@@ -48,7 +48,7 @@ fn publish(target: &Path, model: &Json) -> std::io::Result<()> {
     }
 }
 
-const CAPABILITIES: &str = r#"{"families":["affine_pair_v1","annular_pair_v1"],"commands":["build","audit","evaluate","capabilities"],"evaluators":{"rational_bezier_tensor":{"degrees":[[1,1,1],[2,1,1]],"domain":[[0,1],[0,1],[0,1]]}}}"#;
+const CAPABILITIES: &str = r#"{"families":["affine_pair_v1","annular_pair_v1","filleted_bracket_v1"],"commands":["build","audit","evaluate","capabilities"],"evaluators":{"rational_bezier_tensor":{"degrees":[[1,1,1],[2,1,1]],"domain":[[0,1],[0,1],[0,1]]}}}"#;
 
 fn diagnostic(status: &str, reason: &str) -> Json {
     object([

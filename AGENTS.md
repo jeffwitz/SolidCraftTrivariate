@@ -4,6 +4,8 @@ Sur cette machine, suivre @/home/jeff/.codex/RTK.md et préfixer les commandes s
 
 Lire docs/architecture.md et docs/LUNA.md. Le CdC corrigé définit les garanties scientifiques. Les deux notes d’adaptation précisent la progression du démonstrateur.
 
+Le noyau, les constructeurs et les audits de production sont développés en Rust. Python sert aux oracles indépendants et aux références historiques. Chaque lot géométrique livre du Rust accessible depuis la crate et testé avec Cargo.
+
 1. Découper par capacité réutilisable. Pour chaque lot, consigner la révision de départ, les fichiers concernés, les préconditions, les seuils, l’oracle indépendant, les entrées à refuser et les critères de sortie avant de développer.
 2. Écrire le code, les docstrings, les commentaires techniques et les commits en anglais. Préserver les recettes et les formats versionnés existants. Une extension de famille possède un identifiant et des conventions explicites.
 3. Garder la bibliothèque indépendante de l’interface utilisateur. Le CLI et les futurs adaptateurs passent par le même constructeur. Toute adoption d’un modèle passe par l’audit et un remplacement atomique. Tester la conservation de l’ancien état après refus.

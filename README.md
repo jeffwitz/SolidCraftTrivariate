@@ -1,19 +1,27 @@
 # SolidCraftTrivariate
 
-Prototype Python d’un noyau volumique sans trim pour la conception paramétrique et l’IGA. Le cas de départ construit deux prismes unitaires en hauteur et profondeur, de largeurs réglables, et vérifie leurs coefficients homogènes sur toute la carte.
+Noyau volumique natif en Rust pour la conception paramétrique et l’IGA, avec des références de test en Python. Le cas de départ construit deux prismes unitaires en hauteur et profondeur, de largeurs réglables, et vérifie leurs coefficients homogènes sur toute la carte.
 
 ## Démarrer avec Luna
 
-Depuis la racine, avec Python 3.10+, Git, Bash et Make :
+Depuis la racine, avec Cargo, Rust, Python 3.10+, Git, Bash et Make :
 
 ```sh
 make check
-codex -m gpt-6-luna "Lis AGENTS.md, docs/L1.md et docs/LUNA.md. Rejoue make check puis prépare le lot des deux blocs courbes."
+codex -m gpt-6-luna "Lis AGENTS.md, docs/L1.md et docs/LUNA.md. Rejoue make check puis poursuis le premier lot Rust ouvert dans le journal de campagne."
 ```
 
-Sur une nouvelle copie du projet, lancer d’abord `make bootstrap` pour récupérer les six références de `references.lock`. Sur la machine préparée, `make check` fonctionne hors ligne. Les tests du noyau seul se lancent avec `make test`.
+Sur une nouvelle copie du projet, lancer d’abord `make bootstrap` pour récupérer les six références de `references.lock`. Sur la machine préparée, `make check` fonctionne hors ligne. Les tests du noyau Rust seul se lancent avec `cargo test --locked --offline`. La commande `make check` ajoute les références Python et les démonstrateurs de comparaison.
 
-## Rejouer une construction
+## Vérifier le noyau Rust
+
+```sh
+cargo test --locked --offline --test bezier
+```
+
+Ce test évalue la position et le jacobien sur les 125 points du quart de couronne, avec une référence trigonométrique indépendante.
+
+## Rejouer la construction Python de référence
 
 ```sh
 python3 -m trivariate capabilities
@@ -25,7 +33,7 @@ Modifier les deux largeurs entières positives dans une copie de la recette puis
 
 ## Documents de travail
 
-L’évaluateur L1 accepte les degrés (1,1,1) et (2,1,1). Pour inspecter la position et les trois colonnes du jacobien au centre du quart de couronne, exécuter :
+L’oracle Python de L1 accepte les degrés (1,1,1) et (2,1,1). Pour inspecter la position et les trois colonnes du jacobien au centre du quart de couronne, exécuter :
 
 ```sh
 python3 -m trivariate evaluate tests/references/quarter_annulus.json 0.5 0.5 0.5

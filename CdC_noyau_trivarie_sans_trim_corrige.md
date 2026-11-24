@@ -1075,14 +1075,14 @@ Le premier calcul fiable utilise une source géométrique maîtrisée : un langa
 
 | Source | Phase | Contenu | Contrat |
 | --- | --- | --- | --- |
-| Langage interne, DSL Python | 1 | Paramètres nommés, esquisses, contraintes, extrusion, coupe, poche, congé, chanfrein, motif, miroir | Sélections par entités de conception ; préconditions et modes de construction explicites |
+| Langage interne, recettes de features traitées par le noyau Rust | 1 | Paramètres nommés, esquisses, contraintes, extrusion, coupe, poche, congé, chanfrein, motif, miroir | Sélections par entités de conception ; préconditions et modes de construction explicites |
 | Programmes code-CAD, par exemple CadQuery ou build123d | 3, option | Traduction d'un sous-ensemble d'appels et de leurs dépendances | Liste des opérations couvertes et test d'équivalence ; aucune déduction automatique de trivariées depuis le seul résultat B-rep |
 | CADIR / CADmpeg | 4 | Données de conception effectivement disponibles dans une version identifiée du format | Valider opérandes, paramètres, références et sémantique ; feature native, non résolue ou incomplète refusée si elle ne peut être traduite avec le contrat exigé |
 | STEP sans historique | Hors périmètre initial | Frontière du solide | Reconstruction générative et segmentation à développer et évaluer séparément |
 
 Les noms des niveaux de décodage d'un format externe ne sont pas des garanties pérennes. Chaque adaptateur déclare la version du schéma, les capacités testées et les informations manquantes. L'import n'est pas placé sur le chemin critique du premier démonstrateur.
 
-**16.2 Exemple de description (API indicative, en anglais).**
+**16.2 Exemple de description (pseudocode indicatif de la recette, en anglais).**
 
 ```python
 m = Model(
@@ -1123,7 +1123,7 @@ La robustesse et la traçabilité priment sur la performance brute. Les mesures 
 | NF-1 | Robustesse | Toute transaction produit un assemblage valide ou un refus motivé ; aucune exception ne laisse un état partiellement modifié. L'export calcul possède sa validation propre |
 | NF-2 | Reproductibilité | Choix déterministes et ordre stable ; versions des bibliothèques, options, environnement numérique et graines éventuelles enregistrés. Le niveau de reproductibilité numérique exigé est déclaré |
 | NF-3 | Traçabilité | Chaque gabarit, affectation, choix de maître, degré, approximation et reprise est journalisé avec sa raison et ses dépendances |
-| NF-4 | Langage et code | Prototype Python avec API stable ; noyaux critiques portables ensuite en C++ ou Rust. Code, commentaires techniques, docstrings et messages de commit en anglais |
+| NF-4 | Langage et code | Noyau natif en Rust dès le démonstrateur, avec API stable. Les constructeurs, les audits de production et les nouveaux algorithmes sont implémentés en Rust. Python sert aux oracles de test et aux références de portage. Code, commentaires techniques, docstrings et messages de commit en anglais |
 | NF-5 | Vérification | Tests de propriétés, cas analytiques, tests de contraintes, solutions manufacturées, non-régression et benchmarks selon section 18. Une campagne d'échantillonnage ne remplace pas les certificats |
 | NF-6 | Performance | Mesurer compilation anticipée et mise à jour incrémentale séparément ; invalider par dépendances et réutiliser les résultats inchangés. Compter blocs, sous-faces, coefficients, degrés de liberté, contraintes et coefficients non nuls ; chronométrer intersections, reconstruction, certification, assemblage et résolution. Aucune complexité linéaire universelle ni rayon d'une couche n'est présumé |
 | NF-7 | Documentation | Pour chaque famille : préconditions, domaine de paramètres, construction, statuts, preuves, budget de calcul, causes de refus et exemples exécutables |
@@ -1402,7 +1402,7 @@ Les objectifs natifs trivariés, sans trim, sans bloc dégénéré et à espace 
 - [ ] **Raffinement THB.** Étudier son interaction avec les traces emboîtées et les régimes différentiables une fois le raffinement tensoriel validé.
 - [ ] **Conservation des cellules inactives.** Choisir une politique selon l'utilité démontrée pour annulation, variantes, mémoire et coût de maintenance.
 - [ ] **Champs matériels et physique.** Préciser la portée des champs hétérogènes, orientations et transferts ; introduire grandes déformations et quasi-incompressibilité avec des validations mécaniques propres.
-- [ ] **Industrialisation.** Décider d'un portage C++ ou Rust à partir du profilage du prototype, puis des adaptateurs d'import et d'export à maintenir, dans le cadre de licence déjà établi.
+- [ ] **Industrialisation.** Profiler le noyau Rust et décider des optimisations et des adaptateurs d'import et d'export à maintenir, dans le cadre de licence déjà établi.
 
 ## Annexe A. Principales corrections de cette révision
 

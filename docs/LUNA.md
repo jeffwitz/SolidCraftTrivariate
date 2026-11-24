@@ -1,5 +1,7 @@
 # Feuille de route de Luna
 
+La campagne développe le noyau et ses audits en Rust. Le lot L1 est porté dans `src/bezier.rs` et ses tests natifs sont dans `tests/bezier.rs`. Rejouer `cargo test --locked --offline` avant les contrôles croisés de `make check`. Le descriptif Python ci-dessous documente le point de départ historique.
+
 ## L1 — Évaluer une carte rationnelle native
 
 **Point de départ.** Rejouer `make check`, consigner `git rev-parse HEAD` et inspecter `build/affine_pair.json`. Première modification proposée dans `trivariate/spline.py`, avec tests et recettes sous `tests/`. Conserver l’API et les résultats du cas affine.

@@ -1,6 +1,10 @@
 # Architecture et contrats
 
-## Socle livré
+## Noyau natif Rust
+
+La crate `solidcraft-trivariate` expose `RationalBezierMap::new` et `evaluate` depuis `src/lib.rs`. Toutes les nouvelles fonctionnalités de production passent par cette crate. Les modèles et les tests Python acquis pendant les premiers lots fournissent des références pour qualifier les portages.
+
+## Modèle historique des références Python
 
 La recette versionnée est l’intention de construction. `trivariate.build.build(recipe)` produit un modèle candidat en mémoire. `trivariate.audit.audit(model)` prend uniquement ce modèle et reconstruit les coefficients attendus à partir des dimensions déclarées. Le CLI sérialise en JSON après validation, dans un fichier temporaire du même répertoire que la destination. Le renommage est atomique. En cas de deux publications concurrentes valides, la dernière remplace la précédente.
 
@@ -24,4 +28,4 @@ Le premier raccord courbe porte sur des faces entières. Les côtés ont une ori
 
 - SolidCraft et son sous-arbre solidcore fournissent la façade de corps, l’évaluation des features et les règles de coordination. FieldCraft fournit `tests/corpus/filleted-bracket-blocks/{recipe,fixture}.json` et `crates/testkit/tests/bracket_blocks.rs`.
 - AutoCraft, craft-contrib, Craft Anything et ArtCraft documentent les revues, les tests, les commandes, la provenance et les instructions communes. Les clones de Craft Anything et ArtCraft utilisent un checkout partiel pour les chemins étudiés. Les six révisions figurent dans references.lock.
-- Le prototype utilise la bibliothèque standard Python. Les applications Rust amont disposent de leurs propres dépendances et cycles de compilation. Leur compilation interviendra lors du travail sur les adaptateurs.
+- Les références de test utilisent la bibliothèque standard Python. Les applications Rust amont disposent de leurs propres dépendances et cycles de compilation. Leur compilation interviendra lors du travail sur les adaptateurs.

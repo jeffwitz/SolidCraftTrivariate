@@ -1,15 +1,15 @@
 """Extract and compare oriented tensor-product Bezier face traces."""
 
 from fractions import Fraction
-from math import isfinite
+from math import comb, isfinite
 
 
 def _number(value):
     """Return a rational representation of a finite JSON-style number."""
-    if isinstance(value, bool) or not isinstance(value, (int, float)):
+    if isinstance(value, bool) or not isinstance(value, (int, float, Fraction)):
         raise ValueError("homogeneous coefficients must be finite real numbers")
     try:
-        if not isfinite(value):
+        if isinstance(value, float) and not isfinite(value):
             raise ValueError("homogeneous coefficients must be finite real numbers")
         return Fraction(value)
     except (OverflowError, ValueError, ZeroDivisionError) as error:
@@ -117,3 +117,31 @@ def traces_match(first, second, **orientation):
     if scale <= 0:
         return False
     return all(a == scale * b for a, b in zip(left, right))
+
+
+def elevate_trace(trace, degrees):
+    """Raise both homogeneous Bernstein degrees exactly, preserving the map."""
+    source, controls = _validated_trace(trace)
+    if (not isinstance(degrees, (list, tuple)) or len(degrees) != 2
+            or any(type(d) is not int or d < p for d, p in zip(degrees, source))):
+        raise ValueError("target degrees must be integers at least as large as the source")
+
+    def coefficients(p, n, j):
+        # Expand each degree-p Bernstein polynomial after multiplying by
+        # (t + (1-t))**(n-p). Contributions share the denominator C(n,j).
+        return [(i, Fraction(comb(p, i) * comb(n-p, j-i), comb(n, j)))
+                for i in range(max(0, j-n+p), min(p, j)+1)]
+
+    rows = [coefficients(source[0], degrees[0], j) for j in range(degrees[0]+1)]
+    cols = [coefficients(source[1], degrees[1], j) for j in range(degrees[1]+1)]
+    data = [tuple(map(_number, point)) for point in controls]
+    elevated = []
+    for row in rows:
+        for col in cols:
+            value = [Fraction(0)] * 4
+            for i, a in row:
+                for j, b in col:
+                    for c, component in enumerate(data[i*(source[1]+1)+j]):
+                        value[c] += a*b*component
+            elevated.append(value)
+    return {"degrees": list(degrees), "controls": elevated}

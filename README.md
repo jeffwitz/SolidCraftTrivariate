@@ -8,7 +8,7 @@ Depuis la racine, avec Python 3.10+, Git, Bash et Make :
 
 ```sh
 make check
-codex -m gpt-6-luna "Lis AGENTS.md et docs/LUNA.md. Réalise le lot L1 et rejoue ses critères d’acceptation."
+codex -m gpt-6-luna "Lis AGENTS.md, docs/L1.md et docs/LUNA.md. Rejoue make check puis prépare le lot des deux blocs courbes."
 ```
 
 Sur une nouvelle copie du projet, lancer d’abord `make bootstrap` pour récupérer les six références de `references.lock`. Sur la machine préparée, `make check` fonctionne hors ligne. Les tests du noyau seul se lancent avec `make test`.
@@ -25,6 +25,13 @@ Modifier les deux largeurs entières positives dans une copie de la recette puis
 
 ## Documents de travail
 
+L’évaluateur L1 accepte les degrés (1,1,1) et (2,1,1). Pour inspecter la position et les trois colonnes du jacobien au centre du quart de couronne, exécuter :
+
+```sh
+python3 -m trivariate evaluate tests/references/quarter_annulus.json 0.5 0.5 0.5
+```
+
+- [Contrat et résultats de l’évaluateur L1](docs/L1.md)
 - [Contrats, conventions et architecture](docs/architecture.md)
 - [Premier lot et critères d’acceptation](docs/LUNA.md)
 - [Règles de développement](AGENTS.md)

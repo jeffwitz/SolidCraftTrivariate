@@ -1,10 +1,14 @@
-"""Independent exact oracle for the restricted integer affine family."""
+"""Dispatch a candidate model to its independent family oracle."""
+
+from .annular_certificate import certify
 
 
 def audit(model):
     def invalid(reason):
         return {"status": "invalid", "reason": reason}
 
+    if isinstance(model, dict) and model.get("schema") == "annular_pair_v1":
+        return certify(model)
     if not isinstance(model, dict) or model.get("schema") != "affine_pair_v1":
         return {"status": "indeterminate", "reason": "unknown_schema"}
     if model.keys() != {"schema", "widths_mm", "blocks", "interface"}:

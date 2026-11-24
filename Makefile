@@ -8,4 +8,6 @@ test:
 demo:
 	python3 -m trivariate build tests/references/affine_pair.json build/affine_pair.json
 	python3 -m trivariate audit build/affine_pair.json
+	python3 -m trivariate build tests/references/annular_pair.json build/annular_pair.json
+	python3 -m trivariate audit build/annular_pair.json
 check: refs test demo

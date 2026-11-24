@@ -2,9 +2,15 @@
 
 from itertools import product
 
+from .annular import build_annular_pair
+
 
 def build(recipe):
-    if not isinstance(recipe, dict) or recipe.keys() != {"family", "widths_mm"}:
+    if not isinstance(recipe, dict) or "family" not in recipe:
+        raise ValueError("Expected a recipe with family")
+    if recipe["family"] == "annular_pair_v1":
+        return build_annular_pair(recipe)
+    if recipe.keys() != {"family", "widths_mm"}:
         raise ValueError("Expected family and widths_mm")
     if recipe["family"] != "affine_pair_v1":
         raise ValueError("Unsupported family")

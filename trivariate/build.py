@@ -1,8 +1,11 @@
-"""Construct the two-prism seed in homogeneous Bernstein form."""
+"""Construct a candidate model from a versioned recipe."""
 
 from itertools import product
 
 from .annular import build_annular_pair
+from .bracket import bracket_blocks
+from .bracket_audit import design_faces
+from .incidence import enumerate_faces
 
 
 def build(recipe):
@@ -10,6 +13,14 @@ def build(recipe):
         raise ValueError("Expected a recipe with family")
     if recipe["family"] == "annular_pair_v1":
         return build_annular_pair(recipe)
+    if recipe["family"] == "filleted_bracket_v1":
+        if set(recipe) != {"family"}:
+            raise ValueError("The fixed filleted bracket recipe only accepts family")
+        blocks = bracket_blocks()
+        topology = enumerate_faces(blocks)
+        labels = design_faces({b["id"]: b for b in blocks}, topology["exterior"])
+        return {"schema": recipe["family"], "blocks": blocks,
+                "topology": topology, "design_faces": labels}
     if recipe.keys() != {"family", "widths_mm"}:
         raise ValueError("Expected family and widths_mm")
     if recipe["family"] != "affine_pair_v1":

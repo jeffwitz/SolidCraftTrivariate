@@ -27,7 +27,7 @@ def main():
     try:
         if args.command == "capabilities":
             result = {
-                "families": ["affine_pair_v1", "annular_pair_v1"],
+                "families": ["affine_pair_v1", "annular_pair_v1", "filleted_bracket_v1"],
                 "commands": ["build", "audit", "evaluate", "capabilities"],
                 "evaluators": {
                     "rational_bezier_tensor": {

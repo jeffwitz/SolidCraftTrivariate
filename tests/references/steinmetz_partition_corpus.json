@@ -1,0 +1,141 @@
+[
+  {
+    "id": "xz_steinmetz_centered_target",
+    "accepted": true,
+    "initial_status": "refused_by_pa5_before_steinmetz_transition",
+    "recipe": {
+      "family": "orthogonal_sketch_features_v1",
+      "outer": {"id": "body", "vertices": [[0, 0], [60, 0], [60, 40], [0, 40]]},
+      "height_mm": 30,
+      "fillets": [],
+      "bores": [
+        {"id": "horizontal", "axis": "x", "center_mm": [30, 20, 15], "radius_mm": 3},
+        {"id": "vertical", "axis": "z", "center_mm": [30, 20, 15], "radius_mm": 3}
+      ]
+    }
+  },
+  {
+    "id": "xz_disjoint_y_separation_10",
+    "accepted": true,
+    "recipe": {
+      "family": "orthogonal_sketch_features_v1",
+      "outer": {"id": "body", "vertices": [[0, 0], [60, 0], [60, 40], [0, 40]]},
+      "height_mm": 30,
+      "fillets": [],
+      "bores": [
+        {"id": "horizontal", "axis": "x", "center_mm": [30, 14, 15], "radius_mm": 3},
+        {"id": "vertical", "axis": "z", "center_mm": [30, 26, 15], "radius_mm": 3}
+      ]
+    }
+  },
+  {
+    "id": "xz_steinmetz_scaled_centered_r6",
+    "accepted": true,
+    "recipe": {
+      "family": "orthogonal_sketch_features_v1",
+      "outer": {"id": "body", "vertices": [[0, 0], [72, 0], [72, 46], [0, 46]]},
+      "height_mm": 34,
+      "fillets": [],
+      "bores": [
+        {"id": "horizontal", "axis": "x", "center_mm": [36, 23, 17], "radius_mm": 6},
+        {"id": "vertical", "axis": "z", "center_mm": [36, 23, 17], "radius_mm": 6}
+      ]
+    }
+  },
+  {
+    "id": "xz_steinmetz_shared_y_offset_r3",
+    "accepted": true,
+    "recipe": {
+      "family": "orthogonal_sketch_features_v1",
+      "outer": {"id": "body", "vertices": [[0, 0], [60, 0], [60, 40], [0, 40]]},
+      "height_mm": 30,
+      "fillets": [],
+      "bores": [
+        {"id": "horizontal", "axis": "x", "center_mm": [30, 6, 15], "radius_mm": 3},
+        {"id": "vertical", "axis": "z", "center_mm": [30, 6, 15], "radius_mm": 3}
+      ]
+    }
+  },
+  {
+    "id": "xz_steinmetz_axis_supports_shifted_r1",
+    "accepted": true,
+    "recipe": {
+      "family": "orthogonal_sketch_features_v1",
+      "outer": {"id": "body", "vertices": [[0, 0], [60, 0], [60, 40], [0, 40]]},
+      "height_mm": 30,
+      "fillets": [],
+      "bores": [
+        {"id": "horizontal", "axis": "x", "center_mm": [7, 20, 15], "radius_mm": 1},
+        {"id": "vertical", "axis": "z", "center_mm": [30, 20, 27], "radius_mm": 1}
+      ]
+    }
+  },
+  {
+    "id": "xy_steinmetz_centered",
+    "accepted": true,
+    "recipe": {
+      "family": "orthogonal_sketch_features_v1",
+      "outer": {"id": "body", "vertices": [[0, 0], [60, 0], [60, 40], [0, 40]]},
+      "height_mm": 30,
+      "fillets": [],
+      "bores": [
+        {"id": "horizontal", "axis": "x", "center_mm": [30, 20, 15], "radius_mm": 3},
+        {"id": "transverse", "axis": "y", "center_mm": [30, 20, 15], "radius_mm": 3}
+      ]
+    }
+  },
+  {
+    "id": "yz_steinmetz_centered",
+    "accepted": true,
+    "recipe": {
+      "family": "orthogonal_sketch_features_v1",
+      "outer": {"id": "body", "vertices": [[0, 0], [60, 0], [60, 40], [0, 40]]},
+      "height_mm": 30,
+      "fillets": [],
+      "bores": [
+        {"id": "transverse", "axis": "y", "center_mm": [30, 20, 15], "radius_mm": 3},
+        {"id": "vertical", "axis": "z", "center_mm": [30, 20, 15], "radius_mm": 3}
+      ]
+    }
+  },
+  {
+    "id": "unequal_radii_rejected",
+    "accepted": false,
+    "recipe": {
+      "family": "orthogonal_sketch_features_v1",
+      "outer": {"id": "body", "vertices": [[0, 0], [60, 0], [60, 40], [0, 40]]},
+      "height_mm": 30,
+      "fillets": [],
+      "bores": [
+        {"id": "horizontal", "axis": "x", "center_mm": [30, 20, 15], "radius_mm": 3},
+        {"id": "vertical", "axis": "z", "center_mm": [30, 20, 15], "radius_mm": 2}
+      ]
+    }
+  },
+  {
+    "id": "oblique_axis_rejected",
+    "accepted": false,
+    "recipe": {
+      "family": "orthogonal_sketch_features_v1",
+      "outer": {"id": "body", "vertices": [[0, 0], [60, 0], [60, 40], [0, 40]]},
+      "height_mm": 30,
+      "fillets": [],
+      "bores": [
+        {"id": "oblique", "axis": "oblique", "center_mm": [30, 20, 15], "radius_mm": 3}
+      ]
+    }
+  },
+  {
+    "id": "insufficient_outer_guard_rejected",
+    "accepted": false,
+    "recipe": {
+      "family": "orthogonal_sketch_features_v1",
+      "outer": {"id": "body", "vertices": [[0, 0], [60, 0], [60, 40], [0, 40]]},
+      "height_mm": 30,
+      "fillets": [],
+      "bores": [
+        {"id": "near_wall", "axis": "x", "center_mm": [30, 2, 15], "radius_mm": 3}
+      ]
+    }
+  }
+]

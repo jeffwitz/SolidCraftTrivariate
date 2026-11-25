@@ -1,0 +1,501 @@
+{
+  "protocol": "One warmup then five sequential CLI build+audit wall times, concurrent campaign traffic; 27 Jacobian samples per block.",
+  "python": "3.11.14",
+  "platform": "Linux-7.0.0-43-generic-x86_64-with-glibc2.39",
+  "numpy": "1.26.4",
+  "cli_sha256": "ef94e1f6ad0816be95af1232fc060eafbe5cc101c40f71a933a780d0f830c2ab",
+  "cases": {
+    "plate_blind_pocket": {
+      "recipe": {
+        "family": "sketch_layer_partition_v1",
+        "height_mm": 20,
+        "outer": {
+          "id": "body",
+          "vertices": [
+            [
+              0,
+              0
+            ],
+            [
+              60,
+              0
+            ],
+            [
+              60,
+              40
+            ],
+            [
+              0,
+              40
+            ]
+          ]
+        },
+        "cuts": [
+          {
+            "id": "pocket",
+            "vertices": [
+              [
+                20,
+                15
+              ],
+              [
+                40,
+                15
+              ],
+              [
+                40,
+                25
+              ],
+              [
+                20,
+                25
+              ]
+            ],
+            "z_interval_mm": [
+              14,
+              20
+            ]
+          }
+        ],
+        "construction": []
+      },
+      "blocks": 17,
+      "interfaces": 28,
+      "model_bytes": 17507,
+      "build_and_audit_median_s": 0.008999165962450206,
+      "repeats_s": [
+        0.008092672971542925,
+        0.009949321975000203,
+        0.00833698600763455,
+        0.009293576993513852,
+        0.008999165962450206
+      ],
+      "min_scaled_jacobian_sample": 0.9999999999999993,
+      "max_condition_sample": 3.3333333333333335,
+      "audited_min_det_mm3": 1199.9999999999993,
+      "volume_exact": [
+        46800,
+        1
+      ]
+    },
+    "plate_blind_pocket_triangulate": {
+      "recipe": {
+        "family": "sketch_layer_partition_v1",
+        "height_mm": 20,
+        "partition_strategy": "triangulate",
+        "outer": {
+          "id": "body",
+          "vertices": [
+            [
+              0,
+              0
+            ],
+            [
+              60,
+              0
+            ],
+            [
+              60,
+              40
+            ],
+            [
+              0,
+              40
+            ]
+          ]
+        },
+        "cuts": [
+          {
+            "id": "pocket",
+            "vertices": [
+              [
+                20,
+                15
+              ],
+              [
+                40,
+                15
+              ],
+              [
+                40,
+                25
+              ],
+              [
+                20,
+                25
+              ]
+            ],
+            "z_interval_mm": [
+              14,
+              20
+            ]
+          }
+        ],
+        "construction": []
+      },
+      "blocks": 84,
+      "interfaces": 186,
+      "model_bytes": 51678,
+      "build_and_audit_median_s": 0.018314120010472834,
+      "repeats_s": [
+        0.01771789201302454,
+        0.018314120010472834,
+        0.0177923190058209,
+        0.01864935498451814,
+        0.018726451962720603
+      ],
+      "min_scaled_jacobian_sample": 0.03378352137196555,
+      "max_condition_sample": 60.81689053280162,
+      "audited_min_det_mm3": 49.99999999999997,
+      "volume_exact": [
+        46800,
+        1
+      ]
+    },
+    "c_section_two_holes": {
+      "recipe": {
+        "family": "sketch_layer_partition_v1",
+        "height_mm": 7,
+        "top_shift_mm": [
+          3,
+          -2
+        ],
+        "outer": {
+          "id": "body",
+          "vertices": [
+            [
+              0,
+              0
+            ],
+            [
+              20,
+              0
+            ],
+            [
+              20,
+              4
+            ],
+            [
+              6,
+              4
+            ],
+            [
+              6,
+              16
+            ],
+            [
+              20,
+              16
+            ],
+            [
+              20,
+              20
+            ],
+            [
+              0,
+              20
+            ]
+          ]
+        },
+        "cuts": [
+          {
+            "id": "lower_hole",
+            "vertices": [
+              [
+                12,
+                1
+              ],
+              [
+                14,
+                1
+              ],
+              [
+                14,
+                3
+              ],
+              [
+                12,
+                3
+              ]
+            ],
+            "z_interval_mm": [
+              0,
+              7
+            ]
+          },
+          {
+            "id": "upper_hole",
+            "vertices": [
+              [
+                15,
+                17
+              ],
+              [
+                17,
+                17
+              ],
+              [
+                17,
+                19
+              ],
+              [
+                15,
+                19
+              ]
+            ],
+            "z_interval_mm": [
+              0,
+              7
+            ]
+          }
+        ],
+        "construction": []
+      },
+      "blocks": 35,
+      "interfaces": 48,
+      "model_bytes": 39703,
+      "build_and_audit_median_s": 0.015384895028546453,
+      "repeats_s": [
+        0.015985139994882047,
+        0.015384895028546453,
+        0.015449020022060722,
+        0.015074515016749501,
+        0.014834273024462163
+      ],
+      "min_scaled_jacobian_sample": 0.8890008890013331,
+      "max_condition_sample": 8.887482193696059,
+      "audited_min_det_mm3": 6.9999999999999964,
+      "volume_exact": [
+        1568,
+        1
+      ]
+    },
+    "c_section_two_holes_triangulate": {
+      "recipe": {
+        "family": "sketch_layer_partition_v1",
+        "height_mm": 7,
+        "partition_strategy": "triangulate",
+        "top_shift_mm": [
+          3,
+          -2
+        ],
+        "outer": {
+          "id": "body",
+          "vertices": [
+            [
+              0,
+              0
+            ],
+            [
+              20,
+              0
+            ],
+            [
+              20,
+              4
+            ],
+            [
+              6,
+              4
+            ],
+            [
+              6,
+              16
+            ],
+            [
+              20,
+              16
+            ],
+            [
+              20,
+              20
+            ],
+            [
+              0,
+              20
+            ]
+          ]
+        },
+        "cuts": [
+          {
+            "id": "lower_hole",
+            "vertices": [
+              [
+                12,
+                1
+              ],
+              [
+                14,
+                1
+              ],
+              [
+                14,
+                3
+              ],
+              [
+                12,
+                3
+              ]
+            ],
+            "z_interval_mm": [
+              0,
+              7
+            ]
+          },
+          {
+            "id": "upper_hole",
+            "vertices": [
+              [
+                15,
+                17
+              ],
+              [
+                17,
+                17
+              ],
+              [
+                17,
+                19
+              ],
+              [
+                15,
+                19
+              ]
+            ],
+            "z_interval_mm": [
+              0,
+              7
+            ]
+          }
+        ],
+        "construction": []
+      },
+      "blocks": 84,
+      "interfaces": 142,
+      "model_bytes": 53758,
+      "build_and_audit_median_s": 0.02355656400322914,
+      "repeats_s": [
+        0.02355656400322914,
+        0.023498377006035298,
+        0.022996374987997115,
+        0.024014273018110543,
+        0.024991192971356213
+      ],
+      "min_scaled_jacobian_sample": 0.006945107500696148,
+      "max_condition_sample": 328.90668088108697,
+      "audited_min_det_mm3": 1.166666666666666,
+      "volume_exact": [
+        1568,
+        1
+      ]
+    },
+    "automatic_bracket": {
+      "recipe": {
+        "family": "orthogonal_sketch_features_v1",
+        "outer": {
+          "id": "outline",
+          "vertices": [
+            [
+              0,
+              0
+            ],
+            [
+              60,
+              0
+            ],
+            [
+              60,
+              8
+            ],
+            [
+              8,
+              8
+            ],
+            [
+              8,
+              50
+            ],
+            [
+              0,
+              50
+            ]
+          ]
+        },
+        "height_mm": 40,
+        "fillets": [
+          {
+            "id": "round",
+            "vertex": [
+              8,
+              8
+            ],
+            "radius_mm": 6
+          }
+        ],
+        "bores": [
+          {
+            "id": "east",
+            "axis": "y",
+            "center_mm": [
+              40,
+              4,
+              20
+            ],
+            "radius_mm": 4
+          },
+          {
+            "id": "north",
+            "axis": "x",
+            "center_mm": [
+              4,
+              32,
+              20
+            ],
+            "radius_mm": 4
+          }
+        ]
+      },
+      "blocks": 48,
+      "interfaces": 74,
+      "model_bytes": 38176,
+      "build_and_audit_median_s": 0.36278432997642085,
+      "repeats_s": [
+        0.33959588600555435,
+        0.38421226397622377,
+        0.3448896540212445,
+        0.36278432997642085,
+        0.37987620499916375
+      ],
+      "min_scaled_jacobian_sample": 0.569209978830308,
+      "max_condition_sample": 128.0,
+      "audited_min_det_mm3": 0.00854492187498991,
+      "volume_exact": {
+        "pi_coefficient_mm3": [
+          -2464,
+          4
+        ],
+        "twice_rational_part_mm3": 68160
+      }
+    },
+    "specialized_bracket": {
+      "recipe": {
+        "family": "filleted_bracket_v1"
+      },
+      "blocks": 36,
+      "interfaces": 55,
+      "model_bytes": 32944,
+      "build_and_audit_median_s": 0.009373321023304015,
+      "repeats_s": [
+        0.009988228965085,
+        0.009373321023304015,
+        0.009401868039276451,
+        0.008662956999614835,
+        0.009099622024223208
+      ],
+      "min_scaled_jacobian_sample": 0.707106781186547,
+      "max_condition_sample": 10.0,
+      "audited_min_det_mm3": 160,
+      "volume_exact": null
+    }
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "case": {
+    "formulation": "displacement",
+    "level": 4,
+    "nu": 0.4999,
+    "order": 8
+  },
+  "dimension": 38016,
+  "environment": {
+    "numpy": "2.4.4",
+    "python": "3.12.3",
+    "scipy": "1.17.1"
+  },
+  "factorization_s": 29.771717731026,
+  "field_agreement": {
+    "max_abs_p5b_minus_scipy_lu_mm": 1.695836492839383e-12,
+    "relative_l2_p5b_vs_scipy_lu": 2.0609552958700876e-10
+  },
+  "fields": {
+    "p4_direct": {
+      "max_abs_plain_vs_longdouble_n": 2.6839188649319112e-09,
+      "relative_fsum_products_f64": 2.098704664684316e-11,
+      "relative_longdouble_products_and_sum": 1.743308777163272e-11,
+      "relative_plain_f64": 6.991244542091476e-11
+    },
+    "p5b_k3_corrected": {
+      "max_abs_plain_vs_longdouble_n": 2.6839188649319112e-09,
+      "relative_fsum_products_f64": 2.098704664684316e-11,
+      "relative_longdouble_products_and_sum": 1.743308777163272e-11,
+      "relative_plain_f64": 6.991244542091476e-11
+    },
+    "scipy_sparse_lu": {
+      "max_abs_plain_vs_longdouble_n": 2.4131736608978827e-09,
+      "relative_fsum_products_f64": 1.8254543808896814e-09,
+      "relative_longdouble_products_and_sum": 1.825432637309535e-09,
+      "relative_plain_f64": 1.8264624465400647e-09
+    }
+  },
+  "free_dofs": 29565,
+  "limits": {
+    "memory_address_space_bytes": 6442450944,
+    "residual_acceptance": 1e-10
+  },
+  "method": "SciPy expands archived 3x3 block CSR, sparse-LU solves the free K3 equations, and evaluates f-K3*u with naive, math.fsum product, and longdouble row sums.",
+  "nnz_scalar": 5349888,
+  "schema": "full_cylinder_defect_3d_reference_v1",
+  "scope_note": "This independent sparse-LU reference covers the h4 control only. Larger h5/h6 K3 operators are reassembled and residual-checked by the Rust route; no h4 result is extrapolated to those grids."
+}

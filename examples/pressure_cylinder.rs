@@ -3,7 +3,7 @@ use solidcraft_trivariate::projected_bulk::{assemble_projected_bulk, ProjectedEl
 use solidcraft_trivariate::{
     analysis_space::{section_analysis_space, AnalysisSpace},
     boundary_traction::{integrate_traction, LoadPatch},
-    constrained_elasticity::solve_constrained,
+    constrained_elasticity::{solve_constrained, solve_constrained_from},
     constraint_system::{resolve, Ratio},
     elasticity::{assemble, basis_geometry, gauss, BasisSample, Stiffness},
     h_refine::refine_cross_section,
@@ -838,6 +838,465 @@ fn plane_read(args: &[String]) -> Result<(), Box<dyn std::error::Error>> {
     Ok(())
 }
 
+fn compensated_sum(values: impl IntoIterator<Item = f64>) -> f64 {
+    let mut sum = 0.0;
+    let mut correction = 0.0;
+    for value in values {
+        let next = sum + value;
+        correction += if sum.abs() >= value.abs() {
+            (sum - next) + value
+        } else {
+            (value - next) + sum
+        };
+        sum = next;
+    }
+    sum + correction
+}
+
+fn vector_norm(values: impl IntoIterator<Item = f64>) -> f64 {
+    compensated_sum(values.into_iter().map(|x| x * x)).sqrt()
+}
+
+fn free_residual_norms(residual: &[f64], fixed: &[[bool; 3]]) -> ([f64; 3], f64) {
+    let mut sums = [0.0; 3];
+    let mut corrections = [0.0; 3];
+    for (node, prescribed) in fixed.iter().enumerate() {
+        for component in 0..3 {
+            if prescribed[component] {
+                continue;
+            }
+            let value = residual[3 * node + component];
+            let square = value * value;
+            let next = sums[component] + square;
+            corrections[component] += if sums[component].abs() >= square.abs() {
+                (sums[component] - next) + square
+            } else {
+                (square - next) + sums[component]
+            };
+            sums[component] = next;
+        }
+    }
+    let components = std::array::from_fn(|c| (sums[c] + corrections[c]).sqrt());
+    let total = vector_norm(components);
+    (components, total)
+}
+
+/// Reassemble the original three-component operator once and evaluate a
+/// sequence of plane-strain coefficient fields with ordinary and compensated
+/// residual summation. This is a diagnostic route; it does not solve or alter
+/// any candidate field.
+fn plane_diagnose(args: &[String]) -> Result<(), Box<dyn std::error::Error>> {
+    if args.len() != 9 {
+        return Err("usage: pressure_cylinder plane-diagnose LEVEL ORDER NU PI PO full|projected CANDIDATES.json OUTPUT.json".into());
+    }
+    let level = args[1].parse::<usize>()?;
+    let order = args[2].parse::<usize>()?;
+    let pressure = Pressure {
+        nu: args[3].parse()?,
+        inner: args[4].parse()?,
+        outer: args[5].parse()?,
+    };
+    let projected = match args[6].as_str() {
+        "full" => false,
+        "projected" => true,
+        _ => return Err("expected full or projected formulation".into()),
+    };
+    let input = solidcraft_trivariate::json::parse(&std::fs::read_to_string(&args[7])?)?;
+    if input.field("schema")?.text()? != "plane_residual_candidates_v1"
+        || input.field("level")?.number::<usize>()? != level
+        || input.field("order")?.number::<usize>()? != order
+        || input.field("nu")?.number::<f64>()? != pressure.nu
+        || input.field("inner_mpa")?.number::<f64>()? != pressure.inner
+        || input.field("outer_mpa")?.number::<f64>()? != pressure.outer
+        || input.field("formulation")?.text()?
+            != if projected {
+                "projected_bulk_q1"
+            } else {
+                "displacement"
+            }
+    {
+        return Err("plane residual candidate metadata mismatch".into());
+    }
+    let system = plane_system(level, order, pressure, false, projected)?;
+    let ReducedPlane {
+        mapping,
+        coordinates,
+        ..
+    } = reduce_to_plane(&system)?;
+    let candidates = input.field("candidates")?.items()?;
+    if candidates.is_empty() || candidates.len() > 7 || mapping.len() != system.space.ndof {
+        return Err("invalid plane residual candidate count or map".into());
+    }
+    let mut positions: Vec<Option<[f64; 3]>> = vec![None; system.space.ndof];
+    for block in &system.space.blocks {
+        for (dof, h) in block.dofs.iter().zip(&block.controls) {
+            let point = [
+                h[0] as f64 / h[3] as f64,
+                h[1] as f64 / h[3] as f64,
+                h[2] as f64 / h[3] as f64,
+            ];
+            if let Some(old) = positions[*dof] {
+                if (0..3).any(|axis| (old[axis] - point[axis]).abs() > 1e-10) {
+                    return Err("inconsistent physical control position".into());
+                }
+            } else {
+                positions[*dof] = Some(point);
+            }
+        }
+    }
+    let positions = positions
+        .into_iter()
+        .collect::<Option<Vec<_>>>()
+        .ok_or("incomplete physical dof coordinates")?;
+    let mut fixed = vec![[false; 3]; system.space.ndof];
+    for (component, dofs) in system.fixed.iter().enumerate() {
+        for &dof in dofs {
+            fixed[dof][component] = true;
+        }
+    }
+    let force_scale = vector_norm(system.force.iter().copied()).max(1.0);
+    let external_force: [f64; 3] = std::array::from_fn(|c| {
+        compensated_sum(system.force.as_chunks::<3>().0.iter().map(|node| node[c]))
+    });
+    let external_moment: [f64; 3] = std::array::from_fn(|c| {
+        compensated_sum((0..system.space.ndof).map(|node| {
+            let f = [
+                system.force[3 * node],
+                system.force[3 * node + 1],
+                system.force[3 * node + 2],
+            ];
+            match c {
+                0 => positions[node][1] * f[2] - positions[node][2] * f[1],
+                1 => positions[node][2] * f[0] - positions[node][0] * f[2],
+                _ => positions[node][0] * f[1] - positions[node][1] * f[0],
+            }
+        }))
+    });
+    let mut rows = Vec::with_capacity(candidates.len());
+    for (index, candidate) in candidates.iter().enumerate() {
+        let refinement = candidate.field("refinement")?.number::<usize>()?;
+        if refinement != index {
+            return Err("plane residual candidates must be ordered from correction zero".into());
+        }
+        let xy = candidate
+            .field("displacement_xy")?
+            .items()?
+            .iter()
+            .map(Json::number::<f64>)
+            .collect::<Result<Vec<_>, _>>()?;
+        if xy.len() != 2 * coordinates.len() || xy.iter().any(|x| !x.is_finite()) {
+            return Err("invalid plane residual candidate vector".into());
+        }
+        let mut u = vec![0.0; 3 * system.space.ndof];
+        for (dof, &node) in mapping.iter().enumerate() {
+            u[3 * dof] = xy[2 * node];
+            u[3 * dof + 1] = xy[2 * node + 1];
+        }
+        let ku = system.matrix.apply(&u)?;
+        let naive = system
+            .force
+            .iter()
+            .zip(&ku)
+            .map(|(&f, &k)| f - k)
+            .collect::<Vec<_>>();
+        let compensated = system.matrix.equilibrium_residual(&u, &system.force)?;
+        let (naive_component_norms, naive_norm) = free_residual_norms(&naive, &fixed);
+        let (compensated_component_norms, compensated_norm) =
+            free_residual_norms(&compensated, &fixed);
+        let naive_components = naive_component_norms.map(|x| x / force_scale);
+        let compensated_components = compensated_component_norms.map(|x| x / force_scale);
+        let naive_residual = naive_norm / force_scale;
+        let compensated_residual = compensated_norm / force_scale;
+        let fixed_force: [f64; 3] = std::array::from_fn(|c| {
+            compensated_sum(
+                (0..system.space.ndof)
+                    .filter(|&node| fixed[node][c])
+                    .map(|node| compensated[3 * node + c]),
+            )
+        });
+        let fixed_moment = (0..system.space.ndof).fold([0.0; 3], |mut acc, node| {
+            let r: [f64; 3] = std::array::from_fn(|c| {
+                if fixed[node][c] {
+                    compensated[3 * node + c]
+                } else {
+                    0.0
+                }
+            });
+            let m = [
+                positions[node][1] * r[2] - positions[node][2] * r[1],
+                positions[node][2] * r[0] - positions[node][0] * r[2],
+                positions[node][0] * r[1] - positions[node][1] * r[0],
+            ];
+            for c in 0..3 {
+                acc[c] += m[c];
+            }
+            acc
+        });
+        let force_balance = std::array::from_fn(|c| external_force[c] - fixed_force[c]);
+        let moment_balance = std::array::from_fn(|c| external_moment[c] - fixed_moment[c]);
+        let to_json = |v: [f64; 3]| json_numbers(v);
+        rows.push(object([
+            ("refinement", n(refinement)),
+            ("relative_residual_naive_full_xyz", n(naive_residual)),
+            (
+                "relative_residual_compensated_full_xyz",
+                n(compensated_residual),
+            ),
+            (
+                "relative_residual_naive_by_component",
+                to_json(naive_components),
+            ),
+            (
+                "relative_residual_compensated_by_component",
+                to_json(compensated_components),
+            ),
+            (
+                "max_abs_naive_compensated_difference_n",
+                n(naive
+                    .iter()
+                    .zip(&compensated)
+                    .map(|(a, b)| (a - b).abs())
+                    .fold(0.0, f64::max)),
+            ),
+            ("external_force_n", to_json(external_force)),
+            ("support_residual_force_n", to_json(fixed_force)),
+            ("force_balance_n", to_json(force_balance)),
+            ("external_moment_n_mm", to_json(external_moment)),
+            ("support_residual_moment_n_mm", to_json(fixed_moment)),
+            ("moment_balance_n_mm", to_json(moment_balance)),
+        ]));
+    }
+    write_json(&args[8], &object([
+        ("schema", Json::String("full_cylinder_residual_diagnostic_v1".into())),
+        ("level", n(level)), ("order", n(order)), ("nu", n(pressure.nu)),
+        ("formulation", Json::String(if projected {"projected_bulk_q1"} else {"displacement"}.into())),
+        ("relative_residual_method", Json::String("plain f64 sparse matvec compared with compensated FMA product and addition residual".into())),
+        ("rows", Json::Array(rows)),
+    ]))?;
+    Ok(())
+}
+
+/// Refine a plane-strain or full 3D seed against the true free K3 operator.
+/// The correction solve uses the original three-component CSR and the exact
+/// physical support constraints; no reduced Kxy equilibrium is substituted.
+fn k3_correct(args: &[String]) -> Result<(), Box<dyn std::error::Error>> {
+    if args.len() != 9 {
+        return Err("usage: pressure_cylinder k3-correct LEVEL ORDER NU PI PO full|projected SEED.json OUTPUT.json".into());
+    }
+    let level = args[1].parse::<usize>()?;
+    let order = args[2].parse::<usize>()?;
+    let pressure = Pressure {
+        nu: args[3].parse()?,
+        inner: args[4].parse()?,
+        outer: args[5].parse()?,
+    };
+    let projected = match args[6].as_str() {
+        "full" => false,
+        "projected" => true,
+        _ => return Err("expected full or projected formulation".into()),
+    };
+    let seed = solidcraft_trivariate::json::parse(&std::fs::read_to_string(&args[7])?)?;
+    let schema = seed.field("schema")?.text()?;
+    if !["plane_strain_solution_v1", "full_cylinder_solution_v1"].contains(&schema)
+        || seed.field("level")?.number::<usize>()? != level
+        || seed.field("order")?.number::<usize>()? != order
+        || seed.field("nu")?.number::<f64>()? != pressure.nu
+        || seed.field("inner_mpa")?.number::<f64>()? != pressure.inner
+        || seed.field("outer_mpa")?.number::<f64>()? != pressure.outer
+        || seed.field("formulation")?.text()?
+            != if projected {
+                "projected_bulk_q1"
+            } else {
+                "displacement"
+            }
+    {
+        return Err("K3 correction seed metadata mismatch".into());
+    }
+    let system = plane_system(level, order, pressure, false, projected)?;
+    let mut seed_xyz = vec![0.0; 3 * system.space.ndof];
+    match schema {
+        "plane_strain_solution_v1" => {
+            let ReducedPlane {
+                mapping,
+                coordinates,
+                ..
+            } = reduce_to_plane(&system)?;
+            let xy = seed
+                .field("displacement_xy")?
+                .items()?
+                .iter()
+                .map(Json::number::<f64>)
+                .collect::<Result<Vec<_>, _>>()?;
+            if xy.len() != 2 * coordinates.len() || xy.iter().any(|x| !x.is_finite()) {
+                return Err("invalid plane-strain K3 correction seed".into());
+            }
+            for (dof, &node) in mapping.iter().enumerate() {
+                seed_xyz[3 * dof] = xy[2 * node];
+                seed_xyz[3 * dof + 1] = xy[2 * node + 1];
+            }
+        }
+        "full_cylinder_solution_v1" => {
+            let values = seed
+                .field("displacement_xyz")?
+                .items()?
+                .iter()
+                .map(Json::number::<f64>)
+                .collect::<Result<Vec<_>, _>>()?;
+            if values.len() != seed_xyz.len() || values.iter().any(|x| !x.is_finite()) {
+                return Err("invalid full 3D K3 correction seed".into());
+            }
+            seed_xyz.copy_from_slice(&values);
+        }
+        _ => unreachable!("schema checked above"),
+    }
+
+    let started = Instant::now();
+    let make_lift = |component: usize| {
+        let prescribed = system.fixed[component]
+            .iter()
+            .map(|&dof| (dof, Ratio::zero()))
+            .collect::<Vec<_>>();
+        resolve(system.space.ndof, &[], &prescribed)
+    };
+    let lx = make_lift(0)?;
+    let ly = make_lift(1)?;
+    let lz = make_lift(2)?;
+    let mut initial =
+        Vec::with_capacity(lx.free_roots.len() + ly.free_roots.len() + lz.free_roots.len());
+    for (component, lift) in [&lx, &ly, &lz].into_iter().enumerate() {
+        initial.extend(
+            lift.free_roots
+                .iter()
+                .map(|&dof| seed_xyz[3 * dof + component]),
+        );
+    }
+    let solved = solve_constrained_from(
+        &system.matrix,
+        [&lx, &ly, &lz],
+        &system.force,
+        1e-10,
+        20_000,
+        &initial,
+    )?;
+    let elapsed_s = started.elapsed().as_secs_f64();
+    let residual = system
+        .matrix
+        .equilibrium_residual(&solved.displacement_mm, &system.force)?;
+    let force_scale = vector_norm(system.force.iter().copied()).max(1.0);
+    let fixed: Vec<[bool; 3]> = (0..system.space.ndof)
+        .map(|dof| std::array::from_fn(|c| system.fixed[c].contains(&dof)))
+        .collect();
+    let (_, free_residual_norm) = free_residual_norms(&residual, &fixed);
+    let relative_residual = free_residual_norm / force_scale;
+    let mut positions: Vec<Option<[f64; 3]>> = vec![None; system.space.ndof];
+    for block in &system.space.blocks {
+        for (dof, h) in block.dofs.iter().zip(&block.controls) {
+            positions[*dof] = Some([
+                h[0] as f64 / h[3] as f64,
+                h[1] as f64 / h[3] as f64,
+                h[2] as f64 / h[3] as f64,
+            ]);
+        }
+    }
+    let positions = positions
+        .into_iter()
+        .collect::<Option<Vec<_>>>()
+        .ok_or("incomplete K3 positions")?;
+    let external_force: [f64; 3] = std::array::from_fn(|c| {
+        compensated_sum(system.force.as_chunks::<3>().0.iter().map(|f| f[c]))
+    });
+    let external_moment = (0..system.space.ndof).fold([0.0; 3], |mut acc, node| {
+        let f = [
+            system.force[3 * node],
+            system.force[3 * node + 1],
+            system.force[3 * node + 2],
+        ];
+        let m = [
+            positions[node][1] * f[2] - positions[node][2] * f[1],
+            positions[node][2] * f[0] - positions[node][0] * f[2],
+            positions[node][0] * f[1] - positions[node][1] * f[0],
+        ];
+        for c in 0..3 {
+            acc[c] += m[c];
+        }
+        acc
+    });
+    let support_residual_force: [f64; 3] = std::array::from_fn(|c| {
+        compensated_sum(
+            (0..system.space.ndof)
+                .filter(|&dof| fixed[dof][c])
+                .map(|dof| residual[3 * dof + c]),
+        )
+    });
+    let support_residual_moment: [f64; 3] = std::array::from_fn(|c| {
+        compensated_sum((0..system.space.ndof).map(|node| {
+            let r: [f64; 3] = std::array::from_fn(|component| {
+                if fixed[node][component] {
+                    residual[3 * node + component]
+                } else {
+                    0.0
+                }
+            });
+            match c {
+                0 => positions[node][1] * r[2] - positions[node][2] * r[1],
+                1 => positions[node][2] * r[0] - positions[node][0] * r[2],
+                _ => positions[node][0] * r[1] - positions[node][1] * r[0],
+            }
+        }))
+    });
+    let force_balance: [f64; 3] =
+        std::array::from_fn(|c| external_force[c] - support_residual_force[c]);
+    let moment_balance: [f64; 3] =
+        std::array::from_fn(|c| external_moment[c] - support_residual_moment[c]);
+    let output = object([
+        ("schema", Json::String("full_cylinder_solution_v1".into())),
+        ("level", n(level)),
+        ("order", n(order)),
+        ("nu", n(pressure.nu)),
+        ("inner_mpa", n(pressure.inner)),
+        ("outer_mpa", n(pressure.outer)),
+        (
+            "formulation",
+            Json::String(
+                if projected {
+                    "projected_bulk_q1"
+                } else {
+                    "displacement"
+                }
+                .into(),
+            ),
+        ),
+        (
+            "displacement_xyz",
+            json_numbers(solved.displacement_mm.iter().copied()),
+        ),
+        ("relative_residual_compensated", n(relative_residual)),
+        ("solver_relative_residual", n(solved.relative_residual)),
+        ("iterations", n(solved.iterations)),
+        ("elapsed_s", n(elapsed_s)),
+        ("seed_schema", Json::String(schema.into())),
+        (
+            "equilibrium",
+            object([
+                ("external_force_n", json_numbers(external_force)),
+                (
+                    "support_residual_force_n",
+                    json_numbers(support_residual_force),
+                ),
+                ("force_balance_n", json_numbers(force_balance)),
+                ("external_moment_n_mm", json_numbers(external_moment)),
+                (
+                    "support_residual_moment_n_mm",
+                    json_numbers(support_residual_moment),
+                ),
+                ("moment_balance_n_mm", json_numbers(moment_balance)),
+            ]),
+        ),
+    ]);
+    write_json(&args[8], &output)?;
+    Ok(())
+}
+
 fn full_export(args: &[String]) -> Result<(), Box<dyn std::error::Error>> {
     if args.len() != 8 {
         return Err(
@@ -1035,6 +1494,12 @@ fn full_read(args: &[String]) -> Result<(), Box<dyn std::error::Error>> {
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let a = std::env::args().skip(1).collect::<Vec<_>>();
+    if a.first().is_some_and(|arg| arg == "plane-diagnose") {
+        return plane_diagnose(&a);
+    }
+    if a.first().is_some_and(|arg| arg == "k3-correct") {
+        return k3_correct(&a);
+    }
     if a.first().is_some_and(|arg| arg == "full-export") {
         return full_export(&a);
     }

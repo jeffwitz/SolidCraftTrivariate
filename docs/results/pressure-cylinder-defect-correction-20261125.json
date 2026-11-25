@@ -1,0 +1,275 @@
+{
+  "schema": "full_cylinder_k3_defect_correction_campaign_v1",
+  "cases": [
+    {
+      "elapsed_s": 0.167142596,
+      "equilibrium": {
+        "external_force_n": [
+          6.394884621840902e-14,
+          7.105427357601002e-15,
+          5.658132637436265e-17
+        ],
+        "external_moment_n_mm": [
+          -3.467448550509289e-12,
+          -9.094947017729282e-13,
+          -8.262279749260415e-13
+        ],
+        "force_balance_n": [
+          -6.8147971189507955e-09,
+          2.595501903955604e-09,
+          -7.005638753440989e-10
+        ],
+        "moment_balance_n_mm": [
+          -3.162898165598449e-09,
+          -5.143155346054584e-08,
+          3.547709774391957e-08
+        ],
+        "support_residual_force_n": [
+          6.814861067797014e-09,
+          -2.5954947985282463e-09,
+          7.005639319254253e-10
+        ],
+        "support_residual_moment_n_mm": [
+          3.1594307170479397e-09,
+          5.143064396584407e-08,
+          -3.54779239718945e-08
+        ]
+      },
+      "formulation": "displacement",
+      "inner_mpa": 100,
+      "iterations": 0,
+      "level": 4,
+      "nu": 0.4999,
+      "order": 8,
+      "outer_mpa": 0,
+      "relative_residual_compensated": 1.743340888263197e-11,
+      "schema": "full_cylinder_solution_v1",
+      "seed_schema": "full_cylinder_solution_v1",
+      "solver_relative_residual": 1.743340888263195e-11,
+      "readback": {
+        "assembly_s": 3.911890571,
+        "energy_work_relative": 1.008803832432473e-12,
+        "inner": {
+          "area_mm2": 100.53096491487341,
+          "exact_hoop_mpa": 166.66666666666669,
+          "exact_radial_displacement_mm": 0.0019047301523809524,
+          "max_sampled_hoop_error_mpa": 597.3014426790071,
+          "max_sampled_hoop_relative": 3.583808656074042,
+          "mean_radial_displacement_mm": 0.0019039396668508602,
+          "primal_max_sampled_hoop_error_mpa": 597.3014426790071
+        },
+        "inner_mpa": 100,
+        "level": 4,
+        "nu": 0.4999,
+        "order": 8,
+        "outer": {
+          "area_mm2": 201.06192982974682,
+          "exact_hoop_mpa": 66.66666666666667,
+          "exact_radial_displacement_mm": 0.0009525079238095239,
+          "max_sampled_hoop_error_mpa": 42.48010787109422,
+          "max_sampled_hoop_relative": 0.6372016180664133,
+          "mean_radial_displacement_mm": 0.0009521126810444887,
+          "primal_max_sampled_hoop_error_mpa": 42.48010787109422
+        },
+        "outer_mpa": 0,
+        "physical_strain_energy_n_mm": 9.570244592627196,
+        "pressure_resultant_n": [
+          1.0409451078885468e-12,
+          -7.105427357601002e-14,
+          5.658132637436267e-17
+        ],
+        "projected_bulk": false,
+        "relative_energy_norm": 0.020371839487565817,
+        "relative_l2": 0.0004149033572890179,
+        "relative_residual_3d_free": 1.7433408882631984e-11,
+        "schema": "full_cylinder_reconstruction_v1",
+        "space_dofs_3d": 12672,
+        "strain_energy_matrix_n_mm": 9.57024459240134,
+        "volume_mm3": 301.59289474462037,
+        "work_n_mm": 19.140489184821988
+      }
+    },
+    {
+      "elapsed_s": 262.47311119,
+      "equilibrium": {
+        "external_force_n": [
+          1.7763568394002505e-15,
+          1.7763568394002505e-15,
+          1.6325738108978375e-17
+        ],
+        "external_moment_n_mm": [
+          1.0089706847793423e-12,
+          1.8900436771218665e-12,
+          -2.6680047060523293e-14
+        ],
+        "force_balance_n": [
+          2.2405060859523918e-10,
+          -1.71784061973195e-08,
+          3.548662978680507e-10
+        ],
+        "moment_balance_n_mm": [
+          2.114985443045145e-08,
+          3.80277643955481e-11,
+          2.8567162104750504e-07
+        ],
+        "support_residual_force_n": [
+          -2.2404883223839977e-10,
+          1.7178407973676338e-08,
+          -3.548662815423126e-10
+        ],
+        "support_residual_moment_n_mm": [
+          -2.114884545976667e-08,
+          -3.6137720718426233e-11,
+          -2.856716477275521e-07
+        ]
+      },
+      "formulation": "displacement",
+      "inner_mpa": 100,
+      "iterations": 11056,
+      "level": 5,
+      "nu": 0.4999,
+      "order": 8,
+      "outer_mpa": 0,
+      "relative_residual_compensated": 9.002753333386779e-11,
+      "schema": "full_cylinder_solution_v1",
+      "seed_schema": "plane_strain_solution_v1",
+      "solver_relative_residual": 9.002753333386824e-11,
+      "readback": {
+        "assembly_s": 15.637039767,
+        "energy_work_relative": 5.330572303976203e-13,
+        "inner": {
+          "area_mm2": 100.53096491487322,
+          "exact_hoop_mpa": 166.66666666666669,
+          "exact_radial_displacement_mm": 0.0019047301523809524,
+          "max_sampled_hoop_error_mpa": 155.8361825639759,
+          "max_sampled_hoop_relative": 0.9350170953838554,
+          "mean_radial_displacement_mm": 0.001904680539758817,
+          "primal_max_sampled_hoop_error_mpa": 155.8361825639759
+        },
+        "inner_mpa": 100,
+        "level": 5,
+        "nu": 0.4999,
+        "order": 8,
+        "outer": {
+          "area_mm2": 201.06192982974645,
+          "exact_hoop_mpa": 66.66666666666667,
+          "exact_radial_displacement_mm": 0.0009525079238095239,
+          "max_sampled_hoop_error_mpa": 10.394877139040759,
+          "max_sampled_hoop_relative": 0.15592315708561136,
+          "mean_radial_displacement_mm": 0.0009524831174984662,
+          "primal_max_sampled_hoop_error_mpa": 10.394877139040759
+        },
+        "outer_mpa": 0,
+        "physical_strain_energy_n_mm": 9.57396862618403,
+        "pressure_resultant_n": [
+          5.826450433232822e-13,
+          7.212008767965017e-13,
+          1.6325738108978375e-17
+        ],
+        "projected_bulk": false,
+        "relative_energy_norm": 0.005103635777258737,
+        "relative_l2": 2.604402423592718e-05,
+        "relative_residual_3d_free": 9.002753333386784e-11,
+        "schema": "full_cylinder_reconstruction_v1",
+        "space_dofs_3d": 49920,
+        "strain_energy_matrix_n_mm": 9.573968625831856,
+        "volume_mm3": 301.5928947446136,
+        "work_n_mm": 19.147937251653506
+      }
+    },
+    {
+      "elapsed_s": 57.75965097,
+      "equilibrium": {
+        "external_force_n": [
+          1.7763568394002505e-15,
+          1.7763568394002505e-15,
+          1.6325738108978375e-17
+        ],
+        "external_moment_n_mm": [
+          1.0089706847793423e-12,
+          1.8900436771218665e-12,
+          -2.6680047060523293e-14
+        ],
+        "force_balance_n": [
+          1.283460515638121e-10,
+          1.5734969641297924e-09,
+          -7.698033228032778e-10
+        ],
+        "moment_balance_n_mm": [
+          4.806540061796927e-11,
+          1.1609066767788445e-10,
+          5.660737724947138e-09
+        ],
+        "support_residual_force_n": [
+          -1.283442752069727e-10,
+          -1.573495187772953e-09,
+          7.69803339129016e-10
+        ],
+        "support_residual_moment_n_mm": [
+          -4.7056429933189925e-11,
+          -1.1420062400076259e-10,
+          -5.6607644049941984e-09
+        ]
+      },
+      "formulation": "projected_bulk_q1",
+      "inner_mpa": 100,
+      "iterations": 2591,
+      "level": 5,
+      "nu": 0.4999,
+      "order": 8,
+      "outer_mpa": 0,
+      "relative_residual_compensated": 7.975878552469469e-11,
+      "schema": "full_cylinder_solution_v1",
+      "seed_schema": "plane_strain_solution_v1",
+      "solver_relative_residual": 7.975878552469517e-11,
+      "readback": {
+        "assembly_s": 51.01823827,
+        "energy_work_relative": 3.855983269532703e-12,
+        "inner": {
+          "area_mm2": 100.53096491487322,
+          "exact_hoop_mpa": 166.66666666666669,
+          "exact_radial_displacement_mm": 0.0019047301523809524,
+          "max_sampled_hoop_error_mpa": 0.02059377015990549,
+          "max_sampled_hoop_relative": 0.00012356262095943293,
+          "mean_radial_displacement_mm": 0.001904730139121832,
+          "primal_max_sampled_hoop_error_mpa": 155.369295340617
+        },
+        "inner_mpa": 100,
+        "level": 5,
+        "nu": 0.4999,
+        "order": 8,
+        "outer": {
+          "area_mm2": 201.06192982974645,
+          "exact_hoop_mpa": 66.66666666666667,
+          "exact_radial_displacement_mm": 0.0009525079238095239,
+          "max_sampled_hoop_error_mpa": 0.0013935627599579448,
+          "max_sampled_hoop_relative": 2.090344139936917e-05,
+          "mean_radial_displacement_mm": 0.0009525079171799599,
+          "primal_max_sampled_hoop_error_mpa": 10.41336034847805
+        },
+        "outer_mpa": 0,
+        "physical_strain_energy_n_mm": 9.574467262934116,
+        "pressure_resultant_n": [
+          5.826450433232822e-13,
+          7.212008767965017e-13,
+          1.6325738108978375e-17
+        ],
+        "projected_bulk": true,
+        "relative_energy_norm": 0.00510373367925439,
+        "relative_l2": 5.118977572258529e-07,
+        "relative_residual_3d_free": 7.975878552469484e-11,
+        "schema": "full_cylinder_reconstruction_v1",
+        "space_dofs_3d": 49920,
+        "strain_energy_matrix_n_mm": 9.574217939381011,
+        "volume_mm3": 301.5928947446136,
+        "work_n_mm": 19.14843587883586
+      }
+    }
+  ],
+  "limits": [
+    "The h4 corrected seed already meets the compensated residual threshold.",
+    "At h5 q8 both formulations meet the algebraic tolerance; wall stress errors are reported independently.",
+    "No h6 P5b readback was available at the change of priority."
+  ],
+  "threshold_relative_free_3d_residual": 1e-10
+}

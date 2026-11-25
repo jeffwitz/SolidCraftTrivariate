@@ -1,6 +1,14 @@
 //! Exact unisolvent audit for a stored cylindrical boundary face.
 
 use crate::{bracket::BracketBlock, constraint_system::Ratio, incidence::BlockSide};
+use std::collections::BTreeMap;
+
+/// Summary of exact cylindrical boundary identities checked in an audited model.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct BoundaryAudit {
+    pub total_faces: usize,
+    pub faces_by_bore: BTreeMap<String, usize>,
+}
 
 fn add(a: Ratio, b: Ratio) -> Result<Ratio, &'static str> {
     a.checked_add(b)
@@ -133,6 +141,91 @@ pub fn certify_boundary(
         }
     }
     Ok(true)
+}
+
+/// Re-audit the model, then verify every selected `bore/<id>/wall` face by
+/// exact unisolvent evaluation of its stored homogeneous trace.
+pub fn certify_wall_features(model: &crate::json::Json) -> Result<BoundaryAudit, &'static str> {
+    let schema = model.field("schema")?.text()?;
+    if schema != "orthogonal_sketch_features_v1" {
+        return Err("Steinmetz wall audit requires an orthogonal sketch model");
+    }
+    let audit = crate::interchange::audit(model)?;
+    if audit.field("status")?.text()? != "valid" {
+        return Err("Steinmetz source model is not certified valid");
+    }
+    let blocks = crate::bracket_json::decode_blocks(model)?;
+    let block_map: BTreeMap<_, _> = blocks
+        .iter()
+        .map(|block| (block.id.as_str(), block))
+        .collect();
+    let mut bore_map = BTreeMap::<String, (usize, [i32; 3], i32)>::new();
+    for bore in model.field("bores")?.items()? {
+        let id = bore.field("id")?.text()?.to_owned();
+        let axis = match bore.field("axis")?.text()? {
+            "x" => 0,
+            "y" => 1,
+            "z" => 2,
+            _ => return Err("unsupported Steinmetz cylinder axis"),
+        };
+        let center: [i32; 3] = bore
+            .field("center_mm")?
+            .items()?
+            .iter()
+            .map(|value| value.number())
+            .collect::<Result<Vec<_>, _>>()?
+            .try_into()
+            .map_err(|_| "Steinmetz cylinder center must have three coordinates")?;
+        let radius: i32 = bore.field("radius_mm")?.number()?;
+        if radius <= 0 || bore_map.insert(id, (axis, center, radius)).is_some() {
+            return Err("invalid or duplicate Steinmetz cylinder");
+        }
+    }
+    let mut faces_by_bore = BTreeMap::<String, usize>::new();
+    for face in model.field("design_faces")?.items()? {
+        let feature = face.field("feature")?.text()?;
+        let Some(rest) = feature.strip_prefix("bore/") else {
+            continue;
+        };
+        let Some(id) = rest.strip_suffix("/wall") else {
+            continue;
+        };
+        let (axis, center, radius) = *bore_map.get(id).ok_or("wall selection has no cylinder")?;
+        let side_name = face.field("side")?.text()?;
+        let (side_axis, upper) = match side_name {
+            "u0" => (0, false),
+            "u1" => (0, true),
+            "v0" => (1, false),
+            "v1" => (1, true),
+            "w0" => (2, false),
+            "w1" => (2, true),
+            _ => return Err("unknown Steinmetz design face side"),
+        };
+        let block_id = face.field("block")?.text()?;
+        let block = block_map
+            .get(block_id)
+            .ok_or("wall face references unknown block")?;
+        let side = BlockSide {
+            block: block_id.to_owned(),
+            axis: side_axis,
+            upper,
+        };
+        if !certify_boundary(block, &side, axis, center, radius)? {
+            return Err("stored bore wall is not on its declared circular cylinder");
+        }
+        *faces_by_bore.entry(id.to_owned()).or_default() += 1;
+    }
+    if bore_map
+        .keys()
+        .any(|id| faces_by_bore.get(id).copied().unwrap_or(0) == 0)
+    {
+        return Err("a Steinmetz cylinder has no selected wall face");
+    }
+    let total_faces = faces_by_bore.values().sum();
+    Ok(BoundaryAudit {
+        total_faces,
+        faces_by_bore,
+    })
 }
 
 #[cfg(test)]

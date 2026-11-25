@@ -1,5 +1,26 @@
 [
   {
+    "id": "s3-face-pocket",
+    "title": "Poche latérale sur la plaque G2",
+    "description": "Poche rectangulaire soustraite depuis la face z = 4 mm, sur 2 mm suivant −Z. La figure compare les cartes S2 et S3 en coupe XY à z = 3 mm et en coupe XZ au milieu de l’esquisse ; le contour pointillé indique l’outil complet, y compris sa partie située dans le vide préexistant.",
+    "model": "data/models/s3-face-pocket.model.json",
+    "step": "data/steps/s3-face-pocket.step",
+    "source": "data/sources/s3-face-pocket.recipe.json",
+    "audit": "data/audits/s3-face-pocket-audit.json",
+    "figure": "data/figures/s3-face-pocket-sections.png",
+    "hex8": "data/meshes/s3-face-pocket-n4.vtk",
+    "section": { "axis": "z", "fraction": 0.25 },
+    "metrics": [
+      { "label": "Blocs trivariés", "value": "93" },
+      { "label": "Interfaces partagées", "value": "191" },
+      { "label": "Faces de conception", "value": "176" },
+      { "label": "Volume retiré", "value": "62,8538 mm³" },
+      { "label": "Vérification HEX8 à n = 4", "value": "5 952 / 5 952 éléments avec jacobien certifié positif" },
+      { "label": "Coupe XY", "value": "z = 3 mm ; empreinte de l’outil en pointillé" },
+      { "label": "Coupe XZ", "value": "y = 23,5771 mm ; milieu de l’esquisse" }
+    ]
+  },
+  {
     "id": "g2-cross-plate",
     "title": "Plaque G2 à perçages croisés",
     "description": "Plaque de 100 × 50 × 12 mm avec un profil cubique périodique G2 et un perçage transversal rectangulaire. Le modèle trivarié conserve ses faces de conception ; le fichier STEP a été relu comme un solide par le parseur SolidCore.",

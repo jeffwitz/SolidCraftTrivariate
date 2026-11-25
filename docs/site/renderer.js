@@ -242,11 +242,15 @@ function buildBlockGrid(evaluate, divisions) {
 
 function buildSurfaceMeshes(model, mode) {
   const hiddenSides = new Map();
+  const duplicateSides = new Map();
   for (const item of model.topology?.interfaces || []) {
     for (const [id, side] of [item.first, item.second]) {
       if (!hiddenSides.has(id)) hiddenSides.set(id, new Set());
       hiddenSides.get(id).add(side);
     }
+    const [duplicateBlock, duplicateSide] = item.second;
+    if (!duplicateSides.has(duplicateBlock)) duplicateSides.set(duplicateBlock, new Set());
+    duplicateSides.get(duplicateBlock).add(duplicateSide);
   }
 
   const meshes = [];
@@ -254,7 +258,9 @@ function buildSurfaceMeshes(model, mode) {
     const evaluate = makeEvaluator(block);
     const { grid, index, divisions } = buildBlockGrid(evaluate, GRID);
     const color = mode === 'surface' ? SURFACE_COLOR : blockColor(block.id);
-    const skip = mode === 'surface' ? hiddenSides.get(block.id) || new Set() : new Set();
+    const skip = mode === 'surface'
+      ? hiddenSides.get(block.id) || new Set()
+      : duplicateSides.get(block.id) || new Set();
     const output = [];
     const point = (u, v, w) => grid[index(u, v, w)];
 
@@ -306,15 +312,63 @@ function intersectTetrahedron(points, axis, plane) {
   return intersections;
 }
 
-function buildCapMeshes(model, axis, fraction, bounds) {
+function coplanarBlockFace(evaluate, axis, plane, tolerance) {
+  const samples = [0, 0.25, 0.5, 0.75, 1];
+  for (let parameterAxis = 0; parameterAxis < 3; parameterAxis++) {
+    for (let side = 0; side < 2; side++) {
+      let onPlane = true;
+      for (const first of samples) for (const second of samples) {
+        const parameters = [0.5, 0.5, 0.5];
+        parameters[parameterAxis] = side;
+        const otherAxes = [0, 1, 2].filter(index => index !== parameterAxis);
+        parameters[otherAxes[0]] = first;
+        parameters[otherAxes[1]] = second;
+        if (Math.abs(evaluate(...parameters)[axis] - plane) > tolerance) onPlane = false;
+      }
+      if (!onPlane) continue;
+
+      const parameters = [0.5, 0.5, 0.5];
+      parameters[parameterAxis] = side === 0 ? 1e-4 : 1 - 1e-4;
+      const inwardValue = evaluate(...parameters)[axis];
+      return {
+        sideName: `${'uvw'[parameterAxis]}${side}`,
+        retainedSide: inwardValue <= plane + tolerance,
+      };
+    }
+  }
+  return null;
+}
+
+function buildCapMeshes(model, axis, fraction, bounds, mode) {
   if (axis === null) return [];
   const axisIndex = { x: 0, y: 1, z: 2 }[axis];
   const plane = bounds[0][axisIndex] + (bounds[1][axisIndex] - bounds[0][axisIndex]) * fraction;
+  const tolerance = Math.max(1, bounds[1][axisIndex] - bounds[0][axisIndex]) * 1e-9;
+  const interfaces = new Map();
+  const duplicateSides = new Map();
+  for (const item of model.topology?.interfaces || []) {
+    for (const side of [item.first, item.second]) {
+      if (!interfaces.has(side[0])) interfaces.set(side[0], new Set());
+      interfaces.get(side[0]).add(side[1]);
+    }
+    const [duplicateBlock, duplicateSide] = item.second;
+    if (!duplicateSides.has(duplicateBlock)) duplicateSides.set(duplicateBlock, new Set());
+    duplicateSides.get(duplicateBlock).add(duplicateSide);
+  }
   const meshes = [];
   for (const block of model.blocks) {
     const evaluate = makeEvaluator(block);
     const { grid, index, divisions } = buildBlockGrid(evaluate, CAP_GRID);
     const output = [];
+    const coplanar = coplanarBlockFace(evaluate, axisIndex, plane, tolerance);
+    if (coplanar) {
+      const interfaceFace = interfaces.get(block.id)?.has(coplanar.sideName) || false;
+      const duplicateFace = duplicateSides.get(block.id)?.has(coplanar.sideName) || false;
+      const faceVisible = mode === 'blocks' ? !duplicateFace : !interfaceFace;
+      if (faceVisible || !coplanar.retainedSide) continue;
+      // The retained side needs one cap where its shared interface is hidden.
+    }
+    const color = mode === 'blocks' ? blockColor(block.id) : SURFACE_COLOR;
     const point = (u, v, w) => grid[index(u, v, w)];
     for (let i = 0; i < divisions; i++) {
       for (let j = 0; j < divisions; j++) {
@@ -333,7 +387,7 @@ function buildCapMeshes(model, axis, fraction, bounds) {
             for (const vertex of polygon) for (let component = 0; component < 3; component++) center[component] += vertex[component] / polygon.length;
             polygon.sort((a, b) => Math.atan2(a[v] - center[v], a[u] - center[u]) - Math.atan2(b[v] - center[v], b[u] - center[u]));
             for (let triangle = 1; triangle < polygon.length - 1; triangle++) {
-              appendTriangle(output, polygon[0], polygon[triangle], polygon[triangle + 1], SURFACE_COLOR);
+              appendTriangle(output, polygon[0], polygon[triangle], polygon[triangle + 1], color);
             }
           }
         }
@@ -478,7 +532,7 @@ export function createViewer(canvas) {
 
   function rebuildCaps() {
     deleteMeshes(capMeshes);
-    capMeshes = uploadMeshes(buildCapMeshes(model, clipAxis, clipFraction, bounds));
+    capMeshes = uploadMeshes(buildCapMeshes(model, clipAxis, clipFraction, bounds, mode));
   }
 
   function fittedDistance(width, height) {
@@ -595,7 +649,10 @@ export function createViewer(canvas) {
       if (value !== 'surface' && value !== 'blocks') throw new TypeError("Mode must be 'surface' or 'blocks'");
       if (mode === value) return;
       mode = value;
-      if (model) rebuildSurfaces();
+      if (model) {
+        rebuildSurfaces();
+        rebuildCaps();
+      }
       scheduleDraw();
     },
     setClip(axis, fraction) {

@@ -2,7 +2,7 @@ const byId = (id) => document.getElementById(id);
 const ui = {
   canvas: byId('model-canvas'), state: byId('canvas-state'), wrap: byId('canvas-wrap'),
   selector: byId('experiment-select'), description: byId('experiment-description'),
-  viewTitle: byId('view-title'), metrics: byId('metrics-list'), source: byId('source-link'), step: byId('step-link'), audit: byId('audit-link'), figure: byId('figure-link'),
+  viewTitle: byId('view-title'), metrics: byId('metrics-list'), source: byId('source-link'), step: byId('step-link'), hex8: byId('hex8-link'), audit: byId('audit-link'), figure: byId('figure-link'),
   axis: byId('clip-axis'), fraction: byId('clip-fraction'), value: byId('clip-value'), reset: byId('reset-view'),
   sectionButton: byId('s3-face-pocket'),
 };
@@ -88,6 +88,7 @@ async function selectExperiment(id) {
   renderMetrics(experiment.metrics);
   setLink(ui.source, experiment.source);
   setLink(ui.step, experiment.step);
+  setLink(ui.hex8, experiment.hex8);
   setLink(ui.audit, experiment.audit);
   setLink(ui.figure, experiment.figure);
   const section = experiment.section;

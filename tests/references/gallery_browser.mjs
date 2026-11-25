@@ -45,6 +45,7 @@ const injectedExpressions = {
     Promise.all(experiments.map(async experiment => ({
       id: experiment.id,
       title: experiment.title || experiment.id,
+      section: experiment.section || null,
       status: await Promise.all(['model', 'source', 'step'].map(async key => {
         const response = await fetch(experiment[key]);
         return response.status;
@@ -56,14 +57,20 @@ const injectedExpressions = {
     select.dispatchEvent(new Event('change'));
   })()`,
   blocksMode: "document.querySelector('[data-mode=blocks]').click()",
-  zCut: `(() => {
+  zCut: fractionPercent => `(() => {
     const axis = document.querySelector('#clip-axis');
     axis.value = 'z';
     axis.dispatchEvent(new Event('change'));
     const fraction = document.querySelector('#clip-fraction');
-    fraction.value = '50';
+    fraction.value = ${JSON.stringify(String(fractionPercent))};
     fraction.dispatchEvent(new Event('input'));
   })()`,
+  s3SectionButton: "document.querySelector('#s3-face-pocket').click()",
+  selectedClip: `(() => ({
+    axis: document.querySelector('#clip-axis').value,
+    fraction: Number(document.querySelector('#clip-fraction').value),
+  }))()`,
+  surfaceMode: "document.querySelector('[data-mode=surface]').click()",
   selectedId: "document.querySelector('#experiment-select').value",
   mobileMetrics: `(() => ({
     viewportWidth: innerWidth,
@@ -84,7 +91,11 @@ function validateInjectedExpressions() {
     ['selectExperiment', injectedExpressions.selectExperiment('s3-face-pocket')],
     ['selectExperimentEscapedId', injectedExpressions.selectExperiment("quote'\\test")],
     ['blocksMode', injectedExpressions.blocksMode],
-    ['zCut', injectedExpressions.zCut],
+    ['zCut25', injectedExpressions.zCut(25)],
+    ['zCut50', injectedExpressions.zCut(50)],
+    ['s3SectionButton', injectedExpressions.s3SectionButton],
+    ['selectedClip', injectedExpressions.selectedClip],
+    ['surfaceMode', injectedExpressions.surfaceMode],
     ['selectedId', injectedExpressions.selectedId],
     ['mobileMetrics', injectedExpressions.mobileMetrics],
   ];
@@ -265,7 +276,10 @@ async function runBrowserChecks() {
   }
 
   const version = await cdp('Browser.getVersion');
-  const s3Experiment = resources.find(experiment => /(?:^|[-_])s3(?:[-_]|$)|face[-_]?pocket/i.test(`${experiment.id} ${experiment.title}`));
+  const s3Experiment = resources.find(experiment => (
+    /(?:^|[-_])s3(?:[-_]|$)|face[-_]?pocket/i.test(`${experiment.id} ${experiment.title}`)
+    || (experiment.section?.axis === 'z' && experiment.section.fraction === 0.25)
+  ));
   const selectedExperiment = s3Experiment || resources[0];
   if (!selectedExperiment) throw new Error('No usable gallery experiments were found');
 
@@ -275,10 +289,24 @@ async function runBrowserChecks() {
   await evaluate(injectedExpressions.blocksMode);
   await pause(700);
   const blocksHash = await capture('blocks', await canvasRegion());
-  await evaluate(injectedExpressions.zCut);
+  const cutPercent = s3Experiment ? 25 : 50;
+  if (s3Experiment) {
+    const buttonAvailable = await evaluate("!document.querySelector('#s3-face-pocket').hidden");
+    if (!buttonAvailable) throw new Error(`S3 experiment ${s3Experiment.id} has no section button`);
+    await evaluate(injectedExpressions.s3SectionButton);
+    const section = await evaluate(injectedExpressions.selectedClip);
+    if (section.axis !== 'z' || section.fraction !== 25) {
+      throw new Error(`S3 section button should select z at 25%; found ${JSON.stringify(section)}`);
+    }
+  } else {
+    await evaluate(injectedExpressions.zCut(cutPercent));
+  }
   await pause(1200);
+  const blocksCutHash = await capture('blocks-cut', await canvasRegion());
+  await evaluate(injectedExpressions.surfaceMode);
+  await pause(500);
   const cutHash = await capture('cut', await canvasRegion());
-  if (new Set([surfaceHash, blocksHash, cutHash]).size !== 3) {
+  if (new Set([surfaceHash, blocksHash, blocksCutHash, cutHash]).size !== 4) {
     throw new Error('Surface, blocks, and cut screenshots were not visually distinct');
   }
 
@@ -309,7 +337,8 @@ async function runBrowserChecks() {
     chrome: { product: version.product, userAgent: version.userAgent },
     experiments: experimentChecks,
     selectedS3Experiment: s3Experiment?.id || null,
-    screenshotHashes: { desktop: desktopHash, surface: surfaceHash, blocks: blocksHash, cut: cutHash, mobile: mobileHash },
+    cutPercent,
+    screenshotHashes: { desktop: desktopHash, surface: surfaceHash, blocks: blocksHash, blocksCut: blocksCutHash, cut: cutHash, mobile: mobileHash },
     mobile: mobileMetrics,
     runtimeErrors,
   };

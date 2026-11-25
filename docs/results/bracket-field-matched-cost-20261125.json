@@ -1,0 +1,3390 @@
+{
+  "schema": "field_matched_cost_v1",
+  "base_revision": "05f3b7b",
+  "schedule": [
+    {
+      "radii": [
+        40,
+        80
+      ],
+      "repeat": 1,
+      "methods": [
+        "tetra",
+        "immersed",
+        "local"
+      ]
+    },
+    {
+      "radii": [
+        40,
+        80
+      ],
+      "repeat": 2,
+      "methods": [
+        "immersed",
+        "local",
+        "tetra"
+      ]
+    },
+    {
+      "radii": [
+        80,
+        40
+      ],
+      "repeat": 1,
+      "methods": [
+        "immersed",
+        "local",
+        "tetra"
+      ]
+    },
+    {
+      "radii": [
+        80,
+        40
+      ],
+      "repeat": 2,
+      "methods": [
+        "local",
+        "tetra",
+        "immersed"
+      ]
+    },
+    {
+      "radii": [
+        50,
+        74
+      ],
+      "repeat": 1,
+      "methods": [
+        "local",
+        "tetra",
+        "immersed"
+      ]
+    },
+    {
+      "radii": [
+        50,
+        74
+      ],
+      "repeat": 2,
+      "methods": [
+        "tetra",
+        "immersed",
+        "local"
+      ]
+    },
+    {
+      "radii": [
+        51,
+        74
+      ],
+      "repeat": 1,
+      "methods": [
+        "tetra",
+        "immersed",
+        "local"
+      ]
+    },
+    {
+      "radii": [
+        51,
+        74
+      ],
+      "repeat": 2,
+      "methods": [
+        "immersed",
+        "local",
+        "tetra"
+      ]
+    }
+  ],
+  "cpu_affinity": [
+    2,
+    3
+  ],
+  "sampled_session_rss_interval_s": 0.15,
+  "rows": [
+    {
+      "radii_ticks": [
+        40,
+        80
+      ],
+      "repeat": 1,
+      "trials": [
+        {
+          "status": "completed",
+          "exit_code": 0,
+          "elapsed_s": 69.83613262698054,
+          "tree_peak_rss_kib": 1701176,
+          "wall_s": 69.83613262698054,
+          "command": [
+            "/usr/bin/taskset",
+            "-c",
+            "2,3",
+            "/home/jeff/Code/FreeCAD/.pixi/envs/default/bin/python",
+            "/home/jeff/Code/SolidCraftTrivariate/tests/references/calculix_bracket.py",
+            "--ccx",
+            "/home/jeff/Code/FreeCAD/.pixi/envs/default/bin/ccx",
+            "--size",
+            "1.5",
+            "--store-displacements",
+            "--radius-x",
+            "2.5",
+            "--radius-y",
+            "5.0",
+            "/home/jeff/Code/SolidCraftTrivariate/build/j4g/x40-y80-rep1/tetra/mesh"
+          ],
+          "loadavg": [
+            [
+              3.54,
+              6.95,
+              7.72
+            ],
+            [
+              4.01,
+              6.4,
+              7.47
+            ]
+          ],
+          "campaign_processes_before": [],
+          "diagnostic": "{\"radius_x_mm\": 2.5, \"radius_y_mm\": 5.0, \"size_mm\": 1.5, \"occ_volume_mm3\": 32163.628481310214, \"nodes\": 71230, \"tet10\": 45134, \"loaded_area_mm2\": 320.00000000000034, \"reaction_n\": [-4.1589002066189096e-05, 999.9999764646997, -4.54220001500083e-06], \"mean_tip_y_mm\": -0.5208681110274459, \"point_tip_y_mm\": -0.5215913946237346, \"geometry_mesh_deck_s\": 9.056157976039685, \"solve_s\": 60.20955731696449, \"freecad_version\": [\"26\", \"3\", \"0\"], \"solver_peak_rss_kib\": 1481884, \"mesh_process_peak_rss_kib\": 232200}\n{\"element\": 46559, \"barycentric\": [0.492266640047059, 0.009099239872896528, 0.49863412008004443, 0.0], \"point_mm\": [9.7573593113125, 9.757359315739324, 20.000000007507076], \"distance_mm\": 8.184566317279842e-09, \"stress_mpa\": [[76.88333904801145, -71.65736573152901, 0.5703845826108324], [-71.65736573152901, 79.94795714893775, 0.893748577968563], [0.5703845826108324, 0.893748577968563, 38.61631631209976]], \"von_mises_mpa\": 130.37920574134807}\n",
+          "physical_audit_s": 1.9647413240163587,
+          "result": {
+            "radius_x_mm": 2.5,
+            "radius_y_mm": 5.0,
+            "size_mm": 1.5,
+            "occ_volume_mm3": 32163.628481310214,
+            "nodes": 71230,
+            "tet10": 45134,
+            "loaded_area_mm2": 320.00000000000034,
+            "reaction_n": [
+              -4.1589002066189096e-05,
+              999.9999764646997,
+              -4.54220001500083e-06
+            ],
+            "mean_tip_y_mm": -0.5208681110274459,
+            "point_tip_y_mm": -0.5215913946237346,
+            "geometry_mesh_deck_s": 9.056157976039685,
+            "solve_s": 60.20955731696449,
+            "freecad_version": [
+              "26",
+              "3",
+              "0"
+            ],
+            "solver_peak_rss_kib": 1481884,
+            "mesh_process_peak_rss_kib": 232200
+          },
+          "probe": {
+            "element": 46559,
+            "barycentric": [
+              0.492266640047059,
+              0.009099239872896528,
+              0.49863412008004443,
+              0.0
+            ],
+            "point_mm": [
+              9.7573593113125,
+              9.757359315739324,
+              20.000000007507076
+            ],
+            "distance_mm": 8.184566317279842e-09,
+            "stress_mpa": [
+              [
+                76.88333904801145,
+                -71.65736573152901,
+                0.5703845826108324
+              ],
+              [
+                -71.65736573152901,
+                79.94795714893775,
+                0.893748577968563
+              ],
+              [
+                0.5703845826108324,
+                0.893748577968563,
+                38.61631631209976
+              ]
+            ],
+            "von_mises_mpa": 130.37920574134807
+          },
+          "end_to_end_with_probe_s": 71.8008739509969,
+          "observables": {
+            "tip_relative_to_finest_tetra": 0.00015870904815817877,
+            "fillet_relative_to_finest_tetra": 0.011539084307802705,
+            "volume_relative": 3.3306690738754696e-16,
+            "reaction_relative": 4.800194824605278e-08,
+            "tree_rss_within_cap": true,
+            "qoi_qualified": true,
+            "clamp_boundary_prescribed": true,
+            "drift_from_frozen_replay_relative": 0.0,
+            "drift_qualified": true,
+            "status": "qualified"
+          },
+          "field_replay": {
+            "qualified": true,
+            "coefficients": 1354020,
+            "geometry_equal": true,
+            "relative_displacement_coefficients": 0.0
+          },
+          "coefficient_verification_s": 2.6744364489568397,
+          "qualified": true,
+          "method": "tetra"
+        },
+        {
+          "status": "completed",
+          "exit_code": 0,
+          "elapsed_s": 34.885003670991864,
+          "tree_peak_rss_kib": 1563360,
+          "wall_s": 34.885003670991864,
+          "command": [
+            "/usr/bin/taskset",
+            "-c",
+            "2,3",
+            "/usr/bin/python3",
+            "/home/jeff/Code/SolidCraftTrivariate/tests/references/immersed_bracket.py",
+            "--solver",
+            "multigrid",
+            "--h",
+            "1.25",
+            "--order",
+            "8",
+            "--radius-x",
+            "2.5",
+            "--radius-y",
+            "5.0",
+            "--field-output",
+            "/home/jeff/Code/SolidCraftTrivariate/build/j4g/x40-y80-rep1/immersed/field.npz"
+          ],
+          "loadavg": [
+            [
+              4.01,
+              6.36,
+              7.45
+            ],
+            [
+              4.4,
+              6.2,
+              7.36
+            ]
+          ],
+          "campaign_processes_before": [],
+          "diagnostic": "       ],\n        \"coarse_ncell\": [\n          24,\n          20,\n          16\n        ],\n        \"fine_dofs\": 75204,\n        \"coarse_dofs\": 13284,\n        \"energy_relative\": 5.341077819209121e-16,\n        \"spectral_upper\": 11.380077311531656,\n        \"P_nnz\": 541446\n      },\n      {\n        \"fine_ncell\": [\n          24,\n          20,\n          16\n        ],\n        \"coarse_ncell\": [\n          12,\n          10,\n          8\n        ],\n        \"fine_dofs\": 13284,\n        \"coarse_dofs\": 2520,\n        \"energy_relative\": 0.0,\n        \"spectral_upper\": 11.135452124470334,\n        \"P_nnz\": 88638\n      }\n    ],\n    \"coarse_lu_size\": 2520,\n    \"symmetry_defect\": 7.965148833810932e-16,\n    \"coarse_lu_nnz\": 1589738,\n    \"setup_s\": 2.8515310609946027,\n    \"iterations\": 76,\n    \"status\": 0,\n    \"iterations_s\": 13.482645281997975\n  },\n  \"solver_s\": 16.373112116998527,\n  \"elapsed_s\": 34.07029063499067,\n  \"reduced_nnz\": 22955943,\n  \"scaling_dynamic_range\": 1886903.2540470269,\n  \"max_rss_kib\": 1610080\n}\n",
+          "result": {
+            "h_mm": 1.25,
+            "gauss_order": 8,
+            "volume_mm3": 32163.628395415493,
+            "radius_x_mm": 2.5,
+            "radius_y_mm": 5.0,
+            "volume_target_mm3": 32163.628481310225,
+            "active_cells": 17960,
+            "cut_cells": 2612,
+            "empty_cells": 43480,
+            "minimum_volume_fraction": 0.004680521124650382,
+            "quadrature_points": 9729024,
+            "quadrature_s": 0.6896031365613453,
+            "scalar_active": 25374,
+            "free_components": 75204,
+            "loaded_area_mm2": 320.00000000000006,
+            "force_n": [
+              0.0,
+              -999.9999999999998,
+              0.0
+            ],
+            "reaction_n": [
+              2.906827500925857e-09,
+              999.9999999849599,
+              3.437353568447321e-09
+            ],
+            "relative_residual": 7.200305916601608e-11,
+            "point_tip_y_mm": -0.5217958015870953,
+            "mean_tip_y_mm": -0.5210729770197381,
+            "von_mises_mpa": 133.31485227070308,
+            "stress_mpa": [
+              [
+                72.04651517684643,
+                -73.91411155932909,
+                -1.2690481898690306e-10
+              ],
+              [
+                -73.91411155932909,
+                72.20485497697015,
+                1.4346839492625083e-10
+              ],
+              [
+                -1.2690481898690306e-10,
+                1.4346839492625083e-10,
+                34.93773851454318
+              ]
+            ],
+            "strain_energy_n_mm": 260.5364885153043,
+            "external_work_n_mm": 521.0729770197381,
+            "assembly_s": 14.795134497457184,
+            "diagonal_scaling_and_restriction_s": 2.0027979270089418,
+            "linear_solver": "multigrid",
+            "solver_detail": {
+              "levels": [
+                {
+                  "fine_ncell": [
+                    48,
+                    40,
+                    32
+                  ],
+                  "coarse_ncell": [
+                    24,
+                    20,
+                    16
+                  ],
+                  "fine_dofs": 75204,
+                  "coarse_dofs": 13284,
+                  "energy_relative": 5.341077819209121e-16,
+                  "spectral_upper": 11.380077311531656,
+                  "P_nnz": 541446
+                },
+                {
+                  "fine_ncell": [
+                    24,
+                    20,
+                    16
+                  ],
+                  "coarse_ncell": [
+                    12,
+                    10,
+                    8
+                  ],
+                  "fine_dofs": 13284,
+                  "coarse_dofs": 2520,
+                  "energy_relative": 0.0,
+                  "spectral_upper": 11.135452124470334,
+                  "P_nnz": 88638
+                }
+              ],
+              "coarse_lu_size": 2520,
+              "symmetry_defect": 7.965148833810932e-16,
+              "coarse_lu_nnz": 1589738,
+              "setup_s": 2.8515310609946027,
+              "iterations": 76,
+              "status": 0,
+              "iterations_s": 13.482645281997975
+            },
+            "solver_s": 16.373112116998527,
+            "elapsed_s": 34.07029063499067,
+            "reduced_nnz": 22955943,
+            "scaling_dynamic_range": 1886903.2540470269,
+            "max_rss_kib": 1610080
+          },
+          "end_to_end_with_probe_s": 34.885003670991864,
+          "observables": {
+            "tip_relative_to_finest_tetra": 0.00023311973627482274,
+            "fillet_relative_to_finest_tetra": 0.010717316473711103,
+            "volume_relative": 2.670554777317591e-09,
+            "reaction_relative": 1.569933909084099e-11,
+            "tree_rss_within_cap": true,
+            "qoi_qualified": true,
+            "drift_from_frozen_replay_relative": 0.0,
+            "drift_qualified": true,
+            "status": "qualified"
+          },
+          "field_replay": {
+            "qualified": true,
+            "coefficients": 214200,
+            "geometry_equal": true,
+            "relative_displacement_coefficients": 0.0
+          },
+          "coefficient_verification_s": 0.0438697490026243,
+          "qualified": true,
+          "method": "immersed"
+        },
+        {
+          "status": "completed",
+          "exit_code": 0,
+          "elapsed_s": 19.622593606996816,
+          "tree_peak_rss_kib": 240220,
+          "wall_s": 19.622593606996816,
+          "command": [
+            "/usr/bin/taskset",
+            "-c",
+            "2,3",
+            "/home/jeff/Code/SolidCraftTrivariate/target/release/examples/local_fillet_cost",
+            "--field-tier",
+            "40",
+            "80",
+            "2",
+            "8",
+            "/home/jeff/Code/SolidCraftTrivariate/build/j4g/x40-y80-rep1/local/result.json",
+            "/home/jeff/Code/SolidCraftTrivariate/build/j4g/x40-y80-rep1/local/field.bin"
+          ],
+          "loadavg": [
+            [
+              4.4,
+              6.2,
+              7.36
+            ],
+            [
+              5.03,
+              6.24,
+              7.35
+            ]
+          ],
+          "campaign_processes_before": [],
+          "diagnostic": "",
+          "result": {
+            "constraints_s": 0.318674079,
+            "geometry_build_and_audit_s": 0.007118564,
+            "leaves": 2528,
+            "local_partition_s": 0.163597093,
+            "local_refinement_counts": [
+              {
+                "incident": 4,
+                "induced": 0,
+                "requested": 16
+              },
+              {
+                "incident": 4,
+                "induced": 0,
+                "requested": 16
+              }
+            ],
+            "local_steps": 2,
+            "max_depth": 4,
+            "path": "from_h2",
+            "q8": {
+              "assembly_s": 6.494832651,
+              "blocks": 2528,
+              "constraint_s": 0.002288014,
+              "fillet_limits_mpa": {
+                "elbow_east_z10_30/010/011/011/011": 132.59685785271367,
+                "elbow_east_z10_30/011/010/010/010": 132.59685785272802,
+                "elbow_north_z10_30/110/111/111/111": 132.59139561083467,
+                "elbow_north_z10_30/111/110/110/110": 132.59139561084953
+              },
+              "force_s": 0.005261232,
+              "iterations": 1002,
+              "loaded_area_mm2": 319.99999999999557,
+              "masters": 23463,
+              "q": 8,
+              "reaction_n": [
+                1.0716386000808598e-08,
+                1000.0000000957283,
+                -6.37006891679448e-09
+              ],
+              "recovery_s": 0.013575004,
+              "relative_residual": 4.6959801043289774e-11,
+              "scalar_dofs": 24591,
+              "solve_s": 12.374536419,
+              "strain_energy_n_mm": 260.41881297348573,
+              "tip_mm": [
+                -0.1771337825118579,
+                -0.521560146343123,
+                1.1362897707197473e-12
+              ],
+              "true_projected_residual": 6.018285998745007e-11,
+              "volume_mm3": 32163.628481339205
+            },
+            "radii_ticks": [
+              40,
+              80
+            ],
+            "total_wall_s": 19.461358684,
+            "uniform_depth": 2,
+            "uniform_partition_s": 0.069883803
+          },
+          "selected_step": 2,
+          "end_to_end_with_probe_s": 19.622593606996816,
+          "observables": {
+            "tip_relative_to_finest_tetra": 0.0002186090418098141,
+            "fillet_relative_to_finest_tetra": 0.0052738915362906535,
+            "volume_relative": 9.01057006785777e-13,
+            "reaction_relative": 9.653665334340948e-11,
+            "tree_rss_within_cap": true,
+            "qoi_qualified": true,
+            "drift_from_frozen_replay_relative": 0.0,
+            "drift_qualified": true,
+            "status": "qualified"
+          },
+          "field_replay": {
+            "qualified": true,
+            "field_sha256": "b4acc5f7928a5c09a4912f76c40bc1c57312dbd53999962937396c9466c00edd",
+            "reference_sha256": "b4acc5f7928a5c09a4912f76c40bc1c57312dbd53999962937396c9466c00edd",
+            "geometry_in_checkpoint": false,
+            "geometry_verification_supplement": "bracket-checkpoint-geometry-20261125.json"
+          },
+          "coefficient_verification_s": 0.04200848797336221,
+          "qualified": true,
+          "method": "local"
+        }
+      ]
+    },
+    {
+      "radii_ticks": [
+        40,
+        80
+      ],
+      "repeat": 2,
+      "trials": [
+        {
+          "status": "completed",
+          "exit_code": 0,
+          "elapsed_s": 33.98056840902427,
+          "tree_peak_rss_kib": 1535336,
+          "wall_s": 33.98056840902427,
+          "command": [
+            "/usr/bin/taskset",
+            "-c",
+            "2,3",
+            "/usr/bin/python3",
+            "/home/jeff/Code/SolidCraftTrivariate/tests/references/immersed_bracket.py",
+            "--solver",
+            "multigrid",
+            "--h",
+            "1.25",
+            "--order",
+            "8",
+            "--radius-x",
+            "2.5",
+            "--radius-y",
+            "5.0",
+            "--field-output",
+            "/home/jeff/Code/SolidCraftTrivariate/build/j4g/x40-y80-rep2/immersed/field.npz"
+          ],
+          "loadavg": [
+            [
+              5.03,
+              6.24,
+              7.35
+            ],
+            [
+              5.44,
+              6.2,
+              7.29
+            ]
+          ],
+          "campaign_processes_before": [],
+          "diagnostic": "       ],\n        \"coarse_ncell\": [\n          24,\n          20,\n          16\n        ],\n        \"fine_dofs\": 75204,\n        \"coarse_dofs\": 13284,\n        \"energy_relative\": 5.341077819209121e-16,\n        \"spectral_upper\": 11.380077311531656,\n        \"P_nnz\": 541446\n      },\n      {\n        \"fine_ncell\": [\n          24,\n          20,\n          16\n        ],\n        \"coarse_ncell\": [\n          12,\n          10,\n          8\n        ],\n        \"fine_dofs\": 13284,\n        \"coarse_dofs\": 2520,\n        \"energy_relative\": 0.0,\n        \"spectral_upper\": 11.135452124470334,\n        \"P_nnz\": 88638\n      }\n    ],\n    \"coarse_lu_size\": 2520,\n    \"symmetry_defect\": 7.965148833810932e-16,\n    \"coarse_lu_nnz\": 1589738,\n    \"setup_s\": 2.5376405140268616,\n    \"iterations\": 76,\n    \"status\": 0,\n    \"iterations_s\": 13.439865483960602\n  },\n  \"solver_s\": 15.979811000986956,\n  \"elapsed_s\": 33.19341267796699,\n  \"reduced_nnz\": 22955943,\n  \"scaling_dynamic_range\": 1886903.2540470269,\n  \"max_rss_kib\": 1612776\n}\n",
+          "result": {
+            "h_mm": 1.25,
+            "gauss_order": 8,
+            "volume_mm3": 32163.628395415493,
+            "radius_x_mm": 2.5,
+            "radius_y_mm": 5.0,
+            "volume_target_mm3": 32163.628481310225,
+            "active_cells": 17960,
+            "cut_cells": 2612,
+            "empty_cells": 43480,
+            "minimum_volume_fraction": 0.004680521124650382,
+            "quadrature_points": 9729024,
+            "quadrature_s": 0.7096638745279051,
+            "scalar_active": 25374,
+            "free_components": 75204,
+            "loaded_area_mm2": 320.00000000000006,
+            "force_n": [
+              0.0,
+              -999.9999999999998,
+              0.0
+            ],
+            "reaction_n": [
+              2.906827500925857e-09,
+              999.9999999849599,
+              3.437353568447321e-09
+            ],
+            "relative_residual": 7.200305916601608e-11,
+            "point_tip_y_mm": -0.5217958015870953,
+            "mean_tip_y_mm": -0.5210729770197381,
+            "von_mises_mpa": 133.31485227070308,
+            "stress_mpa": [
+              [
+                72.04651517684643,
+                -73.91411155932909,
+                -1.2690481898690306e-10
+              ],
+              [
+                -73.91411155932909,
+                72.20485497697015,
+                1.4346839492625083e-10
+              ],
+              [
+                -1.2690481898690306e-10,
+                1.4346839492625083e-10,
+                34.93773851454318
+              ]
+            ],
+            "strain_energy_n_mm": 260.5364885153043,
+            "external_work_n_mm": 521.0729770197381,
+            "assembly_s": 14.842238690936938,
+            "diagonal_scaling_and_restriction_s": 1.4489716310054064,
+            "linear_solver": "multigrid",
+            "solver_detail": {
+              "levels": [
+                {
+                  "fine_ncell": [
+                    48,
+                    40,
+                    32
+                  ],
+                  "coarse_ncell": [
+                    24,
+                    20,
+                    16
+                  ],
+                  "fine_dofs": 75204,
+                  "coarse_dofs": 13284,
+                  "energy_relative": 5.341077819209121e-16,
+                  "spectral_upper": 11.380077311531656,
+                  "P_nnz": 541446
+                },
+                {
+                  "fine_ncell": [
+                    24,
+                    20,
+                    16
+                  ],
+                  "coarse_ncell": [
+                    12,
+                    10,
+                    8
+                  ],
+                  "fine_dofs": 13284,
+                  "coarse_dofs": 2520,
+                  "energy_relative": 0.0,
+                  "spectral_upper": 11.135452124470334,
+                  "P_nnz": 88638
+                }
+              ],
+              "coarse_lu_size": 2520,
+              "symmetry_defect": 7.965148833810932e-16,
+              "coarse_lu_nnz": 1589738,
+              "setup_s": 2.5376405140268616,
+              "iterations": 76,
+              "status": 0,
+              "iterations_s": 13.439865483960602
+            },
+            "solver_s": 15.979811000986956,
+            "elapsed_s": 33.19341267796699,
+            "reduced_nnz": 22955943,
+            "scaling_dynamic_range": 1886903.2540470269,
+            "max_rss_kib": 1612776
+          },
+          "end_to_end_with_probe_s": 33.98056840902427,
+          "observables": {
+            "tip_relative_to_finest_tetra": 0.00023311973627482274,
+            "fillet_relative_to_finest_tetra": 0.010717316473711103,
+            "volume_relative": 2.670554777317591e-09,
+            "reaction_relative": 1.569933909084099e-11,
+            "tree_rss_within_cap": true,
+            "qoi_qualified": true,
+            "drift_from_frozen_replay_relative": 0.0,
+            "drift_qualified": true,
+            "status": "qualified"
+          },
+          "field_replay": {
+            "qualified": true,
+            "coefficients": 214200,
+            "geometry_equal": true,
+            "relative_displacement_coefficients": 0.0
+          },
+          "coefficient_verification_s": 0.004590297001414001,
+          "qualified": true,
+          "method": "immersed"
+        },
+        {
+          "status": "completed",
+          "exit_code": 0,
+          "elapsed_s": 19.169523326971103,
+          "tree_peak_rss_kib": 200124,
+          "wall_s": 19.169523326971103,
+          "command": [
+            "/usr/bin/taskset",
+            "-c",
+            "2,3",
+            "/home/jeff/Code/SolidCraftTrivariate/target/release/examples/local_fillet_cost",
+            "--field-tier",
+            "40",
+            "80",
+            "2",
+            "8",
+            "/home/jeff/Code/SolidCraftTrivariate/build/j4g/x40-y80-rep2/local/result.json",
+            "/home/jeff/Code/SolidCraftTrivariate/build/j4g/x40-y80-rep2/local/field.bin"
+          ],
+          "loadavg": [
+            [
+              5.44,
+              6.2,
+              7.29
+            ],
+            [
+              5.03,
+              6.05,
+              7.22
+            ]
+          ],
+          "campaign_processes_before": [],
+          "diagnostic": "",
+          "result": {
+            "constraints_s": 0.318231224,
+            "geometry_build_and_audit_s": 0.007071974,
+            "leaves": 2528,
+            "local_partition_s": 0.16292022,
+            "local_refinement_counts": [
+              {
+                "incident": 4,
+                "induced": 0,
+                "requested": 16
+              },
+              {
+                "incident": 4,
+                "induced": 0,
+                "requested": 16
+              }
+            ],
+            "local_steps": 2,
+            "max_depth": 4,
+            "path": "from_h2",
+            "q8": {
+              "assembly_s": 6.23931675,
+              "blocks": 2528,
+              "constraint_s": 0.002302696,
+              "fillet_limits_mpa": {
+                "elbow_east_z10_30/010/011/011/011": 132.59685785271367,
+                "elbow_east_z10_30/011/010/010/010": 132.59685785272802,
+                "elbow_north_z10_30/110/111/111/111": 132.59139561083467,
+                "elbow_north_z10_30/111/110/110/110": 132.59139561084953
+              },
+              "force_s": 0.005189648,
+              "iterations": 1002,
+              "loaded_area_mm2": 319.99999999999557,
+              "masters": 23463,
+              "q": 8,
+              "reaction_n": [
+                1.0716386000808598e-08,
+                1000.0000000957283,
+                -6.37006891679448e-09
+              ],
+              "recovery_s": 0.01419606,
+              "relative_residual": 4.6959801043289774e-11,
+              "scalar_dofs": 24591,
+              "solve_s": 12.201002779,
+              "strain_energy_n_mm": 260.41881297348573,
+              "tip_mm": [
+                -0.1771337825118579,
+                -0.521560146343123,
+                1.1362897707197473e-12
+              ],
+              "true_projected_residual": 6.018285998745007e-11,
+              "volume_mm3": 32163.628481339205
+            },
+            "radii_ticks": [
+              40,
+              80
+            ],
+            "total_wall_s": 19.027867668,
+            "uniform_depth": 2,
+            "uniform_partition_s": 0.067255172
+          },
+          "selected_step": 2,
+          "end_to_end_with_probe_s": 19.169523326971103,
+          "observables": {
+            "tip_relative_to_finest_tetra": 0.0002186090418098141,
+            "fillet_relative_to_finest_tetra": 0.0052738915362906535,
+            "volume_relative": 9.01057006785777e-13,
+            "reaction_relative": 9.653665334340948e-11,
+            "tree_rss_within_cap": true,
+            "qoi_qualified": true,
+            "drift_from_frozen_replay_relative": 0.0,
+            "drift_qualified": true,
+            "status": "qualified"
+          },
+          "field_replay": {
+            "qualified": true,
+            "field_sha256": "b4acc5f7928a5c09a4912f76c40bc1c57312dbd53999962937396c9466c00edd",
+            "reference_sha256": "b4acc5f7928a5c09a4912f76c40bc1c57312dbd53999962937396c9466c00edd",
+            "geometry_in_checkpoint": false,
+            "geometry_verification_supplement": "bracket-checkpoint-geometry-20261125.json"
+          },
+          "coefficient_verification_s": 0.004112811002414674,
+          "qualified": true,
+          "method": "local"
+        },
+        {
+          "status": "completed",
+          "exit_code": 0,
+          "elapsed_s": 69.34710775496205,
+          "tree_peak_rss_kib": 1705540,
+          "wall_s": 69.34710775496205,
+          "command": [
+            "/usr/bin/taskset",
+            "-c",
+            "2,3",
+            "/home/jeff/Code/FreeCAD/.pixi/envs/default/bin/python",
+            "/home/jeff/Code/SolidCraftTrivariate/tests/references/calculix_bracket.py",
+            "--ccx",
+            "/home/jeff/Code/FreeCAD/.pixi/envs/default/bin/ccx",
+            "--size",
+            "1.5",
+            "--store-displacements",
+            "--radius-x",
+            "2.5",
+            "--radius-y",
+            "5.0",
+            "/home/jeff/Code/SolidCraftTrivariate/build/j4g/x40-y80-rep2/tetra/mesh"
+          ],
+          "loadavg": [
+            [
+              5.03,
+              6.05,
+              7.22
+            ],
+            [
+              4.56,
+              5.76,
+              7.03
+            ]
+          ],
+          "campaign_processes_before": [],
+          "diagnostic": "{\"radius_x_mm\": 2.5, \"radius_y_mm\": 5.0, \"size_mm\": 1.5, \"occ_volume_mm3\": 32163.628481310214, \"nodes\": 71230, \"tet10\": 45134, \"loaded_area_mm2\": 320.00000000000034, \"reaction_n\": [-4.1589002066189096e-05, 999.9999764646997, -4.54220001500083e-06], \"mean_tip_y_mm\": -0.5208681110274459, \"point_tip_y_mm\": -0.5215913946237346, \"geometry_mesh_deck_s\": 9.276684821001254, \"solve_s\": 59.60883332201047, \"freecad_version\": [\"26\", \"3\", \"0\"], \"solver_peak_rss_kib\": 1481720, \"mesh_process_peak_rss_kib\": 243524}\n{\"element\": 46559, \"barycentric\": [0.492266640047059, 0.009099239872896528, 0.49863412008004443, 0.0], \"point_mm\": [9.7573593113125, 9.757359315739324, 20.000000007507076], \"distance_mm\": 8.184566317279842e-09, \"stress_mpa\": [[76.88333904801145, -71.65736573152901, 0.5703845826108324], [-71.65736573152901, 79.94795714893775, 0.893748577968563], [0.5703845826108324, 0.893748577968563, 38.61631631209976]], \"von_mises_mpa\": 130.37920574134807}\n",
+          "physical_audit_s": 1.9635910390061326,
+          "result": {
+            "radius_x_mm": 2.5,
+            "radius_y_mm": 5.0,
+            "size_mm": 1.5,
+            "occ_volume_mm3": 32163.628481310214,
+            "nodes": 71230,
+            "tet10": 45134,
+            "loaded_area_mm2": 320.00000000000034,
+            "reaction_n": [
+              -4.1589002066189096e-05,
+              999.9999764646997,
+              -4.54220001500083e-06
+            ],
+            "mean_tip_y_mm": -0.5208681110274459,
+            "point_tip_y_mm": -0.5215913946237346,
+            "geometry_mesh_deck_s": 9.276684821001254,
+            "solve_s": 59.60883332201047,
+            "freecad_version": [
+              "26",
+              "3",
+              "0"
+            ],
+            "solver_peak_rss_kib": 1481720,
+            "mesh_process_peak_rss_kib": 243524
+          },
+          "probe": {
+            "element": 46559,
+            "barycentric": [
+              0.492266640047059,
+              0.009099239872896528,
+              0.49863412008004443,
+              0.0
+            ],
+            "point_mm": [
+              9.7573593113125,
+              9.757359315739324,
+              20.000000007507076
+            ],
+            "distance_mm": 8.184566317279842e-09,
+            "stress_mpa": [
+              [
+                76.88333904801145,
+                -71.65736573152901,
+                0.5703845826108324
+              ],
+              [
+                -71.65736573152901,
+                79.94795714893775,
+                0.893748577968563
+              ],
+              [
+                0.5703845826108324,
+                0.893748577968563,
+                38.61631631209976
+              ]
+            ],
+            "von_mises_mpa": 130.37920574134807
+          },
+          "end_to_end_with_probe_s": 71.31069879396819,
+          "observables": {
+            "tip_relative_to_finest_tetra": 0.00015870904815817877,
+            "fillet_relative_to_finest_tetra": 0.011539084307802705,
+            "volume_relative": 3.3306690738754696e-16,
+            "reaction_relative": 4.800194824605278e-08,
+            "tree_rss_within_cap": true,
+            "qoi_qualified": true,
+            "clamp_boundary_prescribed": true,
+            "drift_from_frozen_replay_relative": 0.0,
+            "drift_qualified": true,
+            "status": "qualified"
+          },
+          "field_replay": {
+            "qualified": true,
+            "coefficients": 1354020,
+            "geometry_equal": true,
+            "relative_displacement_coefficients": 0.0
+          },
+          "coefficient_verification_s": 2.512159452016931,
+          "qualified": true,
+          "method": "tetra"
+        }
+      ]
+    },
+    {
+      "radii_ticks": [
+        80,
+        40
+      ],
+      "repeat": 1,
+      "trials": [
+        {
+          "status": "completed",
+          "exit_code": 0,
+          "elapsed_s": 33.96289377001813,
+          "tree_peak_rss_kib": 1580880,
+          "wall_s": 33.96289377001813,
+          "command": [
+            "/usr/bin/taskset",
+            "-c",
+            "2,3",
+            "/usr/bin/python3",
+            "/home/jeff/Code/SolidCraftTrivariate/tests/references/immersed_bracket.py",
+            "--solver",
+            "multigrid",
+            "--h",
+            "1.25",
+            "--order",
+            "8",
+            "--radius-x",
+            "5.0",
+            "--radius-y",
+            "2.5",
+            "--field-output",
+            "/home/jeff/Code/SolidCraftTrivariate/build/j4g/x80-y40-rep1/immersed/field.npz"
+          ],
+          "loadavg": [
+            [
+              4.56,
+              5.76,
+              7.03
+            ],
+            [
+              4.32,
+              5.56,
+              6.92
+            ]
+          ],
+          "campaign_processes_before": [],
+          "diagnostic": "     ],\n        \"coarse_ncell\": [\n          24,\n          20,\n          16\n        ],\n        \"fine_dofs\": 75258,\n        \"coarse_dofs\": 13284,\n        \"energy_relative\": 1.333871082355872e-16,\n        \"spectral_upper\": 11.291505486186558,\n        \"P_nnz\": 541854\n      },\n      {\n        \"fine_ncell\": [\n          24,\n          20,\n          16\n        ],\n        \"coarse_ncell\": [\n          12,\n          10,\n          8\n        ],\n        \"fine_dofs\": 13284,\n        \"coarse_dofs\": 2520,\n        \"energy_relative\": 0.0,\n        \"spectral_upper\": 10.959861357375203,\n        \"P_nnz\": 88638\n      }\n    ],\n    \"coarse_lu_size\": 2520,\n    \"symmetry_defect\": 2.1337426287438997e-15,\n    \"coarse_lu_nnz\": 1589734,\n    \"setup_s\": 2.8354981679585762,\n    \"iterations\": 75,\n    \"status\": 0,\n    \"iterations_s\": 13.348555753997061\n  },\n  \"solver_s\": 16.186247941979673,\n  \"elapsed_s\": 33.164353783999104,\n  \"reduced_nnz\": 22971761,\n  \"scaling_dynamic_range\": 150645.07987469327,\n  \"max_rss_kib\": 1613008\n}\n",
+          "result": {
+            "h_mm": 1.25,
+            "gauss_order": 8,
+            "volume_mm3": 32163.628395413976,
+            "radius_x_mm": 5.0,
+            "radius_y_mm": 2.5,
+            "volume_target_mm3": 32163.628481310225,
+            "active_cells": 17974,
+            "cut_cells": 2614,
+            "empty_cells": 43466,
+            "minimum_volume_fraction": 0.009446788277227025,
+            "quadrature_points": 9732096,
+            "quadrature_s": 0.6821864473167807,
+            "scalar_active": 25392,
+            "free_components": 75258,
+            "loaded_area_mm2": 320.00000000000006,
+            "force_n": [
+              0.0,
+              -999.9999999999998,
+              0.0
+            ],
+            "reaction_n": [
+              4.089316829603007e-09,
+              999.9999999903773,
+              3.2132816962793243e-09
+            ],
+            "relative_residual": 6.655450628472673e-11,
+            "point_tip_y_mm": -0.4963979657338034,
+            "mean_tip_y_mm": -0.4955399645406479,
+            "von_mises_mpa": 134.2038958848238,
+            "stress_mpa": [
+              [
+                72.52251057924991,
+                -74.40455957786457,
+                -1.1769378295589295e-10
+              ],
+              [
+                -74.40455957786457,
+                72.70264667614623,
+                1.0545506772636487e-10
+              ],
+              [
+                -1.1769378295589295e-10,
+                1.0545506772636487e-10,
+                35.16199951366335
+              ]
+            ],
+            "strain_energy_n_mm": 247.76998227545707,
+            "external_work_n_mm": 495.53996454064793,
+            "assembly_s": 14.66247965832008,
+            "diagonal_scaling_and_restriction_s": 1.4222305570147,
+            "linear_solver": "multigrid",
+            "solver_detail": {
+              "levels": [
+                {
+                  "fine_ncell": [
+                    48,
+                    40,
+                    32
+                  ],
+                  "coarse_ncell": [
+                    24,
+                    20,
+                    16
+                  ],
+                  "fine_dofs": 75258,
+                  "coarse_dofs": 13284,
+                  "energy_relative": 1.333871082355872e-16,
+                  "spectral_upper": 11.291505486186558,
+                  "P_nnz": 541854
+                },
+                {
+                  "fine_ncell": [
+                    24,
+                    20,
+                    16
+                  ],
+                  "coarse_ncell": [
+                    12,
+                    10,
+                    8
+                  ],
+                  "fine_dofs": 13284,
+                  "coarse_dofs": 2520,
+                  "energy_relative": 0.0,
+                  "spectral_upper": 10.959861357375203,
+                  "P_nnz": 88638
+                }
+              ],
+              "coarse_lu_size": 2520,
+              "symmetry_defect": 2.1337426287438997e-15,
+              "coarse_lu_nnz": 1589734,
+              "setup_s": 2.8354981679585762,
+              "iterations": 75,
+              "status": 0,
+              "iterations_s": 13.348555753997061
+            },
+            "solver_s": 16.186247941979673,
+            "elapsed_s": 33.164353783999104,
+            "reduced_nnz": 22971761,
+            "scaling_dynamic_range": 150645.07987469327,
+            "max_rss_kib": 1613008
+          },
+          "end_to_end_with_probe_s": 33.96289377001813,
+          "observables": {
+            "tip_relative_to_finest_tetra": 0.00015286320387963848,
+            "fillet_relative_to_finest_tetra": 0.013764102961592029,
+            "volume_relative": 2.6706019617961374e-09,
+            "reaction_relative": 1.0938175677353058e-11,
+            "tree_rss_within_cap": true,
+            "qoi_qualified": true,
+            "drift_from_frozen_replay_relative": 0.0,
+            "drift_qualified": true,
+            "status": "qualified"
+          },
+          "field_replay": {
+            "qualified": true,
+            "coefficients": 214200,
+            "geometry_equal": true,
+            "relative_displacement_coefficients": 0.0
+          },
+          "coefficient_verification_s": 0.04342764196917415,
+          "qualified": true,
+          "method": "immersed"
+        },
+        {
+          "status": "completed",
+          "exit_code": 0,
+          "elapsed_s": 19.518528697022703,
+          "tree_peak_rss_kib": 250236,
+          "wall_s": 19.518528697022703,
+          "command": [
+            "/usr/bin/taskset",
+            "-c",
+            "2,3",
+            "/home/jeff/Code/SolidCraftTrivariate/target/release/examples/local_fillet_cost",
+            "--field-tier",
+            "80",
+            "40",
+            "2",
+            "8",
+            "/home/jeff/Code/SolidCraftTrivariate/build/j4g/x80-y40-rep1/local/result.json",
+            "/home/jeff/Code/SolidCraftTrivariate/build/j4g/x80-y40-rep1/local/field.bin"
+          ],
+          "loadavg": [
+            [
+              4.32,
+              5.56,
+              6.92
+            ],
+            [
+              5.44,
+              5.73,
+              6.95
+            ]
+          ],
+          "campaign_processes_before": [],
+          "diagnostic": "",
+          "result": {
+            "constraints_s": 0.316798785,
+            "geometry_build_and_audit_s": 0.007226802,
+            "leaves": 2528,
+            "local_partition_s": 0.161686322,
+            "local_refinement_counts": [
+              {
+                "incident": 4,
+                "induced": 0,
+                "requested": 16
+              },
+              {
+                "incident": 4,
+                "induced": 0,
+                "requested": 16
+              }
+            ],
+            "local_steps": 2,
+            "max_depth": 4,
+            "path": "from_h2",
+            "q8": {
+              "assembly_s": 6.342898965,
+              "blocks": 2528,
+              "constraint_s": 0.002296539,
+              "fillet_limits_mpa": {
+                "elbow_east_z10_30/010/011/011/011": 133.46117265827777,
+                "elbow_east_z10_30/011/010/010/010": 133.46117265830577,
+                "elbow_north_z10_30/110/111/111/111": 133.45470977868402,
+                "elbow_north_z10_30/111/110/110/110": 133.45470977868902
+              },
+              "force_s": 0.005179644,
+              "iterations": 1000,
+              "loaded_area_mm2": 319.99999999999557,
+              "masters": 23463,
+              "q": 8,
+              "reaction_n": [
+                1.3977725643599115e-09,
+                1000.0000001304569,
+                -5.471903818943247e-09
+              ],
+              "recovery_s": 0.014512248,
+              "relative_residual": 4.8764104580524717e-11,
+              "scalar_dofs": 24591,
+              "solve_s": 12.533046014,
+              "strain_energy_n_mm": 247.65295354016465,
+              "tip_mm": [
+                -0.16228957334516145,
+                -0.4961639494673118,
+                9.969410717091785e-13
+              ],
+              "true_projected_residual": 5.921627457618059e-11,
+              "volume_mm3": 32163.628481339205
+            },
+            "radii_ticks": [
+              80,
+              40
+            ],
+            "total_wall_s": 19.466241836000002,
+            "uniform_depth": 2,
+            "uniform_partition_s": 0.06842033
+          },
+          "selected_step": 2,
+          "end_to_end_with_probe_s": 19.518528697022703,
+          "observables": {
+            "tip_relative_to_finest_tetra": 0.0003186375981469869,
+            "fillet_relative_to_finest_tetra": 0.008153638820327602,
+            "volume_relative": 9.01057006785777e-13,
+            "reaction_relative": 1.30579084974848e-10,
+            "tree_rss_within_cap": true,
+            "qoi_qualified": true,
+            "drift_from_frozen_replay_relative": 0.0,
+            "drift_qualified": true,
+            "status": "qualified"
+          },
+          "field_replay": {
+            "qualified": true,
+            "field_sha256": "3ef47bc2c0baec251ea33bbafafaff7cb10d1fd2a1cad32742596610028f1a32",
+            "reference_sha256": "3ef47bc2c0baec251ea33bbafafaff7cb10d1fd2a1cad32742596610028f1a32",
+            "geometry_in_checkpoint": false,
+            "geometry_verification_supplement": "bracket-checkpoint-geometry-20261125.json"
+          },
+          "coefficient_verification_s": 0.042547745048068464,
+          "qualified": true,
+          "method": "local"
+        },
+        {
+          "status": "completed",
+          "exit_code": 0,
+          "elapsed_s": 82.57147330098087,
+          "tree_peak_rss_kib": 1714972,
+          "wall_s": 82.57147330098087,
+          "command": [
+            "/usr/bin/taskset",
+            "-c",
+            "2,3",
+            "/home/jeff/Code/FreeCAD/.pixi/envs/default/bin/python",
+            "/home/jeff/Code/SolidCraftTrivariate/tests/references/calculix_bracket.py",
+            "--ccx",
+            "/home/jeff/Code/FreeCAD/.pixi/envs/default/bin/ccx",
+            "--size",
+            "1.5",
+            "--store-displacements",
+            "--radius-x",
+            "5.0",
+            "--radius-y",
+            "2.5",
+            "/home/jeff/Code/SolidCraftTrivariate/build/j4g/x80-y40-rep1/tetra/mesh"
+          ],
+          "loadavg": [
+            [
+              5.44,
+              5.73,
+              6.95
+            ],
+            [
+              7.84,
+              6.59,
+              7.16
+            ]
+          ],
+          "campaign_processes_before": [],
+          "diagnostic": "{\"radius_x_mm\": 5.0, \"radius_y_mm\": 2.5, \"size_mm\": 1.5, \"occ_volume_mm3\": 32163.628481310217, \"nodes\": 71579, \"tet10\": 45366, \"loaded_area_mm2\": 320.00000000000034, \"reaction_n\": [6.111599911307053e-05, 999.9999815049999, -6.977800131036105e-06], \"mean_tip_y_mm\": -0.495396935554204, \"point_tip_y_mm\": -0.4962544938177651, \"geometry_mesh_deck_s\": 9.232045751996338, \"solve_s\": 72.83563611999853, \"freecad_version\": [\"26\", \"3\", \"0\"], \"solver_peak_rss_kib\": 1495300, \"mesh_process_peak_rss_kib\": 248996}\n{\"element\": 52259, \"barycentric\": [0.49226664004722465, 0.0, 0.009099239872614831, 0.49863412008016056], \"point_mm\": [9.757359311312614, 9.757359315739217, 20.00000000750742], \"distance_mm\": 8.184823400686211e-09, \"stress_mpa\": [[78.6930417714722, -72.61877982885838, 0.3998540678096349], [-72.61877982885838, 79.40699674925662, 0.43115916220091194], [0.3998540678096349, 0.43115916220091194, 39.29935853374945]], \"von_mises_mpa\": 131.9166260293898}\n",
+          "physical_audit_s": 1.9687318929936737,
+          "result": {
+            "radius_x_mm": 5.0,
+            "radius_y_mm": 2.5,
+            "size_mm": 1.5,
+            "occ_volume_mm3": 32163.628481310217,
+            "nodes": 71579,
+            "tet10": 45366,
+            "loaded_area_mm2": 320.00000000000034,
+            "reaction_n": [
+              6.111599911307053e-05,
+              999.9999815049999,
+              -6.977800131036105e-06
+            ],
+            "mean_tip_y_mm": -0.495396935554204,
+            "point_tip_y_mm": -0.4962544938177651,
+            "geometry_mesh_deck_s": 9.232045751996338,
+            "solve_s": 72.83563611999853,
+            "freecad_version": [
+              "26",
+              "3",
+              "0"
+            ],
+            "solver_peak_rss_kib": 1495300,
+            "mesh_process_peak_rss_kib": 248996
+          },
+          "probe": {
+            "element": 52259,
+            "barycentric": [
+              0.49226664004722465,
+              0.0,
+              0.009099239872614831,
+              0.49863412008016056
+            ],
+            "point_mm": [
+              9.757359311312614,
+              9.757359315739217,
+              20.00000000750742
+            ],
+            "distance_mm": 8.184823400686211e-09,
+            "stress_mpa": [
+              [
+                78.6930417714722,
+                -72.61877982885838,
+                0.3998540678096349
+              ],
+              [
+                -72.61877982885838,
+                79.40699674925662,
+                0.43115916220091194
+              ],
+              [
+                0.3998540678096349,
+                0.43115916220091194,
+                39.29935853374945
+              ]
+            ],
+            "von_mises_mpa": 131.9166260293898
+          },
+          "end_to_end_with_probe_s": 84.54020519397454,
+          "observables": {
+            "tip_relative_to_finest_tetra": 0.00013620697271332638,
+            "fillet_relative_to_finest_tetra": 0.0035137268505553987,
+            "volume_relative": 2.220446049250313e-16,
+            "reaction_relative": 6.42333252259943e-08,
+            "tree_rss_within_cap": true,
+            "qoi_qualified": true,
+            "clamp_boundary_prescribed": true,
+            "drift_from_frozen_replay_relative": 0.0,
+            "drift_qualified": true,
+            "status": "qualified"
+          },
+          "field_replay": {
+            "qualified": true,
+            "coefficients": 1360980,
+            "geometry_equal": true,
+            "relative_displacement_coefficients": 0.0
+          },
+          "coefficient_verification_s": 2.744647059007548,
+          "qualified": true,
+          "method": "tetra"
+        }
+      ]
+    },
+    {
+      "radii_ticks": [
+        80,
+        40
+      ],
+      "repeat": 2,
+      "trials": [
+        {
+          "status": "completed",
+          "exit_code": 0,
+          "elapsed_s": 19.924799625005107,
+          "tree_peak_rss_kib": 281820,
+          "wall_s": 19.924799625005107,
+          "command": [
+            "/usr/bin/taskset",
+            "-c",
+            "2,3",
+            "/home/jeff/Code/SolidCraftTrivariate/target/release/examples/local_fillet_cost",
+            "--field-tier",
+            "80",
+            "40",
+            "2",
+            "8",
+            "/home/jeff/Code/SolidCraftTrivariate/build/j4g/x80-y40-rep2/local/result.json",
+            "/home/jeff/Code/SolidCraftTrivariate/build/j4g/x80-y40-rep2/local/field.bin"
+          ],
+          "loadavg": [
+            [
+              7.69,
+              6.58,
+              7.15
+            ],
+            [
+              7.55,
+              6.64,
+              7.16
+            ]
+          ],
+          "campaign_processes_before": [],
+          "diagnostic": "",
+          "result": {
+            "constraints_s": 0.323721769,
+            "geometry_build_and_audit_s": 0.007355412,
+            "leaves": 2528,
+            "local_partition_s": 0.166233245,
+            "local_refinement_counts": [
+              {
+                "incident": 4,
+                "induced": 0,
+                "requested": 16
+              },
+              {
+                "incident": 4,
+                "induced": 0,
+                "requested": 16
+              }
+            ],
+            "local_steps": 2,
+            "max_depth": 4,
+            "path": "from_h2",
+            "q8": {
+              "assembly_s": 6.590342258,
+              "blocks": 2528,
+              "constraint_s": 0.002281932,
+              "fillet_limits_mpa": {
+                "elbow_east_z10_30/010/011/011/011": 133.46117265827777,
+                "elbow_east_z10_30/011/010/010/010": 133.46117265830577,
+                "elbow_north_z10_30/110/111/111/111": 133.45470977868402,
+                "elbow_north_z10_30/111/110/110/110": 133.45470977868902
+              },
+              "force_s": 0.005238833,
+              "iterations": 1000,
+              "loaded_area_mm2": 319.99999999999557,
+              "masters": 23463,
+              "q": 8,
+              "reaction_n": [
+                1.3977725643599115e-09,
+                1000.0000001304569,
+                -5.471903818943247e-09
+              ],
+              "recovery_s": 0.014298671,
+              "relative_residual": 4.8764104580524717e-11,
+              "scalar_dofs": 24591,
+              "solve_s": 12.674080931,
+              "strain_energy_n_mm": 247.65295354016465,
+              "tip_mm": [
+                -0.16228957334516145,
+                -0.4961639494673118,
+                9.969410717091785e-13
+              ],
+              "true_projected_residual": 5.921627457618059e-11,
+              "volume_mm3": 32163.628481339205
+            },
+            "radii_ticks": [
+              80,
+              40
+            ],
+            "total_wall_s": 19.865985079,
+            "uniform_depth": 2,
+            "uniform_partition_s": 0.068610241
+          },
+          "selected_step": 2,
+          "end_to_end_with_probe_s": 19.924799625005107,
+          "observables": {
+            "tip_relative_to_finest_tetra": 0.0003186375981469869,
+            "fillet_relative_to_finest_tetra": 0.008153638820327602,
+            "volume_relative": 9.01057006785777e-13,
+            "reaction_relative": 1.30579084974848e-10,
+            "tree_rss_within_cap": true,
+            "qoi_qualified": true,
+            "drift_from_frozen_replay_relative": 0.0,
+            "drift_qualified": true,
+            "status": "qualified"
+          },
+          "field_replay": {
+            "qualified": true,
+            "field_sha256": "3ef47bc2c0baec251ea33bbafafaff7cb10d1fd2a1cad32742596610028f1a32",
+            "reference_sha256": "3ef47bc2c0baec251ea33bbafafaff7cb10d1fd2a1cad32742596610028f1a32",
+            "geometry_in_checkpoint": false,
+            "geometry_verification_supplement": "bracket-checkpoint-geometry-20261125.json"
+          },
+          "coefficient_verification_s": 0.0045703520299866796,
+          "qualified": true,
+          "method": "local"
+        },
+        {
+          "status": "completed",
+          "exit_code": 0,
+          "elapsed_s": 70.27753991400823,
+          "tree_peak_rss_kib": 1720284,
+          "wall_s": 70.27753991400823,
+          "command": [
+            "/usr/bin/taskset",
+            "-c",
+            "2,3",
+            "/home/jeff/Code/FreeCAD/.pixi/envs/default/bin/python",
+            "/home/jeff/Code/SolidCraftTrivariate/tests/references/calculix_bracket.py",
+            "--ccx",
+            "/home/jeff/Code/FreeCAD/.pixi/envs/default/bin/ccx",
+            "--size",
+            "1.5",
+            "--store-displacements",
+            "--radius-x",
+            "5.0",
+            "--radius-y",
+            "2.5",
+            "/home/jeff/Code/SolidCraftTrivariate/build/j4g/x80-y40-rep2/tetra/mesh"
+          ],
+          "loadavg": [
+            [
+              7.55,
+              6.64,
+              7.16
+            ],
+            [
+              5.77,
+              6.27,
+              6.99
+            ]
+          ],
+          "campaign_processes_before": [],
+          "diagnostic": "{\"radius_x_mm\": 5.0, \"radius_y_mm\": 2.5, \"size_mm\": 1.5, \"occ_volume_mm3\": 32163.628481310217, \"nodes\": 71579, \"tet10\": 45366, \"loaded_area_mm2\": 320.00000000000034, \"reaction_n\": [6.111599911307053e-05, 999.9999815049999, -6.977800131036105e-06], \"mean_tip_y_mm\": -0.495396935554204, \"point_tip_y_mm\": -0.4962544938177651, \"geometry_mesh_deck_s\": 9.253064617980272, \"solve_s\": 60.447593771037646, \"freecad_version\": [\"26\", \"3\", \"0\"], \"solver_peak_rss_kib\": 1495600, \"mesh_process_peak_rss_kib\": 249268}\n{\"element\": 52259, \"barycentric\": [0.49226664004722465, 0.0, 0.009099239872614831, 0.49863412008016056], \"point_mm\": [9.757359311312614, 9.757359315739217, 20.00000000750742], \"distance_mm\": 8.184823400686211e-09, \"stress_mpa\": [[78.6930417714722, -72.61877982885838, 0.3998540678096349], [-72.61877982885838, 79.40699674925662, 0.43115916220091194], [0.3998540678096349, 0.43115916220091194, 39.29935853374945]], \"von_mises_mpa\": 131.9166260293898}\n",
+          "physical_audit_s": 1.9660092110279948,
+          "result": {
+            "radius_x_mm": 5.0,
+            "radius_y_mm": 2.5,
+            "size_mm": 1.5,
+            "occ_volume_mm3": 32163.628481310217,
+            "nodes": 71579,
+            "tet10": 45366,
+            "loaded_area_mm2": 320.00000000000034,
+            "reaction_n": [
+              6.111599911307053e-05,
+              999.9999815049999,
+              -6.977800131036105e-06
+            ],
+            "mean_tip_y_mm": -0.495396935554204,
+            "point_tip_y_mm": -0.4962544938177651,
+            "geometry_mesh_deck_s": 9.253064617980272,
+            "solve_s": 60.447593771037646,
+            "freecad_version": [
+              "26",
+              "3",
+              "0"
+            ],
+            "solver_peak_rss_kib": 1495600,
+            "mesh_process_peak_rss_kib": 249268
+          },
+          "probe": {
+            "element": 52259,
+            "barycentric": [
+              0.49226664004722465,
+              0.0,
+              0.009099239872614831,
+              0.49863412008016056
+            ],
+            "point_mm": [
+              9.757359311312614,
+              9.757359315739217,
+              20.00000000750742
+            ],
+            "distance_mm": 8.184823400686211e-09,
+            "stress_mpa": [
+              [
+                78.6930417714722,
+                -72.61877982885838,
+                0.3998540678096349
+              ],
+              [
+                -72.61877982885838,
+                79.40699674925662,
+                0.43115916220091194
+              ],
+              [
+                0.3998540678096349,
+                0.43115916220091194,
+                39.29935853374945
+              ]
+            ],
+            "von_mises_mpa": 131.9166260293898
+          },
+          "end_to_end_with_probe_s": 72.24354912503622,
+          "observables": {
+            "tip_relative_to_finest_tetra": 0.00013620697271332638,
+            "fillet_relative_to_finest_tetra": 0.0035137268505553987,
+            "volume_relative": 2.220446049250313e-16,
+            "reaction_relative": 6.42333252259943e-08,
+            "tree_rss_within_cap": true,
+            "qoi_qualified": true,
+            "clamp_boundary_prescribed": true,
+            "drift_from_frozen_replay_relative": 0.0,
+            "drift_qualified": true,
+            "status": "qualified"
+          },
+          "field_replay": {
+            "qualified": true,
+            "coefficients": 1360980,
+            "geometry_equal": true,
+            "relative_displacement_coefficients": 0.0
+          },
+          "coefficient_verification_s": 2.5664719009655528,
+          "qualified": true,
+          "method": "tetra"
+        },
+        {
+          "status": "completed",
+          "exit_code": 0,
+          "elapsed_s": 47.15313834697008,
+          "tree_peak_rss_kib": 1571852,
+          "wall_s": 47.15313834697008,
+          "command": [
+            "/usr/bin/taskset",
+            "-c",
+            "2,3",
+            "/usr/bin/python3",
+            "/home/jeff/Code/SolidCraftTrivariate/tests/references/immersed_bracket.py",
+            "--solver",
+            "multigrid",
+            "--h",
+            "1.25",
+            "--order",
+            "8",
+            "--radius-x",
+            "5.0",
+            "--radius-y",
+            "2.5",
+            "--field-output",
+            "/home/jeff/Code/SolidCraftTrivariate/build/j4g/x80-y40-rep2/immersed/field.npz"
+          ],
+          "loadavg": [
+            [
+              5.63,
+              6.23,
+              6.97
+            ],
+            [
+              7.77,
+              6.67,
+              7.08
+            ]
+          ],
+          "campaign_processes_before": [],
+          "diagnostic": "        ],\n        \"coarse_ncell\": [\n          24,\n          20,\n          16\n        ],\n        \"fine_dofs\": 75258,\n        \"coarse_dofs\": 13284,\n        \"energy_relative\": 1.333871082355872e-16,\n        \"spectral_upper\": 11.291505486186558,\n        \"P_nnz\": 541854\n      },\n      {\n        \"fine_ncell\": [\n          24,\n          20,\n          16\n        ],\n        \"coarse_ncell\": [\n          12,\n          10,\n          8\n        ],\n        \"fine_dofs\": 13284,\n        \"coarse_dofs\": 2520,\n        \"energy_relative\": 0.0,\n        \"spectral_upper\": 10.959861357375203,\n        \"P_nnz\": 88638\n      }\n    ],\n    \"coarse_lu_size\": 2520,\n    \"symmetry_defect\": 2.1337426287438997e-15,\n    \"coarse_lu_nnz\": 1589734,\n    \"setup_s\": 3.6789391550119035,\n    \"iterations\": 75,\n    \"status\": 0,\n    \"iterations_s\": 19.71829201601213\n  },\n  \"solver_s\": 23.435587498999666,\n  \"elapsed_s\": 46.3414025970269,\n  \"reduced_nnz\": 22971761,\n  \"scaling_dynamic_range\": 150645.07987469327,\n  \"max_rss_kib\": 1611148\n}\n",
+          "result": {
+            "h_mm": 1.25,
+            "gauss_order": 8,
+            "volume_mm3": 32163.628395413976,
+            "radius_x_mm": 5.0,
+            "radius_y_mm": 2.5,
+            "volume_target_mm3": 32163.628481310225,
+            "active_cells": 17974,
+            "cut_cells": 2614,
+            "empty_cells": 43466,
+            "minimum_volume_fraction": 0.009446788277227025,
+            "quadrature_points": 9732096,
+            "quadrature_s": 0.7889570995466784,
+            "scalar_active": 25392,
+            "free_components": 75258,
+            "loaded_area_mm2": 320.00000000000006,
+            "force_n": [
+              0.0,
+              -999.9999999999998,
+              0.0
+            ],
+            "reaction_n": [
+              4.089316829603007e-09,
+              999.9999999903773,
+              3.2132816962793243e-09
+            ],
+            "relative_residual": 6.655450628472673e-11,
+            "point_tip_y_mm": -0.4963979657338034,
+            "mean_tip_y_mm": -0.4955399645406479,
+            "von_mises_mpa": 134.2038958848238,
+            "stress_mpa": [
+              [
+                72.52251057924991,
+                -74.40455957786457,
+                -1.1769378295589295e-10
+              ],
+              [
+                -74.40455957786457,
+                72.70264667614623,
+                1.0545506772636487e-10
+              ],
+              [
+                -1.1769378295589295e-10,
+                1.0545506772636487e-10,
+                35.16199951366335
+              ]
+            ],
+            "strain_energy_n_mm": 247.76998227545707,
+            "external_work_n_mm": 495.53996454064793,
+            "assembly_s": 17.572877460566815,
+            "diagonal_scaling_and_restriction_s": 4.264522803016007,
+            "linear_solver": "multigrid",
+            "solver_detail": {
+              "levels": [
+                {
+                  "fine_ncell": [
+                    48,
+                    40,
+                    32
+                  ],
+                  "coarse_ncell": [
+                    24,
+                    20,
+                    16
+                  ],
+                  "fine_dofs": 75258,
+                  "coarse_dofs": 13284,
+                  "energy_relative": 1.333871082355872e-16,
+                  "spectral_upper": 11.291505486186558,
+                  "P_nnz": 541854
+                },
+                {
+                  "fine_ncell": [
+                    24,
+                    20,
+                    16
+                  ],
+                  "coarse_ncell": [
+                    12,
+                    10,
+                    8
+                  ],
+                  "fine_dofs": 13284,
+                  "coarse_dofs": 2520,
+                  "energy_relative": 0.0,
+                  "spectral_upper": 10.959861357375203,
+                  "P_nnz": 88638
+                }
+              ],
+              "coarse_lu_size": 2520,
+              "symmetry_defect": 2.1337426287438997e-15,
+              "coarse_lu_nnz": 1589734,
+              "setup_s": 3.6789391550119035,
+              "iterations": 75,
+              "status": 0,
+              "iterations_s": 19.71829201601213
+            },
+            "solver_s": 23.435587498999666,
+            "elapsed_s": 46.3414025970269,
+            "reduced_nnz": 22971761,
+            "scaling_dynamic_range": 150645.07987469327,
+            "max_rss_kib": 1611148
+          },
+          "end_to_end_with_probe_s": 47.15313834697008,
+          "observables": {
+            "tip_relative_to_finest_tetra": 0.00015286320387963848,
+            "fillet_relative_to_finest_tetra": 0.013764102961592029,
+            "volume_relative": 2.6706019617961374e-09,
+            "reaction_relative": 1.0938175677353058e-11,
+            "tree_rss_within_cap": true,
+            "qoi_qualified": true,
+            "drift_from_frozen_replay_relative": 0.0,
+            "drift_qualified": true,
+            "status": "qualified"
+          },
+          "field_replay": {
+            "qualified": true,
+            "coefficients": 214200,
+            "geometry_equal": true,
+            "relative_displacement_coefficients": 0.0
+          },
+          "coefficient_verification_s": 0.04352829500567168,
+          "qualified": true,
+          "method": "immersed"
+        }
+      ]
+    },
+    {
+      "radii_ticks": [
+        50,
+        74
+      ],
+      "repeat": 1,
+      "trials": [
+        {
+          "status": "completed",
+          "exit_code": 0,
+          "elapsed_s": 19.62370443501277,
+          "tree_peak_rss_kib": 226700,
+          "wall_s": 19.62370443501277,
+          "command": [
+            "/usr/bin/taskset",
+            "-c",
+            "2,3",
+            "/home/jeff/Code/SolidCraftTrivariate/target/release/examples/local_fillet_cost",
+            "--field-tier",
+            "50",
+            "74",
+            "2",
+            "8",
+            "/home/jeff/Code/SolidCraftTrivariate/build/j4g/x50-y74-rep1/local/result.json",
+            "/home/jeff/Code/SolidCraftTrivariate/build/j4g/x50-y74-rep1/local/field.bin"
+          ],
+          "loadavg": [
+            [
+              7.77,
+              6.67,
+              7.08
+            ],
+            [
+              6.84,
+              6.53,
+              7.03
+            ]
+          ],
+          "campaign_processes_before": [],
+          "diagnostic": "",
+          "result": {
+            "constraints_s": 0.322991463,
+            "geometry_build_and_audit_s": 0.007962606,
+            "leaves": 2528,
+            "local_partition_s": 0.161903253,
+            "local_refinement_counts": [
+              {
+                "incident": 4,
+                "induced": 0,
+                "requested": 16
+              },
+              {
+                "incident": 4,
+                "induced": 0,
+                "requested": 16
+              }
+            ],
+            "local_steps": 2,
+            "max_depth": 4,
+            "path": "from_h2",
+            "q8": {
+              "assembly_s": 6.354825301,
+              "blocks": 2528,
+              "constraint_s": 0.002256988,
+              "fillet_limits_mpa": {
+                "elbow_east_z10_30/010/011/011/011": 132.8290863892354,
+                "elbow_east_z10_30/011/010/010/010": 132.82908638925912,
+                "elbow_north_z10_30/110/111/111/111": 132.82341810443506,
+                "elbow_north_z10_30/111/110/110/110": 132.823418104443
+              },
+              "force_s": 0.005297801,
+              "iterations": 999,
+              "loaded_area_mm2": 319.99999999999557,
+              "masters": 23463,
+              "q": 8,
+              "reaction_n": [
+                9.788371002628082e-09,
+                1000.0000001141037,
+                -6.8110281858935195e-09
+              ],
+              "recovery_s": 0.014193246,
+              "relative_residual": 4.227574081700108e-11,
+              "scalar_dofs": 24591,
+              "solve_s": 12.585996327,
+              "strain_energy_n_mm": 257.8867836699382,
+              "tip_mm": [
+                -0.17422087281820808,
+                -0.5165240055414045,
+                1.1482695013779482e-12
+              ],
+              "true_projected_residual": 5.4779689262318927e-11,
+              "volume_mm3": 32165.98467582977
+            },
+            "radii_ticks": [
+              50,
+              74
+            ],
+            "total_wall_s": 19.539768748,
+            "uniform_depth": 2,
+            "uniform_partition_s": 0.070214726
+          },
+          "selected_step": 2,
+          "end_to_end_with_probe_s": 19.62370443501277,
+          "observables": {
+            "tip_relative_to_finest_tetra": 0.0002200476536984297,
+            "fillet_relative_to_finest_tetra": 0.009158778625212527,
+            "volume_relative": 9.126033262418787e-13,
+            "reaction_relative": 1.1472516248958555e-10,
+            "tree_rss_within_cap": true,
+            "qoi_qualified": true,
+            "drift_from_frozen_replay_relative": 0.0,
+            "drift_qualified": true,
+            "status": "qualified"
+          },
+          "field_replay": {
+            "qualified": true,
+            "field_sha256": "6ac1e7bb5444c9ad6f466bea8a8958999fdbf870c673b047bb61034a2b7a9bac",
+            "reference_sha256": "6ac1e7bb5444c9ad6f466bea8a8958999fdbf870c673b047bb61034a2b7a9bac",
+            "geometry_in_checkpoint": false,
+            "geometry_verification_supplement": "bracket-checkpoint-geometry-20261125.json"
+          },
+          "coefficient_verification_s": 0.04245130700292066,
+          "qualified": true,
+          "method": "local"
+        },
+        {
+          "status": "completed",
+          "exit_code": 0,
+          "elapsed_s": 72.55561612697784,
+          "tree_peak_rss_kib": 1715004,
+          "wall_s": 72.55561612697784,
+          "command": [
+            "/usr/bin/taskset",
+            "-c",
+            "2,3",
+            "/home/jeff/Code/FreeCAD/.pixi/envs/default/bin/python",
+            "/home/jeff/Code/SolidCraftTrivariate/tests/references/calculix_bracket.py",
+            "--ccx",
+            "/home/jeff/Code/FreeCAD/.pixi/envs/default/bin/ccx",
+            "--size",
+            "1.5",
+            "--store-displacements",
+            "--radius-x",
+            "3.125",
+            "--radius-y",
+            "4.625",
+            "/home/jeff/Code/SolidCraftTrivariate/build/j4g/x50-y74-rep1/tetra/mesh"
+          ],
+          "loadavg": [
+            [
+              6.84,
+              6.53,
+              7.03
+            ],
+            [
+              5.94,
+              6.43,
+              6.96
+            ]
+          ],
+          "campaign_processes_before": [],
+          "diagnostic": "{\"radius_x_mm\": 3.125, \"radius_y_mm\": 4.625, \"size_mm\": 1.5, \"occ_volume_mm3\": 32165.98467580041, \"nodes\": 70939, \"tet10\": 44996, \"loaded_area_mm2\": 320.00000000000034, \"reaction_n\": [6.077999948672641e-05, 1000.0000270439958, 1.8516899974230228e-05], \"mean_tip_y_mm\": -0.515804993478594, \"point_tip_y_mm\": -0.5165553074302082, \"geometry_mesh_deck_s\": 9.255910523002967, \"solve_s\": 62.76851802697638, \"freecad_version\": [\"26\", \"3\", \"0\"], \"solver_peak_rss_kib\": 1493096, \"mesh_process_peak_rss_kib\": 249268}\n{\"element\": 13257, \"barycentric\": [0.0, 0.4986341285726349, 0.009099239406509663, 0.4922666320208554], \"point_mm\": [9.757359319387954, 9.757359307663862, 20.0000000028075], \"distance_mm\": 8.800100340650868e-09, \"stress_mpa\": [[78.3049712654587, -71.80792502891605, 0.04693691225547238], [-71.80792502891605, 79.64802377386907, 0.5040778087495191], [0.04693691225547238, 0.5040778087495191, 38.466778803976396]], \"von_mises_mpa\": 130.81396460761627}\n",
+          "physical_audit_s": 1.9634520020335913,
+          "result": {
+            "radius_x_mm": 3.125,
+            "radius_y_mm": 4.625,
+            "size_mm": 1.5,
+            "occ_volume_mm3": 32165.98467580041,
+            "nodes": 70939,
+            "tet10": 44996,
+            "loaded_area_mm2": 320.00000000000034,
+            "reaction_n": [
+              6.077999948672641e-05,
+              1000.0000270439958,
+              1.8516899974230228e-05
+            ],
+            "mean_tip_y_mm": -0.515804993478594,
+            "point_tip_y_mm": -0.5165553074302082,
+            "geometry_mesh_deck_s": 9.255910523002967,
+            "solve_s": 62.76851802697638,
+            "freecad_version": [
+              "26",
+              "3",
+              "0"
+            ],
+            "solver_peak_rss_kib": 1493096,
+            "mesh_process_peak_rss_kib": 249268
+          },
+          "probe": {
+            "element": 13257,
+            "barycentric": [
+              0.0,
+              0.4986341285726349,
+              0.009099239406509663,
+              0.4922666320208554
+            ],
+            "point_mm": [
+              9.757359319387954,
+              9.757359307663862,
+              20.0000000028075
+            ],
+            "distance_mm": 8.800100340650868e-09,
+            "stress_mpa": [
+              [
+                78.3049712654587,
+                -71.80792502891605,
+                0.04693691225547238
+              ],
+              [
+                -71.80792502891605,
+                79.64802377386907,
+                0.5040778087495191
+              ],
+              [
+                0.04693691225547238,
+                0.5040778087495191,
+                38.466778803976396
+              ]
+            ],
+            "von_mises_mpa": 130.81396460761627
+          },
+          "end_to_end_with_probe_s": 74.51906812901143,
+          "observables": {
+            "tip_relative_to_finest_tetra": 0.00015945995484867304,
+            "fillet_relative_to_finest_tetra": 0.006150954289642407,
+            "volume_relative": 2.220446049250313e-16,
+            "reaction_relative": 6.905404863319698e-08,
+            "tree_rss_within_cap": true,
+            "qoi_qualified": true,
+            "clamp_boundary_prescribed": true,
+            "drift_from_frozen_replay_relative": 0.0,
+            "drift_qualified": true,
+            "status": "qualified"
+          },
+          "field_replay": {
+            "qualified": true,
+            "coefficients": 1349880,
+            "geometry_equal": true,
+            "relative_displacement_coefficients": 0.0
+          },
+          "coefficient_verification_s": 2.542919040948618,
+          "qualified": true,
+          "method": "tetra"
+        },
+        {
+          "status": "completed",
+          "exit_code": 0,
+          "elapsed_s": 35.026315331982914,
+          "tree_peak_rss_kib": 1535512,
+          "wall_s": 35.026315331982914,
+          "command": [
+            "/usr/bin/taskset",
+            "-c",
+            "2,3",
+            "/usr/bin/python3",
+            "/home/jeff/Code/SolidCraftTrivariate/tests/references/immersed_bracket.py",
+            "--solver",
+            "multigrid",
+            "--h",
+            "1.25",
+            "--order",
+            "8",
+            "--radius-x",
+            "3.125",
+            "--radius-y",
+            "4.625",
+            "--field-output",
+            "/home/jeff/Code/SolidCraftTrivariate/build/j4g/x50-y74-rep1/immersed/field.npz"
+          ],
+          "loadavg": [
+            [
+              6.35,
+              6.51,
+              6.99
+            ],
+            [
+              5.11,
+              6.18,
+              6.86
+            ]
+          ],
+          "campaign_processes_before": [],
+          "diagnostic": "coarse_ncell\": [\n          24,\n          20,\n          16\n        ],\n        \"fine_dofs\": 75366,\n        \"coarse_dofs\": 13284,\n        \"energy_relative\": 2.6687930207454063e-16,\n        \"spectral_upper\": 11.260712959587202,\n        \"P_nnz\": 542670\n      },\n      {\n        \"fine_ncell\": [\n          24,\n          20,\n          16\n        ],\n        \"coarse_ncell\": [\n          12,\n          10,\n          8\n        ],\n        \"fine_dofs\": 13284,\n        \"coarse_dofs\": 2520,\n        \"energy_relative\": 1.72581330404051e-16,\n        \"spectral_upper\": 10.769152651006005,\n        \"P_nnz\": 88638\n      }\n    ],\n    \"coarse_lu_size\": 2520,\n    \"symmetry_defect\": 3.8085863262686356e-15,\n    \"coarse_lu_nnz\": 1589735,\n    \"setup_s\": 3.221385611977894,\n    \"iterations\": 76,\n    \"status\": 0,\n    \"iterations_s\": 13.465550302993506\n  },\n  \"solver_s\": 16.689045867999084,\n  \"elapsed_s\": 34.300102299952414,\n  \"reduced_nnz\": 22977685,\n  \"scaling_dynamic_range\": 1311470.4229413583,\n  \"max_rss_kib\": 1613424\n}\n",
+          "result": {
+            "h_mm": 1.25,
+            "gauss_order": 8,
+            "volume_mm3": 32165.9845899086,
+            "radius_x_mm": 3.125,
+            "radius_y_mm": 4.625,
+            "volume_target_mm3": 32165.984675800417,
+            "active_cells": 17960,
+            "cut_cells": 2660,
+            "empty_cells": 43480,
+            "minimum_volume_fraction": 0.001067091235103018,
+            "quadrature_points": 9788416,
+            "quadrature_s": 0.6976059452281334,
+            "scalar_active": 25428,
+            "free_components": 75366,
+            "loaded_area_mm2": 320.00000000000006,
+            "force_n": [
+              0.0,
+              -999.9999999999998,
+              0.0
+            ],
+            "reaction_n": [
+              1.5842988587699836e-09,
+              999.9999999884493,
+              2.6912232997666763e-09
+            ],
+            "relative_residual": 7.078024877280994e-11,
+            "point_tip_y_mm": -0.516763007882659,
+            "mean_tip_y_mm": -0.5160122942064622,
+            "von_mises_mpa": 133.55363493164378,
+            "stress_mpa": [
+              [
+                72.17232705363455,
+                -74.04371960497986,
+                -9.791988079693146e-11
+              ],
+              [
+                -74.04371960497986,
+                72.33519471617194,
+                1.0573127965553867e-10
+              ],
+              [
+                -9.791988079693146e-11,
+                1.0573127965553867e-10,
+                34.982642438772245
+              ]
+            ],
+            "strain_energy_n_mm": 258.00614710984166,
+            "external_work_n_mm": 516.0122942064622,
+            "assembly_s": 14.836294383159839,
+            "diagonal_scaling_and_restriction_s": 1.868397868995089,
+            "linear_solver": "multigrid",
+            "solver_detail": {
+              "levels": [
+                {
+                  "fine_ncell": [
+                    48,
+                    40,
+                    32
+                  ],
+                  "coarse_ncell": [
+                    24,
+                    20,
+                    16
+                  ],
+                  "fine_dofs": 75366,
+                  "coarse_dofs": 13284,
+                  "energy_relative": 2.6687930207454063e-16,
+                  "spectral_upper": 11.260712959587202,
+                  "P_nnz": 542670
+                },
+                {
+                  "fine_ncell": [
+                    24,
+                    20,
+                    16
+                  ],
+                  "coarse_ncell": [
+                    12,
+                    10,
+                    8
+                  ],
+                  "fine_dofs": 13284,
+                  "coarse_dofs": 2520,
+                  "energy_relative": 1.72581330404051e-16,
+                  "spectral_upper": 10.769152651006005,
+                  "P_nnz": 88638
+                }
+              ],
+              "coarse_lu_size": 2520,
+              "symmetry_defect": 3.8085863262686356e-15,
+              "coarse_lu_nnz": 1589735,
+              "setup_s": 3.221385611977894,
+              "iterations": 76,
+              "status": 0,
+              "iterations_s": 13.465550302993506
+            },
+            "solver_s": 16.689045867999084,
+            "elapsed_s": 34.300102299952414,
+            "reduced_nnz": 22977685,
+            "scaling_dynamic_range": 1311470.4229413583,
+            "max_rss_kib": 1613424
+          },
+          "end_to_end_with_probe_s": 35.026315331982914,
+          "observables": {
+            "tip_relative_to_finest_tetra": 0.00024256346754003566,
+            "fillet_relative_to_finest_tetra": 0.014663480509142124,
+            "volume_relative": 2.6702685618218425e-09,
+            "reaction_relative": 1.1965419885367764e-11,
+            "tree_rss_within_cap": true,
+            "qoi_qualified": true,
+            "drift_from_frozen_replay_relative": 0.0,
+            "drift_qualified": true,
+            "status": "qualified"
+          },
+          "field_replay": {
+            "qualified": true,
+            "coefficients": 214200,
+            "geometry_equal": true,
+            "relative_displacement_coefficients": 0.0
+          },
+          "coefficient_verification_s": 0.04324741300661117,
+          "qualified": true,
+          "method": "immersed"
+        }
+      ]
+    },
+    {
+      "radii_ticks": [
+        50,
+        74
+      ],
+      "repeat": 2,
+      "trials": [
+        {
+          "status": "completed",
+          "exit_code": 0,
+          "elapsed_s": 71.773898429994,
+          "tree_peak_rss_kib": 1714016,
+          "wall_s": 71.773898429994,
+          "command": [
+            "/usr/bin/taskset",
+            "-c",
+            "2,3",
+            "/home/jeff/Code/FreeCAD/.pixi/envs/default/bin/python",
+            "/home/jeff/Code/SolidCraftTrivariate/tests/references/calculix_bracket.py",
+            "--ccx",
+            "/home/jeff/Code/FreeCAD/.pixi/envs/default/bin/ccx",
+            "--size",
+            "1.5",
+            "--store-displacements",
+            "--radius-x",
+            "3.125",
+            "--radius-y",
+            "4.625",
+            "/home/jeff/Code/SolidCraftTrivariate/build/j4g/x50-y74-rep2/tetra/mesh"
+          ],
+          "loadavg": [
+            [
+              5.11,
+              6.18,
+              6.86
+            ],
+            [
+              5.42,
+              6.07,
+              6.77
+            ]
+          ],
+          "campaign_processes_before": [],
+          "diagnostic": "{\"radius_x_mm\": 3.125, \"radius_y_mm\": 4.625, \"size_mm\": 1.5, \"occ_volume_mm3\": 32165.98467580041, \"nodes\": 70939, \"tet10\": 44996, \"loaded_area_mm2\": 320.00000000000034, \"reaction_n\": [6.077999948672641e-05, 1000.0000270439958, 1.8516899974230228e-05], \"mean_tip_y_mm\": -0.515804993478594, \"point_tip_y_mm\": -0.5165553074302082, \"geometry_mesh_deck_s\": 9.416418109030928, \"solve_s\": 61.764685239992104, \"freecad_version\": [\"26\", \"3\", \"0\"], \"solver_peak_rss_kib\": 1492960, \"mesh_process_peak_rss_kib\": 249268}\n{\"element\": 13257, \"barycentric\": [0.0, 0.4986341285726349, 0.009099239406509663, 0.4922666320208554], \"point_mm\": [9.757359319387954, 9.757359307663862, 20.0000000028075], \"distance_mm\": 8.800100340650868e-09, \"stress_mpa\": [[78.3049712654587, -71.80792502891605, 0.04693691225547238], [-71.80792502891605, 79.64802377386907, 0.5040778087495191], [0.04693691225547238, 0.5040778087495191, 38.466778803976396]], \"von_mises_mpa\": 130.81396460761627}\n",
+          "physical_audit_s": 1.9633628550218418,
+          "result": {
+            "radius_x_mm": 3.125,
+            "radius_y_mm": 4.625,
+            "size_mm": 1.5,
+            "occ_volume_mm3": 32165.98467580041,
+            "nodes": 70939,
+            "tet10": 44996,
+            "loaded_area_mm2": 320.00000000000034,
+            "reaction_n": [
+              6.077999948672641e-05,
+              1000.0000270439958,
+              1.8516899974230228e-05
+            ],
+            "mean_tip_y_mm": -0.515804993478594,
+            "point_tip_y_mm": -0.5165553074302082,
+            "geometry_mesh_deck_s": 9.416418109030928,
+            "solve_s": 61.764685239992104,
+            "freecad_version": [
+              "26",
+              "3",
+              "0"
+            ],
+            "solver_peak_rss_kib": 1492960,
+            "mesh_process_peak_rss_kib": 249268
+          },
+          "probe": {
+            "element": 13257,
+            "barycentric": [
+              0.0,
+              0.4986341285726349,
+              0.009099239406509663,
+              0.4922666320208554
+            ],
+            "point_mm": [
+              9.757359319387954,
+              9.757359307663862,
+              20.0000000028075
+            ],
+            "distance_mm": 8.800100340650868e-09,
+            "stress_mpa": [
+              [
+                78.3049712654587,
+                -71.80792502891605,
+                0.04693691225547238
+              ],
+              [
+                -71.80792502891605,
+                79.64802377386907,
+                0.5040778087495191
+              ],
+              [
+                0.04693691225547238,
+                0.5040778087495191,
+                38.466778803976396
+              ]
+            ],
+            "von_mises_mpa": 130.81396460761627
+          },
+          "end_to_end_with_probe_s": 73.73726128501585,
+          "observables": {
+            "tip_relative_to_finest_tetra": 0.00015945995484867304,
+            "fillet_relative_to_finest_tetra": 0.006150954289642407,
+            "volume_relative": 2.220446049250313e-16,
+            "reaction_relative": 6.905404863319698e-08,
+            "tree_rss_within_cap": true,
+            "qoi_qualified": true,
+            "clamp_boundary_prescribed": true,
+            "drift_from_frozen_replay_relative": 0.0,
+            "drift_qualified": true,
+            "status": "qualified"
+          },
+          "field_replay": {
+            "qualified": true,
+            "coefficients": 1349880,
+            "geometry_equal": true,
+            "relative_displacement_coefficients": 0.0
+          },
+          "coefficient_verification_s": 2.545168473967351,
+          "qualified": true,
+          "method": "tetra"
+        },
+        {
+          "status": "completed",
+          "exit_code": 0,
+          "elapsed_s": 34.11132670997176,
+          "tree_peak_rss_kib": 1553748,
+          "wall_s": 34.11132670997176,
+          "command": [
+            "/usr/bin/taskset",
+            "-c",
+            "2,3",
+            "/usr/bin/python3",
+            "/home/jeff/Code/SolidCraftTrivariate/tests/references/immersed_bracket.py",
+            "--solver",
+            "multigrid",
+            "--h",
+            "1.25",
+            "--order",
+            "8",
+            "--radius-x",
+            "3.125",
+            "--radius-y",
+            "4.625",
+            "--field-output",
+            "/home/jeff/Code/SolidCraftTrivariate/build/j4g/x50-y74-rep2/immersed/field.npz"
+          ],
+          "loadavg": [
+            [
+              5.3,
+              6.04,
+              6.75
+            ],
+            [
+              4.53,
+              5.78,
+              6.64
+            ]
+          ],
+          "campaign_processes_before": [],
+          "diagnostic": " \"coarse_ncell\": [\n          24,\n          20,\n          16\n        ],\n        \"fine_dofs\": 75366,\n        \"coarse_dofs\": 13284,\n        \"energy_relative\": 2.6687930207454063e-16,\n        \"spectral_upper\": 11.260712959587202,\n        \"P_nnz\": 542670\n      },\n      {\n        \"fine_ncell\": [\n          24,\n          20,\n          16\n        ],\n        \"coarse_ncell\": [\n          12,\n          10,\n          8\n        ],\n        \"fine_dofs\": 13284,\n        \"coarse_dofs\": 2520,\n        \"energy_relative\": 1.72581330404051e-16,\n        \"spectral_upper\": 10.769152651006005,\n        \"P_nnz\": 88638\n      }\n    ],\n    \"coarse_lu_size\": 2520,\n    \"symmetry_defect\": 3.8085863262686356e-15,\n    \"coarse_lu_nnz\": 1589735,\n    \"setup_s\": 2.6778355489950627,\n    \"iterations\": 76,\n    \"status\": 0,\n    \"iterations_s\": 13.478545431979\n  },\n  \"solver_s\": 16.195211685961112,\n  \"elapsed_s\": 33.323493564967066,\n  \"reduced_nnz\": 22977685,\n  \"scaling_dynamic_range\": 1311470.4229413583,\n  \"max_rss_kib\": 1612116\n}\n",
+          "result": {
+            "h_mm": 1.25,
+            "gauss_order": 8,
+            "volume_mm3": 32165.9845899086,
+            "radius_x_mm": 3.125,
+            "radius_y_mm": 4.625,
+            "volume_target_mm3": 32165.984675800417,
+            "active_cells": 17960,
+            "cut_cells": 2660,
+            "empty_cells": 43480,
+            "minimum_volume_fraction": 0.001067091235103018,
+            "quadrature_points": 9788416,
+            "quadrature_s": 0.6977548421709798,
+            "scalar_active": 25428,
+            "free_components": 75366,
+            "loaded_area_mm2": 320.00000000000006,
+            "force_n": [
+              0.0,
+              -999.9999999999998,
+              0.0
+            ],
+            "reaction_n": [
+              1.5842988587699836e-09,
+              999.9999999884493,
+              2.6912232997666763e-09
+            ],
+            "relative_residual": 7.078024877280994e-11,
+            "point_tip_y_mm": -0.516763007882659,
+            "mean_tip_y_mm": -0.5160122942064622,
+            "von_mises_mpa": 133.55363493164378,
+            "stress_mpa": [
+              [
+                72.17232705363455,
+                -74.04371960497986,
+                -9.791988079693146e-11
+              ],
+              [
+                -74.04371960497986,
+                72.33519471617194,
+                1.0573127965553867e-10
+              ],
+              [
+                -9.791988079693146e-11,
+                1.0573127965553867e-10,
+                34.982642438772245
+              ]
+            ],
+            "strain_energy_n_mm": 258.00614710984166,
+            "external_work_n_mm": 516.0122942064622,
+            "assembly_s": 14.792263527109753,
+            "diagonal_scaling_and_restriction_s": 1.4272223960142583,
+            "linear_solver": "multigrid",
+            "solver_detail": {
+              "levels": [
+                {
+                  "fine_ncell": [
+                    48,
+                    40,
+                    32
+                  ],
+                  "coarse_ncell": [
+                    24,
+                    20,
+                    16
+                  ],
+                  "fine_dofs": 75366,
+                  "coarse_dofs": 13284,
+                  "energy_relative": 2.6687930207454063e-16,
+                  "spectral_upper": 11.260712959587202,
+                  "P_nnz": 542670
+                },
+                {
+                  "fine_ncell": [
+                    24,
+                    20,
+                    16
+                  ],
+                  "coarse_ncell": [
+                    12,
+                    10,
+                    8
+                  ],
+                  "fine_dofs": 13284,
+                  "coarse_dofs": 2520,
+                  "energy_relative": 1.72581330404051e-16,
+                  "spectral_upper": 10.769152651006005,
+                  "P_nnz": 88638
+                }
+              ],
+              "coarse_lu_size": 2520,
+              "symmetry_defect": 3.8085863262686356e-15,
+              "coarse_lu_nnz": 1589735,
+              "setup_s": 2.6778355489950627,
+              "iterations": 76,
+              "status": 0,
+              "iterations_s": 13.478545431979
+            },
+            "solver_s": 16.195211685961112,
+            "elapsed_s": 33.323493564967066,
+            "reduced_nnz": 22977685,
+            "scaling_dynamic_range": 1311470.4229413583,
+            "max_rss_kib": 1612116
+          },
+          "end_to_end_with_probe_s": 34.11132670997176,
+          "observables": {
+            "tip_relative_to_finest_tetra": 0.00024256346754003566,
+            "fillet_relative_to_finest_tetra": 0.014663480509142124,
+            "volume_relative": 2.6702685618218425e-09,
+            "reaction_relative": 1.1965419885367764e-11,
+            "tree_rss_within_cap": true,
+            "qoi_qualified": true,
+            "drift_from_frozen_replay_relative": 0.0,
+            "drift_qualified": true,
+            "status": "qualified"
+          },
+          "field_replay": {
+            "qualified": true,
+            "coefficients": 214200,
+            "geometry_equal": true,
+            "relative_displacement_coefficients": 0.0
+          },
+          "coefficient_verification_s": 0.004300182976294309,
+          "qualified": true,
+          "method": "immersed"
+        },
+        {
+          "status": "completed",
+          "exit_code": 0,
+          "elapsed_s": 19.47158844798105,
+          "tree_peak_rss_kib": 290412,
+          "wall_s": 19.47158844798105,
+          "command": [
+            "/usr/bin/taskset",
+            "-c",
+            "2,3",
+            "/home/jeff/Code/SolidCraftTrivariate/target/release/examples/local_fillet_cost",
+            "--field-tier",
+            "50",
+            "74",
+            "2",
+            "8",
+            "/home/jeff/Code/SolidCraftTrivariate/build/j4g/x50-y74-rep2/local/result.json",
+            "/home/jeff/Code/SolidCraftTrivariate/build/j4g/x50-y74-rep2/local/field.bin"
+          ],
+          "loadavg": [
+            [
+              4.53,
+              5.78,
+              6.64
+            ],
+            [
+              4.16,
+              5.62,
+              6.57
+            ]
+          ],
+          "campaign_processes_before": [],
+          "diagnostic": "",
+          "result": {
+            "constraints_s": 0.321610579,
+            "geometry_build_and_audit_s": 0.007311795,
+            "leaves": 2528,
+            "local_partition_s": 0.162944476,
+            "local_refinement_counts": [
+              {
+                "incident": 4,
+                "induced": 0,
+                "requested": 16
+              },
+              {
+                "incident": 4,
+                "induced": 0,
+                "requested": 16
+              }
+            ],
+            "local_steps": 2,
+            "max_depth": 4,
+            "path": "from_h2",
+            "q8": {
+              "assembly_s": 6.2575690999999996,
+              "blocks": 2528,
+              "constraint_s": 0.002285516,
+              "fillet_limits_mpa": {
+                "elbow_east_z10_30/010/011/011/011": 132.8290863892354,
+                "elbow_east_z10_30/011/010/010/010": 132.82908638925912,
+                "elbow_north_z10_30/110/111/111/111": 132.82341810443506,
+                "elbow_north_z10_30/111/110/110/110": 132.823418104443
+              },
+              "force_s": 0.00520563,
+              "iterations": 999,
+              "loaded_area_mm2": 319.99999999999557,
+              "masters": 23463,
+              "q": 8,
+              "reaction_n": [
+                9.788371002628082e-09,
+                1000.0000001141037,
+                -6.8110281858935195e-09
+              ],
+              "recovery_s": 0.014262715,
+              "relative_residual": 4.227574081700108e-11,
+              "scalar_dofs": 24591,
+              "solve_s": 12.571729639,
+              "strain_energy_n_mm": 257.8867836699382,
+              "tip_mm": [
+                -0.17422087281820808,
+                -0.5165240055414045,
+                1.1482695013779482e-12
+              ],
+              "true_projected_residual": 5.4779689262318927e-11,
+              "volume_mm3": 32165.98467582977
+            },
+            "radii_ticks": [
+              50,
+              74
+            ],
+            "total_wall_s": 19.426834769,
+            "uniform_depth": 2,
+            "uniform_partition_s": 0.068914496
+          },
+          "selected_step": 2,
+          "end_to_end_with_probe_s": 19.47158844798105,
+          "observables": {
+            "tip_relative_to_finest_tetra": 0.0002200476536984297,
+            "fillet_relative_to_finest_tetra": 0.009158778625212527,
+            "volume_relative": 9.126033262418787e-13,
+            "reaction_relative": 1.1472516248958555e-10,
+            "tree_rss_within_cap": true,
+            "qoi_qualified": true,
+            "drift_from_frozen_replay_relative": 0.0,
+            "drift_qualified": true,
+            "status": "qualified"
+          },
+          "field_replay": {
+            "qualified": true,
+            "field_sha256": "6ac1e7bb5444c9ad6f466bea8a8958999fdbf870c673b047bb61034a2b7a9bac",
+            "reference_sha256": "6ac1e7bb5444c9ad6f466bea8a8958999fdbf870c673b047bb61034a2b7a9bac",
+            "geometry_in_checkpoint": false,
+            "geometry_verification_supplement": "bracket-checkpoint-geometry-20261125.json"
+          },
+          "coefficient_verification_s": 0.007645633013453335,
+          "qualified": true,
+          "method": "local"
+        }
+      ]
+    },
+    {
+      "radii_ticks": [
+        51,
+        74
+      ],
+      "repeat": 1,
+      "trials": [
+        {
+          "status": "completed",
+          "exit_code": 0,
+          "elapsed_s": 71.66232040402247,
+          "tree_peak_rss_kib": 1705780,
+          "wall_s": 71.66232040402247,
+          "command": [
+            "/usr/bin/taskset",
+            "-c",
+            "2,3",
+            "/home/jeff/Code/FreeCAD/.pixi/envs/default/bin/python",
+            "/home/jeff/Code/SolidCraftTrivariate/tests/references/calculix_bracket.py",
+            "--ccx",
+            "/home/jeff/Code/FreeCAD/.pixi/envs/default/bin/ccx",
+            "--size",
+            "1.5",
+            "--store-displacements",
+            "--radius-x",
+            "3.1875",
+            "--radius-y",
+            "4.625",
+            "/home/jeff/Code/SolidCraftTrivariate/build/j4g/x51-y74-rep1/tetra/mesh"
+          ],
+          "loadavg": [
+            [
+              4.16,
+              5.62,
+              6.57
+            ],
+            [
+              4.18,
+              5.31,
+              6.39
+            ]
+          ],
+          "campaign_processes_before": [],
+          "diagnostic": "{\"radius_x_mm\": 3.1875, \"radius_y_mm\": 4.625, \"size_mm\": 1.5, \"occ_volume_mm3\": 32156.069023987522, \"nodes\": 71258, \"tet10\": 45183, \"loaded_area_mm2\": 320.00000000000034, \"reaction_n\": [-3.847410237156623e-05, 1000.0000362462027, 1.76402000249265e-05], \"mean_tip_y_mm\": -0.5158917334012255, \"point_tip_y_mm\": -0.5166449971514397, \"geometry_mesh_deck_s\": 9.177539745985996, \"solve_s\": 61.9007509520161, \"freecad_version\": [\"26\", \"3\", \"0\"], \"solver_peak_rss_kib\": 1487280, \"mesh_process_peak_rss_kib\": 249844}\n{\"element\": 29677, \"barycentric\": [0.0, 0.009099252207718012, 0.49226662951316963, 0.49863411827911236], \"point_mm\": [9.757359309627844, 9.75735931742399, 19.9999999903794], \"distance_mm\": 1.112557631975154e-08, \"stress_mpa\": [[77.1189162020091, -72.53214940255192, 0.43534428886606147], [-72.53214940255192, 78.45445740716099, 0.11036211814884292], [0.43534428886606147, 0.11036211814884292, 38.80442736231043]], \"von_mises_mpa\": 131.54580003999007}\n",
+          "physical_audit_s": 2.116160706966184,
+          "result": {
+            "radius_x_mm": 3.1875,
+            "radius_y_mm": 4.625,
+            "size_mm": 1.5,
+            "occ_volume_mm3": 32156.069023987522,
+            "nodes": 71258,
+            "tet10": 45183,
+            "loaded_area_mm2": 320.00000000000034,
+            "reaction_n": [
+              -3.847410237156623e-05,
+              1000.0000362462027,
+              1.76402000249265e-05
+            ],
+            "mean_tip_y_mm": -0.5158917334012255,
+            "point_tip_y_mm": -0.5166449971514397,
+            "geometry_mesh_deck_s": 9.177539745985996,
+            "solve_s": 61.9007509520161,
+            "freecad_version": [
+              "26",
+              "3",
+              "0"
+            ],
+            "solver_peak_rss_kib": 1487280,
+            "mesh_process_peak_rss_kib": 249844
+          },
+          "probe": {
+            "element": 29677,
+            "barycentric": [
+              0.0,
+              0.009099252207718012,
+              0.49226662951316963,
+              0.49863411827911236
+            ],
+            "point_mm": [
+              9.757359309627844,
+              9.75735931742399,
+              19.9999999903794
+            ],
+            "distance_mm": 1.112557631975154e-08,
+            "stress_mpa": [
+              [
+                77.1189162020091,
+                -72.53214940255192,
+                0.43534428886606147
+              ],
+              [
+                -72.53214940255192,
+                78.45445740716099,
+                0.11036211814884292
+              ],
+              [
+                0.43534428886606147,
+                0.11036211814884292,
+                38.80442736231043
+              ]
+            ],
+            "von_mises_mpa": 131.54580003999007
+          },
+          "end_to_end_with_probe_s": 73.77848111098865,
+          "observables": {
+            "tip_relative_to_finest_tetra": 0.00015577469522964904,
+            "fillet_relative_to_finest_tetra": 0.009389867966207555,
+            "volume_relative": 1.1102230246251565e-16,
+            "reaction_relative": 5.572450469284466e-08,
+            "tree_rss_within_cap": true,
+            "qoi_qualified": true,
+            "clamp_boundary_prescribed": true,
+            "drift_from_frozen_replay_relative": 0.0,
+            "drift_qualified": true,
+            "status": "qualified"
+          },
+          "field_replay": {
+            "qualified": true,
+            "coefficients": 1355490,
+            "geometry_equal": true,
+            "relative_displacement_coefficients": 0.0
+          },
+          "coefficient_verification_s": 2.7760696649784222,
+          "qualified": true,
+          "method": "tetra"
+        },
+        {
+          "status": "completed",
+          "exit_code": 0,
+          "elapsed_s": 45.747823579993565,
+          "tree_peak_rss_kib": 1604856,
+          "wall_s": 45.747823579993565,
+          "command": [
+            "/usr/bin/taskset",
+            "-c",
+            "2,3",
+            "/usr/bin/python3",
+            "/home/jeff/Code/SolidCraftTrivariate/tests/references/immersed_bracket.py",
+            "--solver",
+            "multigrid",
+            "--h",
+            "1.25",
+            "--order",
+            "8",
+            "--radius-x",
+            "3.1875",
+            "--radius-y",
+            "4.625",
+            "--field-output",
+            "/home/jeff/Code/SolidCraftTrivariate/build/j4g/x51-y74-rep1/immersed/field.npz"
+          ],
+          "loadavg": [
+            [
+              4.25,
+              5.3,
+              6.38
+            ],
+            [
+              8.01,
+              6.26,
+              6.66
+            ]
+          ],
+          "campaign_processes_before": [],
+          "diagnostic": " \"coarse_ncell\": [\n          24,\n          20,\n          16\n        ],\n        \"fine_dofs\": 75366,\n        \"coarse_dofs\": 13284,\n        \"energy_relative\": 5.337276440853463e-16,\n        \"spectral_upper\": 11.260712959587202,\n        \"P_nnz\": 542670\n      },\n      {\n        \"fine_ncell\": [\n          24,\n          20,\n          16\n        ],\n        \"coarse_ncell\": [\n          12,\n          10,\n          8\n        ],\n        \"fine_dofs\": 13284,\n        \"coarse_dofs\": 2520,\n        \"energy_relative\": 1.7259103923055858e-16,\n        \"spectral_upper\": 10.769152651006005,\n        \"P_nnz\": 88638\n      }\n    ],\n    \"coarse_lu_size\": 2520,\n    \"symmetry_defect\": 3.64833358990743e-15,\n    \"coarse_lu_nnz\": 1589735,\n    \"setup_s\": 4.461329065030441,\n    \"iterations\": 76,\n    \"status\": 0,\n    \"iterations_s\": 14.599940577987581\n  },\n  \"solver_s\": 19.063492032990325,\n  \"elapsed_s\": 44.97157915501157,\n  \"reduced_nnz\": 22977733,\n  \"scaling_dynamic_range\": 1311470.4229413583,\n  \"max_rss_kib\": 1604856\n}\n",
+          "result": {
+            "h_mm": 1.25,
+            "gauss_order": 8,
+            "volume_mm3": 32156.06893809567,
+            "radius_x_mm": 3.1875,
+            "radius_y_mm": 4.625,
+            "volume_target_mm3": 32156.069023987526,
+            "active_cells": 17960,
+            "cut_cells": 2660,
+            "empty_cells": 43480,
+            "minimum_volume_fraction": 0.001067091235103018,
+            "quadrature_points": 9788416,
+            "quadrature_s": 1.0239671024610288,
+            "scalar_active": 25428,
+            "free_components": 75366,
+            "loaded_area_mm2": 320.00000000000006,
+            "force_n": [
+              0.0,
+              -999.9999999999998,
+              0.0
+            ],
+            "reaction_n": [
+              -3.116228386446096e-10,
+              999.9999999872265,
+              3.259167491442838e-09
+            ],
+            "relative_residual": 7.098616069227072e-11,
+            "point_tip_y_mm": -0.5168509220254146,
+            "mean_tip_y_mm": -0.5160971610597117,
+            "von_mises_mpa": 133.55533493364376,
+            "stress_mpa": [
+              [
+                72.17308535298983,
+                -74.04453023171865,
+                -1.3456009547966312e-10
+              ],
+              [
+                -74.04453023171865,
+                72.33597590567075,
+                1.5770075547582516e-10
+              ],
+              [
+                -1.3456009547966312e-10,
+                1.5770075547582516e-10,
+                34.982151881375955
+              ]
+            ],
+            "strain_energy_n_mm": 258.0485805354937,
+            "external_work_n_mm": 516.0971610597117,
+            "assembly_s": 21.65428233036073,
+            "diagonal_scaling_and_restriction_s": 2.9444774640141986,
+            "linear_solver": "multigrid",
+            "solver_detail": {
+              "levels": [
+                {
+                  "fine_ncell": [
+                    48,
+                    40,
+                    32
+                  ],
+                  "coarse_ncell": [
+                    24,
+                    20,
+                    16
+                  ],
+                  "fine_dofs": 75366,
+                  "coarse_dofs": 13284,
+                  "energy_relative": 5.337276440853463e-16,
+                  "spectral_upper": 11.260712959587202,
+                  "P_nnz": 542670
+                },
+                {
+                  "fine_ncell": [
+                    24,
+                    20,
+                    16
+                  ],
+                  "coarse_ncell": [
+                    12,
+                    10,
+                    8
+                  ],
+                  "fine_dofs": 13284,
+                  "coarse_dofs": 2520,
+                  "energy_relative": 1.7259103923055858e-16,
+                  "spectral_upper": 10.769152651006005,
+                  "P_nnz": 88638
+                }
+              ],
+              "coarse_lu_size": 2520,
+              "symmetry_defect": 3.64833358990743e-15,
+              "coarse_lu_nnz": 1589735,
+              "setup_s": 4.461329065030441,
+              "iterations": 76,
+              "status": 0,
+              "iterations_s": 14.599940577987581
+            },
+            "solver_s": 19.063492032990325,
+            "elapsed_s": 44.97157915501157,
+            "reduced_nnz": 22977733,
+            "scaling_dynamic_range": 1311470.4229413583,
+            "max_rss_kib": 1604856
+          },
+          "end_to_end_with_probe_s": 45.747823579993565,
+          "observables": {
+            "tip_relative_to_finest_tetra": 0.0002427442050318973,
+            "fillet_relative_to_finest_tetra": 0.005743003062161689,
+            "volume_relative": 2.671093235484534e-09,
+            "reaction_relative": 1.3186428288446351e-11,
+            "tree_rss_within_cap": true,
+            "qoi_qualified": true,
+            "drift_from_frozen_replay_relative": 0.0,
+            "drift_qualified": true,
+            "status": "qualified"
+          },
+          "field_replay": {
+            "qualified": true,
+            "coefficients": 214200,
+            "geometry_equal": true,
+            "relative_displacement_coefficients": 0.0
+          },
+          "coefficient_verification_s": 0.012633053003810346,
+          "qualified": true,
+          "method": "immersed"
+        },
+        {
+          "status": "completed",
+          "exit_code": 0,
+          "elapsed_s": 23.916225871013012,
+          "tree_peak_rss_kib": 200252,
+          "wall_s": 23.916225871013012,
+          "command": [
+            "/usr/bin/taskset",
+            "-c",
+            "2,3",
+            "/home/jeff/Code/SolidCraftTrivariate/target/release/examples/local_fillet_cost",
+            "--field-tier",
+            "51",
+            "74",
+            "2",
+            "8",
+            "/home/jeff/Code/SolidCraftTrivariate/build/j4g/x51-y74-rep1/local/result.json",
+            "/home/jeff/Code/SolidCraftTrivariate/build/j4g/x51-y74-rep1/local/field.bin"
+          ],
+          "loadavg": [
+            [
+              8.01,
+              6.26,
+              6.66
+            ],
+            [
+              8.25,
+              6.44,
+              6.7
+            ]
+          ],
+          "campaign_processes_before": [],
+          "diagnostic": "",
+          "result": {
+            "constraints_s": 0.326618213,
+            "geometry_build_and_audit_s": 0.007371152,
+            "leaves": 2528,
+            "local_partition_s": 0.167840263,
+            "local_refinement_counts": [
+              {
+                "incident": 4,
+                "induced": 0,
+                "requested": 16
+              },
+              {
+                "incident": 4,
+                "induced": 0,
+                "requested": 16
+              }
+            ],
+            "local_steps": 2,
+            "max_depth": 4,
+            "path": "from_h2",
+            "q8": {
+              "assembly_s": 6.370831105,
+              "blocks": 2528,
+              "constraint_s": 0.002300705,
+              "fillet_limits_mpa": {
+                "elbow_east_z10_30/010/011/011/011": 132.83079303831246,
+                "elbow_east_z10_30/011/010/010/010": 132.83079303834617,
+                "elbow_north_z10_30/110/111/111/111": 132.8251235539506,
+                "elbow_north_z10_30/111/110/110/110": 132.8251235539705
+              },
+              "force_s": 0.005216312,
+              "iterations": 999,
+              "loaded_area_mm2": 319.99999999999557,
+              "masters": 23463,
+              "q": 8,
+              "reaction_n": [
+                2.0211583517948384e-09,
+                1000.0000001230736,
+                -6.359719861848134e-09
+              ],
+              "recovery_s": 0.014345744,
+              "relative_residual": 4.5216196063206216e-11,
+              "scalar_dofs": 24591,
+              "solve_s": 16.837107011,
+              "strain_energy_n_mm": 257.9291728422778,
+              "tip_mm": [
+                -0.1742204550270539,
+                -0.516611809067999,
+                1.1202520377899789e-12
+              ],
+              "true_projected_residual": 5.710565843109831e-11,
+              "volume_mm3": 32156.069024017786
+            },
+            "radii_ticks": [
+              51,
+              74
+            ],
+            "total_wall_s": 23.811965148,
+            "uniform_depth": 2,
+            "uniform_partition_s": 0.070082917
+          },
+          "selected_step": 2,
+          "end_to_end_with_probe_s": 23.916225871013012,
+          "observables": {
+            "tip_relative_to_finest_tetra": 0.00022000238302322117,
+            "fillet_relative_to_finest_tetra": 0.0002868156175865888,
+            "volume_relative": 9.410250356722827e-13,
+            "reaction_relative": 1.232543986033627e-10,
+            "tree_rss_within_cap": true,
+            "qoi_qualified": true,
+            "drift_from_frozen_replay_relative": 0.0,
+            "drift_qualified": true,
+            "status": "qualified"
+          },
+          "field_replay": {
+            "qualified": true,
+            "field_sha256": "74701cf62de5c6dfda7aab43544a936540bf9e7e27da87eae4027d4f428dc876",
+            "reference_sha256": "74701cf62de5c6dfda7aab43544a936540bf9e7e27da87eae4027d4f428dc876",
+            "geometry_in_checkpoint": false,
+            "geometry_verification_supplement": "bracket-checkpoint-geometry-20261125.json"
+          },
+          "coefficient_verification_s": 0.009044346981681883,
+          "qualified": true,
+          "method": "local"
+        }
+      ]
+    },
+    {
+      "radii_ticks": [
+        51,
+        74
+      ],
+      "repeat": 2,
+      "trials": [
+        {
+          "status": "completed",
+          "exit_code": 0,
+          "elapsed_s": 51.23786991398083,
+          "tree_peak_rss_kib": 1578260,
+          "wall_s": 51.23786991398083,
+          "command": [
+            "/usr/bin/taskset",
+            "-c",
+            "2,3",
+            "/usr/bin/python3",
+            "/home/jeff/Code/SolidCraftTrivariate/tests/references/immersed_bracket.py",
+            "--solver",
+            "multigrid",
+            "--h",
+            "1.25",
+            "--order",
+            "8",
+            "--radius-x",
+            "3.1875",
+            "--radius-y",
+            "4.625",
+            "--field-output",
+            "/home/jeff/Code/SolidCraftTrivariate/build/j4g/x51-y74-rep2/immersed/field.npz"
+          ],
+          "loadavg": [
+            [
+              8.25,
+              6.44,
+              6.7
+            ],
+            [
+              9.05,
+              7.09,
+              6.92
+            ]
+          ],
+          "campaign_processes_before": [],
+          "diagnostic": "\"coarse_ncell\": [\n          24,\n          20,\n          16\n        ],\n        \"fine_dofs\": 75366,\n        \"coarse_dofs\": 13284,\n        \"energy_relative\": 5.337276440853463e-16,\n        \"spectral_upper\": 11.260712959587202,\n        \"P_nnz\": 542670\n      },\n      {\n        \"fine_ncell\": [\n          24,\n          20,\n          16\n        ],\n        \"coarse_ncell\": [\n          12,\n          10,\n          8\n        ],\n        \"fine_dofs\": 13284,\n        \"coarse_dofs\": 2520,\n        \"energy_relative\": 1.7259103923055858e-16,\n        \"spectral_upper\": 10.769152651006005,\n        \"P_nnz\": 88638\n      }\n    ],\n    \"coarse_lu_size\": 2520,\n    \"symmetry_defect\": 3.64833358990743e-15,\n    \"coarse_lu_nnz\": 1589735,\n    \"setup_s\": 3.9606361559708603,\n    \"iterations\": 76,\n    \"status\": 0,\n    \"iterations_s\": 14.059480098017957\n  },\n  \"solver_s\": 18.022660653979983,\n  \"elapsed_s\": 50.34848151000915,\n  \"reduced_nnz\": 22977733,\n  \"scaling_dynamic_range\": 1311470.4229413583,\n  \"max_rss_kib\": 1614868\n}\n",
+          "result": {
+            "h_mm": 1.25,
+            "gauss_order": 8,
+            "volume_mm3": 32156.06893809567,
+            "radius_x_mm": 3.1875,
+            "radius_y_mm": 4.625,
+            "volume_target_mm3": 32156.069023987526,
+            "active_cells": 17960,
+            "cut_cells": 2660,
+            "empty_cells": 43480,
+            "minimum_volume_fraction": 0.001067091235103018,
+            "quadrature_points": 9788416,
+            "quadrature_s": 1.4162386836251244,
+            "scalar_active": 25428,
+            "free_components": 75366,
+            "loaded_area_mm2": 320.00000000000006,
+            "force_n": [
+              0.0,
+              -999.9999999999998,
+              0.0
+            ],
+            "reaction_n": [
+              -3.116228386446096e-10,
+              999.9999999872265,
+              3.259167491442838e-09
+            ],
+            "relative_residual": 7.098616069227072e-11,
+            "point_tip_y_mm": -0.5168509220254146,
+            "mean_tip_y_mm": -0.5160971610597117,
+            "von_mises_mpa": 133.55533493364376,
+            "stress_mpa": [
+              [
+                72.17308535298983,
+                -74.04453023171865,
+                -1.3456009547966312e-10
+              ],
+              [
+                -74.04453023171865,
+                72.33597590567075,
+                1.5770075547582516e-10
+              ],
+              [
+                -1.3456009547966312e-10,
+                1.5770075547582516e-10,
+                34.982151881375955
+              ]
+            ],
+            "strain_energy_n_mm": 258.0485805354937,
+            "external_work_n_mm": 516.0971610597117,
+            "assembly_s": 27.61252113536466,
+            "diagonal_scaling_and_restriction_s": 3.0354792390135117,
+            "linear_solver": "multigrid",
+            "solver_detail": {
+              "levels": [
+                {
+                  "fine_ncell": [
+                    48,
+                    40,
+                    32
+                  ],
+                  "coarse_ncell": [
+                    24,
+                    20,
+                    16
+                  ],
+                  "fine_dofs": 75366,
+                  "coarse_dofs": 13284,
+                  "energy_relative": 5.337276440853463e-16,
+                  "spectral_upper": 11.260712959587202,
+                  "P_nnz": 542670
+                },
+                {
+                  "fine_ncell": [
+                    24,
+                    20,
+                    16
+                  ],
+                  "coarse_ncell": [
+                    12,
+                    10,
+                    8
+                  ],
+                  "fine_dofs": 13284,
+                  "coarse_dofs": 2520,
+                  "energy_relative": 1.7259103923055858e-16,
+                  "spectral_upper": 10.769152651006005,
+                  "P_nnz": 88638
+                }
+              ],
+              "coarse_lu_size": 2520,
+              "symmetry_defect": 3.64833358990743e-15,
+              "coarse_lu_nnz": 1589735,
+              "setup_s": 3.9606361559708603,
+              "iterations": 76,
+              "status": 0,
+              "iterations_s": 14.059480098017957
+            },
+            "solver_s": 18.022660653979983,
+            "elapsed_s": 50.34848151000915,
+            "reduced_nnz": 22977733,
+            "scaling_dynamic_range": 1311470.4229413583,
+            "max_rss_kib": 1614868
+          },
+          "end_to_end_with_probe_s": 51.23786991398083,
+          "observables": {
+            "tip_relative_to_finest_tetra": 0.0002427442050318973,
+            "fillet_relative_to_finest_tetra": 0.005743003062161689,
+            "volume_relative": 2.671093235484534e-09,
+            "reaction_relative": 1.3186428288446351e-11,
+            "tree_rss_within_cap": true,
+            "qoi_qualified": true,
+            "drift_from_frozen_replay_relative": 0.0,
+            "drift_qualified": true,
+            "status": "qualified"
+          },
+          "field_replay": {
+            "qualified": true,
+            "coefficients": 214200,
+            "geometry_equal": true,
+            "relative_displacement_coefficients": 0.0
+          },
+          "coefficient_verification_s": 0.01580681500490755,
+          "qualified": true,
+          "method": "immersed"
+        },
+        {
+          "status": "completed",
+          "exit_code": 0,
+          "elapsed_s": 23.322172574989963,
+          "tree_peak_rss_kib": 235744,
+          "wall_s": 23.322172574989963,
+          "command": [
+            "/usr/bin/taskset",
+            "-c",
+            "2,3",
+            "/home/jeff/Code/SolidCraftTrivariate/target/release/examples/local_fillet_cost",
+            "--field-tier",
+            "51",
+            "74",
+            "2",
+            "8",
+            "/home/jeff/Code/SolidCraftTrivariate/build/j4g/x51-y74-rep2/local/result.json",
+            "/home/jeff/Code/SolidCraftTrivariate/build/j4g/x51-y74-rep2/local/field.bin"
+          ],
+          "loadavg": [
+            [
+              9.05,
+              7.09,
+              6.92
+            ],
+            [
+              9.76,
+              7.36,
+              7.01
+            ]
+          ],
+          "campaign_processes_before": [],
+          "diagnostic": "",
+          "result": {
+            "constraints_s": 0.327423273,
+            "geometry_build_and_audit_s": 0.007513642,
+            "leaves": 2528,
+            "local_partition_s": 0.167389785,
+            "local_refinement_counts": [
+              {
+                "incident": 4,
+                "induced": 0,
+                "requested": 16
+              },
+              {
+                "incident": 4,
+                "induced": 0,
+                "requested": 16
+              }
+            ],
+            "local_steps": 2,
+            "max_depth": 4,
+            "path": "from_h2",
+            "q8": {
+              "assembly_s": 6.470742276,
+              "blocks": 2528,
+              "constraint_s": 0.002429329,
+              "fillet_limits_mpa": {
+                "elbow_east_z10_30/010/011/011/011": 132.83079303831246,
+                "elbow_east_z10_30/011/010/010/010": 132.83079303834617,
+                "elbow_north_z10_30/110/111/111/111": 132.8251235539506,
+                "elbow_north_z10_30/111/110/110/110": 132.8251235539705
+              },
+              "force_s": 0.005309453,
+              "iterations": 999,
+              "loaded_area_mm2": 319.99999999999557,
+              "masters": 23463,
+              "q": 8,
+              "reaction_n": [
+                2.0211583517948384e-09,
+                1000.0000001230736,
+                -6.359719861848134e-09
+              ],
+              "recovery_s": 0.029716154,
+              "relative_residual": 4.5216196063206216e-11,
+              "scalar_dofs": 24591,
+              "solve_s": 16.040126105,
+              "strain_energy_n_mm": 257.9291728422778,
+              "tip_mm": [
+                -0.1742204550270539,
+                -0.516611809067999,
+                1.1202520377899789e-12
+              ],
+              "true_projected_residual": 5.710565843109831e-11,
+              "volume_mm3": 32156.069024017786
+            },
+            "radii_ticks": [
+              51,
+              74
+            ],
+            "total_wall_s": 23.147966227,
+            "uniform_depth": 2,
+            "uniform_partition_s": 0.072273425
+          },
+          "selected_step": 2,
+          "end_to_end_with_probe_s": 23.322172574989963,
+          "observables": {
+            "tip_relative_to_finest_tetra": 0.00022000238302322117,
+            "fillet_relative_to_finest_tetra": 0.0002868156175865888,
+            "volume_relative": 9.410250356722827e-13,
+            "reaction_relative": 1.232543986033627e-10,
+            "tree_rss_within_cap": true,
+            "qoi_qualified": true,
+            "drift_from_frozen_replay_relative": 0.0,
+            "drift_qualified": true,
+            "status": "qualified"
+          },
+          "field_replay": {
+            "qualified": true,
+            "field_sha256": "74701cf62de5c6dfda7aab43544a936540bf9e7e27da87eae4027d4f428dc876",
+            "reference_sha256": "74701cf62de5c6dfda7aab43544a936540bf9e7e27da87eae4027d4f428dc876",
+            "geometry_in_checkpoint": false,
+            "geometry_verification_supplement": "bracket-checkpoint-geometry-20261125.json"
+          },
+          "coefficient_verification_s": 0.007422304013743997,
+          "qualified": true,
+          "method": "local"
+        },
+        {
+          "status": "completed",
+          "exit_code": 0,
+          "elapsed_s": 75.62223637697753,
+          "tree_peak_rss_kib": 1709992,
+          "wall_s": 75.62223637697753,
+          "command": [
+            "/usr/bin/taskset",
+            "-c",
+            "2,3",
+            "/home/jeff/Code/FreeCAD/.pixi/envs/default/bin/python",
+            "/home/jeff/Code/SolidCraftTrivariate/tests/references/calculix_bracket.py",
+            "--ccx",
+            "/home/jeff/Code/FreeCAD/.pixi/envs/default/bin/ccx",
+            "--size",
+            "1.5",
+            "--store-displacements",
+            "--radius-x",
+            "3.1875",
+            "--radius-y",
+            "4.625",
+            "/home/jeff/Code/SolidCraftTrivariate/build/j4g/x51-y74-rep2/tetra/mesh"
+          ],
+          "loadavg": [
+            [
+              9.76,
+              7.36,
+              7.01
+            ],
+            [
+              7.22,
+              7.3,
+              7.03
+            ]
+          ],
+          "campaign_processes_before": [],
+          "diagnostic": "{\"radius_x_mm\": 3.1875, \"radius_y_mm\": 4.625, \"size_mm\": 1.5, \"occ_volume_mm3\": 32156.069023987522, \"nodes\": 71258, \"tet10\": 45183, \"loaded_area_mm2\": 320.00000000000034, \"reaction_n\": [-3.847410237156623e-05, 1000.0000362462027, 1.76402000249265e-05], \"mean_tip_y_mm\": -0.5158917334012255, \"point_tip_y_mm\": -0.5166449971514397, \"geometry_mesh_deck_s\": 12.968518894980662, \"solve_s\": 61.3107736390084, \"freecad_version\": [\"26\", \"3\", \"0\"], \"solver_peak_rss_kib\": 1487580, \"mesh_process_peak_rss_kib\": 249844}\n{\"element\": 29677, \"barycentric\": [0.0, 0.009099252207718012, 0.49226662951316963, 0.49863411827911236], \"point_mm\": [9.757359309627844, 9.75735931742399, 19.9999999903794], \"distance_mm\": 1.112557631975154e-08, \"stress_mpa\": [[77.1189162020091, -72.53214940255192, 0.43534428886606147], [-72.53214940255192, 78.45445740716099, 0.11036211814884292], [0.43534428886606147, 0.11036211814884292, 38.80442736231043]], \"von_mises_mpa\": 131.54580003999007}\n",
+          "physical_audit_s": 2.113801027997397,
+          "result": {
+            "radius_x_mm": 3.1875,
+            "radius_y_mm": 4.625,
+            "size_mm": 1.5,
+            "occ_volume_mm3": 32156.069023987522,
+            "nodes": 71258,
+            "tet10": 45183,
+            "loaded_area_mm2": 320.00000000000034,
+            "reaction_n": [
+              -3.847410237156623e-05,
+              1000.0000362462027,
+              1.76402000249265e-05
+            ],
+            "mean_tip_y_mm": -0.5158917334012255,
+            "point_tip_y_mm": -0.5166449971514397,
+            "geometry_mesh_deck_s": 12.968518894980662,
+            "solve_s": 61.3107736390084,
+            "freecad_version": [
+              "26",
+              "3",
+              "0"
+            ],
+            "solver_peak_rss_kib": 1487580,
+            "mesh_process_peak_rss_kib": 249844
+          },
+          "probe": {
+            "element": 29677,
+            "barycentric": [
+              0.0,
+              0.009099252207718012,
+              0.49226662951316963,
+              0.49863411827911236
+            ],
+            "point_mm": [
+              9.757359309627844,
+              9.75735931742399,
+              19.9999999903794
+            ],
+            "distance_mm": 1.112557631975154e-08,
+            "stress_mpa": [
+              [
+                77.1189162020091,
+                -72.53214940255192,
+                0.43534428886606147
+              ],
+              [
+                -72.53214940255192,
+                78.45445740716099,
+                0.11036211814884292
+              ],
+              [
+                0.43534428886606147,
+                0.11036211814884292,
+                38.80442736231043
+              ]
+            ],
+            "von_mises_mpa": 131.54580003999007
+          },
+          "end_to_end_with_probe_s": 77.73603740497492,
+          "observables": {
+            "tip_relative_to_finest_tetra": 0.00015577469522964904,
+            "fillet_relative_to_finest_tetra": 0.009389867966207555,
+            "volume_relative": 1.1102230246251565e-16,
+            "reaction_relative": 5.572450469284466e-08,
+            "tree_rss_within_cap": true,
+            "qoi_qualified": true,
+            "clamp_boundary_prescribed": true,
+            "drift_from_frozen_replay_relative": 0.0,
+            "drift_qualified": true,
+            "status": "qualified"
+          },
+          "field_replay": {
+            "qualified": true,
+            "coefficients": 1355490,
+            "geometry_equal": true,
+            "relative_displacement_coefficients": 0.0
+          },
+          "coefficient_verification_s": 2.540368025947828,
+          "qualified": true,
+          "method": "tetra"
+        }
+      ]
+    }
+  ],
+  "finished": true
+}

@@ -271,14 +271,26 @@ fn run_job(
         }
         fields.push("surface_quadrature");
         let q = job.field("surface_quadrature")?;
-        q.keys(&["relative_tolerance", "max_depth", "max_panels"])?;
+        use crate::adaptive_traction::SurfaceSplit;
+        let mut keys = vec!["relative_tolerance", "max_depth", "max_panels"];
+        let strategy = if let Ok(split) = q.field("split") {
+            keys.push("split");
+            match split.text()? {
+                "directional" => SurfaceSplit::Directional,
+                "isotropic" => SurfaceSplit::Isotropic,
+                _ => return Err("unsupported adaptive surface split"),
+            }
+        } else {
+            SurfaceSplit::Isotropic
+        };
+        q.keys(&keys)?;
         let config = crate::adaptive_traction::SurfaceQuadrature {
             relative_tolerance: finite(q.field("relative_tolerance")?)?,
             max_depth: q.field("max_depth")?.number()?,
             max_panels: q.field("max_panels")?.number()?,
         };
         config.validate()?;
-        Some(config)
+        Some((config, strategy))
     } else {
         None
     };
@@ -316,7 +328,8 @@ fn run_job(
                 | "certified_orthogonal_feature_program"
                 | "certified_polygon_prism"
                 | "certified_perforated_polygon_prism"
-                | crate::circular_polygon_json::METHOD
+                | crate::interval_bores_json::METHOD
+            | crate::circular_polygon_json::METHOD
                 | crate::affine_image::METHOD
                 | "certified_parameterized_bracket"
         )
@@ -528,20 +541,20 @@ fn run_job(
             }
             patches.push(LoadPatch::whole(f.side.clone()));
         }
-        let (load, integration) = if let Some(config) = &mut quadrature {
-            let out = crate::adaptive_traction::integrate_adaptive_traction(
+        let (load, integration) = if let Some((config, strategy)) = &mut quadrature {
+            let out = crate::adaptive_traction::integrate_surface_traction(
                 space,
                 &exterior,
                 &patches,
                 order,
-                *config,
+                (*config, *strategy),
                 |_, normal| law.value(normal),
             )?;
             config.max_panels = config
                 .max_panels
                 .checked_sub(out.panels)
                 .ok_or("adaptive surface quadrature panel budget exceeded")?;
-            let info = object([
+            let mut info = object([
                 ("panels", n(out.panels)),
                 ("deepest", n(out.deepest)),
                 (
@@ -549,6 +562,24 @@ fn run_job(
                     n(out.maximum_estimated_relative_error),
                 ),
             ]);
+            if *strategy == crate::adaptive_traction::SurfaceSplit::Directional {
+                let plans = patches
+                    .iter()
+                    .zip(&out.patch_depths)
+                    .map(|(patch, depths)| {
+                        object([
+                            ("block", Json::String(patch.side.block.clone())),
+                            ("axis", n(patch.side.axis)),
+                            ("upper", Json::Bool(patch.side.upper)),
+                            ("depths", Json::Array(depths.iter().map(n).collect())),
+                        ])
+                    })
+                    .collect();
+                if let Json::Object(fields) = &mut info {
+                    fields.insert("split".into(), Json::String("directional".into()));
+                    fields.insert("patch_plans".into(), Json::Array(plans));
+                }
+            }
             (out.load, Some(info))
         } else {
             (

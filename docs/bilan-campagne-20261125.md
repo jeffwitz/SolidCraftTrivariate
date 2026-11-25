@@ -21,11 +21,35 @@ Un historique SolidCraft pris en charge peut produire un solide formé de cartes
 - L’image affine rationnelle G19 transporte cartes, déterminants, frontières et sélections. Six solides ont été comparés aux oracles, dont un tore cisaillé. Ce dernier exige le mode homogène entier i64. Le rapport conserve le refus du mode initial et trois témoins pour lesquels la classification OCC de la primitive portant directement la transformation diverge. Une reconstruction indépendante de sa frontière torique tranche ces trois cas. [Images affines](results/affine-images-20261125.json)
 - SolidCraft 0.48.1 a enregistré puis rouvert les documents éditables utilisés dans les comparaisons de l’équerre, des programmes de boîtes et des extrusions de contours. Les contrôles rapprochent le solide hôte et le STEP natif par masse, géométrie et classification. Les familles non reconnues déclenchent un refus explicite de l’adaptateur. [Équerre](results/solidcraft-bridge-20261125.json) · [Historiques de boîtes](results/solidcraft-box-timeline-20261125.json) · [Profils](results/solidcraft-polygon-20261125.json)
 
-## Où les critères mécaniques restent ouverts
+Le constructeur G20 accepte jusqu’à quatre trous circulaires dans un contour polygonal, avec extrusion cisaillée. Le corpus donne 118 admissions et 36 refus attendus. Les huit STEP contrôlés présentent un écart maximal de volume de 2,45e−15 relatif. L’adaptateur SC7 retrouve les quatre extrusions asymétriques SolidCraft sur les plans d’origine XZ et YZ, et protège la cible pour deux historiques hors domaine. [Perçages](results/circular-polygon-20261125.json) · [Plans SolidCraft](results/solidcraft-oriented-plane-20261125.json)
+
+Les deux coupes suivantes proviennent directement des VTU géométriques, à six subdivisions par paramètre. Les traits noirs délimitent les cartes. La couleur montre le conditionnement local du jacobien sur une échelle commune. Sur la géométrie très cisaillée, la grille tridimensionnelle atteint κ₂ = 6 404. Les 21 fichiers de sept familles ont été relus avec VTK et comparés à une SVD NumPy indépendante. [Vérification](results/geometry-vtu-20261125.json)
+
+![Conditionnement de deux extrusions à mi-hauteur](figures/cartes-geometriques-20261125.png)
+
+## Coût à précision de champ et observables imposées
+
+J4g ajoute aux deux observables de J4b un seuil de 3 % en distance énergétique du champ et de 0,5 % en déplacement L² par rapport au C3D10 h1,0. Les quatre rayons admettent le deuxième raffinement local natif à partir de h2 (2 528 feuilles), avec 2,448–2,697 % en énergie et 0,0480–0,0645 % en déplacement. La sensibilité du comparateur C3D10 h1,25/h1,0 vaut 2,006–2,099 % en énergie. Chaque distance s’appuie sur 589 824 points physiques communs par géométrie. [Comparaisons](results/bracket-candidate-fields-20261125.json) · [Niveaux natifs](results/bracket-field-tiers-20261125.json)
+
+| Méthode retenue | Temps à froid, médiane [min–max] | Pic RSS simultané observé, médiane [min–max] |
+|---|---:|---:|
+| Natif h2, deux raffinements au congé | 19,62 s [19,17–23,92] | 232 Mio [195–284] |
+| Immergé h1,25/q8 | 34,96 s [33,96–51,24] | 1 531 Mio [1 499–1 567] |
+| C3D10 h1,5 | 73,76 s [71,31–84,54] | 1 672 Mio [1 661–1 680] |
+
+Les 24 essais J4g ont satisfait les contrôles. Chaque méthode a été relancée deux fois sur chaque couple de rayons, en série sur les cœurs 2 et 3, avec les autres activités de campagne en cours. Le temps inclut la production du champ et le contrôle physique du congé. La vérification indépendante des coefficients prend en sus jusqu’à 2,78 s pour C3D10. Les références fines, la recherche du premier état admissible et le calcul initial des distances de champ ont leur propre coût. Les checkpoints natifs contiennent les chemins, les poids et les déplacements. Quatre relances complémentaires reproduisent leurs octets et comparent exactement les 273 024 coordonnées homogènes par géométrie au découpage de la carte racine. [Contrôles des coordonnées](results/bracket-checkpoint-geometry-20261125.json)
+
+La mémoire J4g est la somme des RSS échantillonnées toutes les 150 ms dans la session de processus ; la métrique GNU time de J4r est un maximum par processus. [24 mesures brutes](results/bracket-field-matched-cost-20261125.json)
+
+## Convergence et limites mécaniques
 
 Deux constructions du même prisme peuvent avoir des maillages différents. Sur le L et la plaque à deux tunnels du lot M7, les 24 résolutions ont abouti. À h3, les écarts de travail valent 0,2853 % et 0,02412 %, ceux de déplacement L² 0,3352 % et 0,03341 %, et les distances énergétiques 10,338 % et 5,0234 %. Les deux distances énergétiques dépassent le seuil de 5 %. Les nuages indépendants totalisent respectivement 49 152 et 344 064 sites physiques, tous situés une fois par partition. [Partitions équivalentes](results/equivalent-prism-mechanics-20261125.json)
 
 Le raffinement local M8 a mis en évidence une identification d’arête manquante, puis un montage partiel qui lie plusieurs coefficients libres. Sur le témoin d’arête, 7 272 équations indépendamment reconstruites sur 7 641 coefficients locaux ont un rang rationnel démontré de 5 193. La dimension montée est donc 2 448. Le job v3 élimine aussi les équations d’appuis dépendants en rationnels exacts. [Témoin de rang](results/adaptive-edge-rank-20261125.json) · [Premiers parcours M8](results/adaptive-equivalent-prisms-20261125.json)
+
+Après raffinement, la plaque à deux tunnels atteint 4,642 % ±0,101 point en énergie sur les deux partitions M8c. Pour le L, la stratification M10 réduit l’incertitude de mesure ; après deux tours supplémentaires, la confirmation à 4 909 056 sites donne 4,1770 % ±0,0287 point et 0,03588 % en déplacement L². Ces mesures comparent deux champs discrets au même domaine. [Plaque](results/adaptive-equivalent-prisms-c-20261125.json) · [L](results/stratified-prism-20261125.json)
+
+Les forces volumiques M9 et les appuis spatialement affines S3 sont contrôlés par des barres manufacturées et des différences de forme indépendantes. La charge de surface M11 couvre sept cas, y compris une paroi rationnelle très inclinée dont l’aire à l’ordre fixe 12 est biaisée de 4,87e−5 relatif. Les résultats initiaux comportent deux intégrations dépassant 65 536 panneaux. Au rejeu sur le binaire courant, les sept mêmes jobs passent à ce plafond en mode isotrope et à 4 096 en mode directionnel. Les verdicts de budget et leurs révisions sont conservés séparément. [Forces volumiques](results/volume-force-20261125.json) · [Appuis mobiles](results/moving-support-derivative-20261125.json) · [Charges de surface](results/adaptive-surface-load-20261125.json)
 
 Sur le cylindre sous pression proche de l’incompressibilité, la correction creuse 3D au niveau h4 a passé les six cas imposés. Les mesures distinguent le résidu des équations discrètes, le déplacement, la pression et l’erreur énergétique contre la solution de Lamé. La qualification du solveur discret et la convergence de la solution physique ont chacune leur critère. [Lamé et corrections](results/pressure-cylinder-full-correction-20261125.json)
 

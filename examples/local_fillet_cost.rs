@@ -16,6 +16,8 @@ use std::{collections::BTreeSet, path::Path, time::Instant};
 
 #[path = "support/bracket_field.rs"]
 mod bracket_field;
+#[path = "support/bracket_geometry.rs"]
+mod bracket_geometry;
 
 fn n(x: impl ToString) -> Json {
     Json::Number(x.to_string())
@@ -487,6 +489,9 @@ fn run_tier(
     let t = Instant::now();
     let build = build_adaptive_space(&parent, &partition)?;
     let constraints_s = t.elapsed().as_secs_f64();
+    if let (Some(8), Some(field)) = (field_order, checkpoint) {
+        bracket_geometry::write(&field.with_extension("geometry.bin"), &build.space)?;
+    }
     let q = field_order.unwrap_or(8);
     let tolerance = if field_order.is_some() { 5e-11 } else { 1e-11 };
     let result = evaluate_state(

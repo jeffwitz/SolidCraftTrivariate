@@ -43,6 +43,8 @@ pub struct AdaptiveSurfaceLoad {
     pub load: SurfaceLoad,
     /// Number of panel integrals actually evaluated, including estimator panels.
     pub panels: usize,
+    /// Accepted dyadic depths relative to each requested patch in input order.
+    pub patch_depths: Vec<[u8; 2]>,
     /// Maximum dyadic subdivision depth of accepted patches.
     pub deepest: u8,
     /// Largest final parent-vs-children estimate across selected patches/metrics.
@@ -51,7 +53,7 @@ pub struct AdaptiveSurfaceLoad {
 
 type Rect = [[f64; 2]; 2];
 
-#[derive(Clone)]
+#[derive(Clone, Default)]
 struct PanelIntegral {
     nodal: [[f64; 3]; 27],
     area: f64,
@@ -264,6 +266,69 @@ fn estimate_error(coarse: &PanelIntegral, fine: &PanelIntegral) -> Result<f64, &
     }
 }
 
+/// Choose which face parameters can be refined independently.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum SurfaceSplit {
+    Isotropic,
+    Directional,
+}
+
+fn directional_patch(
+    rect: Rect,
+    first: PanelIntegral,
+    config: SurfaceQuadrature,
+    evaluated: &mut usize,
+    sample: impl Fn(Rect) -> Result<PanelIntegral, &'static str>,
+) -> Result<(PanelIntegral, [u8; 2], f64), &'static str> {
+    let mut depths = [0_u8; 2];
+    let mut coarse = first;
+    let mut composite = |depths: [u8; 2]| -> Result<PanelIntegral, &'static str> {
+        let [nu, nv] = depths.map(|depth| 1_usize << depth);
+        let count = nu.checked_mul(nv).ok_or("surface panel count overflow")?;
+        if count > config.max_panels.saturating_sub(*evaluated) {
+            return Err("adaptive surface quadrature panel budget exceeded");
+        }
+        let span = |axis: usize, i: usize, n: usize| {
+            let [lo, hi] = rect[axis];
+            [i, i + 1].map(|j| lo + (hi - lo) * (j as f64 / n as f64))
+        };
+        let mut sum = PanelIntegral::default();
+        for i in 0..nu {
+            let u = span(0, i, nu);
+            for j in 0..nv {
+                add(&mut sum, &sample([u, span(1, j, nv)])?);
+            }
+        }
+        *evaluated += count;
+        Ok(sum)
+    };
+    loop {
+        let [du, dv] = depths;
+        if du >= config.max_depth || dv >= config.max_depth {
+            return Err("adaptive surface quadrature tolerance not met within depth budget");
+        }
+        let u = composite([du + 1, dv])?;
+        let v = composite([du, dv + 1])?;
+        let uv = composite([du + 1, dv + 1])?;
+        let eu = estimate_error(&coarse, &u)?.max(estimate_error(&v, &uv)?);
+        let ev = estimate_error(&coarse, &v)?.max(estimate_error(&u, &uv)?);
+        let error = eu.max(ev).max(estimate_error(&coarse, &uv)?);
+        if error <= config.relative_tolerance {
+            return Ok((uv, [du + 1, dv + 1], error));
+        }
+        if eu > 2.0 * ev {
+            depths[0] += 1;
+            coarse = u;
+        } else if ev > 2.0 * eu {
+            depths[1] += 1;
+            coarse = v;
+        } else {
+            depths = [du + 1, dv + 1];
+            coarse = uv;
+        }
+    }
+}
+
 /// Integrate surface tractions by face-wise dyadic composite Gauss refinement.
 ///
 /// The returned discrepancy is an estimator based on adjacent composite levels,
@@ -278,6 +343,26 @@ pub fn integrate_adaptive_traction<F: Fn(Vector, Vector) -> Vector>(
     config: SurfaceQuadrature,
     traction: F,
 ) -> Result<AdaptiveSurfaceLoad, &'static str> {
+    integrate_surface_traction(
+        space,
+        exterior,
+        patches,
+        order,
+        (config, SurfaceSplit::Isotropic),
+        traction,
+    )
+}
+
+/// Integrate using the selected empirical refinement strategy.
+pub fn integrate_surface_traction<F: Fn(Vector, Vector) -> Vector>(
+    space: &AnalysisSpace,
+    exterior: &BTreeSet<BlockSide>,
+    patches: &[LoadPatch],
+    order: usize,
+    options: (SurfaceQuadrature, SurfaceSplit),
+    traction: F,
+) -> Result<AdaptiveSurfaceLoad, &'static str> {
+    let (config, strategy) = options;
     config.validate()?;
     let quadrature = gauss(order)?;
     if patches.is_empty() {
@@ -325,6 +410,7 @@ pub fn integrate_adaptive_traction<F: Fn(Vector, Vector) -> Vector>(
     }
     let mut panel_evaluations = 0usize;
     let mut deepest = 0u8;
+    let mut patch_depths = Vec::with_capacity(patches.len());
     let mut maximum_error = 0.0_f64;
 
     for (face, block, rect) in validated_patches {
@@ -335,42 +421,50 @@ pub fn integrate_adaptive_traction<F: Fn(Vector, Vector) -> Vector>(
         panel_evaluations = panel_evaluations
             .checked_add(1)
             .ok_or("surface panel count overflow")?;
-        let mut current = vec![(rect, first)];
-        let mut current_depth = 0u8;
-        let accepted;
-        loop {
-            let next_len = current
-                .len()
-                .checked_mul(4)
-                .ok_or("surface panel count overflow")?;
-            if next_len > config.max_panels.saturating_sub(panel_evaluations) {
-                return Err("adaptive surface quadrature panel budget exceeded");
-            }
-            let mut fine_panels = Vec::with_capacity(next_len);
-            for (parent_rect, _) in &current {
-                for child in split(*parent_rect) {
-                    let integral = integrate_panel(block, &face, child, &quadrature, &traction)?;
-                    fine_panels.push((child, integral));
+        let (accepted, depth, error) = if strategy == SurfaceSplit::Directional {
+            directional_patch(rect, first, config, &mut panel_evaluations, |r| {
+                integrate_panel(block, &face, r, &quadrature, &traction)
+            })?
+        } else {
+            let mut current = vec![(rect, first)];
+            let mut current_depth = 0u8;
+            loop {
+                let next_len = current
+                    .len()
+                    .checked_mul(4)
+                    .ok_or("surface panel count overflow")?;
+                if next_len > config.max_panels.saturating_sub(panel_evaluations) {
+                    return Err("adaptive surface quadrature panel budget exceeded");
                 }
+                let mut fine_panels = Vec::with_capacity(next_len);
+                for (parent_rect, _) in &current {
+                    for child in split(*parent_rect) {
+                        let integral =
+                            integrate_panel(block, &face, child, &quadrature, &traction)?;
+                        fine_panels.push((child, integral));
+                    }
+                }
+                panel_evaluations = panel_evaluations
+                    .checked_add(next_len)
+                    .ok_or("surface panel count overflow")?;
+                let coarse_sum = sum_panels(&current);
+                let fine_sum = sum_panels(&fine_panels);
+                let error = estimate_error(&coarse_sum, &fine_sum)?;
+                if error <= config.relative_tolerance {
+                    break (fine_sum, [current_depth + 1; 2], error);
+                }
+                if current_depth + 1 >= config.max_depth {
+                    return Err(
+                        "adaptive surface quadrature tolerance not met within depth budget",
+                    );
+                }
+                current = fine_panels;
+                current_depth += 1;
             }
-            panel_evaluations = panel_evaluations
-                .checked_add(next_len)
-                .ok_or("surface panel count overflow")?;
-            let coarse_sum = sum_panels(&current);
-            let fine_sum = sum_panels(&fine_panels);
-            let error = estimate_error(&coarse_sum, &fine_sum)?;
-            if error <= config.relative_tolerance {
-                maximum_error = maximum_error.max(error);
-                deepest = deepest.max(current_depth + 1);
-                accepted = fine_sum;
-                break;
-            }
-            if current_depth + 1 >= config.max_depth {
-                return Err("adaptive surface quadrature tolerance not met within depth budget");
-            }
-            current = fine_panels;
-            current_depth += 1;
-        }
+        };
+        deepest = deepest.max(depth[0]).max(depth[1]);
+        patch_depths.push(depth);
+        maximum_error = maximum_error.max(error);
         result.area_mm2 += accepted.area;
         for c in 0..3 {
             result.resultant_n[c] += accepted.resultant[c];
@@ -395,6 +489,7 @@ pub fn integrate_adaptive_traction<F: Fn(Vector, Vector) -> Vector>(
     Ok(AdaptiveSurfaceLoad {
         load: result,
         panels: panel_evaluations,
+        patch_depths,
         deepest,
         maximum_estimated_relative_error: maximum_error,
     })

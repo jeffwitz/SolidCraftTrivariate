@@ -184,13 +184,14 @@ def write_json(path, value):
 
 
 def make_job(feature, law, surface=None):
+    selector = feature if isinstance(feature, dict) else {"feature": feature}
     return {"schema": "solidcraft_mechanical_job_v5",
             "material": {"young_mpa": 1000, "poisson": 0.25},
             "formulation": "displacement", "order": 4,
             "plan": {"schema": "adaptive_refinement_plan_v1", "max_depth": 0,
                      "max_cells": 1024, "steps": []},
             "supports": [{"select": {"feature": "start"}, "components": [0, 1, 2]}],
-            "loads": [{"select": {"feature": feature}, **law}],
+            "loads": [{"select": selector, **law}],
             "surface_quadrature": surface or {"relative_tolerance": 1e-9,
                                                 "max_depth": 8, "max_panels": 65536}}
 
@@ -220,7 +221,7 @@ def reference_result_load(result, law, order):
             "face_count": len(faces)}
 
 
-def run_cases(binary):
+def run_cases(binary, body_extension=False):
     corpus = json.loads(CORPUS.read_text())
     recipe_by_id = {x["id"]: x["recipe"] for x in corpus}
     specs = [
@@ -240,6 +241,8 @@ def run_cases(binary):
     models = {}
     rows = []
     for label, recipe_id, feature, law in specs:
+        if label.endswith("body_and_surface") != body_extension:
+            continue
         folder = WORK / label; folder.mkdir(parents=True, exist_ok=True)
         if recipe_id not in models:
             recipe_path = folder / "recipe.json"; model_path = folder / "model.json"
@@ -282,12 +285,12 @@ def run_cases(binary):
         force_scale = max(q128["absolute_force_scale_n"], 1.0)
         moment_scale = max(q128["absolute_moment_scale_n_mm"], 1.0)
         vector_error = float(np.linalg.norm(rust_force-ref_force)/force_scale)
-        vector_q_delta = float(np.linalg.norm(q96["force_n_xyz"]-ref_force)/force_scale)
+        vector_q_delta = float(np.linalg.norm(q96["force_n_xyz"]-q128["force_n_xyz"])/force_scale)
         area_error = abs(float(rust_load["area_mm2"])/q128["area_mm2"]-1.0)
         resultant_error = float(np.linalg.norm(np.asarray(rust_load["resultant_n"])-q128["resultant_n"])/force_scale)
         moment_error = float(np.linalg.norm(np.asarray(rust_load["moment_n_mm"])-q128["moment_n_mm"])/moment_scale)
         displacement = np.asarray(result["displacement_mm_xyz"], dtype=float)
-        reference_work = float(ref_force @ displacement)
+        reference_work = float(q128["force_n_xyz"] @ displacement)
         work_error = abs(reference_work-float(result["traction_work_n_mm"])) / max(abs(reference_work), 1.0)
         row.update({"cells": len(result["analysis_blocks"]), "scalar_dofs": result["scalar_dofs"],
                     "faces": q128["face_count"], "area_reference_q128_mm2": q128["area_mm2"],
@@ -313,10 +316,12 @@ def run_cases(binary):
             row["body_load"]["volume_relative_error"] = abs(body_report["volume_mm3"]/body_result["volume_mm3"]-1)
             row["body_load"]["resultant_relative_error"] = float(np.linalg.norm(np.asarray(body_report["resultant_n"])-body_result["resultant_n"])/max(np.linalg.norm(body_result["resultant_n"]),1.0))
             row["body_load"]["moment_relative_error"] = float(np.linalg.norm(np.asarray(body_report["moment_n_mm"])-body_result["moment_n_mm"])/max(np.linalg.norm(body_result["moment_n_mm"]),1.0))
-            row["qualified"] = row["qualified"] and max(row["body_load"][k] for k in ("volume_relative_error", "resultant_relative_error", "moment_relative_error")) <= 1e-8
+            row["body_load"]["nodal_body_work_error"] = abs(body_report["work_n_mm"] - float(body_result["force_n_xyz"] @ displacement)) / max(1., abs(body_report["work_n_mm"]))
         row["qualified"] = all(row[key] <= 1e-8 for key in (
             "area_relative_error", "full_nodal_force_relative_error", "resultant_relative_error",
             "moment_relative_error", "traction_work_relative_error", "independent_q96_q128_force_delta"))
+        if body_result:
+            row["qualified"] &= max(row["body_load"][k] for k in ("volume_relative_error", "resultant_relative_error", "moment_relative_error", "nodal_body_work_error")) <= 1e-8
         rows.append(row)
         write_json(REPORT, {"protocol": "M11 adaptive surface load oracle v1", "cases": rows,
                             "status": "running", "limits": ["surface quadrature convergence is an estimator, not a mathematical error bound"]})
@@ -359,27 +364,68 @@ def refusal_checks(binary):
     return checks
 
 
+def measured_panel_budgets(binary,rows):
+    """Rerun each original job without changing its geometry, law or tolerance."""
+    frozen = {r["id"]:r["recipe"] for r in json.loads(CORPUS.read_text())}
+    trials=[]
+    for row in rows:
+        if "body_load" in row or row["id"].endswith("body_and_surface"):
+            continue
+        folder=WORK/"budget-replay"/row["id"];folder.mkdir(exist_ok=True,parents=True)
+        rp,mp,jp,out=[folder/(x+".json") for x in ("recipe","model","job","result")]
+        write_json(rp,frozen[row["recipe"]])
+        subprocess.run([str(binary),"build",str(rp),str(mp)],capture_output=True,check=True)
+        baseline=json.loads((WORK/row["id"]/"result.json").read_text())
+        for strategy,budget in (("isotropic",65536),("directional",4096),("directional",65536)):
+            job=json.loads((WORK/row["id"]/"job.json").read_text())
+            job["surface_quadrature"].update(split=strategy,max_panels=budget)
+            write_json(jp,job)
+            marker=b"previous qualified result";out.write_bytes(marker)
+            start=time.monotonic()
+            proc=subprocess.run([str(binary),"solve-job",str(mp),str(jp),str(out)],capture_output=True,text=True)
+            item=dict(id=row["id"],split=strategy,max_panels=budget,
+                      elapsed_s=time.monotonic()-start,exit_code=proc.returncode,
+                      command_status="refused" if proc.returncode else "solved",
+                      diagnostic=proc.stdout.strip(),job=job)
+            if proc.returncode:
+                item["target_preserved"]=out.read_bytes()==marker
+            else:
+                result=json.loads(out.read_text())
+                lhs=np.asarray(result["force_n_xyz"]);rhs=np.asarray(baseline["force_n_xyz"])
+                delta=float(np.linalg.norm(lhs-rhs)/max(1.,np.linalg.norm(rhs)))
+                item.update(panels=result["loads"][0]["integration"]["panels"],force_delta_to_qualified_isotropic=delta,
+                            full_field_relative=float(np.linalg.norm(np.asarray(result["displacement_mm_xyz"])-np.asarray(baseline["displacement_mm_xyz"]))/max(np.linalg.norm(baseline["displacement_mm_xyz"]),1e-30)),
+                            reproduced_force=delta<1e-8)
+            trials.append(item)
+    return trials
+
+
 def main():
+    global REPORT
     parser = argparse.ArgumentParser()
     parser.add_argument("--binary", type=Path, default=ROOT / "target/release/solidcraft-trivariate")
     parser.add_argument("--reference-only", action="store_true")
+    parser.add_argument("--output", type=Path, default=REPORT)
+    parser.add_argument("--body-extension", action="store_true")
+    parser.add_argument("--budget-replay-only", action="store_true")
     args = parser.parse_args()
+    REPORT = args.output
     binary = args.binary.resolve()
+    if args.budget_replay_only:
+        previous=json.loads((ROOT/"docs/results/adaptive-surface-load-20261125.json").read_text())
+        trials=measured_panel_budgets(binary,previous["cases"])
+        valid=all((t["command_status"]=="solved" and t["reproduced_force"] and t["full_field_relative"]<1e-8)
+                  or (t["split"]=="isotropic" and t.get("target_preserved") and "panel budget exceeded" in t["diagnostic"])
+                  for t in trials)
+        write_json(REPORT,dict(schema="matched_surface_strategy_replay_v1",cases=trials,qualified=valid))
+        if not valid: raise SystemExit(1)
+        return
     _model, q12 = compute_q12_reference(binary)
-    rows = [] if args.reference_only else run_cases(binary)
-    refusals = [] if args.reference_only else refusal_checks(binary)
+    rows = [] if args.reference_only else run_cases(binary,args.body_extension)
+    refusals = [] if args.reference_only or args.body_extension else refusal_checks(binary)
     report = {"protocol": "M11 adaptive surface load oracle v1",
               "independent_reference": q12, "cases": rows, "refusals": refusals,
-              "budget_trials": [
-                  {"id": "oblique_circle_stress", "max_panels": 65536,
-                   "relative_tolerance": 1e-9, "max_depth": 8, "status": "refused",
-                   "diagnostic": "adaptive surface quadrature panel budget exceeded"},
-                  {"id": "extreme_shear_circle_pressure", "max_panels": 65536,
-                   "relative_tolerance": 1e-9, "max_depth": 8, "status": "refused",
-                   "diagnostic": "adaptive surface quadrature panel budget exceeded"},
-                  {"id": "extreme_shear_circle_vector", "max_panels": 65536,
-                   "relative_tolerance": 1e-9, "max_depth": 8, "status": "refused",
-                   "diagnostic": "adaptive surface quadrature panel budget exceeded"}],
+              "budget_trials": [] if args.reference_only else measured_panel_budgets(binary,rows),
               "status": "reference_only" if args.reference_only else
                        ("qualified" if all(x.get("qualified", False) for x in rows) and
                         all(x["previous_output_preserved"] for x in refusals) else "not_qualified"),

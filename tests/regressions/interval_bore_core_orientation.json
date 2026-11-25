@@ -1,0 +1,28 @@
+{
+  "id": "interval_bore_core_orientation",
+  "old_failure": "interval_bore_nonpositive_jacobian",
+  "assertion": "present core block determinant_lower_bound_mm3 > 0.0",
+  "minimum_determinant_mm3": 0.0,
+  "recipe": {
+    "outer": {
+      "id": "outer",
+      "vertices": [
+        {"id": "v00", "xy_mm": [-24, -16]},
+        {"id": "v01", "xy_mm": [24, -16]},
+        {"id": "v02", "xy_mm": [24, 16]},
+        {"id": "v03", "xy_mm": [-24, 16]}
+      ]
+    },
+    "bores": [
+      {
+        "id": "pilot",
+        "center_mm": [0, 0],
+        "radius_mm": 6,
+        "guard_mm": 12,
+        "z_interval_mm": [4, 8]
+      }
+    ],
+    "height_mm": 12,
+    "top_shift_mm": [0, 0]
+  }
+}

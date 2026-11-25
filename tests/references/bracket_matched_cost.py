@@ -10,6 +10,7 @@ import time
 import numpy as np
 
 from bracket_cost_fields import read, save
+from bracket_checkpoint_geometry import checkpoint, verify_geometry
 from bracket_field_distance import TetraField
 from bracket_serial_cost import (ROOT, MANIFEST, BASELINE, PROTO, active_campaign_processes,
                                  loadavg, physical_qualification, tetra_trial)
@@ -37,7 +38,13 @@ def verify(method, case, step, dest, fine, tiers):
     if method=="local":
         def digest(p):return hashlib.sha256(p.read_bytes()).hexdigest()
         a=digest(dest/"field.bin");b=digest(tiers/case/f"s{step}.bin")
-        return dict(qualified=a==b, field_sha256=a, reference_sha256=b, geometry_in_checkpoint=True)
+        package=read(fine/case/"native.package.json")
+        ids,bad=verify_geometry(package,dest/"field.geometry.bin")
+        header,controls=checkpoint(dest/"field.bin")
+        geometry_equal=bad is None and ids==controls.keys() and len(ids)==header[-1]
+        return dict(qualified=a==b and geometry_equal, field_sha256=a, reference_sha256=b,
+                    geometry_in_checkpoint=False, geometry_equal=geometry_equal,
+                    geometry_source="companion homogeneous nets vs exact subdivision of archived root package")
     if method=="immersed":
         with np.load(dest/"field.npz") as a,np.load(fine/case/"immersed.npz") as b:
             geom=all(np.array_equal(a[k],b[k]) for k in ("h_mm","radii_mm"))

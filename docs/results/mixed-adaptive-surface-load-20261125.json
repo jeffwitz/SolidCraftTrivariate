@@ -1,0 +1,94 @@
+{
+  "budget_trials": [],
+  "cases": [
+    {
+      "area_reference_q128_mm2": 1536.749816983875,
+      "area_relative_error": 5.329070518200751e-15,
+      "area_rust_mm2": 1536.7498169838832,
+      "body_load": {
+        "body_work_n_mm": 0.7209053110419247,
+        "independent_moment_n_mm": [
+          -131.8619513473072,
+          -106.77421314669618,
+          801.4127552813942
+        ],
+        "independent_resultant_n": [
+          39.85117699835266,
+          -6.125150444078394,
+          8.047506638568562
+        ],
+        "independent_volume_mm3": 1532.8584073463985,
+        "moment_relative_error": 1.1750559047997197e-08,
+        "nodal_body_work_error": 4.263761010925293e-09,
+        "reported_moment_n_mm": [
+          -131.8619497846487,
+          -106.77421158578444,
+          801.4127459124344
+        ],
+        "reported_resultant_n": [
+          39.851176432020445,
+          -6.125150318226743,
+          8.047506528448418
+        ],
+        "reported_volume_mm3": 1532.8583863711276,
+        "resultant_relative_error": 1.4362499446246418e-08,
+        "volume_relative_error": 1.368376278954031e-08
+      },
+      "cells": 32,
+      "command_status": "solved",
+      "diagnostic": "{\"relative_residual\":0.00000000009544982433323451,\"schema\":\"solidcraft_mechanical_result_v1\",\"status\":\"solved\"}\n",
+      "faces": 2,
+      "full_nodal_force_relative_error": 3.706724695641199e-09,
+      "id": "extreme_shear_rectangle_body_and_surface",
+      "independent_q96_q128_force_delta": 3.719721988257729e-15,
+      "independent_traction_work_n_mm": 43.70341744012742,
+      "load": {
+        "select": "edge/outer/v00/v01",
+        "vector_mpa": [
+          0.2,
+          0.4,
+          -0.1
+        ]
+      },
+      "moment_relative_error": 1.0587382054843425e-15,
+      "qualified": false,
+      "recipe": "extreme_shear",
+      "relative_force_balance": 1.0565040466991328e-12,
+      "relative_moment_balance": 3.5680359798434236e-13,
+      "relative_residual": 9.544982433323451e-11,
+      "resultant_relative_error": 1.8494688671045928e-15,
+      "rust_quadrature": {
+        "deepest": 1,
+        "maximum_estimated_relative_error": 3.6989377342092213e-16,
+        "panels": 10
+      },
+      "scalar_dofs": 432,
+      "traction_work_relative_error": 5.202652075314894e-15,
+      "wall_s": 0.19836517801741138
+    }
+  ],
+  "independent_reference": {
+    "area_q128_mm2": 181.27116907548225,
+    "area_q12_mm2": 181.2799954801985,
+    "area_q24_mm2": 181.26981798803234,
+    "area_q48_mm2": 181.27118698819686,
+    "area_q64_mm2": 181.2711682934231,
+    "area_q96_mm2": 181.27116908316617,
+    "case": "G20 extreme_shear",
+    "face_count": 8,
+    "feature": "bore/micro",
+    "q128_q96_relative": 4.2389092236305714e-11,
+    "q12_relative_to_q128": 4.8691718386617566e-05,
+    "q96_relative_to_q128": 4.238920325860818e-11,
+    "quadrature_order": 12,
+    "reference_method": "independent rational Bernstein surface Jacobian, tensor Gauss-Legendre",
+    "reference_wall_s": 33.4118862329633
+  },
+  "limits": [
+    "surface quadrature convergence is an estimator, not a mathematical error bound",
+    "the q96/q128 difference is the numerical reference diagnostic, not a certified bound"
+  ],
+  "protocol": "M11 adaptive surface load oracle v1",
+  "refusals": [],
+  "status": "not_qualified"
+}

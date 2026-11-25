@@ -1,28 +1,426 @@
 {
   "budget_trials": [
     {
-      "diagnostic": "adaptive surface quadrature panel budget exceeded",
+      "command_status": "solved",
+      "diagnostic": "{\"relative_residual\":0.00000000008910624204131541,\"schema\":\"solidcraft_mechanical_result_v1\",\"status\":\"solved\"}",
+      "elapsed_s": 0.07781074102967978,
+      "exit_code": 0,
+      "force_delta_to_qualified_isotropic": 0.0,
+      "full_field_relative": 0.0,
+      "id": "right_circle_pressure",
+      "job": {
+        "formulation": "displacement",
+        "loads": [
+          {
+            "pressure_mpa": 0.05,
+            "select": {
+              "feature": "bore/pilot"
+            }
+          }
+        ],
+        "material": {
+          "poisson": 0.25,
+          "young_mpa": 1000
+        },
+        "order": 4,
+        "plan": {
+          "max_cells": 1024,
+          "max_depth": 0,
+          "schema": "adaptive_refinement_plan_v1",
+          "steps": []
+        },
+        "schema": "solidcraft_mechanical_job_v5",
+        "supports": [
+          {
+            "components": [
+              0,
+              1,
+              2
+            ],
+            "select": {
+              "feature": "start"
+            }
+          }
+        ],
+        "surface_quadrature": {
+          "max_depth": 8,
+          "max_panels": 65536,
+          "relative_tolerance": 1e-09,
+          "split": "isotropic"
+        }
+      },
+      "max_panels": 65536,
+      "panels": 680,
+      "reproduced_force": true,
+      "split": "isotropic"
+    },
+    {
+      "command_status": "solved",
+      "diagnostic": "{\"relative_residual\":0.00000000007647655040593002,\"schema\":\"solidcraft_mechanical_result_v1\",\"status\":\"solved\"}",
+      "elapsed_s": 0.08497514604823664,
+      "exit_code": 0,
+      "force_delta_to_qualified_isotropic": 0.0,
+      "full_field_relative": 0.0,
+      "id": "right_circle_vector",
+      "job": {
+        "formulation": "displacement",
+        "loads": [
+          {
+            "select": {
+              "feature": "bore/pilot"
+            },
+            "vector_mpa": [
+              0.2,
+              -0.4,
+              0.7
+            ]
+          }
+        ],
+        "material": {
+          "poisson": 0.25,
+          "young_mpa": 1000
+        },
+        "order": 4,
+        "plan": {
+          "max_cells": 1024,
+          "max_depth": 0,
+          "schema": "adaptive_refinement_plan_v1",
+          "steps": []
+        },
+        "schema": "solidcraft_mechanical_job_v5",
+        "supports": [
+          {
+            "components": [
+              0,
+              1,
+              2
+            ],
+            "select": {
+              "feature": "start"
+            }
+          }
+        ],
+        "surface_quadrature": {
+          "max_depth": 8,
+          "max_panels": 65536,
+          "relative_tolerance": 1e-09,
+          "split": "isotropic"
+        }
+      },
+      "max_panels": 65536,
+      "panels": 680,
+      "reproduced_force": true,
+      "split": "isotropic"
+    },
+    {
+      "command_status": "solved",
+      "diagnostic": "{\"relative_residual\":0.00000000008986951071988969,\"schema\":\"solidcraft_mechanical_result_v1\",\"status\":\"solved\"}",
+      "elapsed_s": 0.21131889801472425,
+      "exit_code": 0,
+      "force_delta_to_qualified_isotropic": 0.0,
+      "full_field_relative": 0.0,
       "id": "oblique_circle_stress",
-      "max_depth": 8,
+      "job": {
+        "formulation": "displacement",
+        "loads": [
+          {
+            "select": {
+              "feature": "bore/left"
+            },
+            "stress_mpa": [
+              [
+                0.0,
+                0.3,
+                0.1
+              ],
+              [
+                0.3,
+                0.0,
+                -0.2
+              ],
+              [
+                0.1,
+                -0.2,
+                0.0
+              ]
+            ]
+          }
+        ],
+        "material": {
+          "poisson": 0.25,
+          "young_mpa": 1000
+        },
+        "order": 4,
+        "plan": {
+          "max_cells": 1024,
+          "max_depth": 0,
+          "schema": "adaptive_refinement_plan_v1",
+          "steps": []
+        },
+        "schema": "solidcraft_mechanical_job_v5",
+        "supports": [
+          {
+            "components": [
+              0,
+              1,
+              2
+            ],
+            "select": {
+              "feature": "start"
+            }
+          }
+        ],
+        "surface_quadrature": {
+          "max_depth": 8,
+          "max_panels": 65536,
+          "relative_tolerance": 1e-09,
+          "split": "isotropic"
+        }
+      },
       "max_panels": 65536,
-      "relative_tolerance": 1e-09,
-      "status": "refused"
+      "panels": 680,
+      "reproduced_force": true,
+      "split": "isotropic"
     },
     {
-      "diagnostic": "adaptive surface quadrature panel budget exceeded",
+      "command_status": "solved",
+      "diagnostic": "{\"relative_residual\":0.00000000009896916954545454,\"schema\":\"solidcraft_mechanical_result_v1\",\"status\":\"solved\"}",
+      "elapsed_s": 2.122976436978206,
+      "exit_code": 0,
+      "force_delta_to_qualified_isotropic": 2.2300527283597074e-13,
+      "full_field_relative": 2.358102869937504e-11,
       "id": "extreme_shear_circle_pressure",
-      "max_depth": 8,
+      "job": {
+        "formulation": "displacement",
+        "loads": [
+          {
+            "pressure_mpa": 0.05,
+            "select": {
+              "feature": "bore/micro"
+            }
+          }
+        ],
+        "material": {
+          "poisson": 0.25,
+          "young_mpa": 1000
+        },
+        "order": 4,
+        "plan": {
+          "max_cells": 1024,
+          "max_depth": 0,
+          "schema": "adaptive_refinement_plan_v1",
+          "steps": []
+        },
+        "schema": "solidcraft_mechanical_job_v5",
+        "supports": [
+          {
+            "components": [
+              0,
+              1,
+              2
+            ],
+            "select": {
+              "feature": "start"
+            }
+          }
+        ],
+        "surface_quadrature": {
+          "max_depth": 8,
+          "max_panels": 65536,
+          "relative_tolerance": 1e-09,
+          "split": "isotropic"
+        }
+      },
       "max_panels": 65536,
-      "relative_tolerance": 1e-09,
-      "status": "refused"
+      "panels": 44712,
+      "reproduced_force": true,
+      "split": "isotropic"
     },
     {
-      "diagnostic": "adaptive surface quadrature panel budget exceeded",
+      "command_status": "solved",
+      "diagnostic": "{\"relative_residual\":0.00000000009032002552751894,\"schema\":\"solidcraft_mechanical_result_v1\",\"status\":\"solved\"}",
+      "elapsed_s": 1.4297205040347762,
+      "exit_code": 0,
+      "force_delta_to_qualified_isotropic": 3.39474557451857e-13,
+      "full_field_relative": 1.870873293773843e-12,
       "id": "extreme_shear_circle_vector",
-      "max_depth": 8,
+      "job": {
+        "formulation": "displacement",
+        "loads": [
+          {
+            "select": {
+              "feature": "bore/micro"
+            },
+            "vector_mpa": [
+              0.2,
+              -0.4,
+              0.7
+            ]
+          }
+        ],
+        "material": {
+          "poisson": 0.25,
+          "young_mpa": 1000
+        },
+        "order": 4,
+        "plan": {
+          "max_cells": 1024,
+          "max_depth": 0,
+          "schema": "adaptive_refinement_plan_v1",
+          "steps": []
+        },
+        "schema": "solidcraft_mechanical_job_v5",
+        "supports": [
+          {
+            "components": [
+              0,
+              1,
+              2
+            ],
+            "select": {
+              "feature": "start"
+            }
+          }
+        ],
+        "surface_quadrature": {
+          "max_depth": 8,
+          "max_panels": 65536,
+          "relative_tolerance": 1e-09,
+          "split": "isotropic"
+        }
+      },
       "max_panels": 65536,
-      "relative_tolerance": 1e-09,
-      "status": "refused"
+      "panels": 44712,
+      "reproduced_force": true,
+      "split": "isotropic"
+    },
+    {
+      "command_status": "solved",
+      "diagnostic": "{\"relative_residual\":0.00000000007167173728494643,\"schema\":\"solidcraft_mechanical_result_v1\",\"status\":\"solved\"}",
+      "elapsed_s": 1.8881669089896604,
+      "exit_code": 0,
+      "force_delta_to_qualified_isotropic": 0.0,
+      "full_field_relative": 0.0,
+      "id": "extreme_shear_circle_stress",
+      "job": {
+        "formulation": "displacement",
+        "loads": [
+          {
+            "select": {
+              "feature": "bore/micro"
+            },
+            "stress_mpa": [
+              [
+                0.0,
+                0.3,
+                0.1
+              ],
+              [
+                0.3,
+                0.0,
+                -0.2
+              ],
+              [
+                0.1,
+                -0.2,
+                0.0
+              ]
+            ]
+          }
+        ],
+        "material": {
+          "poisson": 0.25,
+          "young_mpa": 1000
+        },
+        "order": 4,
+        "plan": {
+          "max_cells": 1024,
+          "max_depth": 0,
+          "schema": "adaptive_refinement_plan_v1",
+          "steps": []
+        },
+        "schema": "solidcraft_mechanical_job_v5",
+        "supports": [
+          {
+            "components": [
+              0,
+              1,
+              2
+            ],
+            "select": {
+              "feature": "start"
+            }
+          }
+        ],
+        "surface_quadrature": {
+          "max_depth": 8,
+          "max_panels": 65536,
+          "relative_tolerance": 1e-09,
+          "split": "isotropic"
+        }
+      },
+      "max_panels": 65536,
+      "panels": 44712,
+      "reproduced_force": true,
+      "split": "isotropic"
+    },
+    {
+      "command_status": "solved",
+      "diagnostic": "{\"relative_residual\":0.00000000009608354259354267,\"schema\":\"solidcraft_mechanical_result_v1\",\"status\":\"solved\"}",
+      "elapsed_s": 0.16658009501406923,
+      "exit_code": 0,
+      "force_delta_to_qualified_isotropic": 0.0,
+      "full_field_relative": 0.0,
+      "id": "extreme_shear_rectangle_vector",
+      "job": {
+        "formulation": "displacement",
+        "loads": [
+          {
+            "select": {
+              "feature": "edge/outer/v00/v01"
+            },
+            "vector_mpa": [
+              0.2,
+              0.4,
+              -0.1
+            ]
+          }
+        ],
+        "material": {
+          "poisson": 0.25,
+          "young_mpa": 1000
+        },
+        "order": 4,
+        "plan": {
+          "max_cells": 1024,
+          "max_depth": 0,
+          "schema": "adaptive_refinement_plan_v1",
+          "steps": []
+        },
+        "schema": "solidcraft_mechanical_job_v5",
+        "supports": [
+          {
+            "components": [
+              0,
+              1,
+              2
+            ],
+            "select": {
+              "feature": "start"
+            }
+          }
+        ],
+        "surface_quadrature": {
+          "max_depth": 8,
+          "max_panels": 65536,
+          "relative_tolerance": 1e-09,
+          "split": "isotropic"
+        }
+      },
+      "max_panels": 65536,
+      "panels": 10,
+      "reproduced_force": true,
+      "split": "isotropic"
     }
   ],
   "cases": [
@@ -317,6 +715,7 @@
     "reference_method": "independent rational Bernstein surface Jacobian, tensor Gauss-Legendre",
     "reference_wall_s": 34.012293650012
   },
+  "initial_oblique_refusal_provenance": "An earlier campaign note attributed an unarchived refusal to the panel budget. The corrected bore/left job at 65536 panels completes using 680. The initial selection bore/pilot is absent in oblique_profile.",
   "limits": [
     "surface quadrature convergence is an estimator, not a mathematical error bound",
     "the q96/q128 difference is the numerical reference diagnostic, not a certified bound"

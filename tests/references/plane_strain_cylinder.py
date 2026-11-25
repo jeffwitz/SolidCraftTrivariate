@@ -114,6 +114,8 @@ def vector_solve(binary: Path, work: Path, level: int, order: int, nu: float,
                          "scipy_backsolve": solve_s,
                          "rust_field_readback_wall": read_wall},
             "peak_rss_mib_campaign_process": mem_mib,
+            "peak_rss_mib_child_process": resource.getrusage(resource.RUSAGE_CHILDREN).ru_maxrss / 1024.0,
+            "peak_rss_mib_process_tree_upper_bound": mem_mib + resource.getrusage(resource.RUSAGE_CHILDREN).ru_maxrss / 1024.0,
             "artifacts": {"csr": str(export_path), "solution": str(solution_path), "readback": str(report_path),
                           "readback_sha256": hashlib.sha256(report_path.read_bytes()).hexdigest()},
             "_displacement_mm_xyz": report["displacement_mm_xyz"]}

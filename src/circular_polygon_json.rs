@@ -11,6 +11,15 @@ pub(crate) const FAMILY: &str = "polygon_circular_bores_v1";
 pub(crate) const METHOD: &str = "certified_polygon_circular_bores";
 const PARAMETERS: [&str; 4] = ["outer", "bores", "height_mm", "top_shift_mm"];
 
+pub(super) fn bore_values(v: &Json) -> Result<CircularPolygonBore, &'static str> {
+    Ok(CircularPolygonBore {
+        id: v.field("id")?.text()?.to_owned(),
+        center_mm: pair(v.field("center_mm")?)?,
+        radius_mm: v.field("radius_mm")?.number()?,
+        guard_mm: v.field("guard_mm")?.number()?,
+    })
+}
+
 fn parse(data: &Json) -> Result<CircularPolygonPrism, &'static str> {
     let list = data.field("bores")?.items()?;
     if !(1..=4).contains(&list.len()) {
@@ -19,12 +28,7 @@ fn parse(data: &Json) -> Result<CircularPolygonPrism, &'static str> {
     let mut bores = Vec::with_capacity(list.len());
     for v in list {
         v.keys(&["id", "center_mm", "radius_mm", "guard_mm"])?;
-        bores.push(CircularPolygonBore {
-            id: v.field("id")?.text()?.to_owned(),
-            center_mm: pair(v.field("center_mm")?)?,
-            radius_mm: v.field("radius_mm")?.number()?,
-            guard_mm: v.field("guard_mm")?.number()?,
-        });
+        bores.push(bore_values(v)?);
     }
     Ok(CircularPolygonPrism {
         outer: profile(data.field("outer")?)?,

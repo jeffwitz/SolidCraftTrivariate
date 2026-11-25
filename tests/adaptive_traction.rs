@@ -343,3 +343,52 @@ fn configuration_depth_selection_and_face_overlap_are_explicitly_refused() {
         "traction requires a certified exterior side"
     );
 }
+
+#[test]
+fn directional_tensor_refinement_matches_separable_manufactured_loads() {
+    use solidcraft_trivariate::adaptive_traction::{integrate_surface_traction, SurfaceSplit};
+    let space = cube_space();
+    let top = side("cube", 2, true);
+    let exterior = BTreeSet::from([top.clone()]);
+    let patches = [LoadPatch::whole(top)];
+    // On the unit top face, the exact moments of each shifted Bernstein
+    // coefficient against t^p are beta integrals.
+    let beta = |i, p| {
+        let binomial = [1., 2., 1.][i];
+        let a = p + i;
+        let b = 2 - i;
+        let mut value = 1. / (a + 1) as f64;
+        for j in 1..=b {
+            value *= j as f64 / (a + j + 1) as f64;
+        }
+        value * binomial
+    };
+    for (p, q) in [(16, 0), (0, 16), (8, 8)] {
+        let run = |depth, panels| {
+            integrate_surface_traction(
+                &space,
+                &exterior,
+                &patches,
+                4,
+                (config(1e-8, depth, panels), SurfaceSplit::Directional),
+                |x, _| [0., 0., x[0].powi(p) * x[1].powi(q)],
+            )
+        };
+        let out = run(12, 32768).unwrap();
+        for i in 0..3 {
+            for j in 0..3 {
+                let expected = beta(i, p as usize) * beta(j, q as usize);
+                let dof = 9 * i + 3 * j + 2;
+                assert!((out.load.nodal_force_n[3 * dof + 2] - expected).abs() < 1e-10);
+            }
+        }
+        assert_eq!(
+            error(run(1, 32768)),
+            "adaptive surface quadrature tolerance not met within depth budget"
+        );
+        assert_eq!(
+            error(run(12, out.panels - 1)),
+            "adaptive surface quadrature panel budget exceeded"
+        );
+    }
+}

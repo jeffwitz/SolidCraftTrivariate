@@ -183,6 +183,33 @@ def level_six_pilot(binary: Path, work: Path) -> dict:
     return run
 
 
+def level_six_remaining(binary: Path, work: Path, pilot: dict) -> list[dict]:
+    """Complete the h6 table only after the bounded pilot is qualified."""
+    if pilot.get("status") != "valid":
+        return []
+    progress = work / "h6-progress.json"
+    runs = json.loads(progress.read_text()) if progress.is_file() else []
+    done = {(r.get("level"), r.get("order"), r.get("nu"), r.get("formulation")) for r in runs}
+    done.add((6, 8, 0.49, "displacement"))
+    from plane_strain_cylinder import vector_solve
+    for order in (8, 12):
+        for nu in (0.49, 0.4999):
+            for projected in (False, True):
+                formulation = "projected_bulk_q1" if projected else "displacement"
+                if (6, order, nu, formulation) in done:
+                    continue
+                try:
+                    result = vector_solve(binary, work, 6, order, nu, 100.0, 0.0, projected)
+                    result.pop("_displacement_mm_xyz", None)
+                except (RuntimeError, MemoryError, subprocess.TimeoutExpired) as error:
+                    result = {"status": "indeterminate", "level": 6, "order": order, "nu": nu,
+                              "formulation": formulation, "reason": str(error),
+                              "memory_budget_bytes": LIMIT_BYTES, "timeout_seconds": 1800}
+                runs.append(result)
+                progress.write_text(json.dumps(runs, indent=2, allow_nan=False) + "\n")
+    return runs
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("binary", type=Path)
@@ -213,6 +240,7 @@ def main():
             add_equilibrium_checks(run)
     extensions = plane_only_extensions(args.binary.resolve(), args.work)
     pilot = level_six_pilot(args.binary.resolve(), args.work)
+    h6_runs = level_six_remaining(args.binary.resolve(), args.work, pilot)
     payload = {
         "schema": "plane_strain_full_3d_correction_v1",
         "scope": "full 3D Q2 pressure-cylinder solve at h4; comparison only against the exact axial-invariant subspace",
@@ -250,7 +278,9 @@ def main():
             "memory_budget_mib": LIMIT_BYTES // 1024**2,
             "h6_pilot_launched": True,
         },
-        "h6_plane_only_pilot_h4_q8_nu049_full": pilot,
+        "h6_plane_only_pilot_h6_q8_nu049_full": pilot,
+        "h6_plane_only_remaining_runs": h6_runs,
+        "h6_extension_qualification": "valid" if pilot.get("status") == "valid" and all(r.get("status") == "valid" for r in h6_runs) else "indeterminate",
         "qualification": {"residual_threshold": 1e-10, "status": "valid" if all(r["status"] == "valid" for r in runs) else "indeterminate"},
     }
     args.output.parent.mkdir(parents=True, exist_ok=True)

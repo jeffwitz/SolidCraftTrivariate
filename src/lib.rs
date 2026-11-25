@@ -108,3 +108,7 @@ pub mod solidcraft_circular_polygon;
 pub mod solidcraft_oriented_plane;
 pub mod adaptive_traction;
 pub mod geometry_vtu;
+
+pub mod interval_bores;
+pub mod interval_bores_audit;
+mod interval_bores_json;

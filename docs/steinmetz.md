@@ -16,6 +16,10 @@ La séparation part du point (3r/5,4r/5) vers (g,H_y). Le bord extérieur suit d
 
 Chaque octant contient quatre blocs courbes et un pavé, soit 40 blocs. Les arcs et les traces ont des contrôles homogènes entiers. Les raccords sur les plans diagonaux transportent exactement la même paramétrisation. Aux pôles, la largeur de la règle d’extrusion est H_d, ce qui évite de rabattre une face entière sur un point.
 
+![Parois des deux alésages et séparatrice dans une section](figures/percages-secants.png)
+
+À gauche, les parois issues des réseaux de contrôle exportés, limitées à 7 mm de l’intersection pour montrer la jonction. À droite, les deux régions à extruder dans un octant du cas de référence. Les axes de la coupe ont des échelles différentes.
+
 ## Pourquoi les cartes couvrent la matière
 
 Dans le premier secteur, le point du bord extérieur est B=(g,H_y t) pour q=t/2 ; dans le second, B=(g(1−t),H_y) pour q=(1+t)/2. Dans les deux cas B−C a des composantes positives ou nulles. Sur l’arc orienté, m décroît et e croît. Le bord extérieur suit les mêmes monotonies. L’interpolation en coordonnées homogènes décrit, après projection, le segment C–B avec un paramètre strictement croissant en direction radiale. Quand on dérive dans la direction angulaire, la dérivée du coefficient de mélange est parallèle au segment et disparaît du déterminant. Les deux autres termes sont les tangentes pondérées de C et de B. Leur déterminant avec B−C garde un signe strict, y compris aux extrémités : le bord vertical bénéficie de g>r et le bord horizontal de H_y>r.

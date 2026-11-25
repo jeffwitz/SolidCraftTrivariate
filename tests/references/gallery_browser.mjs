@@ -53,6 +53,8 @@ const injectedExpressions = {
     return {
       id: experiment.id,
       title: experiment.title || experiment.id,
+      description: experiment.description || '',
+      metrics: experiment.metrics || [],
       representation: experiment.representation || null,
       section: experiment.section || null,
       links: {
@@ -388,12 +390,19 @@ async function runBrowserChecks() {
   await waitForGallery();
 
   const resources = await evaluate(injectedExpressions.resources);
-  if (resources.length !== 17) {
-    throw new Error(`Expected 17 gallery entries after the edge-treatment expansion; found ${resources.length}`);
+  if (resources.length !== 18) {
+    throw new Error(`Expected 18 gallery entries after the four-volume fillet addition; found ${resources.length}`);
   }
   if (resources.some(experiment => experiment.assets.length === 0
     || experiment.assets.some(asset => asset.status !== 200))) {
     throw new Error(`Gallery resource requests failed: ${JSON.stringify(resources)}`);
+  }
+  const singularAnnulus = resources.find(experiment => experiment.id === 'annulus-four-fillet-singular');
+  if (!singularAnnulus
+    || !/jacobien (?:est )?nul/i.test(singularAnnulus.description)
+    || !/pas qualifi/i.test(singularAnnulus.description)
+    || !singularAnnulus.metrics.some(metric => metric.label === 'IGA' && /non qualifi/i.test(metric.value))) {
+    throw new Error('Four-volume annulus fillet must disclose its singular Jacobian and unqualified IGA status');
   }
 
   const version = await cdp('Browser.getVersion');

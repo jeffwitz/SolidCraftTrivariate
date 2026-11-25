@@ -36,7 +36,8 @@ void main() {
 }`;
 
 const SURFACE_COLOR = [0.78, 0.67, 0.52];
-const DEFAULT_CAMERA = { yaw: 0.75, pitch: 0.52, distance: 2.7 };
+const DEFAULT_CAMERA = { yaw: 0.72, pitch: 0.5, distance: 2 };
+const CAMERA_FILL = 0.64;
 const GRID = 12;
 const CAP_GRID = 6;
 const FACE_SIDES = [
@@ -382,12 +383,18 @@ export function createViewer(canvas) {
   let center = [0, 0, 0];
   let scale = 1;
   let camera = { ...DEFAULT_CAMERA };
+  let cameraAdjusted = false;
+  let lastCanvasSize = null;
   let drag = null;
   let frame = 0;
   let surfaceMeshes = [];
   let capMeshes = [];
   const activePointers = new Map();
   let pinchDistance = null;
+
+  if (typeof ResizeObserver === 'function') {
+    new ResizeObserver(scheduleDraw).observe(canvas);
+  }
 
   function deleteMeshes(meshes) {
     for (const mesh of meshes) if (mesh.buffer) gl.deleteBuffer(mesh.buffer);
@@ -415,6 +422,10 @@ export function createViewer(canvas) {
       canvas.width = width;
       canvas.height = height;
     }
+    if (!lastCanvasSize || lastCanvasSize[0] !== width || lastCanvasSize[1] !== height) {
+      lastCanvasSize = [width, height];
+      if (model && !cameraAdjusted) camera.distance = fittedDistance(width, height);
+    }
     gl.viewport(0, 0, width, height);
     gl.enable(gl.DEPTH_TEST);
     gl.disable(gl.CULL_FACE);
@@ -426,10 +437,10 @@ export function createViewer(canvas) {
     const cosPitch = Math.cos(camera.pitch);
     const eye = [
       camera.distance * Math.sin(camera.yaw) * cosPitch,
-      camera.distance * Math.sin(camera.pitch),
       camera.distance * Math.cos(camera.yaw) * cosPitch,
+      camera.distance * Math.sin(camera.pitch),
     ];
-    const view = lookAt(eye, [0, 0, 0], [0, 1, 0]);
+    const view = lookAt(eye, [0, 0, 0], [0, 0, 1]);
     const projection = perspective(Math.PI / 4, width / height, 0.01, 100);
     const mvp = multiplyMatrices(projection, view);
     const modelMatrix = new Float32Array([
@@ -470,6 +481,35 @@ export function createViewer(canvas) {
     capMeshes = uploadMeshes(buildCapMeshes(model, clipAxis, clipFraction, bounds));
   }
 
+  function fittedDistance(width, height) {
+    if (!bounds) return DEFAULT_CAMERA.distance;
+    const direction = [
+      Math.sin(camera.yaw) * Math.cos(camera.pitch),
+      Math.cos(camera.yaw) * Math.cos(camera.pitch),
+      Math.sin(camera.pitch),
+    ];
+    const right = normalize([-Math.cos(camera.yaw), Math.sin(camera.yaw), 0]);
+    const up = normalize(cross(direction, right));
+    const aspect = Math.max(1e-6, width / height);
+    const tangentY = Math.tan(Math.PI / 8);
+    const tangentX = tangentY * aspect;
+    let requiredDistance = 0;
+    for (let corner = 0; corner < 8; corner++) {
+      const relative = [0, 1, 2].map(axis => (
+        ((corner >> axis) & 1 ? bounds[1][axis] : bounds[0][axis]) - center[axis]
+      ) / scale);
+      const depth = relative.reduce((sum, coordinate, axis) => sum + coordinate * direction[axis], 0);
+      const horizontal = Math.abs(relative.reduce((sum, coordinate, axis) => sum + coordinate * right[axis], 0));
+      const vertical = Math.abs(relative.reduce((sum, coordinate, axis) => sum + coordinate * up[axis], 0));
+      requiredDistance = Math.max(
+        requiredDistance,
+        depth + horizontal / (tangentX * CAMERA_FILL),
+        depth + vertical / (tangentY * CAMERA_FILL),
+      );
+    }
+    return Math.max(0.85, requiredDistance * 1.04);
+  }
+
   canvas.style.touchAction = 'none';
   canvas.addEventListener('pointerdown', event => {
     activePointers.set(event.pointerId, { x: event.clientX, y: event.clientY });
@@ -489,14 +529,16 @@ export function createViewer(canvas) {
     if (activePointers.size >= 2) {
       const [first, second] = [...activePointers.values()];
       const nextDistance = Math.hypot(first.x - second.x, first.y - second.y);
-      if (pinchDistance > 0 && nextDistance > 0) camera.distance = clamp(camera.distance * pinchDistance / nextDistance, 1.1, 9);
+      if (pinchDistance > 0 && nextDistance > 0) camera.distance = clamp(camera.distance * pinchDistance / nextDistance, 0.85, 9);
       pinchDistance = nextDistance;
+      cameraAdjusted = true;
       scheduleDraw();
       return;
     }
     if (!drag) return;
     camera.yaw = drag.yaw + (event.clientX - drag.x) * 0.008;
     camera.pitch = clamp(drag.pitch + (event.clientY - drag.y) * 0.008, -1.45, 1.45);
+    cameraAdjusted = true;
     scheduleDraw();
   });
   function releasePointer(event) {
@@ -513,20 +555,24 @@ export function createViewer(canvas) {
   canvas.addEventListener('pointercancel', releasePointer);
   canvas.addEventListener('wheel', event => {
     event.preventDefault();
-    camera.distance = clamp(camera.distance * Math.exp(event.deltaY * 0.001), 1.1, 9);
+    camera.distance = clamp(camera.distance * Math.exp(event.deltaY * 0.001), 0.85, 9);
+    cameraAdjusted = true;
     scheduleDraw();
   }, { passive: false });
   canvas.addEventListener('keydown', event => {
     const orbitStep = event.shiftKey ? 0.14 : 0.06;
     if (event.key === 'Home') {
       camera = { ...DEFAULT_CAMERA };
+      camera.distance = fittedDistance(canvas.clientWidth, canvas.clientHeight);
+      cameraAdjusted = false;
     } else if (event.key === 'ArrowLeft') camera.yaw -= orbitStep;
     else if (event.key === 'ArrowRight') camera.yaw += orbitStep;
     else if (event.key === 'ArrowUp') camera.pitch = clamp(camera.pitch - orbitStep, -1.45, 1.45);
     else if (event.key === 'ArrowDown') camera.pitch = clamp(camera.pitch + orbitStep, -1.45, 1.45);
-    else if (event.key === '+' || event.key === '=' || event.code === 'NumpadAdd') camera.distance = clamp(camera.distance * 0.9, 1.1, 9);
-    else if (event.key === '-' || event.code === 'NumpadSubtract') camera.distance = clamp(camera.distance / 0.9, 1.1, 9);
+    else if (event.key === '+' || event.key === '=' || event.code === 'NumpadAdd') { camera.distance = clamp(camera.distance * 0.9, 0.85, 9); cameraAdjusted = true; }
+    else if (event.key === '-' || event.code === 'NumpadSubtract') { camera.distance = clamp(camera.distance / 0.9, 0.85, 9); cameraAdjusted = true; }
     else return;
+    if (event.key !== 'Home') cameraAdjusted = true;
     event.preventDefault();
     scheduleDraw();
   });
@@ -541,6 +587,8 @@ export function createViewer(canvas) {
       rebuildSurfaces();
       rebuildCaps();
       camera = { ...DEFAULT_CAMERA };
+      camera.distance = fittedDistance(canvas.clientWidth, canvas.clientHeight);
+      cameraAdjusted = false;
       scheduleDraw();
     },
     setMode(value) {
@@ -560,6 +608,8 @@ export function createViewer(canvas) {
     },
     reset() {
       camera = { ...DEFAULT_CAMERA };
+      camera.distance = fittedDistance(canvas.clientWidth, canvas.clientHeight);
+      cameraAdjusted = false;
       scheduleDraw();
     },
   };

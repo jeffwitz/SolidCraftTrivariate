@@ -4,7 +4,7 @@ const ui = {
   selector: byId('experiment-select'), description: byId('experiment-description'),
   viewTitle: byId('view-title'), metrics: byId('metrics-list'), source: byId('source-link'), step: byId('step-link'), audit: byId('audit-link'), figure: byId('figure-link'),
   axis: byId('clip-axis'), fraction: byId('clip-fraction'), value: byId('clip-value'), reset: byId('reset-view'),
-  sectionButton: byId('section-button'),
+  sectionButton: byId('s3-face-pocket'),
 };
 
 let experiments = [];

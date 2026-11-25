@@ -1,0 +1,40 @@
+name: Engineering gallery browser QA
+
+on:
+  push:
+    branches:
+      - campagne-nurbs-multiboucles
+    paths:
+      - 'docs/site/**'
+      - 'tests/references/gallery_browser.mjs'
+      - '.github/workflows/gallery-qa.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  gallery-browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Confirm runner browser
+        run: |
+          node --version
+          google-chrome --version
+          echo "CHROME_BIN=$(command -v google-chrome)" >> "$GITHUB_ENV"
+
+      - name: Run engineering gallery browser QA
+        run: node tests/references/gallery_browser.mjs build/gallery-qa
+
+      - name: Upload screenshots and browser report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: engineering-gallery-browser-qa
+          path: build/gallery-qa/
+          if-no-files-found: warn
+          retention-days: 14

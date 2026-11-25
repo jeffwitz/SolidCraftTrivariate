@@ -1,127 +1,125 @@
-**J’ai retrouvé l’exemple, et je pense qu’il fournit une base concrète pour démarrer notre noyau.** Il s’agit de **`bracket-hex`**, une équerre avec un congé et deux perçages, construite dans SolidCraft, partitionnée en **30 cellules**, puis maillée par FieldCraft.
+# Integrating SolidCraft and FieldCraft Around a Trivariate Kernel
 
-Ton idée permet de fixer un premier périmètre réaliste : **construire des solides comme des assemblages de blocs paramétrables sur un cube**. Pour obtenir notre noyau trivarié, le changement central serait de **conserver ces blocs comme géométrie native, avec leurs cartes splines et leurs interfaces, dès la construction de la pièce**.
+## Archival scope
 
-La lecture du code confirme plusieurs briques utiles. Elle montre aussi précisément où intervenir : FieldCraft produit aujourd’hui des maillages à partir de ces blocs ; SolidCraft conserve des corps B-rep. **Nous devons introduire entre les features et leurs représentations dérivées un véritable modèle volumique trivarié.**
+This study examined the `bracket-hex` example: a filleted, two-bore bracket built in SolidCraft, partitioned into **30 cells**, and meshed by FieldCraft. It assessed how that example could seed a trivariate kernel. The central architectural change is to preserve the blocks as native geometry—with spline maps and interfaces—from part construction onward.
 
-## 1. L’exemple exact et ce qu’il démontre
+The source review found useful construction and meshing components, but also a clear boundary: FieldCraft currently produces meshes from the blocks, while SolidCraft retains B-rep bodies. A native trivariate model must sit between feature history and derived representations.
 
-### L’équerre partitionnée en 30 blocs
+## 1. The example and what it demonstrates
 
-Voici les sources directement utiles :
+### The bracket partitioned into 30 blocks
 
-- [La recette de construction et de partition](https://github.com/tangency-labs/fieldcraft/blob/35e834652d8548384c2da8ef1b28d588c9af2ffd/tests/corpus/filleted-bracket-blocks/recipe.json).
-- [L’image du découpage en 30 blocs](https://github.com/tangency-labs/fieldcraft/blob/35e834652d8548384c2da8ef1b28d588c9af2ffd/docs/media/bracket-partition.png).
-- [Le code qui prépare le calcul `bracket-hex`](https://github.com/tangency-labs/fieldcraft/blob/35e834652d8548384c2da8ef1b28d588c9af2ffd/crates/engine/src/sample.rs#L556-L580).
-- [Le mailleur multibloc `hex_mesh_cells`](https://github.com/tangency-labs/fieldcraft/blob/35e834652d8548384c2da8ef1b28d588c9af2ffd/crates/mesh/src/hex/cells.rs#L1-L138).
+Relevant sources:
 
-La pièce est un profil en L de **60 × 50 mm**, avec des jambes de **8 mm**, extrudé sur **40 mm**. Elle comporte un congé intérieur de **rayon 6 mm**, puis deux perçages de **diamètre 8 mm**, un dans chaque jambe. Les trous ont des axes différents : la pièce terminée dépasse donc le cas d’une simple section extrudée dans une seule direction.
+- [Construction and partition recipe](https://github.com/tangency-labs/fieldcraft/blob/35e834652d8548384c2da8ef1b28d588c9af2ffd/tests/corpus/filleted-bracket-blocks/recipe.json).
+- [Image of the 30-block partition](https://github.com/tangency-labs/fieldcraft/blob/35e834652d8548384c2da8ef1b28d588c9af2ffd/docs/media/bracket-partition.png).
+- [Code preparing the `bracket-hex` calculation](https://github.com/tangency-labs/fieldcraft/blob/35e834652d8548384c2da8ef1b28d588c9af2ffd/crates/engine/src/sample.rs#L556-L580).
+- [Multiblock mesher `hex_mesh_cells`](https://github.com/tangency-labs/fieldcraft/blob/35e834652d8548384c2da8ef1b28d588c9af2ffd/crates/mesh/src/hex/cells.rs#L1-L138).
 
-La recette prescrit **29 opérations `solid.split_body`** :
+The part is an L profile **60 × 50 mm**, with **8 mm** legs, extruded by **40 mm**. It has a **radius-6 mm** inside fillet and two **diameter-8 mm** bores, one in each leg. Their axes differ, so the finished part is beyond a simple section extruded in one direction.
 
-| Étape | Partition obtenue |
+The recipe prescribes **29 `solid.split_body` operations**:
+
+| Step | Resulting partition |
 |---|---|
-| Coupes à \(z=10\) et \(z=30\) | Trois tranches dans la largeur |
-| Coupes dans les jambes et coupe diagonale dans le coude | Huit cellules dans chaque tranche |
-| Découpage autour de chacun des deux trous, dans la tranche centrale | Chaque cellule contenant un trou devient quatre cellules disposées autour du trou |
+| Splits at z=10 and z=30 | Three widthwise slices |
+| Splits in the legs and a diagonal split in the bend | Eight cells in each slice |
+| Splits around each bore in the middle slice | Each cell containing a bore becomes four cells arranged around it |
 
-On arrive à :
+The total is
 
 \[
-8+(8+3+3)+8=30\ \text{cellules}.
+8+(8+3+3)+8=30\ \text{cells}.
 \]
 
-**Cette partition est explicitement écrite dans la recette.** Les plans de coupe, leur ordre et les noms successifs des corps sont fournis. C’est précisément ce qui rend cet exemple intéressant pour commencer : les décisions de construction des blocs sont déjà disponibles et examinables.
+**The partition is explicitly recorded in the recipe:** cut planes, their order, and successive body names are supplied. That makes the example useful as a starting case because the block-construction decisions are already available for inspection.
 
-Dans l’application, l’exemple s’ouvre avec :
+The application opens the example with:
 
 ```sh
 fieldcraft --sample bracket-hex
 ```
 
-La documentation décrit ensuite un calcul sur **5 778 éléments hex20**, avec une taille demandée de 3 mm. Il faut bien distinguer les **30 blocs de partition** des milliers d’éléments qui les discrétisent. [FieldCraft](https://tangency-labs.github.io/fieldcraft/examples.html?utm_source=chatgpt.com)
+The documentation then describes a calculation with **5,778 hex20 elements** at a requested size of 3 mm. The **30 partition blocks** must be distinguished from the thousands of elements used to discretize them. [FieldCraft example](https://tangency-labs.github.io/fieldcraft/examples.html?utm_source=chatgpt.com)
 
-### Ce que FieldCraft fait avec cette partition
+### What FieldCraft does with the partition
 
-Le code de `cells.rs` suit une organisation qui nous intéresse directement :
+The organization in `cells.rs` is directly relevant:
 
-1. Reconnaître chaque cellule comme un **cube logique**.
-2. Identifier les sommets, arêtes et faces partagés.
-3. Affecter des nombres de subdivisions compatibles entre les blocs.
-4. Construire chaque arête une seule fois.
-5. Construire chaque grille de face une seule fois.
-6. Remplir chaque intérieur par **interpolation transfinie trivariée**.
-7. Contrôler le maillage obtenu.
+1. Recognize each cell as a **logical cube**.
+2. Identify shared vertices, edges, and faces.
+3. Assign compatible subdivision counts across blocks.
+4. Construct each edge once.
+5. Construct each face grid once.
+6. Fill each interior using **trivariate transfinite interpolation**.
+7. Check the resulting mesh.
 
-Une face commune possède donc une grille commune, utilisée par les deux cellules. Une fois la topologie établie, les nœuds sont partagés par identité. La fixture du corpus enregistre **30 corps et 45 interfaces**. [Sources : algorithme multibloc](https://github.com/tangency-labs/fieldcraft/blob/35e834652d8548384c2da8ef1b28d588c9af2ffd/crates/mesh/src/hex/cells.rs#L1-L32), [fixture](https://github.com/tangency-labs/fieldcraft/blob/35e834652d8548384c2da8ef1b28d588c9af2ffd/tests/corpus/filleted-bracket-blocks/fixture.json).
+A shared face therefore has one grid used by both cells. Once topology is established, nodes are shared by identity. The corpus fixture records **30 bodies and 45 interfaces**. [Multiblock algorithm](https://github.com/tangency-labs/fieldcraft/blob/35e834652d8548384c2da8ef1b28d588c9af2ffd/crates/mesh/src/hex/cells.rs#L1-L32) · [Fixture](https://github.com/tangency-labs/fieldcraft/blob/35e834652d8548384c2da8ef1b28d588c9af2ffd/tests/corpus/filleted-bracket-blocks/fixture.json).
 
-**C’est cette organisation que je reprendrais : une topologie commune, puis une géométrie commune sur les interfaces.**
+The reusable idea is **a common topology followed by common geometry on interfaces**.
 
-### Il existe aussi un exemple de décomposition automatique
+### An automatic-decomposition example
 
-Le second exemple à étudier est **`crank-arm`**, une manivelle. Après une partition suivant son plan de symétrie, `mesh.hex.generate` décompose automatiquement sa section en régions adaptées au maillage structuré.
+The second example is **`crank-arm`**, a crank. After partitioning along its symmetry plane, `mesh.hex.generate` automatically decomposes its section into regions suited to structured meshing.
 
-Le code correspondant est [`hex/decompose.rs`](https://github.com/tangency-labs/fieldcraft/blob/35e834652d8548384c2da8ef1b28d588c9af2ffd/crates/mesh/src/hex/decompose.rs#L1-L48). Il sépare les trous, propose des découpages autour d’eux et cherche des coupes depuis les coins rentrants et les congés.
+The implementation is [`hex/decompose.rs`](https://github.com/tangency-labs/fieldcraft/blob/35e834652d8548384c2da8ef1b28d588c9af2ffd/crates/mesh/src/hex/decompose.rs#L1-L48). It separates holes, proposes splits around them, and seeks cuts from re-entrant corners and fillets.
 
-Deux limites de cet exemple orientent notre stratégie :
+Two limits inform the proposed strategy:
 
-- ses partitions restent **internes au mailleur** et ne sont pas conservées dans le modèle géométrique ;
-- la variante maillée est préparée pour rester balayable : certains congés et chanfreins sont retirés, et certaines rencontres géométriques sont modifiées pour éviter des dégénérescences. [Source : description de `crank-arm`](https://github.com/tangency-labs/fieldcraft/blob/35e834652d8548384c2da8ef1b28d588c9af2ffd/docs/examples.md#L142-L165).
+- partitions are **internal to the mesher** and are not retained in the geometric model;
+- the meshed variant is adjusted to remain sweepable: some fillets and chamfers are removed, and some geometric encounters are changed to avoid degeneracies. [Description of `crank-arm`](https://github.com/tangency-labs/fieldcraft/blob/35e834652d8548384c2da8ef1b28d588c9af2ffd/docs/examples.md#L142-L165).
 
-Je commencerais donc par **la partition maîtrisée de l’équerre**, puis utiliserais la manivelle pour étendre l’automatisation.
+Start with **the controlled bracket partition**, then use the crank to extend automation.
 
-## 2. Ta contrainte est-elle suffisante ?
+## 2. Is the constraint sufficient?
 
-**Elle est suffisante pour définir le périmètre d’un premier noyau.** Je la formulerais cependant plus précisément :
+It is sufficient to define the scope of an initial kernel, but should be stated more precisely:
 
-> Le noyau construit des solides constitués de blocs trivariés réguliers, dont les interfaces sont explicitement partagées et paramétriquement compatibles.
+> The kernel constructs solids from regular trivariate blocks whose interfaces are explicitly shared and parametrically compatible.
 
-« Décomposable en solides maillables en hexas » constitue un excellent point de départ, mais il reste quatre propriétés à établir :
+“Decomposable into hexahedral-meshable solids” is a good starting point, but four properties remain to be established:
 
-| Propriété | Ce qu’elle apporte à notre noyau |
+| Property | Contribution to the kernel |
 |---|---|
-| Chaque bloc possède une topologie de cube | Un domaine paramétrique à trois coordonnées |
-| Chaque bloc possède une carte spline régulière et injective | Une géométrie volumique exploitable pour l’analyse |
-| Deux blocs voisins utilisent des traces compatibles | Un raccord géométrique et un assemblage des champs bien définis |
-| Les blocs forment une partition du solide | Une couverture complète, sans recouvrement intérieur |
+| Each block has cube topology | A three-coordinate parameter domain |
+| Each block has a regular, injective spline map | Volumetric geometry usable for analysis |
+| Neighboring blocks have compatible traces | Well-defined geometric joins and field assembly |
+| Blocks form a partition of the solid | Complete coverage without interior overlap |
 
-La distinction essentielle est entre **la topologie du bloc** et **sa paramétrisation**. Six faces logiques donnent une structure de construction ; elles ne garantissent pas à elles seules la qualité d’une carte \(X(u,v,w)\).
+The key distinction is **block topology versus parameterization**. Six logical faces provide a construction structure; they do not alone guarantee a good map \(X(u,v,w)\).
 
-L’exemple contient d’ailleurs un détail instructif : ses 30 corps totalisent **188 faces B-rep**, alors que 30 cubes logiques possèdent 180 côtés. FieldCraft sait regrouper plusieurs faces géométriques en une face logique composite, par exemple au voisinage d’un raccord tangent entre un plan et un congé. [Sources : fixture](https://github.com/tangency-labs/fieldcraft/blob/35e834652d8548384c2da8ef1b28d588c9af2ffd/tests/corpus/filleted-bracket-blocks/fixture.json), [construction des faces composites](https://github.com/tangency-labs/fieldcraft/blob/35e834652d8548384c2da8ef1b28d588c9af2ffd/crates/mesh/src/hex/cells.rs#L9-L15).
+One instructive detail is that the 30 bodies have **188 B-rep faces**, whereas 30 logical cubes have 180 sides. FieldCraft can group multiple geometric faces into one composite logical face, for example near a tangent join between a plane and fillet. [Fixture](https://github.com/tangency-labs/fieldcraft/blob/35e834652d8548384c2da8ef1b28d588c9af2ffd/tests/corpus/filleted-bracket-blocks/fixture.json) · [Composite-face construction](https://github.com/tangency-labs/fieldcraft/blob/35e834652d8548384c2da8ef1b28d588c9af2ffd/crates/mesh/src/hex/cells.rs#L9-L15).
 
-Pour nous, cela implique qu’une face de bloc pourra être une surface spline comportant plusieurs intervalles de nœuds. Et, si une cellule logique exige une subdivision supplémentaire pour obtenir des cartes régulières, le noyau devra pouvoir la produire explicitement.
+Thus a block face may be a spline surface spanning multiple knot intervals. If a logical cell needs further subdivision to obtain regular maps, the kernel must be able to produce that subdivision explicitly.
 
-**Je retiendrais donc le plan à 30 cellules comme première cible de construction, avec la régularité des cartes comme critère d’acceptation.** Le nombre 30 reste un objectif à vérifier, pas une contrainte qui justifierait de conserver une carte défectueuse.
+**The 30-cell plan is a first construction target, with map regularity as an acceptance criterion.** Thirty is a target to verify, not a reason to retain a defective map.
 
-## 3. La modification décisive dans FieldCraft : conserver les cartes
+## 3. The decisive change in FieldCraft: retain the maps
 
-### L’état actuel
+### Current state
 
-Les types de sortie sont très explicites :
+The output types are explicit:
 
-- `HexMesh` contient des nœuds, une connectivité, des faces frontières et un rapport ;
-- `CellsMesh.blocks` contient les nombres de divisions suivant les trois directions de chaque bloc.
+- `HexMesh` contains nodes, connectivity, boundary faces, and a report;
+- `CellsMesh.blocks` contains the subdivision counts in each block direction.
 
-Il n’y a pas, dans ces objets, de réseau de contrôle volumique, de poids NURBS ni de vecteurs de nœuds. [Sources : `HexMesh`](https://github.com/tangency-labs/fieldcraft/blob/35e834652d8548384c2da8ef1b28d588c9af2ffd/crates/mesh/src/hex/mod.rs#L213-L223), [`CellsMesh`](https://github.com/tangency-labs/fieldcraft/blob/35e834652d8548384c2da8ef1b28d588c9af2ffd/crates/mesh/src/hex/cells.rs#L52-L72).
+These objects contain no volumetric control net, NURBS weights, or knot vectors. [Sources: `HexMesh`](https://github.com/tangency-labs/fieldcraft/blob/35e834652d8548384c2da8ef1b28d588c9af2ffd/crates/mesh/src/hex/mod.rs#L213-L223) · [`CellsMesh`](https://github.com/tangency-labs/fieldcraft/blob/35e834652d8548384c2da8ef1b28d588c9af2ffd/crates/mesh/src/hex/cells.rs#L52-L72).
 
-FieldCraft possède bien des cartes continues pour ses éléments finis et des évaluateurs analytiques pour certaines constructions. **Ce qui manque est la conservation des blocs de conception comme volumes splines indépendants du maillage.**
+FieldCraft does have continuous maps for finite elements and analytic evaluators for some constructions. **What it lacks is retention of design blocks as spline volumes independent of a mesh.** For example, [`transfinite_volume`](https://github.com/tangency-labs/fieldcraft/blob/35e834652d8548384c2da8ef1b28d588c9af2ffd/crates/mesh/src/quad/tfi.rs#L204-L240) fills a point array from boundary grids. It is a useful formula reference, but its result remains a grid.
 
-La fonction [`transfinite_volume`](https://github.com/tangency-labs/fieldcraft/blob/35e834652d8548384c2da8ef1b28d588c9af2ffd/crates/mesh/src/quad/tfi.rs#L204-L240), par exemple, remplit un tableau de points à partir de grilles de frontières. Elle constitue une référence utile pour les formules, mais son résultat reste une grille.
+### Proposed objects
 
-### L’objet à introduire
-
-Je proposerais trois objets distincts :
-
-| Objet proposé | Responsabilité |
+| Proposed object | Responsibility |
 |---|---|
-| `BlockPlan` | Recettes de construction des blocs, incidences, orientations et provenance |
-| `TrivariateComplex` | Cartes splines effectivement construites, interfaces canoniques, frontière et validité |
-| `AnalysisSpace` | Bases d’analyse, raffinement, degrés de liberté, contraintes et quadrature |
+| `BlockPlan` | Block-construction recipes, incidences, orientations, and provenance |
+| `TrivariateComplex` | Constructed spline maps, canonical interfaces, boundary, and validity |
+| `AnalysisSpace` | Analysis bases, refinement, DOFs, constraints, and quadrature |
 
-Le cœur géométrique contiendrait notamment :
+The geometric core would include, for example:
 
 ```rust
-// Schéma proposé : ces types n'existent pas encore dans les projets.
+// Proposed schema: these types do not yet exist in the projects.
 struct Trivariate {
     degree: [usize; 3],
     knots: [Vec<f64>; 3],
@@ -137,206 +135,164 @@ struct NativeSolid {
 }
 ```
 
-Le point crucial est que **les divisions demandées pour le calcul ne définissent plus la géométrie**. On construit d’abord les cartes. On peut ensuite les raffiner exactement, les échantillonner pour l’affichage ou en dériver un maillage EF.
+The key point is that **requested analysis subdivisions no longer define geometry**. Construct maps first. They can then be exactly refined, sampled for display, or used to derive an FE mesh.
 
-### Ce qui se reprend directement dans l’organisation
+### What can be reused from the organization
 
-Le mailleur multibloc possède déjà les bonnes idées pour :
+The multiblock mesher already has useful mechanisms for sharing an edge and face, converting face orientations between blocks, and propagating subdivision constraints. For example, [`FaceGrid::map_from`](https://github.com/tangency-labs/fieldcraft/blob/35e834652d8548384c2da8ef1b28d588c9af2ffd/crates/mesh/src/hex/cells.rs#L939-L971) handles grid-orientation correspondences; the same logic can be adapted to parametric directions.
 
-- porter une arête commune ;
-- porter une face commune ;
-- convertir les orientations d’une face entre deux blocs ;
-- propager des contraintes de subdivision.
+Spline compatibility must additionally cover **degrees, knots, multiplicities, weights, and trace coefficients**. Equal point counts on both sides are insufficient.
 
-Par exemple, [`FaceGrid::map_from`](https://github.com/tangency-labs/fieldcraft/blob/35e834652d8548384c2da8ef1b28d588c9af2ffd/crates/mesh/src/hex/cells.rs#L939-L971) gère les correspondances d’orientation des grilles. Nous pouvons reprendre cette logique pour les directions paramétriques.
+**For the first demonstrator, use whole-face interfaces with identical traces.** This matches FieldCraft's multiblock mode, which already rejects cells meeting without sharing complete faces. Nested interfaces specified in the project requirements can follow. [Source: `hex_mesh_cells` contract](https://github.com/tangency-labs/fieldcraft/blob/35e834652d8548384c2da8ef1b28d588c9af2ffd/crates/mesh/src/hex/cells.rs#L100-L103).
 
-En revanche, la compatibilité spline doit porter sur **les degrés, les nœuds, leurs multiplicités, les poids et les coefficients de trace**. Avoir le même nombre de points de chaque côté ne suffit pas.
+## 4. Constructing the bracket directly in trivariate form
 
-**Pour le premier démonstrateur, je choisirais des raccords par faces entières, avec traces identiques.** C’est cohérent avec le mode multibloc de FieldCraft, qui refuse déjà les cellules se rencontrant sans partager leurs faces entières. Les raccords emboîtés prévus dans notre CdC peuvent venir ensuite. [Source : contrat de `hex_mesh_cells`](https://github.com/tangency-labs/fieldcraft/blob/35e834652d8548384c2da8ef1b28d588c9af2ffd/crates/mesh/src/hex/cells.rs#L100-L103).
+Turn the existing recipe into a **parametric recipe for native blocks**. Today it creates a body, drills it, then splits it. In the new kernel, features should produce or rebuild a block set whose union represents the result.
 
-## 4. Comment construire l’équerre directement en trivarié
+### A deliberately small initial operator set
 
-Je transformerais la recette existante en **recette paramétrique de blocs natifs**.
-
-Aujourd’hui, elle construit un corps, le perce, puis le découpe. Dans notre noyau, les features devront produire ou reconstruire un ensemble de blocs dont la réunion représente leur résultat.
-
-### Une première palette d’opérateurs très limitée
-
-Pour cette équerre, je viserais les constructions suivantes :
-
-| Opérateur natif | Utilisation |
+| Native operator | Use |
 |---|---|
-| Quadrilatère plan et extrusion | Zones droites des jambes |
-| Quadrilatère à frontière circulaire et extrusion | Zones autour des perçages |
-| Section avec raccord circulaire et extrusion | Coude avec congé |
-| Découpage isoparamétrique | Subdivision exacte d’un bloc existant |
-| Assemblage par faces partagées | Constitution du solide |
-| Reconstruction d’une famille de blocs | Mise à jour d’un trou, d’une épaisseur ou d’un rayon |
+| Planar quadrilateral and extrusion | Straight regions of the legs |
+| Quadrilateral with circular boundary and extrusion | Regions around bores |
+| Section with circular blend and extrusion | Filleted bend |
+| Isoparametric split | Exact subdivision of an existing block |
+| Assembly by shared faces | Compose the solid |
+| Block-family reconstruction | Update a hole, thickness, or radius |
 
-L’extrusion est particulièrement favorable. Pour une section rationnelle \(\mathbf S(u,v)\), on construit :
+Extrusion is especially favorable. For a rational section \(\mathbf S(u,v)\), construct
 
 \[
 \mathbf X(u,v,w)=\mathbf S(u,v)+wh\,\mathbf d.
 \]
 
-Si les points de contrôle de la section sont \(\mathbf P_{ij}\), avec poids \(\omega_{ij}\), les deux couches de contrôle volumique sont :
+If section control points are \(\mathbf P_{ij}\) with weights \(\omega_{ij}\), the two volumetric control layers are
 
 \[
-\mathbf P_{ij0}=\mathbf P_{ij},
-\qquad
+\mathbf P_{ij0}=\mathbf P_{ij},\qquad
 \mathbf P_{ij1}=\mathbf P_{ij}+h\mathbf d,
 \]
 
-avec les mêmes poids sur les deux couches et un degré 1 dans la direction d’extrusion.
+with equal weights on both layers and degree 1 in the extrusion direction. This directly produces a native NURBS volume whose definition is independent of element count.
 
-**On obtient immédiatement un volume NURBS natif.** Sa définition ne dépend d’aucun nombre d’éléments.
+### Bores become block constructions around voids
 
-### Les trous deviennent des constructions de blocs autour d’un vide
+For each bore, FieldCraft's partition provides four regions around the hole. Use this as a template:
 
-Pour chaque perçage, la partition de FieldCraft fournit quatre régions autour du trou. Nous pouvons nous en servir comme patron :
+1. Define the bore arcs exactly.
+2. Define the outer boundaries of the region reserved for the bore.
+3. Construct four section patches.
+4. Extrude them through the leg thickness.
+5. Share their interfaces with neighboring blocks.
 
-1. Définir exactement les arcs du trou.
-2. Définir les frontières extérieures de la zone réservée au perçage.
-3. Construire les quatre surfaces de section.
-4. Les extruder à travers l’épaisseur de la jambe.
-5. Partager leurs interfaces avec les blocs voisins.
+For this admissible family, “make a hole” becomes **a local volumetric reconstruction with known topology**. The bore wall is a restriction of volume maps and is retained in the kernel.
 
-L’opération « créer un trou » devient alors, dans cette famille admissible, **une reconstruction volumique locale avec une topologie connue**.
+The exterior faces of these blocks and their neighbors must be parameterized together. Even a geometrically planar interface can have different parameterizations on its two sides, so the canonical shared face must be construction data.
 
-Cela répond directement à ton objectif : l’intérieur est construit et conservé dans le noyau. La surface cylindrique du trou est une restriction de cartes volumiques.
+### FieldCraft arcs require a real adaptation
 
-Il faudra cependant paramétrer ensemble les faces extérieures de ces blocs et celles de leurs voisins. Même quand une interface est géométriquement plane, ses deux paramétrisations peuvent différer. La face canonique partagée doit donc être une donnée de construction.
+In [`mesh/block.rs`](https://github.com/tangency-labs/fieldcraft/blob/35e834652d8548384c2da8ef1b28d588c9af2ffd/crates/mesh/src/block.rs#L177-L188), arcs are evaluated with sine and cosine of an angular parameter. Construct the same geometric arcs using rational quadratic segments instead. Their parameterization differs, so boundary correspondences must be recalculated.
 
-### Les arcs de FieldCraft demandent une adaptation réelle
+Transfinite formulas remain useful for more general blocks, but spline coefficients must be constructed from compatible boundaries, then weights and Jacobians checked. **Applying TFI to projected points does not automatically produce an exact NURBS map.**
 
-Dans [`mesh/block.rs`](https://github.com/tangency-labs/fieldcraft/blob/35e834652d8548384c2da8ef1b28d588c9af2ffd/crates/mesh/src/block.rs#L177-L188), les arcs sont évalués par sinus et cosinus d’un paramètre angulaire.
+### Start with a qualified fillet family
 
-Nous construirions les mêmes arcs géométriques avec des segments rationnels quadratiques. Leur paramétrisation change : les correspondances de bord doivent être recalculées en conséquence.
+The bracket's inside fillet comes from a rounded planar section extruded through the part. It is a good first native operation. Start with:
 
-Pour les blocs plus généraux, les formules transfinies restent utiles, mais il faut construire des coefficients splines avec des frontières compatibles, puis contrôler les poids et le Jacobien. **Une TFI appliquée à des points projetés ne devient pas automatiquement une carte NURBS exacte.**
+> A circular blend in a section, paired with a specified volumetric partition and explicit validity conditions.
 
-### Le congé doit commencer comme une famille qualifiée
+Spatial fillets between arbitrary surfaces should follow later. This sequence delivers useful design operations while keeping volume construction controlled.
 
-Le congé intérieur de cette équerre provient d’une section plane arrondie, extrudée. C’est une bonne première opération native.
+## 5. Replacing Solidcore in SolidCraft
 
-Je commencerais donc par :
+### The facade exists, but replacement is not transparent
 
-> Un raccord circulaire dans une section, associé à une partition volumique définie et à des conditions de validité explicites.
-
-L’extension aux congés spatiaux entre surfaces quelconques viendrait après. Cette progression permet de livrer des opérations de conception utiles tout en gardant des constructions volumiques maîtrisées.
-
-## 5. Où remplacer Solidcore dans SolidCraft
-
-### La façade existe, mais le remplacement n’est pas transparent
-
-SolidCraft possède une crate `solidcraft-kernel` qui regroupe les opérations usuelles. Toutefois, son type `Body` repose explicitement sur un record B-rep et expose notamment :
+SolidCraft has a `solidcraft-kernel` crate that groups common operations. However, its `Body` type explicitly wraps a B-rep record and exposes, among other methods:
 
 ```rust
 pub fn record(&self) -> &Brep
 pub fn smlib(&self) -> Result<Arc<solidcraft_smlib::Brep>>
 ```
 
-Des couches supérieures utilisent aussi des types de Solidcore. Le changement porte donc sur le modèle géométrique et ses consommateurs, au-delà de la substitution d’une dépendance Cargo. [Sources : définition de `Body`](https://github.com/tangency-labs/solidcraft/blob/765f26e0d1fc7c66a0d03ea2dae28ee3b65270b8/crates/kernel/src/body.rs#L165-L183), [accès publics](https://github.com/tangency-labs/solidcraft/blob/765f26e0d1fc7c66a0d03ea2dae28ee3b65270b8/crates/kernel/src/body.rs#L799-L808).
+Higher layers also use Solidcore types. The change therefore affects the geometric model and its consumers, not just a Cargo dependency. [Definition of `Body`](https://github.com/tangency-labs/solidcraft/blob/765f26e0d1fc7c66a0d03ea2dae28ee3b65270b8/crates/kernel/src/body.rs#L165-L183) · [Public accessors](https://github.com/tangency-labs/solidcraft/blob/765f26e0d1fc7c66a0d03ea2dae28ee3b65270b8/crates/kernel/src/body.rs#L799-L808).
 
-### Le bon point d’entrée est l’évaluation des features
+### Feature evaluation is the right entry point
 
-SolidCraft possède déjà :
+SolidCraft already has serialized features, including sketches, extrusions, revolutions, and fillets; parameters and expressions; feature identities; a timeline with references; and evaluation dispatch. Integration belongs around `FeatureKind` and `eval_feature_kind`, where construction intent, profiles, and parameters are still known. [Feature definitions](https://github.com/tangency-labs/solidcraft/blob/765f26e0d1fc7c66a0d03ea2dae28ee3b65270b8/crates/doc/src/document.rs#L887-L934) · [Evaluation](https://github.com/tangency-labs/solidcraft/blob/765f26e0d1fc7c66a0d03ea2dae28ee3b65270b8/crates/doc/src/eval.rs#L14094-L14131).
 
-- des features sérialisées, dont esquisses, extrusions, révolutions et congés ;
-- des paramètres et expressions ;
-- des identifiants de features ;
-- une timeline avec références ;
-- un dispatch d’évaluation.
+The restricted contract at that point should be:
 
-Le point d’intégration se trouve autour de `FeatureKind` et de `eval_feature_kind`. C’est là que l’on connaît encore **l’intention de construction**, les profils et les paramètres. [Sources : définition des features](https://github.com/tangency-labs/solidcraft/blob/765f26e0d1fc7c66a0d03ea2dae28ee3b65270b8/crates/doc/src/document.rs#L887-L934), [évaluation](https://github.com/tangency-labs/solidcraft/blob/765f26e0d1fc7c66a0d03ea2dae28ee3b65270b8/crates/doc/src/eval.rs#L14094-L14131).
+> A resolved design operation receives parameters and semantic references, then returns a valid trivariate solid or an explained refusal.
 
-Je créerais à ce niveau un contrat restreint :
+Begin with the operations needed for the bracket. This allows the editor and history to remain in use while the native body gains its own representation.
 
-> Une opération de conception résolue reçoit des paramètres et des références sémantiques, puis retourne un solide trivarié valide ou un refus expliqué.
+### Solidcore contains volume types, but not an operational volume kernel
 
-Le premier ensemble d’opérations serait celui nécessaire à l’équerre. Cela permettrait de conserver progressivement l’éditeur et son historique tout en donnant au corps natif sa propre représentation.
+Solidcore does contain a `BSplineVolume` type. Its source explains that the port follows an SMLib build without `USE_VOLUMES`, so volume evaluation is unavailable. `evaluate_simple` explicitly returns `BSplineVolumeUnsupported`. [Implementation of `BSplineVolume`](https://github.com/tangency-labs/solidcraft/blob/765f26e0d1fc7c66a0d03ea2dae28ee3b65270b8/solidcore/crates/solidcore/src/surface/b_spline_volume.rs#L31-L38) · [Evaluation](https://github.com/tangency-labs/solidcraft/blob/765f26e0d1fc7c66a0d03ea2dae28ee3b65270b8/solidcore/crates/solidcore/src/surface/b_spline_volume.rs#L307-L324).
 
-### Une découverte utile : Solidcore contient des types de volumes
+There are structures to inspect, but no operational volumetric kernel to activate. Elementary routines do exist for B-spline basis evaluation, curve derivatives, and control-net refinement. They can be qualified and potentially reused behind the new API. [Basis functions](https://github.com/tangency-labs/solidcraft/blob/765f26e0d1fc7c66a0d03ea2dae28ee3b65270b8/solidcore/crates/solidcore/src/nurbs/knots.rs#L444-L512) · [Refinement](https://github.com/tangency-labs/solidcraft/blob/765f26e0d1fc7c66a0d03ea2dae28ee3b65270b8/solidcore/crates/solidcore/src/nurbs/crv_adv/p2.rs#L440-L479).
 
-Solidcore contient effectivement un type `BSplineVolume`. Mais le fichier explique que le port suit un build SMLib sans la fonctionnalité `USE_VOLUMES` : l’évaluation du volume n’est pas disponible. La méthode `evaluate_simple` retourne explicitement `BSplineVolumeUnsupported`. [Source : implémentation de `BSplineVolume`](https://github.com/tangency-labs/solidcraft/blob/765f26e0d1fc7c66a0d03ea2dae28ee3b65270b8/solidcore/crates/solidcore/src/surface/b_spline_volume.rs#L31-L38), [évaluation](https://github.com/tangency-labs/solidcraft/blob/765f26e0d1fc7c66a0d03ea2dae28ee3b65270b8/solidcore/crates/solidcore/src/surface/b_spline_volume.rs#L307-L324).
+Replacing Solidcore as the master model remains compatible with reusing selected mathematical components.
 
-Nous avons donc des structures à examiner, mais pas un noyau volumique opérationnel à activer.
+### Preserve naming and rendering while adapting their identities
 
-En revanche, des routines élémentaires existent réellement : évaluation des bases B-splines, dérivées de courbes et raffinement de réseaux de contrôle. Elles méritent d’être qualifiées et éventuellement reprises derrière notre API. [Sources : bases](https://github.com/tangency-labs/solidcraft/blob/765f26e0d1fc7c66a0d03ea2dae28ee3b65270b8/solidcore/crates/solidcore/src/nurbs/knots.rs#L444-L512), [raffinement](https://github.com/tangency-labs/solidcraft/blob/765f26e0d1fc7c66a0d03ea2dae28ee3b65270b8/solidcore/crates/solidcore/src/nurbs/crv_adv/p2.rs#L440-L479).
+SolidCraft's naming already carries provenance such as feature, face role, subdivision, and copy. [Persistent names](https://github.com/tangency-labs/solidcraft/blob/765f26e0d1fc7c66a0d03ea2dae28ee3b65270b8/crates/doc/src/persistent_name.rs#L1-L10).
 
-**Remplacer Solidcore comme modèle central reste compatible avec le réemploi de certaines de ses briques mathématiques.**
+Keep three concepts distinct:
 
-### Conserver le nommage et le rendu, en adaptant leur identité
+- **design face:** “bore wall,” “loaded face,” or “support face”;
+- **block face:** parametric boundary of a map;
+- **internal interface:** join between two maps.
 
-Le nommage de SolidCraft porte déjà la provenance : feature, rôle de la face, subdivision, copie, etc. C’est une base intéressante. [Source : noms persistants](https://github.com/tangency-labs/solidcraft/blob/765f26e0d1fc7c66a0d03ea2dae28ee3b65270b8/crates/doc/src/persistent_name.rs#L1-L10).
+A bore wall can comprise four block faces while retaining one design identity. Boundary conditions attach to the design identity.
 
-Je garderais impérativement notre distinction :
+Rendering is easier to connect: SolidCraft already displays meshes with face identifiers. Triangles can be generated from the trivariate complex boundary while much of the display engine is retained. [`SceneMesh`](https://github.com/tangency-labs/solidcraft/blob/765f26e0d1fc7c66a0d03ea2dae28ee3b65270b8/crates/viewport/src/scene.rs#L24-L40).
 
-- **face de conception** : « paroi du perçage », « face chargée », « face d’appui » ;
-- **face de bloc** : frontière paramétrique d’une carte ;
-- **interface interne** : raccord entre deux cartes.
+## 6. Using FieldCraft for IGA
 
-La paroi d’un trou peut réunir quatre faces de blocs tout en conservant une seule identité de conception. Les conditions aux limites s’attachent à cette identité.
+FieldCraft is a useful host because geometric dependencies are concentrated in `fieldcraft-geometry`, separately from the mesher. [Geometry dependencies](https://github.com/tangency-labs/fieldcraft/blob/35e834652d8548384c2da8ef1b28d588c9af2ffd/crates/geometry/Cargo.toml#L11-L29) · [Mesher dependencies](https://github.com/tangency-labs/fieldcraft/blob/35e834652d8548384c2da8ef1b28d588c9af2ffd/crates/mesh/Cargo.toml#L11-L17).
 
-Le rendu est plus facile à raccorder : SolidCraft affiche déjà des maillages munis d’identifiants de faces. On peut produire ces triangles depuis la frontière du complexe trivarié et conserver une grande partie du moteur d’affichage. [Source : `SceneMesh`](https://github.com/tangency-labs/solidcraft/blob/765f26e0d1fc7c66a0d03ea2dae28ee3b65270b8/crates/viewport/src/scene.rs#L24-L40).
+The adapter would need a native volumetric output. Current output exposes primarily triangulated surfaces, discretized curves, and selected analytic surfaces; it does not carry general NURBS maps.
 
-## 6. Comment utiliser FieldCraft pour l’IGA
+### IGA also requires solver integration
 
-FieldCraft constitue un hôte intéressant parce que ses dépendances géométriques sont concentrées dans `fieldcraft-geometry`, tandis que le mailleur est séparé. [Sources : dépendances géométriques](https://github.com/tangency-labs/fieldcraft/blob/35e834652d8548384c2da8ef1b28d588c9af2ffd/crates/geometry/Cargo.toml#L11-L29), [dépendances du mailleur](https://github.com/tangency-labs/fieldcraft/blob/35e834652d8548384c2da8ef1b28d588c9af2ffd/crates/mesh/Cargo.toml#L11-L17).
+The current solver is organized around finite-element families. Shape functions are selected by element type, and some structures fix the maximum number of local functions at 27. A tensor-product cubic basis already uses 64 per element. [`ElementType`](https://github.com/tangency-labs/fieldcraft/blob/35e834652d8548384c2da8ef1b28d588c9af2ffd/crates/fem/src/element.rs#L57-L74) · [`MAX_NODES`](https://github.com/tangency-labs/fieldcraft/blob/35e834652d8548384c2da8ef1b28d588c9af2ffd/crates/fem/src/shape.rs#L24-L34).
 
-Il faut toutefois ajouter une sortie volumique native à cet adaptateur. Sa sortie actuelle expose essentiellement des surfaces triangulées, des courbes discrétisées et certaines surfaces analytiques ; elle ne transporte pas des cartes NURBS générales.
+Use **Bézier extraction** with weights, extraction operators, and control-DOF connectivity. This could reuse parts of the mechanics and linear algebra while adapting basis and Jacobian evaluation, local support sizes, interface assembly, boundary conditions, and evaluation at physical result points.
 
-### Le calcul IGA demande aussi un raccordement
+The analysis space could begin with \(C^0\) joins between blocks and spline continuity inside each block. That would already provide an end-to-end native volumetric design and analysis pipeline.
 
-Le solveur actuel est organisé autour de familles d’éléments finis. Ses fonctions de forme sont sélectionnées par type d’élément et certaines structures fixent le nombre maximal de fonctions locales à 27. Une base tensorielle cubique en utilise déjà 64 par élément. [Sources : `ElementType`](https://github.com/tangency-labs/fieldcraft/blob/35e834652d8548384c2da8ef1b28d588c9af2ffd/crates/fem/src/element.rs#L57-L74), [`MAX_NODES`](https://github.com/tangency-labs/fieldcraft/blob/35e834652d8548384c2da8ef1b28d588c9af2ffd/crates/fem/src/shape.rs#L24-L34).
+### Existing checks are useful but apply to a different object
 
-Je passerais par une **extraction de Bézier** munie des poids, des opérateurs d’extraction et de la connectivité des degrés de liberté de contrôle.
+FieldCraft checks element Jacobians using Bernstein representations and subdivision. This approach is relevant, but it applies to polynomial hex8/hex20 element maps and uses `f64` coefficients. [Jacobian check](https://github.com/tangency-labs/fieldcraft/blob/35e834652d8548384c2da8ef1b28d588c9af2ffd/crates/mesh/src/quality/jacobian.rs#L1-L15) · [Bernstein coefficients](https://github.com/tangency-labs/fieldcraft/blob/35e834652d8548384c2da8ef1b28d588c9af2ffd/crates/mesh/src/quality/bernstein.rs#L42-L50).
 
-Cela permettrait de réutiliser une partie de la mécanique et de l’algèbre linéaire, en adaptant :
+Extend this logic to rational maps using the numerical enclosure specified in the project requirements, and check global partition validity separately. **Sampled hex quality remains useful as a diagnostic; geometric validity belongs to the native maps themselves.**
 
-- l’évaluation des bases et du Jacobien ;
-- les tailles des supports locaux ;
-- l’assemblage des interfaces ;
-- les conditions aux limites ;
-- l’évaluation des résultats aux points physiques.
+## 7. Recommended starting strategy
 
-L’espace d’analyse pourrait commencer avec des raccords \(C^0\) entre blocs et une continuité spline à l’intérieur des blocs. Notre premier résultat serait déjà une chaîne complète de conception et d’analyse volumiques natives.
+Build **a restricted standalone kernel**, followed by adapters to SolidCraft and FieldCraft. This advances the geometric core without requiring an immediate rewrite of the full CAD application.
 
-### Les contrôles existants sont utiles, mais changent d’objet
+### Step 1 — An elementary native construction
 
-FieldCraft contrôle les Jacobiennes de ses éléments par représentation de Bernstein et subdivision. Cette démarche est pertinente pour nous. Cependant, elle porte sur les cartes polynomiales des éléments hex8/hex20 et utilise des coefficients en `f64`. [Sources : contrôle du Jacobien](https://github.com/tangency-labs/fieldcraft/blob/35e834652d8548384c2da8ef1b28d588c9af2ffd/crates/mesh/src/quality/jacobian.rs#L1-L15), [coefficients Bernstein](https://github.com/tangency-labs/fieldcraft/blob/35e834652d8548384c2da8ef1b28d588c9af2ffd/crates/mesh/src/quality/bernstein.rs#L42-L50).
+First result:
 
-Nous devons étendre cette logique aux cartes rationnelles, avec l’encadrement numérique prévu dans notre CdC, et contrôler séparément la validité globale de la partition.
+- a rational four-sided section;
+- its extrusion;
+- evaluation of \(X\) and \(DX\);
+- boundary traces;
+- exact subdivision;
+- validity check;
+- save and reload.
 
-**La qualité des hexas échantillonnés restera un indicateur utile ; la validité géométrique sera portée par les cartes natives elles-mêmes.**
+Then assemble a few blocks sharing faces.
 
-## 7. La stratégie de démarrage que je recommande
+**Success criterion:** changing display or analysis resolution leaves geometry unchanged.
 
-Je construirais **un noyau autonome restreint**, puis deux adaptateurs vers SolidCraft et FieldCraft. Cela permet de faire avancer le cœur géométrique sans devoir immédiatement reprendre toute l’application CAO.
+### Step 2 — The FieldCraft bracket as demonstrator
 
-### Étape 1 — Une construction native élémentaire
+Reuse its dimensions, bores, fillet, and partition plan, then express blocks directly with the new constructors. Replace body names inherited from successive splits with explicit identities such as leg block, bend block, bore sector, and slice.
 
-Premier résultat :
-
-- une section rationnelle à quatre côtés ;
-- son extrusion ;
-- l’évaluation de \(X\) et \(DX\) ;
-- les traces de frontière ;
-- la subdivision exacte ;
-- le contrôle de validité ;
-- la sauvegarde et la relecture.
-
-Puis un assemblage de quelques blocs partageant leurs faces.
-
-**Critère de réussite :** changer la résolution d’affichage ou d’analyse conserve la géométrie.
-
-### Étape 2 — L’équerre de FieldCraft comme démonstrateur
-
-Reprendre ses dimensions, ses perçages, son congé et son plan de partition, puis exprimer les blocs directement avec nos constructeurs.
-
-Je remplacerais les noms de corps issus des coupes successives par des identités explicites : bloc de jambe, bloc de coude, secteur de perçage, tranche, etc.
-
-La recette permet déjà un premier contrôle indépendant du volume. À partir de ses dimensions :
+The recipe provides an independent volume check. From its dimensions:
 
 \[
 \begin{aligned}
@@ -345,63 +301,46 @@ V
 &\quad+6^2\left(1-\frac{\pi}{4}\right)40
 -2\pi\,4^2\,8\\
 &=34080-616\pi\\
-&\approx 32144{,}7789254\ \mathrm{mm}^3.
+&\approx 32144.7789254\ \mathrm{mm}^3.
 \end{aligned}
 \]
 
-J’ai recalculé cette valeur : elle correspond à celle enregistrée dans la recette. Ce contrôle ne démontre pas à lui seul l’égalité de forme, mais fournit une référence analytique utile.
+This matches the value recorded in the recipe. It does not alone establish shape equality, but is a useful analytic reference.
 
-**Critère de réussite :** reproduire la pièce avec des cartes natives, des interfaces explicites et une frontière conforme aux primitives prescrites.
+**Success criterion:** reproduce the part with native maps, explicit interfaces, and a boundary matching the prescribed primitives.
 
-### Étape 3 — La modification paramétrique
+### Step 3 — Parametric modification
 
-Faire varier successivement :
+Vary leg thickness, extrusion width, bore diameters and positions, and fillet radius. The kernel must determine whether the block plan remains valid, needs reconstruction, or has left its admissible domain.
 
-- l’épaisseur des jambes ;
-- la largeur extrudée ;
-- les diamètres et positions des trous ;
-- le rayon du congé.
+The history then has a precise function: carry parameters, dependencies, and entity provenance. The partition becomes an explicit derived construction with its own validity conditions.
 
-Le noyau doit déterminer si le plan de blocs reste valide, nécessite une reconstruction ou sort du domaine admissible.
+### Step 4 — IGA on the same model
 
-L’historique prend ici une fonction précise : il porte les paramètres, les dépendances et la provenance des entités. La partition devient une construction dérivée explicite, avec ses propres conditions de validité.
+Reuse the example's load case: steel, a fixed end of one leg, and a 1 kN force at the other end. Compare displacements, energy, reactions, and stress evaluated at the same physical locations. Treat FieldCraft values as an initial comparison alongside convergence studies.
 
-### Étape 4 — Le calcul IGA sur le même modèle
+The README reports 0.1% agreement for the documented tip displacement. The inspected tests use other thresholds and do not all recompute the tetrahedral reference. Treat those values as project-reported results to reproduce, with their precise scope. [Bracket convergence test](https://github.com/tangency-labs/fieldcraft/blob/35e834652d8548384c2da8ef1b28d588c9af2ffd/crates/testkit/tests/bracket_blocks.rs).
 
-Reprendre le chargement de l’exemple : acier, encastrement en bout de jambe et effort de 1 kN sur l’autre extrémité.
+### Step 5 — Automate partition proposals
 
-Comparer les déplacements, l’énergie, les réactions et des contraintes évaluées aux mêmes positions physiques. Les valeurs de FieldCraft serviront de comparaison initiale, accompagnées des études de convergence.
+At this stage, `hex/decompose.rs` becomes a basis for proposing block plans: hole separation, bore sectors, cuts from re-entrant corners, fillet handling, and ranking of candidate partitions.
 
-Le README évoque un accord à 0,1 %, mais cela concerne le déplacement de pointe documenté. Les tests inspectés utilisent d’autres seuils et ne recalculent pas tous la référence tétraédrique. Je traiterais donc ces chiffres comme des résultats publiés par le projet à reproduire, avec leur périmètre précis. [Source : test de convergence de l’équerre](https://github.com/tangency-labs/fieldcraft/blob/35e834652d8548384c2da8ef1b28d588c9af2ffd/crates/testkit/tests/bracket_blocks.rs).
+Its decision criterion needs adaptation: current evaluation depends partly on requested mesh size and can retain a free-mesh solution. The new constructor must propose an admissible partition for spline maps and preserve it independently of analysis refinement. [Decomposer principles and evaluation](https://github.com/tangency-labs/fieldcraft/blob/35e834652d8548384c2da8ef1b28d588c9af2ffd/crates/mesh/src/hex/decompose.rs#L19-L48).
 
-### Étape 5 — Automatiser la proposition de partition
+## 8. Implications for the proposed architecture
 
-À ce stade, `hex/decompose.rs` devient une base utile pour proposer des plans de blocs :
-
-- séparation des trous ;
-- secteurs autour des perçages ;
-- coupes depuis les coins rentrants ;
-- prise en compte des congés ;
-- classement de partitions candidates.
-
-Il faudra adapter son critère de décision : aujourd’hui, son évaluation dépend notamment de la taille de maillage demandée et peut conserver une solution de maillage libre. Pour notre constructeur, il devra proposer une partition admissible pour des cartes splines, puis la conserver indépendamment des raffinements d’analyse. [Source : principes et évaluation du décomposeur](https://github.com/tangency-labs/fieldcraft/blob/35e834652d8548384c2da8ef1b28d588c9af2ffd/crates/mesh/src/hex/decompose.rs#L19-L48).
-
-## 8. Ce que cette étude change dans notre proposition
-
-Elle nous donne une répartition concrète du travail :
-
-| Base existante | Réemploi envisagé | Travail propre au projet |
+| Existing base | Potential reuse | Project-specific work |
 |---|---|---|
-| SolidCraft | Esquisses, paramètres, features, commandes, provenance | Évaluation native des features et nouveau type de corps |
-| FieldCraft multibloc | Incidences, orientations, contraintes de subdivision, exemples | Plans persistants et interfaces de cartes splines |
-| Constructions transfinies | Formules et référence d’échantillonnage | Construction rationnelle et contrôle des cartes |
-| Solidcore, partie NURBS | Certaines routines élémentaires après qualification | Complexe volumique, constructeurs et opérations natives |
-| FieldCraft calcul | Infrastructure mécanique, unités, solveurs et visualisation | Bases IGA, extraction, assemblage et post-traitement adaptés |
+| SolidCraft | Sketches, parameters, features, commands, provenance | Native feature evaluation and new body type |
+| FieldCraft multiblock | Incidences, orientations, subdivision constraints, examples | Persistent plans and spline-map interfaces |
+| Transfinite constructions | Formulas and sampled reference | Rational construction and map checks |
+| Solidcore NURBS components | Selected elementary routines after qualification | Volume complex, constructors, and native operations |
+| FieldCraft mechanics | Mechanics infrastructure, units, solvers, visualization | IGA bases, extraction, assembly, adapted post-processing |
 
-Un point pratique concerne l’interface graphique : les composants `ui-kit`, `look` et `theme` de SolidCraft ont une licence distincte du code géométrique. Le réemploi du moteur et celui de l’apparence doivent donc être examinés séparément au moment de définir le produit distribué. [Source : licence de l’interface](https://github.com/tangency-labs/solidcraft/blob/765f26e0d1fc7c66a0d03ea2dae28ee3b65270b8/LICENSE-BRAND).
+One practical point concerns the GUI: SolidCraft's `ui-kit`, `look`, and `theme` components have a license distinct from the geometric code. Engine reuse and visual-identity reuse should therefore be reviewed separately when defining a distributable product. [UI license](https://github.com/tangency-labs/solidcraft/blob/765f26e0d1fc7c66a0d03ea2dae28ee3b65270b8/LICENSE-BRAND).
 
-**Ma recommandation est de commencer par l’équerre à 30 cellules et de faire de son plan de blocs un objet géométrique persistant.** Nous aurions ainsi un premier noyau capable de construire, modifier, afficher et analyser une pièce percée et arrondie en restant trivarié.
+The recommended starting point is the **30-cell bracket partition stored as a persistent geometric object**. It would provide a first kernel able to construct, modify, display, and analyze a perforated, filleted part while remaining trivariate.
 
-L’étude a porté sur le code de FieldCraft au commit `35e8346`, son pin SolidCraft v0.42.0, et l’architecture plus récente de SolidCraft au commit `765f26e`. J’ai contrôlé les sources, la recette, les structures de données et les assertions des tests ; je n’ai pas exécuté le mailleur ou le solveur, Rust et Cargo étant absents de cet environnement.
+The review covered FieldCraft at commit `35e8346`, its SolidCraft v0.42.0 pin, and the later SolidCraft architecture at commit `765f26e`. It inspected source, recipe, data structures, and test assertions; it did not execute the mesher or solver because Rust and Cargo were absent in the reviewed environment.
 
-**Le premier résultat à viser est donc précis : cette équerre construite directement par nos cartes rationnelles, avec ses faces partagées et un calcul IGA sur le même modèle.** C’est un jalon suffisamment riche pour vérifier l’architecture, tout en gardant un ensemble d’opérations que l’on peut réellement maîtriser.
+The initial milestone is therefore precise: construct this bracket directly with rational maps, shared faces, and IGA on the same model. It is rich enough to test the architecture while limiting the operation set to constructions that can be controlled.

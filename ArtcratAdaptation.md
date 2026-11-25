@@ -1,390 +1,262 @@
-**Oui. Après lecture des sources, je reprendrais une grande partie des méthodes de développement de cet écosystème pour notre projet, avec une validation mathématique plus exigeante.** La combinaison que je recommande est :
+# Applying the Craft Ecosystem to a Trivariate Geometry Kernel
 
-- **AutoCraft pour l’organisation du travail entre agents ;**
-- **Solidcore pour la discipline de développement d’un noyau géométrique ;**
-- **FieldCraft pour les références scientifiques, les corpus de tests et les commandes reproductibles ;**
-- **Craft Anything pour la manière d’exposer les outils et de conserver les preuves d’exécution.**
+## Archival scope
 
-Cela donne une méthode assez concrète pour construire notre noyau trivarié : **des agents développent et proposent les constructions ; un programme de vérification contrôle les cartes, les interfaces et le complexe volumique avant leur acceptation.**
+This study reviewed selected repositories at pinned revisions and assessed which development practices could support a trivariate geometry kernel. It examined architecture and implementation mechanisms; it did not run the repositories' Rust test suites locally. The proposal is to combine **AutoCraft's work orchestration, Solidcore's geometric-kernel discipline, FieldCraft's scientific references and reproducible commands, and Craft Anything's shared tools and evidence records**.
 
-J’ai examiné les sources à des révisions précises. C’est un audit de leur architecture et de leurs mécanismes ; je n’ai pas exécuté localement leurs suites de tests Rust.
+The resulting development model is concrete: agents propose constructions, while independent verification checks maps, interfaces, and the volume complex before adoption. The sources do not quantify productivity gains or demonstrate that this process solves volumetric parameterization.
 
-## 1. Où se trouve réellement la « méthode ArtCraft » ?
+## 1. Attribution: where the “ArtCraft method” resides
 
-Il faut préciser l’attribution. **ArtCraft est l’application de création d’images et de vidéos.** Les méthodes intéressantes pour nous sont réparties dans plusieurs dépôts. Son propre fichier d’instructions adopte les règles communes de `craft-contrib`, tout en déclarant certaines exceptions locales, notamment l’absence actuelle de registre de commandes et d’entrée d’agent dans cette application. [Instructions d’ArtCraft](https://github.com/storytold/artcraft/blob/9a1cc6b701e9dbec38af820507c9b33b668f54f0/AGENTS.md).
+ArtCraft is an image and video creation application. The practices relevant to this project are distributed across several repositories. ArtCraft's own instruction file adopts shared `craft-contrib` rules while documenting local exceptions, including the then-current absence of a command registry and agent entry point. [ArtCraft instructions](https://github.com/storytold/artcraft/blob/9a1cc6b701e9dbec38af820507c9b33b668f54f0/AGENTS.md).
 
-Voici ce que j’en retiens :
-
-| Source | Méthode effectivement présente | Intérêt pour notre noyau |
+| Source | Practice found in the repository | Relevance to the kernel |
 |---|---|---|
-| **craft-contrib** | Règles communes : tâches bornées, changements séparés, tests pertinents, déclaration des vérifications effectuées | Donner aux agents un cadre stable |
-| **AutoCraft** | Orchestration de l’implémentation, des corrections, des revues, de la vérification et de l’intégration | Organiser une production de code contrôlée |
-| **Solidcore** | Consignes spécifiques aux invariants géométriques, à la coordination et à l’inspection des résultats | Adapter le travail des agents aux exigences d’un noyau |
-| **FieldCraft** | Commandes exécutables, recettes, références scientifiques et tests de régression distincts | Construire une chaîne reproductible de géométrie et de calcul |
-| **Craft Anything** | Outils communs aux différentes interfaces et résultats accompagnés de provenance, couverture et limitations | Rendre le noyau inspectable et pilotable |
+| **craft-contrib** | Shared rules for bounded tasks, isolated changes, relevant tests, and reporting checks | Give agents a stable framework |
+| **AutoCraft** | Orchestration of implementation, fixes, review, verification, and integration | Organize controlled code production |
+| **Solidcore** | Guidance specific to geometric invariants, coordination, and result inspection | Adapt agent work to kernel requirements |
+| **FieldCraft** | Executable commands, recipes, scientific references, and separate regression tests | Build a reproducible geometry and analysis pipeline |
+| **Craft Anything** | Tools shared across interfaces and results accompanied by provenance, coverage, and limits | Make the kernel inspectable and operable |
 
-AutoCraft possède bien une chaîne d’orchestration implémentée : traitement des tâches, implémentation, revue, vérification, puis intégration. Ce n’est donc pas seulement une convention écrite dans un fichier destiné aux agents. [storytold/autocraft · GitHub](https://github.com/storytold/autocraft?utm_source=chatgpt.com)
+AutoCraft implements an orchestration chain for tasks, implementation, review, verification, and integration; it is more than a convention in an agent instruction file. [storytold/autocraft on GitHub](https://github.com/storytold/autocraft?utm_source=chatgpt.com).
 
-**Mon évaluation : la partie la plus intéressante est l’organisation des responsabilités et des contrôles.** Pour notre projet, elle peut réduire le coût des développements répétitifs, accélérer la recherche de défauts et rendre les résultats plus faciles à examiner. Les sources ne permettent pas de chiffrer honnêtement un gain de productivité, ni de conclure que cette organisation résout les difficultés de paramétrisation volumique.
+The most useful idea is the separation of responsibilities and checks. It may reduce the cost of repetitive development, speed defect discovery, and make results easier to review. The inspected sources provide no defensible productivity estimate and do not establish that orchestration resolves volumetric parameterization challenges.
 
-## 2. La première méthode à reprendre : définir la preuve attendue avant de distribuer le travail
+## 2. Specify the required evidence before delegating work
 
-Le document le plus directement applicable à notre cas est étonnamment celui de **Solidcore**, dans `docs/coordinating.md`.
+Solidcore's `docs/coordinating.md` is directly applicable. It asks coordinators to understand invariants before splitting work, then provide each agent with:
 
-Il demande au coordinateur de comprendre les invariants avant de découper le travail, puis de fournir à chaque agent :
+- an objective and a completion criterion;
+- established results;
+- references and functions to inspect;
+- files owned by the agent;
+- the starting revision;
+- verifiable evidence to report.
 
-- l’objectif et le critère qui permet de le considérer atteint ;
-- les résultats déjà acquis ;
-- les références et les fonctions à lire ;
-- les fichiers dont il est responsable ;
-- la révision de départ ;
-- les éléments vérifiables à rapporter.
+It also recommends isolated workspaces and parallelism limited by review capacity. [Solidcore coordination method](https://github.com/tangency-labs/solidcraft/blob/765f26e0d1fc7c66a0d03ea2dae28ee3b65270b8/solidcore/docs/coordinating.md).
 
-Il recommande aussi des espaces de travail séparés et une quantité de travail parallèle compatible avec la capacité de relecture. [Méthode de coordination de Solidcore](https://github.com/tangency-labs/solidcraft/blob/765f26e0d1fc7c66a0d03ea2dae28ee3b65270b8/solidcore/docs/coordinating.md).
+Before delegating “implement extrusion” or “build the interfaces,” define the operation in the representation. For an extrusion, specify the admissible parameterized section, the construction of the trivariate map, allowed orientations, regularity conditions, boundary and provenance data, and the result when assumptions fail. For an interface, specify the shared-face representation, parameter permutations and reversals, degree/knot/weight compatibility, relations between analysis spaces, and treatment of shared edges and vertices.
 
-### Application à notre projet
+**Module interfaces should be project deliverables in their own right.** Once fixed, construction, verification, and adapter work can proceed in parallel without each module inventing a different representation.
 
-Avant de demander à un agent « implémente l’extrusion » ou « construis les raccords », nous devons fixer ce que cette opération signifie dans notre représentation.
+### A reasonable initial team
 
-Pour une extrusion, par exemple :
-
-- quelle section paramétrée est admissible ;
-- comment la carte trivariée est construite ;
-- quelles orientations sont autorisées ;
-- quelles conditions garantissent sa régularité ;
-- quelles informations de frontière et de provenance sont conservées ;
-- quel résultat est produit lorsque les hypothèses échouent.
-
-Pour un raccord, il faut préalablement préciser :
-
-- la représentation de la face commune ;
-- les permutations et inversions des paramètres ;
-- la compatibilité des degrés, nœuds et poids ;
-- les relations entre les espaces de calcul ;
-- le traitement des arêtes et des sommets partagés.
-
-**Les interfaces entre modules doivent donc être un livrable du projet à part entière.** Les agents peuvent ensuite travailler en parallèle sur les constructions, les contrôles et les adaptateurs sans inventer chacun leur propre représentation.
-
-### Une équipe initiale raisonnable
-
-Je commencerais avec cette organisation :
-
-| Rôle | Travail principal | Résultat attendu |
+| Role | Main responsibility | Expected result |
 |---|---|---|
-| **Coordinateur** | Contrats, dépendances, cohérence de l’architecture, intégration | Une révision cohérente dont les critères d’acceptation sont explicites |
-| **Agent construction** | Algèbre spline, cartes trivariées, opérateurs de construction | Une implémentation et ses cas d’usage |
-| **Agent vérification** | Références indépendantes, cas limites, contre-exemples | Des contrôles capables de mettre en défaut l’implémentation |
-| **Agent intégration** | Commandes, persistance, affichage, adaptateurs SolidCraft/FieldCraft | Un scénario complet et rejouable |
+| Coordinator | Contracts, dependencies, architecture consistency, integration | A coherent revision with explicit acceptance criteria |
+| Construction agent | Spline algebra, trivariate maps, construction operators | Implementation and use cases |
+| Verification agent | Independent references, edge cases, counterexamples | Checks capable of disproving the implementation |
+| Integration agent | Commands, persistence, display, SolidCraft/FieldCraft adapters | A complete, replayable workflow |
 
-Les fonctions de relecture numérique peuvent être distribuées selon les tâches, mais l’auteur d’un algorithme ne doit pas constituer sa seule autorité de validation.
+Numerical review can be assigned as appropriate, but the algorithm's author should not be its sole validation authority. In the FieldCraft bracket, **the thirty blocks describe a geometric decomposition; they are not thirty independent programming tasks.** Work should be divided by reusable capability: extrusion, a bore sector, shared faces, partition verification, and so forth.
 
-Pour l’équerre de FieldCraft, **les trente blocs décrivent une décomposition géométrique ; ils ne constituent pas trente tâches indépendantes de programmation.** Le travail doit se répartir par capacité réutilisable : extrusion, secteur autour d’un trou, face commune, vérification de partition, etc.
+## 3. Execute checks outside the agent reporting success
 
-## 3. La deuxième méthode : faire exécuter les contrôles en dehors de l’agent qui annonce la réussite
+AutoCraft has a particularly relevant mechanism: the orchestrator runs implementation checks through specified scripts and collects their execution results. Assertions in the programming session are not the verdict. This is explicit in [`src/implement/checks.ts`](https://github.com/storytold/autocraft/blob/28aa39720b3708d9e72808474e7c8ad8ec29706f/src/implement/checks.ts).
 
-AutoCraft contient un mécanisme que je trouve particulièrement pertinent : ses vérifications d’implémentation sont lancées par l’orchestrateur au moyen de scripts déterminés. Il récupère leurs résultats d’exécution ; les affirmations de la session de programmation ne constituent pas le verdict. C’est explicite dans [`src/implement/checks.ts`](https://github.com/storytold/autocraft/blob/28aa39720b3708d9e72808474e7c8ad8ec29706f/src/implement/checks.ts).
+A kernel delivery should therefore include:
 
-Je reprendrais exactement cette séparation.
+1. an exact code revision;
+2. the recipes used;
+3. checks actually run;
+4. structured results;
+5. remaining limitations;
+6. images useful for inspection.
 
-Pour nous, une livraison devrait contenir :
-
-1. une révision précise du code ;
-2. les recettes utilisées ;
-3. les contrôles réellement exécutés ;
-4. leurs résultats structurés ;
-5. les limitations restantes ;
-6. les images utiles à l’inspection.
-
-Le coordinateur examine ensuite ces éléments et relance les contrôles nécessaires.
-
-Le fonctionnement proposé serait le suivant :
+The coordinator reviews these artifacts and reruns checks as needed.
 
 ```mermaid
 flowchart TD
-    C["Contrat et références"]
-    I["Implémentation"]
-    O["Oracles et contre-exemples"]
-    E["Exécution des contrôles"]
-    R{"Critères satisfaits ?"}
-    M["Intégration de la révision"]
+    C["Contract and references"]
+    I["Implementation"]
+    O["Oracles and counterexamples"]
+    E["Run checks"]
+    R{"Criteria met?"}
+    M["Integrate revision"]
 
     C --> I
     C --> O
     I --> E
     O --> E
     E --> R
-    R -->|Oui| M
-    R -->|Défaut identifié| I
-    R -->|Contrat insuffisant| C
+    R -->|Yes| M
+    R -->|Defect identified| I
+    R -->|Contract insufficient| C
 ```
 
-La branche « contrat insuffisant » est essentielle dans un projet de recherche. Certaines difficultés demandent de revoir une hypothèse ou de restreindre une famille géométrique. Elles ne se résolvent pas en répétant indéfiniment la demande d’implémentation.
+The “contract insufficient” branch matters in research software. Some difficulties require revising an assumption or narrowing a geometric family; repeating an implementation request will not resolve them.
 
-### Une limite concrète d’AutoCraft à corriger pour notre usage
+### A concrete AutoCraft limitation to address
 
-Dans son vérificateur de régression, AutoCraft peut déclarer le contrôle réussi lorsque la nouvelle version passe et que l’ancienne version **ne compile pas avec le test ajouté**, avec une note signalant que l’échec du test sur l’ancienne version n’a pas été démontré. [Calcul du verdict](https://github.com/storytold/autocraft/blob/28aa39720b3708d9e72808474e7c8ad8ec29706f/src/verify/results.ts).
+AutoCraft's regression verifier may report success when the new version passes but the old version **does not compile with the newly added test**, while noting that failure of the old version was not demonstrated. [Verdict calculation](https://github.com/storytold/autocraft/blob/28aa39720b3708d9e72808474e7c8ad8ec29706f/src/verify/results.ts).
 
-Pour une correction numérique, je demanderais davantage :
+For a numerical fix, stronger evidence is needed:
 
-> L’ancienne version compile, puis échoue sur une assertion qui caractérise le défaut ; la nouvelle version satisfait cette assertion.
+> The old version compiles, then fails an assertion that characterizes the defect; the new version satisfies that assertion.
 
-Un échec de compilation sans rapport avec le défaut serait classé **non concluant**.
+A compile failure unrelated to the defect is inconclusive. This rule applies to demonstrating a fix. For a new feature whose API does not exist in the old version, use other evidence such as an analytic solution, structural property, independent comparison, or certificate.
 
-Cette règle concerne la démonstration d’une correction. Pour une nouvelle fonctionnalité dont l’ancienne version ne possède pas l’API, on utilise naturellement d’autres preuves : solution analytique, propriété structurelle, comparaison indépendante ou certificat.
+## 4. Separate scientific references, regressions, and certificates
 
-## 4. La troisième méthode : séparer références scientifiques, régressions et certificats
+FieldCraft's verification model distinguishes three files:
 
-C’est probablement **la pratique de FieldCraft que je reprendrais le plus directement**.
-
-Sa vérification distingue :
-
-| Élément | Question à laquelle il répond |
+| Item | Question answered |
 |---|---|
-| `recipe.json` | Quel modèle a été construit et avec quels paramètres ? |
-| `expected.json` | Quelle valeur de référence attend-on, avec quelle source et quelle tolérance ? |
-| `fixture.json` | Le résultat a-t-il changé depuis la version précédemment acceptée ? |
+| `recipe.json` | Which model was built, and with what parameters? |
+| `expected.json` | Which reference value is expected, from what source and with what tolerance? |
+| `fixture.json` | Has the result changed since the previously accepted version? |
 
-Cette séparation est décrite dans sa [documentation de vérification](https://github.com/tangency-labs/fieldcraft/blob/35e834652d8548384c2da8ef1b28d588c9af2ffd/docs/verification.md) et implémentée dans son [comparateur de références et de fixtures](https://github.com/tangency-labs/fieldcraft/blob/35e834652d8548384c2da8ef1b28d588c9af2ffd/crates/testkit/src/oracle.rs).
+This separation is described in [FieldCraft verification documentation](https://github.com/tangency-labs/fieldcraft/blob/35e834652d8548384c2da8ef1b28d588c9af2ffd/docs/verification.md) and implemented in its [reference and fixture comparator](https://github.com/tangency-labs/fieldcraft/blob/35e834652d8548384c2da8ef1b28d588c9af2ffd/crates/testkit/src/oracle.rs). Solidcore makes the same distinction: invariants and references establish correctness; frozen outputs, or *goldens*, establish behavioral stability. [Solidcore correctness and regression rules](https://github.com/tangency-labs/solidcraft/blob/765f26e0d1fc7c66a0d03ea2dae28ee3b65270b8/solidcore/AGENTS.md).
 
-Solidcore exprime la même distinction : les invariants et les références établissent la correction ; les résultats figés, ou *goldens*, établissent la stabilité du comportement. [Règles de correction et de régression de Solidcore](https://github.com/tangency-labs/solidcraft/blob/765f26e0d1fc7c66a0d03ea2dae28ee3b65270b8/solidcore/AGENTS.md).
+For the trivariate kernel, retain three complementary levels:
 
-### Ce que cela devient pour le noyau trivarié
+- **Mathematical properties:** representation and construction properties such as partition of unity, geometry preservation under knot insertion, trace identity, orientation, non-folding, and partition consistency.
+- **Calculation references:** physical quantities such as analytic or manufactured solutions, affine fields, rigid modes, equilibrium, convergence, and sensitivities.
+- **Recorded regressions:** changes in block count, produced topology, operation status, calculation values, and diagnostics.
 
-Je conserverais trois niveaux complémentaires.
+A fixture update may be justified; it must never disable a geometric validity check. FieldCraft already has a useful safeguard: tetrahedral mesh validity is checked after fixture processing, including fixture re-recording. [Independent fixture check in the runner](https://github.com/tangency-labs/fieldcraft/blob/35e834652d8548384c2da8ef1b28d588c9af2ffd/crates/testkit/src/runner.rs).
 
-**Les propriétés mathématiques.** Elles portent sur la représentation et les constructions : partition de l’unité, préservation de la géométrie par insertion de nœuds, identité des traces, orientation, absence de repliement, cohérence de la partition.
+### A useful counterexample
 
-**Les références de calcul.** Elles portent sur les grandeurs physiques : solutions analytiques ou manufacturées, champs affines, modes rigides, équilibre, convergence et sensibilités.
-
-**Les régressions enregistrées.** Elles surveillent les changements : nombre de blocs, topologie produite, statut des opérations, valeurs de calcul, diagnostics.
-
-Une modification d’une fixture peut être justifiée. **Elle ne doit jamais neutraliser un contrôle de validité géométrique.**
-
-FieldCraft possède déjà un mécanisme intéressant dans cette direction : le contrôle de validité du maillage tétraédrique reste exécuté après le traitement des fixtures, y compris lorsqu’elles sont réenregistrées. [Contrôle indépendant des fixtures dans le runner](https://github.com/tangency-labs/fieldcraft/blob/35e834652d8548384c2da8ef1b28d588c9af2ffd/crates/testkit/src/runner.rs).
-
-### Un exemple particulièrement bon à reprendre
-
-FieldCraft contient un hexaèdre dont le jacobien est positif aux coins et au centre, mais négatif à l’intérieur. Le déterminant analytique est :
+FieldCraft includes a hexahedron whose Jacobian is positive at corners and center but negative in the interior. Its analytic determinant is
 
 \[
 \det J(w)=(1-3w)(1-4w).
 \]
 
-Il devient négatif pour :
+It is negative for
 
 \[
 \frac14<w<\frac13.
 \]
 
-Le test exige que cet élément soit reconnu comme invalide malgré ses échantillons rassurants. [Contre-exemple analytique de FieldCraft](https://github.com/tangency-labs/fieldcraft/blob/35e834652d8548384c2da8ef1b28d588c9af2ffd/crates/mesh/src/quality/tests.rs).
+The test requires this element to be rejected despite reassuring samples. [FieldCraft analytic counterexample](https://github.com/tangency-labs/fieldcraft/blob/35e834652d8548384c2da8ef1b28d588c9af2ffd/crates/mesh/src/quality/tests.rs).
 
-**Voilà une excellente tâche pour un agent de vérification : chercher un cas qui trompe un contrôle trop faible.**
+This is a model task for a verification agent: find a case that defeats a weak check. For the kernel's certifier, useful cases include a Jacobian positive at sample points but negative elsewhere; locally regular maps that overlap globally; geometrically close faces with incompatible parametric traces; joins that work with unit weights but fail with rational weights; and parameter changes outside a template's admissible domain.
 
-Pour notre certificateur, je demanderais notamment des exemples de :
+FieldCraft's testing mechanisms are a strong methodological starting point, but adapting them to continuous rational maps needs more work. The contract should distinguish sampled observations, estimated bounds, properties proven under explicit assumptions, and checks that could not conclude. Numerical guarantees must account for rounding and rational denominators. A local Jacobian certificate must be supplemented by checks for injectivity and global partition. **The validator can also be developed with agents, but it needs references and counterexamples that do not depend solely on the constructor it checks.**
 
-- jacobien positif aux points testés mais négatif ailleurs ;
-- cartes localement régulières produisant un recouvrement global ;
-- faces proches géométriquement mais incompatibles comme traces paramétriques ;
-- raccords corrects pour des poids unitaires et incorrects pour des poids rationnels ;
-- changements de paramètres qui sortent du domaine admissible d’un gabarit.
+## 5. Use one engine for people and agents
 
-Cette approche apporte beaucoup plus d’information qu’une collection de pièces faciles qui passent toutes.
+FieldCraft and Craft Anything provide concrete examples. FieldCraft's `CommandSpec` describes an operation, parameters, prerequisites, and execution function; UI and automation tools go through the session engine. Craft Anything has a comparable shared `ToolSpec`. [FieldCraft commands](https://github.com/tangency-labs/fieldcraft/blob/35e834652d8548384c2da8ef1b28d588c9af2ffd/crates/engine/src/lib.rs) · [Craft Anything tool contract](https://github.com/storytold/craft-anything/blob/4f0f744b7e2ad16198a7b08b9edc53286b1b8b67/crates/engine/src/tool.rs).
 
-### La certification doit rester une exigence propre à notre noyau
+The kernel should be a shared library with reproducible commands, with SolidCraft and FieldCraft adapters layered on top. Suggested project commands are:
 
-Les mécanismes de test de FieldCraft constituent une excellente base méthodologique. Leur adaptation aux cartes rationnelles continues demande cependant un travail supplémentaire.
-
-Notre contrat devra distinguer :
-
-- une propriété observée par échantillonnage ;
-- une borne estimée ;
-- une propriété démontrée sous des hypothèses explicites ;
-- un contrôle qui n’a pas permis de conclure.
-
-Pour les garanties numériques, il faudra traiter les erreurs d’arrondi et les dénominateurs rationnels. Et un certificat de jacobien local devra être complété par les contrôles nécessaires à l’injectivité et à la partition globale.
-
-**Le validateur peut lui aussi être développé avec des agents ; il doit disposer de références et de contre-exemples qui ne dépendent pas uniquement du constructeur qu’il contrôle.**
-
-## 5. La quatrième méthode : un moteur unique, utilisable par les personnes et les agents
-
-Cette architecture est concrète dans FieldCraft et Craft Anything.
-
-FieldCraft possède un `CommandSpec` qui décrit une opération, ses paramètres, ses prérequis et sa fonction d’exécution. L’interface et les outils d’automatisation passent par le moteur de session. Craft Anything possède un `ToolSpec` comparable, partagé entre plusieurs points d’entrée. [Commandes de FieldCraft](https://github.com/tangency-labs/fieldcraft/blob/35e834652d8548384c2da8ef1b28d588c9af2ffd/crates/engine/src/lib.rs) ; [contrat des outils de Craft Anything](https://github.com/storytold/craft-anything/blob/4f0f744b7e2ad16198a7b08b9edc53286b1b8b67/crates/engine/src/tool.rs).
-
-### Pour nous, c’est une décision d’architecture importante
-
-Je construirais le noyau comme **une bibliothèque commune avec une interface de commandes reproductibles**, puis je brancherais SolidCraft et FieldCraft dessus.
-
-Les noms ci-dessous sont une proposition pour notre projet :
-
-| Commande proposée | Fonction |
+| Proposed command | Function |
 |---|---|
-| `kernel.capabilities` | Décrire les familles de construction et les garanties effectivement disponibles |
-| `kernel.build` | Construire un complexe trivarié candidat depuis les features et une recette de partition |
-| `kernel.audit` | Vérifier cartes, interfaces, partition et certificats |
-| `kernel.inspect` | Exposer blocs, réseaux de contrôle, coupes, orientations et diagnostics |
-| `kernel.refine` | Effectuer un raffinement dont la préservation géométrique est spécifiée |
-| `kernel.rebuild` | Régénérer le complexe concerné après une modification paramétrique |
+| `kernel.capabilities` | Describe construction families and guarantees actually available |
+| `kernel.build` | Build a candidate trivariate complex from features and a partition recipe |
+| `kernel.audit` | Check maps, interfaces, partition, and certificates |
+| `kernel.inspect` | Expose blocks, control nets, sections, orientations, and diagnostics |
+| `kernel.refine` | Refine with specified geometric preservation |
+| `kernel.rebuild` | Regenerate the affected complex after a parameter change |
 
-Cela permettrait de reproduire un défaut avec une recette courte, de lancer un corpus sans interface graphique et de donner à un agent des outils dont les effets sont précisément définis.
+This would let users reproduce a defect with a short recipe, run a corpus without a GUI, and give agents tools with precisely defined effects. Visualization remains useful—transparent blocks, colored interfaces, sections, and distortion fields—but complements the kernel data.
 
-L’affichage resterait très utile : blocs transparents, interfaces colorées, coupes, champs de distorsion. Il compléterait les données du noyau.
+### Strengthen transactions
 
-### Il faut renforcer la transaction
+FieldCraft restores the previous state when a model-changing command fails. A command sequence is not a global transaction, however: successful earlier steps remain applied if a later step fails. This is visible in `run_command` and `run_script`. [Command and script handling](https://github.com/tangency-labs/fieldcraft/blob/35e834652d8548384c2da8ef1b28d588c9af2ffd/crates/engine/src/lib.rs).
 
-FieldCraft restaure l’état précédent lorsqu’une commande modifiant le modèle échoue. En revanche, une suite de commandes n’est pas une transaction globale : les étapes déjà réussies restent appliquées lorsqu’une étape ultérieure échoue. C’est visible dans `run_command` et `run_script`. [Gestion des commandes et scripts](https://github.com/tangency-labs/fieldcraft/blob/35e834652d8548384c2da8ef1b28d588c9af2ffd/crates/engine/src/lib.rs).
+For a trivariate complex, use atomic adoption:
 
-Pour notre complexe trivarié, je demanderais une adoption atomique :
+1. Build new blocks in a candidate state.
+2. Rebuild affected interfaces.
+3. Verify the affected complex.
+4. Replace the active version only after acceptance.
 
-1. construire les nouveaux blocs dans un état candidat ;
-2. reconstruire les raccords affectés ;
-3. vérifier le complexe concerné ;
-4. remplacer la version active seulement après acceptation.
+If a radius change rebuilds six blocks and the sixth fails, the active part should retain its prior coherent version. This property supports interactive editing, agent exploration, and later optimization.
 
-Si un changement de rayon reconstruit six blocs et que le sixième échoue, la pièce active doit conserver sa version précédente cohérente.
+## 6. Preserve inspectable results and their provenance
 
-Cette propriété sera utile pour les modifications interactives, les explorations faites par les agents et, plus tard, l’optimisation.
+Craft Anything's `Evidence` type records the operation, parameters, result, environment, limitations, coverage, and linked inputs. It distinguishes observations, derived results, and inferences. A content-derived identifier supports integrity checks. [The `Evidence` model](https://github.com/storytold/craft-anything/blob/4f0f744b7e2ad16198a7b08b9edc53286b1b8b67/crates/evidence/src/lib.rs).
 
-## 6. La cinquième méthode : conserver des résultats inspectables, avec leur provenance
+Each volumetric construction should have an acceptance record containing:
 
-Craft Anything dispose d’un type `Evidence` contenant l’opération, ses paramètres, le résultat, l’environnement, les limitations, la couverture et les liens vers les éléments utilisés. Il distingue notamment les observations, les résultats dérivés et les inférences. Un identifiant calculé sur le contenu permet d’en vérifier l’intégrité. [Modèle `Evidence`](https://github.com/storytold/craft-anything/blob/4f0f744b7e2ad16198a7b08b9edc53286b1b8b67/crates/evidence/src/lib.rs).
+- kernel revision **and validator revision**;
+- recipe, parameters, and units;
+- construction-template version;
+- produced blocks and interfaces;
+- exact or approximate representation status;
+- verified properties, assumptions, and bounds;
+- checks not run or inconclusive;
+- associated diagnostics and visualizations.
 
-Je reprendrais cette organisation pour chaque construction volumique.
+The construction history adds a requirement: **the recipe must be complete, versioned, and replayable**. Craft Anything's activity journal is best-effort and may summarize oversized parameters, so it is not by itself the geometric journal needed here. [Craft Anything journal](https://github.com/storytold/craft-anything/blob/4f0f744b7e2ad16198a7b08b9edc53286b1b8b67/crates/engine/src/journal.rs).
 
-Un dossier d’acceptation contiendrait :
+### A geometry-appropriate completion status
 
-- la révision du noyau **et celle du validateur** ;
-- la recette, ses paramètres et leurs unités ;
-- la version du gabarit de construction ;
-- les blocs et interfaces produits ;
-- le statut de représentation exacte ou approchée ;
-- les propriétés vérifiées, leurs hypothèses et leurs bornes ;
-- les contrôles non exécutés ou non concluants ;
-- les diagnostics et visualisations associés.
+Craft Anything's reconstruction loop may finish as `Ready` when a result is usable even if the target similarity threshold was not reached within the iteration budget; it exposes remaining open questions. [Reconstruction-loop completion](https://github.com/storytold/craft-anything/blob/4f0f744b7e2ad16198a7b08b9edc53286b1b8b67/crates/ai/src/rebuild/mod.rs).
 
-Il faut toutefois ajouter une exigence spécifique à notre historique de construction : **la recette doit être complète, versionnée et rejouable**. Le journal d’activité de Craft Anything est écrit au mieux et peut résumer des paramètres trop volumineux ; il ne constitue donc pas directement le journal géométrique dont nous avons besoin. [Journal de Craft Anything](https://github.com/storytold/craft-anything/blob/4f0f744b7e2ad16198a7b08b9edc53286b1b8b67/crates/engine/src/journal.rs).
+For this kernel, distinguish explicitly:
 
-### Un statut « terminé » adapté à la géométrie
+- construction obtained;
+- geometric properties established;
+- analysis model accepted;
+- operation refused or verification inconclusive.
 
-Autre différence à prendre en compte : la boucle de reconstruction de Craft Anything peut terminer avec le statut `Ready` lorsqu’un résultat est utilisable, même si le seuil de ressemblance visé n’a pas été atteint après le nombre d’itérations prévu. Le programme expose les questions encore ouvertes. [Fin de la boucle de reconstruction](https://github.com/storytold/craft-anything/blob/4f0f744b7e2ad16198a7b08b9edc53286b1b8b67/crates/ai/src/rebuild/mod.rs).
+Exhausting an iteration budget cannot turn an indeterminate property into an established one.
 
-Pour notre noyau, je séparerais explicitement :
+## 7. Applying the practices to a Solidcore replacement
 
-- **construction obtenue** ;
-- **propriétés géométriques établies** ;
-- **modèle d’analyse accepté** ;
-- **opération refusée ou vérification non concluante**.
+The target architecture is **a master representation made of native trivariate maps, with interfaces and provenance in the construction tree**. Development practices should support that target from the first demonstrator.
 
-Épuiser un budget d’itérations ne peut pas transformer une propriété indéterminée en propriété acquise.
+### Step 1 — Define a small shared contract
 
-## 7. Comment appliquer tout cela à notre remplacement de Solidcore
+Before broadening functionality, define the rational block map, its six parametric sides, topological faces and incidences, parameterization relations between neighbors, feature-linked identities, and validation outcomes and refusal reasons. Declare the initially supported families. Extrusion and construction around a through-hole can have precise contracts before a general Boolean operator exists.
 
-Je conserverais notre objectif : **la représentation maîtresse est un complexe de cartes trivariées natives, avec leurs interfaces et leur provenance dans l’arbre de construction**.
+This is a prerequisite for parallel work and reduces the risk of separate modules that cannot be assembled.
 
-L’organisation du développement doit servir cet objectif dès le premier démonstrateur.
+### Step 2 — Build a small end-to-end case
 
-### Étape 1 — Définir le petit contrat commun
+The first milestone should be **two native trivariate blocks, one shared interface, a curved rational boundary, save/reload, and a parameter edit**. This already exercises rational weights, orientation, face sharing, persistence, regeneration, and inspection. Add geometry-preserving refinement and an affine-field check to prepare for analysis.
 
-Avant d’élargir les fonctionnalités, fixer quelques objets :
+This produces a usable pipeline from construction intent to an inspectable, verifiable result.
 
-- la carte rationnelle d’un bloc ;
-- ses six côtés paramétriques ;
-- les faces topologiques et leurs incidences ;
-- les relations de paramétrisation entre voisins ;
-- les identifiants liés aux features ;
-- les résultats de validation et les motifs de refus.
+### Step 3 — Build the templates needed for the bracket
 
-Il faut aussi déclarer les familles initialement admises. Une extrusion et une construction autour d’un trou traversant peuvent avoir un contrat clair bien avant de disposer d’un opérateur booléen général.
+Extend the demonstrator with reusable extrusion of a parameterized section, bore sectors, the bend and fillet in the selected family, interfaces between regions, and parameter updates within an admissible domain. Each template should come with a contract, edge cases, and checks. Parallel work becomes useful when traces and data exchange are fixed.
 
-Cette étape est le préalable aux travaux parallèles. Elle réduit le risque d’avoir trois modules fonctionnels qui ne peuvent pas s’assembler.
+### Step 4 — Use the FieldCraft bracket as the integrated demonstrator
 
-### Étape 2 — Réaliser une petite chaîne complète
+The existing bracket test checks **30 cells**, minimum quality, and convergence of hex8/hex20 mechanical results under refinement. It is a useful integration scenario. [Partitioned bracket test](https://github.com/tangency-labs/fieldcraft/blob/35e834652d8548384c2da8ef1b28d588c9af2ffd/crates/testkit/tests/bracket_blocks.rs).
 
-Le premier jalon que je choisirais est :
+For the kernel, turn the partition recipe into a **construction template for the trivariate complex**:
 
-> **Deux blocs trivariés natifs, une interface commune, une frontière rationnelle courbe, une sauvegarde/relecture et une modification de paramètre.**
+1. Read feature parameters.
+2. Construct block maps.
+3. Establish canonical interfaces.
+4. Check coverage and non-overlap.
+5. Produce the IGA representation.
+6. Compare mechanical results.
+7. Change parameters and replay the pipeline.
 
-Ce cas sollicite déjà les points essentiels : poids rationnels, orientation, partage de face, persistance, régénération et inspection.
+Thirty blocks are the starting point supplied by the example. If maps require further subdivision to satisfy the kernel contract, state that explicitly and measure its cost.
 
-J’y ajouterais un raffinement qui préserve la géométrie et un premier contrôle de champ affine pour préparer l’analyse.
+### Step 5 — Expand coverage based on observed failures
 
-Nous aurions alors une chaîne utilisable, depuis une intention de construction jusqu’à un résultat inspectable et vérifiable.
+Classify failures as a constructor limit, interface defect, poor parameterization quality, excessive verification cost, out-of-contract geometric family, or IGA formulation issue. This identifies the capability that is actually missing. A well-diagnosed refusal is correct software behavior. **A refusal on a declared admissible and required case is still a coverage failure.** Preserve that distinction in project statistics.
 
-### Étape 3 — Construire les gabarits nécessaires à l’équerre
+## 8. Required checks
 
-On développe ensuite les capacités réutilisables du démonstrateur :
+Tie work to the project's four scientific milestones:
 
-- extrusion d’une section paramétrée ;
-- secteurs autour d’un trou ;
-- traitement du coude et du congé dans la famille retenue ;
-- raccords entre les différentes régions ;
-- mise à jour des paramètres dans un domaine admissible.
-
-Chaque gabarit arrive avec son contrat, ses cas limites et ses contrôles.
-
-C’est ici que le travail entre agents devient particulièrement rentable : les modules peuvent avancer séparément lorsque leurs traces et leurs échanges sont fixés.
-
-### Étape 4 — Reprendre l’équerre de FieldCraft comme démonstrateur intégré
-
-Le test existant de l’équerre vérifie notamment les **30 cellules**, une qualité minimale et le rapprochement des résultats mécaniques hex8/hex20 sous raffinement. Il fournit un bon scénario d’intégration. [Test de l’équerre partitionnée](https://github.com/tangency-labs/fieldcraft/blob/35e834652d8548384c2da8ef1b28d588c9af2ffd/crates/testkit/tests/bracket_blocks.rs).
-
-Pour notre version, la recette de partition devient un **gabarit de construction du complexe trivarié** :
-
-1. lire les paramètres des features ;
-2. construire les cartes des blocs ;
-3. établir les interfaces canoniques ;
-4. vérifier la couverture et l’absence de recouvrement ;
-5. produire la représentation destinée à l’IGA ;
-6. comparer les résultats mécaniques ;
-7. modifier les paramètres et rejouer l’ensemble.
-
-Le nombre de trente blocs est un point de départ fourni par l’exemple. Si certaines cartes exigent une subdivision supplémentaire pour satisfaire notre contrat, il faudra l’expliciter et en mesurer le coût.
-
-### Étape 5 — Étendre la couverture à partir des échecs observés
-
-À ce stade, les agents peuvent aider à classer les échecs :
-
-- limite d’un constructeur ;
-- défaut de raccord ;
-- mauvaise qualité de paramétrisation ;
-- vérification trop coûteuse ;
-- famille géométrique hors contrat ;
-- problème dans la formulation IGA.
-
-Cette classification permet d’ajouter la capacité qui manque réellement.
-
-Un refus bien diagnostiqué est un comportement correct du logiciel. **Sur un cas déclaré admissible et obligatoire, il reste cependant un échec de couverture.** Il faut conserver cette distinction dans les statistiques du projet.
-
-## 8. Les contrôles que je rendrais obligatoires
-
-Je rattacherais les tâches aux quatre jalons scientifiques de notre projet :
-
-| Jalon | Conditions d’acceptation |
+| Milestone | Acceptance conditions |
 |---|---|
-| **J1 — Géométrie** | Cartes régulières, frontières attendues, interfaces cohérentes, partition correcte |
-| **J2 — Analyse** | Raccords d’espaces, champs admissibles, modes rigides, équilibre et convergence |
-| **J3 — Modifications et sensibilités** | Régénération cohérente, régimes topologiques identifiés, dérivées vérifiées dans leur domaine de validité |
-| **J4 — Couverture et coût** | Taux de réussite sur un corpus fixé, temps et mémoire à précision comparable, comparaison avec les références retenues |
+| **J1 — Geometry** | Regular maps, expected boundaries, consistent interfaces, correct partition |
+| **J2 — Analysis** | Space coupling, admissible fields, rigid modes, equilibrium, convergence |
+| **J3 — Edits and sensitivities** | Coherent regeneration, identified topological regimes, derivatives verified in their validity domain |
+| **J4 — Coverage and cost** | Success rate on a fixed corpus, time and memory at comparable accuracy, comparison with selected references |
 
-Les contrôles de compilation et de qualité du code accompagnent ces jalons. Ils ne les remplacent pas.
+Compilation and code-quality checks accompany these milestones; they do not replace them.
 
-Je conserverais également la préférence de Craft pour les tests de propriétés et les cas qui détectent une erreur plausible. [GitHub](https://github.com/storytold/craft-contrib/blob/main/standards/testing.md?utm_source=chatgpt.com) Mais en calcul numérique, plusieurs entrées qui suivent exactement les mêmes branches peuvent représenter des régimes très différents : poids extrêmes, éléments minces, jacobien proche de zéro ou forte disparité d’échelles. Il faut préserver ces cas lorsqu’ils éprouvent le conditionnement ou les garanties.
+Retain Craft's preference for property tests and cases that detect plausible errors. [Testing standard](https://github.com/storytold/craft-contrib/blob/main/standards/testing.md?utm_source=chatgpt.com). In numerical computation, several inputs following the same code path may still represent different regimes: extreme weights, thin elements, near-zero Jacobians, or large scale disparities. Preserve cases that challenge conditioning or guarantees.
 
-Pour maîtriser les coûts de développement, on peut reprendre la sélection des suites concernées par une modification, puis exécuter périodiquement le corpus complet. FieldCraft possède déjà une sélection fondée sur les packages modifiés et leurs dépendants transitifs. [Sélection des modules affectés](https://github.com/tangency-labs/fieldcraft/blob/35e834652d8548384c2da8ef1b28d588c9af2ffd/xtask/src/affected.rs).
+To manage development cost, select affected test suites for each change and periodically run the full corpus. FieldCraft already selects tests from changed packages and their transitive dependents. [Affected-package selection](https://github.com/tangency-labs/fieldcraft/blob/35e834652d8548384c2da8ef1b28d588c9af2ffd/xtask/src/affected.rs).
 
-## Ma recommandation
+## Recommendation
 
-**Je reprendrais dès maintenant le protocole de développement, puis j’introduirais progressivement l’automatisation d’AutoCraft lorsque le volume de travaux parallèles le justifiera.**
+Adopt the development protocol now, then introduce AutoCraft orchestration as parallel workload warrants it. The initial requirements are a short trivariate representation contract, a shared library, distinct construction and verification responsibilities, commands runnable without a GUI, a corpus separating references, regressions, and counterexamples, and one end-to-end case followed by the FieldCraft bracket.
 
-Pour démarrer, il nous faut surtout :
+Agents can propose decomposition recipes or choose templates. The kernel must check the resulting objects against the same criteria regardless of how they were proposed.
 
-1. un contrat court de représentation trivariée ;
-2. une bibliothèque commune ;
-3. un constructeur et un vérificateur développés avec des responsabilités distinctes ;
-4. des commandes exécutables sans interface graphique ;
-5. un corpus séparant références, régressions et contre-exemples ;
-6. une première chaîne complète, puis l’équerre de FieldCraft.
-
-Les agents pourront ensuite proposer des recettes de décomposition ou sélectionner des gabarits. Le noyau devra toujours vérifier les objets obtenus selon les mêmes critères, quelle que soit l’origine de la proposition.
-
-**Le premier investissement que je ferais est donc le couple “construction native + vérification indépendante”, appliqué à deux blocs raccordés, puis au gabarit de l’équerre.** C’est ce qui permettra d’utiliser la puissance de développement de l’écosystème Craft tout en conservant la propriété centrale de notre projet : une géométrie construite et maintenue dans le noyau trivarié.
+The first investment should be **native construction plus independent verification**, applied to two connected blocks and then the bracket template. This uses the development capacity of the Craft ecosystem while retaining the project's central property: geometry is constructed and maintained in the trivariate kernel.

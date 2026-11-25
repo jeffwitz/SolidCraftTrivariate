@@ -1,33 +1,33 @@
-# Congés et chanfreins sur la partition de l’anneau vif
+# Fillets and chamfers on the sharp annulus partition
 
-Le prototype reprend les quatre volumes de `full_annulus_v1`, leurs identifiants, leurs quatre faces de raccord et les coefficients angulaires dyadiques de la pièce vive. Les variantes affichées utilisent la même base triquadratique, le même vecteur de nœuds par direction et les mêmes poids. Chaque volume a 63 pôles (3 × 3 × 7). Les nœuds supplémentaires sont internes aux volumes. Dans chacun des trois états on conserve les quatre secteurs, avec trois travées d’intégration axiales par secteur.
+The prototype reuses the four `full_annulus_v1` volumes, their identities, four interface faces, and the dyadic angular coefficients of the sharp part. The displayed variants use the same triquadratic basis, knot vector in each direction, and weights. Each volume has 63 poles (3 × 3 × 7). Additional knots are internal to the volumes. All three states retain four sectors, with three axial integration spans per sector.
 
-| État | Volume Gauss 16 (mm³) | Régularité |
-| --- | ---: | --- |
-| [Vif](site/data/models/annulus-four-sharp.json) | 301,592894744620 | Déterminant positif sur les travées fermées |
-| [Quatre chanfreins](site/data/models/annulus-four-chamfer.json) | 299,236700254428 | Déterminant positif sur les travées fermées |
-| [Quatre congés](site/data/models/annulus-four-fillet-singular.json) | 300,581607414644 | Positif dans la matière, nul sur quatre cercles de contact. IGA non qualifiée |
+| State | Gauss-16 volume (mm³) | Regularity |
+|---|---:|---|
+| [Sharp](https://github.com/jeffwitz/SolidCraftTrivariate/blob/38825ceaf8d70141181e48ee3d4cc06387d87deb/docs/site/data/models/annulus-four-sharp.json) | 301.592894744620 | Positive determinant on closed spans |
+| [Four chamfers](https://github.com/jeffwitz/SolidCraftTrivariate/blob/38825ceaf8d70141181e48ee3d4cc06387d87deb/docs/site/data/models/annulus-four-chamfer.json) | 299.236700254428 | Positive determinant on closed spans |
+| [Four fillets](https://github.com/jeffwitz/SolidCraftTrivariate/blob/38825ceaf8d70141181e48ee3d4cc06387d87deb/docs/site/data/models/annulus-four-fillet-singular.json) | 300.581607414644 | Positive in material, zero on four contact circles. IGA not qualified |
 
-## Carte du congé
+## Fillet map
 
-Dans la travée du bas, s est le paramètre radial (0 à l’extérieur, 1 à l’intérieur), t le paramètre axial local et R=1/4 mm. Poser a=2s−1, D=1+t², d=R(1−t)²/D, b=1−d, E=t(1−t)/D et k=R/2. Le rayon nominal et l’altitude sont
+In the lower span, s is the radial parameter (0 outside, 1 inside), t is the local axial parameter, and R=1/4 mm. Set a=2s−1, D=1+t², d=R(1−t)²/D, b=1−d, E=t(1−t)/D, and k=R/2. The nominal radius and height are
 
     ρ = 3 − a b
     z = 2R t²/D + k(1−a²)E.
 
-Sur les deux parois a=±1, le terme en k s’annule. Les fonctions (1−t²)/D et 2t/D tracent un quart de cercle exact dans le profil méridien nominal. La révolution reprend l’approximation dyadique angulaire d’origine. La travée du haut est la symétrique de celle du bas autour de z=4 mm. Dans la travée centrale, le profil est rectangulaire.
+On both walls a=±1, the k term vanishes. The functions (1−t²)/D and 2t/D trace an exact quarter-circle in the nominal meridian profile. Revolution uses the original dyadic angular approximation. The upper span is symmetric to the lower span about z=4 mm. In the middle span, the profile is rectangular.
 
-Le terme en k régularise **l’intérieur des faces d’extrémité**. Le facteur méridien du jacobien orienté, à une constante positive près, vaut b z_t + 2 a² k b′ E. Ici b>0, b′≥0, E≥0 et
+The k term regularizes **the interior of the end faces**. Up to a positive constant, the meridional factor of the oriented Jacobian is b z_t + 2 a² k b′ E. Here b>0, b′≥0, E≥0, and
 
     D² z_t = 4R t + k(1−a²)(1−2t−t²).
 
-Pour t>0 ce dernier terme est strictement positif, car 1−2t−t² ≥ −2t et 4R>2k. Pour t=0, il est positif dès que |a|<1. Les seuls zéros sont donc les deux cercles à z=0 et leurs deux symétriques à z=8, aux rayons nominaux 2,25 et 3,75 mm. Le facteur angulaire est strictement positif comme sur la pièce initiale. Pour vérifier la couverture, à rayon fixé on résout a=(3−ρ)/b(t). L’ensemble des t permis est un intervalle car b est croissante, et z y est strictement croissant dans l’intérieur par la formule du jacobien. Le bord décrit le profil arrondi, et les quatre secteurs angulaires couvrent chacun leur quadrant une fois.
+For t>0 this last term is strictly positive because 1−2t−t² ≥ −2t and 4R>2k. At t=0 it is positive whenever |a|<1. Thus the only zeros are the two circles at z=0 and their symmetric counterparts at z=8, at nominal radii 2.25 and 3.75 mm. The angular factor remains strictly positive as in the original part. To verify coverage, at fixed radius solve a=(3−ρ)/b(t). The permitted t values form an interval because b is increasing, and z is strictly increasing there in the interior by the Jacobian formula. The boundary describes the rounded profile, and the four angular sectors each cover their quadrant once.
 
-Une arête de cube entre deux faces physiques tangentes impose cette perte de rang sur ces quatre secteurs. Un test du champ IGA et une qualification pour cette classe de cartes singulières restent à mener. Le rapport antérieur [sur la condition de jacobien strict](annulus-four-block-topology.md) explique pourquoi la variante régulière utilise une autre partition.
+A cube edge between two tangent physical faces forces this rank loss in these four sectors. An IGA field test and qualification of this singular-map family remain to be done. The earlier report [on the strict Jacobian condition](annulus-four-block-topology.md) explains why the regular variant uses a different partition.
 
-## Contrôles reproductibles
+## Reproducible checks
 
-Le contrôle indépendant opère directement sur les modèles de la galerie. Sur chaque travée et pour chaque rangée angulaire, neuf comparaisons en fractions exactes déterminent l’identité des polynômes biquadratiques homogènes (numérateurs et dénominateur, composante par composante) avec la formule analytique. Les quatre faces de raccord sont identiques coefficient par coefficient. Les quadratures de Gauss 12 et 16 concordent avec le volume analytique vif ou le STEP traité de référence à moins de 10⁻¹⁰ mm³.
+The independent check operates directly on gallery models. On every span and angular row, nine exact-fraction comparisons determine componentwise identity of the homogeneous biquadratic polynomials (numerators and denominator) with the analytic formula. The four interface faces agree coefficient by coefficient. Gauss quadrature orders 12 and 16 agree with the analytic sharp volume or treated STEP reference to within 10⁻¹⁰ mm³.
 
 ```sh
 cargo test --offline --example annulus_original_edges
@@ -35,4 +35,4 @@ cargo run --offline --example annulus_original_edges -- fillet > build/annulus-o
 python3 tests/references/annulus_original_edge_states.py
 ```
 
-[Constructeur Rust](../examples/annulus_original_edges.rs) · [Oracle indépendant](../tests/references/annulus_original_edge_states.py)
+[Rust constructor](../examples/annulus_original_edges.rs) · [Independent oracle](../tests/references/annulus_original_edge_states.py)

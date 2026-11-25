@@ -1,23 +1,23 @@
 # SolidCraftTrivariate
 
-Noyau volumique natif en Rust pour construire et auditer des cartes trivariées rationnelles, puis les exporter en STEP et préparer leur espace d’analyse IGA. Le parcours géométrique commence par une esquisse ou une recette, détermine ses lignes de partition, puis construit et audite les volumes dans la même crate. Python fournit des oracles indépendants et des références historiques.
+A native Rust volumetric kernel for building and auditing rational trivariate maps, exporting STEP, and preparing their IGA analysis spaces. The geometry workflow starts from a sketch or recipe, derives its partition lines, then builds and audits the volumes in the same crate. Python supplies independent oracles and historical references. [Documentation index](docs/README.md)
 
-La galerie présente les six configurations à profils courbes. Chaque fiche montre la coupe du solide et les arcs de son esquisse, avec la recette, le modèle, l’audit et le STEP à télécharger. [Galerie interactive](https://jeffwitz.github.io/SolidCraftTrivariate/) · [Construction et vérifications](docs/galerie-esquisses-courbes.md)
+The gallery contains six curved-profile solids and five FieldCraft bracket variants. Each entry shows a solid section and its sketch arcs, with the recipe, model, audit, and STEP file available for download. [Interactive gallery](https://jeffwitz.github.io/SolidCraftTrivariate/) · [Construction and checks](docs/galerie-esquisses-courbes.md) · [FieldCraft bracket results](docs/results/fieldcraft-compact.md)
 
-Le planificateur polygonal compare les séparatrices locales à la partition historique sur la même recette. La poche borgne du corpus passe de 17 à 9 volumes et le C à deux trous de 35 à 9. Ces deux résultats atteignent la borne topologique dans la classe de partitions conformes étudiée. Le conditionnement des cartes entre aussi en jeu pour le calcul. [Algorithme](docs/architecture.md#planificateur) · [Corpus, preuves et mesures](docs/partition-poche-comparaison.md) · [Construction depuis les esquisses](docs/partition-esquisses.md)
+The polygonal planner compares local separators with the historical partition on the same recipe. In the recorded corpus, the blind pocket uses 9 instead of 17 volumes and the two-hole C profile uses 9 instead of 35. Both meet the topological lower bound within the conforming partition class studied. Map conditioning also affects analysis. [Algorithm](docs/architecture.md#planner) · [Corpus, proofs, and measurements](docs/partition-poche-comparaison.md) · [Sketch-based construction](docs/partition-esquisses.md)
 
-## Démarrage rapide : esquisse, plan, volumes
+## Quick start: sketch, plan, volumes
 
-Prérequis : Rust/Cargo, Python 3.10+, Git, Bash et Make. Depuis la racine, le parcours Rust initial ne dépend pas des clones upstream ni des oracles Python :
+Requirements: Rust/Cargo, Python 3.10+, Git, Bash, and Make. From the repository root, the initial Rust workflow does not depend on upstream clones or Python oracles:
 
 ```sh
 cargo build --release --locked --offline
 make demo-native
 ```
 
-Pour installer les six références de `references.lock` et lancer l’ensemble des références et tests, faire une fois `make bootstrap`, puis `make check`. `make check` vérifie la présence de ces clones; il ne les installe pas implicitement.
+To install the six references listed in `references.lock` and run the full reference and test suite, run `make bootstrap` once, then `make check`. `make check` checks that those clones are present; it does not install them implicitly.
 
-`plan-sketch` expose les jonctions du contour et les niveaux de coupe induits par les autres opérations avant la création des blocs. Ici, le profil cubique périodique est soustrait par extrusion à un rectangle transversal. Le plan est enregistré dans un JSON consultable :
+`plan-sketch` reports contour junctions and cutting levels induced by other operations before blocks are created. In this example, a periodic cubic profile is subtracted by extrusion from a transverse rectangle. The plan is saved as inspectable JSON:
 
 ```sh
 mkdir -p build/demo
@@ -26,9 +26,9 @@ cli=target/release/solidcraft-trivariate
 python3 -m json.tool build/demo/g2-plan.json
 ```
 
-Le rapport rejoué contient huit jonctions G2 sur le profil périodique, les coins G0 du rectangle, quatre croisements exacts aux paramètres 7/2, 13/2, 5/2 et 15/2, ainsi que les niveaux transversaux 4 et 8 mm. Ces valeurs décrivent cette recette. Les nœuds introduits pour représenter une courbe et les croisements entre deux esquisses gardent des provenances distinctes.
+The recorded report contains eight G2 junctions on the periodic profile, G0 corners on the rectangle, four exact crossings at parameters `7/2`, `13/2`, `5/2`, and `15/2`, and transverse levels at 4 and 8 mm. These values are specific to this recipe. Knots inserted to represent a curve and crossings between two sketches retain distinct provenance.
 
-Construire la représentation volumique à partir de la même recette, puis auditer et exporter le solide :
+Build the volumetric representation from the same recipe, then audit and export the solid:
 
 ```sh
 mkdir -p build/demo
@@ -38,11 +38,11 @@ cli=target/release/solidcraft-trivariate
 "$cli" export-step build/demo/g2-cross.json build/demo/g2-cross.step
 ```
 
-Sur cette recette, l’audit rejoué rapporte 32 blocs, 46 interfaces partagées, 100 faces extérieures, une borne inférieure du déterminant de 5,729862499996598 mm³ et deux perçages traversants. La borne certifie la régularité locale des cartes sur leur domaine; elle ne suffit pas à elle seule à établir la fidélité globale d’une autre recette.
+For this recipe, the recorded audit reports 32 blocks, 46 shared interfaces, 100 exterior faces, a determinant lower bound of `5.729862499996598 mm³`, and two through bores. The bound certifies local regularity of the maps on their domains; by itself it does not establish global fidelity for a different recipe.
 
-### Importer une timeline SolidCraft
+### Import a SolidCraft timeline
 
-`import-solidcraft-sketch` lit une timeline canonique exportée de SolidCraft; il ne lance ni n’exécute le script utilisateur. Le sous-ensemble qualifié ici est une esquisse polygonale orthogonale, son extrusion, un congé et deux perçages traversants d’axes distincts. La fixture versionnée permet de rejouer l’import, l’audit et l’export STEP :
+`import-solidcraft-sketch` reads a canonical timeline exported from SolidCraft; it does not launch or execute the user's script. The qualified subset is an orthogonal polygon sketch, its extrusion, a fillet, and two through bores on distinct axes. A versioned fixture lets you replay import, audit, and STEP export:
 
 ```sh
 mkdir -p build/demo
@@ -52,17 +52,17 @@ cli=target/release/solidcraft-trivariate
 "$cli" export-step build/demo/bracket.json build/demo/bracket.step
 ```
 
-Le cas de référence rejoué donne 48 blocs, 74 interfaces partagées, 140 faces extérieures, deux perçages et une borne certifiée du déterminant de 0,00854492187498991 mm³. Les détails de l’entrée canonique et les refus atomiques sont dans [le test d’import de timeline](tests/solidcraft_sketch_features.rs). Pour les autres formats de scripts SolidCraft, voir aussi `import-solidcraft` et ses sous-ensembles documentés dans les [résultats de campagne](docs/campagne-20261125.md).
+The recorded case has 48 blocks, 74 shared interfaces, 140 exterior faces, two bores, and a certified determinant lower bound of `0.00854492187498991 mm³`. Details of the canonical input and atomic rejection are in [the timeline import test](tests/solidcraft_sketch_features.rs). For other SolidCraft script formats, see `import-solidcraft` and its documented subsets in the [campaign results](docs/campagne-20261125.md).
 
-## Familles de construction et portée
+## Construction families and scope
 
-Les recettes JSON versionnées expriment les opérations et dimensions; l’audit reconstruit et vérifie les cartes candidates avant publication. Les familles implémentées couvrent notamment les paires affines, couronnes, équerres, perçages axiaux et mobiles, contours NURBS multiboucles, esquisses NURBS croisées, et primitives rectangle/cercle/ellipse extrudées ou tournées. Chaque famille possède des hypothèses d’admission propres. Une réussite sur un gabarit ne constitue pas une garantie universelle pour toute géométrie.
+Versioned JSON recipes express operations and dimensions; the audit rebuilds and checks candidate maps before publication. Implemented families include affine pairs, annuli, brackets, axial and moving bores, multi-loop NURBS contours, intersecting NURBS sketches, and rectangle/circle/ellipse primitives made by extrusion or revolution. Each family has its own admission assumptions. Success on a template is not a universal guarantee for every geometry.
 
-Le préplan de `plan-sketch` traite les jonctions, subdivisions et événements d’intersection nécessaires à des familles précises. Les certificats de Bernstein portent sur les domaines et méthodes annoncés par le rapport. Les classifications, grilles et échantillonnages restent des diagnostics mesurés; ils ne sont pas présentés comme des preuves de couverture ou d’injectivité. Les refus et contre-exemples sont conservés dans `tests/counterexamples`, `tests/regressions` et les rapports versionnés.
+The `plan-sketch` preplanner handles junctions, subdivisions, and intersection events required by specific families. Bernstein certificates apply to the domains and methods named in each report. Classifications, grids, and samples remain measured diagnostics; they are not presented as proofs of coverage or injectivity. Rejections and counterexamples are retained under `tests/counterexamples`, `tests/regressions`, and the versioned reports.
 
-Le catalogue des primitives décrit leurs conventions et les résultats rejoués : [gabarits NURBS](docs/gabarits-primitives-nurbs.md). Pour les courbes importées et les opérations croisées, voir [prépartition des esquisses](docs/prepartition-esquisse-nurbs.md) et [cycle NURBS multiboucles](docs/cycle-nurbs-multiboucles.md). Ces documents distinguent les mesures de chaque recette des propriétés démontrées pour son domaine. Le CdC corrigé demeure la spécification normative; les notes d’adaptation et les journaux de campagne apportent contexte, recettes et résultats, sans modifier les exigences du CdC.
+The primitive catalog records conventions and replayed results: [NURBS templates](docs/gabarits-primitives-nurbs.md). For imported curves and cross-operations, see [NURBS sketch prepartitioning](docs/prepartition-esquisse-nurbs.md) and the [multi-loop NURBS cycle](docs/cycle-nurbs-multiboucles.md). These documents distinguish measurements for each recipe from properties proved over its domain. The corrected specification remains normative; adaptation notes and campaign logs provide context, recipes, and results without changing its requirements.
 
-La démo native inclut aussi une poche prismatique versionnée :
+The native demo also includes a versioned prismatic pocket:
 
 ```sh
 mkdir -p build/demo
@@ -71,13 +71,13 @@ cli=target/release/solidcraft-trivariate
 "$cli" audit build/demo/blind-pocket.json
 ```
 
-Cette fixture produit 9 blocs au total et une borne certifiée du déterminant de 191,99999999999991 mm³. La recette du test de référence plus large (`sketch_boolean_oracle.py`) utilise un domaine et un historique d’opérations différents; ses nombres ne se substituent pas à ceux de cette démo.
+This fixture produces 9 blocks and a certified determinant lower bound of `191.99999999999991 mm³`. The broader reference-test recipe (`sketch_boolean_oracle.py`) uses a different domain and operation history; its values do not replace the demo's.
 
-## Autres parcours
+## Other workflows
 
-### Calcul mécanique
+### Mechanical analysis
 
-Le solveur Rust prend un modèle audité et un job versionné. Cet exemple reprend le job de l’équerre de référence, résout puis exporte champ et contraintes pour ParaView :
+The Rust solver takes an audited model and a versioned job. This example imports the historical bracket template, solves its reference job, and exports the field and stress for ParaView:
 
 ```sh
 mkdir -p build/demo
@@ -88,11 +88,11 @@ python3 -c 'import json; print(json.dumps(json.load(open("tests/references/mecha
 "$cli" export-field-vtu build/demo/result.json 4 build/demo/bracket-field.vtu
 ```
 
-Le gabarit historique de l’équerre FieldCraft fournit 36 blocs et 55 interfaces. Le constructeur depuis les esquisses reproduit l’équerre et ses quatre variantes à deux perçages avec 10 blocs et 11 interfaces. Chaque aile percée occupe quatre blocs, et le coude en occupe deux. [Modèles, STEP et contrôles](docs/results/fieldcraft-compact.md). Le résultat conserve déplacements en mm, réactions, bilan travail-énergie et contraintes par bloc aux interfaces. Le solveur traite l’élasticité linéaire isotrope en petites déformations. Les comparaisons et limites de chaque expérience sont consignées dans le [journal de campagne](docs/campagne-20261125.md).
+The historical FieldCraft bracket template has 36 blocks and 55 interfaces. The sketch-based builder reproduces the bracket and its four two-bore variants with 10 blocks and 11 interfaces. Each pierced arm uses four blocks and the bend uses two. [Models, STEP, and checks](docs/results/fieldcraft-compact.md). The result retains displacements in mm, reactions, work-energy balance, and per-block stresses at interfaces. The solver handles small-strain linear isotropic elasticity. Comparisons and limits for each experiment are recorded in the [campaign log](docs/campagne-20261125.md).
 
-### Éditer la profondeur d’un perçage
+### Editing bore depth
 
-La recette polygonale `closed` du corpus sert à rejouer une poche axiale et l’audit de son édition :
+The polygonal `closed` recipe in the corpus can replay an axial pocket and audit its edit:
 
 ```sh
 mkdir -p build/demo
@@ -107,11 +107,11 @@ JSON
 "$cli" export-step build/demo/blind.json build/demo/blind.step
 ```
 
-Une sélection exigée qui disparaît fait échouer l’édition avant publication de la cible. Voir [l’oracle indépendant des éditions](tests/references/interval_bore_edits.py).
+If a required selection disappears, the edit fails before publishing the target. See the [independent edit oracle](tests/references/interval_bore_edits.py).
 
-### Référence Python et évaluation
+### Python reference and evaluation
 
-Les références Python historiques sont rejouables séparément de la crate Rust :
+Historical Python references can be replayed independently of the Rust crate:
 
 ```sh
 python3 -m trivariate capabilities
@@ -120,16 +120,17 @@ python3 -m trivariate audit build/affine_pair.json
 python3 -m trivariate evaluate tests/references/quarter_annulus.json 0.5 0.5 0.5
 ```
 
-`make bootstrap` récupère les six dépendances d’oracle consignées dans `references.lock` sur une nouvelle copie; après cette étape, `make check` fonctionne hors ligne. Pour les seuls tests Rust : `cargo test --locked --offline`.
+On a fresh clone, `make bootstrap` retrieves the six oracle dependencies pinned in `references.lock`; afterward, `make check` runs offline. For Rust tests alone: `cargo test --locked --offline`.
 
-## Documents et résultats
+## Documents and results
 
-- [Contrats et architecture](docs/architecture.md)
-- [Évaluateur L1 et résultats](docs/L1.md)
-- [Critères de développement de Luna](docs/LUNA.md)
-- [Consignes de développement](AGENTS.md)
-- [Cahier des charges scientifique corrigé](CdC_noyau_trivarie_sans_trim_corrige.md)
-- [Construction de l’équerre de référence](LienSolidecraft.md)
-- [Adaptation et organisation des revues](ArtcratAdaptation.md)
-- [Journal de campagne et résultats mesurés](docs/campagne-20261125.md)
-- [Galerie interactive](https://jeffwitz.github.io/SolidCraftTrivariate/)
+
+- [Architecture and contracts](docs/architecture.md)
+- [L1 evaluator and results](docs/L1.md)
+- [Luna development roadmap](docs/LUNA.md)
+- [Development instructions](AGENTS.md)
+- [Corrected scientific specification](CdC_noyau_trivarie_sans_trim_corrige.md)
+- [Reference bracket construction](LienSolidecraft.md)
+- [Adaptation and review organization](ArtcratAdaptation.md)
+- [Campaign log and measured results](docs/campagne-20261125.md)
+- [Interactive gallery](https://jeffwitz.github.io/SolidCraftTrivariate/)

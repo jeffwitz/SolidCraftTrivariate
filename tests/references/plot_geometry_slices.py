@@ -32,8 +32,8 @@ def patches(path):
 def plot(folder, output):
     fig, axes = plt.subplots(1, 2, figsize=(11.5, 5), layout="constrained")
     norm = LogNorm(1, 10000)
-    cases = [("two_tunnels", "Deux tunnels polygonaux", "z = 2,5 mm"),
-             ("inclined_bores", "Perçage circulaire sous cisaillement", "z = 0,5 mm")]
+    cases = [("two_tunnels", "Two polygonal tunnels", "z = 2.5 mm"),
+             ("inclined_bores", "Inclined circular bore", "z = 0.5 mm")]
     for ax, (name, title, plane) in zip(axes, cases):
         poly, color, edges = patches(folder / f"{name}-6.vtu")
         field = PolyCollection(poly, array=np.array(color), cmap="viridis", norm=norm,
@@ -46,7 +46,7 @@ def plot(folder, output):
         ax.set_ylabel("y (mm)")
         ax.set_title(f"{title}\n{plane}", fontsize=12)
     fig.colorbar(field, ax=axes, location="bottom", shrink=.65, aspect=45,
-                 label="Conditionnement du jacobien  κ₂(J)  ·  moyenne des quatre sommets")
+                 label="Jacobian condition number κ₂(J) · mean of the four vertices")
     output.parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(output, dpi=160, facecolor="white")
     plt.close(fig)

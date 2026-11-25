@@ -395,7 +395,7 @@ def main():
     )
     xy, xz = sections
     draw_material(axes[0], xy[4], xy[5], xy[6], xy[7], show_before=True)
-    axes[0].set_title(f"Avant — S2, z = {args.z:g} mm")
+    axes[0].set_title(f"Before — S2, z = {args.z:g} mm")
     axes[0].set_xlabel(xy[2])
     axes[0].set_ylabel(xy[3])
 
@@ -404,7 +404,7 @@ def main():
         sketch_xy = prism[0][:, [0, 1]]
         removed_xy &= polygon_mask(xy[4], xy[5], sketch_xy)
     draw_material(axes[1], xy[4], xy[5], xy[6], xy[7], removal_clip=removed_xy)
-    axes[1].set_title("Après — retrait en orange")
+    axes[1].set_title("After — removed material shown in orange")
     axes[1].set_xlabel(xy[2])
     axes[1].set_ylabel(xy[3])
     if prism is not None:
@@ -416,7 +416,7 @@ def main():
             ax.set_ylim(np.min(sketch_xy[:, 1]) - args.zoom_margin,
                         np.max(sketch_xy[:, 1]) + args.zoom_margin)
     elif not zoom_to_removed(axes[1], xy[4], xy[5], removed_xy):
-        axes[1].text(0.5, 0.5, "Aucun retrait détecté à cette cote", transform=axes[1].transAxes,
+        axes[1].text(0.5, 0.5, "No material removal detected at this coordinate", transform=axes[1].transAxes,
                      ha="center", va="center")
 
     removed_xz = xz[6] & ~xz[7]
@@ -426,7 +426,7 @@ def main():
     if prism_xz is not None:
         removed_xz &= polygon_mask(xz[4], xz[5], prism_xz)
     draw_material(axes[2], xz[4], xz[5], xz[6], xz[7], removal_clip=removed_xz)
-    axes[2].set_title(f"Coupe XZ — y = {y_cut:g} mm")
+    axes[2].set_title(f"XZ cross-section — y = {y_cut:g} mm")
     axes[2].set_xlabel(xz[2])
     axes[2].set_ylabel(xz[3])
     zoom_to_removed(axes[2], xz[4], xz[5], removed_xz)
@@ -437,20 +437,20 @@ def main():
                          np.max(prism_xz[:, 1]) + args.zoom_margin)
     fig.legend(
         handles=[
-            Patch(facecolor="#2f7f78", label="Matière conservée"),
-            Patch(facecolor="#dc8a4c", label="Matière retirée"),
+            Patch(facecolor="#2f7f78", label="Remaining material"),
+            Patch(facecolor="#dc8a4c", label="Removed material"),
         ],
         frameon=False,
         loc="lower center",
         bbox_to_anchor=(0.5, 0.035),
         ncol=2,
     )
-    fig.suptitle("Comparaison des cartes trivariées S2 / S3", fontsize=15)
+    fig.suptitle("Comparison of S2 and S3 trivariate maps", fontsize=15)
     fig.text(
         0.5,
         0.005,
-        f"Sections évaluées sur les cartes rationnelles ; contours échantillonnés à {args.samples} points par direction. "
-        f"Masque de visualisation : {args.raster_resolution} × {args.raster_resolution}.",
+        f"Sections evaluated on rational maps; boundaries sampled at {args.samples} points per direction. "
+        f"Display mask: {args.raster_resolution} × {args.raster_resolution}.",
         ha="center",
         fontsize=8,
         color="#52606b",

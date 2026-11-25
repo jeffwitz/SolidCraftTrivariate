@@ -1,245 +1,217 @@
-# CdC — Noyau géométrique trivarié par partition (IGA sans trim)
+# Requirements for the partition-based trivariate geometry kernel
 
-**Révision technique : 24 novembre 2026.**
+**Technical revision of 24 November 2026.**
 
-**Objet :** construction native de volumes trivariés entiers, avec raccords forts, certificats de validité et interfaces de calcul.
+The kernel constructs whole, untrimmed trivariate blocks with strong interblock coupling, validity certificates and an analysis interface. This specification defines the required guarantees and how to establish them. Performance and coverage must be measured on the stated test sets.
 
-**Statut :** cahier des charges révisé. Les garanties exigées doivent être établies par les constructions, certificats et jalons décrits ; les performances et la couverture restent à mesurer sur les corpus annoncés.
+“Must”, “required” and “acceptance criterion” denote obligations. Research objectives and unqualified extensions are identified separately. Geometric representation, model validity and suitability for a particular analysis are three separate decisions.
 
-Les formulations « doit », « exigé » et « condition d'acceptation » désignent des obligations. Les objectifs de recherche et les extensions non qualifiées sont identifiés séparément. Le statut géométrique, la validité du modèle et l'admissibilité du calcul sont toujours distingués.
+## 1. Context and design hypothesis
 
-## 1. Contexte, motivation et thèse
+The material domain is a finite assembly of injective, nondegenerate tensor-product B-spline or NURBS blocks. Each active block represents material over its entire parameter cube. Design operations construct and maintain these maps. The boundary representation and the analysis model are derived from the same assembly.
 
-Le projet construit un **noyau géométrique trivarié natif**. Le domaine matériel est représenté par un assemblage fini de blocs B-splines ou NURBS tensoriels entiers, sans trim volumique, injectifs et non dégénérés. Les opérations de conception construisent et maintiennent cet intérieur paramétré. Le bord du solide et le modèle d'analyse sont des vues cohérentes de cet assemblage.
+The first target is displacement-based three-dimensional linear elasticity in an $H^1$-conforming space. Adjacent blocks share degrees of freedom or impose strong constraints between nested trace spaces. This coupling requires no weak interface terms. The mechanical problem must still be well posed, with admissible materials and sufficient boundary conditions.
 
-Le premier calcul visé est l'élasticité linéaire 3D en déplacement, dans un espace $H^1$-conforme. La conformité est obtenue par partage de degrés de liberté ou par contraintes fortes entre espaces de trace emboîtés. Elle ne nécessite pas de terme de couplage faible entre blocs. Un problème mécanique bien posé, des matériaux admissibles et des conditions aux limites suffisantes restent requis.
+**Motivation.** A boundary representation alone does not supply an interior map suitable for volumetric IGA. The kernel retains this map as design data that can also carry material fields. The construction history constrains the possible decompositions. Where equivalent transformations are permitted, the final partition need not follow the order of the design operations.
 
-**Motivation.** Une représentation de frontière ne fournit pas à elle seule une carte de l'intérieur adaptée à l'IGA volumique. Le projet fait de cette carte une donnée de conception persistante, susceptible de porter également des champs matériels. Le programme de construction fournit des contraintes et des possibilités de décomposition ; son ordre historique n'est pas imposé comme découpage final lorsque des transformations équivalentes sont autorisées.
+**Related approaches**
 
-**Périmètre par rapport aux autres voies.**
-
-| Voie | Apport | Place dans le projet |
+| Approach | Contribution | Role in the project |
 | --- | --- | --- |
-| Analyse immergée | Calcul sur un fond indépendant de la frontière, avec traitement des cellules coupées et formulations adaptées | Référence de comparaison ; elle ne constitue pas la représentation géométrique native recherchée |
-| V-rep à trivariées trimées | Modélisation volumique, champs internes et opérations booléennes | Antériorité et source de méthodes ; la sortie native du présent noyau reste une union de blocs entiers |
-| Conversion d'une B-rep finale | Segmentation et paramétrisation à partir d'une géométrie existante | Antériorité utile ; reconstruction depuis STEP hors du périmètre initial |
-| Volumetric untrimming | Décomposition tensorielle d'un domaine trimé, notamment pour l'intégration | Source de méthodes ; une carte d'intégration singulière ne doit pas être confondue avec la carte géométrique et la base d'analyse. Seules des cartes respectant les invariants du noyau peuvent y être intégrées |
+| Immersed analysis | Analysis on a background grid with cut-cell integration and suitable formulations | Independent numerical reference |
+| Trimmed trivariate V-rep | Volumetric modeling, internal fields and Boolean operations | Prior work on volumetric construction. The native output here is a union of whole blocks. |
+| Conversion from a final B-rep | Segmentation and parameterization of existing geometry | Relevant prior work. General reconstruction from STEP lies outside the initial scope. |
+| Volumetric untrimming | Tensor-product decomposition of a trimmed domain, including for integration | An integration map may be singular. A map used as native geometry must satisfy every kernel invariant. |
 
-Les références et leurs limites sont précisées en section 21. L'exclusion d'une voie du modèle natif ne constitue pas une affirmation de son infériorité numérique générale.
+Section 21 lists the sources and their limits. The choice of native representation makes no general claim about the numerical accuracy of alternative methods.
 
-**Principe de construction.** Sur un hôte plan affine, les contours d'esquisse et les opérations compatibles définissent un arrangement. Celui-ci est partitionné en cellules paramétrables, puis transformé en blocs par les opérateurs admis. Les coupes nécessaires aux frontières matérielles et les coupes de structuration sont distinctes. La partition peut être reconstruite lorsqu'une modification l'exige ; sa localité doit être démontrée ou mesurée.
+**Construction.** On an affine planar host, sketch contours and compatible operations define an arrangement. The compiler partitions it into parameterizable cells and applies the supported operators to build the blocks. It distinguishes material boundaries from internal partition lines. An edit may require rebuilding the partition. Locality must be demonstrated or measured.
 
-**Hypothèse à évaluer.** Maintenir une géométrie volumique native valide peut réduire le coût et les ambiguïtés de la chaîne conception–calcul–modification, tout en fournissant des sensibilités exploitables. Le projet n'affirme ni couverture universelle des solides, ni supériorité sur tout solveur FEM. Il définit des familles admissibles, des certificats et des critères de validation ou de rejet par contribution (sections 18 et 19).
+**Research hypothesis.** Maintaining valid volumetric geometry throughout design may reduce the cost and ambiguity of analysis and subsequent edits while providing usable sensitivities. Sections 18 and 19 specify admissible families, certificates and decision criteria. Coverage and performance claims apply only within the tested scope.
 
-## 2. Objectifs, périmètre et non-objectifs
+## 2. Objectives, scope and exclusions
 
-Le premier livrable est un **noyau prismatique natif sans trim, exact de représentation pour une famille explicitement définie de sections et d'opérations**, couplé à un solveur d'élasticité linéaire 3D. Sa couverture est mesurée sur un corpus fixé avant les essais. Il ne revendique pas le traitement complet de toutes les pièces 2,5D.
+The first deliverable pairs a displacement-based 3D linear elasticity solver with a prismatic kernel that represents a declared family of sections and operations exactly. Measure coverage on a corpus fixed before testing.
 
-**Objectifs.**
-
-| ID | Objectif | Résultat attendu |
+| ID | Objective | Acceptance evidence |
 | --- | --- | --- |
-| O1 | Représentation | Assemblage de blocs trivariés entiers, injectifs et non dégénérés, avec espaces d'analyse raccordés fortement en $C^0$ |
-| O2 | Opérateurs | Esquisse, partition, extrusion, perçages, poches, motifs, congés et chanfreins dans des familles déclarées ; extensions opérateur par opérateur |
-| O3 | Validité | Certificats de jacobien, justification de l'injectivité et de la partition, étanchéité structurelle, cohérence des incidences et des contraintes |
-| O4 | Modification | Invalidation par dépendances, réutilisation des données inchangées et reconstruction mesurée ; distinction entre événements du domaine, de représentation et de validité |
-| O5 | Sensibilités | Dérivées complètes des données géométriques et algébriques nécessaires, dans un régime différentiel déclaré valide |
-| O6 | Calcul | Export d'espaces compatibles, contraintes, relèvements de Dirichlet et groupes de sous-faces liés aux faces de conception |
-| O7 | Démonstration | Construction, modification et calcul sur un corpus 2,5D, comparaison à précision imposée avec des chaînes de référence |
+| O1 | Represent the material volume | Whole, injective, nondegenerate trivariate blocks with strong $C^0$ coupling of the analysis spaces |
+| O2 | Construct and edit parts | Sketching, partitioning, extrusion, holes, pockets, patterns, fillets and chamfers in declared families. Qualify extensions one operator at a time. |
+| O3 | Establish validity | Jacobian certificates, injectivity and partition proofs, structural watertightness, consistent incidences and constraints |
+| O4 | Support local edits | Invalidate by dependency, reuse unchanged data and measure reconstruction. Track domain, representation and validity events separately. |
+| O5 | Provide sensitivities | Complete derivatives of the required geometric and algebraic data within a declared regular regime |
+| O6 | Prepare analysis | Export compatible spaces, constraints, Dirichlet lifts and subface groups linked to design faces |
+| O7 | Demonstrate the workflow | Build, edit and analyze a 2.5D corpus. Compare reference workflows at prescribed accuracy. |
 
-**Statuts géométriques et refus.** Le statut de représentation est indépendant du certificat de validité du modèle. L'acceptation d'une géométrie exige les invariants géométriques de la section 4 ; les exigences relatives à l'espace de champ et au problème mécanique conditionnent séparément l'export pour calcul.
+**Representation contracts.** Each accepted geometry must satisfy the geometric invariants in Section 4. Export for analysis also requires a suitable field space and an admissible mechanical problem.
 
-| Statut | Signification | Garantie sur l'écart à la géométrie de conception |
-| --- | --- | --- |
-| EXACT_REPRESENTATION | La forme est représentée sans approximation de modèle ni fitting ; les erreurs de construction numérique et les prédicats sont traités explicitement | Exactitude analytique de représentation, avec erreurs numériques documentées ; ne signifie pas égalité symbolique de tous les nombres stockés |
-| APPROX_ESTIMATED | Une approximation est construite et son écart est estimé par un protocole déclaré | Erreur observée, domaine et densité de contrôle enregistrés ; aucune borne globale n'est revendiquée |
-| APPROX_CERTIFIED | Une approximation est accompagnée d'une borne globale valide | Borne de l'erreur dans la métrique déclarée, inférieure ou égale à la tolérance demandée |
-| Refused | Précondition non satisfaite, configuration non couverte, budget atteint ou preuve indéterminée | Aucune nouvelle géométrie n'est validée ; l'état précédent est conservé |
-
-Un appel exigeant une tolérance garantie accepte EXACT_REPRESENTATION selon son budget numérique, ou APPROX_CERTIFIED. APPROX_ESTIMATED reste un résultat explicitement exploratoire ; il ne satisfait pas une exigence de tolérance garantie. Le statut d'une construction composée tient compte de tous ses opérandes et de toutes ses approximations.
-
-**Périmètre par phase.**
-
-| Phase | Inclus et limites |
+| Result | Guarantee |
 | --- | --- |
-| Phase 1 — familles prismatiques qualifiées | Sections à segments et arcs dans les configurations couvertes par les gabarits ; contraintes d'esquisse admissibles ; extrusion ; trous et poches parallèles ; motifs ; congés et chanfreins longitudinaux avec gabarit métrique validé ; élasticité linéaire 3D. Les NURBS sont admises uniquement dans les sous-familles qualifiées avec statut géométrique explicite. Aucune exactitude générale des intersections NURBS n'est présumée |
-| Phase 2 — modifications et sensibilités | Branches de représentation, événements, conditions de différentiabilité, dérivées des contrôles et poids ou coordonnées homogènes, contraintes et relèvements ; sensibilités adjointes |
-| Phase 3 — extensions 3D ciblées | Familles de révolution avec contacts à l'axe classés ; perçages obliques dans des parois planes ; bossages ; congés terminaux dont le voisinage volumique régulier est construit et validé |
-| Phase 4 — extensions de recherche | Balayages, lissages, booléens libres approchés, rencontres de congés, import partiel d'historiques réels ; formulations mécaniques supplémentaires évaluées séparément |
+| `EXACT_REPRESENTATION` | No geometric fitting or model approximation. Quantify numerical errors in construction and predicates. Exact representation does not imply symbolic equality of all stored coefficients. |
+| `APPROX_ESTIMATED` | Report the observed error, sampling domain and density. The result carries no global error bound. |
+| `APPROX_CERTIFIED` | A verified global bound in the declared metric is at most the requested tolerance. |
+| Rejection | A precondition failed, the configuration is unsupported, the budget was exhausted or the proof was inconclusive. Preserve the last valid state. |
 
-La simple exactitude d'une courbe ou d'une surface primitive ne valide pas l'opérateur volumique qui l'utilise. Chaque famille doit disposer d'un domaine admissible, d'une construction, de raccords compatibles et d'une procédure de certification. Les jalons J1 et J2 conditionnent la phase 1 ; J3 conditionne l'usage des gradients ; J4 conditionne les conclusions de couverture et de performance (section 19).
+A request for guaranteed accuracy may accept exact representation within its numerical budget or a certified approximation. An estimated approximation is exploratory. Compose the contracts of every operand and approximation in a composite construction.
 
-**Non-objectifs et exclusions.**
-
-- Cellules matérielles trimées, qu'elles soient introduites directement ou comme repli automatique.
-- Blocs à face ou arête effondrée, ou à jacobien nul sur le fermé d'un élément de Bézier. Aux lignes de nœuds de faible continuité, les dérivées unilatérales sont traitées explicitement.
-- Raccords faibles généraux de type mortar ou Nitsche dans le modèle d'analyse visé.
-- Continuité $C^1$ globale entre blocs : le premier problème en déplacement requiert un espace $H^1$-conforme.
-- Pointes, cusps, contacts de dimension inférieure ou configurations non-manifold matérielles incompatibles avec les invariants. Une pointe de cône exacte ne devient pas admissible par le seul ajout d'un cœur.
-- Modeleur interactif complet, import exhaustif de formats propriétaires et reconstruction générale depuis une B-rep ou de l'imagerie.
-- Grandes déformations et quasi-incompressibilité dans les premières phases. Leur éventuelle prise en charge doit définir une formulation et une validation propres.
-
-Une modification géométrique destinée à rendre un cas admissible, par exemple un arrondi d'une pointe, doit être demandée ou explicitement autorisée et porter son contrat d'approximation. Le noyau ne modifie pas silencieusement la pièce.
-
-## 3. Glossaire
-
-Ces termes ont un sens précis dans tout le document. Les noms anglais entre parenthèses désignent les entités du modèle de données. La distinction entre côté paramétrique, face topologique et face de conception est obligatoire, notamment aux raccords emboîtés.
-
-| Terme | Définition |
+| Phase | Scope |
 | --- | --- |
-| Bloc (*Block*) | Application tensorielle B-spline ou NURBS $X:[0,1]^3\to\mathbb R^3$, injective et non trimée. Le cube paramétrique entier représente du matériau si le bloc est actif. Le jacobien est strictement positif avec une borne certifiée, élément par élément et jusqu'aux limites unilatérales pertinentes. |
-| Cellule de section (*Cell2D*) | Région plane à quatre côtés paramétriques issue de la partition d'une esquisse, image entière de $[0,1]^2$ par une application régulière. |
-| Hôte (*Host*) | Application de référence $S$ portant une face ou un volume ; affine pour une esquisse plane. Le choix de l'hôte ne dispense pas de certifier les blocs produits. |
-| Partition | Décomposition du domaine visé en images entières de cellules régulières, avec intérieurs disjoints et interfaces enregistrées. Les courbes ou surfaces de l'arrangement guident sa construction ; elles ne servent pas à masquer une partie d'un bloc livré. |
-| Reparamétrisation $\varphi_c$ | Application $[0,1]^2\to c$ vers une cellule du domaine de l'hôte ; le patch géométrique correspondant est $S\circ\varphi_c$. |
-| Coupe imposée | Courbe ou surface de construction qui doit être représentée par des frontières de cellules ou des interfaces : profil d'esquisse, paroi de perçage, fond de poche. |
-| Coupe de structuration | Courbe ou surface ajoutée pour rendre possible une partition régulière, par exemple les branches d'un O-grid. |
-| Gabarit (*Template*) | Règle de partition associée à une configuration, munie de préconditions, d'une construction géométrique, d'incidences et de raccords vérifiables. |
-| O-grid | Couronne de blocs autour d'un trou ou d'une région centrale ; son nombre de secteurs et ses raccords sont définis par le gabarit. |
-| Bloc de cœur | Bloc central qui remplace l'effondrement polaire d'une paramétrisation de disque ou de révolution contenant l'axe. |
-| Côté paramétrique de bloc (*BlockSide*) | Restriction de $X$ à l'une des six faces du cube paramétrique. Un côté peut porter plusieurs faces topologiques ; il n'est pas nécessairement entièrement frontière ou entièrement intérieur. |
-| Face topologique (*TopologicalFace*) | Sous-face entière d'un ou de deux côtés paramétriques, issue de leur subdivision commune en sous-rectangles. Elle est frontière si elle possède une seule incidence matérielle, intérieure si elle en possède deux. Son contour peut comporter des arêtes topologiques subdivisées. |
-| Face de conception (*DesignFace*) | Groupe sémantique de faces topologiques frontières, par exemple « paroi du perçage H7 ». Elle porte le nommage, la provenance et les sélections de conditions aux limites. |
-| Trace canonique | Définition commune de la géométrie d'une interface, avec paramétrisation, degrés, nœuds, poids et relations de restriction ou de raffinement. Les côtés incidents en dérivent leur trace. |
-| Raccord identique | Traces géométriques identiques après orientation et normalisation des poids. Les espaces de trace d'analyse sont également identiques pour leur couplage par identification directe des coefficients. |
-| Raccord emboîté | Raccord sur un sous-rectangle paramétrique pour lequel l'espace de trace maître restreint s'inclut exactement dans celui de l'esclave. La compatibilité concerne degrés, multiplicités, paramétrisations et dénominateurs NURBS ; elle permet des contraintes linéaires fortes. |
-| Assemblage cellulaire (*CellComplex*) | Blocs, côtés paramétriques, faces topologiques, arêtes et sommets, avec incidences orientées, raccords, statuts et provenance. Le complexe topologique actif représente exactement le domaine matériel. |
-| Coordonnée homogène | Pour un point de contrôle $P_A$ de poids $w_A>0$, vecteur $H_A=(w_AP_A,w_A)$. L'insertion de nœuds et l'élévation de degré NURBS agissent linéairement sur ces coordonnées. |
-| Espace d'analyse | Espace de champs construit sur les blocs, distinct de leur stockage géométrique et compatible avec leurs traces. Par défaut, il provient d'un raffinement exact de la géométrie et reproduit les coordonnées physiques, donc les champs affines et les modes rigides. |
-| Contrat de représentation | Statut indépendant de la validité : EXACT_REPRESENTATION sans ajustement géométrique et avec erreurs numériques bornées ; APPROX_ESTIMATED avec erreur observée ; APPROX_CERTIFIED avec borne globale vérifiée inférieure à la tolérance annoncée. |
-| Refus | Résultat motivé d'une opération qui ne satisfait pas son contrat ou ses préconditions. L'état valide antérieur est conservé ; le refus n'est pas un quatrième statut de géométrie produite. |
-| Certificat de jacobien | Preuve encadrée de $\det DX\ge J_{\min}>0$ sur chaque élément paramétrique, avec traitement des limites unilatérales aux nœuds de faible continuité. Il ne remplace pas le certificat d'injectivité et de partition. |
-| Singularité topologique | Sommet intérieur d'une partition quadrangulaire où la valence diffère de quatre, ou arête correspondante en 3D. Elle n'autorise aucune singularité du jacobien d'un bloc. |
-| Affectation de coin $k$ | Nombre de cellules incidentes à un coin du bord, choisi notamment selon son angle $\alpha$, la qualité visée et les gabarits admissibles. |
-| Branche topologique | Composante de paramètres où les propriétés topologiques matérielles suivies sont inchangées : connectivité, tunnels, cavités et adjacences matérielles pertinentes, indépendamment des coupes de structuration. Cette seule propriété ne garantit pas la différentiabilité de la construction. |
-| Branche de représentation | Régime où les cellules de structuration et leurs incidences, les gabarits, affectations, maîtres, degrés, nœuds et sous-rectangles paramétriques sont fixés. |
-| Régime différentiel régulier | Partie d'une branche où les constructions implicites, ensembles actifs, rangs de contraintes et données du calcul satisfont les hypothèses nécessaires aux dérivées déclarées. |
-| Événement | Changement physique, topologique, de représentation ou de régime différentiel. Sa nature et les garanties perdues sont annoncées séparément. |
-| Bloc inactif | Bloc conservé pour la construction ou la provenance mais exclu du matériau, du complexe actif et de l'assemblage mécanique. |
-| Programme de conception | Graphe des paramètres, esquisses, opérations, sélections et dépendances qui définit la pièce et ses variantes. |
+| 1. Prismatic families | Segment and arc profiles covered by a template, admissible sketch constraints, extrusion, parallel bores and pockets, patterns, longitudinal fillets and chamfers with a validated metric construction, and 3D linear elasticity. Admit NURBS only in qualified subfamilies with an explicit representation contract. |
+| 2. Edits and sensitivities | Representation branches, events and differentiability conditions. Differentiate control points and weights or homogeneous coordinates, constraints and lifts. Provide adjoint sensitivities. |
+| 3. Targeted 3D extensions | Revolutions with classified axis contacts, oblique bores in planar walls, bosses and end fillets with validated regular volume maps throughout their neighborhoods. |
+| 4. Research extensions | Sweeps, lofts, approximate free-form Booleans, intersecting fillets, partial import of real feature histories and separately validated mechanical formulations. |
 
-## 4. Principes directeurs et invariants
+An operator needs an admissible domain, a construction, compatible interfaces and a certification procedure. Exact representation of its input curves does not establish those properties. Milestones J1 and J2 govern phase 1, J3 governs use of gradients, and J4 governs coverage and performance claims (Section 19).
 
-Les dix invariants suivants définissent le contrat complet. Les exigences géométriques conditionnent chaque transaction sur l'assemblage ; leur échec conserve l'état courant. Les exigences relatives aux espaces de champ et au problème mécanique — partie analyse d'INV-4, INV-9 et INV-10 — conditionnent en plus l'export pour calcul. Une acceptation géométrique ne vaut pas validation d'un problème mécanique ; un résultat annoncé prêt au calcul satisfait les deux niveaux.
+**Exclusions.** The initial model excludes trimmed material cells, including automatic fallback, and blocks with a collapsed edge or face or a zero Jacobian on a closed Bézier element. At low-continuity knot lines, check the appropriate one-sided derivatives. The target displacement space is $H^1$-conforming. Global $C^1$ continuity and general weak mortar or Nitsche coupling are outside this contract. Exclude tips, cusps, lower-dimensional contacts and nonmanifold configurations that violate the material-domain invariants. Adding a core block does not make an exact cone tip admissible.
 
-| ID | Invariant | Vérification |
+A complete interactive modeler, exhaustive proprietary format import, and general reconstruction from a B-rep or images are outside the initial scope. Large deformation and near-incompressibility require separate formulations and validation. An edit that changes the part to make it admissible, such as rounding a tip, requires explicit authorization and an approximation contract.
+
+## 3. Glossary
+
+| Term | Definition |
+| --- | --- |
+| Block (`Block`) | An injective, untrimmed tensor-product B-spline or NURBS map $X:[0,1]^3\to\mathbb R^3$. In an active block, the entire cube represents material. Certify a strictly positive Jacobian lower bound on every element, including the relevant one-sided limits. |
+| Section cell (`Cell2D`) | A four-sided region of a sketch partition, the full image of $[0,1]^2$ under a regular map. |
+| Host | Reference map $S$ carrying a face or volume. A planar sketch has an affine host. Blocks derived from it still need certification. |
+| Partition | A covering by whole regular cells with disjoint interiors and recorded interfaces. Arrangement curves and surfaces guide the subdivision. |
+| Reparameterization | A map $\varphi_c:[0,1]^2\to c$ onto a cell in host parameter space. Its geometric patch is $S\circ\varphi_c$. |
+| Required cut | A curve or surface that must appear on a cell boundary, such as a hole wall, pocket floor or sketch profile. |
+| Structural cut | An additional separator that makes a regular partition possible, such as a spoke of an O-grid. |
+| Template | A partition rule with verifiable preconditions, geometry, incidences and interfaces. |
+| O-grid | A ring of blocks around a hole or a central region. Its template defines the sectors and their interfaces. |
+| Core block | A central block that avoids the polar collapse of a disk or a solid of revolution containing its axis. |
+| Parametric side (`BlockSide`) | Restriction of $X$ to one of the cube's six faces. A side may carry several topological faces, including both exposed and interior regions. |
+| Topological face (`TopologicalFace`) | A whole subface of one or two block sides in their common rectangular subdivision. One material incidence identifies a boundary face and two identify an interior face. Its edges can also be subdivided. |
+| Design face (`DesignFace`) | A named semantic group of boundary faces, such as the wall of hole H7. It carries provenance and boundary-condition selections. |
+| Canonical trace | The shared interface definition, including parameterization, degrees, knots, weights and exact restriction or refinement relationships. |
+| Matching interface | Both geometric traces coincide after reorientation and weight normalization. Direct identification of analysis coefficients also requires identical analysis trace spaces. |
+| Nested interface | The restricted master trace space is contained exactly in the slave space on the interface subrectangle. Check degrees, multiplicities, parameterizations and rational denominators before constructing strong linear constraints. |
+| Cell complex (`CellComplex`) | Blocks, sides, topological faces, edges and vertices with oriented incidences, interfaces, states and provenance. The active complex represents the material domain. |
+| Homogeneous control point | For $P_A$ of weight $w_A>0$, the vector $H_A=(w_AP_A,w_A)$. Knot insertion and degree elevation act linearly on these vectors. |
+| Analysis space | Field space over the blocks with compatible traces. The default exact refinement of the geometry basis reproduces physical coordinates, affine fields and rigid-body modes. |
+| Representation contract | The exact, estimated or certified geometric status defined in Section 2. Model validity requires separate evidence. |
+| Rejection | A documented failure to satisfy the contract or preconditions of an operation. Preserve the last valid state. |
+| Jacobian certificate | A proof of $\det DX\ge J_{\min}>0$ on each element, with one-sided limits at low-continuity knots. Injectivity and partition require additional evidence. |
+| Topological singularity | An interior vertex of a quadrilateral partition with valence other than four, or the corresponding 3D edge. Every incident block still needs a regular map. |
+| Corner assignment $k$ | Number of cells incident at a boundary corner. Its angle $\alpha$, admissible templates and quality target constrain this choice. |
+| Topological branch | A connected parameter region with unchanged material connectivity, tunnels, cavities and relevant adjacencies, independently of structural cuts. |
+| Representation branch | A regime with fixed structural cells and incidences, templates, assignments, master sides, degrees, knots and parametric subrectangles. |
+| Regular differential regime | The part of a branch where implicit constructions, active sets, constraint ranks and analysis data satisfy the hypotheses for the reported derivatives. |
+| Event | A change in physical state, topology, representation or differential regime. Report its nature and the guarantees affected. |
+| Inactive block | A block retained for construction or provenance and excluded from the material domain, active topology and mechanical assembly. |
+| Design program | The graph of parameters, sketches, features, selections and dependencies that defines a part and its variants. |
+
+## 4. Design principles and invariants
+
+Every geometric transaction must satisfy the geometric invariants below. Failure preserves the previous assembly. Analysis export also requires the analysis clauses of INV-4, INV-9 and INV-10.
+
+| ID | Requirement | Evidence |
 | --- | --- | --- |
-| INV-1 | Le domaine matériel est exactement l'union des images des blocs actifs entiers ; aucune donnée de trim matériel | Contrôle structurel et classification des blocs |
-| INV-2 | $\det DX\ge J_{\min}>0$ sur chaque élément de Bézier fermé, avec échelle et dérivées unilatérales définies | Certificat polynomial ou rationnel avec arrondis encadrés ; le dénominateur et les changements d'échelle sont inclus (section 12) |
-| INV-3 | Chaque bloc est injectif, les intérieurs de blocs sont disjoints et les contacts correspondent aux incidences admises | Preuve de partition par construction ou vérifications certifiées d'intersection et d'inclusion ; contrôle de l'injectivité du bord |
-| INV-4 | Les raccords de calcul imposent une continuité forte compatible avec la géométrie ; contraintes d'arêtes et de sommets cohérentes | Inclusion des espaces de trace, compatibilité des poids et multiplicités, résolution des contraintes, rang et reproduction des champs attendus (section 10) |
-| INV-5 | Les interfaces partagent une même géométrie canonique ; aucun raccord par simple tolérance de proximité | Entités partagées ou restrictions dérivées d'une même donnée homogène ; cohérence des caches et des erreurs d'évaluation |
-| INV-6 | Le statut de représentation et la preuve de validité sont explicites et distincts | EXACT_REPRESENTATION, APPROX_ESTIMATED ou APPROX_CERTIFIED selon section 2 ; journal des approximations et refus motivés |
-| INV-7 | Toute sous-face extérieure appartient à une face de conception ou à un groupe explicitement créé ; toute entité possède une provenance | Complétude et vérification des sélections après scission, fusion ou suppression |
-| INV-8 | Les choix et résultats sont reproductibles pour un programme, des paramètres, des options, une version et un environnement numérique déclarés | Ordre déterministe, graines enregistrées si un algorithme en utilise, tests de reconstruction |
-| INV-9 | Géométrie et espace d'analyse sont séparés ; leur compatibilité est démontrée | Raffinement exact de référence ; capacité de reproduction des coordonnées géométriques et des modes rigides ; contraintes de trace maintenues |
-| INV-10 | Le premier calcul utilise un Galerkin $H^1$-conforme, sans terme de couplage faible entre blocs ni traitement de cellules coupées | Espace admissible, relèvement de Dirichlet fort, quadrature contrôlée et problème mécanique bien posé |
+| INV-1 | The material domain is exactly the union of whole active block images. | Check block classification and the absence of material trims. |
+| INV-2 | On each closed Bézier element, $\det DX\ge J_{\min}>0$. | Use a polynomial or rational certificate with bounded rounding error. Include denominators, scale changes and one-sided derivatives (Section 12). |
+| INV-3 | Blocks are individually injective. Their interiors are disjoint and their contacts agree with the declared incidences. | Prove the partition by construction or certify intersection and containment. Check boundary injectivity. |
+| INV-4 | Strong field continuity agrees with the geometry, including at shared edges and vertices. | Check trace inclusion, weights, multiplicities, global constraint rank and reproduction of the required fields (Section 10). |
+| INV-5 | Incident blocks use the same canonical interface geometry. | Derive both sides from a common entity or its homogeneous restrictions. Bound evaluation error and check cached coefficients. |
+| INV-6 | Record representation status and validity evidence independently. | Apply the contracts in Section 2 and record approximations and reasons for rejection. |
+| INV-7 | Each exposed subface belongs to an explicit design face or group. Every entity has provenance. | Check selections for completeness after a split, merge or deletion. |
+| INV-8 | The program, parameters, options, version and numerical environment determine reproducible results. | Use deterministic ordering, record random seeds and test reconstruction. |
+| INV-9 | Demonstrate compatibility between geometry and analysis spaces. | Use an exact reference refinement. Reproduce physical coordinates and rigid modes while satisfying trace constraints. |
+| INV-10 | The initial analysis uses an $H^1$-conforming Galerkin formulation with strong coupling on full material cells. | Verify the field space, strong Dirichlet lift, quadrature and well-posedness. |
 
-La positivité du jacobien est une garantie de régularité locale, pas à elle seule une preuve de disjonction ou d'injectivité globale. Les diagnostics de qualité complètent la validité : un bloc valide peut rester coûteux ou défavorable au calcul.
+A positive Jacobian establishes local regularity. Global injectivity and disjointness need separate proofs. Quality indicators quantify distortion and potential analysis cost even on a valid block.
 
-**Principes de conception.**
+1. Build the interior on every operation. Construct and validate candidate maps before committing. Measure the neighborhood affected by an edit.
+2. Batch compatible operations only when design semantics, dependencies, intermediate face selections and fillet order are preserved. Compute the arrangement, intersections and events.
+3. Distinguish required material boundaries from structural separators. Record structural choices so that they can evolve.
+4. Reject an unproved guarantee. Keep a rejected mandatory test in the coverage denominator.
+5. Qualify each family on its declared domain. Start with affine hosts and exactly representable boundaries. Identify exact, approximate and out-of-scope cases before testing.
+6. Track material topology, representation and differentiability separately. Fixed discrete choices still require rank, transversality and regularity checks.
+7. Attach boundary conditions to topological selections. Propagate changes in exposure to subfaces and trace spaces. Report ambiguous selections rather than silently transferring them.
 
-1. **Construire et maintenir l'intérieur.** Chaque opération prépare une partition et des cartes candidates, puis valide la transaction. Le rayon de la reconstruction dépend des contraintes effectives ; aucune borne universelle à une couche n'est supposée.
-2. **Anticiper sous contrôle sémantique.** Les opérations parallèles compatibles peuvent être regroupées. Les références à des faces intermédiaires, les dépendances et l'ordre des congés doivent être préservés. L'arrangement, les intersections et les événements ne sont pas connus sans calcul.
-3. **Séparer frontières matérielles et structuration.** Les coupes imposées décrivent la pièce ; les coupes de structuration servent la représentation. Les choix de ces dernières sont enregistrés et peuvent évoluer.
-4. **Refuser une garantie non établie.** Un refus protège l'état courant, mais un refus sur un cas du corpus obligatoire reste un échec de couverture. La sûreté ne suffit pas à valider l'utilité du noyau.
-5. **Qualifier des familles avant de généraliser.** Les premiers gabarits utilisent des hôtes affines et des frontières représentables exactement. Les configurations exactes, approchées et hors périmètre sont distinguées avant les essais.
-6. **Rendre les décisions et régimes explicites.** Topologie du domaine, représentation et régime différentiel possèdent des descriptions distinctes. Les choix discrets figés ne dispensent pas de vérifier rang, transversalité et régularité des systèmes résolus.
-7. **Porter les conditions aux limites dans la topologie.** Un changement de statut d'une portion de face doit apparaître dans les sous-faces et dans les espaces de trace appropriés. La persistance des noms est vérifiée ; une sélection ambiguë n'est jamais transférée silencieusement.
+## 5. Representation layers
 
-## 5. Architecture en niveaux de représentation
-
-Le noyau sépare quatre niveaux : programme de conception, assemblage géométrique certifié, vue de frontière et modèle d'analyse. L'assemblage porte la géométrie de référence ; les autres niveaux fournissent son programme générateur ou des vues et espaces dérivés.
+The design program generates a geometric assembly. That assembly defines the material domain and is the common source for the boundary view and analysis model.
 
 ```mermaid
 flowchart TD
-    P["Programme et paramètres"] --> C["Construction candidate"]
-    C --> V{"Contrats et certificats"}
-    V -->|"Échec ou indéterminé"| R["Refus ; état précédent conservé"]
-    V -->|"Acceptation"| A["Assemblage géométrique certifié"]
-    A --> B["Vue de frontière et faces de conception"]
-    A --> M["Espaces et contraintes d'analyse"]
-    A --> D["Dépendances et sensibilités"]
-    M --> E{"Espace et problème admissibles"}
-    E -->|"Oui"| S["Calcul et post-traitement"]
-    E -->|"Non"| F["Export calcul refusé"]
+    P["Program and parameters"] --> C["Candidate construction"]
+    C --> V{"Contracts and certificates"}
+    V -->|"Failed or inconclusive"| R["Reject and retain previous state"]
+    V -->|"Accepted"| A["Certified geometry"]
+    A --> B["Boundary view and design faces"]
+    A --> M["Analysis spaces and constraints"]
+    A --> D["Dependencies and sensitivities"]
+    M --> E{"Admissible space and mechanical problem?"}
+    E -->|"Yes"| S["Solve and postprocess"]
+    E -->|"No"| F["Reject analysis export"]
 ```
 
-La construction géométrique utilise les raccords géométriques et les sous-faces de la section 6. La préparation du calcul construit ensuite les traces, contraintes et conditions essentielles admissibles. Une géométrie acceptée n'est pas annoncée « prête au calcul » si ce second contrat échoue.
+| Layer | Contents and responsibility |
+| --- | --- |
+| Design program | Parameters, sketches, operations, selections and dependencies define each part and its variants. Grouped compilation must preserve their semantics. |
+| Geometric assembly | Blocks, sides, subfaces, edges, vertices, interfaces, certificates and provenance constitute the native material domain. |
+| Boundary view | Oriented external subfaces and design-face groups support selection, visualization and boundary export. Preserve incompatible surfaces as distinct entities. |
+| Analysis model | Refined spaces, trace operators, constraint elimination, lifts, quadrature, materials and boundary conditions define a conforming discretization and its discrete sensitivities. |
 
-| Niveau | Contenu | Responsabilité |
+| Module | Responsibility | Sections |
 | --- | --- | --- |
-| Programme de conception | Paramètres, esquisses, opérations, sélections, dépendances | Définir les pièces et leurs variantes ; permettre une compilation groupée équivalente |
-| Assemblage géométrique | Blocs, côtés paramétriques, sous-faces, arêtes, sommets, raccords, certificats et provenance | Représentation native du domaine matériel |
-| Vue de frontière | Sous-faces extérieures, incidences orientées et groupes DesignFace | Sélections, visualisation, export de frontière ; aucune fusion implicite de surfaces incompatibles |
-| Modèle d'analyse | Espaces raffinés, traces, matrice d'élimination, relèvement, quadrature, matériaux et conditions aux limites | Calcul conforme et sensibilités discrètes |
+| Sketch solver | Solve constraints on a declared branch, detect rank deficiencies and preserve analytic curve types and the numerical error budget. | 7, 14 |
+| Planar arrangement | Compute robust intersections, classify regions and derive axial levels and required cuts. | 7, 13 |
+| Partition planner | Choose admissible templates and structural cuts, bound combinatorial search and revise the partition as needed. | 7 |
+| Reparameterization | Construct maps with prescribed boundaries, improve quality, check feasibility and certify. | 7, 11, 12 |
+| Volume operators | Construct extrusions, layers, qualified revolutions, holes and fillet neighborhoods. | 8, 9 |
+| Interfaces and traces | Derive parameter correspondences, compatible weights, subfaces, global constraints and essential boundary conditions. | 6, 10, 15 |
+| Certification | Verify regularity, injectivity, coverage, watertightness and any promised error bound. | 11, 12 |
+| Parameter management | Track dependencies, signatures and events. Compute geometric and algebraic derivatives. | 14 |
+| Export | Produce native geometry, the analysis package, the STEP boundary and the validity report. | 15, 16 |
 
-| Module | Rôle | Sections |
-| --- | --- | --- |
-| Solveur d'esquisse | Résoudre les contraintes dans une branche déclarée ; détecter les rangs insuffisants ; conserver les types analytiques et le budget numérique | 7, 14 |
-| Arrangement 2D | Intersections robustes, classification des régions, niveaux axiaux et coupes imposées | 7, 13 |
-| Découpage | Gabarits admissibles, budget combinatoire, coupes de structuration et reprises de partition | 7 |
-| Reparamétrisation | Cartes à bords prescrits, amélioration de qualité, contrôle de faisabilité et certification | 7, 11, 12 |
-| Opérateurs volumiques | Extrusion, couches, révolutions qualifiées, perçages et voisinages de congés | 8, 9 |
-| Raccords et traces | Correspondances paramétriques, poids compatibles, sous-faces, contraintes globales et conditions essentielles | 6, 10, 15 |
-| Certification | Régularité locale, injectivité, partition, étanchéité et preuve d'erreur lorsque demandée | 11, 12 |
-| Gestionnaire paramétrique | Dépendances, signatures, événements, dérivées géométriques et algébriques | 14 |
-| Export | Format natif, analyse, frontière STEP et rapport de validité | 15, 16 |
+Invalidate dependencies from the actual changes. Measure advance compilation and incremental updates separately. Reuse a certificate only while its hypotheses and the coefficients on which it depends remain unchanged.
 
-Les dépendances sont invalidées à partir des données effectivement modifiées. Le mode de compilation anticipée et le mode de mise à jour incrémentale sont identifiés séparément dans les mesures de coût. Les certificats ne sont réutilisés que si leurs hypothèses et les coefficients concernés sont inchangés.
+## 6. Data model
 
-## 6. Modèle de données
+Keep parametric blocks, their topological subdivision and semantic design groups distinct. A radial-edge structure can record the multiple incidences needed during construction. Accepted material still has to meet the partition, neighborhood and regularity requirements in Section 12.
 
-L'assemblage conserve séparément les blocs paramétriques, leur subdivision topologique et les groupes sémantiques de conception. Une structure de type radial-edge peut stocker les incidences multiples nécessaires à la construction ; le domaine matériel accepté reste soumis aux contrôles de partition, de voisinage et de régularité de la section 12.
+**6.1 Topology.** Each block has six parametric sides. Overlay the interface subrectangles, exposed portions and boundary selections to subdivide each side into topological faces. This subdivision retains every material point. Each face occupies a whole rectangle on the reference side and has an oriented incidence on each participating material side. Build the common subdivision of edges and vertices across all sides, including T-junctions. A face with four parametric sides may have more than four topological edges.
 
-**6.1 Topologie.** Un bloc possède exactement six côtés paramétriques (*BlockSide*). Un côté est subdivisé en faces topologiques (*TopologicalFace*) par le recouvrement commun des sous-rectangles de raccord, des portions exposées et des sélections de bord. Cette subdivision est topologique : elle ne supprime aucun point du bloc matériel et n'introduit aucun trim.
+After every operation, verify the following properties.
 
-Chaque face topologique possède un domaine rectangulaire entier dans le côté de référence et une incidence orientée sur chacun des côtés matériels concernés. Les arêtes et sommets résultent d'une subdivision commune, y compris aux jonctions en T et aux intersections de subdivisions venant de plusieurs côtés. Une face peut ainsi avoir quatre côtés paramétriques mais davantage de quatre arêtes topologiques sur son contour.
+- Topological faces cover each active side with disjoint interiors.
+- An interior face has two oppositely oriented material incidences. A boundary face has one.
+- All faces meeting at an edge or vertex agree on its incidences.
+- The local neighborhoods meet the declared material-domain conditions. Edge-only or vertex-only contact does not establish a mechanical connection.
+- Inactive blocks are excluded from the domain, its topological counts and the mechanical assembly.
 
-Les contrôles suivants sont obligatoires après chaque opération :
-
-- les faces topologiques couvrent chaque côté de bloc actif sans lacune ni recouvrement de leurs intérieurs ;
-- une face intérieure possède exactement deux incidences matérielles, avec orientations opposées ; une face frontière en possède une ;
-- les incidences d'arêtes et de sommets concordent entre toutes les faces qui les rencontrent ;
-- les voisinages des gabarits acceptés satisfont les conditions de domaine matériel annoncées. Un contact entre deux corps limité à une arête ou à un sommet ne devient pas implicitement une liaison mécanique ;
-- les blocs inactifs sont exclus du domaine, de ses comptages topologiques et du calcul.
-
-Le contrôle d'Euler porte sur ce complexe actif subdivisé, et non sur une liste de six faces non subdivisées par bloc :
+Apply the Euler check to the subdivided active complex:
 
 $$
 V-E+F-C=\chi=\beta_0-\beta_1+\beta_2,
 $$
 
-pour les domaines volumiques bornés admissibles ici, où $C$ compte les blocs actifs et $\beta_i$ les nombres de Betti du domaine. Une pièce contractile a $\chi=1$ ; un tore plein a $\chi=0$ ; une cavité fermée doit également être prise en compte. Ce contrôle ne suffit pas à prouver les propriétés de voisinage, l'absence de recouvrement ou l'injectivité. Les gabarits de phase 1 doivent fournir leurs incidences de référence et les contrôles correspondants, y compris avec jonctions en T.
+where $C$ counts active blocks and the Betti numbers describe the bounded material domain. A contractible part has $\chi=1$ and a solid torus has $\chi=0$. Count enclosed cavities as well. Euler counts alone do not establish local manifold structure, injectivity or absence of overlaps. Each phase 1 template must provide reference incidences and checks, including at T-junctions.
 
-**6.2 Géométrie et statuts.**
+**6.2 Geometry and status.**
 
-| Entité | Données géométriques ou algébriques | Statuts et métadonnées |
-| --- | --- | --- |
-| Bloc (*Block*) | Degrés $(p,q,r)$ ; vecteurs nodaux ouverts ; points $P_A$ et poids $w_A>0$, ou coordonnées homogènes $H_A$ ; références des six côtés | Actif ou inactif ; contrat de représentation ; certificats de validité ; indicateurs de qualité ; origine ; état de mise à jour |
-| Côté paramétrique (*BlockSide*) | Bloc incident ; direction fixée et extrémité 0 ou 1 ; trace tensorielle entière ; liste de faces topologiques | Orientation locale et référence à une trace canonique éventuelle |
-| Face topologique (*TopologicalFace*) | Sous-rectangle dans le côté de référence ; applications affines vers les côtés incidents ; arêtes orientées ; géométrie obtenue par restriction entière | Frontière ou intérieure ; incidences matérielles ; groupe de conception pour une face frontière |
-| Arête et sommet topologiques | Restrictions communes, positions, incidences orientées ; subdivisions pendantes explicitement enregistrées | Provenance ; coin de conception ; valence ; singularité topologique éventuelle |
-| Trace canonique | Degrés, nœuds, poids normalisés, coefficients homogènes de référence et relations exactes de restriction ou raffinement | Définition faisant autorité ; matérialisations numériques dérivées avec erreurs bornées |
-| Raccord | Références des côtés et faces ; orientations ; sous-rectangles ; opérateurs homogènes géométriques $A_g$ et opérateurs euclidiens $T_g$ ; opérateurs d'analyse $T_a$ distincts si nécessaire | Type géométrique et type d'analyse ; choix du maître ; contrôles d'inclusion, de cohérence et de rang |
-| Face de conception (*DesignFace*) | Ensemble de faces topologiques frontières | Identité stable ; sélection sémantique ; provenance ; règles de transfert des conditions aux limites |
-| Espace d'analyse (*AnalysisSpace*) | Degrés, nœuds, poids et numérotation ; opérateur de raffinement depuis la géométrie ou preuve équivalente de reproduction | Version ; règles de raffinement ; contrôles de champs affines et de modes rigides |
-| Modèle d'analyse (*AnalysisModel*) | Espaces par bloc ; contraintes globales $B_{\mathrm{int}}u=0$ ; paramétrisation $C_I$ de leur noyau ; opérateurs de trace ; réduction avec conditions aux limites | Rang ; groupes matériels ; données de chargement ; quadrature ; signatures et statut des sensibilités |
-| Données de construction | Hôte $S$ ; $\varphi_c$ ; intervalles de couche ; gabarit ; affectations de coins ; relations canoniques | Préconditions et gardes ; dépendances ; choix discrets ; historique des événements |
+| Entity | Required data |
+| --- | --- |
+| Block | Degrees $(p,q,r)$, open knot vectors, points $P_A$ and weights $w_A>0$ or homogeneous controls $H_A$, six sides, activity, representation contract, validity certificates, quality indicators, origin and update state |
+| Parametric side | Incident block, fixed axis and endpoint 0 or 1, full tensor-product trace, list of faces, local orientation and any canonical trace |
+| Topological face | Reference subrectangle, affine maps to incident sides, oriented edges and geometry by restriction. Record boundary or interior status, material incidences and the design group for an exposed face. |
+| Edge and vertex | Common restrictions, positions, oriented incidences, explicit hanging subdivisions, provenance, design-corner status, valence and any topological singularity |
+| Canonical trace | Degrees, knots, normalized weights, reference homogeneous coefficients and exact restriction or refinement relations. Bound errors in derived numerical representations. |
+| Interface | Sides, faces, orientations, subrectangles, homogeneous geometry operator $A_g$, Euclidean geometry operator $T_g$ and analysis operator $T_a$ where distinct. Record geometric and analysis types, master selection, inclusion, consistency and rank checks. |
+| Design face | Group of boundary faces, stable identity, semantic selection, provenance and rules for transferring boundary conditions |
+| Analysis space | Degrees, knots, weights, numbering, exact refinement operator from the geometry or equivalent reproduction proof, version, refinement rules, affine-field and rigid-mode checks |
+| Analysis model | Per-block spaces, global constraints $B_{\mathrm{int}}u=0$, nullspace parameterization $C_I$, trace operators and reduction with boundary conditions. Include rank, material groups, loads, quadrature, signatures and sensitivity status. |
+| Construction record | Host $S$, maps $\varphi_c$, layer intervals, template, corner assignments, canonical relations, preconditions, guards, dependencies, discrete choices and event history |
 
-Les poids égaux à 1 sont représentés explicitement ou par une convention documentée. Les faces voisines ne sont jamais reconstruites par deux ajustements géométriques indépendants. Leur définition commune réside dans la trace canonique et les relations de raffinement ; les tableaux flottants dérivés sont des matérialisations contrôlées de cette définition.
+Represent unit weights explicitly or document the convention. Adjacent sides derive from the canonical trace and refinement relations. Floating-point coefficient arrays are controlled representations of this common definition. Store units, tolerances, methods, measurements and bounds with the representation contract. Every accepted status requires validity evidence. A failed transaction leaves the previous assembly available.
 
-Le contrat de représentation distingue EXACT_REPRESENTATION, APPROX_ESTIMATED et APPROX_CERTIFIED. Les mesures, bornes, tolérances, unités et méthodes associées sont enregistrées. Aucun de ces statuts ne dispense des certificats de validité. Un refus conserve l'état antérieur et ne publie pas de nouvel assemblage valide.
+**6.3 Provenance and dependencies.** Record each block's generating operation and each exterior face's design face. Track how parameters affect homogeneous controls, analysis spaces, constraints and boundary data. Supply $dP/d\theta$ and $dw/d\theta$, or $dH/d\theta$, and the needed operator derivatives. Retain three signatures for material topology, representation and regular differential regime (Section 14). Equality of combinatorial signatures alone does not establish differentiability. Record the assumptions, regime and guards of every derivative.
 
-**6.3 Provenance et dépendances.** Chaque bloc conserve l'opération qui l'a créé ; chaque face topologique frontière est reliée à sa face de conception. Le graphe des dépendances relie les paramètres aux coordonnées homogènes, aux espaces d'analyse, aux contraintes et aux données de bord qu'ils influencent. Il permet de fournir $dP/d\theta$ et $dw/d\theta$, ou de manière équivalente $dH/d\theta$, ainsi que les dérivées des opérateurs dérivés lorsqu'elles sont nécessaires.
+**6.4 Serialization.** The versioned native format stores topology, canonical relations and metadata in JSON. Binary arrays, for example HDF5 or NPZ, can carry coefficients and sparse matrices. Use deterministic entity order. Preserve all three face levels, weight normalization, interface parameter maps, contracts, validity evidence and signatures. Specify a migration policy. Reloading must reproduce the incidences, constraints and geometry without a tolerance-based reclassification.
 
-Trois signatures sont conservées : topologie matérielle, représentation, régime différentiel régulier (section 14). L'égalité d'une signature combinatoire ne constitue pas à elle seule une preuve de différentiabilité. Chaque résultat dérivé porte les hypothèses vérifiées, le régime et les gardes dans lesquels il est utilisable.
-
-**6.4 Sérialisation.** Format natif versionné : topologie, relations canoniques et métadonnées en JSON ; tableaux de coefficients et matrices creuses en binaire, par exemple HDF5 ou NPZ. L'ordre des entités est déterministe. Le schéma conserve les trois niveaux de face, les normalisations des poids, les applications paramétriques de raccord, les contrats, les preuves de validité et les signatures. Il porte un numéro de version et une politique de migration. La relecture doit reconstruire les mêmes incidences, contraintes et définitions géométriques, sans reclassification par tolérance.
-
-**6.5 Esquisse d'API (indicative, en anglais).**
-
-Les types ci-dessous précisent les responsabilités, sans imposer une bibliothèque numérique. Les références à une définition canonique font autorité sur les caches de coefficients.
+**6.5 Illustrative API.** The types below specify responsibilities. Canonical definitions take precedence over cached coefficients.
 
 ```python
 @dataclass
@@ -305,75 +277,75 @@ class CellComplex:
     def make_analysis(self, spec: AnalysisSpec) -> Result: ...
 ```
 
-## 7. Esquisses et partition 2D
+## 7. Sketches and planar partitioning
 
-Pour une esquisse plane, l'hôte est affine : la partition du domaine paramétrique se transporte exactement dans le plan physique. La construction produit des cellules à quatre côtés, munies de cartes régulières sur leur domaine fermé. Une partition combinatoirement admissible n'est acceptée qu'après certification géométrique.
+For a planar sketch, the host map is affine: a partition of the parametric domain is carried exactly into the physical plane. The construction produces four-sided cells with regular maps over their closed domains. A combinatorially admissible partition is accepted only after geometric certification.
 
-**7.1 Entrée.** Une esquisse est un ensemble de courbes — segments, arcs rationnels quadratiques, NURBS — avec contraintes géométriques et dimensionnelles, résolu par un solveur. Elle fournit des profils fermés orientés : contour extérieur dans le sens trigonométrique, trous dans le sens inverse. Les courbes doivent être régulières sur chaque morceau utilisé. Une jonction continue mais non G¹ est un coin ; une jonction G¹ régulière n'en est pas un. Cusps, retours de tangente et contacts entre contours font l'objet d'une classification distincte.
+**7.1 Input.** A sketch is a set of curves—segments, quadratic rational arcs, or NURBS—with geometric and dimensional constraints solved by a sketch solver. It defines oriented closed profiles: the outer contour is counterclockwise and holes are clockwise. Curves must be regular on every portion used. A continuous but non-G1 junction is a corner; a regular G1 junction is not. Cusps, tangent reversals, and contacts between contours are classified separately.
 
-La phase 1 couvre une famille explicite de profils en segments et arcs, associée à des gabarits et à leurs préconditions. Les profils NURBS sont une extension qualifiée : leur conservation sans ajustement permet un contrat exact de représentation lorsque toute la construction le justifie ; sinon, le contrat d'approximation de la section 11 s'applique. Aucun contrat de couverture générale des esquisses NURBS n'est annoncé.
+Phase 1 covers an explicit family of segment and arc profiles, with templates and stated preconditions. NURBS profiles are a qualified extension: retaining them without adjustment permits an exact representation contract when the full construction justifies it; otherwise, the approximation contract in Section 11 applies. No general coverage guarantee for NURBS sketches is claimed.
 
-**7.2 Hôte.** On choisit un repère orthonormé orienté du plan, avec $\mathbf n=\mathbf e_1\times\mathbf e_2$ :
+**7.2 Host map.** Choose an oriented orthonormal frame in the sketch plane, with $\mathbf n=\mathbf e_1\times\mathbf e_2$:
 
 $$
 S(u,v)=O+u\,\mathbf e_1+v\,\mathbf e_2,
 \qquad (u,v)\in[0,L_1]\times[0,L_2].
 $$
 
-La composition $S\circ\varphi_c$ n'augmente pas le degré de $\varphi_c$. Si un autre repère affine est utilisé, sa métrique et son facteur d'aire sont conservés explicitement ; les distances, rayons et seuils physiques ne sont pas évalués comme si ce repère était orthonormé.
+The composition $S\circ\varphi_c$ does not increase the degree of $\varphi_c$. If another affine frame is used, its metric and area factor are retained explicitly; physical distances, radii, and thresholds are not evaluated as though that frame were orthonormal.
 
-**7.3 Arrangement anticipé.** On superpose les profils de l'esquisse et les profils ramenés dans ce plan des opérations ultérieures compatibles avec la même direction d'extrusion : perçages, poches, motifs et congés longitudinaux admissibles. Les arêtes de l'arrangement sont les coupes imposées. Chaque région conserve la liste des features qui la recouvrent et leur ordre de construction ; son occupation matérielle est déterminée par intervalles axiaux selon la section 8.2. Une seule étiquette « poche de profondeur $d$ » ne suffit pas dans les cas de poches superposées ou issues de faces opposées.
+**7.3 Anticipatory arrangement.** Overlay the sketch profiles with profiles of later operations that can be mapped into this plane and share the same extrusion direction: through-holes, pockets, patterns, and eligible longitudinal fillets. The arrangement edges define the imposed cuts. Each region retains the list and order of the features covering it; its material occupancy is determined by axial intervals as specified in Section 8.2. A single “pocket depth $d$” label is not sufficient for overlapping pockets or pockets cut from opposite sides.
 
-- Pour les segments et arcs de la famille exacte, les courbes restent dans leur représentation analytique. Les intersections, éventuellement à coordonnées algébriques, sont isolées et leur incidence est certifiée. « Exact de représentation » ne signifie pas que tous les calculs sont exacts en double précision.
-- Pour les NURBS, le noyau distingue la conservation exacte de courbes restreintes et les ajustements nécessaires à leur assemblage. Tout déplacement de courbe, de sommet ou de raccord dû à un ajustement entre dans le budget d'erreur géométrique. Une résolution numérique d'intersection ne reçoit pas automatiquement le statut exact.
-- Les décisions d'orientation, d'incidence, de nombre d'intersections et de classement utilisent des prédicats robustes ou des isolations certifiées. Une ambiguïté non levée ne doit pas être convertie silencieusement en coïncidence.
-- Les courbes communes et leurs extrémités ont une représentation canonique partagée. L'écart entre la géométrie calculée et la géométrie de conception est traité séparément de cette identité interne.
+- For segments and arcs in the exact family, curves remain in their analytical representation. Intersections, including those with algebraic coordinates, are isolated and their incidence is certified. “Exact representation” does not mean every calculation is exact in floating-point arithmetic.
+- For NURBS, the kernel distinguishes exact retention of restricted curves from adjustments needed to assemble them. Any adjustment that moves a curve, vertex, or interface contributes to the geometric error budget. A numerically solved intersection is not automatically exact.
+- Orientation, incidence, intersection count, and classification decisions use robust predicates or certified root isolation. An unresolved ambiguity must not be silently treated as coincidence.
+- Shared curves and their endpoints use a shared canonical representation. The difference between computed geometry and design geometry is accounted for separately from this internal identity.
 
-**7.4 Affectation des coins.** Pour un angle intérieur $\alpha$, l'initialisation propose $k=\operatorname{arrondi}(\alpha/90^\circ)$, borné entre 1 et 4 ; un sommet ajouté sur un bord lisse reçoit par défaut $k=2$. Ce choix est une heuristique, à valider globalement avec les contraintes de partition et le compte de la section 7.5.
+**7.4 Corner assignments.** For an interior angle $\alpha$, initialization proposes $k=\operatorname{round}(\alpha/90^\circ)$, clamped to the range 1 through 4. A vertex introduced on a smooth edge defaults to $k=2$. This is a heuristic; it must be validated globally against partition constraints and the count in Section 7.5.
 
-Chaque secteur de cellule au coin doit avoir un angle strictement compris entre $0$ et $180^\circ$, des tangentes régulières et une marge compatible avec le certificat de jacobien. Les seuils effectifs de changement de $k$ sont $135^\circ$, $225^\circ$ et $315^\circ$ ; le seuil nominal de $45^\circ$ ne change pas la valeur après limitation à $k\ge1$. Les choix au voisinage d'un seuil sont enregistrés dans la signature combinatoire. En dessous de l'angle admissible $\alpha_{\min}$, ou si aucune affectation compatible n'est trouvée, la construction est refusée.
+Each cell sector at a corner must have an angle strictly between $0$ and $180^\circ$, regular tangents, and a margin compatible with the Jacobian certificate. The effective thresholds at which $k$ changes are $135^\circ$, $225^\circ$, and $315^\circ$; the nominal $45^\circ$ threshold does not change the value after enforcing $k\ge1$. Choices near a threshold are recorded in the combinatorial signature. Construction is refused below the admissible angle $\alpha_{\min}$ or when no compatible assignment exists.
 
-**7.5 Formule de comptage.** Pour une quadrangulation conforme, avec $d_v$ le nombre d'arêtes issues d'un sommet intérieur, $k_v$ le nombre de cellules incidentes à un sommet de bord et $\chi=\text{composantes}-\text{trous}$ :
+**7.5 Counting formula.** For a conforming quadrangulation, let $d_v$ be the number of edges incident to an interior vertex, $k_v$ the number of incident cells at a boundary vertex, and $\chi=\text{components}-\text{holes}$:
 
 $$
 \sum_{v\in\mathcal V_{\mathrm{int}}}(4-d_v)
-=4\chi-\sum_{v\in\mathcal V_{\mathrm{bord}}}(2-k_v).
+=4\chi-\sum_{v\in\mathcal V_{\mathrm{boundary}}}(2-k_v).
 $$
 
-Cette identité sert à budgéter les valences, à vérifier un découpage et à caractériser certains événements combinatoires. Elle est nécessaire, mais ne prouve ni l'existence d'une partition géométrique admissible ni sa qualité. La parité du nombre total d'arêtes de bord et les autres incidences du complexe doivent également être vérifiées.
+This identity helps budget valences, check a partition, and characterize certain combinatorial events. It is necessary, but does not prove that an admissible geometric partition exists or that it is good. The parity of the total number of boundary edges and the other incidences in the complex must also be checked.
 
-| Section | $\chi$ | Affectation de bord | Charge intérieure | Exemple de découpage |
+| Region | $\chi$ | Boundary assignment | Interior charge | Example partition |
 | --- | --- | --- | --- | --- |
-| Rectangle | 1 | 4 coins avec $k=1$ | 0 | 1 cellule |
-| Disque | 1 | Bord lisse | $+4$ | 5 cellules : cœur et 4 cellules latérales, avec 4 sommets intérieurs de valence 3 |
-| L | 1 | 5 coins avec $k=1$, 1 rentrant avec $k=3$ | 0 | 3 cellules conformes ; 2 macrocellules possibles avec un raccord emboîté |
-| Plaque rectangulaire percée, gabarit admissible | 0 | 4 coins divisés avec $k=2$, secteurs de $45^\circ$ | 0 | 4 cellules en O-grid |
-| Plaque rectangulaire percée, angles droits conservés | 0 | 4 coins avec $k=1$ | $-4$ | 12 cellules : grille 3×3 dont la case centrale est remplacée par un O-grid, avec 4 sommets de valence 5 |
+| Rectangle | 1 | 4 corners with $k=1$ | 0 | 1 cell |
+| Disk | 1 | Smooth boundary | $+4$ | 5 cells: a core and 4 side cells, with 4 interior vertices of valence 3 |
+| L shape | 1 | 5 corners with $k=1$, 1 re-entrant corner with $k=3$ | 0 | 3 conforming cells; 2 macro-cells possible with a nested interface |
+| Perforated rectangle, admissible template | 0 | 4 corners split with $k=2$, 45° sectors | 0 | 4-cell O-grid |
+| Perforated rectangle, right angles preserved | 0 | 4 corners with $k=1$ | $-4$ | 12 cells: a 3×3 grid with an O-grid replacing the center cell, and 4 interior vertices of valence 5 |
 
-Les nombres du tableau décrivent des gabarits soumis à leurs conditions de placement et de dégagement. Une « singularité » de valence 3 ou 5 est combinatoire : elle n'autorise jamais un jacobien nul dans les cartes incidentes.
+The table describes templates subject to their placement and clearance conditions. A valence-3 or valence-5 “singularity” is combinatorial; it never permits a zero Jacobian in an incident map.
 
-Pour les jonctions en T, on construit le graphe topologique conforme en subdivisant les arêtes aux incidences. Une macrocellule géométrique peut alors avoir un contour topologique à $n_f$ côtés, sans changer sa carte tensorielle. Pour des cellules topologiques simplement connexes et des composantes de bord simples, l'identité à vérifier est :
+For T-junctions, construct the conforming topological graph by subdividing edges at incidences. A geometric macro-cell may then have a topological boundary with $n_f$ sides without changing its tensor-product map. For simply connected topological cells and simple boundary components, check:
 
 $$
 \sum_{v\in\mathcal V_{\mathrm{int}}}(4-d_v)
-+\sum_{v\in\mathcal V_{\mathrm{bord}}}(3-d_v)
++\sum_{v\in\mathcal V_{\mathrm{boundary}}}(3-d_v)
 =4\chi+\sum_f(n_f-4).
 $$
 
-Les degrés et les nombres de côtés sont ceux du même graphe conformisé. On ne mélange pas les côtés paramétriques des macrocellules et les sous-entités topologiques de la section 6.
+The degrees and side counts refer to the same conformized graph. Do not mix macro-cell parametric sides with the topological subentities of Section 6.
 
-Le disque illustre la contrainte de non-dégénérescence : une seule carte régulière du carré ne peut envoyer ses quatre coins sur un bord partout lisse avec un jacobien strictement positif jusque sur le bord. La plaque percée montre que le budget de valences dépend des angles attribués aux cellules.
+The disk illustrates the non-degeneracy constraint: a single regular map of a square cannot map all four corners to an everywhere-smooth boundary while keeping a strictly positive Jacobian through the boundary. The perforated plate shows that the valence budget depends on the angles assigned to cells.
 
-**7.6 Génération du découpage.**
+**7.6 Partition generation.**
 
-1. **Gabarits de phase 1.** Rectangle, disque avec cœur, couronne, L, T, U, trou dans un rectangle et rangée de trous. Chaque gabarit précise son domaine de paramètres, ses marges de dégagement, ses raccords et son procédé de certification. La juxtaposition de gabarits est elle-même validée.
-2. **Méthode générale, en recherche.** Champ de croix et séparatrices, ou optimisation combinatoire. L'objectif combine nombre de cellules, distorsion aux coins, tailles et compatibilité des interfaces. Aucun succès universel n'est présumé.
-3. **Règles communes.** Chaque région matérielle de l'arrangement est une union de cellules entières ; aucune cellule ne traverse une coupe imposée. Une jonction en T n'est admise que si elle possède un raccord emboîté conforme au contrat de la section 10. Chaque cellule doit avoir un bord de Jordan et des coins différentiellement compatibles avec une carte régulière du carré.
+1. **Phase 1 templates.** Rectangle, disk with a core, annulus, L, T, U, a hole in a rectangle, and a row of holes. Each template specifies its parameter domain, clearance margins, interfaces, and certification method. Juxtaposed templates must themselves be validated.
+2. **General method, under research.** Cross fields and separators, or combinatorial optimization. The objective combines cell count, corner distortion, cell sizes, and interface compatibility. No universal success is assumed.
+3. **Common rules.** Each material region in the arrangement is a union of complete cells; no cell crosses an imposed cut. A T-junction is admitted only with a nested interface meeting the contract in Section 10. Every cell must have a Jordan boundary and corners differentially compatible with a regular square map.
 
-**7.7 Reparamétrisation $\varphi_c$.**
+**7.7 Reparameterization $\varphi_c$.**
 
-- **Bords.** Les quatre côtés proviennent de courbes canoniques de l'arrangement. Ils conservent leur géométrie exacte de représentation ou leur contrat d'approximation. Deux cellules voisines partagent une paramétrisation, ou une restriction compatible avec le raccord emboîté. Degrés, nœuds et poids rationnels sont pris en compte.
-- **Initialisation.** Une interpolation de Coons fournit une candidate, sans garantie de bijectivité. Pour des côtés compatibles $c_0,c_1,d_0,d_1$ et des coins $p_{ij}$ :
+- **Boundaries.** The four sides come from canonical arrangement curves. They retain either their exact representation geometry or their approximation contract. Neighboring cells share a parameterization, or a restriction compatible with their nested interface. Degrees, knots, and rational weights are accounted for.
+- **Initialization.** Coons interpolation supplies a candidate, without guaranteeing bijectivity. For compatible sides $c_0,c_1,d_0,d_1$ and corners $p_{ij}$:
 
 $$
 \begin{aligned}
@@ -382,85 +354,85 @@ $$
 \end{aligned}
 $$
 
-- **Amélioration.** On peut rechercher une inverse harmonique, utiliser une formulation de Winslow ou minimiser une énergie de distorsion. Les limites de degré, de raffinement et de coût sont explicites. Les bords restent fixés lors de l'optimisation intérieure ; leur modification éventuelle constitue une opération coordonnée avec les voisins et un nouveau contrat géométrique.
-- **Portée du résultat harmonique.** Avec une correspondance homéomorphe des bords, le théorème de Radó–Kneser–Choquet donne une application harmonique d'un domaine de Jordan vers une cible convexe qui est un difféomorphisme à l'intérieur. Il ne donne pas à lui seul une borne positive uniforme du jacobien sur le fermé, ni une carte spline à degré borné reproduisant exactement les bords. Voir Hinz et Buffa (2024), section 21.
-- **Acceptation.** Chaque candidate passe les certificats de la section 12. En cas d'échec, le noyau peut raffiner, élever le degré, modifier le découpage ou refuser. Il n'est pas garanti que l'ajout de nœuds suffise sans ajout de cellules.
-- **Degré.** Les espaces doivent représenter les bords et les raccords imposés. Pour des bords rationnels, la mise au même dénominateur et la construction de Coons peuvent augmenter le degré ; la politique de la section 11 s'applique.
+- **Improvement.** The kernel may seek a harmonic map, use a Winslow formulation, or minimize a distortion energy. Degree, refinement, and cost limits are explicit. Boundaries remain fixed during interior optimization; changing them is a coordinated operation with neighboring cells and requires a new geometric contract.
+- **Scope of the harmonic result.** Given a homeomorphic correspondence of the boundaries, the Radó–Kneser–Choquet theorem gives a harmonic map from a Jordan domain to a convex target that is a diffeomorphism in the interior. It does not by itself give a uniform positive Jacobian bound on the closed domain, nor a bounded-degree spline map that reproduces the boundaries exactly. See Hinz and Buffa (2024), Section 21.
+- **Acceptance.** Each candidate must pass the certificates in Section 12. If it fails, the kernel may refine, raise degree, change the partition, or refuse. Adding knots is not guaranteed to suffice without adding cells.
+- **Degree.** Spaces must represent the required boundaries and interfaces. For rational boundaries, common-denominator construction and Coons interpolation may raise degree; the policy in Section 11 applies.
 
-**7.8 Sorties.** Cellules, cartes $\varphi_c$ certifiées, adjacences et sous-entités topologiques, raccords, allocations de coins, contrats d'exactitude et provenance. Chaque morceau de courbe de conception engendre, après extrusion, une ou plusieurs faces rattachées à la même intention de conception.
+**7.8 Outputs.** Cells; certified maps $\varphi_c$; topological adjacencies and subentities; interfaces; corner assignments; accuracy contracts; and provenance. After extrusion, each design-curve segment generates one or more faces tied to the same design intent.
 
-**7.9 Motifs de refus.** Profil auto-intersecté ; cusp ou courbe non régulière non prise en charge ; ligament hors du domaine admissible ; coin incompatible avec les marges prescrites ; incidence ou intersection non certifiée ; absence de gabarit ; raccord incompatible ; budget de degré ou de cellules dépassé ; jacobien, injectivité ou erreur géométrique exigée non certifiés. Aucun refus n'autorise une sortie trimée ou dégénérée.
+**7.9 Grounds for refusal.** Self-intersecting profile; unsupported or non-regular cusp or curve; ligament outside the admissible domain; corner incompatible with prescribed margins; uncertified incidence or intersection; no applicable template; incompatible interface; degree or cell budget exceeded; or required Jacobian, injectivity, or geometric error bound not certified. Refusal never permits a trimmed or degenerate output.
 
-## 8. Opérateurs volumiques et contrats
+## 8. Volumetric operators and their contracts
 
-Chaque opérateur est spécifié par ses préconditions, sa construction, son contrat géométrique et ses motifs de refus. La phase 1 vise une famille exacte de représentation en segments, arcs et gabarits validés ; elle ne couvre pas toutes les esquisses ni toutes les configurations. Une opération exacte appliquée à une entrée déjà approchée ne supprime pas son erreur héritée.
+Each operator specifies its preconditions, construction, geometric contract, and grounds for refusal. Phase 1 targets exact representation for validated families of segments, arcs, and templates; it does not cover every sketch or configuration. An exact operation applied to an already approximated input does not remove inherited error.
 
-Les statuts EXACT_REPRESENTATION, APPROX_ESTIMATED et APPROX_CERTIFIED suivent la section 11. Tous exigent des blocs entiers non trimés, une non-dégénérescence certifiée et un assemblage valide. Le refus est un résultat séparé qui ne modifie pas l'état valide courant.
+The statuses `EXACT_REPRESENTATION`, `APPROX_ESTIMATED`, and `APPROX_CERTIFIED` follow Section 11. All require complete untrimmed blocks, certified non-degeneracy, and valid assembly. Refusal is a separate result and does not change the current valid state.
 
-| Opérateur | Phase | Construction | Contrat visé | Préconditions ou motifs de refus principaux |
+| Operator | Phase | Construction | Contract covered | Main preconditions or grounds for refusal |
 | --- | --- | --- | --- | --- |
-| Extrusion droite | 1 | Cellules de section × intervalle axial | EXACT_REPRESENTATION pour une section exacte | Hauteur positive ; direction transverse ; section et interfaces certifiées |
-| Perçage traversant parallèle | 1 | Coupe imposée dans l'arrangement 2D | Exact dans les familles de gabarits | Ligaments et débouchés dans le domaine admissible |
-| Poche borgne parallèle | 1 | Occupation par couches axiales et raccords emboîtés | Exact dans les familles de gabarits | Profondeur admissible ; profondeur nulle ou débouchante traitée comme événement avec une sémantique explicite |
-| Motif linéaire ou circulaire | 1 | Profils dupliqués dans l'arrangement | Exact pour les transformations et profils exacts pris en charge | Contacts et interférences couverts par un gabarit ; nombre de cellules dans le budget |
-| Congé et chanfrein longitudinaux | 1 | Construction métrique de section, puis extrusion | Exact pour le premier gabarit d'extrusion normale | Conditions de la section 9 ; le cas oblique requiert son propre gabarit |
-| Révolution | 3 | Profil hors axe × secteurs rationnels ; gabarits distincts au contact de l'axe | Exact pour les familles régulières certifiées | Refus des contacts à l'axe non couverts, notamment d'une pointe de cône exacte |
-| Perçage oblique dans une paroi plane | 3 | Couronne orientée selon l'axe et blocs de transition | Exact pour des gabarits entièrement construits et certifiés | Deux débouchés plans transverses, dégagement suffisant, transitions compatibles |
-| Bossage, union de corps non coaxiaux | 3 | Partition anticipée | Exact dans des cas particuliers ; approximation qualifiée en général | Intersections, partition et raccords certifiables |
-| Miroir | 1 | Symétrie des blocs et inversion d'une direction paramétrique | Conservation du contrat d'entrée | Orientations et provenance mises à jour |
-| Extrusion avec dépouille | 4 | Sections variables selon une définition métrique explicite | Exact sur certaines familles analytiques ; approximation qualifiée sinon | Décalages et transitions représentables ; absence de disparition de section |
-| Balayage | 4 | Transport des cellules avec un repère à rotation minimale | Contrat par famille, généralement approché | Régularité locale et absence de collision globale certifiées |
-| Lissage entre sections | 4 | Correspondance de partitions, puis interpolation ou ajustement | Contrat par construction | Correspondance compatible et injectivité certifiée |
-| Booléen libre | 4 | Construction de la section 13 | Approximation qualifiée en général | Configuration couverte ; budget et certificats respectés |
+| Normal extrusion | 1 | Section cells × axial interval | `EXACT_REPRESENTATION` for an exact section | Positive height; transverse direction; certified section and interfaces |
+| Parallel through-hole | 1 | Cut imposed in the 2D arrangement | Exact for supported templates | Ligaments and exits within the admissible domain |
+| Parallel blind pocket | 1 | Axial-layer occupancy and nested interfaces | Exact for supported templates | Admissible depth; zero-depth or through-depth event has explicit semantics |
+| Linear or circular pattern | 1 | Duplicate profiles in the arrangement | Exact for supported transformations and profiles | Contacts and interference covered by a template; cell count within budget |
+| Longitudinal fillet or chamfer | 1 | Metric section construction, then extrusion | Exact for the first normal-extrusion template | Section 9 conditions; oblique case requires its own template |
+| Revolution | 3 | Off-axis profile × rational sectors; separate templates at axis contact | Exact for certified regular families | Unsupported axis contact, including an exact cone tip, is refused |
+| Oblique hole in a planar wall | 3 | Axis-oriented annulus and transition blocks | Exact for fully constructed and certified templates | Two transverse planar exits, sufficient clearance, compatible transitions |
+| Boss or non-coaxial union | 3 | Anticipatory partition | Exact in specific cases; qualified approximation in general | Intersections, partition, and interfaces must be certifiable |
+| Mirror | 1 | Block symmetry and reversal of a parametric direction | Preserve the input contract | Update orientations and provenance |
+| Drafted extrusion | 4 | Variable sections under an explicit metric definition | Exact for some analytical families; qualified approximation otherwise | Representable offsets and transitions; no section disappearance |
+| Sweep | 4 | Transport cells with a minimum-rotation frame | Family-specific contract, usually approximated | Local regularity and certified absence of global collision |
+| Loft | 4 | Partition correspondence, then interpolation or adjustment | Construction-specific contract | Compatible correspondence and certified injectivity |
+| General Boolean | 4 | Construction in Section 13 | Qualified approximation in general | Supported configuration; budget and certificates respected |
 
-**8.1 Extrusion droite.** Pour une cellule $c$, une longueur d'extrusion $h>0$ et une direction unitaire $\mathbf d$ :
+**8.1 Normal extrusion.** For a section cell $c$, extrusion length $h>0$, and unit direction $\mathbf d$:
 
 $$
 X_c(u,v,w)=S\big(\varphi_c(u,v)\big)+h\,w\,\mathbf d.
 $$
 
-Dans le repère affine général $S(u,v)=O+u\mathbf e_1+v\mathbf e_2$ :
+In the general affine frame $S(u,v)=O+u\mathbf e_1+v\mathbf e_2$:
 
 $$
 \det DX_c
 =h\,\det D\varphi_c\,(\mathbf e_1\times\mathbf e_2)\cdot\mathbf d.
 $$
 
-Dans le repère orthonormé orienté de la section 7.2, le dernier facteur vaut $\mathbf n\cdot\mathbf d$. On exige une borne positive de ce facteur et la marge de jacobien volumique prescrite. Une certification 2D de $\varphi_c$, avec ces bornes, suffit pour la non-dégénérescence locale du bloc ; la partition de section et les intervalles axiaux fournissent le certificat d'assemblage correspondant.
+In the oriented orthonormal frame of Section 7.2, the final factor is $\mathbf n\cdot\mathbf d$. Require a positive lower bound for this factor and the prescribed volumetric Jacobian margin. With these bounds, 2D certification of $\varphi_c$ suffices for local block non-degeneracy; the section partition and axial intervals provide the corresponding assembly certificate.
 
-Le degré en $w$ est 1 ; son élévation pour l'analyse ne change pas la géométrie. L'extrusion normale est le premier gabarit. Une extrusion oblique reste une construction géométrique exacte, mais $h$ n'est alors pas l'épaisseur mesurée suivant $\mathbf n$ : cette épaisseur vaut $h\,\mathbf n\cdot\mathbf d$. Les congés métriques obliques ne sont pas obtenus par la simple extrusion d'un arc de même rayon dans le plan d'esquisse.
+The degree in $w$ is 1; degree elevation for analysis does not change the geometry. Normal extrusion is the first template. Oblique extrusion is still an exact geometric construction, but $h$ is not the thickness measured along $\mathbf n$; that thickness is $h\,\mathbf n\cdot\mathbf d$. An oblique metric fillet is not obtained by simply extruding a same-radius arc in the sketch plane.
 
-**8.2 Couches axiales.** Pour chaque cellule de section, les niveaux des features qui la recouvrent définissent des intervalles axiaux. L'occupation de chaque intervalle est évaluée en respectant l'ordre des opérations et leurs références. Ce mécanisme couvre les poches superposées, les retraits issus de faces opposées et les unions de hauteurs différentes.
+**8.2 Axial layers.** For each section cell, the levels of the features covering it define axial intervals. Evaluate occupancy on each interval in operation order and with the specified references. This handles overlapping pockets, cuts from opposite faces, and unions of different heights.
 
-Si $n_c^{\mathrm{act}}$ désigne le nombre d'intervalles matériels retenus après les regroupements autorisés :
+If $n_c^{\mathrm{act}}$ denotes the number of retained material intervals after permitted grouping:
 
 $$
-N_{\mathrm{blocs\ actifs}}=\sum_c n_c^{\mathrm{act}}.
+N_{\mathrm{active\ blocks}}=\sum_c n_c^{\mathrm{act}}.
 $$
 
-Les blocs inactifs éventuels sont comptés séparément. Les niveaux et interfaces nécessaires aux charges, matériaux ou références de conception ne sont pas fusionnés sans préserver leur sémantique.
+Count any inactive blocks separately. Do not merge levels and interfaces required by design loads, materials, or references unless their semantics are preserved.
 
-Deux piles voisines peuvent se raccorder par emboîtement lorsque les restrictions de faces et les espaces de trace satisfont la section 10. Le fait qu'une pile comporte moins de couches ne suffit pas à la désigner automatiquement comme maître : les découpages doivent être effectivement compatibles. Sinon, on introduit un découpage commun local ou l'on refuse.
+Adjacent block stacks may be connected by nested interfaces when their face restrictions and trace spaces satisfy Section 10. A stack with fewer layers is not automatically a valid master: the partitions must actually be compatible. Otherwise, introduce a local common subdivision or refuse.
 
-Une face paramétrique partiellement couverte est décomposée en sous-faces topologiques rectangulaires : les unes sont intérieures, les autres constituent la paroi de poche. Les lignes de séparation sont compatibles avec les traces et leur intégration. Il ne s'agit jamais de retrancher une partie active de l'intérieur d'un bloc.
+A partially covered parametric face is split into rectangular topological subfaces: some are internal and others form the pocket wall. The split lines must be compatible with traces and their integration. This never means cutting active material out of the interior of a block.
 
-**8.3 Réduction des booléens coaxiaux en 2D.** Plus généralement, cette réduction concerne des extrusions suivant la même direction et exprimées dans un même repère transversal. Pour des sections $A,B$ et des intervalles axiaux $I,J$ :
+**8.3 Reduction of coaxial Booleans to 2D.** More generally, this reduction applies to extrusions in the same direction and expressed in the same transverse frame. For sections $A,B$ and axial intervals $I,J$:
 
 $$
 \begin{aligned}
 (A\times I)\setminus(B\times J)&=(A\setminus B)\times I,
-&&\text{si }I\subseteq J,\\
+&&\text{if }I\subseteq J,\\
 (A\times I)\cap(B\times J)&=(A\cap B)\times(I\cap J).
 \end{aligned}
 $$
 
-Lorsque $I=J$, les trois opérations, y compris l'union, se réduisent à une opération sur les sections suivie de l'extrusion sur $I$. La seule inclusion $I\subseteq J$ ne suffit pas pour réduire l'union à une extrusion unique de $A\cup B$.
+When $I=J$, all three operations, including union, reduce to one section operation followed by extrusion over $I$. The inclusion $I\subseteq J$ alone is not enough to reduce union to one extrusion of $A\cup B$.
 
-Pour des intervalles différents, on stratifie l'axe selon toutes leurs bornes et l'on applique l'opération 2D dans chaque tranche. Ces identités décrivent les occupations ; les frontières sont traitées selon la convention de booléens régularisés de la section 13.
+For different intervals, stratify the axis at all interval endpoints and apply the 2D operation on each stratum. These identities describe occupancy; boundaries follow the regularized-Boolean convention in Section 13.
 
-**8.4 Révolution.** Hors de l'axe, on tourne les cellules du profil par secteurs circulaires rationnels, de $90^\circ$ au plus dans le premier gabarit. L'angle géométrique n'est pas supposé affine dans le paramètre rationnel.
+**8.4 Revolution.** Away from the axis, rotate profile cells using rational circular sectors of at most $90^\circ$ in the first template. The geometric angle is not assumed to vary affinely with the rational parameter.
 
-Soient $(r(u,v),z(u,v))$ les coordonnées du profil et $(c(t),s(t))$ un arc rationnel du cercle unité orienté positivement. En fixant explicitement l'ordre des coordonnées paramétriques $(u,t,v)$ :
+Let $(r(u,v),z(u,v))$ be the profile coordinates and $(c(t),s(t))$ a rational arc of the positively oriented unit circle. With parametric coordinate order $(u,t,v)$:
 
 $$
 X(u,t,v)=\big(r(u,v)c(t),\,r(u,v)s(t),\,z(u,v)\big),
@@ -471,138 +443,136 @@ $$
 =r\,\det D_{(u,v)}(r,z)\,\big(c\,s'-s\,c'\big).
 $$
 
-Le dernier facteur est la dérivée de l'angle géométrique. Le certificat exige des bornes strictement positives de $r$, du jacobien du profil et de ce facteur, avec les orientations indiquées.
+The final factor is the derivative of the geometric angle. The certificate requires strictly positive lower bounds for $r$, the profile Jacobian, and this factor, with the stated orientations.
 
-Les contacts avec l'axe nécessitent un autre découpage volumique : cœur cartésien et blocs périphériques pour les familles validées, par exemple un cylindre plein. Le remplacement n'est pas une simple révolution d'une cellule atteignant $r=0$. Des pôles géométriquement réguliers peuvent demander des gabarits tridimensionnels distincts.
+Axis contacts require a different volumetric partition: a Cartesian core with peripheral blocks for validated families, such as a solid cylinder. It is not enough to revolve a cell that reaches $r=0$. Geometrically regular poles may require dedicated 3D templates.
 
-Une pointe de cône exacte ou un cusp essentiel n'est pas admis sous le contrat de cartes rationnelles régulières sur le fermé : la singularité de la frontière impose une dégénérescence de toute face qui en couvre un secteur jusqu'à la pointe. Le noyau refuse ce contrat exact. Une géométrie régularisée n'est possible que comme construction approchée explicitement identifiée, avec sa propre erreur et ses certificats. Un profil traversant l'axe ou un contact non classé est également refusé.
+An exact cone tip or essential cusp is not admitted under the contract of regular rational maps on the closed domain: the boundary singularity forces degeneration of any face covering a sector up to the tip. The kernel refuses this exact contract. Regularized geometry is possible only as an explicitly identified approximation with its own error and certificates. A profile crossing the axis or an unclassified contact is also refused.
 
-**8.5 Perçage oblique.** Le premier gabarit vise un trou cylindrique débouchant sur deux faces planes transverses à son axe, éloigné des arêtes, congés et autres features. Les intersections sont alors des ellipses, éventuellement des cercles, représentables rationnellement. Cette propriété ne garantit pas à elle seule la construction des blocs de transition.
+**8.5 Oblique hole.** The first template covers a cylindrical hole opening onto two planar faces transverse to its axis, away from edges, fillets, and other features. The intersections are then ellipses, possibly circles, and are rationally representable. This alone does not guarantee that transition blocks can be constructed.
 
-Dans un repère d'axe $\mathbf d$, une couronne plane régulière $q(u,v)$ peut être prolongée entre les deux plans par :
+In a frame aligned with axis $\mathbf d$, a regular planar annulus $q(u,v)$ can be extended between the two planes by:
 
 $$
 X(u,v,w)=q(u,v)+
 \big[(1-w)z_a(q(u,v))+w z_b(q(u,v))\big]\mathbf d,
 $$
 
-où $q$ appartient au plan transverse et $z_a,z_b$ sont les hauteurs affines des deux faces. Une borne positive de $z_b-z_a$, combinée à la régularité de $q$, certifie ce prolongement local. Les blocs qui relient cette couronne au reste de la pièce ont leur propre gabarit, leur contrat de trace et leurs certificats.
+where $q$ lies in the transverse plane and $z_a,z_b$ are the affine heights of the two faces. A positive lower bound on $z_b-z_a$, together with regularity of $q$, certifies this local extension. Blocks connecting the annulus to the rest of the part require their own template, trace contract, and certificates.
 
-Le gabarit n'est accepté qu'après validation de l'ensemble. Axe trop rasant, dégagement insuffisant, sortie dans un congé, transition non compatible ou certificat indéterminé entraînent un refus ou le choix explicite d'une autre famille.
+Accept the template only after validating the complete assembly. A nearly tangential axis, insufficient clearance, an exit through a fillet, incompatible transition, or indeterminate certificate results in refusal or an explicit choice of another family.
 
-**8.6 Spécification commune à tout opérateur.** Entrées et paramètres nommés ; domaine admissible et marges ; sémantique exacte de l'opération ; coupes imposées ; gabarit et choix discrets ; blocs créés, reconstruits ou désactivés ; sous-entités et raccords mis à jour ; provenance ; dépendances et dérivées des données géométriques, poids et contraintes selon la section 14 ; statut et budget d'erreur ; certificats requis ; coûts maximaux ; motif de refus.
+**8.6 Common specification for every operator.** Named inputs and parameters; admissible domain and margins; exact operation semantics; imposed cuts; discrete templates and choices; blocks created, rebuilt, or disabled; updated subentities and interfaces; provenance; dependencies and derivatives of geometric data, weights, and constraints under Section 14; error status and budget; required certificates; maximum costs; and refusal reason.
 
-La validation précède la publication du nouvel état. Aucun opérateur ne contourne ses préconditions par une cellule trimée, une carte dégénérée ou une approximation non déclarée.
+Validation precedes publication of the new state. No operator bypasses its preconditions with a trimmed cell, degenerate map, or undeclared approximation.
 
-## 9. Congés et chanfreins
+## 9. Fillets and chamfers
 
-Un congé est porté par une ou plusieurs faces de blocs, avec une définition métrique et un contrat géométrique explicites. Les cartes volumiques de son voisinage gardent une épaisseur et un jacobien strictement positifs jusque sur le bord. La rationalité de la surface extérieure ne suffit pas à certifier ce voisinage.
+A fillet is represented by one or more block faces, with an explicit metric definition and geometric contract. Volumetric maps in its neighborhood must retain strictly positive thickness and Jacobian up to the edge. Rationality of the outer surface alone does not certify this neighborhood.
 
-**Exigences.**
+**Requirements.**
 
-| ID | Exigence |
+| ID | Requirement |
 | --- | --- |
-| C-1 | Le congé cible est défini par une boule roulante de rayon $r$, avec côté matière et faces de tangence identifiés. EXACT_REPRESENTATION signifie que cette construction métrique est représentée sans ajustement géométrique ; APPROX_CERTIFIED porte une borne d'écart à cette cible. Une erreur seulement estimée ne satisfait pas un contrat de tolérance garantie. |
-| C-2 | Les deux lignes de tangence sont des arêtes ou des chaînes d'arêtes du complexe ; elles sont intégrées aux coupes de la partition lorsque leurs dépendances géométriques sont résolues. |
-| C-3 | Le seul volume ajouté ou retiré en forme de biseau arrondi n'est pas utilisé comme bloc qui s'écrase sur ses rails. Un voisinage d'épaisseur positive est reconstruit, puis certifié avec les blocs adjacents. |
-| C-4 | La continuité géométrique G¹ de la face de congé avec ses voisines est construite ou prouvée, indépendamment du raccord C⁰ des champs d'analyse. Un faible écart angulaire échantillonné ne vaut pas preuve de G¹ exacte. |
-| C-5 | Pour chaque paire de gabarits congé/chanfrein annoncée substituable, un domaine commun de paramètres garantit la même topologie de blocs et les mêmes raccords. Cette propriété n'est pas revendiquée pour toutes les configurations. |
+| C-1 | Define the target fillet by a rolling ball of radius $r$, identifying the material side and tangent faces. `EXACT_REPRESENTATION` means the metric construction is represented without geometric adjustment; `APPROX_CERTIFIED` provides a deviation bound from that target. An estimated error alone does not meet a guaranteed-tolerance contract. |
+| C-2 | Both tangency lines are edges or edge chains in the complex. Include them in the partition cuts once their geometric dependencies are resolved. |
+| C-3 | Do not use only the added or removed rounded-wedge volume as a block that collapses onto its rails. Rebuild a neighborhood with positive thickness, then certify it with adjacent blocks. |
+| C-4 | Construct or prove G1 geometric continuity of the fillet face with its neighbors, independently of C0 continuity of analysis fields. A small sampled angular deviation is not proof of exact G1 continuity. |
+| C-5 | For every fillet/chamfer template pair declared interchangeable, define a common parameter domain on which block topology and interfaces are identical. Do not claim this for all configurations. |
 
-**Ce qu'un arrondi coûte en topologie.** Dans une quadrangulation conforme, à allocations des autres coins inchangées, arrondir un coin convexe avec $k=1$ supprime une contribution de bord $+1$. La charge intérieure doit donc augmenter de $+1$, par exemple avec un sommet de valence 3. Arrondir un coin rentrant avec $k=3$ demande à l'inverse une variation de $-1$, par exemple un sommet de valence 5.
+**Topological cost of rounding.** In a conforming quadrangulation, with assignments at all other corners unchanged, rounding a convex corner with $k=1$ removes a boundary contribution of $+1$. The interior charge must therefore increase by $+1$, for example through a valence-3 vertex. Rounding a re-entrant corner with $k=3$ requires a change of $-1$, for example through a valence-5 vertex.
 
-- Un rectangle à un coin arrondi admet un gabarit de trois cellules autour d'un sommet de valence 3.
-- Un rectangle à quatre coins arrondis a le même budget de charge que le disque, par exemple un cœur et quatre cellules latérales.
-- Par extrusion, ces sommets engendrent des arêtes de valence correspondante. Dans une construction tridimensionnelle générale, elles appartiennent à un graphe dont les jonctions et les terminaisons sur le bord sont validées par des gabarits de sommet.
+- A rectangle with one rounded corner admits a three-cell template around a valence-3 vertex.
+- A rectangle with four rounded corners has the same charge budget as a disk, for example a core and four side cells.
+- Extrusion turns these vertices into edges of corresponding valence. In a general 3D construction, they belong to a graph whose junctions and boundary endpoints are validated by vertex templates.
 
-Ces singularités sont combinatoires. Elles n'autorisent ni carte singulière ni disparition d'épaisseur. Pour des raccords emboîtés, le comptage s'effectue sur le complexe topologique conformisé de la section 7.5.
+These singularities are combinatorial; they do not permit a singular map or loss of thickness. For nested interfaces, perform the count on the conformized topological complex of Section 7.5.
 
-**Chanfrein à $45^\circ$ : un cas de seuil.** Dans une section avec coin initial de $90^\circ$, un chanfrein symétrique crée deux coins de $135^\circ$. Les affectations $k=1$ et $k=2$ sont localement envisageables ; le choix reste soumis à la compatibilité globale. Le gabarit substituable au congé retient $k=2$ aux deux coins, ce qui conserve son budget de charge et peut conserver sa topologie. Ce choix fait partie du gabarit, pas d'une règle universelle d'arrondi.
+**45° chamfer: a threshold case.** In a section with an original 90° corner, a symmetric chamfer creates two 135° corners. Assignments $k=1$ and $k=2$ are locally possible; global compatibility determines the choice. A template interchangeable with the fillet uses $k=2$ at both corners, preserving its charge budget and potentially its topology. This is a template-specific choice, not a universal rounding rule.
 
-**Niveaux de difficulté.**
+**Difficulty levels.**
 
-| Niveau | Cas | Construction | Contrat | Phase |
+| Level | Case | Construction | Contract | Phase |
 | --- | --- | --- | --- | --- |
-| A | Congé ou chanfrein longitudinal d'une extrusion normale | Arc tangent rationnel quadratique ou segment dans la section métrique ; partition du voisinage puis extrusion | Exact pour les courbes, tangences et gabarits pris en charge | 1 |
-| A, extension oblique | Arête parallèle à une direction d'extrusion oblique | Construction dans un plan normal à l'arête, puis retour dans le plan d'esquisse ; une courbe circulaire devient généralement elliptique | Exact si le gabarit complet est représentable et certifié ; sinon refus ou approximation qualifiée | Après validation du gabarit |
-| B1 | Congé terminal entre deux faces planes orthogonales, le long d'une arête droite | Quart de cylindre ; dans le gabarit de plaque normale, coupe décalée de $r$ et couche à $h-r$ ; reconstruction du voisinage | Exact sous les marges et certificats du gabarit | 3 |
-| B2 | Entrée circulaire d'un trou cylindrique sur une face plane normale à son axe | Portion de tore et reconstruction de son voisinage | Exact sur les plages excluant dégénérescence, auto-intersection et conflit de raccords | 3 |
-| B3 | Congé terminal sur géométrie NURBS générale | Construction de la cible de boule roulante puis approximation compatible de ses faces et rails | Approximation qualifiée ; recherche sur le paramétrage et les certificats | 4 |
-| C | Rencontre de congés en un sommet ; rayon variable | Gabarit de sommet et définition métrique de la transition | Contrat par famille ; refus avant prise en charge | 4 |
-| Chanfrein terminal droit | Chanfrein le long d'une arête droite entre plans | Face plane inclinée et reconstruction suivant la logique de B1 | Exact dans le gabarit admissible | 3 |
+| A | Longitudinal fillet or chamfer on a normal extrusion | Rational quadratic tangent arc or segment in the metric section; partition the neighborhood, then extrude | Exact for supported curves, tangencies, and templates | 1 |
+| A, oblique extension | Edge parallel to an oblique extrusion direction | Construct in a plane normal to the edge, then map back to the sketch plane; a circle generally becomes an ellipse | Exact if the complete template is representable and certified; otherwise refuse or provide qualified approximation | After template validation |
+| B1 | Terminal fillet between orthogonal planar faces along a straight edge | Quarter-cylinder; in the normal plate template, offset cut by $r$ and layer to $h-r$; rebuild the neighborhood | Exact within template margins and certificates | 3 |
+| B2 | Circular entry of a cylindrical hole on a planar face normal to its axis | Torus portion and rebuilt neighborhood | Exact on ranges excluding degeneration, self-intersection, and interface conflicts | 3 |
+| B3 | Terminal fillet on general NURBS geometry | Construct rolling-ball target, then approximate its faces and rails compatibly | Qualified approximation; parameterization and certification remain research topics | 4 |
+| C | Fillets meeting at a vertex; variable radius | Vertex template and metric definition of the transition | Family-specific contract; refuse until supported | 4 |
+| Terminal straight chamfer | Chamfer along a straight edge between planes | Sloped planar face and reconstruction following the B1 approach | Exact in the admissible template | 3 |
 
-Pour le niveau A, extruder obliquement un cercle tracé dans l'esquisse ne produit pas en général un congé de même rayon métrique : sa section normale à l'arête est elliptique. Le premier gabarit est donc explicitement limité à l'extrusion normale. Pour B1 et B2, disposer d'un cylindre ou d'un tore exact ne remplace pas la construction de cartes volumiques régulières ni le certificat des raccords.
+For level A, obliquely extruding a circle drawn in the sketch does not generally yield a fillet with the same metric radius: its cross-section normal to the edge is elliptical. The first template is therefore limited explicitly to normal extrusion. For B1 and B2, having an exact cylinder or torus does not replace constructing regular volumetric maps or certifying interfaces.
 
-**Ordre dans le programme.** Les congés dépendent des booléens qui créent leurs arêtes. L'anticipation repère ces dépendances et réserve les coupes nécessaires ; les lignes de tangence sont calculées lorsque la géométrie dont elles dépendent est connue. Un regroupement d'opérations n'est autorisé que s'il conserve les références et le résultat de construction.
+**Operation order.** Fillets depend on the Booleans that create their edges. Anticipation identifies these dependencies and reserves the required cuts; tangency lines are computed once their supporting geometry is known. Operations may be grouped only if their references and construction results are preserved.
 
-Les travaux de Masalha, Cirillo et Elber (2021), cités en section 21, constituent une antériorité pour les congés trivariés, mais leurs constructions ne démontrent pas le contrat présent : certaines dégénèrent sur les rails et les blends proposés ne sont pas tous des congés métriques à rayon constant. Le noyau doit donc valider ses propres gabarits de voisinage régulier.
+The work of Masalha, Cirillo, and Elber (2021), cited in Section 21, is prior work on trivariate fillets, but their constructions do not establish the present contract: some degenerate along their rails, and the proposed blends are not all constant-radius metric fillets. The kernel must therefore validate its own regular-neighborhood templates.
 
-**Motifs de refus.** Rayon ou emprise hors du domaine admissible ; consommation complète d'une face voisine non prévue par le gabarit ; rails non réguliers ou non certifiés ; congés adjacents en conflit ; rencontre de sommet non prise en charge ; G¹ exigée non établie ; épaisseur, jacobien, injectivité ou raccords non certifiés ; borne d'erreur requise indisponible. La substitution par un chanfrein n'est automatique que dans le domaine commun certifié de C-5.
+**Grounds for refusal.** Radius or footprint outside the admissible domain; complete consumption of a neighboring face not allowed by the template; irregular or uncertified rails; conflicting adjacent fillets; unsupported vertex meeting; required G1 continuity not established; thickness, Jacobian, injectivity, or interfaces not certified; or required error bound unavailable. Automatic substitution by a chamfer is allowed only within the certified common domain in C-5.
 
-## 10. Raccords entre blocs
+## 10. Interfaces between blocks
 
-Deux types de raccords sont admis : identique et emboîté. Ils imposent une continuité forte des traces et produisent un espace global $H^1$-conforme pour les formulations visées, sans terme de couplage d'interface. La conformité de la géométrie et celle de l'espace d'analyse sont vérifiées séparément sur la même correspondance physique.
+Two interface types are admitted: identical and nested. Both impose strong trace continuity and produce a globally $H^1$-conforming space for the targeted formulations, without an interface-coupling term. Geometric conformity and analysis-space conformity are verified separately on the same physical correspondence.
 
-| Type | Contrat de trace | Effet sur la propagation | Statut |
+| Type | Trace contract | Effect on propagation | Status |
 | --- | --- | --- | --- |
-| Identique | Paramétrisations, degrés, nœuds et poids compatibles après orientation ; définition géométrique commune et bases de trace d'analyse identiques pour l'identification directe | Un raffinement de trace est partagé, ou le raccord d'analyse est reclassé emboîté après vérification | Admis |
-| Emboîté | Une trace maître restreinte à un sous-rectangle appartient exactement à l'espace esclave ; dénominateurs rationnels compatibles ; contraintes fortes explicites | Permet des subdivisions différentes et limite certaines propagations ; aucune borne universelle d'une couche n'est garantie | Admis |
-| Non conforme général | Traces sans inclusion admissible, ou paramétrisations dont la correspondance n'est pas prise en charge | Reconstruction, raffinement compatible ou refus | Couplage mortar ou Nitsche exclu, conformément à INV-10 |
+| Identical | Parameterizations, degrees, knots, and weights are compatible after orientation; common geometric definition and identical analysis trace bases permit direct identification | Trace refinement is shared, or the analysis interface is reclassified as nested after verification | Admitted |
+| Nested | Restriction of the master trace to a subrectangle belongs exactly to the slave space; rational denominators are compatible; strong constraints are explicit | Allows different subdivisions and limits some propagation; no universal one-layer bound is guaranteed | Admitted |
+| General nonconforming | Traces lack an admissible inclusion, or their parameter correspondence is unsupported | Rebuild, apply compatible refinement, or refuse | Mortar and Nitsche coupling are excluded under INV-10 |
 
-Une géométrie à raccord identique peut porter deux espaces d'analyse emboîtés après raffinement. Les deux statuts et leurs opérateurs sont alors enregistrés distinctement. L'absence de raccord admissible ne déclenche jamais un recours au trim, à l'immersion ou à un couplage faible.
+Geometry on an identical interface may carry two nested analysis spaces after refinement. Record the two statuses and operators separately. An unavailable admissible interface never triggers trimming, immersion, or weak coupling.
 
-**10.1 Condition d'emboîtement.** Soit $M$ un côté maître de domaine $[0,1]^2$, et $E$ un côté esclave dont le domaine entier correspond au sous-rectangle $R=[a,b]\times[c,d]$ du maître. L'application $\rho:[0,1]^2\to R$ est affine dans les directions paramétriques ; elle inclut, si nécessaire, leur permutation et leur renversement. Elle est stockée explicitement. La condition géométrique est :
+**10.1 Nesting condition.** Let $M$ be a master side with domain $[0,1]^2$, and $E$ a slave side whose full domain corresponds to the master subrectangle $R=[a,b]\times[c,d]$. The map $\rho:[0,1]^2\to R$ is affine in the parametric directions and includes any required permutation or reversal. Store it explicitly. The geometric condition is:
 
 $$
 X_E(\eta)=X_M(\rho(\eta)),\qquad \eta\in[0,1]^2.
 $$
 
-La condition d'analyse porte sur les fonctions de trace, pas seulement sur la coïncidence de leurs supports :
+The analysis condition applies to trace functions, not merely to coincident supports:
 
 $$
 \{v_M\circ\rho:\ v_M\in V_M^{\mathrm{trace}}\}
 \subseteq V_E^{\mathrm{trace}}.
 $$
 
-Pour les espaces tensoriels retenus, le noyau vérifie cette inclusion par restriction, élévation de degré et insertion de nœuds. Les degrés esclaves sont suffisants dans chaque direction ; les nœuds maîtres restreints sont présents avec les multiplicités nécessaires. Une élévation de $p_M$ à $p_E$ conserve la continuité d'un nœud intérieur de multiplicité $m_M$ en lui donnant au moins la multiplicité $m_M+p_E-p_M$. Comparer seulement les positions des nœuds ne suffit donc pas.
+For selected tensor-product spaces, the kernel checks this inclusion by restriction, degree elevation, and knot insertion. Slave degrees must be sufficient in both directions, and restricted master knots must be present with the required multiplicities. Elevating degree from $p_M$ to $p_E$ preserves the continuity at an interior master knot of multiplicity $m_M$ by assigning it multiplicity at least $m_M+p_E-p_M$. Matching knot locations alone is insufficient.
 
-Pour une trace NURBS, il faut aussi rendre les dénominateurs compatibles. Soit $A$ l'opérateur **polynomial** de restriction et de raffinement dans les coordonnées homogènes, après orientation. Avec les poids normalisés de manière cohérente :
+For a NURBS trace, denominators must also be made compatible. Let $A$ be the **polynomial** restriction and refinement operator in homogeneous coordinates after orientation. With consistently normalized weights:
 
 $$
-w_E=Aw_M,\qquad
-Q_E=AQ_M,\qquad
-Q_M=\operatorname{diag}(w_M)P_M.
+w_E=Aw_M,\qquad Q_E=AQ_M,\qquad Q_M=\operatorname{diag}(w_M)P_M.
 $$
 
-L'opérateur sur les coefficients euclidiens est :
+The operator on Euclidean coefficients is:
 
 $$
 T=\operatorname{diag}(w_E)^{-1}A\operatorname{diag}(w_M),
 \qquad P_E=TP_M.
 $$
 
-La même formule donne l'opérateur sur les coefficients d'un champ exprimé dans ces bases NURBS. L'Oslo polynomial brut $A$ ne doit pas être appliqué directement aux points ou aux coefficients euclidiens lorsque les poids ne sont pas uniformes. Des poids proportionnels par un facteur global positif sont équivalents ; leur normalisation est enregistrée.
+The same formula gives the operator on field coefficients expressed in these NURBS bases. Do not apply the raw polynomial Oslo operator $A$ directly to Euclidean points or coefficients when weights are nonuniform. Weights proportional by a positive global factor are equivalent; record their normalization.
 
-Les opérateurs de géométrie et d'analyse sont nommés séparément :
+Name geometry and analysis operators separately:
 
 $$
 P_E=T_gP_M,\qquad u_E=T_au_M.
 $$
 
-Ils ne sont identiques que si les espaces concernés le sont. Un raccord identique exige également des poids correspondants compatibles, et non seulement des degrés, nœuds et points de contrôle communs. La trace canonique fait autorité ; restriction et raffinement ne créent pas une seconde définition géométrique indépendante.
+They are identical only when the spaces concerned are identical. An identical interface also requires compatible corresponding weights, not only common degrees, knots, and control points. The canonical trace is authoritative; restriction and refinement do not create an independent geometric definition.
 
-Les contraintes fortes de traces NURBS ainsi raffinées sont notamment établies dans Kleiss, Pechstein, Jüttler et Tomar (2012), *IETI*, sections 3.2 et 5.1, DOI : 10.1016/j.cma.2012.08.007.
+Strong constraints for refined NURBS traces are established, among others, by Kleiss, Pechstein, Jüttler, and Tomar (2012), *IETI*, Sections 3.2 and 5.1, DOI: 10.1016/j.cma.2012.08.007.
 
-**10.2 Couverture partielle et portions de frontière.** Les intérieurs des sous-rectangles esclaves d'un même côté maître doivent être disjoints. Leur union, complétée par les portions exposées, fournit une subdivision topologique complète du côté. Une portion exposée est représentée par des faces topologiques rectangulaires entières, rattachées aux faces de conception correspondantes. Tous les séparateurs sont des isolignes paramétriques du maître.
+**10.2 Partial coverage and boundary portions.** Slave subrectangles on the same master side must have disjoint interiors. Their union, together with exposed portions, forms a complete topological subdivision of that side. Represent each exposed portion by complete rectangular topological faces attached to the corresponding design faces. All separators are parametric isolines of the master.
 
-Un séparateur entre interface intérieure et frontière extérieure doit également être représenté dans l'espace de trace d'analyse maître. En phase 1, le nœud correspondant est inséré avec multiplicité $p$ dans la direction de degré $p$, pour assurer une continuité $C^0$ et permettre des traces indépendantes de part et d'autre hormis leur valeur commune. La même règle s'applique aux séparateurs de groupes portant des conditions essentielles différentes. Les conséquences de ces insertions sont propagées aux traces esclaves.
+A separator between an interior interface and the exterior boundary must also be represented in the master analysis trace space. In Phase 1, insert the corresponding knot with multiplicity $p$ in the degree-$p$ direction, giving $C^0$ continuity and allowing independent traces on either side except for their common value. Apply the same rule to separators between groups with different essential conditions. Propagate the consequences of these insertions to slave traces.
 
-Cette exigence évite une surcontrainte : si un unique span polynomial ou rationnel couvre à la fois la portion intérieure et une portion extérieure encastrée, imposer exactement une trace nulle sur une partie ouverte de ce span l'annule sur le span entier. Une projection de Dirichlet ne corrige pas ce défaut d'espace.
+This requirement prevents overconstraint: if one polynomial or rational span covers both an interior portion and a clamped exterior portion, imposing an exactly zero trace on an open subset of that span forces zero over the entire span. Dirichlet projection does not repair this space defect.
 
-L'insertion concerne l'analyse ; elle peut laisser la géométrie et le nombre de blocs inchangés. Les interfaces restent fortes et tous les blocs matériels restent entiers. Si le raffinement compatible ne peut être construit dans les limites annoncées, la préparation du calcul est refusée avec un motif explicite.
+The insertion affects analysis and may leave geometry and block count unchanged. Interfaces remain strong and material blocks remain whole. If compatible refinement cannot be built within the stated limits, refuse analysis preparation with an explicit reason.
 
-**10.3 Contraintes globales et élimination.** Les degrés de liberté identiques sont d'abord identifiés. Les relations maître vers esclave restantes sont enregistrées dans un graphe de dépendances. Les gabarits de phase 1 doivent permettre une élimination sans cycle après ces identifications. Une relation cyclique non résolue par une équivalence canonique provoque le refus de ce raccord ; elle n'est pas présentée comme une impossibilité géométrique générale.
+**10.3 Global constraints and elimination.** First identify identical degrees of freedom. Record remaining master-to-slave relations in a dependency graph. Phase 1 templates must permit acyclic elimination after those identifications. A cyclic relation that cannot be resolved by canonical equivalence causes refusal of that interface; it is not presented as a general geometric impossibility.
 
-Les chaînes sont composées en conservant les normalisations des poids. Toutes les relations alimentent un système global :
+Compose chains while preserving weight normalization. All relations enter a global system:
 
 $$
 B_{\mathrm{int}}u=0,\qquad u=C_Iz,\qquad
@@ -610,265 +580,264 @@ B_{\mathrm{int}}C_I=0,\qquad
 \operatorname{Im}C_I=\ker B_{\mathrm{int}}.
 $$
 
-Les colonnes de $C_I$ sont indépendantes. Le noyau vérifie le rang et la cohérence globale, par les propriétés structurelles des gabarits et un contrôle algébrique adapté à la précision utilisée. Une ambiguïté numérique de rang n'est pas acceptée silencieusement. L'acyclicité seule ne constitue pas un certificat de conformité ou de bonne approximation.
+The columns of $C_I$ are independent. The kernel checks global rank and consistency using template structure and algebraic checks suited to the working precision. It must not silently accept numerical rank ambiguity. Acyclicity alone does not certify conformity or approximation quality.
 
-Les contrôles de reproduction comprennent les constantes et les champs affines physiques. Pour un assemblage élastique 3D libre, les six modes rigides doivent appartenir à l'espace contraint. Les tests vérifient aussi l'absence de modes parasites, selon les conditions aux limites et le problème considéré.
+Reproduction checks include constants and physical affine fields. In a free 3D elastic assembly, all six rigid modes must belong to the constrained space. Tests also check for parasitic modes, as appropriate to the boundary conditions and problem.
 
-**10.4 Arêtes et sommets partagés.** Une arête peut appartenir à plusieurs côtés emboîtés ; toutes les relations induites doivent définir la même trace géométrique et le même espace de champ sur cette arête. Le contrôle porte également sur leurs extrémités et sur les sommets pendants.
+**10.4 Shared edges and vertices.** An edge may belong to several nested sides; all induced relations must define the same geometric trace and field space on that edge. Check its endpoints and hanging vertices as well.
 
-La construction confronte les différents chemins de restriction ou de raffinement, assemble les contraintes une seule fois par entité canonique et élimine leurs redondances. Elle vérifie que ces opérations ne suppriment aucun champ exigé par le contrat de reproduction. La compatibilité d'arêtes et de sommets est une **condition d'acceptation de phase 1**, avec cas de test dédiés ; elle ne peut être différée comme question de recherche. L'extension à des graphes plus généraux peut, elle, rester hors du périmètre initial.
+The construction compares the different restriction or refinement paths, assembles constraints once per canonical entity, and eliminates redundancy. Verify that these operations preserve every field required by the reproduction contract. Edge and vertex compatibility is a **Phase 1 acceptance condition**, with dedicated test cases; it cannot be deferred as a research question. More general graphs may remain outside the initial scope.
 
-**10.5 Ordre de construction.** La géométrie d'interface est définie côté maître puis transmise par les relations canoniques. Le choix du maître commence par la vérification des inclusions admissibles ; parmi les choix valides, il privilégie la trace la moins subdivisée puis un ordre de création déterministe. Une simple comparaison du nombre de cellules ne remplace pas cette vérification.
+**10.5 Construction order.** Define interface geometry on the master side and transmit it through canonical relations. Choose a master only after checking admissible inclusions; among valid choices, prefer the least-subdivided trace and then a deterministic creation order. Comparing cell counts alone does not replace this check.
 
-Les choix géométriques et d'analyse sont enregistrés. Un changement de maître ou de représentation de trace constitue un événement de représentation et impose la reconstruction des contraintes concernées. Les sous-rectangles, orientations et normalisations sont conservés dans la sérialisation.
+Record geometric and analysis choices. Changing the master or trace representation is a representation event and requires rebuilding the affected constraints. Preserve subrectangles, orientations, and normalizations in serialization.
 
-**10.6 Compatibilité et qualité du raffinement.** Tout raffinement d'analyse doit préserver l'inclusion des traces, les séparateurs de frontière et les contrôles globaux précédents. Un nœud ou une élévation de degré du maître est reporté sur les esclaves concernés avec les multiplicités et poids appropriés.
+**10.6 Refinement compatibility and quality.** Analysis refinement must preserve trace inclusion, boundary separators, and the global checks above. Report a master knot insertion or degree elevation on affected slaves with appropriate multiplicities and weights.
 
-Raffiner seulement un esclave est autorisé si l'inclusion subsiste ; cela n'enrichit pas automatiquement la trace commune, qui reste limitée par le maître. Le gestionnaire de raffinement doit donc pouvoir demander un enrichissement du maître lorsque l'erreur de trace limite la convergence. Les limites de rapports de tailles ou de niveaux requises par les gabarits et les objectifs d'approximation sont déclarées et contrôlées.
+Refining only a slave is allowed if inclusion still holds; it does not automatically enrich the common trace, which remains limited by the master. The refinement manager must therefore be able to request master enrichment when trace error limits convergence. Declare and monitor any size or level-ratio limits required by templates and approximation goals.
 
-La propagation des mises à jour de traces est poursuivie jusqu'à un état compatible, y compris à travers les chaînes et les contraintes d'arêtes. Le nombre de blocs concernés et le coût sont mesurés ; aucune garantie générale d'arrêt après une seule couche n'est formulée. Le raffinement doit soit se terminer dans les limites de ressources déclarées, soit être refusé sans altérer le modèle valide antérieur.
+Propagate trace updates until a compatible state is reached, including through chains and edge constraints. Measure the number of affected blocks and the cost; no general one-layer termination guarantee is claimed. Refinement must either finish within stated resource limits or be refused without changing the previous valid model.
 
-**10.7 Continuité.** Entre blocs, la continuité imposée est $C^0$ sur les traces. À l'intérieur d'un bloc, la continuité dans une direction de degré $p$ est $C^{p-m}$ à un nœud de multiplicité $m$ ; elle vaut $C^{p-1}$ aux nœuds simples. Les espaces utilisés pour l'élasticité de déplacement restent au moins continus à l'intérieur des blocs. Une continuité supérieure entre blocs n'est pas un objectif.
+**10.7 Continuity.** Across blocks, traces are required to be $C^0$. Within a block, continuity in a degree-$p$ direction is $C^{p-m}$ at a knot of multiplicity $m$, and $C^{p-1}$ at simple knots. Displacement-elasticity spaces remain at least continuous within blocks. Higher inter-block continuity is not a goal.
 
-Avec des cartes régulières, une partition valide et des traces effectivement compatibles, l'espace ainsi assemblé est $H^1$-conforme. La convergence et le conditionnement font l'objet de contrôles distincts ; ils ne découlent pas de la seule continuité.
+With regular maps, a valid partition, and compatible traces, the assembled space is $H^1$-conforming. Convergence and conditioning require separate checks; continuity alone does not establish them.
 
-## 11. Degré, composition et tolérances
+## 11. Degree, composition, and tolerances
 
-Le noyau distingue l'exactitude de représentation, l'erreur géométrique et la validité des cartes. EXACT_REPRESENTATION signifie que la construction mathématique est représentée sans ajustement géométrique ; les erreurs numériques restent bornées et documentées. APPROX_ESTIMATED fournit une estimation d'erreur, sans garantie globale de tolérance. APPROX_CERTIFIED fournit une borne d'erreur selon une métrique et un domaine précisés. Les trois statuts exigent les certificats de validité de la section 12.
+The kernel distinguishes representation exactness, geometric error, and map validity. `EXACT_REPRESENTATION` means the mathematical construction is represented without geometric adjustment; numerical errors remain bounded and documented. `APPROX_ESTIMATED` provides an error estimate but no global tolerance guarantee. `APPROX_CERTIFIED` provides an error bound for a specified metric and domain. All three statuses require the validity certificates in Section 12.
 
-La composition sur un hôte affine conserve le degré de la reparamétrisation. Sur un hôte courbe, elle peut augmenter ce degré et rencontrer des lignes de nœuds incompatibles avec une représentation tensorielle unique. Le choix entre composition exacte, partition supplémentaire, approximation et refus suit un contrat explicite.
+Composition on an affine host preserves the degree of the reparameterization. On a curved host it may increase that degree and cross knot lines that are incompatible with a single tensor-product representation. The choice among exact composition, additional partitioning, approximation, and refusal follows an explicit contract.
 
-**11.1 Degré de la composition.** Sur un morceau de Bézier, soit un hôte polynomial ou rationnel $S$ de bidegré au plus $(p,q)$ et une reparamétrisation $\varphi$ dont les composantes homogènes ont un bidegré au plus $(r,s)$ avec dénominateur commun. Le numérateur et le dénominateur de $S\circ\varphi$ admettent la borne :
+**11.1 Degree of composition.** On a Bézier piece, let the polynomial or rational host map $S$ have bidegree at most $(p,q)$, and let the homogeneous components of reparameterization $\varphi$ have bidegree at most $(r,s)$ and a common denominator. The numerator and denominator of $S\circ\varphi$ satisfy:
 
 $$
 \deg(S\circ\varphi)\le\big((p+q)r,\,(p+q)s\big).
 $$
 
-Il s'agit d'une borne, non d'une égalité générale. Des annulations ou des dépendances séparables peuvent réduire le degré. Pour un hôte affine, la borne se réduit à $(r,s)$.
+This is an upper bound, not a general equality. Cancellation or separable dependencies may reduce the degree. For an affine host the bound reduces to $(r,s)$.
 
-| Hôte, sur un morceau admissible | Borne de bidegré | Politique |
+| Host on an admissible piece | Bidegree bound | Policy |
 | --- | --- | --- |
-| Plan affine | $(r,s)$ | Composition exacte ; conservation du contrat d'entrée |
-| Bilinéaire | $(2r,2s)$ | Composition exacte si le budget est respecté |
-| Cylindre ou cône, patch rationnel régulier de bidegré $(2,1)$ | $(3r,3s)$ | Exact si degrés, nœuds et validité le permettent |
-| Sphère ou tore, patch rationnel régulier de bidegré $(2,2)$ | $(4r,4s)$ | Exact sous les mêmes conditions |
-| Surface libre bicubique | $(6r,6s)$ | Comparer coût exact, repartitionnement et approximation qualifiée |
+| Affine plane | $(r,s)$ | Exact composition; preserve the input contract |
+| Bilinear | $(2r,2s)$ | Exact composition if the budget permits |
+| Cylinder or cone, regular rational patch of bidegree $(2,1)$ | $(3r,3s)$ | Exact if degrees, knots, and validity permit |
+| Sphere or torus, regular rational patch of bidegree $(2,2)$ | $(4r,4s)$ | Same conditions |
+| Free bicubic surface | $(6r,6s)$ | Compare exact cost, repartitioning, and qualified approximation |
 
-Ces bornes ne garantissent ni régularité ni admissibilité d'une singularité géométrique, notamment à la pointe d'un cône. Le paramètre $D_{\max}$ borne les degrés homogènes admis ; les budgets portent aussi sur le nombre de nœuds, de blocs et sur le coût de certification.
+These bounds guarantee neither regularity nor admissibility at a geometric singularity, particularly a cone tip. $D_{\max}$ bounds the permitted homogeneous degrees; budgets also cover knot count, block count, and certification cost.
 
-Pour un hôte trivarié de multidegré $(p,q,\ell)$ et une reparamétrisation volumique de multidegré homogène au plus $(r,s,t)$, l'analogue est :
+For a trivariate host of multidegree $(p,q,\ell)$ and a volume reparameterization of homogeneous multidegree at most $(r,s,t)$, the analogous bound is:
 
 $$
 \deg(S\circ\varphi)\le
 \big((p+q+\ell)r,\,(p+q+\ell)s,\,(p+q+\ell)t\big).
 $$
 
-**Franchissement des nœuds.** Les formules précédentes s'appliquent par morceaux. La préimage d'une ligne ou d'une surface de nœuds de l'hôte par $\varphi$ n'est généralement pas isoparamétrique. Dans ce cas, la composée n'est pas nécessairement une B-spline tensorielle sur une seule grille rectangulaire, même à degré élevé. Ce problème est distinct de la seule hausse du degré ; voir van Sosin et Elber (2018), section 21.
+**Knot crossings.** These formulas apply piecewise. The preimage under $\varphi$ of a host knot line or surface is generally not isoparametric. The composition may therefore fail to be a tensor-product B-spline on one rectangular grid, even at high degree. This is distinct from degree growth alone; see van Sosin and Elber (2018), Section 21.
 
-Une composition exacte est donc admise si son image reste dans un morceau approprié, si les franchissements sont compatibles avec les directions tensorielles, ou si une nouvelle partition exacte est construite et certifiée. Sinon, le noyau produit une approximation qualifiée dans des blocs entiers, ou refuse. Dépasser $D_{\max}$ n'autorise jamais une approximation silencieuse.
+Exact composition is allowed when its image stays within a suitable piece, its crossings align with tensor-product directions, or a new exact partition is constructed and certified. Otherwise, the kernel produces a qualified approximation in complete blocks or refuses. Exceeding $D_{\max}$ never authorizes silent approximation.
 
-**11.2 Approximation contrôlée.** L'ajustement suit les dépendances géométriques : sommets, arêtes, faces, intérieurs. Les entités communes sont construites une seule fois, puis partagées ou restreintes par les opérateurs exacts de raccord. Les degrés, nœuds et poids sont inclus dans cette compatibilité. Des ajustements indépendants de deux faces voisines ne suffisent pas à garantir l'étanchéité.
+**11.2 Controlled approximation.** Fitting follows geometric dependencies from vertices to edges, faces, and interiors. Shared entities are built once, then shared or restricted using exact interface operators. Degree, knots, and weights are part of compatibility. Independent adjustments on neighboring faces do not guarantee watertightness.
 
-L'approximation doit préserver les contraintes de conception retenues, notamment G¹ lorsqu'elle est exigée, et la positivité des dénominateurs rationnels. Elle est suivie des certificats de jacobien, d'injectivité et d'assemblage. Les erreurs héritées et celles de chaque ajustement sont propagées dans un budget documenté ; une opération exacte ne remet pas ce budget à zéro.
+Approximation must preserve selected design constraints, including G1 when required, and positivity of rational denominators. It is followed by Jacobian, injectivity, and assembly certificates. Inherited error and the error from each adjustment are propagated in a documented budget; an exact operation does not reset that budget to zero.
 
-L'évaluation géométrique distingue :
+Geometric assessment distinguishes:
 
-- **Estimation.** Échantillonnage documenté, recherches de plus proches points et indicateurs adaptatifs. Une distance de Hausdorff échantillonnée reste une estimation ; elle ne prouve pas $d_H\le\varepsilon$.
-- **Certification.** Borne globale sur le domaine annoncé, obtenue par exemple par subdivision avec bornes d'erreur, ou par une majoration uniforme sur une correspondance paramétrique justifiée. Le sens de la distance, les deux directions si une distance de Hausdorff est annoncée, et les erreurs de calcul sont précisés.
+- **Estimate.** Documented sampling, closest-point searches, and adaptive indicators. A sampled Hausdorff distance remains an estimate and does not prove $d_H\le\varepsilon$.
+- **Certificate.** A global bound over the stated domain, obtained, for example, by subdivision with error bounds or a uniform bound under a justified parametric correspondence. Specify the distance direction—or both directions for Hausdorff distance—and account for numerical error.
 
-APPROX_ESTIMATED peut être conservé comme état géométriquement valide, mais ne peut satisfaire une demande de tolérance garantie. Une telle demande exige APPROX_CERTIFIED ou un refus.
+`APPROX_ESTIMATED` may be stored as a geometrically valid state, but it cannot satisfy a guaranteed-tolerance request. Such a request requires `APPROX_CERTIFIED` or refusal.
 
-**11.3 Plancher de convergence.** Un raffinement exact de l'espace spline conserve la géométrie déjà construite. Il ne réduit donc pas son erreur géométrique vis-à-vis de la cible de conception. Cette erreur peut limiter la convergence du calcul vers le problème posé sur la cible.
+**11.3 Convergence floor.** Exact refinement of a spline space preserves the geometry already constructed. It therefore does not reduce geometric error relative to the design target. That error may limit convergence of the analysis toward the problem on the target geometry.
 
-On ne compare pas directement une longueur $\varepsilon_{\mathrm{geo}}$ à une erreur de contrainte, d'énergie ou de déplacement. Le budget est défini sur une grandeur d'intérêt $Q$, avec une part $\eta_{\mathrm{geo}}$ attribuée à la géométrie. Lorsque des estimations de sensibilité ou des comparaisons contrôlées sont disponibles, elles servent à relier la tolérance géométrique à :
+A length tolerance $\varepsilon_{\mathrm{geo}}$ is not compared directly with a stress, energy, or displacement error. Define the budget on a quantity of interest $Q$, assigning a share $\eta_{\mathrm{geo}}$ to geometry. When sensitivity estimates or controlled comparisons are available, use them to relate geometric tolerance to:
 
 $$
-\big|Q(\Omega_{\mathrm{construite}})-Q(\Omega_{\mathrm{cible}})\big|
+\big|Q(\Omega_{\mathrm{built}})-Q(\Omega_{\mathrm{target}})\big|
 \le\eta_{\mathrm{geo}}.
 $$
 
-À défaut de borne démontrée, cette relation reste un objectif à valider numériquement, et non un certificat. Une faible distance de Hausdorff ne suffit pas, seule, à contrôler toutes les réponses mécaniques, notamment près d'un changement de topologie, d'un coin ou d'une condition aux limites sensible.
+Without a demonstrated bound, this relation remains an objective for numerical validation, not a certificate. A small Hausdorff distance alone does not control every mechanical response, especially near topology changes, corners, or sensitive boundary conditions.
 
-Un réajustement géométrique au cours du raffinement est une opération distincte : il modifie les cartes, invalide les certificats concernés et nécessite le transfert contrôlé des champs ainsi qu'une nouvelle validation.
+Geometric adjustment during refinement is a separate operation: it changes maps, invalidates affected certificates, and requires controlled field transfer and revalidation.
 
-**11.4 Tolérances hiérarchisées.**
+**11.4 Hierarchical tolerances.**
 
-| Paramètre | Rôle | Règle de définition |
+| Parameter | Role | Definition rule |
 | --- | --- | --- |
-| $\varepsilon_{\mathrm{geo}}$ | Écart géométrique admis à la cible, dans une métrique précisée | Budget explicite pour les opérations approchées ; lien à la précision mécanique documenté |
-| $\varepsilon_{\mathrm{num}}$ | Bornes d'erreur des calculs et représentations stockées | Incluses dans les certificats et les budgets géométriques |
-| $\varepsilon_{\mathrm{coinc}}$ | Échelle de traitement d'une proximité ou d'une coïncidence | Compatible avec les unités, la résolution numérique et la plus petite feature admissible ; ne décide pas seule d'une fusion topologique |
-| $J_{\min}>0$ | Marge exigée du jacobien sur les paramètres normalisés du bloc | Définie par rapport à des longueurs caractéristiques documentées, par exemple $J_{\min}=\beta\,\ell_1\ell_2\ell_3$ en 3D |
-| $\alpha_{\min}$ | Angle minimal admissible dans une cellule | Fixé par famille de gabarits et par exigences de qualité |
+| $\varepsilon_{\mathrm{geo}}$ | Allowed geometric deviation from the target in a specified metric | Explicit budget for approximated operations; document its relation to mechanical accuracy |
+| $\varepsilon_{\mathrm{num}}$ | Error bounds for calculations and stored representations | Include in certificates and geometric budgets |
+| $\varepsilon_{\mathrm{coinc}}$ | Scale for handling proximity or coincidence | Consistent with units, numerical resolution, and the smallest admissible feature; does not alone decide topological fusion |
+| $J_{\min}>0$ | Required Jacobian margin on normalized block parameters | Define relative to documented characteristic lengths, e.g. $J_{\min}=\beta\,\ell_1\ell_2\ell_3$ in 3D |
+| $\alpha_{\min}$ | Minimum admissible cell angle | Fix by template family and quality requirements |
 
-La relation $\varepsilon_{\mathrm{coinc}}\ll\varepsilon_{\mathrm{geo}}$ n'est pas une règle universelle, en particulier pour une construction exacte de représentation. Toute fusion ou modification géométrique liée à une tolérance de coïncidence est déclarée et comptabilisée. Les seuils sont distincts des certificats de signe et des décisions topologiques robustes.
+The relation $\varepsilon_{\mathrm{coinc}}\ll\varepsilon_{\mathrm{geo}}$ is not universal, particularly for exact representation. Declare and account for any fusion or geometric modification associated with a coincidence tolerance. Thresholds are distinct from sign certificates and robust topological decisions.
 
-**11.5 Arithmétique.** La géométrie courante peut être stockée en double précision. Les prédicats topologiques utilisent une stratégie robuste, avec précision accrue ou isolation lorsque nécessaire. Les certificats reposent sur des intervalles à arrondi dirigé ou sur des bornes explicites des erreurs d'arrondi.
+**11.5 Arithmetic.** Geometry may be stored in double precision. Topological predicates use a robust strategy, increasing precision or isolating roots when necessary. Certificates rely on directed-rounded intervals or explicit rounding-error bounds.
 
-Le rapport distingue la validité prouvée de la carte effectivement stockée et son écart éventuel à la construction mathématique cible. Les identités internes de partage sont imposées par la représentation canonique et les opérations de restriction ; elles ne sont pas remplacées par un test de proximité.
+The report distinguishes proven validity of the stored map from any deviation from the target mathematical construction. Internal sharing identities are imposed by canonical representations and restriction operators, not replaced by proximity tests.
 
-## 12. Validité et certification des blocs
+## 12. Block validity and certification
 
-Un bloc n'entre dans un nouvel état valide qu'avec une non-dégénérescence certifiée sur tout son domaine fermé. S'y ajoutent l'injectivité, l'étanchéité et la validité de la partition. Un résultat indéterminé entraîne le refus de la construction candidate ; l'état valide précédent est conservé. Une géométrie approchée reste soumise aux mêmes exigences de validité qu'une géométrie exacte de représentation.
+A block enters a new valid state only after non-degeneracy is certified over its entire closed domain. Injectivity, watertightness, and partition validity are also required. An indeterminate result rejects the candidate construction and preserves the previous valid state. Approximated geometry is subject to the same validity requirements as exact-representation geometry.
 
-**12.1 Certificat de jacobien.** Sur chaque morceau de Bézier d'un bloc polynomial de degré au plus $(p,q,r)$, le jacobien est un polynôme de multidegré au plus :
+**12.1 Jacobian certificate.** On each Bézier piece of a polynomial block with degree at most $(p,q,r)$, the Jacobian is a polynomial of multidegree at most:
 
 $$
 \deg(\det DX)\le(3p-1,\,3q-1,\,3r-1).
 $$
 
-On exprime les dérivées dans les paramètres du bloc. Si les paramètres locaux d'un élément ou d'une subdivision sont normalisés à nouveau, le seuil est transporté avec le facteur affine correspondant. Un changement de coordonnées paramétriques ne doit pas modifier artificiellement le verdict.
+Derivatives are expressed in block parameters. If local parameters of an element or subdivision are renormalized, transport the threshold by the corresponding affine factor. A parametric coordinate change must not artificially change the verdict.
 
-Pour une carte rationnelle $X=P/W$, où $P$ est le numérateur vectoriel, on pose $H=(P,W)$. Avec les quatre vecteurs comme colonnes :
+For a rational map $X=P/W$, where $P$ is the vector numerator, define $H=(P,W)$. With the four vectors as columns:
 
 $$
 \det DX=\frac{N}{W^4},
-\qquad
-N=\det\big(H_u,H_v,H_w,H\big).
+\qquad N=\det\big(H_u,H_v,H_w,H\big).
 $$
 
-Les poids positifs donnent un dénominateur strictement positif ; la borne utilisée est explicitement conservée. Certifier seulement le signe de $N$ suffit pour le signe du jacobien, mais pas pour sa marge. Pour imposer $\det DX\ge J_{\min}$, on certifie :
+Positive weights make the denominator strictly positive; retain the bound used. Certifying only the sign of $N$ suffices to certify the Jacobian sign, but not its margin. To require $\det DX\ge J_{\min}$, certify:
 
 $$
 N-J_{\min}W^4\ge0,
 $$
 
-ou une borne équivalente telle que $N_{\min}/W_{\max}^4\ge J_{\min}$. Le résultat doit être invariant sous une multiplication globale positive des coordonnées homogènes. En 2D, pour $H=(P_1,P_2,W)$, on utilise $\det D\varphi=\det(H_u,H_v,H)/W^3$ et la même logique de marge.
+or an equivalent bound such as $N_{\min}/W_{\max}^4\ge J_{\min}$. The result must be invariant under positive global scaling of homogeneous coordinates. In 2D, for $H=(P_1,P_2,W)$, use $\det D\varphi=\det(H_u,H_v,H)/W^3$ and the same margin logic.
 
-La procédure est :
+Procedure:
 
-1. Construire les coefficients de Bernstein, avec bornes d'arrondi, de $\det DX-J_{\min}$ dans le cas polynomial, ou du polynôme équivalent dans le cas rationnel.
-2. Si toutes leurs bornes inférieures sont positives ou nulles, la marge est certifiée par la propriété d'enveloppe convexe.
-3. Sinon, subdiviser par de Casteljau et recommencer dans les limites de profondeur et de coût. Un coefficient négatif ne prouve pas, à lui seul, que la carte est invalide.
-4. Une évaluation ponctuelle certifiant $\det DX\le0$ prouve une dégénérescence ou une inversion. Une évaluation certifiant $0<\det DX<J_{\min}$ prouve seulement le non-respect de la marge exigée ; les deux cas sont refusés sous ce contrat.
-5. Si les bornes ne permettent pas de conclure dans le budget, le résultat est indéterminé, donc refusé. Un intervalle contenant zéro n'est pas une preuve de dégénérescence.
+1. Build Bernstein coefficients with rounding bounds for $\det DX-J_{\min}$ in the polynomial case, or for the equivalent polynomial in the rational case.
+2. If all lower bounds are nonnegative, the convex-hull property certifies the margin.
+3. Otherwise subdivide by de Casteljau and retry within the depth and cost limits. A negative coefficient alone does not prove that the map is invalid.
+4. A point evaluation certifying $\det DX\le0$ proves degeneration or inversion. An evaluation certifying $0<\det DX<J_{\min}$ proves only that the required margin is not met; both cases are rejected under this contract.
+5. If the bounds do not permit a conclusion within budget, the result is indeterminate and therefore rejected. An interval containing zero is not proof of degeneration.
 
-Le certificat couvre aussi les traces et les limites des morceaux. Si le paramétrage présente des interfaces internes seulement C⁰, leur compatibilité et la non-superposition locale sont vérifiées comme des interfaces de blocs ; le signe des déterminants de part et d'autre n'est pas le seul contrôle.
+The certificate also covers traces and piece boundaries. If the parameterization has internal interfaces that are only C0, check their compatibility and local non-overlap as block interfaces; determinant signs on either side are not the only check.
 
-Pour une extrusion du gabarit de la section 8.1, le certificat 2D et les bornes analytiques du prolongement peuvent remplacer le calcul général 3D. Cette simplification est justifiée par la formule de construction et reste accompagnée du certificat de partition.
+For extrusion under the Section 8.1 template, the 2D certificate and analytical extension bounds may replace the general 3D calculation. The construction formula justifies this simplification, which remains accompanied by the partition certificate.
 
-**12.2 Injectivité.**
+**12.2 Injectivity.**
 
-- **Dans un bloc.** Pour les cartes C¹ régulières considérées, un jacobien strictement positif et une restriction au bord injective donnent l'injectivité globale par un argument de degré topologique. Le certificat de bord porte sur les six faces ensemble : absence d'auto-intersection de chaque face, intersections entre faces uniquement selon les incidences prévues, et cohérence des arêtes, sommets et orientations. Un test sur des points échantillonnés ne suffit pas.
-- **Entre blocs.** Les images des intérieurs doivent être disjointes et leurs intersections égales aux entités du complexe déclarées. Un gabarit peut fournir cette propriété par construction, à condition d'en vérifier les préconditions. À défaut, le contrôle géométrique combine intersections interdites et classification intérieur/extérieur : deux blocs à frontières disjointes peuvent néanmoins être emboîtés et se recouvrir.
-- **Portée des outils.** Une hiérarchie de boîtes englobantes élimine des paires certainement séparées ; les paires restantes requièrent une méthode certifiée ou une preuve de construction. Les contacts autorisés sont traités avec leurs orientations et leur provenance. Toute ambiguïté restante interdit la publication du nouvel assemblage.
+- **Within a block.** For the regular C1 maps considered, a strictly positive Jacobian and an injective boundary restriction imply global injectivity by a topological-degree argument. Certify all six faces together: each face has no self-intersection; face intersections occur only at intended incidences; and edges, vertices, and orientations are consistent. Sampled point tests are insufficient.
+- **Between blocks.** Interior images must be disjoint, and block intersections must equal the declared complex entities. A template may guarantee this by construction if its preconditions are verified. Otherwise combine forbidden-intersection checks with inside/outside classification: blocks with disjoint boundaries can still be nested and overlap.
+- **Tool scope.** A bounding-volume hierarchy can eliminate pairs that are certainly separated; remaining pairs require a certified method or a construction proof. Handle permitted contacts with their orientations and provenance. Any unresolved ambiguity prevents publication of the new assembly.
 
-**12.3 Étanchéité.** Pour un raccord identique, les deux traces sont dérivées de la même représentation canonique, orientation comprise. Dans le cas rationnel, les nœuds, degrés et coordonnées homogènes — donc les poids — participent à cette identité. Le partage des seuls points euclidiens ne suffit pas.
+**12.3 Watertightness.** At an identical interface, both traces derive from the same canonical representation, including orientation. For rational maps, homogeneous knots, degrees, and coordinates—and therefore weights—participate in this identity. Sharing only Euclidean points is insufficient.
 
-Pour un raccord emboîté, la trace esclave est la restriction de la trace maître, construite par des opérations exactes de représentation dans l'espace compatible de la section 10. Les relations homogènes de géométrie et les matrices de contrainte des champs sont vérifiées selon leurs définitions respectives ; elles ne sont pas confondues.
+At a nested interface, the slave trace is the restriction of the master trace, built by exact representation operations in the compatible space described in Section 10. Verify homogeneous geometry relations and field-constraint matrices according to their respective definitions; do not conflate them.
 
-Une équivalence rationnelle démontrée peut justifier deux écritures différentes d'une même trace. Une proximité géométrique échantillonnée ne vaut jamais identité interne. Le budget d'erreur vis-à-vis de la conception reste distinct de cette exigence d'étanchéité.
+A proved rational equivalence may justify two different encodings of the same trace. Sampled geometric proximity never establishes internal identity. The design-error budget remains separate from watertightness.
 
-**12.4 Cohérence topologique.** Le contrôle comprend les incidences orientées, les couvertures des faces, l'absence de sous-faces oubliées ou comptées deux fois, les liens autour des arêtes et sommets, ainsi que les composantes et les caractéristiques topologiques attendues de l'opération.
+**12.4 Topological consistency.** Check oriented incidences, face coverage, omitted or double-counted subfaces, links around edges and vertices, and the expected components and topological characteristics of the operation.
 
-L'identité $V-E+F-C=\chi$ est évaluée sur un complexe topologique conforme cohérent avec les sous-faces de la section 6, et non par un mélange de faces paramétriques et de sous-faces. La formule 2D de la section 7.5 est appliquée dans ses hypothèses. Ces identités sont des contrôles nécessaires, pas une preuve suffisante de topologie correcte.
+Evaluate $V-E+F-C=\chi$ on a conforming topological complex consistent with the subfaces in Section 6, not by mixing parametric faces and subfaces. Apply the 2D formula in Section 7.5 only under its assumptions. These identities are necessary checks, not sufficient proof of correct topology.
 
-Les relations de raccord géométrique et l'affectation de chaque sous-face frontière à une face de conception sont vérifiées dès l'acceptation géométrique. Les contrôles de rang, de reproduction et de cohérence des contraintes de champ de la section 10 conditionnent en plus la préparation et l'export du calcul. Les configurations non-manifold admises ou refusées sont déterminées par le contrat de domaine, pas par la seule valeur de $\chi$.
+Verify geometric interface relations and assignment of each boundary subface to a design face as part of geometric acceptance. Rank, reproduction, and consistency checks for field constraints in Section 10 also govern analysis preparation and export. The domain contract—not $\chi$ alone—determines which non-manifold configurations are admitted or rejected.
 
-**12.5 Indicateurs de qualité.** La validité ne garantit pas une bonne précision ni un bon conditionnement numérique. Les indicateurs suivants sont rapportés avec leur méthode d'évaluation, estimée ou certifiée. Ils donnent des alertes, ou des motifs de refus lorsqu'un seuil fait explicitement partie du gabarit ou du contrat d'analyse.
+**12.5 Quality indicators.** Validity does not guarantee high accuracy or good numerical conditioning. Report the following indicators with their assessment method and whether they are estimated or certified. They are warnings, or rejection grounds when a threshold is explicitly part of the template or analysis contract.
 
-| Indicateur | Définition | Usage |
+| Indicator | Definition | Use |
 | --- | --- | --- |
-| Valeur singulière minimale | Borne ou estimation de $\min\sigma_{\min}(DX)$, avec unités et normalisation précisées | Quantifie les directions localement comprimées et le coût de l'inversion de la carte |
-| Distorsion spectrale | $\kappa_2(DX)=\sigma_{\max}(DX)/\sigma_{\min}(DX)$ | Détecte l'anisotropie ou le cisaillement du paramétrage |
-| Jacobien normalisé | $\det DX/(\|X_u\|\,\|X_v\|\,\|X_w\|)$ | Mesure la perte d'indépendance angulaire des directions |
-| Variation du jacobien | $\max\det DX/\min\det DX$ | Décrit la variation de volume ; ne prédit pas seule le conditionnement |
-| Angle minimal | Plus petit angle entre directions paramétriques | Complète la détection des cartes écrasées |
-| Élancement | Rapport des longueurs caractéristiques, interprété avec la géométrie physique | Oriente le raffinement et le choix des gabarits |
-| Marge d'événement | Distance ou intervalle admissible avant un contact, une disparition de ligament ou un changement d'allocation | Informe l'optimisation paramétrique |
+| Minimum singular value | Bound or estimate of $\min\sigma_{\min}(DX)$, with units and normalization stated | Quantifies locally compressed directions and map-inversion cost |
+| Spectral distortion | $\kappa_2(DX)=\sigma_{\max}(DX)/\sigma_{\min}(DX)$ | Detects anisotropy or parametric shear |
+| Scaled Jacobian | $\det DX/(\|X_u\|\,\|X_v\|\,\|X_w\|)$ | Measures loss of angular independence among directions |
+| Jacobian variation | $\max\det DX/\min\det DX$ | Describes volume variation; alone it does not predict conditioning |
+| Minimum angle | Smallest angle between parametric directions | Complements detection of collapsed maps |
+| Aspect ratio | Ratio of characteristic lengths, interpreted with physical geometry | Guides refinement and template selection |
+| Event margin | Admissible distance or interval before contact, ligament loss, or allocation change | Informs parametric optimization |
 
-Un bloc affine très allongé peut avoir un rapport de jacobien égal à 1 et une distorsion spectrale élevée. Le conditionnement du système mécanique dépend aussi des espaces, matériaux, contraintes et conditions aux limites ; il n'est pas certifié par ces seuls indicateurs géométriques.
+A highly elongated affine block can have a Jacobian ratio of 1 and high spectral distortion. Mechanical-system conditioning also depends on spaces, materials, constraints, and boundary conditions; geometry indicators alone do not certify it.
 
-**12.6 Rapport de validité.** Chaque assemblage exporté est accompagné de sa signature combinatoire et d'un rapport précisant : cartes et versions certifiées ; marges et normalisations ; preuve ou méthode d'injectivité ; contrôle de partition et des interfaces ; statut géométrique de chaque opération ; erreurs héritées, estimées ou majorées ; budgets de calcul ; indicateurs de qualité. Une modification de donnée invalide les certificats qui en dépendent.
+**12.6 Validity report.** Accompany every exported assembly with its combinatorial signature and a report specifying certified maps and versions; margins and normalizations; injectivity proof or method; partition and interface checks; geometric status of each operation; inherited, estimated, or bounded errors; compute budgets; and quality indicators. A data change invalidates dependent certificates.
 
-Le rapport distingue un certificat obtenu, un contre-exemple établi et un résultat indéterminé. Il ne présente ni une réussite sur échantillons comme une preuve globale, ni un refus conservateur comme la preuve que la géométrie cible est impossible.
+Distinguish an obtained certificate, an established counterexample, and an indeterminate result. Do not present sampled success as global evidence or a conservative refusal as proof that the target geometry is impossible.
 
-## 13. Booléens par partition anticipée
+## 13. Boolean operations by advance partitioning
 
-La stratégie retenue est « partitionner, puis sélectionner ». Le noyau construit une partition commune des opérandes, avec des cartes trivariées entières dont l'occupation vis-à-vis de chaque opérande est constante dans l'intérieur. Le résultat matériel est une union de blocs entiers, sans domaine actif découpé dans une carte.
+The chosen strategy is “partition, then select.” The kernel constructs a common partition of the operands using complete trivariate maps whose occupancy with respect to each operand is constant in the interior. The material result is a union of complete blocks; no active domain is cut within a map.
 
-Cette stratégie n'affirme pas qu'une partition régulière de coût borné existe pour tous les opérandes. La fermeture opérationnelle est garantie sur des familles de gabarits déclarées ; hors de ces familles, le noyau peut construire une approximation qualifiée ou refuser, sans changer de modèle de représentation.
+This strategy does not claim that every operand pair admits a regular partition of bounded cost. Operational closure is guaranteed only for declared template families. Outside those families the kernel may produce a qualified approximation or refuse, without changing representation models.
 
-**13.1 Principe.** Les booléens portent sur des solides régularisés : les entités résiduelles de dimension inférieure à trois ne constituent pas à elles seules un volume matériel. Chaque cellule de la partition commune porte des étiquettes d'appartenance à $A$ et $B$, certifiées à partir de la partition et de la classification.
+**13.1 Principle.** Booleans operate on regularized solids: residual entities of dimension below three do not by themselves constitute material volume. Each cell in the common partition carries certified membership labels for $A$ and $B$, based on the partition and classification.
 
-| Opération | Blocs retenus |
+| Operation | Blocks retained |
 | --- | --- |
-| $A\cup B$ | Blocs appartenant à au moins un opérande ; aucun recouvrement n'est compté deux fois |
-| $A\setminus B$ | Blocs de $A$ hors de $B$, avec régularisation des frontières |
-| $A\cap B$ | Blocs appartenant aux deux opérandes |
+| $A\cup B$ | Blocks belonging to at least one operand; overlaps are not counted twice |
+| $A\setminus B$ | Blocks in $A$ and outside $B$, with boundary regularization |
+| $A\cap B$ | Blocks belonging to both operands |
 
-Les portions de frontières des opérandes qui deviennent internes sont reclassées comme interfaces ou supprimées si une fusion admissible de blocs est effectuée. Les frontières du résultat conservent leur provenance. Une classification par un point intérieur n'est suffisante que si l'absence de traversée de la cellule par une frontière d'opérande a été établie.
+Operand boundary portions that become internal are reclassified as interfaces or removed if an admissible block fusion is performed. Result boundaries retain their provenance. Classification at an interior point is sufficient only after establishing that no operand boundary crosses the cell.
 
-**13.2 Deux sortes de coupes.**
+**13.2 Two kinds of cuts.**
 
-- **Imposées.** Les portions de frontières des opérandes qui séparent des occupations différentes, ainsi que les interfaces matérielles ou de conception à conserver. Le programme de construction en identifie les supports et dépendances ; leurs intersections et portions effectives doivent encore être calculées et classées.
-- **De structuration.** Les surfaces ajoutées pour obtenir des cellules topologiquement cubiques et des cartes régulières. Une région percée doit, par exemple, être subdivisée autour de son trou. Les O-grids sont des gabarits possibles, pas une solution universelle pour toute disposition de trous.
+- **Imposed cuts.** Operand boundary portions that separate different occupancy states, together with physical or design interfaces to preserve. The construction plan identifies supports and dependencies; actual intersections and portions must still be computed and classified.
+- **Structural cuts.** Surfaces added to obtain topologically cubic cells and regular maps. For example, a perforated region must be subdivided around its hole. O-grids are possible templates, not universal solutions for every hole arrangement.
 
-Les surfaces de coupe appartiennent au plan de construction et deviennent des faces des blocs retenus. Elles ne définissent jamais un masque de matière à l'intérieur d'un bloc exporté.
+Cutting surfaces belong to the construction plan and become faces of retained blocks. They never define a material mask inside an exported block.
 
-**13.3 Déroulement.**
+**13.3 Procedure.**
 
-1. Identifier les familles géométriques, les dépendances et les configurations candidates : disjonction, recouvrement, directions communes, obliquité, contact ou coïncidence.
-2. Sélectionner un gabarit candidat et vérifier ses préconditions avec des marges ou des prédicats robustes. Une proximité numérique ne vaut pas classification topologique certaine.
-3. Calculer et classer les intersections courbe/courbe ou surface/surface. En déduire la topologie effective et confirmer le gabarit ; déclarer tout ajustement géométrique et son budget.
-4. Déterminer le voisinage à reconstruire et les interfaces à préserver. Les raccords emboîtés peuvent limiter la propagation ; une limite à une seule couche n'est garantie que pour un gabarit qui l'établit. Sinon, le voisinage peut croître dans un budget explicite, ou la construction est refusée.
-5. Construire les cellules et leurs cartes, imposer les raccords, puis certifier jacobiens, injectivité, absence de recouvrement et couverture selon la section 12.
-6. Sélectionner les blocs et mettre à jour sous-faces, provenance, matériaux, dépendances, contraintes et signature. Publier le nouvel état seulement après validation de l'ensemble affecté.
+1. Identify geometric families, dependencies, and candidate configurations: disjointness, overlap, shared directions, obliquity, contact, or coincidence.
+2. Select a candidate template and check its preconditions using robust margins or predicates. Numerical proximity is not a certified topological classification.
+3. Compute and classify curve/curve or surface/surface intersections. Infer the actual topology and confirm the template; declare any geometric adjustment and its budget.
+4. Determine the neighborhood to rebuild and interfaces to preserve. Nested interfaces may limit propagation; a one-layer bound is guaranteed only by a template that establishes it. Otherwise, the neighborhood may grow within an explicit budget, or construction is refused.
+5. Build cells and maps, impose interfaces, then certify Jacobians, injectivity, non-overlap, and coverage under Section 12.
+6. Select blocks and update subfaces, provenance, materials, dependencies, constraints, and signature. Publish the new state only after validating the affected set.
 
-**13.4 Anticipation groupée.** Le programme est lu en avance pour regrouper les opérations compatibles. Une extrusion suivie de plusieurs perçages parallèles peut donner un seul arrangement transversal et une seule stratification axiale, selon les sections 7.3 et 8.3. Cette organisation évite des redécoupages successifs sans supprimer le coût intrinsèque des intersections ni garantir une croissance linéaire du nombre de cellules.
+**13.4 Grouped anticipation.** Read the operation program in advance to combine compatible operations. An extrusion followed by several parallel holes can use one transverse arrangement and one axial stratification, as in Sections 7.3 and 8.3. This avoids successive repartitioning but does not remove the inherent intersection cost or guarantee linear growth in cell count.
 
-L'ordre et la sémantique restent ceux du programme : une référence « jusqu'à cette face », un matériau déposé à une étape ou un congé sur une arête intermédiaire peuvent interdire un regroupement. La validité du regroupement est justifiée par les dépendances et la définition des opérateurs.
+Preserve program order and semantics: a reference “up to this face,” material added at an intermediate stage, or a fillet on an intermediate edge may prohibit grouping. Justify grouping through feature dependencies and operator definitions.
 
-**13.5 Ce qui ne s'anticipe pas.** L'historique aide à proposer les familles, les coupes et la topologie candidate ; la géométrie calculée décide des intersections réelles, des tangences et de l'applicabilité du gabarit. La topologie n'est donc pas garantie indépendamment des paramètres géométriques.
+**13.5 What cannot be anticipated.** History helps propose families, cuts, and candidate topology; computed geometry determines actual intersections, tangencies, and template applicability. Topology is therefore not guaranteed independently of geometric parameters.
 
-Une coupe transverse d'un cylindre circulaire par un plan donne une ellipse, éventuellement un cercle, représentable rationnellement. Une intersection générale de deux cylindres peut être une quartique non rationnelle ; des configurations particulières restent rationnelles. Une telle courbe non rationnelle ne devient pas une arête NURBS exacte par simple changement de partition.
+A plane cutting a circular cylinder transversely produces an ellipse, possibly a circle, which is rationally representable. A general intersection of two cylinders may be a non-rational quartic; particular configurations remain rational. A non-rational curve does not become an exact NURBS edge by merely changing the partition.
 
-Le contrat doit alors préciser quelles entités sont approchées et comment leur représentation commune est construite. Les ajustements des deux côtés sont coordonnés pour conserver les interfaces exactes de représentation, avec une erreur déclarée vis-à-vis des opérandes cibles.
+The contract must then specify which entities are approximated and how their common representation is constructed. Coordinate adjustments on both sides to preserve exact-representation interfaces, and report error relative to the target operands.
 
-**13.6 Configurations dégénérées.** Tangence, faces quasi coïncidentes, trou affleurant une arête, ligament disparaissant ou gabarits voisins en conflit sont des événements à classer. Un seuil $\varepsilon_{\mathrm{coinc}}$ guide la recherche mais ne remplace pas un certificat d'incidence. Une incertitude résiduelle entraîne le refus.
+**13.6 Degenerate configurations.** Tangency, nearly coincident faces, a hole touching an edge, disappearing ligaments, or conflicting neighboring templates are events to classify. A threshold $\varepsilon_{\mathrm{coinc}}$ guides the search but does not replace an incidence certificate. Residual uncertainty results in refusal.
 
-Le noyau applique un gabarit spécifique lorsqu'il existe. Sinon, il refuse la configuration plutôt que de créer des blocs très plats, de modifier silencieusement la topologie ou d'abaisser la marge de jacobien. Les contacts de dimension inférieure et les configurations non-manifold ne sont admis que si leur sémantique géométrique et mécanique est explicitement prise en charge.
+Apply a specific template when available. Otherwise refuse rather than create very flat blocks, silently change topology, or lower the Jacobian margin. Admit lower-dimensional contacts and non-manifold configurations only when their geometric and mechanical semantics are explicitly supported.
 
-**13.7 Cellules inactives, option.** Les blocs retirés peuvent être conservés comme blocs entiers inactifs. Le domaine matériel reste une union de blocs actifs complets. Leur provenance, leurs interfaces potentielles et leur état de validité restent suivis.
+**13.7 Inactive cells (optional).** Removed blocks may be retained as complete inactive blocks. The material domain remains a union of complete active blocks. Track their provenance, potential interfaces, and validity status.
 
-Annuler une opération peut se réduire à une réactivation si les données et certificats nécessaires sont encore valides. Déplacer une poche ne constitue pas, en général, une simple réactivation : ses frontières peuvent imposer le déplacement de cartes, un nouveau découpage et une nouvelle certification. Les cellules inactives facilitent la réutilisation mais ne garantissent pas une topologie stable sous toute modification.
+Cancelling an operation may reduce to reactivation if required data and certificates remain valid. Moving a pocket is generally not simple reactivation: its boundaries may require map movement, a new partition, and recertification. Inactive cells ease reuse but do not guarantee stable topology under arbitrary edits.
 
-**13.8 Booléens libres, phase 4.** Pour des corps non coaxiaux à surfaces gauches, le problème comprend au moins trois tâches : calculer les intersections, construire une partition volumique admissible, puis paramétrer et raccorder ses cellules avec les certificats requis. Les deux dernières tâches s'ajoutent au problème d'intersection surface/surface rencontré en B-rep.
+**13.8 General Booleans, Phase 4.** For non-coaxial bodies with free-form surfaces, the problem includes at least three tasks: computing intersections, constructing an admissible volume partition, and parameterizing and connecting cells with the required certificates. The last two tasks are additional to the surface/surface intersection problem in B-rep.
 
-Lorsqu'un bloc hôte courbe est reparamétré, la hausse de degré et le franchissement de ses surfaces de nœuds suivent la section 11. Des intersections exactes ne garantissent ni une partition hexaédrique régulière ni un atlas de faible degré. L'absence de garantie générale est assumée comme un sujet de recherche ; chaque extension doit produire une famille d'opérations testable, avec préconditions, budget, contrat d'erreur et motifs de refus.
+When a curved host block is reparameterized, degree growth and crossings of its knot surfaces follow Section 11. Exact intersections do not guarantee a regular hexahedral partition or a low-degree atlas. The absence of a general guarantee is an acknowledged research topic; every extension must deliver a testable operation family with preconditions, budget, error contract, and grounds for refusal.
 
-L'objectif demeure un résultat construit nativement en blocs trivariés non trimés et non dégénérés. Les méthodes de recherche ou de certification ne créent pas un mode alternatif de représentation matérielle.
+The objective remains a native result made of untrimmed, non-degenerate trivariate blocks. Search and certification methods do not create an alternative physical representation.
 
-## 14. Paramétrique, événements topologiques et sensibilités
+## 14. Parametric edits, topological events, and sensitivities
 
-Le noyau distingue la continuité de la pièce physique, la stabilité de sa représentation et la différentiabilité des constructions numériques. Une topologie inchangée ne suffit pas à garantir un gradient. Les dérivées sont livrées uniquement dans un régime dont les hypothèses de régularité sont vérifiées ; les événements sont annoncés avec leur nature et leurs conséquences.
+The kernel distinguishes continuity of the physical part, stability of its representation, and differentiability of numerical constructions. Unchanged topology alone does not guarantee a gradient. Deliver derivatives only within a regime whose regularity assumptions have been verified; report events with their nature and consequences.
 
-La phase 1 conserve les dépendances, choix de construction, signatures et événements nécessaires. Le calcul des sensibilités et sa validation relèvent du jalon J3, en phase 2 ; les sections 14.5 à 14.7 en fixent le contrat.
+Phase 1 retains the dependencies, construction choices, signatures, and events required for this purpose. Sensitivity computation and validation belong to milestone J3 in Phase 2; Sections 14.5–14.7 define that contract.
 
-**14.1 Paramètres, signatures et régimes.** Les paramètres $\theta$ comprennent les cotes d'esquisse, positions, profondeurs, rayons et angles. Le nombre d'instances d'un motif est un paramètre discret : aucune dérivée continue n'est déclarée par rapport à ce nombre.
+**14.1 Parameters, signatures, and regimes.** Parameters $\theta$ include sketch dimensions, positions, depths, radii, and angles. Pattern instance count is discrete; no continuous derivative is declared with respect to that count.
 
-Trois signatures sont conservées :
+Maintain three signatures:
 
-| Signature | Contenu | Rôle |
+| Signature | Contents | Role |
 | --- | --- | --- |
-| Topologique $\sigma_{\mathrm{top}}$ | Connectivité et composantes matérielles, tunnels, cavités, adjacences matérielles pertinentes et étiquettes de régions physiques, indépendamment des coupes de structuration | Suivre les propriétés topologiques matérielles déclarées |
-| De représentation $\sigma_{\mathrm{rep}}$ | Cellules de structuration et de calcul, incidences de leur partition, gabarits, affectations de coins, maîtres, correspondances paramétriques, degrés, nœuds, normalisations, raffinements et numérotation | Définir une réalisation géométrique et un espace discret donnés |
-| Différentielle $\sigma_{\mathrm{diff}}$ | Branche des solveurs implicites, contraintes actives, rangs et choix d'élimination, règles discrètes du calcul et données de bord | Identifier les hypothèses nécessaires aux sensibilités |
+| Topological $\sigma_{\mathrm{top}}$ | Connectivity and physical components, tunnels, cavities, relevant material adjacencies, and physical-region labels, independent of structural cuts | Track declared material-topology properties |
+| Representation $\sigma_{\mathrm{rep}}$ | Structural and analysis cells and their partition incidences; templates; corner assignments; masters; parametric correspondences; degrees; knots; normalizations; refinements; numbering | Define a particular geometric realization and discrete space |
+| Differential $\sigma_{\mathrm{diff}}$ | Implicit-solver branch; active constraints; ranks and elimination choices; discrete analysis rules; boundary data | Identify assumptions required for sensitivities |
 
-Une branche est une composante connexe de paramètres satisfaisant les choix et les gardes déclarés ; l'égalité d'une empreinte ne prouve pas à elle seule cette propriété, et la signature matérielle n'est pas annoncée comme un invariant topologique complet. Une repartition par de nouvelles coupes de structuration peut changer $\sigma_{\mathrm{rep}}$ sans changer la pièce ni les propriétés suivies par $\sigma_{\mathrm{top}}$. Les configurations où le rang se dégrade, où une intersection devient tangente ou où un ensemble actif change sont distinguées même si $\sigma_{\mathrm{top}}$ reste inchangée.
+A branch is a connected parameter region satisfying declared choices and guards; matching fingerprints alone do not prove this property. The material signature is not claimed to be a complete topological invariant. New structural cuts may change $\sigma_{\mathrm{rep}}$ without changing the part or properties tracked by $\sigma_{\mathrm{top}}$. Distinguish configurations where rank degrades, an intersection becomes tangent, or the active set changes even if $\sigma_{\mathrm{top}}$ remains unchanged.
 
-**14.2 Règle de paramètres de représentation fixes.** À l'intérieur d'une branche de représentation, les degrés, vecteurs nodaux et sous-rectangles paramétriques des raccords sont fixes. La géométrie varie par ses points de contrôle **et, si nécessaire, ses poids** :
+**14.2 Fixed-representation-parameter rule.** Within a representation branch, degrees, knot vectors, and parametric interface subrectangles remain fixed. Geometry varies through control points **and, when needed, weights**:
 
 $$
 P_A=P_A(\theta),\qquad w_A=w_A(\theta)>0,\qquad
 H_A(\theta)=(w_A(\theta)P_A(\theta),w_A(\theta)).
 $$
 
-Le caractère fixe des nœuds ne rend pas les fonctions NURBS indépendantes de $\theta$. Un arc rationnel quadratique d'angle variable fournit un exemple : son poids médian dépend de l'angle.
+Fixed knots do not make NURBS functions independent of $\theta$. For example, the middle weight of a quadratic rational arc varies with its angle.
 
-Pour une poche, une position paramétrique $\zeta_*$ peut rester fixe tandis qu'une carte axiale $g$ satisfait $g(\zeta_*;\theta)=d(\theta)/h(\theta)$. Les cartes voisines doivent être construites de façon compatible et rester certifiées. Cette possibilité ne garantit pas qu'une même branche puisse couvrir toutes les profondeurs, ni un franchissement de profondeur entre features.
+For a pocket, a parametric location $\zeta_*$ may remain fixed while an axial map $g$ satisfies $g(\zeta_*;\theta)=d(\theta)/h(\theta)$. Neighboring maps must be built compatibly and remain certified. This possibility does not guarantee that one branch covers all depths or a depth crossing between features.
 
-Les opérateurs polynomiaux de raffinement $A$ restent constants lorsque les degrés, nœuds, orientations et sous-rectangles le sont. En revanche,
+Polynomial refinement operators $A$ remain constant when degrees, knots, orientations, and subrectangles remain fixed. However,
 
 $$
 T(\theta)=
@@ -876,46 +845,46 @@ T(\theta)=
 A\,\operatorname{diag}(w_M(\theta))
 $$
 
-peut varier. Les contraintes de champ et leur élimination doivent alors être dérivées. Une formulation utilisant des inconnues homogènes pour rendre certaines relations constantes est possible, mais doit être explicitement déclarée dans l'export ; elle ne permet pas d'omettre la dépendance du dénominateur des fonctions de base.
+may vary. Field constraints and their elimination must then be differentiated. Homogeneous unknowns can make some relations constant, but this choice must be declared in the export and does not remove the denominator dependence of basis functions.
 
-**14.3 Mise à jour.** Le graphe des dépendances limite la mise à jour aux objets affectés, y compris les poids, les opérateurs de trace, les contraintes, les groupes de bord et leurs certificats. Une mise à jour est d'abord construite dans un état provisoire.
+**14.3 Update.** The dependency graph limits updates to affected objects, including weights, trace operators, constraints, boundary groups, and their certificates. Build each update provisionally.
 
-Si les signatures et les gardes du régime sont conservées, les coefficients et, lorsqu'elles sont disponibles, les sensibilités concernés sont recalculés, puis la validité est vérifiée avant publication. Si une garde échoue, le noyau annonce l'événement, reconstruit la zone lorsque le contrat le permet ou refuse la modification. L'état valide antérieur est conservé en cas de refus. Une topologie inchangée n'autorise pas à conserver automatiquement une matrice de raccord ou un gradient périmé.
+If regime signatures and guards remain valid, recalculate affected coefficients and available sensitivities, then recheck validity before publication. If a guard fails, report the event, rebuild the region when the contract permits, or refuse the edit. Rejection preserves the prior valid state. Unchanged topology does not justify automatically retaining a stale interface matrix or gradient.
 
-**14.4 Événements et conséquences.**
+**14.4 Events and consequences.**
 
-| Nature | Exemple | Détection | Conséquence |
+| Type | Example | Detection | Consequence |
 | --- | --- | --- | --- |
-| Physique ou topologique | Perçage débouchant sur le bord ; fusion de trous ; poche devenant traversante | Arrangement, classification des régions et intervalles | Nouvelle partition ; revalidation des sélections de bord et du problème mécanique |
-| De représentation | Angle franchissant un seuil d'affectation ; changement de gabarit, maître ou raffinement | Gardes des gabarits et comparaison des signatures | Nouvelle représentation ; reconstruction des contraintes et des opérateurs dérivés |
-| Différentielle | Changement d'ensemble actif ; perte de rang du solveur d'esquisse ; intersection tangente | Conditions de régularité des solveurs implicites | Arrêt de la garantie de gradient classique ; poursuite seulement dans un régime à nouveau validé |
-| De validité | Borne de jacobien ou de séparation non certifiée | Certificats et contrôles de partition | Reconstruction certifiée ou refus |
-| Discrète | Modification du nombre d'instances | Type du paramètre | Reconstruction du motif ; aucune dérivée par rapport à ce saut |
-| Du calcul numérique | Changement de règle adaptative, de discrétisation ou de sélection de données de bord | Métadonnées du modèle d'analyse | Nouveau régime numérique ; vérification des sensibilités du système effectivement résolu |
+| Physical or topological | Hole reaches an edge; holes merge; pocket becomes through | Arrangement and classification of regions and intervals | New partition; revalidate boundary selections and mechanical problem |
+| Representation | Angle crosses an assignment threshold; template, master, or refinement changes | Template guards and signature comparison | New representation; rebuild constraints and derived operators |
+| Differential | Active set changes; sketch solver loses rank; intersection becomes tangent | Regularity conditions for implicit solvers | Classical gradient guarantee stops; continue only in a revalidated regime |
+| Validity | Jacobian or separation bound is uncertified | Partition certificates and checks | Certified rebuild or refusal |
+| Discrete | Pattern instance count changes | Parameter type | Rebuild pattern; no derivative across the jump |
+| Numerical analysis | Adaptive rule, discretization, or boundary-data selection changes | Analysis-model metadata | New numerical regime; verify sensitivities of the system actually solved |
 
-Un changement de représentation ne prouve pas que la dérivée de la pièce ou de l'objectif physique n'existe pas. Le noyau annonce précisément la garantie perdue : gradient non disponible, non certifié, ou dérivée directionnelle définie par une méthode explicitement prise en charge. Il n'annonce pas systématiquement « gradient inexistant ».
+A representation change does not prove that the derivative of the part or physical objective does not exist. The kernel reports the specific lost guarantee: gradient unavailable, uncertified, or a directional derivative defined by an explicitly supported method. It does not systematically report “gradient does not exist.”
 
-Le transfert des conditions aux limites utilise les faces de conception et la provenance. Si une face disparaît, se scinde ou change de rôle, une règle de transfert explicite doit s'appliquer ; sinon le calcul est signalé incomplet, sans réaffectation silencieuse à une surface différente.
+Boundary-condition transfer uses design faces and provenance. If a face disappears, splits, or changes role, an explicit transfer rule must apply; otherwise, report the analysis as incomplete rather than silently reassigning the condition to a different face.
 
-Les marges disponibles sont des distances ou bornes conservatrices relatives aux gardes suivies, accompagnées de leur statut de certification. Le noyau ne promet pas de connaître à tout instant la distance exacte au prochain événement parmi toutes les configurations possibles.
+Available margins are conservative distances or bounds relative to monitored guards, with their certification status. The kernel does not promise to know the exact distance to the next event across all possible configurations at every instant.
 
-**14.5 Dérivées de construction.** Chaque opérateur déclare ses variables différentiables et ses préconditions de régularité. La chaîne de dérivation comprend notamment :
+**14.5 Construction derivatives.** Each operator declares its differentiable variables and regularity preconditions. The derivative chain includes:
 
-- solveur d'esquisse : différentiation implicite après traitement des degrés de liberté de jauge et des contraintes redondantes, avec rang requis vérifié ;
-- intersections : branche identifiée, intersection transverse et système implicite non singulier ;
-- construction de Coons et conversions de représentation : dérivation des bords, des poids et des opérations algébriques effectivement utilisées ;
-- reparamétrisation optimisée : dérivation du système d'optimalité correspondant aux contraintes réellement résolues ;
-- extrusion, révolution et autres opérateurs explicites : dérivation des points, des poids et des transformations ;
-- raccords : dérivation des normalisations, des opérateurs rationnels et de leur élimination lorsque ces objets varient.
+- Sketch solver: implicit differentiation after handling gauge degrees of freedom and redundant constraints, with the required rank verified.
+- Intersections: identified branch, transverse intersection, and nonsingular implicit system.
+- Coons construction and representation conversions: derivatives of the boundaries, weights, and algebraic operations actually used.
+- Optimized reparameterization: derivative of the optimality system for the constraints actually solved.
+- Extrusion, revolution, and other explicit operators: derivatives of points, weights, and transformations.
+- Interfaces: derivatives of normalizations, rational operators, and their elimination when these objects vary.
 
-Pour un problème non contraint, avec un optimum intérieur et une Hessienne inversible, la formule usuelle reste valable :
+For an unconstrained problem with an interior optimum and invertible Hessian, the usual formula remains valid:
 
 $$
 \frac{dQ}{d\theta}
 =-\bigl(\nabla^2_{QQ}E\bigr)^{-1}\nabla^2_{Q\theta}E.
 $$
 
-Elle ne s'applique pas telle quelle lorsque des contraintes de qualité ou de jacobien sont actives. Pour une formulation différentiable de dimension finie des contraintes de construction, on écrit les conditions KKT sous la forme $F(z,\theta)=0$, où $z$ rassemble les inconnues et multiplicateurs de l'ensemble actif retenu :
+It does not apply unchanged when quality or Jacobian constraints are active. For a differentiable finite-dimensional formulation of construction constraints, write the KKT conditions as $F(z,\theta)=0$, where $z$ collects unknowns and multipliers for the selected active set:
 
 $$
 \frac{dz}{d\theta}
@@ -923,17 +892,17 @@ $$
 \frac{\partial F}{\partial\theta}.
 $$
 
-L'ensemble actif doit rester stable et le système d'optimalité être régulièrement résoluble. Des conditions suffisantes usuelles comprennent qualification des contraintes, conditions suffisantes du second ordre et complémentarité stricte. L'unicité locale seule ne suffit pas. Un changement d'ensemble actif ou une matrice KKT singulière invalide la garantie de dérivée classique de ce régime.
+The active set must remain stable and the optimality system must be regularly solvable. Common sufficient conditions include constraint qualification, sufficient second-order conditions, and strict complementarity. Local uniqueness alone is insufficient. An active-set change or singular KKT matrix invalidates the classical derivative guarantee for this regime.
 
-La certification géométrique globale reste requise après l'optimisation, indépendamment de la formulation numérique qui a servi à la produire. Si une subdivision ou une sélection de contraintes est adaptée, son effet sur le régime de construction est enregistré.
+Global geometric certification remains required after optimization, regardless of the numerical formulation used to obtain the result. Record the effect on the construction regime if subdivision or active constraint selection is adapted.
 
-**14.6 Sensibilités mécaniques.** La dérivation porte sur le système réduit réellement résolu, avec raccords et conditions essentielles. On écrit :
+**14.6 Mechanical sensitivities.** Differentiate the reduced system actually solved, including interfaces and essential conditions. Write:
 
 $$
 u=C(\theta)\widetilde u+u_D(\theta),
 $$
 
-où $u_D$ satisfait les données essentielles projetées et les raccords, et où les colonnes de $C$ satisfont les contraintes homogènes correspondantes. Avec les matrices assemblées $K$ et $f$ :
+where $u_D$ satisfies the projected essential data and interfaces, and the columns of $C$ satisfy the corresponding homogeneous constraints. With assembled matrices $K$ and $f$:
 
 $$
 K_r=C^{\mathsf T}KC,\qquad
@@ -941,7 +910,7 @@ f_r=C^{\mathsf T}(f-Ku_D),\qquad
 K_r\widetilde u=f_r.
 $$
 
-Les dérivées incluent celles de la réduction et du relèvement :
+Derivatives include those of reduction and recovery:
 
 $$
 K_r'=C'^{\mathsf T}KC+C^{\mathsf T}K'C+C^{\mathsf T}KC',
@@ -952,19 +921,19 @@ f_r'=C'^{\mathsf T}(f-Ku_D)
 +C^{\mathsf T}(f'-K'u_D-Ku_D').
 $$
 
-En particulier, $K'$ comprend les dépendances aux points et poids géométriques, aux poids des bases d'analyse et aux données matérielles variables. Pour des nœuds et degrés fixés, une écriture explicite est :
+In particular, $K'$ includes dependencies on geometric points and weights, analysis-basis weights, and variable material data. With fixed knots and degrees, one explicit form is:
 
 $$
 K'
 =\sum_A \frac{\partial K}{\partial P_A^g}(P_A^g)'
 +\sum_A \frac{\partial K}{\partial w_A^g}(w_A^g)'
 +\sum_B \frac{\partial K}{\partial w_B^a}(w_B^a)'
-+K'_{\mathrm{données}}.
++K'_{\mathrm{data}}.
 $$
 
-Les poids d'analyse obtenus par raffinement sont dérivés par la même chaîne que leur construction. Le chargement $f'$ inclut, selon la convention physique déclarée, la variation des surfaces, normales, mesures, pressions ou efforts prescrits. Les conditions essentielles variables contribuent à $u_D'$.
+Analysis weights obtained by refinement are differentiated through the same chain used to construct them. Depending on the stated physical convention, load derivative $f'$ includes changes to surfaces, normals, measures, pressures, or prescribed forces. Variable essential conditions contribute to $u_D'$.
 
-Pour une grandeur $J(u,\theta)$, définir $J_r(\widetilde u,\theta)=J(C\widetilde u+u_D,\theta)$. L'adjoint donne :
+For a quantity $J(u,\theta)$, define $J_r(\widetilde u,\theta)=J(C\widetilde u+u_D,\theta)$. The adjoint satisfies:
 
 $$
 K_r^{\mathsf T}\lambda
@@ -975,114 +944,113 @@ K_r^{\mathsf T}\lambda
 +\lambda^{\mathsf T}\bigl(f_r'-K_r'\widetilde u\bigr).
 $$
 
-Ces formules supposent un problème réduit régulièrement résoluble et un objectif différentiable dans le régime considéré. Un problème libre doit traiter explicitement ses modes rigides et sa jauge. Des objectifs non lisses ou des valeurs propres multiples requièrent un contrat de sensibilité distinct.
+These formulas assume a regularly solvable reduced problem and a differentiable objective in the regime considered. A free problem must explicitly handle rigid modes and gauge. Nonsmooth objectives or repeated eigenvalues require a separate sensitivity contract.
 
-**14.7 Vérification et usage en optimisation.**
+**14.7 Verification and use in optimization.**
 
-- Les tests de sensibilité du jalon J3, en phase 2, comprennent des poids variables, des raccords emboîtés, un relèvement de Dirichlet non nul et les dérivées de $C$ lorsqu'elles interviennent.
-- Les gradients sont vérifiés par différences finies centrées sur plusieurs pas et par tests de Taylor directionnels, dans un même régime régulier. Les tolérances de résolution et de quadrature sont suffisamment serrées pour distinguer l'erreur de dérivée du bruit numérique.
-- Les choix de quadrature et de discrétisation sont conservés pendant cette vérification ; leur adéquation est contrôlée pour les perturbations utilisées.
-- Les tests d'événement couvrent aussi un changement d'ensemble actif ou une perte de rang à topologie fixe. Le statut de sensibilité doit changer avant qu'un gradient non justifié soit utilisé.
-- L'optimiseur reçoit les signatures, gardes et statuts. Un pas quittant le régime accepté est réduit, refusé ou traité dans une nouvelle phase après reconstruction et validation. Les dérivées ne sont jamais réutilisées à travers un événement sans ce contrôle.
+- Phase 2 sensitivity tests for milestone J3 include variable weights, nested interfaces, nonzero Dirichlet lifting, and derivatives of $C$ when it varies.
+- Check gradients using centered finite differences at multiple step sizes and directional Taylor tests within the same regular regime. Solver and quadrature tolerances must be tight enough to distinguish derivative error from numerical noise.
+- Keep quadrature and discretization choices fixed during these checks; verify their adequacy for the tested perturbations.
+- Event tests also cover active-set changes and rank loss at fixed topology. Update sensitivity status before an unjustified gradient can be used.
+- The optimizer receives signatures, guards, and statuses. Reduce or refuse a step that leaves the accepted regime, or enter a new regime after rebuilding and validation. Never reuse derivatives across an event without this control.
 
-## 15. Interface avec le calcul
+## 15. Interface to analysis
 
-Le noyau livre au solveur une partition en blocs entiers certifiés, un espace d'analyse compatible, les contraintes globales et des sélections de bord fondées sur les faces de conception. Pour l'élasticité de déplacement visée en phase 1, le calcul est un Galerkin standard $H^1$-conforme. L'intégration porte sur des éléments paramétriques entiers et des faces topologiques entières ; aucune cellule matérielle n'est coupée, aucun couplage faible d'interface n'est introduit.
+The kernel supplies the solver with a partition into certified whole blocks, a compatible analysis space, global constraints, and boundary selections based on design faces. The phase-1 target is standard displacement-based Galerkin analysis with an $H^1$-conforming space. Integration is over whole parametric elements and whole topological faces: no material cell is cut, and no weak interface coupling is introduced.
 
-La validité géométrique et celle de l'espace discret sont nécessaires au calcul. Elles ne suffisent pas à garantir qu'un problème mécanique quelconque est bien posé : les matériaux, chargements, conditions aux limites et éventuels modes libres sont vérifiés par le modèle d'analyse.
+Geometric validity and validity of the discrete space are both necessary for analysis. They do not by themselves ensure that an arbitrary mechanical problem is well posed; the analysis model checks materials, loads, boundary conditions, and any unconstrained modes.
 
-**15.1 Contenu de l'export.**
+**15.1 Export contents.**
 
-| Élément | Contenu obligatoire |
-| --- | --- |
-| Géométrie | Blocs actifs ; degrés, nœuds, points et poids ou coefficients homogènes ; traces canoniques ; orientations et unités ; contrats de représentation et certificats |
-| Topologie | Côtés paramétriques ; faces topologiques frontières et intérieures ; sous-rectangles et correspondances affines ; incidences d'arêtes et de sommets |
-| Espace d'analyse | Degrés, nœuds, poids, numérotation et extraction éventuelle par élément ; relation avec la géométrie ; contrôles de reproduction affine et de modes rigides |
-| Raccords | Contraintes $B_{\mathrm{int}}u=0$ ; opérateur $C_I$ donnant les inconnues compatibles avec les interfaces ; normalisations et règles de composition |
-| Conditions aux limites | Faces de conception et faces topologiques sélectionnées ; composantes concernées ; données physiques ; opérateurs de projection et de trace ; règles de transfert |
-| Réduction du problème | Après définition des conditions essentielles, $C$ et $u_D$ tels que $u=C\widetilde u+u_D$, ou données suffisantes pour les reconstruire sans ambiguïté |
-| Matériaux et charges | Lois et paramètres par bloc ou groupe ; conventions de pression, traction, force totale et repère ; dépendances éventuelles aux paramètres |
-| Quadrature | Règle par élément et face ; ordre retenu ; tolérances et résultats des contrôles de convergence ; statut des adaptations |
-| Dérivées | Au jalon J3, phase 2 : $dP^g/d\theta$ et $dw^g/d\theta$, ou $dH/d\theta$ ; dérivées des poids d'analyse, contraintes, réduction, relèvement et données variables ; signatures et statut de sensibilité. Avant leur disponibilité, statut explicite sans valeur de substitution. |
-| Rapport | Validité géométrique, compatibilité des traces, rangs, qualité, précision de représentation, contrôles numériques et limites déclarées |
+| Item | Required contents |
+|---|---|
+| Geometry | Active blocks; degrees, knots, points, and weights or homogeneous coefficients; canonical traces; orientations and units; representation contracts and certificates |
+| Topology | Parametric sides; boundary and interior topological faces; subrectangles and affine correspondences; edge and vertex incidences |
+| Analysis space | Degrees, knots, weights, numbering, and optional element extraction; relation to geometry; affine reproduction and rigid-mode checks |
+| Interfaces | Constraints $B_{\mathrm{int}}u=0$; operator $C_I$ mapping interface-compatible unknowns; normalization and composition rules |
+| Boundary conditions | Selected design and topological faces; affected components; physical data; projection and trace operators; transfer rules |
+| Problem reduction | After essential conditions are defined, $C$ and $u_D$ such that $u=C\widetilde u+u_D$, or sufficient unambiguous reconstruction data |
+| Materials and loads | Laws and parameters by block or group; pressure, traction, total-force, and frame conventions; any parameter dependencies |
+| Quadrature | Rule per element and face; selected order; tolerances and convergence-check results; adaptation status |
+| Derivatives | At milestone J3, phase 2: $dP^g/d\theta$ and $dw^g/d\theta$, or $dH/d\theta$; derivatives of analysis weights, constraints, reduction, lifting, and variable data; signatures and sensitivity status. Before available, report an explicit status without substituting a value. |
+| Report | Geometric validity, trace compatibility, ranks, quality, representation accuracy, numerical checks, and declared limits |
 
-L'espace d'analyse et le stockage géométrique restent séparés conformément à INV-9. **Par défaut, l'espace d'analyse provient d'un raffinement exact de la représentation géométrique.** Il contient alors les coordonnées $X_1,X_2,X_3$ et les constantes ; les champs affines physiques et les rotations rigides sont représentables.
+Analysis space and geometric storage remain separate, as required by INV-9. **By default, the analysis space is derived from exact refinement of the geometric representation.** It then contains coordinates $X_1,X_2,X_3$ and constants, so physical affine fields and rigid rotations are representable.
 
-Une autre base n'est acceptée que si elle satisfait explicitement le même contrat de reproduction, les raccords forts et les contrôles correspondants. Une carte rationnelle associée arbitrairement à une base polynomiale indépendante n'est pas réputée satisfaire ce contrat.
+An alternative basis is accepted only if it explicitly satisfies the same reproduction contract, strong coupling, and associated checks. A rational map paired arbitrarily with an independent polynomial basis is not assumed to meet that contract.
 
-**15.2 Règles de raffinement.** Les raffinements $h$, $p$ et les séquences de type $k$ doivent conserver la géométrie, les champs exigés et la conformité des traces. Le modèle enregistre les opérateurs de transfert depuis l'espace précédent.
+**15.2 Refinement rules.** $h$, $p$, and $k$-type refinement sequences must preserve geometry, required fields, and trace conformity. The model records transfer operators from the preceding space.
 
-- Sur un raccord d'analyse identique, les traces sont raffinées ensemble ou deviennent emboîtées après vérification explicite.
-- Sur un raccord emboîté, toute modification du maître est propagée aux esclaves concernés. Un raffinement esclave seul n'enrichit pas la trace commune ; le maître est également enrichi si l'objectif d'erreur le requiert.
-- Les séparateurs entre frontière et interface, ainsi que les séparateurs de conditions essentielles, sont représentés avec les nœuds et multiplicités imposés en section 10.2.
-- Les contraintes d'arêtes, de sommets et de chaînes sont recalculées globalement. La propagation est poursuivie jusqu'à compatibilité, avec limites de ressources et refus explicites.
-- Une élévation de degré ou une séquence de type $k$ ne supprime pas librement les multiplicités héritées de la géométrie. L'augmentation de continuité doit conserver l'inclusion des coordonnées géométriques et les contraintes de bord.
+- For identical analysis interfaces, refine traces together or explicitly verify that they have become nested.
+- At a nested interface, propagate any master change to affected slaves. Slave-only refinement does not enrich the common trace; enrich the master too if required by the error objective.
+- Separators between boundary and interface, and separators for essential conditions, use the knots and multiplicities required by Section 10.2.
+- Recompute edge, vertex, and chain constraints globally. Propagate until compatible, subject to resource limits and explicit refusal.
+- Degree elevation or a $k$-type sequence must not freely remove multiplicities inherited from geometry. Increasing continuity must preserve inclusion of geometric coordinates and boundary constraints.
 
-Les objectifs de convergence reposent sur des familles d'espaces dont les cartes et tailles sont contrôlées et dont les traces communes sont effectivement enrichies. Le comportement d'une interface laissée grossière pendant le raffinement des seuls intérieurs est mesuré séparément.
+Convergence objectives use space families with controlled maps and sizes whose common traces are actually enriched. Measure separately the behavior of an interface left coarse while only interiors are refined.
 
-Un raffinement THB interne pourra être ajouté après la phase initiale, avec un contrat démontré de trace, de transfert, d'indépendance et de reproduction. Il n'est ni nécessaire à la phase 1, ni une dispense des contrôles précédents.
+Internal THB refinement may be added after the initial phase with a demonstrated trace, transfer, independence, and reproduction contract. It is not needed for phase 1 and does not waive the preceding checks.
 
-**15.3 Assemblage et quadrature.** Les contributions élémentaires sont assemblées dans les inconnues locales, puis réduites par les raccords et les conditions essentielles. Avec un relèvement admissible $u_D$ :
+**15.3 Assembly and quadrature.** Assemble element contributions in local unknowns, then reduce by interface constraints and essential conditions. For an admissible lifting $u_D$:
 
 $$
 u=C\widetilde u+u_D,\qquad
-C^{\mathsf T}KC\,\widetilde u
-=C^{\mathsf T}(f-Ku_D).
+C^{\mathsf T}KC\,\widetilde u=C^{\mathsf T}(f-Ku_D).
 $$
 
-Les colonnes de $C$ sont indépendantes et satisfont les contraintes homogènes d'interface et de Dirichlet. Le relèvement satisfait les raccords et les données essentielles projetées. Le cas $u_D=0$ est une spécialisation, pas une hypothèse générale de l'export.
+Columns of $C$ are independent and satisfy homogeneous interface and Dirichlet constraints. The lifting satisfies interfaces and projected essential data. The case $u_D=0$ is a specialization, not a general export assumption.
 
-L'intégration volumique utilise les éléments définis par les vecteurs nodaux. Les intégrales de frontière portent sur les sous-rectangles entiers des faces topologiques, ramenés à un carré de référence par leur carte affine. Ces restrictions rectangulaires ne sont pas des quadratures sur cellules coupées.
+Volume integration uses elements defined by knot vectors. Boundary integrals cover whole subrectangles of topological faces, mapped to a reference square by their affine map. These rectangular restrictions are not quadrature over cut cells.
 
-La règle de Gauss à $p_a+1$ points dans une direction de degré d'analyse $p_a$ peut servir de règle initiale. **Elle n'est pas déclarée exacte en général.** Même pour une géométrie polynomiale non affine, les inverses du jacobien rendent généralement les intégrandes de raideur rationnels. Avec des bases NURBS, cette difficulté existe également par les dénominateurs des bases.
+Gauss quadrature with $p_a+1$ points in a direction of analysis degree $p_a$ may be an initial rule. **It is not generally declared exact.** Even for non-affine polynomial geometry, inverse Jacobians generally make stiffness integrands rational. NURBS bases introduce the same issue through their denominators.
 
-Une exactitude par comptage de degré n'est annoncée que dans un cas où l'intégrande est effectivement polynomial, par exemple certaines cartes affines, bases polynomiales et données matérielles constantes. Dans les autres cas :
+Degree-counting exactness is claimed only when the integrand is actually polynomial, for example with certain affine maps, polynomial bases, and constant material data. Otherwise:
 
-1. augmenter l'ordre ou subdiviser les domaines paramétriques d'intégration selon une stratégie enregistrée ;
-2. contrôler la variation des matrices ou actions pertinentes, des chargements et des grandeurs énergétiques sur des règles successivement plus précises ;
-3. poursuivre jusqu'à satisfaire les tolérances de quadrature du calcul, ou annoncer l'échec du contrôle ;
-4. vérifier la procédure sur des références indépendantes et les tests de reproduction, afin de détecter une sous-intégration ou des modes parasites.
+1. Increase order or subdivide parametric integration domains according to a recorded strategy.
+2. Check changes in relevant matrices or actions, loads, and energy quantities under successively more precise rules.
+3. Continue until analysis quadrature tolerances are met, or report failure.
+4. Check the procedure against independent references and reproduction tests to detect under-integration or spurious modes.
 
-La précision d'intégration est suivie séparément de l'erreur de discrétisation. Une convergence observée entre règles n'est pas présentée comme une preuve universelle d'erreur quadrature. Pour les sensibilités, les choix discrets de quadrature sont fixés dans le régime différentiel considéré et leur adéquation est recontrôlée.
+Integration accuracy is tracked separately from discretization error. Observed convergence between rules is not presented as a universal quadrature-error proof. For sensitivities, discrete quadrature choices are fixed within the differential regime and their adequacy is checked again.
 
-Avant résolution, le solveur vérifie les propriétés requises des matériaux et du problème réduit. Un corps libre conserve ses modes rigides, qui sont traités explicitement ; un système singulier dû à des appuis insuffisants n'est pas masqué par une stabilisation géométrique.
+Before solving, the solver checks required material and reduced-problem properties. A free body retains its rigid modes, which are handled explicitly; geometric stabilization must not hide a singular system caused by insufficient supports.
 
-**15.4 Conditions aux limites.** Une condition est définie par une face de conception ou une sélection sémantique explicite de telles faces. Sa réalisation utilise la liste exacte des faces topologiques frontières et leurs sous-rectangles paramétriques. Elle n'est pas attachée à un nom instable de bloc.
+**15.4 Boundary conditions.** Define a condition on a design face or an explicit semantic selection of design faces. Implement it using the exact list of boundary topological faces and their parametric subrectangles. Do not attach it to an unstable block name.
 
-**Dirichlet.** Les données sont représentées par une fonction de l'espace de trace compatible avec les interfaces. Une interpolation ou une projection adaptée fournit $g_h$ lorsque la donnée $g$ n'appartient pas exactement à cet espace ; la méthode et son erreur sont déclarées. L'imposition est forte pour $g_h$. Les coefficients NURBS ne sont pas traités comme des valeurs nodales interpolatoires sans justification.
+**Dirichlet.** Represent data as a function in the trace space compatible with interfaces. When data $g$ is not exactly in that space, an appropriate interpolation or projection provides $g_h$; declare the method and its error. Impose $g_h$ strongly. Do not treat NURBS coefficients as interpolatory nodal values without justification.
 
-Les contraintes sont résolues globalement avec les raccords. Les séparateurs de groupes et les portions partiellement exposées doivent satisfaire la règle de nœuds de la section 10.2 avant cette résolution. Les données incompatibles sur les intersections de groupes sont signalées et le calcul refusé tant qu'elles ne définissent pas un problème cohérent. Aucun degré de liberté n'est fixé par simple appartenance de son support à une face partiellement encastrée.
+Solve constraints globally with interfaces. Group separators and partially exposed portions must meet the node rule in Section 10.2 before this solve. Report incompatible data at group intersections and refuse the analysis until they define a consistent problem. Do not fix a DOF merely because its support touches a partially clamped face.
 
-**Neumann.** Les tractions ou pressions sont intégrées sur les faces topologiques frontières sélectionnées, avec normales et mesures calculées à partir des cartes géométriques. Une traction par unité d'aire, une pression normale et une force totale répartie constituent des données différentes ; la convention et sa dépendance paramétrique sont enregistrées.
+**Neumann.** Integrate tractions or pressures on selected boundary topological faces, using normals and measures computed from geometric maps. Traction per unit area, normal pressure, and distributed total force are distinct data; record the convention and parameter dependence.
 
-Les dérivées du relèvement, des normales, des mesures et des chargements variables sont incluses dans les sensibilités. Après un événement, les sélections sont revalidées selon la provenance et les règles de transfert ; une face disparue ne reçoit pas de remplacement implicite.
+Sensitivity includes derivatives of lifting, normals, measures, and variable loads. After an event, revalidate selections using provenance and transfer rules; do not implicitly replace a vanished face.
 
-**15.5 Solveurs cibles.** Phase 1 : élasticité linéaire 3D dans un solveur de référence interne, pour maîtriser les cartes, bases, contraintes, données essentielles et quadratures. Ses portes de validation comprennent les champs affines, les six modes rigides d'un corps libre, les raccords rationnels emboîtés, les frontières partiellement encastrées et les contrôles de convergence.
+**15.5 Target solvers.** Phase 1 uses an internal reference solver for 3D linear elasticity, to control maps, bases, constraints, essential data, and quadrature. Its validation gates include affine fields, the six rigid modes of a free body, rational nested interfaces, partially clamped boundaries, and convergence checks.
 
-Ensuite : évaluer des adaptateurs vers des bibliothèques IGA, par exemple G+Smo, GeoPDEs et PetIGA, ainsi qu'un export d'extraction de Bézier. L'export transporte les poids rationnels, les cartes, les contraintes et les sélections de bord ; une liste de points et d'éléments ne suffit pas.
+Next, evaluate adapters to IGA libraries such as G+Smo, GeoPDEs, and PetIGA, plus Bézier-extraction export. Export rational weights, maps, constraints, and boundary selections; a list of points and elements is insufficient.
 
-Un adaptateur n'est déclaré pris en charge qu'après relecture, contrôles de reproduction, conservation des raccords et comparaison de résultats avec le solveur de référence. L'extraction de Bézier facilite l'intégration dans un code éléments finis muni d'un lecteur approprié ; elle ne garantit pas une lecture native par tout solveur existant.
+Support an adapter only after re-import, reproduction checks, preserved interfaces, and comparison with the reference solver. Bézier extraction facilitates integration into an FE code with a suitable reader; it does not guarantee native reading by every existing solver.
 
-**15.6 Post-traitement.** Évaluation des déplacements, déformations et contraintes sur les blocs et les faces de conception ; cartes de qualité et d'erreur ; comparaison avec une solution de référence sur des domaines et grandeurs identifiés.
+**15.6 Post-processing.** Evaluate displacement, strain, and stress on blocks and design faces; provide quality and error maps; and compare with reference solutions on identified domains and quantities.
 
-La continuité $C^0$ des déplacements n'impose pas la continuité des contraintes entre blocs. Les valeurs de part et d'autre d'une interface sont donc accessibles séparément. Toute moyenne ou reconstruction de contraintes est annoncée comme un post-traitement et ne remplace pas les champs calculés dans les évaluations d'erreur ou de sensibilité.
+$C^0$ displacement continuity does not imply stress continuity across blocks. Make values on each side of an interface separately accessible. Identify any averaging or stress reconstruction as post-processing; do not substitute it for computed fields in error or sensitivity evaluation.
 
-## 16. Entrées et sorties
+## 16. Inputs and outputs
 
-Le premier calcul fiable utilise une source géométrique maîtrisée : un langage de description interne. Les importateurs réels sont des adaptateurs versionnés ; ils doivent fournir les données et la sémantique requises par les opérateurs, sans supposer la complétude d'un historique importé.
+The first reliable calculation uses a controlled geometry source: an internal description language. Real-world importers are versioned adapters; they must supply the data and semantics required by operators and must not assume an imported history is complete.
 
-**16.1 Entrées.**
+**16.1 Inputs.**
 
-| Source | Phase | Contenu | Contrat |
-| --- | --- | --- | --- |
-| Langage interne, recettes de features traitées par le noyau Rust | 1 | Paramètres nommés, esquisses, contraintes, extrusion, coupe, poche, congé, chanfrein, motif, miroir | Sélections par entités de conception ; préconditions et modes de construction explicites |
-| Programmes code-CAD, par exemple CadQuery ou build123d | 3, option | Traduction d'un sous-ensemble d'appels et de leurs dépendances | Liste des opérations couvertes et test d'équivalence ; aucune déduction automatique de trivariées depuis le seul résultat B-rep |
-| CADIR / CADmpeg | 4 | Données de conception effectivement disponibles dans une version identifiée du format | Valider opérandes, paramètres, références et sémantique ; feature native, non résolue ou incomplète refusée si elle ne peut être traduite avec le contrat exigé |
-| STEP sans historique | Hors périmètre initial | Frontière du solide | Reconstruction générative et segmentation à développer et évaluer séparément |
+| Source | Phase | Contents | Contract |
+|---|---:|---|---|
+| Internal language, feature recipes handled by the Rust kernel | 1 | Named parameters, sketches, constraints, extrusion, cut, pocket, fillet, chamfer, pattern, mirror | Selections by design entities; explicit preconditions and construction modes |
+| Code-CAD programs, e.g. CadQuery or build123d | 3, optional | Translation of a subset of calls and their dependencies | List covered operations and equivalence tests; do not infer trivariates automatically from B-rep output alone |
+| CADIR / CADmpeg | 4 | Design data actually available in an identified format version | Validate operands, parameters, references, and semantics; refuse native, unresolved, or incomplete features that cannot be translated under the required contract |
+| STEP without history | Outside initial scope | Solid boundary | Generative reconstruction and segmentation to be developed and evaluated separately |
 
-Les noms des niveaux de décodage d'un format externe ne sont pas des garanties pérennes. Chaque adaptateur déclare la version du schéma, les capacités testées et les informations manquantes. L'import n'est pas placé sur le chemin critique du premier démonstrateur.
+External-format decoding-level names are not lasting guarantees. Each adapter declares schema version, tested capabilities, and missing information. Import is not on the critical path for the first demonstrator.
 
-**16.2 Exemple de description (pseudocode indicatif de la recette, en anglais).**
+**16.2 Example description (illustrative recipe pseudocode, in English).**
 
 ```python
 m = Model(
@@ -1101,321 +1069,318 @@ m.pocket(body.face("top"), sketch=pocket_sketch, depth="depth")
 result = m.build()  # Accepted(CellComplex, ValidityReport) | Refused(reason)
 ```
 
-Cet exemple ne constitue pas une preuve de couverture : les conventions d'esquisse, les sélections et les gabarits doivent être définis dans l'API, puis ce cas et ses variantes doivent appartenir au corpus qualifié.
+This example does not establish coverage. Sketch conventions, selections, and templates must be defined in the API, and this case and its variants must be in the qualified corpus.
 
-**16.3 Sorties.**
+**16.3 Outputs.**
 
-- Assemblage natif versionné : géométrie, côtés et sous-faces, incidences, contrats, certificats et provenance.
-- Modèle d'analyse conforme et données de conditions aux limites, uniquement après validation du contrat de trace et du problème (section 15).
-- Vue B-rep étanche et export STEP à partir des patches frontières admissibles. Le regroupement DesignFace est sémantique ; il ne transforme pas automatiquement plusieurs patches en une seule surface rectangulaire non trimée. Les restrictions rectangulaires peuvent être extraites exactement pour l'export.
-- Rapport indiquant séparément validité du modèle stocké, statut géométrique, erreurs numériques, erreur estimée ou certifiée, limites de qualité et motifs des refus.
-- Visualisation des blocs, sous-faces, raccords, jacobiens, métriques de distorsion et singularités combinatoires.
-- Graphe des dépendances, signatures et dérivées disponibles avec leur régime de validité.
+- Versioned native assembly: geometry, sides and subfaces, incidences, contracts, certificates, and provenance.
+- Conforming analysis model and boundary-condition data, only after validating the trace contract and problem (Section 15).
+- Watertight B-rep view and STEP export from admissible boundary patches. Grouping into a `DesignFace` is semantic; it does not automatically merge multiple patches into one untrimmed rectangular surface. Rectangular restrictions can be extracted exactly for export.
+- Report separating stored-model validity, geometric status, numerical errors, estimated or certified error, quality limits, and refusal reasons.
+- Visualization of blocks, subfaces, interfaces, Jacobians, distortion metrics, and combinatorial singularities.
+- Dependency graph, signatures, and available derivatives with their validity regimes.
 
-**16.4 Persistance des sélections.** Les conditions aux limites référencent des DesignFace et des règles de sélection enregistrées. Une scission peut étendre un groupe ; une fusion, une disparition ou un changement de sens peut rendre la sélection ambiguë. L'importateur ou le gestionnaire de modification produit un rapport de résolution. Une condition visant une face disparue n'est jamais réaffectée par simple proximité sans règle explicite ; le calcul est suspendu tant que la sélection n'est pas résolue.
+**16.4 Selection persistence.** Boundary conditions reference `DesignFace` entities and recorded selection rules. A split may extend a group; a merge, disappearance, or orientation change may make selection ambiguous. The importer or edit manager produces a resolution report. Never reassign a condition on a vanished face by proximity alone without an explicit rule; suspend analysis until the selection is resolved.
 
-## 17. Exigences non fonctionnelles
+## 17. Non-functional requirements
 
-La robustesse et la traçabilité priment sur la performance brute. Les mesures exploratoires servent à fixer des objectifs ; les seuils d'acceptation du corpus de validation sont ensuite figés avant sa campagne, sans ajustement après observation des résultats.
+Robustness and traceability take priority over raw speed. Exploratory measurements inform targets; acceptance thresholds for the validation corpus are then frozen before its campaign and are not adjusted after results are observed.
 
-| ID | Domaine | Exigence |
-| --- | --- | --- |
-| NF-1 | Robustesse | Toute transaction produit un assemblage valide ou un refus motivé ; aucune exception ne laisse un état partiellement modifié. L'export calcul possède sa validation propre |
-| NF-2 | Reproductibilité | Choix déterministes et ordre stable ; versions des bibliothèques, options, environnement numérique et graines éventuelles enregistrés. Le niveau de reproductibilité numérique exigé est déclaré |
-| NF-3 | Traçabilité | Chaque gabarit, affectation, choix de maître, degré, approximation et reprise est journalisé avec sa raison et ses dépendances |
-| NF-4 | Langage et code | Noyau natif en Rust dès le démonstrateur, avec API stable. Les constructeurs, les audits de production et les nouveaux algorithmes sont implémentés en Rust. Python sert aux oracles de test et aux références de portage. Code, commentaires techniques, docstrings et messages de commit en anglais |
-| NF-5 | Vérification | Tests de propriétés, cas analytiques, tests de contraintes, solutions manufacturées, non-régression et benchmarks selon section 18. Une campagne d'échantillonnage ne remplace pas les certificats |
-| NF-6 | Performance | Mesurer compilation anticipée et mise à jour incrémentale séparément ; invalider par dépendances et réutiliser les résultats inchangés. Compter blocs, sous-faces, coefficients, degrés de liberté, contraintes et coefficients non nuls ; chronométrer intersections, reconstruction, certification, assemblage et résolution. Aucune complexité linéaire universelle ni rayon d'une couche n'est présumé |
-| NF-7 | Documentation | Pour chaque famille : préconditions, domaine de paramètres, construction, statuts, preuves, budget de calcul, causes de refus et exemples exécutables |
-| NF-8 | Licence | Logiciel libre ; choix de licence et compatibilité des dépendances établis avant intégration |
-| NF-9 | Interopérabilité | Formats ouverts et versionnés ; unités, conventions, orientations et normalisations explicites ; validation des exports STEP et d'analyse |
-| NF-10 | Visualisation | Inspection des blocs et sous-faces, des contraintes, des certificats et des échecs ; outils nécessaires au développement des gabarits |
+| ID | Area | Requirement |
+|---|---|---|
+| NF-1 | Robustness | Every transaction produces a valid assembly or a justified refusal; no exception leaves partial state. Analysis export has its own validation. |
+| NF-2 | Reproducibility | Deterministic choices and stable ordering; record library versions, options, numerical environment, and any seeds. Declare the required level of numerical reproducibility. |
+| NF-3 | Traceability | Log each template, assignment, master choice, degree, approximation, and retry with its reason and dependencies. |
+| NF-4 | Language and code | Native kernel in Rust from the demonstrator onward, with a stable API. Constructors, production audits, and new algorithms are implemented in Rust. Python is for test oracles and porting references. Code, technical comments, docstrings, and commit messages are in English. |
+| NF-5 | Verification | Property tests, analytic cases, constraint tests, manufactured solutions, regression tests, and benchmarks per Section 18. Sampling campaigns do not replace certificates. |
+| NF-6 | Performance | Measure ahead-of-time compilation and incremental updates separately; invalidate by dependencies and reuse unchanged results. Count blocks, subfaces, coefficients, DOFs, constraints, and nonzeros; time intersections, rebuild, certification, assembly, and solve. Assume neither universal linear complexity nor a one-layer update radius. |
+| NF-7 | Documentation | For each family: preconditions, parameter domain, construction, statuses, proofs, compute budget, refusal causes, and runnable examples. |
+| NF-8 | License | Free software; establish project license and dependency compatibility before integration. |
+| NF-9 | Interoperability | Open, versioned formats; explicit units, conventions, orientations, and normalization; validate STEP and analysis exports. |
+| NF-10 | Visualization | Inspect blocks and subfaces, constraints, certificates, and failures; provide tools needed to develop templates. |
 
-Les caches de matrices de raccord doivent dépendre des degrés, nœuds, orientations, sous-domaines et poids concernés. Les caches de dérivées dépendent en outre du régime différentiel. Aucun cache n'est réutilisé sur la seule base de la signature topologique.
+Interface-matrix caches depend on relevant degrees, knots, orientations, subdomains, and weights. Derivative caches also depend on the differential regime. Do not reuse a cache based solely on topological signature.
 
-Le diagnostic d'un refus distingue au minimum : entrée invalide, hors domaine annoncé, configuration annoncée mais non construite, contraintes incohérentes, carte invalide, certification indéterminée, budget dépassé, condition aux limites non résolue et dérivée non disponible. Les temps d'échec et les interventions humaines sont inclus dans les résultats de couverture.
+At minimum, refusal diagnostics distinguish invalid input, outside declared domain, advertised but unbuilt configuration, inconsistent constraints, invalid map, indeterminate certification, exhausted budget, unresolved boundary condition, and unavailable derivative. Include failed-run time and human intervention in coverage results.
 
-## 18. Validation, benchmarks et critères de décision
+## 18. Validation, benchmarks, and decision criteria
 
-La validation distingue trois exigences : **ne jamais livrer une géométrie invalide**, **réussir effectivement les constructions annoncées**, et **obtenir un calcul suffisamment précis à un coût mesuré**. Un refus préserve la première exigence ; il ne satisfait pas les deux autres.
+Validation distinguishes three requirements: **never deliver invalid geometry**, **actually succeed on advertised constructions**, and **obtain sufficiently accurate analysis at measured cost**. A refusal preserves the first requirement; it does not satisfy the other two.
 
-Les tests utilisent les contrats EXACT_REPRESENTATION, APPROX_ESTIMATED et APPROX_CERTIFIED définis dans le document. Le niveau de fidélité géométrique et la validité du modèle sont indépendants : la certification requise des blocs et des raccords s'applique aux trois contrats. Les assertions de représentation exacte ne sont pas assimilées à une arithmétique réelle sans arrondi.
+Tests use the EXACT_REPRESENTATION, APPROX_ESTIMATED, and APPROX_CERTIFIED contracts defined in this specification. Geometric fidelity and model validity are independent: required certification of blocks and interfaces applies to all three contracts. Exact-representation assertions do not assume real arithmetic without rounding.
 
-### 18.1 Tests géométriques
+### 18.1 Geometric tests
 
-| ID | Test | Résultat exigé |
-| --- | --- | --- |
-| T-G1 | Incidences orientées, caractéristique d'Euler et comptage 2D | Vérification sur le complexe topologique commun, après subdivision des côtés maîtres en faces topologiques. La formule de quadrangulation n'est appliquée que sous ses hypothèses ; les jonctions en T ne sont pas comptées comme des raccords identiques. La caractéristique attendue tient compte des composantes, tunnels et cavités. |
-| T-G2 | Certificats de jacobien, cas polynomiaux et rationnels | Comparaison à des cas analytiques et à une évaluation indépendante avec bornes d'arrondi. Inclure des cartes valides difficiles à certifier, des inversions très localisées et des valeurs proches du seuil. Un échantillonnage dense peut réfuter un certificat ; il n'en constitue pas la preuve. |
-| T-G3 | Étanchéité des interfaces | Vérification des identités de construction dans une représentation canonique, des orientations et des relations de restriction homogènes pour les NURBS ; contrôle numérique indépendant des traces. Aucune réparation par tolérance ne remplace l'identité partagée. |
-| T-G4 | Fidélité des opérateurs | EXACT_REPRESENTATION : comparaison à la représentation analytique et audit des transformations exactes, avec erreurs d'arrondi bornées. APPROX_ESTIMATED : erreur observée et protocole d'échantillonnage publiés. APPROX_CERTIFIED : borne supérieure démontrée inférieure à la tolérance déclarée. Une distance de Hausdorff échantillonnée seule ne valide pas ce dernier statut. |
-| T-G5 | Variantes paramétriques et transactions | Jeux déterministes et variations à graine fixée sur les domaines annoncés ; invariants préservés pour toute sortie acceptée ; retour à l'état précédent en cas de refus. Les refus sont aussi comptés dans la couverture définie en 18.5. |
-| T-G6 | Injectivité globale et absence de double couverture | Inclure auto-intersections, recouvrements, bloc entièrement contenu dans un autre sans intersection de leurs frontières, coïncidences admissibles et contacts non admissibles. Les tests de frontières seuls ne suffisent pas à exclure l'inclusion volumique. |
-| T-G7 | Opérations ensemblistes et intervalles axiaux | Vérifier différence, intersection et union sur des extrusions de mêmes sections mais d'intervalles égaux, inclus et partiellement superposés. Contrôler volume, connectivité, sélection des blocs et provenance des frontières. |
-| T-G8 | Représentation rationnelle et composition | Arcs d'ouverture variable, restrictions d'arcs, poids non uniformes, élévation de degré et composition traversant ou non un nœud de l'hôte. Vérifier le statut exact/approché annoncé, les poids positifs et le traitement des changements de morceaux. |
-| T-G9 | Qualité et changements d'échelle | Transformations affines très anisotropes, blocs minces et changement d'unité. Vérifier les indicateurs normalisés, les valeurs singulières de la jacobienne et les décisions de qualité ; un déterminant constant ne suffit pas à conclure à une faible distorsion. |
-| T-G10 | Géométries exclues par le contrat | Exemples à arête ou face effondrée, singularité géométrique incompatible avec les blocs réguliers exigés et configurations hors gabarit. Refus typé, reproductible et distinct d'une certification simplement indéterminée. |
+| ID | Test | Required result |
+|---|---|---|
+| T-G1 | Oriented incidences, Euler characteristic, and 2D counting | Check on the common topological complex after subdividing master sides into topological faces. Apply quadrangulation formulas only under their assumptions; do not count T-junctions as identical interfaces. Expected characteristic accounts for components, tunnels, and cavities. |
+| T-G2 | Jacobian certificates, polynomial and rational cases | Compare with analytic cases and independent evaluation using rounding bounds. Include valid maps difficult to certify, highly localized inversions, and values near threshold. Dense sampling can refute a certificate but cannot prove one. |
+| T-G3 | Interface watertightness | Check construction identity in a canonical representation, orientations, and homogeneous restriction relations for NURBS; independently compare traces numerically. Tolerance repair does not replace shared identity. |
+| T-G4 | Operator fidelity | EXACT_REPRESENTATION: compare with analytic representation and audit exact transformations with bounded rounding error. APPROX_ESTIMATED: publish observed error and sampling protocol. APPROX_CERTIFIED: prove an upper error bound no greater than the declared tolerance. Sampled Hausdorff distance alone cannot validate the latter status. |
+| T-G5 | Parametric variants and transactions | Deterministic sets and fixed-seed variations over declared domains; preserve invariants for every accepted output; restore prior state on refusal. Count refusals in the coverage of 18.5. |
+| T-G6 | Global injectivity and no double coverage | Include self-intersections, overlap, one block wholly contained in another with no boundary intersection, admissible coincidences, and inadmissible contacts. Boundary tests alone cannot rule out volume containment. |
+| T-G7 | Set operations and axial intervals | Check difference, intersection, and union for extrusions of the same sections with equal, nested, and partially overlapping intervals. Check volume, connectivity, block selection, and boundary provenance. |
+| T-G8 | Rational representation and composition | Variable-opening arcs, arc restrictions, nonuniform weights, degree elevation, and composition crossing or not crossing a host knot. Check declared exact/approximate status, positive weights, and piecewise changes. |
+| T-G9 | Quality and scale changes | Highly anisotropic affine transforms, thin blocks, and unit changes. Check normalized metrics, Jacobian singular values, and quality decisions; constant determinant alone does not imply low distortion. |
+| T-G10 | Geometries excluded by contract | Collapsed edge or face, geometric singularity incompatible with required regular blocks, and out-of-template configuration. Return a reproducible typed refusal, distinct from indeterminate certification. |
 
-### 18.2 Tests des raccords et de l'espace conforme
+### 18.2 Interface and conforming-space tests
 
-Ces tests sont un préalable à la généralisation des raccords emboîtés en phase 1.
+These tests precede generalization of nested interfaces in phase 1.
 
-| ID | Test | Résultat exigé |
-| --- | --- | --- |
-| T-I1 | Raccords identiques et emboîtés, orientations des faces | Toutes les orientations admises, restrictions rectangulaires, degrés différents et chaînes de raccords ; égalité des traces et absence de dépendance à l'ordre de parcours des incidences. |
-| T-I2 | Raccords NURBS | Poids non uniformes et poids issus d'une restriction/élévation. Distinguer transformation des coordonnées homogènes et transformation des coefficients de champ ; rejeter un prétendu emboîtement fondé uniquement sur les degrés et les nœuds lorsque les poids sont incompatibles. |
-| T-I3 | Arête ou sommet commun à plusieurs raccords | Contraintes cohérentes après élimination des redondances, rang attendu, absence de surcontrainte. Les cas compatibles et volontairement incompatibles sont tous deux présents. |
-| T-I4 | Côté de bloc partiellement interface, partiellement frontière de Dirichlet | Statuts portés par les faces topologiques, trace adaptée à la séparation et compatibilité avec le relèvement de Dirichlet. Vérifier que l'imposition sur la partie frontière ne bloque pas artificiellement une partie intérieure. |
-| T-I5 | Raffinement maître et esclave | Raffiner successivement le maître, un esclave, puis plusieurs voisins ; reconstruire les contraintes nécessaires et vérifier emboîtement, reproduction des champs et convergence. Mesurer la propagation effectivement requise. |
-| T-I6 | Noyau de rigidité et contraintes essentielles | Avant conditions de Dirichlet, retrouver les six mouvements rigides indépendants par composante matérielle 3D libre, sous les hypothèses mécaniques du test. Après suppression des mouvements rigides, aucun mode parasite ; vérifier aussi les relèvements non homogènes dans $u=C\tilde u+u_D$. |
+| ID | Test | Required result |
+|---|---|---|
+| T-I1 | Identical and nested interfaces; face orientations | All supported orientations, rectangular restrictions, different degrees, and interface chains; equal traces and no dependence on incidence traversal order. |
+| T-I2 | NURBS interfaces | Nonuniform weights and weights from restriction/elevation. Distinguish transformation of homogeneous coordinates from field coefficients; reject claimed nesting based only on degrees and knots when weights are incompatible. |
+| T-I3 | Edge or vertex shared by several interfaces | Consistent constraints after removing redundancies, expected rank, and no overconstraint. Include both compatible and deliberately incompatible cases. |
+| T-I4 | Block side partly interface and partly Dirichlet boundary | Status carried by topological faces; trace adapted to the split and compatible with Dirichlet lifting. Verify that boundary enforcement does not spuriously constrain the interior portion. |
+| T-I5 | Master and slave refinement | Successively refine master, one slave, then multiple neighbors; rebuild necessary constraints and check nesting, field reproduction, and convergence. Measure actual propagation. |
+| T-I6 | Rigid kernel and essential constraints | Before Dirichlet conditions, recover six independent rigid motions per free 3D material component under test assumptions. After removing rigid motions, no spurious modes; also check nonhomogeneous liftings in $u=C\tilde u+u_D$. |
 
-### 18.3 Tests mécaniques
+### 18.3 Mechanical tests
 
-| ID | Test | Résultat exigé |
-| --- | --- | --- |
-| T-M1 | Reproduction affine et solutions manufacturées | Patch test, puis suites de raffinements sur assemblages avec raccords emboîtés et valences irrégulières. Les taux $p+1$ en norme $L^2$ et $p$ en semi-norme $H^1$ sont attendus lorsque régularité de la solution et du problème adjoint, qualité des cartes, espaces et raffinement satisfont les hypothèses correspondantes ; les cas singuliers sont évalués séparément. |
-| T-M2 | Plaque percée en traction | Utiliser Kirsch avec un régime et des conditions aux limites compatibles, par exemple une extrusion en déformation plane avec chargements appropriés. Sur une plaque finie, quantifier séparément l'écart au domaine infini ; ne pas attribuer cet écart au noyau. |
-| T-M3 | Démonstrateur contre FEM d'ordre élevé | Même domaine cible, même loi, mêmes conditions aux limites et budgets d'erreur géométrique comparables. Erreur en énergie et grandeurs d'intérêt contre temps total et mémoire ; le nombre de degrés de liberté est une mesure complémentaire. |
-| T-M4 | Deux programmes produisant le même domaine | Même problème physique et mêmes groupes de chargement ; convergence vers la même solution, sans exiger des partitions ou des erreurs à maillage fixé identiques. |
-| T-M5 | Convergence en quadrature | Sur cartes courbes polynomiales et rationnelles, augmenter l'ordre jusqu'à rendre l'erreur de quadrature négligeable devant le budget retenu. La seule régularité du jacobien n'autorise pas une règle universelle à $p+1$ points. |
+| ID | Test | Required result |
+|---|---|---|
+| T-M1 | Affine reproduction and manufactured solutions | Patch test, then refinement sequences on assemblies with nested interfaces and irregular valences. Rates $p+1$ in $L^2$ and $p$ in the $H^1$ seminorm are expected when solution/adjoint regularity, map quality, spaces, and refinement satisfy the applicable assumptions; assess singular cases separately. |
+| T-M2 | Tension-loaded perforated plate | Use Kirsch under compatible regime and boundary conditions, e.g. plane-strain extrusion with suitable loading. On a finite plate quantify deviation from the infinite-domain solution separately; do not attribute it to the kernel. |
+| T-M3 | Demonstrator versus high-order FEM | Same target domain, constitutive law, boundary conditions, and comparable geometric-error budgets. Compare energy error and quantities of interest against total time and memory; DOF count is complementary. |
+| T-M4 | Two programs producing the same domain | Same physical problem and load groups; convergence to the same solution, without requiring identical partitions or fixed-mesh errors. |
+| T-M5 | Quadrature convergence | On curved polynomial and rational maps, increase order until quadrature error is negligible relative to the selected budget. Jacobian regularity alone does not justify a universal $p+1$-point rule. |
 
-### 18.4 Tests paramétriques et sensibilités
+### 18.4 Parametric and sensitivity tests
 
-| ID | Test | Résultat exigé |
-| --- | --- | --- |
-| T-P1 | Déplacer un perçage vers une poche puis vers le bord | Suivre séparément signature du domaine, signature de représentation et régime de différentiation. Contrôler validité, continuité physique attendue et détection des événements ; comparer mise à jour et reconstruction complète. |
-| T-P2 | Tests de Taylor directionnels | Dans un régime différentiable fixé, contrôler le reste $R(h)=\lvert J(\theta+h d)-J(\theta)-h\,\nabla J(\theta)\cdot d\rvert$ sur une gamme de pas. Attendre le comportement $O(h^2)$ lorsque la régularité le permet, avant le plateau d'arrondi et les tolérances des solveurs. Compléter par différences finies centrées et critères absolus/relatifs adaptés aux gradients proches de zéro. |
-| T-P3 | Angle traversant un seuil d'affectation, notamment $135^\circ$ | Identifier un changement algorithmique de partition. Ne pas déclarer automatiquement le gradient physique inexistant ; comparer les résultats des représentations de part et d'autre et signaler la limite de la dérivée discrète disponible. |
-| T-P4 | Poche atteignant une autre couche ou débouchant | Localiser l'événement ensembliste ; actualiser le domaine et les sélections. Une face supprimée ou devenue ambiguë entraîne une notification explicite, jamais un transfert silencieux de condition aux limites. |
-| T-P5 | Arc d'ouverture variable et interface rationnelle mobile | Vérifier $dH/d\theta$ ou le couple $dP/d\theta,dw/d\theta$, ainsi que $dC/d\theta$ lorsqu'il est non nul. Inclure la dérivée du relèvement $u_D$ et du système réduit. |
-| T-P6 | Reparamétrisation par optimisation contrainte | Cas à ensemble actif fixé puis changement d'ensemble actif. Vérifier les dérivées du système KKT, les conditions de régularité et les décisions lorsque le minimiseur n'est pas localement unique. |
-| T-P7 | Esquisse et intersections | Cas à rang fixé et intersections transverses, puis perte de rang ou tangence. Vérifier la validité des dérivées implicites et le statut d'indisponibilité hors de leurs hypothèses. |
-| T-P8 | Caches et dépendances | Une modification de paramètre doit invalider toutes les géométries, poids, contraintes, certificats et données de calcul qui en dépendent. Les résultats doivent coïncider avec une reconstruction sans cache, au niveau de reproductibilité annoncé. |
+| ID | Test | Required result |
+|---|---|---|
+| T-P1 | Move a bore toward a pocket, then toward the boundary | Track domain signature, representation signature, and differential regime separately. Check validity, expected physical continuity, event detection; compare update with complete rebuild. |
+| T-P2 | Directional Taylor tests | In a fixed differentiable regime, check remainder $R(h)=|J(\theta+hd)-J(\theta)-h\nabla J(\theta)\cdot d|$ over a range of steps. Expect $O(h^2)$ when regularity allows, before rounding and solver-tolerance plateaus. Also use centered finite differences and suitable absolute/relative criteria for near-zero gradients. |
+| T-P3 | Angle crossing an assignment threshold, including $135^\circ$ | Identify an algorithmic partition change. Do not automatically declare the physical gradient nonexistent; compare results on both sides and report limits of the available discrete derivative. |
+| T-P4 | Pocket reaching another layer or breaking through | Locate the set event; update domain and selections. A removed or ambiguous face triggers explicit notice, never silent boundary-condition transfer. |
+| T-P5 | Variable-opening arc and moving rational interface | Check $dH/d\theta$ or $(dP/d\theta,dw/d\theta)$, and $dC/d\theta$ when nonzero. Include derivatives of lifting $u_D$ and reduced system. |
+| T-P6 | Reparameterization by constrained optimization | Test fixed active set, then active-set change. Check KKT-system derivatives, regularity conditions, and decisions when the minimizer is not locally unique. |
+| T-P7 | Sketch and intersections | Fixed-rank, transverse intersections followed by rank loss or tangency. Check validity of implicit derivatives and report unavailability outside assumptions. |
+| T-P8 | Caches and dependencies | Parameter changes invalidate all dependent geometry, weights, constraints, certificates, and analysis data. Results match a cache-free rebuild at the declared reproducibility level. |
 
-### 18.5 Corpus, couverture et refus
+### 18.5 Corpus, coverage, and refusals
 
-Deux corpus versionnés sont définis **avant** la campagne :
+Define two versioned corpora **before** the campaign:
 
-- **Corpus obligatoire de la version (must-succeed).** Familles, gabarits, plages paramétriques et cas de régression annoncés comme pris en charge. Tous les cas valides de ce corpus doivent aboutir à un modèle certifié et au calcul prévu. Un refus faute de gabarit ou une certification indéterminée est un échec de la version sur ce corpus.
-- **Corpus exploratoire.** Pièces et variantes valides plus larges, réparties par complexité, proximité d'événement et type d'opération. Il mesure la couverture et les limites ; son contenu n'est pas sélectionné a posteriori parmi les seuls succès.
+- **Mandatory version corpus (must-succeed).** Families, templates, parameter ranges, and regression cases advertised as supported. Every valid case must produce a certified model and planned analysis. Refusal for lack of a template or indeterminate certification is a version failure on this corpus.
+- **Exploratory corpus.** Broader valid parts and variants stratified by complexity, proximity to events, and operation type. It measures coverage and limits; do not select it after the fact from successes alone.
 
-Les préconditions géométriques et exclusions sont publiées avant les essais. Les entrées réellement invalides ou hors du périmètre déclaré sont comptées séparément. Chaque essai reçoit une catégorie finale unique, de sorte que refus, dépassements de délai et erreurs d'exécution ne sont jamais comptés deux fois. Pour les entrées admissibles :
+Publish geometric preconditions and exclusions before tests. Count truly invalid or out-of-scope inputs separately. Give every test one final category so refusals, timeouts, and execution errors are not double-counted. For admissible inputs:
 
 $$
-\text{couverture}=
-\frac{N_{\text{succès complets}}}
-{N_{\text{succès complets}}+N_{\text{refus dans le périmètre}}+
-N_{\text{délais dépassés}}+N_{\text{erreurs d'exécution}}}.
+\text{coverage}=\frac{N_{\text{complete successes}}}{N_{\text{complete successes}}+N_{\text{in-scope refusals}}+N_{\text{timeouts}}+N_{\text{execution errors}}}.
 $$
 
-Un succès complet satisfait toutes les sorties exigées par la campagne. Dans une campagne mécanique, une géométrie certifiée suivie d'un refus d'export ou d'un calcul ne satisfaisant pas la précision imposée n'est pas un succès complet. Les couvertures géométrique et de calcul sont également publiées séparément, avec leurs dénominateurs.
+A complete success meets every output required by the campaign. For a mechanical campaign, certified geometry followed by refused export or analysis that misses required precision is not a complete success. Also publish geometric and analysis coverage separately, with denominators.
 
-Un refus ne permet pas de reclasser rétroactivement un cas en « hors périmètre ». Le rapport conserve chaque motif : précondition non satisfaite, opérateur non couvert, construction invalide, certification indéterminée, contrainte incompatible ou ressource dépassée. Il publie également le temps consommé par les essais infructueux et toute intervention humaine.
+A refusal cannot retroactively reclassify a case as “out of scope.” Preserve each reason: precondition unmet, operator unsupported, invalid construction, indeterminate certification, incompatible constraint, or resource exhaustion. Also report time spent on failed runs and any human intervention.
 
-### 18.6 Comparaison des chaînes complètes
+### 18.6 End-to-end pipeline comparison
 
-Comparer le noyau à un FEM d'ordre élevé sur tétraèdres courbes générés automatiquement et à une méthode immergée à base de B-splines. Ces références servent à mesurer les compromis ; elles ne deviennent pas des modes de représentation du noyau sans trim.
+Compare the kernel with high-order FEM on automatically generated curved tetrahedra and with an immersed B-spline method. These are trade-off references; they do not become trimmed representation modes of the kernel.
 
-Le protocole fixe la géométrie cible, les conditions physiques, les grandeurs d'intérêt, les budgets d'erreur et les ressources. Le critère principal est le **coût jusqu'à un résultat valide à précision imposée**, au premier calcul puis après modification d'une cote.
+Fix target geometry, physical conditions, quantities of interest, error budgets, and resources. The primary criterion is **cost to a valid result at prescribed accuracy**, for the first solve and after a dimension edit.
 
-Mesurer séparément : préparation géométrique, intersections et partition, reparamétrisation, certification, génération des contraintes, quadrature, assemblage, résolution, préconditionnement, calcul des gradients, mémoire maximale et interventions humaines. Publier aussi le nombre de blocs, de points de contrôle, de degrés de liberté et de coefficients non nuls des contraintes. Les méthodes de référence doivent elles-mêmes satisfaire un contrôle de précision et de convergence.
+Measure separately: geometry preparation, intersections and partitioning, reparameterization, certification, constraint generation, quadrature, assembly, solve, preconditioning, gradient calculation, peak memory, and human intervention. Also publish block, control-point, DOF, and constraint-nonzero counts. Reference methods must themselves meet precision and convergence checks.
 
-### 18.7 Critères de décision et portée d'un échec
+### 18.7 Decision criteria and interpretation of failure
 
-| ID | Critère | Interprétation |
-| --- | --- | --- |
-| R1 | À précision imposée, aucun gain sur les scénarios de premier calcul ou de modifications répétés annoncés, compte tenu de la préparation et de la couverture | Invalide l'avantage opérationnel revendiqué sur ces scénarios. Une absence de gain en erreur par degré de liberté, prise isolément, ne réfute pas l'intérêt du modèle volumique natif. |
-| R2 | Échec d'un cas du corpus obligatoire, ou couverture exploratoire inférieure au seuil préenregistré | Bloque la livraison du périmètre concerné ou impose d'en revoir explicitement les prétentions. Un refus sûr reste un échec de couverture. |
-| R3 | Sur des motifs à espacement, interactions et complexité locale bornés, croissance excessive des blocs, contrôles ou contraintes par rapport au budget annoncé | Met en défaut la maîtrise de la propagation. Pour les motifs interactifs, rapporter les coûts à la complexité effective de l'arrangement et des couches : une croissance superlinéaire imposée par la géométrie n'est pas un échec de l'algorithme. |
-| R4 | Tests de Taylor ou dérivées indépendantes incompatibles avec le gradient annoncé dans un régime différentiable admissible | Bloque l'usage du gradient concerné ; ne remet pas automatiquement en cause le constructeur géométrique. |
-| R5 | Cartes ou contraintes produisant une dégradation de précision, de conditionnement ou de coût au-delà du budget accepté | Impose un meilleur gabarit, un raffinement ou une restriction explicite. Comparer des systèmes et préconditionneurs documentés ; le déterminant seul n'est pas une mesure suffisante. |
+| ID | Criterion | Interpretation |
+|---|---|---|
+| R1 | At prescribed accuracy, no gain on advertised first-solve or repeated-edit scenarios after accounting for preparation and coverage | Invalidates the claimed operational advantage for those scenarios. Lack of an error-per-DOF gain alone does not refute the value of a native volume model. |
+| R2 | Any mandatory-corpus case fails, or exploratory coverage is below its preregistered threshold | Blocks delivery of the affected scope or requires explicit revision of claims. A safe refusal remains a coverage failure. |
+| R3 | For patterns with bounded spacing, interaction, and local complexity, blocks, checks, or constraints grow beyond the stated budget | Challenges propagation control. For interacting patterns, normalize costs by actual arrangement and layer complexity: geometry-imposed superlinear growth is not an algorithm failure. |
+| R4 | Taylor tests or independent derivatives disagree with the reported gradient in an admissible differentiable regime | Blocks use of that gradient; does not automatically invalidate the geometric constructor. |
+| R5 | Maps or constraints degrade accuracy, conditioning, or cost beyond the accepted budget | Requires a better template, refinement, or explicit restriction. Compare documented systems and preconditioners; determinant alone is insufficient. |
 
-Les seuils de couverture, de coût et de qualité sont fixés dans la fiche de campagne avant son exécution. Tant qu'ils ne sont pas fixés, les résultats sont exploratoires et ne constituent pas une validation des promesses de performance.
+Set coverage, cost, and quality thresholds in the campaign plan before execution. Until then, results are exploratory and do not validate performance claims.
 
-## 19. Jalons de preuve avant généralisation
+## 19. Evidence milestones before generalization
 
-Le développement commence par quatre démonstrateurs limités. Chacun possède ses entrées, ses hypothèses, ses sorties et un rapport de passage. Le passage d'un jalon n'établit une garantie que sur son périmètre annoncé ; il n'autorise ni à généraliser les gabarits sans preuve, ni à remplacer les blocs sans trim par un autre type de représentation.
+Development starts with four limited demonstrators. Each has inputs, assumptions, outputs, and a pass report. Passing a milestone establishes guarantees only within its declared scope; it does not justify generalizing templates without proof or replacing untrimmed blocks with another representation.
 
-### J1 — Construire et certifier les blocs natifs
+### J1 — Construct and certify native blocks
 
-**Périmètre.** Sections de référence : rectangle, disque avec cœur, couronne, plaque percée et coin arrondi ; extrusion droite. Inclure un exemple de poche à couches axiales, d'abord avec raccords identiques si nécessaire. Les paramètres, unités, degrés, tolérances et domaines admis sont versionnés.
+**Scope.** Reference sections: rectangle, disk with core, annulus, perforated plate, and rounded corner; straight extrusion. Include an axially layered pocket, initially with identical interfaces if needed. Version parameters, units, degrees, tolerances, and admitted domains.
 
-**Livrables.** Constructeurs exécutables, visualisation des cartes, représentation des frontières, certificats de jacobien et contrôle d'injectivité globale. La différence entre EXACT_REPRESENTATION et une construction approchée est démontrée sur des exemples.
+**Deliverables.** Runnable constructors, map visualization, boundary representation, Jacobian certificates, and global injectivity check. Demonstrate the difference between EXACT_REPRESENTATION and an approximate construction.
 
-**Passage.** Réussite du corpus obligatoire J1, tests géométriques applicables de 18.1, aucune dégénérescence ni double couverture, et diagnostic correct des cas négatifs. Publier le coût de certification, y compris les résultats indéterminés. Un défaut de gabarit est corrigé ou conduit à une réduction explicite du périmètre dans une nouvelle version et une nouvelle campagne. L'échec de la campagne initiale reste publié et son dénominateur inchangé.
+**Pass.** Pass mandatory J1 corpus and applicable tests in 18.1; no degeneracy or double coverage; correct diagnostics for negative cases. Publish certification cost, including indeterminate results. Fix template defects or explicitly narrow scope in a new version and campaign. Publish the initial campaign failure and retain its denominator unchanged.
 
-### J2 — Prouver les raccords, la topologie et le calcul conforme
+### J2 — Establish interfaces, topology, and conforming analysis
 
-**Périmètre.** Raccord en T 3D, plusieurs faces partageant une arête, orientations variées, raccords rationnels, côté maître partiellement interface et partiellement frontière, raffinements successifs du maître et des esclaves.
+**Scope.** 3D T-junction, several faces sharing an edge, varied orientations, rational interfaces, a master side partly interface and partly boundary, and successive master/slave refinement.
 
-**Livrables.** Distinction BlockSide/TopologicalFace, complexe d'incidences commun, contraintes et relèvement $u=C\tilde u+u_D$, calcul mécanique minimal et règles d'admissibilité des configurations de raccord.
+**Deliverables.** BlockSide/TopologicalFace distinction, common incidence complex, constraints and lifting $u=C\tilde u+u_D$, minimal mechanics calculation, and admissibility rules for interface configurations.
 
-**Passage.** T-I1 à T-I6, reproduction affine et convergence sur solutions manufacturées, quadrature contrôlée. Les contraintes ne créent ni mode parasite ni surcontrainte ; la partie de Dirichlet ne bloque pas artificiellement une interface intérieure. Les configurations non prouvées restent exclues. J2 conditionne l'emploi général des raccords emboîtés dans la version de phase 1.
+**Pass.** T-I1 through T-I6, affine reproduction and manufactured-solution convergence, and controlled quadrature. Constraints create neither spurious modes nor overconstraint; Dirichlet enforcement does not spuriously block an interior interface. Unproven configurations remain excluded. J2 gates general use of nested interfaces in the phase-1 version.
 
-### J3 — Mettre à jour et différencier la construction
+### J3 — Update and differentiate the construction
 
-**Périmètre.** Position et rayon d'un trou, profondeur d'une poche, ouverture d'un arc, reparamétrisation optimisée et franchissement d'un seuil algorithmique. Ajouter un événement réel de topologie du domaine.
+**Scope.** Bore position and radius, pocket depth, arc opening, optimized reparameterization, and crossing an algorithmic threshold. Include a true domain-topology event.
 
-**Livrables.** Graphe de dépendances, signatures distinctes, dérivées géométriques homogènes ou $dP,dw$, dérivées des contraintes et du relèvement lorsque nécessaires, adjoint du problème réduit et comparaison à une reconstruction complète.
+**Deliverables.** Dependency graph, distinct signatures, homogeneous geometric derivatives or $dP,dw$, needed derivatives of constraints and lifting, adjoint of the reduced problem, and comparison with a full rebuild.
 
-**Passage.** T-P1 à T-P8 sur les cas applicables ; comportement de Taylor attendu dans les régimes réguliers ; indisponibilité motivée des dérivées lorsque leurs hypothèses échouent. Un changement de gabarit est distingué d'un changement du domaine physique. La régularité KKT, le rang des esquisses et les hypothèses sur les poids ne restent pas implicites.
+**Pass.** Applicable T-P1 through T-P8; expected Taylor behavior in regular regimes; justified derivative unavailability when assumptions fail. Distinguish a template change from a physical-domain change. Make KKT regularity, sketch rank, and weight assumptions explicit.
 
-### J4 — Établir la couverture et le coût à précision donnée
+### J4 — Establish coverage and cost at prescribed accuracy
 
-**Périmètre.** Corpus obligatoire de version et corpus exploratoire fixés ; familles 2,5D combinant trous, poches, motifs et congés longitudinaux. Deux séries de motifs séparent les interactions géométriques intrinsèques de la propagation artificielle des découpes.
+**Scope.** Frozen mandatory and exploratory corpora; 2.5D families combining holes, pockets, patterns, and longitudinal fillets. Use two pattern series to separate intrinsic geometric interactions from artificial cut propagation.
 
-**Livrables.** Campagne reproductible, comparaison aux deux références de 18.6, résultats bruts, refus, interventions, budgets d'erreur et mesures par étape. Le positionnement scientifique de 21 est rédigé face aux travaux les plus proches.
+**Deliverables.** Reproducible campaign, comparison with both references in 18.6, raw results, refusals, interventions, error budgets, per-stage measurements, and scientific positioning against the closest work in Section 21.
 
-**Passage.** Aucun échec dans le corpus obligatoire ; seuils exploratoires et budgets de campagne satisfaits ; convergence mécanique et gradients validés pour les usages revendiqués. Les seuils sont arrêtés avant les essais, sans valeur choisie a posteriori. L'extension aux opérateurs 3D ciblés commence après ce passage, avec un contrat propre à chaque nouvel opérateur.
+**Pass.** No mandatory-corpus failure; meet preregistered exploratory thresholds and campaign budgets; validate mechanical convergence and gradients for claimed uses. Set thresholds before testing, not after observing results. Begin targeted 3D operators only after this pass, with a separate contract for each.
 
-**Décision après un échec.** Corriger l'algorithme, réduire explicitement le périmètre d'une nouvelle version ou ajouter un jalon de recherche. Une réduction de périmètre ne transforme pas rétroactivement une campagne échouée en campagne réussie. Le caractère sans trim, la non-dégénérescence et la conformité exigés ne sont pas abandonnés pour faire passer un test.
+**Decision after failure.** Fix the algorithm, explicitly narrow scope in a new version, or add a research milestone. Scope reduction does not retroactively turn a failed campaign into a successful one. Do not abandon the required untrimmed, nondegenerate, conforming properties to pass a test.
 
-## 20. Risques et parades
+## 20. Risks and mitigations
 
-Le risque principal est la couverture effective de la construction régulière, à coût acceptable. Les risques sur les raccords, les certificats et la différentiation sont traités par les jalons de la section 19 ; ils ne sont pas reportés à une phase ultérieure tout en étant supposés résolus en phase 1.
+The primary risk is actual coverage of regular construction at acceptable cost. Interface, certification, and differentiation risks are handled by Section 19 milestones; they are not deferred while being assumed solved in phase 1.
 
-| Risque | Gravité | Parade et condition de maîtrise | Indicateur |
-| --- | --- | --- | --- |
-| Découpage automatique insuffisant au-delà des cas simples | Élevée | Famille initiale explicite, corpus obligatoire, gabarits vérifiés et étude des méthodes générales avant extension | Couverture et refus par famille ; J1/J4 |
-| Existence d'une carte lisse confondue avec celle d'une carte spline certifiable sur le fermé | Élevée | Hypothèses de bord et de coins explicites ; budgets de degré, nœuds et cellules ; aucune garantie générale déduite du seul théorème harmonique | Échecs de paramétrisation/certification ; J1 |
-| Coût intrinsèque de l'arrangement confondu avec une propagation évitable | Élevée | Mesurer intersections, régions, couches, contrôles et contraintes ; séparer motifs interactifs et non interactifs | R3 et coût par étape |
-| Raccords emboîtés incompatibles sur arêtes/sommets ou surcontraignant une frontière partielle | Élevée | Configurations admissibles prouvées, topologie commune, contraintes rationnelles correctes et tests de trace/Dirichlet | Rang, modes rigides, convergence ; J2 |
-| Fausse certification par arrondis ou comparaison de frontières insuffisante | Élevée | Bornes d'arrondi, normalisation rationnelle, tests indépendants, détection des inclusions et recouvrements | T-G2/T-G6 ; aucun certificat incorrect admissible |
-| Distorsion malgré un jacobien positif | Élevée | Valeurs singulières, indicateurs normalisés et contrôle mécanique ; reblocage ou restriction du gabarit | Qualité, coût de résolution, R5 |
-| Hausse de degré et franchissement de nœuds par composition | Élevée pour les extensions | Traitement par morceaux, preuve de représentation ou approximation au statut explicite ; hôtes affines prioritaires | Degrés, contrôles, erreur, certification |
-| Dérivées incomplètes : poids, contraintes, relèvement ou ensemble actif omis | Élevée | Contrat différentiel complet, tests de Taylor et vérification KKT | T-P2/T-P5/T-P6 ; J3 |
-| Événement de représentation pris pour une singularité physique | Moyenne | Signatures séparées, comparaison de branches et de reconstructions | T-P3, continuité des grandeurs d'intérêt |
-| Localité annoncée mais dépendances ou optimisations globales | Élevée | Journal d'invalidation, mode anticipé distingué du mode incrémental, caches vérifiés | Blocs réellement recalculés et coût de modification |
-| Géométrie approchée qualifiée à tort de certifiée | Élevée | Séparation APPROX_ESTIMATED/APPROX_CERTIFIED ; provenance des bornes et budgets géométriques | T-G4 ; statut d'export |
-| Congés terminaux, pointes et coins de congés hors des constructeurs réguliers disponibles | Élevée pour l'extension | Contrat par famille, singularités géométriques explicitement traitées par le périmètre, aucun bloc effondré de substitution | Cas 3D réussis/refusés et motif |
-| Nouveauté surestimée | Moyenne | Lecture ciblée de Chen 2022/2024, IETI 2012, Hinz–Buffa 2024 et Wang et al. 2026 ; tableau des différences démontrées | Positionnement écrit avant J4 |
-| Dépendance prématurée aux historiques propriétaires | Faible si le phasage est respecté | DSL interne d'abord ; adaptateur CADIR versionné ensuite | Aucun blocage de J1–J4 dû à un codec |
-| Charge d'un noyau général engagée avant validation de ses fondations | Élevée | Quatre jalons, solveur minimal vérifiable, extensions opérateur par opérateur | Rapports de passage et périmètres versionnés |
+| Risk | Severity | Mitigation and control condition | Indicator |
+|---|---|---|---|
+| Automatic partitioning insufficient beyond simple cases | High | Explicit initial family, mandatory corpus, verified templates, and study of general methods before extension | Coverage and refusals by family; J1/J4 |
+| Existence of a smooth map confused with a spline map certifiable on its closure | High | Explicit boundary/corner assumptions; degree, knot, and cell budgets; no general guarantee inferred from the harmonic theorem alone | Parameterization/certification failures; J1 |
+| Intrinsic arrangement cost confused with avoidable propagation | High | Measure intersections, regions, layers, controls, and constraints; separate interacting and noninteracting patterns | R3 and per-stage cost |
+| Nested interfaces incompatible at edges/vertices or overconstraining a partial boundary | High | Proven admissible configurations, common topology, correct rational constraints, trace/Dirichlet tests | Rank, rigid modes, convergence; J2 |
+| False certification from rounding or insufficient boundary comparison | High | Rounding bounds, rational normalization, independent tests, detection of inclusion and overlap | T-G2/T-G6; no incorrect certificate accepted |
+| Distortion despite positive Jacobian | High | Singular values, normalized metrics, and mechanical checks; reblock or restrict template | Quality, solve cost, R5 |
+| Degree growth and host-knot crossings under composition | High for extensions | Piecewise treatment, proof of representation or explicitly stated approximation; prioritize affine hosts | Degrees, controls, error, certification |
+| Incomplete derivatives omitting weights, constraints, lifting, or active set | High | Complete differential contract, Taylor tests, and KKT verification | T-P2/T-P5/T-P6; J3 |
+| Representation event mistaken for physical singularity | Medium | Separate signatures, compare branches and rebuilds | T-P3, continuity of quantities of interest |
+| Claimed locality despite dependencies or global optimizations | High | Invalidation log, distinguish precompile and incremental modes, verify caches | Blocks actually recomputed and edit cost |
+| Approximate geometry incorrectly called certified | High | Separate APPROX_ESTIMATED/APPROX_CERTIFIED; record bound provenance and budgets | T-G4; export status |
+| Terminal fillets, tips, and fillet corners outside available regular constructors | High for extension | Per-family contract, explicitly scope excluded geometric singularities, no collapsed-block substitute | Successful/refused 3D cases and reasons |
+| Novelty overstated | Medium | Targeted review of Chen 2022/2024, IETI 2012, Hinz–Buffa 2024, Wang et al. 2026; table demonstrated differences | Written positioning before J4 |
+| Premature dependence on proprietary histories | Low if phased | Internal DSL first; versioned CADIR adapter later | No J1–J4 blocker due to codec |
+| General-kernel workload committed before foundations are validated | High | Four milestones, verifiable minimal solver, operator-by-operator extensions | Pass reports and versioned scopes |
 
-## 21. État de l'art et positionnement
+## 21. State of the art and positioning
 
-Le projet s'inscrit dans les travaux sur les modèles volumiques guidés par les features, les paramétrisations multi-blocs et les espaces conformes à traces emboîtées. Ces principes ont des antériorités directes. La contribution recherchée est leur mise en œuvre dans un **noyau natif sans trim, à couverture déclarée, dont les opérations, mises à jour et calculs sont vérifiés**.
+The project relates to feature-guided volumetric models, multiblock parameterizations, and conforming spaces with nested traces. These principles have direct precedents. The intended contribution is their implementation in a **native untrimmed kernel with declared coverage and verified operations, updates, and analyses**.
 
-La bibliographie est mise à jour au 24 novembre 2026. Les statuts ci-dessous distinguent une notice ou un résumé vérifié, des passages techniques consultés et une lecture détaillée restant à réaliser. Une référence correctement identifiée ne constitue pas une validation indépendante de son algorithme.
+The bibliography is current to 24 November 2026. Statuses below distinguish a checked citation or abstract, inspected technical passages, and detailed review still required. A correctly identified reference is not independent validation of its algorithm.
 
-### 21.1 Contributions candidates, à établir par comparaison
+### 21.1 Candidate contributions to establish by comparison
 
-| Contribution candidate | Antériorité à prendre en compte | Élément à démontrer dans ce projet |
-| --- | --- | --- |
-| Construction volumique directement depuis les features | Chen et al. 2022 et 2024 ; plateforme iMSO décrite par Wang et al. 2026 | Contrats opératoires, maintien des invariants au fil des opérations, couverture et mise à jour incrémentale reproductible |
-| Partition et reparamétrisation sans trim | Travaux de segmentation, untrimming et composition de splines | Blocs réguliers sur leur domaine fermé, fidélité déclarée, décisions de subdivision et couverture réellement obtenue |
-| Raccords emboîtés conformes | Emboîtement de traces NURBS et nœuds pendants déjà traités dans IETI 2012 | Configurations 3D admises, cohérence d'arêtes, frontières partielles, absence de surcontrainte et coût de propagation mesuré |
-| Certification pendant la construction | Conditions suffisantes de positivité et optimisation de paramétrisations déjà étudiées | Certificats avec arrondis maîtrisés, contrôle global du complexe, transactions et refus distincts des succès |
-| Sensibilités du programme de conception | Chen et al. 2024 ; paramétrisations différentiables et optimisation de forme | Dérivées des poids, cartes, raccords et relèvements ; régimes différentiables explicites ; tests de Taylor et transitions de représentation |
+| Candidate contribution | Prior work to account for | What this project must demonstrate |
+|---|---|---|
+| Direct volumetric construction from features | Chen et al. 2022 and 2024; iMSO platform described by Wang et al. 2026 | Operator contracts, preservation of invariants through operations, coverage, and reproducible incremental updates |
+| Untrimmed partition and reparameterization | Segmentation, untrimming, and spline-composition work | Regular blocks on closed domains, declared fidelity, subdivision decisions, and achieved coverage |
+| Conforming nested interfaces | NURBS trace nesting and hanging nodes already treated in IETI 2012 | Admissible 3D configurations, edge consistency, partial boundaries, no overconstraint, measured propagation cost |
+| Certification during construction | Sufficient positivity conditions and parameterization optimization already studied | Certificates with controlled rounding, global-complex checks, transactions, and refusals distinct from success |
+| Sensitivities of the design program | Chen et al. 2024; differentiable parameterization and shape optimization | Derivatives of weights, maps, interfaces, and liftings; explicit differentiable regimes; Taylor tests and representation transitions |
 
-Une analyse détaillée des algorithmes les plus proches précède toute revendication de nouveauté. Le caractère ouvert ou l'intégration logicielle peuvent constituer une contribution utile, mais ne rendent pas nouvelles les propriétés mathématiques déjà établies.
+Detailed algorithm review of the closest work must precede any novelty claim. Open licensing or software integration may be useful contributions, but do not make established mathematical properties new.
 
-### 21.2 Sources directement structurantes
+### 21.2 Directly relevant sources
 
-| Référence et lien primaire | Vérification effectuée | Usage et limites pour le projet |
-| --- | --- | --- |
-| **Chen, Bu, Jin, Xu, Li (2022)**, *Construction of IGA-suitable Volume Parametric Models by the Segmentation–Mapping–Merging Mechanism of Design Features*, Computer-Aided Design 146, 103228. [DOI 10.1016/j.cad.2022.103228](https://doi.org/10.1016/j.cad.2022.103228) | Notice et résumé vérifiés ; lecture détaillée de l'algorithme requise | Antériorité centrale de la construction depuis un réseau sémantique de features. Examiner précisément incrémentalité, raccords, validité et couverture avant de distinguer notre apport. |
-| **Chen, Zhang, Wu, Xu, Li (2024)**, *Isogeometric Size Optimization Design Based on Parameterized Volume Parametric Models*, Computer-Aided Design 169, 103672. [DOI 10.1016/j.cad.2023.103672](https://doi.org/10.1016/j.cad.2023.103672) | Métadonnées et résumé vérifiés | Relation entre dimensions de conception, contrôles volumiques et sensibilités. Le millésime de publication est 2024, malgré « 2023 » dans le DOI. |
-| **Kleiss, Pechstein, Jüttler, Tomar (2012)**, *IETI – Isogeometric Tearing and Interconnecting*, CMAME 247–248, 201–215. [DOI 10.1016/j.cma.2012.08.007](https://doi.org/10.1016/j.cma.2012.08.007) ; [texte auteur](https://www.ag.jku.at/pubs/2012kpjt.pdf) | Texte et passages sur les interfaces/nœuds pendants consultés | Emboîtement exact de traces, poids raffinés compatibles et contraintes de continuité. Le choix d'un solveur IETI n'est pas imposé ici. Les configurations 3D du présent noyau et les frontières partielles nécessitent leurs propres preuves. |
-| **Hinz, Buffa (2024)**, *On the use of elliptic PDEs for the parameterisation of planar multipatch domains. Part 1: Numerical algorithms and foundations of parametric control*, Engineering with Computers 40, 3735–3764. [DOI 10.1007/s00366-024-01997-x](https://doi.org/10.1007/s00366-024-01997-x) | Texte, hypothèses et théorème harmonique consultés | Méthodes inverses harmoniques et contrôle paramétrique multi-patch. Le résultat continu dans l'intérieur ne prouve pas une borne uniforme du jacobien d'une approximation spline sur le fermé, à bord et complexité imposés ; il ne se transpose pas automatiquement en 3D. |
-| **van Sosin, Elber (2018)**, *Crossing knot lines in composition of freeform B-spline geometry*, Computer Aided Geometric Design 62, 217–227. [DOI 10.1016/j.cagd.2018.03.009](https://doi.org/10.1016/j.cagd.2018.03.009) ; [texte auteur](https://gershon.cs.technion.ac.il/papers/cross_knot_line_comp2018.pdf) | Métadonnées, résumé et introduction consultés | Lorsque la composition traverse un nœud de l'hôte, la rupture de régularité peut suivre une courbe non isoparamétrique. Une simple formule de hausse de degré ne suffit donc pas à établir une représentation tensorielle exacte. |
-| **Pan, Chen, Tong (2019)**, *Volumetric Spline Parameterization for Isogeometric Analysis*. [DOI 10.1016/j.cma.2019.112769](https://doi.org/10.1016/j.cma.2019.112769) ; [prépublication et texte](https://arxiv.org/abs/1902.00650) | Texte des conditions de bijectivité et de positivité consulté | Distinguer positivité locale, hypothèses sur le bord, injectivité globale et qualité. Les critères de Bernstein sont suffisants, pas nécessaires ; une subdivision peut rester indéterminée sous budget fini. |
-| **Masalha, Cirillo, Elber (2021)**, *Heterogeneous Parametric Trivariate Fillets*. [DOI 10.1016/j.cagd.2021.101970](https://doi.org/10.1016/j.cagd.2021.101970) ; [texte auteur](https://gershon.cs.technion.ac.il/papers/HeterogeneousFillets2021.pdf) | Passages sur la construction et les singularités aux rails consultés | Construction volumique de congés instructive, avec jacobien s'annulant sur certaines lignes de raccordement. Elle ne fournit pas directement les gabarits réguliers jusqu'au bord exigés ici ; le voisinage doit être reconstruit et certifié selon notre contrat. |
-| **Wang, Chen, Zhang (2026)**, *Construction of complex non-uniform rational B-spline volume parametric models with G1 continuity*, Visual Computing for Industry, Biomedicine, and Art 9, article 7. [DOI 10.1186/s42492-026-00217-1](https://doi.org/10.1186/s42492-026-00217-1) | Texte, exemples, discussion et conclusion consultés ; publication du 9 avril 2026 | Décrit iMSO, les constructions par features et l'ajustement de raccords. Les exemples discutent encore des jacobiens négatifs et la conclusion reporte leur élimination : ce travail ne prouve pas notre invariant de non-dégénérescence. L'amélioration géométrique $G^1$ n'est pas une nécessité générale pour l'élasticité en déplacement $H^1$. |
-| **Patrikalakis, Maekawa, Cho**, *Shape Interrogation for Computer Aided Design and Manufacturing*, édition en ligne, §3.1 « Tangent plane and surface normal ». [Source MIT](https://web.mit.edu/hyperbook/Patrikalakis-Maekawa-Cho/node27.html) | Passage consulté | Distingue singularités artificielles de paramétrisation et singularités géométriques essentielles, dont la pointe du cône. Les conclusions sur ce qui est représentable par notre atlas fini de blocs réguliers relèvent de l'analyse du présent contrat ; elles ne sont pas attribuées à cette page comme un théorème général d'impossibilité. |
+| Reference and primary link | Review performed | Use and limits for this project |
+|---|---|---|
+| **Chen, Bu, Jin, Xu, Li (2022)**, *Construction of IGA-suitable Volume Parametric Models by the Segmentation–Mapping–Merging Mechanism of Design Features*, Computer-Aided Design 146, 103228. [DOI 10.1016/j.cad.2022.103228](https://doi.org/10.1016/j.cad.2022.103228) | Citation and abstract checked; detailed algorithm review required | Central precedent for construction from a semantic feature network. Examine incrementality, interfaces, validity, and coverage before distinguishing this project's contribution. |
+| **Chen, Zhang, Wu, Xu, Li (2024)**, *Isogeometric Size Optimization Design Based on Parameterized Volume Parametric Models*, Computer-Aided Design 169, 103672. [DOI 10.1016/j.cad.2023.103672](https://doi.org/10.1016/j.cad.2023.103672) | Metadata and abstract checked | Links design dimensions, volume controls, and sensitivities. Publication year is 2024 despite “2023” in the DOI. |
+| **Kleiss, Pechstein, Jüttler, Tomar (2012)**, *IETI – Isogeometric Tearing and Interconnecting*, CMAME 247–248, 201–215. [DOI 10.1016/j.cma.2012.08.007](https://doi.org/10.1016/j.cma.2012.08.007); [author text](https://www.ag.jku.at/pubs/2012kpjt.pdf) | Text and interface/hanging-node passages reviewed | Exact trace nesting, compatible refined weights, continuity constraints. An IETI solver is not required here. This kernel's 3D configurations and partial boundaries need their own proofs. |
+| **Hinz, Buffa (2024)**, *On the use of elliptic PDEs for the parameterisation of planar multipatch domains. Part 1: Numerical algorithms and foundations of parametric control*, Engineering with Computers 40, 3735–3764. [DOI 10.1007/s00366-024-01997-x](https://doi.org/10.1007/s00366-024-01997-x) | Text, assumptions, and harmonic theorem reviewed | Harmonic inverse methods and multipatch parametric control. An interior continuous result does not prove a uniform Jacobian bound for a spline approximation on the closure with prescribed boundary and complexity; it does not transfer automatically to 3D. |
+| **van Sosin, Elber (2018)**, *Crossing knot lines in composition of freeform B-spline geometry*, Computer Aided Geometric Design 62, 217–227. [DOI 10.1016/j.cagd.2018.03.009](https://doi.org/10.1016/j.cagd.2018.03.009); [author text](https://gershon.cs.technion.ac.il/papers/cross_knot_line_comp2018.pdf) | Metadata, abstract, and introduction reviewed | When composition crosses a host knot, a regularity break may follow a non-isoparametric curve. A degree-elevation formula alone is insufficient to establish exact tensor-product representation. |
+| **Pan, Chen, Tong (2019)**, *Volumetric Spline Parameterization for Isogeometric Analysis*. [DOI 10.1016/j.cma.2019.112769](https://doi.org/10.1016/j.cma.2019.112769); [preprint and text](https://arxiv.org/abs/1902.00650) | Bijectivity and positivity conditions reviewed | Distinguish local positivity, boundary assumptions, global injectivity, and quality. Bernstein conditions are sufficient, not necessary; finite-budget subdivision may remain indeterminate. |
+| **Masalha, Cirillo, Elber (2021)**, *Heterogeneous Parametric Trivariate Fillets*. [DOI 10.1016/j.cagd.2021.101970](https://doi.org/10.1016/j.cagd.2021.101970); [author text](https://gershon.cs.technion.ac.il/papers/HeterogeneousFillets2021.pdf) | Construction and rail-singularity passages reviewed | Instructive volumetric fillet construction with Jacobian zeros on some join lines. It does not directly provide the regular-to-boundary templates required here; the neighborhood must be rebuilt and certified under this contract. |
+| **Wang, Chen, Zhang (2026)**, *Construction of complex non-uniform rational B-spline volume parametric models with G1 continuity*, Visual Computing for Industry, Biomedicine, and Art 9, article 7. [DOI 10.1186/s42492-026-00217-1](https://doi.org/10.1186/s42492-026-00217-1) | Text, examples, discussion, and conclusion reviewed; published 9 April 2026 | Describes iMSO, feature construction, and interface adjustment. Examples still discuss negative Jacobians and the conclusion defers their elimination, so the work does not prove this project's nondegeneracy invariant. Geometric $G^1$ improvement is not generally required for displacement-based $H^1$ elasticity. |
+| **Patrikalakis, Maekawa, Cho**, *Shape Interrogation for Computer Aided Design and Manufacturing*, online edition, §3.1 “Tangent plane and surface normal.” [MIT source](https://web.mit.edu/hyperbook/Patrikalakis-Maekawa-Cho/node27.html) | Passage reviewed | Distinguishes artificial parameterization singularities from essential geometric singularities such as a cone tip. Conclusions about representation by this finite atlas of regular blocks belong to analysis of this contract; they are not attributed to the page as a general impossibility theorem. |
 
-### 21.3 Décomposition, représentation et provenance
+### 21.3 Decomposition, representation, and provenance
 
-| Référence | Statut et rôle |
-| --- | --- |
-| **Massarwi, Elber (2016)**, *A B-spline based framework for volumetric object modeling*, Computer-Aided Design 78, 36–47. [DOI 10.1016/j.cad.2016.05.003](https://doi.org/10.1016/j.cad.2016.05.003) ; [texte auteur](https://gershon.cs.technion.ac.il/papers/vrep_framework2016.pdf) | Notice et cadre V-rep identifiés. Structures volumiques et booléens instructifs ; les blocs trimés ne sont pas une sortie admise ici. |
-| **Antolin, Buffa, Martinelli (2019)**, *Isogeometric Analysis on V-reps: first results*. [Prépublication](https://arxiv.org/abs/1903.03362) | Source primaire identifiée ; lecture numérique ciblée à compléter pour la comparaison. Calcul sur V-rep, distinct du contrat sans trim. |
-| **Massarwi, Antolin, Elber (2019)**, *Volumetric untrimming: Precise decomposition of trimmed trivariates into tensor products*, Computer Aided Geometric Design 71, 1–15. [Dépôt EPFL](https://infoscience.epfl.ch/record/267682) | Référence identifiée. Vérifier la régularité de chaque type de bloc et l'usage visé, notamment quadrature ; « produit tensoriel » ne signifie pas automatiquement bloc admissible pour nos fonctions de forme. |
-| **Lu, Gadh, Tautges (2001)**, *Feature based hex meshing methodology: feature recognition and volume decomposition*, Computer-Aided Design 33(3), 221–232. [DOI 10.1016/S0010-4485(00)00122-6](https://doi.org/10.1016/S0010-4485(00)00122-6) | Notice et résumé vérifiés. Décomposition guidée par features en volumes maillables ; cette référence remplace le lien erroné vers le chapitre de Pauley. |
-| **Pauley, Nguyen, Mayer, Špeh, Weeger, Jüttler (2015)**, *The isogeometric segmentation pipeline*, dans *Isogeometric Analysis and Applications*, LNCSE 107, 51–72. [DOI 10.1007/978-3-319-23315-4_3](https://doi.org/10.1007/978-3-319-23315-4_3) ; [notice des auteurs](https://research.jku.at/en/publications/the-isogeometric-segmentation-pipeline/) | Métadonnées et description du pipeline vérifiées. Segmentation puis paramétrisation depuis une frontière ; référence de comparaison pour les coupes de structuration. |
-| **Xu, Mourrain, Duvigneau, Galligo (2013)**, *Analysis-suitable volume parameterization of multi-block computational domain in isogeometric applications*, Computer-Aided Design 45(2), 395–404. [DOI 10.1016/j.cad.2012.10.022](https://doi.org/10.1016/j.cad.2012.10.022) | Métadonnées identifiées ; texte à étudier avant réutilisation de ses conditions multi-blocs. |
-| **Liu, Zhang, Hughes, Scott, Sederberg (2014)**, *Volumetric T-spline construction using Boolean operations*, Engineering with Computers 30(4), 425–439. [Rapport auteur](https://www.ices.utexas.edu/media/reports/2013/1319.pdf) | Source identifiée. Booléens, polycubes et structure volumique ; ses résultats ne sont pas assimilés à des booléens natifs incrémentaux sur nos blocs. |
-| **Boussuge, Léon, Hahmann, Fine (2014)**, travaux sur l'extraction de processus génératifs depuis une B-rep. [Dépôt HAL](https://hal.archives-ouvertes.fr/hal-00922908) | Notice à compléter et texte à relire. Piste ultérieure pour l'absence d'historique ; ne conditionne pas le prototype natif. |
-| **Capoyleas, Chen, Hoffmann (1996)**, *Generic naming in generative, constraint-based design*. [Texte auteur](https://www.cs.purdue.edu/cgvlab/www/resources/papers/Capoyleas-Computer_aided_design-1996-Generic_naming-in_generative.pdf) | Référence identifiée ; lecture ciblée requise pour provenance et sélections persistantes. Un identifiant de feature ne règle pas à lui seul les scissions ou disparitions de faces. |
-| **CADmpeg — CADIR**, documentation de la représentation intermédiaire. [Documentation projet](https://github.com/cadmpeg/cadmpeg/blob/main/docs/cad-ir.md) | Source évolutive. Tout adaptateur doit citer version et commit testés, niveau de décodage et pertes constatées. La documentation n'est pas une garantie de récupération exhaustive des historiques natifs. |
+| Reference | Status and role |
+|---|---|
+| **Massarwi, Elber (2016)**, *A B-spline based framework for volumetric object modeling*, Computer-Aided Design 78, 36–47. [DOI 10.1016/j.cad.2016.05.003](https://doi.org/10.1016/j.cad.2016.05.003); [author text](https://gershon.cs.technion.ac.il/papers/vrep_framework2016.pdf) | Citation and V-rep framework identified. Volumetric structures and Booleans are instructive; trimmed blocks are not an allowed output here. |
+| **Antolin, Buffa, Martinelli (2019)**, *Isogeometric Analysis on V-reps: first results*. [Preprint](https://arxiv.org/abs/1903.03362) | Primary source identified; targeted numerical review remains for comparison. V-rep analysis differs from the untrimmed contract. |
+| **Massarwi, Antolin, Elber (2019)**, *Volumetric untrimming: Precise decomposition of trimmed trivariates into tensor products*, Computer Aided Geometric Design 71, 1–15. [EPFL repository](https://infoscience.epfl.ch/record/267682) | Reference identified. Check regularity of each block type and intended use, especially quadrature; “tensor product” does not automatically mean admissible for the kernel's shape functions. |
+| **Lu, Gadh, Tautges (2001)**, *Feature based hex meshing methodology: feature recognition and volume decomposition*, Computer-Aided Design 33(3), 221–232. [DOI 10.1016/S0010-4485(00)00122-6](https://doi.org/10.1016/S0010-4485(00)00122-6) | Citation and abstract checked. Feature-guided decomposition into meshable volumes; this corrects the earlier erroneous link to the Pauley chapter. |
+| **Pauley, Nguyen, Mayer, Špeh, Weeger, Jüttler (2015)**, *The isogeometric segmentation pipeline*, in *Isogeometric Analysis and Applications*, LNCSE 107, 51–72. [DOI 10.1007/978-3-319-23315-4_3](https://doi.org/10.1007/978-3-319-23315-4_3); [authors' record](https://research.jku.at/en/publications/the-isogeometric-segmentation-pipeline/) | Metadata and pipeline description checked. Segmentation then boundary-based parameterization; comparison source for structural cuts. |
+| **Xu, Mourrain, Duvigneau, Galligo (2013)**, *Analysis-suitable volume parameterization of multi-block computational domain in isogeometric applications*, Computer-Aided Design 45(2), 395–404. [DOI 10.1016/j.cad.2012.10.022](https://doi.org/10.1016/j.cad.2012.10.022) | Metadata identified; study text before reusing multiblock conditions. |
+| **Liu, Zhang, Hughes, Scott, Sederberg (2014)**, *Volumetric T-spline construction using Boolean operations*, Engineering with Computers 30(4), 425–439. [Author report](https://www.ices.utexas.edu/media/reports/2013/1319.pdf) | Source identified. Booleans, polycubes, and volume structure; do not equate its results with incremental native Booleans on these blocks. |
+| **Boussuge, Léon, Hahmann, Fine (2014)**, work on extracting generative processes from B-reps. [HAL repository](https://hal.archives-ouvertes.fr/hal-00922908) | Citation to complete and text to review. Later path for missing histories; not a prerequisite for the native prototype. |
+| **Capoyleas, Chen, Hoffmann (1996)**, *Generic naming in generative, constraint-based design*. [Author text](https://www.cs.purdue.edu/cgvlab/www/resources/papers/Capoyleas-Computer_aided_design-1996-Generic_naming-in_generative.pdf) | Source identified; targeted review needed for provenance and persistent selections. A feature identity alone does not resolve face splits or disappearance. |
+| **CADmpeg — CADIR**, intermediate-representation documentation. [Project documentation](https://github.com/cadmpeg/cadmpeg/blob/main/docs/cad-ir.md) | Evolving source. Any adapter must cite tested version and commit, decoding level, and losses. Documentation does not guarantee exhaustive recovery of native histories. |
 
-### 21.4 Références pour les comparaisons numériques
+### 21.4 References for numerical comparisons
 
-Les approches suivantes sont étudiées comme références de calcul et de coût, sans modifier le périmètre du noyau.
+The following approaches are considered as analysis and cost references without changing the kernel's scope.
 
-| Référence | Usage et statut |
-| --- | --- |
-| **Kamensky et al. (2015)**, travaux d'analyse immersogéométrique. [Texte déposé](https://pmc.ncbi.nlm.nih.gov/articles/PMC4274080/) | Source primaire à relire pour définir une comparaison cohérente ; ne pas attribuer à une seule étude l'ensemble des propriétés des méthodes immergées. |
-| **Hsu, Wang, Xu, Herrema, Krishnamurthy (2016)**, calcul immergé sur modèles B-rep. [Dépôt auteur](https://works.bepress.com/ming-chen_hsu/20) | Référence identifiée ; choix d'un cas comparable à l'élasticité de phase 1 à documenter. |
-| **Schillinger, Ruess, Zander, Bazilevs, Düster, Rank (2012)**. [DOI 10.1007/s00466-012-0684-z](https://doi.org/10.1007/s00466-012-0684-z) | Cellules finies et bases d'ordre élevé ; texte à relire pour les paramètres de la référence retenue. |
-| **Divi et al. (2022)**, Journal of Mechanics 38. [DOI 10.1093/jom/ufac015](https://doi.org/10.1093/jom/ufac015) | Adaptivité THB en formulation immergée ; les résultats propres à Laplace/Stokes ne sont pas repris comme validation de notre élasticité. |
-| **de Prenter et al. (2019)**, *Multigrid solvers for immersed finite element methods and immersed isogeometric analysis*. [Prépublication](https://arxiv.org/abs/1903.10977) | Préconditionnement de référence pour éviter une comparaison contre une implémentation immergée artificiellement mal conditionnée. |
-| **de Prenter, Verhoosel, van Brummelen, Larson, Badia (2023)**, *Stability and Conditioning of Immersed Finite Element Methods: Analysis and Remedies*. [DOI 10.1007/s11831-023-09913-0](https://doi.org/10.1007/s11831-023-09913-0) | Revue consultée : distinction entre stabilité de la formulation et conditionnement. Utile à la qualification de la référence extérieure. |
-| **Wunsch et al. (2025)**, *Enriched immersed finite element and isogeometric analysis: algorithms and data structures*, Engineering with Computers 41, 3919–3957. [DOI 10.1007/s00366-025-02163-7](https://doi.org/10.1007/s00366-025-02163-7) | Texte consulté. Connectivité matérielle dans les supports, enrichissement, quadrature et stabilisation ; documenter lesquels sont nécessaires dans la comparaison choisie. |
+| Reference | Use and status |
+|---|---|
+| **Kamensky et al. (2015)**, immersed isogeometric analysis work. [Deposited text](https://pmc.ncbi.nlm.nih.gov/articles/PMC4274080/) | Primary source to review for a coherent comparison; do not attribute every property of immersed methods to one study. |
+| **Hsu, Wang, Xu, Herrema, Krishnamurthy (2016)**, immersed analysis on B-rep models. [Author repository](https://works.bepress.com/ming-chen_hsu/20) | Reference identified; document choice of a case comparable to phase-1 elasticity. |
+| **Schillinger, Ruess, Zander, Bazilevs, Düster, Rank (2012)**. [DOI 10.1007/s00466-012-0684-z](https://doi.org/10.1007/s00466-012-0684-z) | Finite cells and high-order bases; review text for parameters of the selected reference. |
+| **Divi et al. (2022)**, Journal of Mechanics 38. [DOI 10.1093/jom/ufac015](https://doi.org/10.1093/jom/ufac015) | THB adaptivity in immersed formulation; Laplace/Stokes-specific results are not used to validate this elasticity formulation. |
+| **de Prenter et al. (2019)**, *Multigrid solvers for immersed finite element methods and immersed isogeometric analysis*. [Preprint](https://arxiv.org/abs/1903.10977) | Reference preconditioning to avoid comparison against an artificially ill-conditioned immersed implementation. |
+| **de Prenter, Verhoosel, van Brummelen, Larson, Badia (2023)**, *Stability and Conditioning of Immersed Finite Element Methods: Analysis and Remedies*. [DOI 10.1007/s11831-023-09913-0](https://doi.org/10.1007/s11831-023-09913-0) | Review consulted; distinguishes formulation stability from conditioning. Useful for qualifying the external reference. |
+| **Wunsch et al. (2025)**, *Enriched immersed finite element and isogeometric analysis: algorithms and data structures*, Engineering with Computers 41, 3919–3957. [DOI 10.1007/s00366-025-02163-7](https://doi.org/10.1007/s00366-025-02163-7) | Text reviewed. Material connectivity in supports, enrichment, quadrature, and stabilization; document which are needed in the chosen comparison. |
 
-### 21.5 Compléments bibliographiques à vérifier avant usage
+### 21.5 Additional bibliography to check before use
 
-Ces entrées ne portent encore aucune garantie utilisée par le cahier des charges :
+These entries do not yet support any guarantee in this specification:
 
-- Aigner, Heinrich, Jüttler, Pilgerstorfer, Simeon, Vuong (2009), paramétrisation de volumes balayés pour l'IGA : vérifier les hypothèses de régularité et les familles effectivement traitées.
-- Nguyen, Pauley, Jüttler (2016), *Isogeometric segmentation: Construction of auxiliary curves* : compléter la notice et étudier les contraintes des coupes de structuration.
-- Giannelli, Jüttler, Speleers (2012), THB-splines : compléter la notice et séparer propriétés de la base, raccordement et représentation géométrique.
-- Buffa, Puppi, Vázquez, stabilisation minimale de géométries trimées : [prépublication 1902.04937](https://arxiv.org/abs/1902.04937), pour la référence extérieure seulement.
-- Couplage de patches superposés : [prépublication 1912.06400](https://arxiv.org/abs/1912.06400), auteurs et portée à confirmer avant citation technique.
-- Wei, Marussig, Antolin, Buffa, *Immersed boundary-conformal isogeometric method for linear elliptic problems* : [prépublication 2011.01622](https://arxiv.org/abs/2011.01622), à relire comme méthode comparative distincte.
-- Shahan, Walker, *Exact shape derivatives with unfitted FEM* : [texte auteur](https://www.math.lsu.edu/~walker/pdfs/ShahanWalker_exact_shape_deriv_unfitted_FEM.pdf), métadonnées et hypothèses à vérifier.
-- Kripac, nommage persistant ; Takacs–Jüttler (2011), paramétrisations singulières ; DeRose–Goldman–Hagen–Mann (1993), composition par blossoming ; Weiler, structure radial-edge : notices originales à compléter.
+- Aigner, Heinrich, Jüttler, Pilgerstorfer, Simeon, Vuong (2009), swept-volume parameterization for IGA: check regularity assumptions and families actually covered.
+- Nguyen, Pauley, Jüttler (2016), *Isogeometric segmentation: Construction of auxiliary curves*: complete the citation and study structural-cut constraints.
+- Giannelli, Jüttler, Speleers (2012), THB-splines: complete the citation and distinguish basis properties, coupling, and geometric representation.
+- Buffa, Puppi, Vázquez, minimal stabilization of trimmed geometries: [preprint 1902.04937](https://arxiv.org/abs/1902.04937), for external reference only.
+- Overlapping-patch coupling: [preprint 1912.06400](https://arxiv.org/abs/1912.06400), authors and scope to confirm before technical citation.
+- Wei, Marussig, Antolin, Buffa, *Immersed boundary-conformal isogeometric method for linear elliptic problems*: [preprint 2011.01622](https://arxiv.org/abs/2011.01622), review as a distinct comparison method.
+- Shahan, Walker, *Exact shape derivatives with unfitted FEM*: [author text](https://www.math.lsu.edu/~walker/pdfs/ShahanWalker_exact_shape_deriv_unfitted_FEM.pdf), verify metadata and assumptions.
+- Kripac, persistent naming; Takacs–Jüttler (2011), singular parameterizations; DeRose–Goldman–Hagen–Mann (1993), blossoming composition; Weiler, radial-edge structure: complete original-source citations.
 
-## 22. Décisions restantes et ordre de résolution
+## 22. Remaining decisions and resolution order
 
-Les objectifs natifs trivariés, sans trim, sans bloc dégénéré et à espace de déplacement conforme sont fixés. Les questions ci-dessous portent sur les moyens de les réaliser et leur domaine de validité ; elles ne servent pas à différer les conditions indispensables à une version annoncée.
+Native trivariate objectives, no trimming, no degenerate blocks, and a conforming displacement space are fixed. The following questions concern implementation and validity domains; they do not defer conditions essential to a claimed release.
 
-### 22.1 À trancher avant ou pendant J1
+### 22.1 Resolve before or during J1
 
-- [ ] **Périmètre exact de phase 1.** Énumérer les profils, intersections, compositions et gabarits admis ; fixer les plages du corpus obligatoire. Séparer les constructions à représentation exacte des variantes NURBS nécessitant une approximation.
-- [ ] **Arithmétique et certificats.** Choisir les prédicats, bornes d'arrondi et conventions homogènes ; fixer la normalisation de $J_{\min}$, les budgets de certification et les statuts invalide/indéterminé.
-- [ ] **Paramétrisation de section.** Choisir l'initialisation et l'amélioration des gabarits, leurs conditions de bord, la politique de subdivision et les critères autorisant davantage de nœuds ou davantage de cellules.
-- [ ] **Complexe topologique commun.** Arrêter les incidences BlockSide/TopologicalFace/DesignFace, le traitement des subdivisions emboîtées et les vérifications d'Euler/comptage sous leurs hypothèses.
-- [ ] **Réutilisation des bibliothèques.** Identifier les composants d'esquisse, d'arrangement et d'intersection réellement réutilisables, leurs licences et leurs contrats numériques. La présence d'un noyau B-rep ne vaut pas disponibilité d'un solveur d'esquisses ni preuve d'exactitude.
-- [ ] **Licence du projet.** Fixer la licence libre et vérifier sa compatibilité avec les dépendances avant leur intégration, conformément à NF-8.
+- [ ] **Exact phase-1 scope.** List admitted profiles, intersections, compositions, and templates; fix mandatory-corpus ranges. Separate exact-representation constructions from NURBS variants requiring approximation.
+- [ ] **Arithmetic and certificates.** Choose predicates, rounding bounds, and homogeneous conventions; fix normalization of $J_{\min}$, certification budgets, and invalid/indeterminate statuses.
+- [ ] **Section parameterization.** Choose template initialization/improvement, boundary conditions, subdivision policy, and criteria for allowing more knots or cells.
+- [ ] **Common topological complex.** Set BlockSide/TopologicalFace/DesignFace incidences, nested subdivision handling, and Euler/counting checks under their assumptions.
+- [ ] **Library reuse.** Identify reusable sketch, arrangement, and intersection components, licenses, and numerical contracts. Having a B-rep kernel does not imply a sketch solver is available or exactness is established.
+- [ ] **Project license.** Choose a free-software license and verify dependency compatibility before integration, as required by NF-8.
 
-### 22.2 À trancher avant la réussite de J2
+### 22.2 Resolve before J2 passes
 
-- [ ] **Configurations emboîtées admises.** Définir orientation, restriction, choix du maître, chaînes, compatibilité des poids et cohérence des arêtes. Les configurations non démontrées ne sont pas activées par défaut.
-- [ ] **Trace de frontière partielle.** Choisir nœuds et multiplicités nécessaires au changement de statut et aux conditions de Dirichlet ; définir la projection et le relèvement compatibles avec l'élimination.
-- [ ] **Espace de calcul.** Préciser le lien entre géométrie rationnelle et base d'analyse, les règles de raffinement ainsi que la propagation nécessaire. Valider la reproduction des champs et le rang avant d'étudier THB.
-- [ ] **Solveur de référence.** Fixer conventions de matériau, conditions limites, contrôle de quadrature et vérification indépendante de l'assemblage. Arrêter les seuils des tests mécaniques de J2 avant leur campagne.
+- [ ] **Admitted nested configurations.** Define orientation, restriction, master choice, chains, weight compatibility, and edge consistency. Do not enable unproven configurations by default.
+- [ ] **Partial boundary trace.** Choose knots and multiplicities needed for status changes and Dirichlet conditions; define projection and lifting compatible with elimination.
+- [ ] **Analysis space.** Specify the link between rational geometry and analysis basis, refinement rules, and required propagation. Check field reproduction and rank before studying THB.
+- [ ] **Reference solver.** Fix material conventions, boundary conditions, quadrature checks, and independent assembly verification. Freeze J2 mechanical-test thresholds before its campaign.
 
-### 22.3 À trancher avant la réussite de J3 et J4
+### 22.3 Resolve before J3 and J4 pass
 
-- [ ] **Régime différentiable.** Définir les hypothèses de rang, transversalité, ensemble actif et unicité locale ; choisir les dérivées $dH$ ou $dP,dw$, celles de $C$ et du relèvement lorsque nécessaires.
-- [ ] **Événements et paramétrage.** Fixer ce qui est maintenu constant dans une représentation, les règles aux seuils d'affectation et les transferts entre branches. Ne pas assimiler une décision algorithmique à une perte automatique de différentiabilité physique.
-- [ ] **Compilation anticipée et mises à jour.** Définir les regroupements autorisés par la sémantique, les dépendances et l'invalidation ; mesurer la localité au lieu de la postuler.
-- [ ] **Campagnes.** Geler corpus, préconditions, dénominateurs, budgets d'erreur et seuils de R1 à R5. Les seuils sont choisis avant les essais ; les performances non encore mesurées restent des hypothèses.
-- [ ] **Positionnement scientifique.** Comparer les algorithmes aux sources de 21, notamment les raccords emboîtés déjà connus et les modèles volumiques guidés par features. Identifier les différences effectivement implémentées et validées.
+- [ ] **Differentiable regime.** Define rank, transversality, active-set, and local-uniqueness assumptions; choose derivatives $dH$ or $dP,dw$, and derivatives of $C$ and lifting where needed.
+- [ ] **Events and parameterization.** Specify what remains fixed within a representation, rules at assignment thresholds, and transfers between branches. Do not equate an algorithmic choice with automatic loss of physical differentiability.
+- [ ] **Ahead-of-time compilation and updates.** Define groupings permitted by semantics, dependencies, and invalidation; measure locality instead of assuming it.
+- [ ] **Campaigns.** Freeze corpora, preconditions, denominators, error budgets, and R1–R5 thresholds. Set thresholds before tests; unmeasured performance remains a hypothesis.
+- [ ] **Scientific positioning.** Compare algorithms with Section 21 sources, especially known nested interfaces and feature-guided volume models. Identify differences actually implemented and validated.
 
-### 22.4 Extensions après validation du socle
+### 22.4 Extensions after validating the foundation
 
-- [ ] **3D ciblé.** Gabarits réguliers des révolutions, perçages obliques et congés terminaux ; contrat séparé pour chaque famille et traitement explicite des singularités géométriques exclues.
-- [ ] **Composition et degré maximal.** Définir les budgets de degré/coût pour les hôtes courbes et une stratégie tenant compte des préimages des nœuds.
-- [ ] **Découpage général.** Évaluer champs de croix, séparatrices et optimisation combinatoire comme extensions mesurées des gabarits, sans présumer leur couverture.
-- [ ] **Raffinement THB.** Étudier son interaction avec les traces emboîtées et les régimes différentiables une fois le raffinement tensoriel validé.
-- [ ] **Conservation des cellules inactives.** Choisir une politique selon l'utilité démontrée pour annulation, variantes, mémoire et coût de maintenance.
-- [ ] **Champs matériels et physique.** Préciser la portée des champs hétérogènes, orientations et transferts ; introduire grandes déformations et quasi-incompressibilité avec des validations mécaniques propres.
-- [ ] **Industrialisation.** Profiler le noyau Rust et décider des optimisations et des adaptateurs d'import et d'export à maintenir, dans le cadre de licence déjà établi.
+- [ ] **Targeted 3D.** Regular templates for revolutions, oblique bores, and terminal fillets; separate contract per family and explicit handling of excluded geometric singularities.
+- [ ] **Composition and maximum degree.** Set degree/cost budgets for curved hosts and a strategy accounting for knot preimages.
+- [ ] **General decomposition.** Evaluate cross fields, separators, and combinatorial optimization as measured extensions to templates, without assuming coverage.
+- [ ] **THB refinement.** Study interaction with nested traces and differentiable regimes after tensor refinement is validated.
+- [ ] **Retaining inactive cells.** Choose a policy based on demonstrated usefulness for undo, variants, memory, and maintenance cost.
+- [ ] **Material fields and physics.** Specify scope of heterogeneous fields, orientations, and transfers; add large deformation and near-incompressibility with their own mechanical validations.
+- [ ] **Industrialization.** Profile the Rust kernel and select import/export adapters and optimizations to maintain, within the established license.
 
-## Annexe A. Principales corrections de cette révision
+## Appendix A. Main corrections in this revision
 
-| Sujet | Correction intégrée | Sections |
-| --- | --- | --- |
-| Périmètre | Familles prismatiques explicitement qualifiées ; suppression de la promesse de couverture complète 2,5D | 1, 2, 18, 19 |
-| Contrats | Exactitude de représentation, erreur estimée et erreur certifiée distinguées ; validité indépendante | 2, 4, 6, 11, 12 |
-| Topologie | Séparation des côtés paramétriques, sous-faces topologiques et faces de conception ; comptages sur le complexe subdivisé | 3, 6, 7, 10 |
-| Raccords | Poids NURBS, multiplicités, contraintes d'arêtes, reproduction des champs et raffinement des traces communes | 10, 15, 18 |
-| Conditions aux limites | Traitement des faces partiellement exposées, relèvements forts et transfert explicite des sélections | 10, 14, 15, 16 |
-| Paramétrisation | Portée du théorème harmonique, possibilité de repartitionner, singularités essentielles et compositions traversant des nœuds | 7, 8, 11 |
-| Opérateurs | Booléens par couches, rayon métrique des congés, contacts à l'axe et contrats des transitions volumiques | 8, 9, 13 |
-| Certification | Dénominateur rationnel, injectivité globale, inclusion entre blocs et indicateurs de distorsion | 12 |
-| Sensibilités | Poids et coordonnées homogènes, contraintes variables, relèvement, systèmes KKT et régimes différentiels | 14, 15 |
-| Validation | Corpus obligatoire, couverture, coût complet à précision imposée et quatre jalons de décision | 17, 18, 19 |
-| État de l'art | Références corrigées et complétées ; distinction entre résultats établis et contributions à démontrer | 21 |
+| Topic | Correction incorporated | Sections |
+|---|---|---|
+| Scope | Explicitly qualified prismatic families; removed promise of full 2.5D coverage | 1, 2, 18, 19 |
+| Contracts | Distinguished representation exactness, estimated error, certified error, and independent validity | 2, 4, 6, 11, 12 |
+| Topology | Separated parametric sides, topological subfaces, and design faces; counts on subdivided complex | 3, 6, 7, 10 |
+| Interfaces | NURBS weights, multiplicities, edge constraints, field reproduction, and common-trace refinement | 10, 15, 18 |
+| Boundary conditions | Partial exposed faces, strong liftings, and explicit selection transfer | 10, 14, 15, 16 |
+| Parameterization | Scope of harmonic theorem, repartitioning, essential singularities, and composition across knots | 7, 8, 11 |
+| Operators | Layered Booleans, metric fillet radius, axis contacts, and volumetric transition contracts | 8, 9, 13 |
+| Certification | Rational denominator, global injectivity, block inclusion, and distortion indicators | 12 |
+| Sensitivities | Weights and homogeneous coordinates, variable constraints, lifting, KKT systems, and differential regimes | 14, 15 |
+| Validation | Mandatory corpus, coverage, full cost at prescribed accuracy, and four decision milestones | 17, 18, 19 |
+| State of the art | Corrected and expanded references; distinguished established results from contributions to prove | 21 |

@@ -65,14 +65,14 @@ if __name__ == "__main__":
         p.add_argument(name, type=Path)
     args = p.parse_args()
     fig = plt.figure(figsize=(11, 5.4), facecolor="white")
-    titles = ["Équerre issue de l’esquisse", "Deux perçages sécants"]
+    titles = ["Sketch-generated bracket", "Two intersecting bores"]
     for i, file in enumerate((args.bracket, args.cross)):
         ax = fig.add_subplot(1, 2, i+1, projection="3d")
         n, links = panel(ax, json.loads(file.read_text()), bool(i))
         ax.set_title(titles[i], fontsize=16, loc="center", weight="bold", color="#213d50")
-        ax.text2D(.5,.03,f"{n} blocs  ·  {links} interfaces",transform=ax.transAxes,
+        ax.text2D(.5,.03,f"{n} blocks  ·  {links} interfaces",transform=ax.transAxes,
                   fontsize=12,ha="center",color="#213d50")
-    fig.text(.5,.045,"À gauche, frontière extérieure et limites de cartes. À droite, parois des deux perçages dans le pavé.",
+    fig.text(.5,.045,"Left: outer boundary and chart edges. Right: the two bore walls inside the box.",
              ha="center",fontsize=11, color="#314b59")
     fig.subplots_adjust(left=.015,right=.985,top=.91,bottom=.105,wspace=.02)
     fig.savefig(args.output, dpi=180)

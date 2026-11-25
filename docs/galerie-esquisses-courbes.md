@@ -1,29 +1,29 @@
-# Esquisses courbes de la galerie
+# Curved sketch gallery
 
-Les six recettes reprennent la plaque à poche borgne, les deux cavités fermées, les deux sections en C et le prisme en L de la série polygonale. Le constructeur Rust conserve les identifiants des blocs et des raccords du plan d’esquisse. Il remplace les cartes trilinéaires par des volumes de Bézier de degrés (2, 2, 1), à contrôles homogènes entiers de poids commun. Ces cartes polynomiales sont des cas particuliers de NURBS. Les arcs et les surfaces figurent dans les coordonnées du modèle et dans l’export STEP.
+The six recipes reuse the blind-pocket plate, two closed cavities, two C-sections, and L-shaped prism from the polygonal series. The Rust constructor preserves the block and interface identities from the sketch plan. It replaces trilinear maps with Bézier volumes of degree (2, 2, 1), using integer homogeneous controls with a common weight. These polynomial maps are special cases of NURBS. Arcs and surfaces appear in model coordinates and in the STEP export.
 
-## Règles de construction
+## Construction rules
 
-Le rectangle de chaque opération donne le centre et les dimensions de son profil courbe. Pour un trou traversant, le constructeur rapproche les quatre coins du centre par un facteur 2/3. Il relie les coins successifs par quatre arcs quadratiques. Le contrôle central de chaque arc est décalé vers l’extérieur de la moitié de la dimension transverse du rectangle réduit. Les tangentes paramétriques coïncident aux jonctions. L’enveloppe en X et Y du trou reste celle du rectangle source.
+The rectangle for each operation defines the center and dimensions of its curved profile. For a through-hole, the constructor moves the four corners toward the center by a factor of 2/3. It connects successive corners with four quadratic arcs. Each arc's middle control is offset outward by half the transverse dimension of the reduced rectangle. Parametric tangents agree at the junctions. The hole's X and Y envelope remains that of the source rectangle.
 
-Pour une poche borgne ou une cavité fermée, les facteurs correspondants sont 4/5 et 1/4. Les quatre arcs ont des tangentes distinctes aux jonctions. Cette construction conserve un bloc de fond régulier jusque dans ses coins. Sur chaque pièce, le côté extérieur de plus petite ordonnée est également courbe. Son contrôle central est déplacé vers l’extérieur d’un huitième de la hauteur du profil dans le plan XY. La flèche géométrique au milieu de l’arc vaut la moitié de ce déplacement.
+For a blind pocket or closed cavity, the corresponding factors are 4/5 and 1/4. The four arcs have distinct tangents at their junctions. This construction preserves a regular floor block, including at its corners. On each part, the outer side with the smallest ordinate is also curved. Its middle control is moved outward by one eighth of the profile height in the XY plane. The geometric sagitta at the arc midpoint is half that offset.
 
-Les contrôles des bords sont partagés entre les cartes voisines. Le centre du réseau biquadratique est obtenu par interpolation de Coons. Les plans sont ensuite extrudés suivant la direction prescrite par la recette. Pour le C, la face supérieure est translatée de (3, −2, 7) mm.
+Edge controls are shared by adjacent maps. The center control of the biquadratic net is obtained by Coons interpolation. The sections are then extruded in the direction specified by the recipe. For the C, the top face is translated by (3, −2, 7) mm.
 
-| Configuration | Blocs | Interfaces | Volume exact en mm³ |
+| Configuration | Blocks | Interfaces | Exact volume (mm³) |
 |---|---:|---:|---:|
-| Poche borgne | 9 | 16 | 48 976 |
-| Cavité centrée | 14 | 28 | 247 952 / 25 |
-| Cavité décalée | 14 | 28 | 247 952 / 25 |
-| C à deux trous traversants | 9 | 10 | 45 878 / 27 |
-| L avec trou traversant et cavité | 26 | 51 | 49 792 / 9 |
-| C avec trou déplacé de 1 mm | 9 | 10 | 45 878 / 27 |
+| Blind pocket | 9 | 16 | 48,976 |
+| Centered cavity | 14 | 28 | 247,952 / 25 |
+| Offset cavity | 14 | 28 | 247,952 / 25 |
+| C with two through-holes | 9 | 10 | 45,878 / 27 |
+| L with through-hole and cavity | 26 | 51 | 49,792 / 9 |
+| C with hole shifted by 1 mm | 9 | 10 | 45,878 / 27 |
 
-La borne de comptage des blocs s’applique aux partitions communes aux couches, avec raccords face entière et quatre jonctions prescrites par profil. Ces quatre jonctions peuvent être lisses sur un trou traversant. Leur conservation comme sommets du plan fait partie de l’hypothèse de comptage. [Démonstration combinatoire](partition-poche-comparaison.md)
+The block-count lower bound applies to partitions shared across layers, with whole-face interfaces and four prescribed junctions per profile. These four junctions may be smooth for a through-hole. Retaining them as planar vertices is part of the counting assumption. [Combinatorial proof](partition-poche-comparaison.md)
 
-## Rejouer une pièce
+## Replaying a part
 
-Depuis la racine du dépôt, cet exemple reconstruit le C à deux trous, lance l’audit natif et l’oracle indépendant, puis écrit le STEP.
+From the repository root, this example rebuilds the C with two holes, runs the native audit and independent oracle, then writes STEP.
 
 ```sh
 cargo build --release --locked --offline
@@ -38,6 +38,6 @@ python3 tests/references/curved_sketch_gallery.py --recipe "$recipe" --model "$m
 "$cli" export-step "$model" build/curved-gallery/c.step
 ```
 
-L’audit Rust rejoue la recette, compare les traces orientées et certifie la positivité du jacobien sur chaque cube paramétrique fermé. L’oracle Python vérifie les contrôles des arcs sur les parois, borne le déterminant en arithmétique rationnelle et intègre le volume de deux manières indépendantes. La première intègre le déterminant des cartes. La seconde intègre les contours d’esquisse par la formule de Green et somme les volumes des couches. La galerie permet de télécharger chaque recette, le modèle, l’audit et le STEP. [Données de la galerie](site/data)
+The Rust audit replays the recipe, compares oriented traces, and certifies positive Jacobians on every closed parametric cube. The Python oracle checks arc controls on the walls, bounds the determinant with rational arithmetic, and integrates volume in two independent ways. One integrates map determinants. The other integrates sketch contours with Green's formula and sums layer volumes. The gallery provides each recipe, model, audit, and STEP for download. [Gallery data](site/data)
 
-Les six exports STEP ont été relus avec FreeCAD et OCCT 7.8.1. Le lecteur retrouve un solide valide par fichier, avec deux coquilles fermées pour les pièces à cavité interne et une pour les trois autres. Les écarts relatifs de volume avec l’intégrale exacte sont inférieurs à 10⁻¹⁴. L’option `--step build/curved-gallery/c.step` de l’oracle ajoute cette vérification lorsque les modules Python FreeCAD et Part sont disponibles.
+All six STEP exports were re-imported with FreeCAD and OCCT 7.8.1. The reader finds one valid solid per file, with two closed shells for parts with internal cavities and one for the other three. Relative volume errors against exact integration are below 10⁻¹⁴. The oracle's `--step build/curved-gallery/c.step` option adds this check when the FreeCAD and Part Python modules are available.

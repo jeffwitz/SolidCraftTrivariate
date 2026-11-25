@@ -1,39 +1,39 @@
-# Partition locale des équerres FieldCraft
+# Local partition of the FieldCraft brackets
 
-La référence de départ est la révision `aa94b1b`. Ses cinq équerres ont chacune 48 blocs et 74 interfaces. Sur chaque aile, la face extérieure percée porte 24 panneaux.
+The baseline is revision `aa94b1b`. Its five bracket models each have 48 blocks and 74 interfaces. Each arm's perforated exterior face contains 24 panels.
 
-## Critères de qualification
+## Qualification criteria
 
-- Reconstruire les cinq solides depuis les mêmes recettes. Conserver le contour en L, le congé R6, les positions et les diamètres des deux trous. Préserver la lecture et l’audit des anciens modèles.
-- Sur un prisme rectangulaire percé, relier chaque côté extérieur directement à un quart de cercle. L’objectif est de quatre blocs traversants. Sur l’équerre, essayer quatre blocs dans chaque aile et deux dans le coude.
-- Vérifier sur le cube fermé la positivité du déterminant de chaque carte. Vérifier les raccords en coordonnées homogènes, les parois cylindriques et les empreintes planes.
-- Comparer chaque STEP avec le solide historique correspondant par intégration adaptative et par classification de matière, y compris à ±0,02 mm de chaque paroi. Les seuils géométriques sont ceux du rejeu précédent.
-- Compter les panneaux des faces extérieures percées directement sur les cartes. La réduction du nombre de blocs ne constitue pas une preuve de minimalité sur l’ensemble des partitions 3D possibles.
+- Rebuild all five solids from the same recipes. Preserve the L outline, R6 fillet, and the positions and diameters of both holes. Keep old models readable and auditable.
+- For a rectangular prism with a through bore, connect each outside side directly to a quarter-circle. The target is four through-blocks. For the bracket, try four blocks per arm and two in the bend.
+- Verify positive determinant on each closed cube. Check homogeneous-coordinate interfaces, cylindrical walls, and planar footprints.
+- Compare each STEP file with its corresponding historical solid using adaptive integration and material classification, including points ±0.02 mm from each wall. Use the geometric thresholds from the preceding replay.
+- Count panels on perforated exterior faces directly from the maps. Fewer blocks do not prove minimality among all possible 3D partitions.
 
-## Résultat géométrique
+## Geometric result
 
-| Mesure par équerre | Grille précédente | Partition locale |
+| Measure per bracket | Previous grid | Local partition |
 |---|---:|---:|
-| Blocs trivariés | 48 | 10 |
-| Raccords entre blocs | 74 | 11 |
-| Faces extérieures de blocs | 140 | 38 |
-| Panneaux sur chacune des faces planes percées x = 0 et y = 0 | 24 | 5 |
+| Trivariate blocks | 48 | 10 |
+| Block interfaces | 74 | 11 |
+| Exterior block faces | 140 | 38 |
+| Panels on each planar perforated face x = 0 and y = 0 | 24 | 5 |
 
-Les cinq variantes partagent cette topologie. Les quatre cartes de chaque aile vont directement du cercle au bord de la partie rectangulaire de l’aile. Le cinquième panneau sur la grande face appartient au coude. Les deux cartes du coude sont communes aux deux ailes. Les onze raccords comparent les réseaux homogènes, après élévation de degré si nécessaire. Le prisme rectangulaire à un seul trou comporte quatre blocs et quatre raccords, pour chacun des axes d’extrusion X, Y et Z testés. Les profils en L réfléchis et translatés ont aussi été reconstruits dans les quatre orientations du plan.
+The five variants share this topology. Four maps in each arm connect the circle directly to the boundary of the rectangular arm section. The fifth panel on the large face belongs to the bend. The two bend maps are shared by both arms. The eleven interfaces compare homogeneous control nets, with degree elevation when needed. The rectangular single-bore prism has four blocks and four interfaces for each tested extrusion axis X, Y, and Z. Reflected and translated L profiles were also rebuilt in all four plane orientations.
 
-Les huit faces cylindriques de perçage sont exportées sur des supports STEP `CYLINDRICAL_SURFACE`. La reconnaissance vérifie les coordonnées et les poids du quart de cercle, le rayon et la direction d’extrusion. Lors du premier essai, le STEP décrivait les mêmes surfaces par des B-splines rationnelles. Sur la variante Ø10/Ø5, FreeCAD/OCCT classait huit points de matière dans le vide sur un plan tangent au petit trou. Les coordonnées et les empreintes des fichiers du premier essai sont conservées dans [le contre-exemple](../../tests/counterexamples/fieldcraft_compact_x80_y40_cylindrical_step_supports.json).
+The eight cylindrical bore faces are exported on STEP `CYLINDRICAL_SURFACE` supports. Recognition checks the quarter-circle coordinates and weights, radius, and extrusion direction. The first attempt represented the same surfaces as rational B-splines in STEP. On the Ø10/Ø5 variant, FreeCAD/OCCT classified eight material points as void on a plane tangent to the small hole. Coordinates and file hashes from that first attempt are preserved in the [counterexample](../../tests/counterexamples/fieldcraft_compact_x80_y40_cylindrical_step_supports.json).
 
-FreeCAD/OCCT a relu cinq solides valides à une coquille, avec 38 faces chacun. Les 7 680 points des deux grilles, les 80 sondes radiales et les 40 sondes sur les plans tangents concordent avec les références. Sur les cinq paires de STEP, les plus grands écarts absolus mesurés par intégration adaptative sont 2,19 × 10⁻¹¹ mm³ en volume et 1,64 × 10⁻⁷ mm² en aire.
+FreeCAD/OCCT reread five valid one-shell solids with 38 faces each. The 7,680 points in the two grids, 80 radial probes, and 40 probes on tangent planes agreed with the references. Across the five STEP pairs, the largest absolute adaptive-integration discrepancies were `2.19 × 10⁻¹¹ mm³` in volume and `1.64 × 10⁻⁷ mm²` in area.
 
-## Calcul sur la partition
+## Analysis on the partition
 
-Sur l’équerre d’origine, le calcul Q2 sans raffinement reproduit la résultante de 2 000 N sur 320 mm² avec 171 degrés de liberté scalaires, contre 705 auparavant. À quadrature d’ordre 16, l’énergie de déformation vaut 135,445 N·mm avec dix blocs et 144,124 N·mm avec l’ancienne partition. L’écart de 6,02 % porte sur deux espaces d’analyse différents. La validation géométrique laisse ouverte la convergence en contrainte et en énergie aux raffinements supérieurs.
+On the original bracket, the unrefined Q2 solve reproduces a 2,000 N resultant over 320 mm² with 171 scalar degrees of freedom, compared with 705 previously. At quadrature order 16, strain energy is 135.445 N·mm with ten blocks and 144.124 N·mm with the old partition. The 6.02% difference compares two different analysis spaces. Geometric qualification leaves convergence of stress and energy at higher refinement open.
 
-## Fichiers et rejeu
+## Files and replay
 
-[Télécharger les cinq équerres et le prisme témoin](fieldcraft-replay/fieldcraft-compact.zip) · [Ouvrir l’équerre dans la galerie](https://jeffwitz.github.io/SolidCraftTrivariate/?model=fieldcraft_x64_y64)
+[Download the five brackets and control prism](fieldcraft-replay/fieldcraft-compact.zip) · [Open the bracket in the gallery](https://jeffwitz.github.io/SolidCraftTrivariate/?model=fieldcraft_x64_y64)
 
-Depuis un clone du dépôt, les commandes suivantes reconstruisent le prisme témoin.
+From a repository clone, these commands rebuild the control prism:
 
 ```sh
 mkdir -p build
@@ -42,4 +42,4 @@ cargo run -- audit build/plate.model.json
 cargo run -- export-step build/plate.model.json build/plate.step
 ```
 
-Pour l’équerre, utiliser la recette `docs/site/data/fieldcraft_x64_y64/fieldcraft_x64_y64.recipe.json`. Le constructeur choisit la partition depuis les esquisses. Les modèles à 48 blocs restent auditables avec le plan enregistré dans leurs fichiers.
+For a bracket, use the recipe `docs/site/data/fieldcraft_x64_y64/fieldcraft_x64_y64.recipe.json`. The builder chooses the partition from the sketches. The 48-block models remain auditable using the plan stored in their files.

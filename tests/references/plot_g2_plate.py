@@ -107,7 +107,7 @@ def main():
             if polygon is not None:
                 section.fill(*polygon.T, facecolor="#cce5e5", edgecolor="#57888b", lw=.65)
         section.set(aspect="equal", xlabel="x (mm)", ylabel="y (mm)",
-                    title=f"Matière en coupe à z = {args.slice_z:g} mm")
+                    title=f"Material cross-section at z = {args.slice_z:g} mm")
 
     traces = []
     for b in blocks:
@@ -119,7 +119,7 @@ def main():
             plan.plot(*p.T, color="#176a72" if curved else "#243845" if wall else "#adc3cc",
                       lw=2.4 if wall else 0.8, zorder=2 if wall else 1)
     plan.set(aspect="equal", xlabel="x (mm)", ylabel="y (mm)",
-             title="Partition de la face supérieure")
+             title="Top-face partition")
     crossings = model.get("sketch_plan", {}).get("crossings", [])
     cut_levels = sorted({tuple(c["y_mm"]) for c in crossings})
     for val in cut_levels:
@@ -132,16 +132,16 @@ def main():
         s = s0 + np.r_[0, np.cumsum(np.linalg.norm(np.diff(p, axis=0), axis=1))]
         curvature.plot(s, k, color="#176a72", lw=2)
         induced = len(crossing_xy) and np.min(np.linalg.norm(crossing_xy - p[0], axis=1)) < 1e-8
-        label, color, marker = (("Intersection des esquisses", "#a8421f", "D") if induced
-                                else ("Nœud du profil", "#176a72", "o"))
+        label, color, marker = (("Sketch intersection", "#a8421f", "D") if induced
+                                else ("Profile node", "#176a72", "o"))
         curvature.scatter(s[0], k[0], s=23, color=color, marker=marker, zorder=3,
                           label=label if label not in labelled else None)
         labelled.add(label)
         plan.scatter(*p[0], s=19, color=color, marker=marker, zorder=3)
         s0 = s[-1]
 
-    curvature.set(xlabel="Abscisse curviligne approchée (mm)", ylabel="Courbure signée (mm⁻¹)",
-                  title="Courbure du contour NURBS sur un tour")
+    curvature.set(xlabel="Approximate arc length (mm)", ylabel="Signed curvature (mm⁻¹)",
+                  title="Signed curvature along one NURBS boundary period")
     curvature.grid(axis="y", alpha=0.25)
     curvature.legend(frameon=False, loc="upper center", bbox_to_anchor=(0.5, -0.26), ncol=2)
     args.figure.parent.mkdir(parents=True, exist_ok=True)

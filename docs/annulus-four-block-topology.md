@@ -1,49 +1,49 @@
-# Anneau à connectivité fixe
+# Fixed-connectivity annulus
 
-L’essai part de la révision `d25b6b6`. L’anneau a pour rayons 2 et 4 mm et pour hauteur 8 mm. L’opération traite les quatre arêtes circulaires ensemble, avec un rayon ou un retrait de 0,25 mm. Deux expériences répondent à deux décisions que le constructeur peut prendre dès l’esquisse.
+The experiment starts from revision `d25b6b6`. The annulus has radii 2 and 4 mm and height 8 mm. The operation treats all four circular edges together, with a 0.25 mm fillet radius or chamfer setback. Two experiments address two decisions the constructor can make from the sketch.
 
-| Plan de construction | Vif | Chanfrein | Congé | Cellules de Bézier pour l’audit par état |
-| --- | --- | --- | --- | --- |
-| Éditer les quatre secteurs de la galerie | 4 volumes | 4 volumes | Obstruction au jacobien strict avec ces incidences | 12 |
-| Préparer une section à cinq cartes et deux demi-tours | 10 volumes | 10 volumes | 10 volumes | 128 |
+| Construction plan | Sharp | Chamfer | Fillet | Bézier audit cells per state |
+|---|---|---|---|---:|
+| Edit the gallery's four sectors | 4 volumes | 4 volumes | Strict-Jacobian obstruction with these incidences | 12 |
+| Prepare a five-patch section and revolve it in two half-turns | 10 volumes | 10 volumes | 10 volumes | 128 |
 
-## Édition des quatre secteurs d’origine
+## Editing the four original sectors
 
-Le prototype lit les quatre blocs de `full_annulus_v1` et conserve leurs identifiants, leurs orientations, leurs pôles angulaires et leurs poids à une échelle homogène globale près. Il prépare deux nœuds axiaux internes à 0,25 et 7,75 mm dans chacun des quatre blocs de degrés (2,1,1). Les deux états ont 24 pôles par volume. À hauteur z, le rayon varie entre 2+d et 4−d. Pour le chanfrein, d=max(0, 0,25−min(z,8−z)). L’état vif utilise d=0. L’édition déplace deux rangées radiales à chaque extrémité. Le volume du profil idéal chanfreiné vaut 95,25π mm³.
+The prototype reads the four `full_annulus_v1` blocks and preserves their identities, orientations, angular poles, and weights up to a common homogeneous scale. It inserts two internal axial knots at 0.25 and 7.75 mm in each degree-(2,1,1) block. Both states have 24 poles per volume. At height z, radius varies between 2+d and 4−d. For the chamfer, d=max(0, 0.25−min(z,8−z)); the sharp state uses d=0. Editing moves two radial rows at each end. The ideal chamfered profile volume is 95.25π mm³.
 
-Les quatre raccords entre secteurs coïncident coefficient par coefficient. Le certificat de Bernstein appliqué aux douze cellules fermées donne une borne de déterminant supérieure à 0,82079 mm³ dans l’état vif et à 0,69254 mm³ dans l’état chanfreiné, en paramètres locaux de cellule. Le rayon, la hauteur et l’angle parcourent chacun leur intervalle une seule fois, avec la même approximation dyadique du cercle que le constructeur d’origine. [Constructeur et tests](../examples/annulus_four_block_chamfer.rs) · [Vif](results/annulus-fixed-topology/four-sharp.json) · [Chanfrein](results/annulus-fixed-topology/four-chamfer.json)
+All four sector interfaces match coefficient by coefficient. Bernstein certification on the twelve closed cells gives determinant lower bounds above 0.82079 mm³ in the sharp state and 0.69254 mm³ in the chamfered state, in local cell parameters. Radius, height, and angle each traverse their interval once, using the same dyadic circle approximation as the original constructor. [Constructor and tests](../examples/annulus_four_block_chamfer.rs) · [Sharp](results/annulus-fixed-topology/four-sharp.json) · [Chamfer](results/annulus-fixed-topology/four-chamfer.json)
 
-## Obstruction pour le congé sur ces quatre volumes
+## Fillet obstruction on these four volumes
 
-Chaque secteur d’origine est le produit d’un quadrant angulaire par une section carrée. Ses deux faces d’extrémité angulaire sont des raccords internes. Deux faces physiques extérieures sont incidentes à chacune des quatre arêtes longitudinales issues des coins de la section. Après traitement des quatre arêtes, le bord méridien entier est lisse au sens du plan tangent, y compris aux jonctions des arcs et des droites.
+Each original sector is the product of an angular quadrant and a square section. Its two angular end faces are internal interfaces. Two exterior physical faces meet at each of the four longitudinal edges from the section corners. After treating all four edges, the entire meridional boundary is smooth in tangent-plane sense, including at arc/line junctions.
 
-Dans une cellule tensorielle qui touche une telle arête, prenons les deux faces u=0 et v=0 et un point intérieur de l’arête hors des nœuds angulaires. Les dérivées tangentielles des deux faces sont respectivement (Fv,Fw) et (Fu,Fw). Si le bord physique a un seul plan tangent, les trois colonnes Fu, Fv, Fw appartiennent à ce plan. Le déterminant s’annule donc sur le bord. Le raisonnement vaut pour les dérivées unilatérales de la cellule adjacente, quel que soit le nombre de nœuds internes. Il suffit d’une seule telle arête pour faire échouer le critère du projet. Le chanfrein laisse des cassures de tangente auxquelles ces arêtes paramétriques peuvent aboutir. [Témoin Rust du défaut de rang et des changements de paramètres](../tests/annulus_four_sector_obstruction.rs)
+In a tensor cell touching such an edge, take faces u=0 and v=0 and an interior point on the edge away from angular knots. The tangent derivatives of the two faces are respectively (Fv,Fw) and (Fu,Fw). If the physical boundary has one tangent plane, columns Fu, Fv, Fw all lie in that plane. The determinant therefore vanishes on the boundary. The same reasoning applies to one-sided derivatives of the adjacent cell, regardless of internal knot count. One such edge is enough to fail the project's criterion. The chamfer retains tangent breaks to which these parametric edges can terminate. [Rust witness for the rank defect and parameter changes](../tests/annulus_four_sector_obstruction.rs)
 
-## Gabarit préparé depuis la section et son constructeur de révolution
+## Template prepared from the section and its revolution constructor
 
-Le constructeur joint les milieux des quatre côtés du profil à un losange intérieur centré sur (3,4), de demi-diagonales 0,5 et 2 mm. Les quatre bandes entre ce cœur et le contour portent chacune un coin physique au milieu de leur **bord de carte**. Le cœur et les bandes existent dans l’état vif. Chaque bande utilise quatre travées tangentielles. Deux d’entre elles couvrent la zone modifiable. Dans cette zone, les pôles extérieurs représentent suivant l’état deux branches du coin vif, deux segments colinéaires ou deux restrictions d’un arc circulaire rationnel tangent. Le recul et le rayon valent 0,25 mm sur les quatre coins.
+The constructor connects the midpoints of the four profile sides to an interior diamond centered at (3,4), with half-diagonals 0.5 and 2 mm. The four strips between the core and contour each contain a physical corner at the midpoint of their **map boundary**. The core and strips also exist in the sharp state. Each strip uses four tangential spans; two cover the editable region. There, depending on state, exterior poles describe two sharp-corner branches, two collinear segments, or two restrictions of a tangent rational circular arc. Setback and radius are 0.25 mm at all four corners.
 
-Le balayage utilise deux demi-tours injectifs, avec deux travées rationnelles par demi-tour et une vitesse angulaire raccordée. Chaque volume retrouve le même voisin sur deux faces angulaires distinctes. Les dix identifiants, incidences, degrés, nœuds, multiplicités et poids sont identiques dans les trois états. Seules les coordonnées des pôles de la paroi changent. Le format JSON du prototype enregistre les dix réseaux NURBS complets. [Constructeur et audit Rust](../examples/annulus_prepared_volumes.rs) · [Vif](results/annulus-fixed-topology/ten-sharp.json) · [Chanfrein](results/annulus-fixed-topology/ten-chamfer.json) · [Congé](results/annulus-fixed-topology/ten-fillet.json)
+The sweep uses two injective half-turns, each with two rational spans and a matched angular speed. Each volume meets the same neighbor on two distinct angular faces. All ten identities, incidences, degrees, knots, multiplicities, and weights are identical in all three states. Only wall pole coordinates change. The prototype JSON records all ten complete NURBS nets. [Rust constructor and audit](../examples/annulus_prepared_volumes.rs) · [Sharp](results/annulus-fixed-topology/ten-sharp.json) · [Chamfer](results/annulus-fixed-topology/ten-chamfer.json) · [Fillet](results/annulus-fixed-topology/ten-fillet.json)
 
-Pour chaque état, les 128 cellules extraites ont toutes un déterminant strictement supérieur à 0,0048828 mm³ en coordonnées locales. Le contrôle des coefficients homogènes retrouve 352 interfaces de cellules et les 64 faces de cellules attendues sur la peau. Dans la section, les quatre bandes couvrent des quadrants méridiens disjoints. Dans chaque quadrant, le bord de bande est simple (côté du cœur, deux rails, contour extérieur). Le déterminant positif dans chaque cellule et les raccords orientés, avec ce bord de degré topologique un, donnent une seule couverture. La révolution préserve cette couverture puisque r reste strictement positif et que les deux demi-tours couvrent le cercle une fois.
+For each state, all 128 extracted cells have determinant strictly greater than 0.0048828 mm³ in local coordinates. Homogeneous-coefficient checks find 352 cell interfaces and the expected 64 cell faces on the skin. In the section, the four strips cover disjoint meridional quadrants. In each quadrant, the strip boundary is simple (core side, two rails, outer contour). Positive determinant in every cell and oriented joins, together with this boundary of topological degree one, give a single cover. Revolution preserves it because r remains strictly positive and the two half-turns cover the circle once.
 
-L’oracle lit les réseaux JSON, extrait les éléments depuis les nœuds et intègre le déterminant en quadrature tensorielle de Gauss aux ordres 12 et 16. L’état vif est comparé à 96π. Les deux états traités sont comparés aux volumes préalablement mesurés après relecture des STEP indépendants. [Oracle de volume](../tests/references/annulus_prepared_volumes.py)
+The oracle reads the JSON nets, extracts elements from knots, and integrates determinants with tensor Gauss quadrature of orders 12 and 16. It compares the sharp state against 96π. The treated states are compared with volumes measured previously from independent STEP re-imports. [Volume oracle](../tests/references/annulus_prepared_volumes.py)
 
-| État | Volume q16 (mm³) | Référence (mm³) |
-| --- | ---: | ---: |
-| Vif | 301,592894744620 | 301,592894744620 |
-| Chanfrein | 299,236700254428 | 299,236700254422 |
-| Congé | 300,581607414644 | 300,581607414643 |
+| State | q16 volume (mm³) | Reference (mm³) |
+|---|---:|---:|
+| Sharp | 301.592894744620 | 301.592894744620 |
+| Chamfer | 299.236700254428 | 299.236700254422 |
+| Fillet | 300.581607414644 | 300.581607414643 |
 
-L’audit en fractions exactes retrouve les quatre profils et leurs raccords sur les données enregistrées. Pour chaque congé, l’identité polynomiale du cercle de rayon 1/4 mm vaut sur les deux travées complètes. Les tangentes aux deux contacts et à la jonction entre les travées ont la direction attendue. Sur les 1 530 pôles stockés, le passage du vif au congé modifie 80 positions, et le passage du vif au chanfrein en modifie 120. [Contrôle du profil](../tests/references/annulus_prepared_profile.py)
+Exact-fraction audit recovers all four profiles and their joins from the recorded data. For each fillet, the polynomial identity of a radius-1/4 mm circle holds over both complete spans. Tangents at both contacts and at the span junction have the expected direction. Among the 1,530 stored poles, 80 positions change from sharp to fillet and 120 from sharp to chamfer. [Profile check](../tests/references/annulus_prepared_profile.py)
 
-## Dans quelle classe dix volumes sont-ils minimaux ?
+## In what class are ten volumes minimal?
 
-Considérons une quadrangulation conforme de la section en disque, avec bord lisse, sans double arête ni identification, et des coins de carte réguliers. Soient I le nombre de sommets internes, B le nombre de sommets de bord et q le nombre de quadrilatères incidents au sommet. Euler et le comptage des côtés donnent F=I+B/2−1 et 4=Σᵢ(4−q)+Σᵦ(2−q). L’image d’un coin régulier a un angle strictement inférieur à π. Il faut donc au moins trois cartes en un sommet interne, et deux en un sommet du bord lisse. Il en résulte I≥4. Le contour simple a un nombre pair B≥4, donc **F≥5**. Le losange et ses quatre bandes atteignent cette borne.
+Consider a conforming quadrangulation of a disk section with smooth boundary, no double edges or identifications, and regular map corners. Let I be the number of interior vertices, B the number of boundary vertices, and q the number of quadrilaterals incident at a vertex. Euler's formula and side counting give F=I+B/2−1 and 4=Σᵢ(4−q)+Σᵦ(2−q). The image of a regular map corner has angle strictly less than π. Thus at least three maps must meet at an interior vertex and two at a smooth boundary vertex, so I≥4. A simple contour has an even number B≥4; hence **F≥5**. The diamond and its four strips attain this bound.
 
-Dans une construction produit de cette section par des intervalles angulaires, une seule carte angulaire sur un intervalle fermé identifierait ses deux extrémités. L’injectivité sur le fermé impose au moins deux intervalles. Les deux demi-tours atteignent cette borne et donnent **dix volumes dans cette classe**. Imposer les quatre quadrants comme volumes distincts conduit à vingt. La preuve ne porte ni sur les cartes périodiques avec auto-identification, ni sur toutes les décompositions héxaédriques 3D non produites par révolution.
+In a product construction of this section with angular intervals, one angular map on a closed interval would identify its two endpoints. Injectivity on the closed domain requires at least two intervals. The two half-turns attain this bound and give **ten volumes in this class**. Requiring four quadrants as distinct volumes gives twenty. The proof covers neither periodic maps with self-identification nor all 3D hexahedral decompositions not obtained by revolution.
 
-## Rejeu et portée
+## Replay and scope
 
 ```sh
 cargo test --offline --test annulus_four_sector_obstruction
@@ -54,4 +54,4 @@ python3 tests/references/annulus_prepared_profile.py
 python3 tests/references/annulus_prepared_volumes.py docs/results/annulus-fixed-topology/ten-{sharp,chamfer,fillet}.json
 ```
 
-La qualification porte sur la géométrie et ses raccords. L’espace IGA, les degrés de liberté et les performances mécaniques du gabarit à dix volumes restent à mesurer. Le parcours de production doit encore intégrer les cartes logiques multi-travées du prototype. Le planificateur devra compter à la fois les volumes persistants, les travées, les pôles et le coût de calcul. L’essai antérieur à 96 blocs mono-travée utilisait 96 cellules géométriques. Le gabarit à dix volumes en utilise 128 dans cette réalisation.
+Qualification covers geometry and interfaces. The IGA space, degrees of freedom, and mechanical performance of the ten-volume template remain to be measured. The production path still needs to integrate the prototype's logical multi-span maps. The planner must count persistent volumes, spans, poles, and computation cost. The earlier 96-block single-span experiment used 96 geometric cells; this ten-volume template uses 128 cells in this implementation.

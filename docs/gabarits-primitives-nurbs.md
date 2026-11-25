@@ -1,39 +1,48 @@
-# De la primitive d’esquisse aux volumes NURBS
+# From sketch primitives to NURBS volumes
 
-Le générateur choisit ses lignes de construction au moment où la primitive est créée. Il conserve ses travées de frontière, les jonctions prévues et le réseau homogène de chaque carte de section. L’opération choisit ensuite la direction et les travées du balayage. Les nombres ci-dessous désignent les cartes émises par ces conventions de la bibliothèque. Une seule courbe NURBS d’esquisse peut contenir plusieurs travées.
+The generator chooses construction lines when the primitive is created. It preserves boundary spans, planned junctions, and the homogeneous net for each section patch. The operation then chooses the sweep direction and spans. The counts below describe patches emitted by these library conventions. A single NURBS sketch curve may contain multiple spans.
 
-| Primitive remplie | Travées du contour | Jonctions géométriques | Cartes de section | Blocs pour une extrusion droite | Blocs pour un tour complet autour de Y |
+| Filled primitive | Boundary spans | Geometric junctions | Section patches | Blocks for straight extrusion | Blocks for full turn about Y |
 |---|---:|---|---:|---:|---:|
-| Rectangle | 4 droites de degré 1 | 4 coins G0 | 1 | 1 | 4 |
-| Disque | 4 quarts rationnels de degré 2 | 4 raccords G2 ou plus | 5 | 5 | 20 |
-| Ellipse pleine | 4 quarts rationnels de degré 2 | 4 raccords G2 ou plus | 5 | 5 | 20 |
+| Rectangle | 4 degree-1 lines | 4 G0 corners | 1 | 1 | 4 |
+| Disk | 4 rational degree-2 quarters | 4 G2-or-higher joins | 5 | 5 | 20 |
+| Filled ellipse | 4 rational degree-2 quarters | 4 G2-or-higher joins | 5 | 5 | 20 |
 
-Le nombre de surfaces NURBS sur la frontière est distinct du nombre de blocs de volume. Le rectangle extrudé a 6 faces de blocs exposées. Le disque et l’ellipse extrudés en ont 14 chacun : 4 parois latérales et 5 cartes sur chacun des deux plats. En révolution hors axe, les trois gabarits ont 16 faces exposées, une par paire travée de contour × quart de tour. Le tore possède ainsi 16 faces de frontière pour 20 blocs de matière.
+The number of boundary NURBS surfaces differs from the number of volume blocks. The extruded rectangle has 6 exposed block faces. The extruded disk and ellipse each have 14: 4 side walls and 5 patches on each of the two caps. For an off-axis revolution, all three templates have 16 exposed faces, one for each boundary-span × quarter-turn pair. Thus the torus has 16 boundary faces for 20 material blocks.
 
-![Cartes de section extraites des contrôles produits par les trois gabarits](figures/gabarits-primitives-nurbs.png)
+![Section patches extracted from the controls produced by the three templates](figures/gabarits-primitives-nurbs.png)
 
-Pour le disque, les lignes relient les quatre sommets d’un losange central situé à mi-rayon aux quatre points cardinaux du cercle. Le losange donne une carte centrale régulière et les quatre régions latérales relient ses côtés à la frontière. Le centre possède donc une carte de surface non dégénérée. L’ellipse utilise l’image affine du même découpage. Pour le rectangle les paramètres des deux côtés définissent directement la carte intérieure.
+The figure samples the boundary of each block on the bottom face of the exported extrusion. The labels count blocks in the corresponding extrusion and revolution models. To regenerate it from the CLI outputs:
 
-Chaque quart de cercle vient de la paramétrisation rationnelle exacte `(1−t², 2t)/(1+t²)`, de ses rotations et des changements de sens nécessaires pour accorder les poids aux raccords. Ces coefficients admettent une représentation entière en coordonnées homogènes. Le constructeur connaît les jonctions avant même de produire les contrôles de volume. Les essais vérifient indépendamment les jets sur les coefficients émis ainsi que les incidences et le signe du déterminant sur chaque cube fermé.
+```sh
+cargo build --release --locked --offline
+mkdir -p build/templates
+python3 tests/references/primitive_sweep_cli.py target/release/solidcraft-trivariate build/templates/models build/templates/checks.json
+python3 tests/references/plot_primitive_templates.py build/templates/models build/templates/sections.png
+```
 
-Sur le disque unité, chaque carte latérale a pour bord un côté du losange, deux segments radiaux et un quart de cercle. Cette frontière est simple et parcourt exactement une fois le bord du secteur correspondant. Avec un déterminant strictement positif, le degré topologique vaut un dans ce secteur : chaque point intérieur a un antécédent. Les quatre secteurs et le losange ont des intérieurs disjoints. Une translation et deux dilatations positives transportent cette partition à l’ellipse. La longueur positive de l’extrusion ou le rayon strictement positif de la révolution conserve la régularité sur chaque secteur angulaire.
+For the disk, lines connect the four vertices of a diamond at half-radius to the four cardinal points on the circle. The diamond gives a regular central patch; four side regions connect its sides to the boundary. Thus the center has a nondegenerate surface patch. The ellipse uses an affine image of the same subdivision. For the rectangle, the two side parameters directly define the interior patch.
 
-Pour l’extrusion, une carte de section est prolongée sur toute la longueur positive. Pour la révolution, chaque carte est croisée avec quatre quarts de tour. L’axe est l’axe Y de l’esquisse et la coordonnée radiale doit rester strictement positive. Un disque décalé de l’axe donne ainsi un tore plein. Le passage ou le contact avec l’axe demande un autre gabarit à cause de la dégénérescence des coordonnées angulaires sur l’axe.
+Each quarter circle comes from the exact rational parameterization `(1−t², 2t)/(1+t²)`, its rotations, and direction changes needed to match weights at joins. These coefficients have an integer homogeneous representation. The constructor knows the junctions before producing volume controls. Tests independently check jets on emitted coefficients, incidences, and determinant sign on every closed cube.
 
-Les nombres du tableau s’appliquent à la primitive isolée remplie. L’enlèvement de cette primitive dans une pièce nécessite aussi les cartes de **matière autour du trou**. Pour deux enlèvements qui se croisent, les lignes induites dans chaque esquisse dépendent des positions relatives des deux profils et des directions d’extrusion. Le gabarit conserve ses jonctions d’origine, puis le préplanificateur ajoute les intersections nécessaires. [Prépartition des esquisses](prepartition-esquisse-nurbs.md)
+On the unit disk, each side patch has one side of the diamond, two radial segments, and one quarter-circle as its boundary. This boundary is simple and traverses the corresponding sector boundary exactly once. With a strictly positive determinant, the topological degree in the sector is one: every interior point has a preimage. The four sectors and diamond have disjoint interiors. A translation and two positive dilations carry this partition to the ellipse. Positive extrusion length or a strictly positive revolution radius preserves regularity in each angular sector.
 
-L’API Rust est `Primitive::plan(operation)`. Le plan fournit `contour`, `junctions`, `section_patches` et `block_count()` avant toute construction 3D. `plan.build()` instancie le volume. Les dimensions de l’esquisse sont des rationnels à capacité vérifiée. [Code](../src/primitive_template.rs) · [Tests](../tests/primitive_template.rs)
+For extrusion, a section patch extends across the full positive length. For revolution, each patch is crossed with four quarter-turns. The sketch axis is Y and the radial coordinate must remain strictly positive. A disk offset from the axis therefore gives a solid torus. Crossing or touching the axis needs another template because angular coordinates degenerate on the axis.
 
-Sur le témoin de longueur 3 mm ou de rayon de révolution au centroïde 6 mm, les six volumes intégrés à l’ordre de Gauss 12 concordent avec l’aire × longueur ou le théorème de Pappus à 5,66 × 10⁻¹⁵ en relatif au maximum. Le certificat de Bernstein établit un déterminant strictement positif sur les 55 blocs des six volumes. Les incidences mesurées sont de 0 et 4 interfaces pour le rectangle extrudé et tourné, de 8 et 52 pour le disque et pour l’ellipse.
+The table counts apply to an isolated filled primitive. Removing the primitive from a part also requires maps for the **material around the hole**. For two intersecting removals, lines induced in each sketch depend on the relative profile positions and extrusion directions. The template preserves its original junctions, then the preplanner adds required intersections. [Sketch prepartitioning](prepartition-esquisse-nurbs.md)
 
-## Rejouer le tore plein
+The Rust API is `Primitive::plan(operation)`. The plan provides `contour`, `junctions`, `section_patches`, and `block_count()` before any 3D construction. `plan.build()` instantiates the volume. Sketch dimensions are capacity-checked rationals. [Code](../src/primitive_template.rs) · [Tests](../tests/primitive_template.rs)
 
-La recette fournit le centre et le rayon du disque et demande un tour autour de Y. La commande de planification donne les 20 blocs attendus avant leur construction. [Recette du tore](../tests/references/primitive_circle_revolution.recipe.json) · [Six essais CLI](results/primitive-sweep-cli.json)
+For the 3 mm extrusion or revolution radius 6 mm from the centroid, all six volumes integrated at Gauss order 12 agree with area × length or Pappus' theorem to at most 5.66 × 10⁻¹⁵ relative. The Bernstein certificate establishes a strictly positive determinant on all 55 blocks across the six volumes. Measured incidences are 0 and 4 interfaces for the extruded and revolved rectangle, and 8 and 52 for the disk and ellipse.
+
+## Replaying the solid torus
+
+The recipe provides the disk center and radius and requests a turn about Y. The planning command reports the expected 20 blocks before construction. [Torus recipe](../tests/references/primitive_circle_revolution.recipe.json) · [Six CLI trials](results/primitive-sweep-cli.json)
 
 ```sh
 mkdir -p build/templates
 cargo run --locked --offline -- plan-sketch tests/references/primitive_circle_revolution.recipe.json
-cargo run --locked --offline -- build tests/references/primitive_circle_revolution.recipe.json build/templates/tore.json
-cargo run --locked --offline -- audit build/templates/tore.json
-cargo run --locked --offline -- export-step build/templates/tore.json build/templates/tore.step
+cargo run --locked --offline -- build tests/references/primitive_circle_revolution.recipe.json build/templates/torus.json
+cargo run --locked --offline -- audit build/templates/torus.json
+cargo run --locked --offline -- export-step build/templates/torus.json build/templates/torus.step
 ```

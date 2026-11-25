@@ -1,23 +1,23 @@
-# Feuille de route de Luna
+# Luna roadmap
 
-La campagne développe le noyau et ses audits en Rust. Le lot L1 est porté dans `src/bezier.rs` et ses tests natifs sont dans `tests/bezier.rs`. Rejouer `cargo test --locked --offline` avant les contrôles croisés de `make check`. Le descriptif Python ci-dessous documente le point de départ historique.
+The campaign develops the kernel and its audits in Rust. Increment L1 is implemented in `src/bezier.rs`, with native tests in `tests/bezier.rs`. Run `cargo test --locked --offline` before the cross-checks in `make check`. The Python description below records the historical starting point.
 
-## L1 — Évaluer une carte rationnelle native
+## L1 — Evaluate a native rational map
 
-**Point de départ.** Rejouer `make check`, consigner `git rev-parse HEAD` et inspecter `build/affine_pair.json`. Première modification proposée dans `trivariate/spline.py`, avec tests et recettes sous `tests/`. Conserver l’API et les résultats du cas affine.
+**Starting point.** Run `make check`, record `git rev-parse HEAD`, and inspect `build/affine_pair.json`. The initial proposal was to modify `trivariate/spline.py`, with tests and recipes under `tests/`. Preserve the API and affine-case results.
 
-**Livrable.** Une carte de Bézier tensorielle rationnelle à degrés explicites, supportant (1,1,1) et (2,1,1), avec évaluation de X et DX sur le cube fermé. Fixer la convention des colonnes du jacobien, l’ordre des coefficients, les unités et les paramètres de face avant l’implémentation. Distinguer une entrée invalide d’une famille encore hors domaine.
+**Deliverable.** A tensor-product rational Bézier map with explicit degrees, supporting `(1,1,1)` and `(2,1,1)`, and evaluating `X` and `DX` on the closed cube. Fix the Jacobian-column convention, coefficient ordering, units, and face parameters before implementation. Distinguish invalid input from a family that is not yet supported.
 
-**Recette indépendante.** Extruder suivant z un quart de couronne de rayons 1 et 2 mm sur 3 mm. Pour chaque rayon r, les contrôles euclidiens de l’arc sont (r,0), (r,r), (0,r), de poids 1, √2/2, 1. Choisir l’ordre des axes pour un déterminant positif, par exemple angle croissant en u, rayon décroissant en v, altitude croissante en w. Enregistrer comment le poids irrationnel est représenté.
+**Independent recipe.** Extrude a quarter annulus with radii 1 and 2 mm through 3 mm along z. For each radius `r`, the arc's Euclidean controls are `(r,0)`, `(r,r)`, `(0,r)`, with weights `1`, `√2/2`, `1`. Choose axis order for a positive determinant, for example angle increasing in `u`, radius decreasing in `v`, and height increasing in `w`. Record how the irrational weight is represented.
 
-**Acceptation à figer pour ce lot.** Vérifier le cas affine sur sommets, faces et intérieur. Pour le cas courbe, vérifier les extrémités, le milieu angulaire, le rayon et z sur une grille incluant les bords (erreur absolue ≤ 10⁻¹² mm en double précision pour ces dimensions). Comparer les colonnes de DX à des dérivées indépendantes, préciser la méthode et son seuil avant essai. Tester les dimensions incohérentes et les poids nuls. Rapporter séparément les tests ponctuels et toute preuve sur le domaine continu.
+**Acceptance criteria to freeze for this increment.** Check the affine case at vertices, faces, and interior points. For the curved case, check endpoints, angular midpoint, radius, and z on a grid that includes boundaries (absolute error at most `10⁻¹² mm` for these dimensions in double precision). Compare `DX` columns with independent derivatives and specify method and tolerance before the run. Test inconsistent dimensions and zero weights. Report pointwise tests separately from any proof over the continuous domain.
 
-## Suite du démonstrateur
+## Follow-on demonstrator
 
-1. **Deux blocs courbes.** Découper le quart de couronne suivant z, partager la face canonique, vérifier les permutations et inversions, sauvegarder/recharger, modifier la hauteur et tester un refus atomique. Contrôler la subdivision exacte et la reproduction d’un champ affine. Qualifier bornes de poids, déterminant, injectivité et partition pour annoncer J1 sur cette famille.
-2. **Équerre.** Construire par gabarits les jambes, le congé de rayon 6 et les deux trous de diamètre 8. Comparer à la fixture FieldCraft (30 cellules, 45 interfaces) et au volume analytique 34080 − 616π mm³. Justifier les subdivisions supplémentaires. Le volume seul ne démontre pas l’égalité de forme.
-3. **J2.** Tester conformité H¹, modes rigides, champ affine, équilibre et convergence sous raffinement, puis comparer à la référence EF.
-4. **J3.** Régénération par dépendances et sensibilités vérifiées à régime fixé. Signaler les événements de topologie ou de sélection.
-5. **J4.** Geler corpus et seuils, publier couverture avec refus, temps et mémoire à précision comparable.
+1. **Two curved blocks.** Split the quarter annulus along z, share the canonical face, verify permutations and reversals, save/reload, edit height, and test atomic rejection. Check exact subdivision and affine-field reproduction. Qualify weight and determinant bounds, injectivity, and partition before claiming J1 for this family.
+2. **Bracket.** Build the legs, radius-6 fillet, and two diameter-8 holes from templates. Compare against the FieldCraft fixture (30 cells, 45 interfaces) and analytical volume `34080 − 616π mm³`. Justify extra subdivisions. Volume alone does not prove shape equality.
+3. **J2.** Test H¹ conformity, rigid modes, affine field, equilibrium, and convergence under refinement; then compare with the finite-element reference.
+4. **J3.** Verify dependency-based regeneration and sensitivities at a fixed regime. Report topology or selection events.
+5. **J4.** Freeze corpus and thresholds; publish coverage including rejections, runtime, and memory at comparable precision.
 
-Chaque livraison indique commandes, révision, paramètres, résultats, limites et prochain critère ouvert. Les jalons scientifiques restent ouverts au démarrage.
+Each delivery records commands, revision, parameters, results, limitations, and the next open criterion. The scientific milestones were open at the start.

@@ -1,0 +1,98 @@
+"""Independent FreeCAD/OCC reread of the SolidCore S2 STEP deliverable."""
+import hashlib
+import json
+import math
+from pathlib import Path
+
+import FreeCAD as App
+import Part
+
+root = Path(__file__).resolve().parents[2]
+step_path = root / "docs/results/g2-cross-solidcore.step"
+backend_path = root / "docs/results/g2-cross-brep-probes296.json"
+output_path = root / "docs/results/g2-cross-solidcore-reread-20261125.json"
+backend = json.loads(backend_path.read_text())
+shape = Part.read(str(step_path))
+if shape is None or shape.isNull():
+    raise RuntimeError("FreeCAD/OCC returned no shape from the SolidCore STEP")
+
+solid_list = list(shape.Solids)
+if len(solid_list) != 1:
+    raise RuntimeError("STEP reread did not contain exactly one solid")
+solid = solid_list[0]
+edge_usage = []
+for edge in shape.Edges:
+    edge_usage.append(sum(any(edge.isSame(fe) for fe in face.Edges) for face in shape.Faces))
+
+tol = 2e-7
+classifications = []
+for sample in backend["independent_source_oracle"]["classifications"]:
+    point = sample["point_mm"]
+    vertex = Part.Vertex(App.Vector(*point))
+    # Distance to the solid is zero for every point contained by it, so use
+    # the imported boundary faces for the ON test.
+    distance = min(float(face.distToShape(vertex)[0]) for face in shape.Faces)
+    if distance <= tol:
+        actual = "OnBoundary"
+    elif solid.isInside(App.Vector(*point), tol, False):
+        actual = "Inside"
+    else:
+        actual = "Outside"
+    classifications.append({
+        "point_mm": point,
+        "expected": sample["expected"],
+        "actual": actual,
+        "boundary_distance_mm": distance,
+        "matches": actual == sample["expected"],
+    })
+
+expected_volume = backend["backend_result"]["remaining_solid_volume_mm3"]
+reread_volume = float(solid.Volume)
+expected_oracle = backend["independent_source_oracle"]["q64"]["remaining_solid_volume_mm3"]
+mismatches = [x for x in classifications if not x["matches"]]
+report = {
+    "reader": "FreeCAD Part.read / OpenCascade",
+    "command": "rtk env QT_QPA_PLATFORM=offscreen freecadcmd tests/references/g2_cross_solidcore_reread.FCMacro",
+    "solidcore_report_path": str(backend_path),
+    "solidcore_report_sha256": hashlib.sha256(backend_path.read_bytes()).hexdigest(),
+    "initial_classifier_diagnostic": {
+        "method": "Shape.distToShape(point)",
+        "observed_false_on_boundary_count": 148,
+        "reason": "distance to a volumetric solid is zero for every point contained in it; the corrected ON test measures distance to each imported face",
+    },
+    "freecad_version": list(App.Version()),
+    "occ_version": getattr(Part, "OCC_VERSION", "unavailable"),
+    "step_path": str(step_path),
+    "step_bytes": step_path.stat().st_size,
+    "step_sha256": hashlib.sha256(step_path.read_bytes()).hexdigest(),
+    "shape_is_valid": bool(shape.isValid()),
+    "step_read_status": "valid" if shape.isValid() and len(solid_list) == 1 else "invalid",
+    "solid_count": len(solid_list),
+    "shell_count": len(shape.Shells),
+    "face_count": len(shape.Faces),
+    "edge_count": len(shape.Edges),
+    "vertex_count": len(shape.Vertexes),
+    "closed": bool(solid.isClosed()),
+    "edge_face_usage": {
+        "minimum": min(edge_usage, default=0),
+        "maximum": max(edge_usage, default=0),
+        "edges_used_twice": sum(x == 2 for x in edge_usage),
+        "edges_not_used_twice": [i for i, x in enumerate(edge_usage) if x != 2],
+    },
+    "volume_mm3": reread_volume,
+    "volume_vs_solidcore_relative_error": abs(reread_volume - expected_volume) / expected_volume,
+    "volume_vs_independent_q64_relative_error": abs(reread_volume - expected_oracle) / expected_oracle,
+    "classification_tolerance_mm": tol,
+    "classification_count": len(classifications),
+    "classification_status": "match" if not mismatches else "mismatch",
+    "classification_mismatch_count": len(mismatches),
+    "classification_mismatches": mismatches,
+    "classifications": classifications,
+}
+output_path.write_text(json.dumps(report, indent=2, sort_keys=True, allow_nan=False) + "\n")
+print(json.dumps({k: report[k] for k in (
+    "shape_is_valid", "solid_count", "face_count", "edge_count", "vertex_count",
+    "closed", "volume_mm3", "volume_vs_independent_q64_relative_error",
+    "classification_mismatch_count", "step_sha256",
+)}, sort_keys=True))
+App.closeDocument(App.ActiveDocument.Name) if App.ActiveDocument else None

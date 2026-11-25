@@ -876,8 +876,9 @@ def main() -> int:
                                              volume_report)
             report["production_variant_builds"] = cli_variant_checks(
                 args.cli.resolve(), recipe, rectangle_curve, work, volume_report)
-            if any(row["status"] == "accepted_validation_failed"
-                   for row in report["production_variant_builds"].values()):
+            if (report["c0_iga"]["status"] != "verified"
+                    or any(row["status"] != "accepted"
+                           for row in report["production_variant_builds"].values())):
                 report["status"] = "failed"
         except Exception as error:
             report["c0_iga"] = {"status": "failed", "error": str(error)}

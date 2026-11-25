@@ -1,0 +1,68 @@
+{
+  "version": "j1_geometry_20261125_v1",
+  "frozen_base": "00e135f",
+  "thresholds": {
+    "radius_error_mm": 1e-12,
+    "volume_relative": 1e-10,
+    "positive_closed_jacobian": true,
+    "mandatory_coverage": 1
+  },
+  "cases": [
+    {
+      "id": "rectangle",
+      "recipe": {
+        "family": "reference_rectangle_v1"
+      },
+      "required_shape": "closed 20 x 20 square extruded 8 mm",
+      "expected_blocks": 1
+    },
+    {
+      "id": "disk",
+      "recipe": {
+        "family": "core_disk_v1"
+      },
+      "required_shape": "closed radius-4 disk with square core extruded 8 mm",
+      "expected_blocks": 5
+    },
+    {
+      "id": "annulus",
+      "recipe": {
+        "family": "full_annulus_v1"
+      },
+      "required_shape": "full annulus radii 2 and 4 mm extruded 8 mm",
+      "expected_blocks": 4
+    },
+    {
+      "id": "pierced",
+      "recipe": {
+        "family": "pierced_square_v1"
+      },
+      "required_shape": "square 20 x 20 mm, through bore radius 4 mm, height 8 mm",
+      "expected_blocks": 4
+    },
+    {
+      "id": "corner",
+      "recipe": {
+        "family": "rounded_corner_v1"
+      },
+      "required_shape": "radius-6 inside corner in the 14 x 14 mm elbow footprint, height 8 mm",
+      "expected_blocks": 2
+    },
+    {
+      "id": "pocket",
+      "recipe": {
+        "family": "layered_pocket_v1"
+      },
+      "required_shape": "20 x 20 x 8 mm, central blind radius-4 recess 4 mm deep",
+      "expected_blocks": 13
+    },
+    {
+      "id": "bracket",
+      "recipe": {
+        "family": "filleted_bracket_v1"
+      },
+      "required_shape": "fixed orthogonally pierced and filleted bracket",
+      "expected_blocks": 36
+    }
+  ]
+}

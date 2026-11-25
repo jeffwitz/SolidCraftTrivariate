@@ -49,12 +49,12 @@ fn publish(target: &Path, contents: &str) -> std::io::Result<()> {
     }
 }
 
-const COMMANDS_AND_EVALUATORS: &str = r#"{"commands":["build","audit","evaluate","capabilities","export-step","certify-map","export-analysis"],"evaluators":{"rational_bezier_tensor":{"degrees":[[1,1,1],[2,1,1],[2,2,1]],"domain":[[0,1],[0,1],[0,1]]}}}"#;
+const COMMANDS_AND_EVALUATORS: &str = r#"{"commands":["build","audit","evaluate","capabilities","export-step","certify-map","export-analysis","inspect-travel"],"evaluators":{"rational_bezier_tensor":{"degrees":[[1,1,1],[2,1,1],[2,2,1]],"domain":[[0,1],[0,1],[0,1]]}}}"#;
 
 fn capabilities() -> Result<Json,String> {
     let mut result = parse(COMMANDS_AND_EVALUATORS)?;
     let Json::Object(fields) = &mut result else {return Err("invalid capabilities".into())};
-    let families = ["affine_pair_v1", "annular_pair_v1", "filleted_bracket_v1", "movable_bore_v1", "pocket_depth_v1", "exact_bore_v1", "row_bores_v1", "overlap_bore_v1", "axial_boolean_v1", "crescent_pocket_v1", "parameterized_bracket_v1"]
+    let families = ["affine_pair_v1", "annular_pair_v1", "filleted_bracket_v1", "movable_bore_v1", "pocket_depth_v1", "exact_bore_v1", "row_bores_v1", "overlap_bore_v1", "axial_boolean_v1", "crescent_pocket_v1", "parameterized_bracket_v1","travelling_bore_v1"]
         .into_iter().chain(SECTION_FAMILIES).map(|s| Json::String(s.to_owned())).collect();
     fields.insert("families".into(), Json::Array(families));
     Ok(result)
@@ -114,9 +114,37 @@ fn certify_map(map: &Json, leaves: &str, depth: &str) -> Result<Json, &'static s
     ]))
 }
 
+fn inspect_travel(center:&str)->Result<Json,&'static str> {
+    use solidcraft_trivariate::travelling_bore_events::analyze_travelling_bore;
+    let r=analyze_travelling_bore(center.parse().map_err(|_| "invalid integer center in micrometres")?)?;
+    let a=r.areas;
+    let n=|x:f64|Json::Number(x.to_string());
+    Ok(object([
+        ("status", Json::String("evaluated".into())),
+        ("center_x_um",Json::Number(r.center_um.to_string())),
+        ("ideal_volume_mm3",n(r.volume_mm3)),
+        ("dvolume_dcenter_mm2",n(r.dvolume_dcenter_mm2)),
+        ("domain_signature",object([
+            ("bore_plate", Json::String(format!("{:?}",r.physical.bore_plate))),
+            ("bore_pocket",Json::String(format!("{:?}",r.physical.bore_pocket))),
+        ])),
+        ("partition_locally_fixed",Json::Bool(r.representation.locally_fixed_partition)),
+        ("center_sides_in_x_order",Json::Array(r.representation.center_sides.map(|s|Json::Number(s.to_string())).into())),
+        ("integer_cut_ordinates",Json::Bool(r.representation.integer_cut_ordinates)),
+        ("geometry_derivative_status",Json::String("unavailable".into())),
+        ("tangencies",Json::Array(r.events.into_iter().flatten().map(|e| Json::String(e.feature.into())).collect())),
+        ("ideal_boundary_areas_mm2",object([
+            ("lower_bore",n(a.bore_wall_below_pocket_mm2)), ("upper_bore",n(a.bore_wall_above_pocket_mm2)),
+            ("pocket_walls",n(a.pocket_vertical_walls_mm2)),("pocket_floor",n(a.pocket_floor_mm2)),
+            ("top",n(a.plate_top_mm2)),("bottom",n(a.plate_bottom_mm2)),("outer_vertical",n(a.plate_outer_vertical_walls_mm2)),
+        ])),
+    ]))
+}
+
 fn run(args: &[String]) -> Result<Json, String> {
     match args {
         [cmd] if cmd=="capabilities"=>capabilities(),
+        [cmd,center] if cmd=="inspect-travel"=>Ok(inspect_travel(center)?),
         [cmd,path] if cmd=="audit"=>Ok(audit(&read(path)?).unwrap_or_else(|reason| diagnostic(if reason.ends_with("_indeterminate_bernstein") {"indeterminate"} else {"invalid"},reason))),
         [cmd,recipe,target] if cmd=="build"=>{
             let model=build(&read(recipe)?)?;
@@ -149,7 +177,7 @@ fn run(args: &[String]) -> Result<Json, String> {
             Ok(object([("status",Json::String("evaluated".into())),("position",vector(res.position)),
                 ("jacobian_columns",Json::Array(res.jacobian_columns.into_iter().map(vector).collect()))]))
         }
-        _=>Err("usage: solidcraft-trivariate capabilities | build RECIPE OUTPUT | audit MODEL | evaluate MAP U V W | export-step MODEL OUTPUT | certify-map MAP MAX_LEAVES MAX_DEPTH | export-analysis MODEL GAUSS_ORDER OUTPUT".into()),
+        _=>Err("usage: solidcraft-trivariate capabilities | build RECIPE OUTPUT | audit MODEL | evaluate MAP U V W | export-step MODEL OUTPUT | certify-map MAP MAX_LEAVES MAX_DEPTH | export-analysis MODEL GAUSS_ORDER OUTPUT | inspect-travel CENTER_X_UM".into()),
     }
 }
 

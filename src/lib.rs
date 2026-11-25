@@ -1,6 +1,7 @@
 //! Native geometry on the closed unit cube. Physical coordinates are in mm.
 
 pub mod analysis_space;
+pub mod adaptive_partition;
 pub mod affine_overlap;
 pub mod annular;
 pub mod annular_audit;
@@ -56,5 +57,7 @@ pub mod stress;
 pub mod trace_sensitivity;
 pub mod triangle_quads;
 pub mod travelling_bore_events;
+pub mod travelling_bore_audit;
+pub mod travelling_bore_session;
 pub mod travelling_bore;
 pub use bezier::{Evaluation, MapError, RationalBezierMap};

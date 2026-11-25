@@ -81,7 +81,7 @@ fn certify(
     ))
 }
 
-pub(crate) const PARAMETRIC_FAMILIES: [&str; 7] = [
+pub(crate) const PARAMETRIC_FAMILIES: [&str; 8] = [
     "movable_bore_v1",
     "pocket_depth_v1",
     "exact_bore_v1",
@@ -89,10 +89,12 @@ pub(crate) const PARAMETRIC_FAMILIES: [&str; 7] = [
     "overlap_bore_v1",
     "crescent_pocket_v1",
     "parameterized_bracket_v1",
+    "travelling_bore_v1",
 ];
 
 fn parameters(family: &str) -> &'static [&'static str] {
     match family {
+        "travelling_bore_v1" => &["center_x_um"],
         "parameterized_bracket_v1" => &["radii_sixteenths_mm"],
         "movable_bore_v1" => &["center_half_mm", "radius_half_mm"],
         "row_bores_v1" => &["half_widths_half_mm", "centers_half_mm", "radii_half_mm"],
@@ -155,6 +157,13 @@ fn audit_template(
     blocks: &[BracketBlock],
 ) -> Result<(BracketCertificate, Option<f64>), &'static str> {
     match family {
+        "travelling_bore_v1" => {
+            let center = input.field("center_x_um")?.number::<i32>()?;
+            let cert = crate::travelling_bore_audit::audit_travelling_bore(center, blocks)?;
+            let physical =
+                crate::travelling_bore_events::analyze_travelling_bore(i64::from(center))?;
+            Ok((cert, Some(physical.volume_mm3)))
+        }
         "parameterized_bracket_v1" => {
             let [rx, ry] = bracket_radii(input)?;
             let result = crate::bracket_parameters_audit::audit_bracket_parameters(rx, ry, blocks)?;
@@ -224,6 +233,9 @@ pub(crate) fn build(recipe: &Json) -> Result<Json, &'static str> {
     recipe.keys(&keys)?;
     let blocks = match family {
         "filleted_bracket_v1" => bracket_blocks()?,
+        "travelling_bore_v1" => {
+            crate::travelling_bore::travelling_bore_blocks(recipe.field("center_x_um")?.number()?)?
+        }
         "parameterized_bracket_v1" => {
             let [rx, ry] = bracket_radii(recipe)?;
             crate::bracket_parameters::build_bracket_parameters(rx, ry)?.blocks

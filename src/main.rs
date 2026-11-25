@@ -83,6 +83,7 @@ fn capabilities() -> Result<Json, String> {
         "polygon_counterbores_v1",
         "polygon_countersinks_v1",
         "nurbs_multiloop_v1",
+        "nurbs_edge_loops_v1",
         "nurbs_sketch_strip_v1",
         "sketch_layer_partition_v1",
         "sketch_boolean_layers_v1",

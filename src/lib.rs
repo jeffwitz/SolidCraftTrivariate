@@ -157,4 +157,5 @@ mod nurbs_sketch_json;
 pub mod nurbs_space;
 
 pub mod nurbs_multiloop;
+pub mod nurbs_edge_loops;
 mod nurbs_multiloop_json;

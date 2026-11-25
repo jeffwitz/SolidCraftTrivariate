@@ -219,7 +219,9 @@ pub fn build(recipe: &Json) -> Result<Json, &'static str> {
         super::sketch_layers_json::FAMILY | super::sketch_layers_json::BOOLEAN_FAMILY => {
             super::sketch_layers_json::build(recipe)
         }
-        super::nurbs_multiloop_json::FAMILY => super::nurbs_multiloop_json::build(recipe),
+        super::nurbs_multiloop_json::FAMILY | super::nurbs_multiloop_json::EDGE_FAMILY => {
+            super::nurbs_multiloop_json::build(recipe)
+        }
         super::nurbs_sketch_json::FAMILY => super::nurbs_sketch_json::build(recipe),
         super::orthogonal_sketch_json::FAMILY => super::orthogonal_sketch_json::build(recipe),
         super::interval_bores_json::FAMILY => super::interval_bores_json::build(recipe),
@@ -265,7 +267,9 @@ pub fn audit(model: &Json) -> Result<Json, &'static str> {
         super::sketch_layers_json::FAMILY | super::sketch_layers_json::BOOLEAN_FAMILY => {
             super::sketch_layers_json::audit(model)
         }
-        super::nurbs_multiloop_json::FAMILY => super::nurbs_multiloop_json::audit(model),
+        super::nurbs_multiloop_json::FAMILY | super::nurbs_multiloop_json::EDGE_FAMILY => {
+            super::nurbs_multiloop_json::audit(model)
+        }
         super::nurbs_sketch_json::FAMILY => super::nurbs_sketch_json::audit(model),
         super::orthogonal_sketch_json::FAMILY => super::orthogonal_sketch_json::audit(model),
         super::interval_bores_json::FAMILY => super::interval_bores_json::audit(model),

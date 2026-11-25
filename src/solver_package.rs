@@ -269,6 +269,7 @@ pub fn export_analysis(model: &Json, order: usize) -> Result<Json, &'static str>
     if matches!(
         schema,
         "nurbs_multiloop_v1"
+            | "nurbs_edge_loops_v1"
             | "nurbs_sketch_strip_v1"
             | "nurbs_cross_bores_v1"
             | "nurbs_cross_bores_bounded_v1"

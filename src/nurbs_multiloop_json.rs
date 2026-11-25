@@ -11,8 +11,10 @@ use crate::{
 use std::collections::BTreeSet;
 
 pub(crate) const FAMILY: &str = "nurbs_multiloop_v1";
+pub(crate) const EDGE_FAMILY: &str = "nurbs_edge_loops_v1";
 pub(crate) const METHOD: &str = "ordered_monotone_nurbs_contours_and_axial_layers";
 const PARAMETERS: [&str; 3] = ["bounds_xy_mm", "height_mm", "loops"];
+const EDGE_PARAMETERS: [&str; 4] = ["bounds_xy_mm", "height_mm", "edges", "cuts"];
 
 fn number(v: impl ToString) -> Json {
     Json::Number(v.to_string())
@@ -27,8 +29,17 @@ fn bound(b: &BracketBlock) -> Result<f64, &'static str> {
 }
 
 fn candidate(recipe: &Json) -> Result<(Json, f64), &'static str> {
-    recipe.keys(&["family", "bounds_xy_mm", "height_mm", "loops"])?;
-    let (blocks, mut faces) = construct(recipe)?;
+    let family = recipe.field("family")?.text()?;
+    let normalized;
+    let contours = match family {
+        FAMILY => recipe,
+        EDGE_FAMILY => {
+            normalized = crate::nurbs_edge_loops::normalize(recipe)?;
+            &normalized
+        }
+        _ => return Err("unknown multiloop recipe"),
+    };
+    let (blocks, mut faces) = construct(contours)?;
     let incidence = enumerate_faces(&blocks)?;
     faces.sort_by(|a, b| a.0.cmp(&b.0));
     let labelled: BTreeSet<_> = faces.iter().map(|(s, _)| s).collect();
@@ -48,10 +59,15 @@ fn candidate(recipe: &Json) -> Result<(Json, f64), &'static str> {
         determinant_lower_bound_mm3: lower,
         radial_error_upper_mm: 0.,
     };
-    let mut model = encode(FAMILY, blocks, &cert);
+    let mut model = encode(family, blocks, &cert);
     if let Json::Object(fields) = &mut model {
         for key in PARAMETERS {
-            fields.insert(key.into(), recipe.field(key)?.clone());
+            fields.insert(key.into(), contours.field(key)?.clone());
+        }
+        if family == EDGE_FAMILY {
+            for key in ["edges", "cuts"] {
+                fields.insert(key.into(), recipe.field(key)?.clone());
+            }
         }
     }
     Ok((model, lower))
@@ -62,9 +78,15 @@ pub(crate) fn build(recipe: &Json) -> Result<Json, &'static str> {
 }
 
 pub(crate) fn audit(model: &Json) -> Result<Json, &'static str> {
-    let mut recipe = object([("family", Json::String(FAMILY.into()))]);
+    let family = model.field("schema")?.text()?;
+    let parameters = match family {
+        FAMILY => PARAMETERS.as_slice(),
+        EDGE_FAMILY => EDGE_PARAMETERS.as_slice(),
+        _ => return Err("unknown multiloop schema"),
+    };
+    let mut recipe = object([("family", Json::String(family.into()))]);
     if let Json::Object(fields) = &mut recipe {
-        for key in PARAMETERS {
+        for &key in parameters {
             fields.insert(key.into(), model.field(key)?.clone());
         }
     }

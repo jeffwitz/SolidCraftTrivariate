@@ -36,6 +36,7 @@ void main() {
 }`;
 
 const SURFACE_COLOR = [0.78, 0.67, 0.52];
+const SECTION_COLOR = [0.20, 0.48, 0.46];
 const DEFAULT_CAMERA = { yaw: 0.72, pitch: 0.5, distance: 2 };
 const CAMERA_FILL = 0.64;
 const GRID = 12;
@@ -339,11 +340,41 @@ function coplanarBlockFace(evaluate, axis, plane, tolerance) {
   return null;
 }
 
+function zExtrusionLevels(block) {
+  const [degreeU, degreeV, degreeW] = block.degrees;
+  if (degreeW !== 1) return null;
+  const close = (a, b) => Math.abs(a - b) <= 1e-12 * Math.max(1, Math.abs(a), Math.abs(b));
+  const countV = degreeV + 1;
+  let z0 = null;
+  let z1 = null;
+  for (let i = 0; i <= degreeU; i++) {
+    for (let j = 0; j <= degreeV; j++) {
+      const first = block.controls[(i * countV + j) * 2];
+      const last = block.controls[(i * countV + j) * 2 + 1];
+      if (!close(first[3], last[3])) return null;
+      const firstXY = [first[0] / first[3], first[1] / first[3]];
+      const lastXY = [last[0] / last[3], last[1] / last[3]];
+      if (!close(firstXY[0], lastXY[0]) || !close(firstXY[1], lastXY[1])) return null;
+      const firstZ = first[2] / first[3];
+      const lastZ = last[2] / last[3];
+      if (z0 === null) {
+        z0 = firstZ;
+        z1 = lastZ;
+      } else if (!close(z0, firstZ) || !close(z1, lastZ)) {
+        return null;
+      }
+    }
+  }
+  return z1 > z0 ? { z0, z1 } : null;
+}
+
 function buildCapMeshes(model, axis, fraction, bounds, mode) {
   if (axis === null) return [];
   const axisIndex = { x: 0, y: 1, z: 2 }[axis];
   const plane = bounds[0][axisIndex] + (bounds[1][axisIndex] - bounds[0][axisIndex]) * fraction;
   const tolerance = Math.max(1, bounds[1][axisIndex] - bounds[0][axisIndex]) * 1e-9;
+  const zExtrusions = axis === 'z' ? model.blocks.map(zExtrusionLevels) : null;
+  const directZCap = zExtrusions !== null && zExtrusions.every(Boolean);
   const interfaces = new Map();
   const duplicateSides = new Map();
   for (const item of model.topology?.interfaces || []) {
@@ -356,9 +387,9 @@ function buildCapMeshes(model, axis, fraction, bounds, mode) {
     duplicateSides.get(duplicateBlock).add(duplicateSide);
   }
   const meshes = [];
-  for (const block of model.blocks) {
+  for (let blockIndex = 0; blockIndex < model.blocks.length; blockIndex++) {
+    const block = model.blocks[blockIndex];
     const evaluate = makeEvaluator(block);
-    const { grid, index, divisions } = buildBlockGrid(evaluate, CAP_GRID);
     const output = [];
     const coplanar = coplanarBlockFace(evaluate, axisIndex, plane, tolerance);
     if (coplanar) {
@@ -368,7 +399,30 @@ function buildCapMeshes(model, axis, fraction, bounds, mode) {
       if (faceVisible || !coplanar.retainedSide) continue;
       // The retained side needs one cap where its shared interface is hidden.
     }
-    const color = mode === 'blocks' ? blockColor(block.id) : SURFACE_COLOR;
+    const color = mode === 'blocks' ? blockColor(block.id) : SECTION_COLOR;
+    if (directZCap) {
+      const { z0, z1 } = zExtrusions[blockIndex];
+      const w = (plane - z0) / (z1 - z0);
+      if (w < -1e-12 || w > 1 + 1e-12) continue;
+      const capParameter = clamp(w, 0, 1);
+      const points = Array.from({ length: GRID + 1 }, (_, i) => (
+        Array.from({ length: GRID + 1 }, (_, j) => evaluate(i / GRID, j / GRID, capParameter))
+      ));
+      for (let i = 0; i < GRID; i++) {
+        for (let j = 0; j < GRID; j++) {
+          const p00 = points[i][j];
+          const p10 = points[i + 1][j];
+          const p11 = points[i + 1][j + 1];
+          const p01 = points[i][j + 1];
+          appendTriangle(output, p00, p10, p11, color);
+          appendTriangle(output, p00, p11, p01, color);
+        }
+      }
+      if (output.length) meshes.push({ id: `${block.id}:cap`, values: new Float32Array(output), count: output.length / 9 });
+      continue;
+    }
+
+    const { grid, index, divisions } = buildBlockGrid(evaluate, CAP_GRID);
     const point = (u, v, w) => grid[index(u, v, w)];
     for (let i = 0; i < divisions; i++) {
       for (let j = 0; j < divisions; j++) {

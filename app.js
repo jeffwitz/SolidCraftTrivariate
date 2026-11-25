@@ -181,7 +181,7 @@ function activeExperiment() { return experiments.find((item) => item.id === ui.s
 async function start() {
   initControls();
   try {
-    const response = await fetch(new URL('./experiments.json', document.baseURI));
+    const response = await fetch(byId('catalog-url').href, { cache: 'no-cache' });
     if (!response.ok) throw new Error(`Le catalogue d’expériences est indisponible (${response.status}).`);
     const data = await response.json();
     if (!Array.isArray(data) || data.length === 0) throw new Error('Le catalogue ne contient aucune expérience.');
@@ -214,6 +214,11 @@ async function start() {
     }
     const requested = new URL(location.href).searchParams.get('model');
     const initial = experiments.find(entry => entry.id === requested) || experiments[0];
+    if (requested && requested !== initial.id) {
+      const url = new URL(location.href);
+      url.searchParams.set('model', initial.id);
+      history.replaceState(null, '', url);
+    }
     await selectExperiment(initial.id);
   } catch (error) {
     showState(`${error.message} Le catalogue attendu est ./experiments.json.`, 'error');

@@ -1,6 +1,6 @@
 //! Thin filesystem adapter for the versioned native construction service.
 
-use solidcraft_trivariate::interchange::{audit, build};
+use solidcraft_trivariate::interchange::{audit, build, SECTION_FAMILIES};
 use solidcraft_trivariate::json::{object, parse, Json};
 use solidcraft_trivariate::RationalBezierMap;
 use std::env;
@@ -48,7 +48,16 @@ fn publish(target: &Path, model: &Json) -> std::io::Result<()> {
     }
 }
 
-const CAPABILITIES: &str = r#"{"families":["affine_pair_v1","annular_pair_v1","filleted_bracket_v1"],"commands":["build","audit","evaluate","capabilities"],"evaluators":{"rational_bezier_tensor":{"degrees":[[1,1,1],[2,1,1]],"domain":[[0,1],[0,1],[0,1]]}}}"#;
+const COMMANDS_AND_EVALUATORS: &str = r#"{"commands":["build","audit","evaluate","capabilities"],"evaluators":{"rational_bezier_tensor":{"degrees":[[1,1,1],[2,1,1]],"domain":[[0,1],[0,1],[0,1]]}}}"#;
+
+fn capabilities() -> Result<Json,String> {
+    let mut result = parse(COMMANDS_AND_EVALUATORS)?;
+    let Json::Object(fields) = &mut result else {return Err("invalid capabilities".into())};
+    let families = ["affine_pair_v1", "annular_pair_v1", "filleted_bracket_v1"]
+        .into_iter().chain(SECTION_FAMILIES).map(|s| Json::String(s.to_owned())).collect();
+    fields.insert("families".into(), Json::Array(families));
+    Ok(result)
+}
 
 fn diagnostic(status: &str, reason: &str) -> Json {
     object([
@@ -59,7 +68,7 @@ fn diagnostic(status: &str, reason: &str) -> Json {
 
 fn run(args: &[String]) -> Result<Json, String> {
     match args {
-        [cmd] if cmd=="capabilities"=>parse(CAPABILITIES).map_err(str::to_owned),
+        [cmd] if cmd=="capabilities"=>capabilities(),
         [cmd,path] if cmd=="audit"=>Ok(audit(&read(path)?).unwrap_or_else(|reason| diagnostic("invalid",reason))),
         [cmd,recipe,target] if cmd=="build"=>{
             let model=build(&read(recipe)?)?;

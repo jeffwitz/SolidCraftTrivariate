@@ -1,4 +1,4 @@
-//! Stable JSON exchange for the fixed bracket. Exact controls stay integral.
+//! Stable JSON exchange for audited fixed-template block complexes. Exact controls stay integral.
 
 use super::bracket::{bracket_blocks, BracketBlock};
 use super::bracket_audit::{audit_bracket, BracketCertificate};
@@ -63,9 +63,32 @@ fn design(cert: &BracketCertificate) -> Json {
     )
 }
 
-pub(crate) fn build() -> Result<Json, &'static str> {
-    let blocks = bracket_blocks()?;
-    let cert = audit_bracket(&blocks)?;
+fn certify(
+    family: &str,
+    blocks: &[BracketBlock],
+) -> Result<(BracketCertificate, Option<f64>), &'static str> {
+    if family == "filleted_bracket_v1" {
+        return Ok((audit_bracket(blocks)?, None));
+    }
+    let certificate = crate::section_audit::audit_section(family, blocks)?;
+    Ok((
+        BracketCertificate {
+            incidence: certificate.incidence,
+            determinant_lower_bound_mm3: certificate.determinant_lower_bound_mm3,
+            radial_error_upper_mm: certificate.radial_error_upper_mm,
+            design_faces: certificate.design_faces,
+        },
+        Some(certificate.volume_mm3),
+    ))
+}
+
+pub(crate) fn build(family: &str) -> Result<Json, &'static str> {
+    let blocks = if family == "filleted_bracket_v1" {
+        bracket_blocks()?
+    } else {
+        crate::sections::section_blocks(family)?
+    };
+    let (cert, _) = certify(family, &blocks)?;
     let blocks = blocks
         .into_iter()
         .map(|b| {
@@ -88,7 +111,7 @@ pub(crate) fn build() -> Result<Json, &'static str> {
         })
         .collect();
     Ok(object([
-        ("schema", text("filleted_bracket_v1")),
+        ("schema", text(family)),
         ("blocks", Json::Array(blocks)),
         ("topology", topology(&cert)),
         ("design_faces", design(&cert)),
@@ -125,14 +148,14 @@ pub(crate) fn audit(model: &Json) -> Result<Json, &'static str> {
             controls,
         });
     }
-    let certificate = audit_bracket(&blocks)?;
+    let (certificate, ideal_volume) = certify(model.field("schema")?.text()?, &blocks)?;
     if model.field("topology")? != &topology(&certificate) {
         return Err("incidence_mismatch");
     }
     if model.field("design_faces")? != &design(&certificate) {
         return Err("design_faces");
     }
-    Ok(object([
+    let mut report = object([
         ("status", text("valid")),
         ("method", text("certified_fixed_extrusion_partition")),
         ("blocks", number(blocks.len())),
@@ -152,5 +175,9 @@ pub(crate) fn audit(model: &Json) -> Result<Json, &'static str> {
             "radial_error_upper_bound_mm",
             number(certificate.radial_error_upper_mm),
         ),
-    ]))
+    ]);
+    if let (Json::Object(fields), Some(volume)) = (&mut report, ideal_volume) {
+        fields.insert("ideal_volume_mm3".into(), number(volume));
+    }
+    Ok(report)
 }

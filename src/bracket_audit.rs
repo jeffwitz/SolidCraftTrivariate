@@ -21,7 +21,7 @@ const RADIAL_ERROR_BOUND_MM: f64 = 4.20e-15;
 // E6-qualified local reference profiles, independently frozen from the
 // analytical radius-6 fillet and radius-4 plate sector. Triples are (wx,wy,w).
 // Their exact binary64 source values were scaled to integers by 2^52 and 2^53.
-const FILLET_PROFILE: [[i64; 3]; 6] = [
+pub(crate) const FILLET_PROFILE: [[i64; 3]; 6] = [
     [0, 0, 4_503_599_627_370_496],
     [
         43_943_239_765_609_632,
@@ -42,7 +42,7 @@ const FILLET_PROFILE: [[i64; 3]; 6] = [
     ],
 ];
 
-const HOLE_PROFILE: [[i64; 3]; 6] = [
+pub(crate) const HOLE_PROFILE: [[i64; 3]; 6] = [
     [
         90_071_992_547_409_920,
         -90_071_992_547_409_920,

@@ -2,7 +2,7 @@
 
 use crate::bracket::BracketBlock;
 use crate::bracket_audit::audit_bracket;
-use crate::incidence::BlockSide;
+use crate::incidence::{BlockSide, Incidence};
 use std::collections::{BTreeMap, BTreeSet};
 
 /// One accepted block elevated to homogeneous degree `(2,2,2)`.
@@ -228,10 +228,24 @@ impl UnionFind {
 /// ordered by block ID and local node index, independent of input block order.
 pub fn build_analysis_space(blocks: &[BracketBlock]) -> Result<AnalysisSpace, &'static str> {
     let certificate = audit_bracket(blocks)?;
-    if blocks.len() != 36 {
-        return Err("analysis space requires the audited 36-block bracket");
-    }
+    from_certified_faces(blocks, &certificate.incidence, &certificate.design_faces)
+}
 
+/// Build the conforming space of one audited fixed section template.
+pub fn section_analysis_space(
+    family: &str,
+    blocks: &[BracketBlock],
+) -> Result<AnalysisSpace, &'static str> {
+    let certificate = crate::section_audit::audit_section(family, blocks)?;
+    from_certified_faces(blocks, &certificate.incidence, &certificate.design_faces)
+}
+
+// Callers must establish model-wide validity before numbering the space.
+pub(crate) fn from_certified_faces(
+    blocks: &[BracketBlock],
+    incidence: &Incidence,
+    design_faces: &[(BlockSide, String)],
+) -> Result<AnalysisSpace, &'static str> {
     let mut ordered: Vec<&BracketBlock> = blocks.iter().collect();
     ordered.sort_by(|left, right| left.id.cmp(&right.id));
     let elevated = ordered
@@ -249,7 +263,7 @@ pub fn build_analysis_space(blocks: &[BracketBlock]) -> Result<AnalysisSpace, &'
         .checked_mul(27)
         .ok_or("analysis space size overflow")?;
     let mut union_find = UnionFind::new(local_count);
-    for interface in &certificate.incidence.interfaces {
+    for interface in &incidence.interfaces {
         let first_block = *indices
             .get(interface.first.block.as_str())
             .ok_or("incidence references an unknown first block")?;
@@ -337,7 +351,7 @@ pub fn build_analysis_space(blocks: &[BracketBlock]) -> Result<AnalysisSpace, &'
         .collect::<Vec<_>>();
 
     let mut boundary_sets = BTreeMap::<String, BTreeSet<usize>>::new();
-    for (side, feature) in &certificate.design_faces {
+    for (side, feature) in design_faces {
         let block_index = *indices
             .get(side.block.as_str())
             .ok_or("design face references an unknown block")?;

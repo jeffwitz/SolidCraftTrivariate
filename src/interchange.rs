@@ -4,6 +4,16 @@ use super::annular::{build_annular, AnnularBlock, AnnularPair};
 use super::annular_audit::audit_annular;
 use super::json::{object, Json};
 
+/// Recipes using a fixed two-dimensional section extruded in one or two layers.
+pub const SECTION_FAMILIES: [&str; 6] = [
+    "reference_rectangle_v1",
+    "core_disk_v1",
+    "full_annulus_v1",
+    "pierced_square_v1",
+    "rounded_corner_v1",
+    "layered_pocket_v1",
+];
+
 fn string(s: &str) -> Json {
     Json::String(s.to_owned())
 }
@@ -195,9 +205,9 @@ fn audit_affine(m: &Json) -> Result<Json, &'static str> {
 
 pub fn build(recipe: &Json) -> Result<Json, &'static str> {
     match recipe.field("family")?.text()? {
-        "filleted_bracket_v1" => {
+        family if family == "filleted_bracket_v1" || SECTION_FAMILIES.contains(&family) => {
             recipe.keys(&["family"])?;
-            super::bracket_json::build()
+            super::bracket_json::build(family)
         }
         "affine_pair_v1" => {
             recipe.keys(&["family", "widths_mm"])?;
@@ -215,7 +225,9 @@ pub fn build(recipe: &Json) -> Result<Json, &'static str> {
 
 pub fn audit(model: &Json) -> Result<Json, &'static str> {
     match model.field("schema")?.text()? {
-        "filleted_bracket_v1" => super::bracket_json::audit(model),
+        family if family == "filleted_bracket_v1" || SECTION_FAMILIES.contains(&family) => {
+            super::bracket_json::audit(model)
+        }
         "affine_pair_v1" => audit_affine(model),
         "annular_pair_v1" => {
             let cert = audit_annular(&decode_annular(model)?)?;

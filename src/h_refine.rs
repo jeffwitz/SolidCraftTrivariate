@@ -84,30 +84,29 @@ fn split_axis(
     Ok((lower, upper))
 }
 
-fn children(block: &AnalysisBlock) -> Result<Vec<ChildNet>, &'static str> {
+fn children(block: &AnalysisBlock, split_w: bool) -> Result<Vec<ChildNet>, &'static str> {
     if block.controls.len() != 27
         || block.dofs.len() != 27
         || block.controls.iter().any(|p| p[3] <= 0)
     {
         return Err("invalid analysis block for Q2 subdivision");
     }
-    let mut patches = vec![(String::new(), [0usize; 3], block.controls.clone())];
-    for axis in 0..3 {
+    let mut patches = vec![([0usize; 3], block.controls.clone())];
+    for axis in 0..if split_w { 3 } else { 2 } {
         let mut next = Vec::with_capacity(patches.len() * 2);
-        for (prefix, bits, controls) in patches {
+        for (bits, controls) in patches {
             let (lower, upper) = split_axis(&controls, axis)?;
             for (bit, child_controls) in [(0usize, lower), (1usize, upper)] {
                 let mut child_bits = bits;
                 child_bits[axis] = bit;
-                let child_prefix = format!("{prefix}{bit}");
-                next.push((child_prefix, child_bits, child_controls));
+                next.push((child_bits, child_controls));
             }
         }
         patches = next;
     }
     Ok(patches
         .into_iter()
-        .map(|(_, bits, controls)| ChildNet {
+        .map(|(bits, controls)| ChildNet {
             parent_id: block.id.clone(),
             bits,
             controls,
@@ -194,6 +193,24 @@ fn local_face_node(axis: usize, upper: bool, first: usize, second: usize) -> usi
 /// of four per split axis. The input is immutable; overflow or a mismatching
 /// physical position rejects the complete operation without partial output.
 pub fn refine_uniform(parent: &AnalysisSpace) -> Result<AnalysisSpace, &'static str> {
+    refine(parent, true)
+}
+
+/// Split the two section directions, retaining the full thickness of every
+/// block. All columns must be vertical with constant weights and ordered z.
+pub fn refine_cross_section(parent: &AnalysisSpace) -> Result<AnalysisSpace, &'static str> {
+    for b in &parent.blocks {
+        if b.controls.len() != 27 || !b.controls.as_chunks::<3>().0.iter().all(|column| {
+            column.windows(2).all(|p| p[0][..2] == p[1][..2] &&
+                p[0][3] == p[1][3] && p[0][2] < p[1][2])
+        }) {
+            return Err("cross-section refinement requires vertical extrusion columns");
+        }
+    }
+    refine(parent, false)
+}
+
+fn refine(parent: &AnalysisSpace, split_w: bool) -> Result<AnalysisSpace, &'static str> {
     if parent.blocks.is_empty() || parent.ndof == 0 {
         return Err("empty analysis space");
     }
@@ -251,7 +268,7 @@ pub fn refine_uniform(parent: &AnalysisSpace) -> Result<AnalysisSpace, &'static 
 
     let mut child_nets = Vec::<ChildNet>::with_capacity(blocks.len() * 8);
     for block in &blocks {
-        child_nets.extend(children(block)?);
+        child_nets.extend(children(block, split_w)?);
     }
 
     let mut keys = BTreeSet::<NodeKey>::new();
@@ -266,7 +283,7 @@ pub fn refine_uniform(parent: &AnalysisSpace) -> Result<AnalysisSpace, &'static 
                 let grid = [
                     2 * child.bits[0] + local[0],
                     2 * child.bits[1] + local[1],
-                    2 * child.bits[2] + local[2],
+                    if split_w { 2 * child.bits[2] + local[2] } else { 2 * local[2] },
                 ];
                 let key = topology_key(corners, grid);
                 keys.insert(key.clone());
@@ -311,7 +328,7 @@ pub fn refine_uniform(parent: &AnalysisSpace) -> Result<AnalysisSpace, &'static 
     for (child, (parent_id, bits)) in refined_blocks.iter().zip(child_metadata) {
         for (axis, &bit) in bits.iter().enumerate() {
             for upper in [false, true] {
-                if bit != usize::from(upper) {
+                if (axis != 2 || split_w) && bit != usize::from(upper) {
                     continue;
                 }
                 let Some(feature) = face_features.get(&(parent_id.clone(), axis, upper)) else {

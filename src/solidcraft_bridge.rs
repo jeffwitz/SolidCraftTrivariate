@@ -153,7 +153,29 @@ pub fn bracket_recipe(script: &Json) -> Result<Json, &'static str> {
 /// Translate, construct, and independently audit before returning the native state.
 pub fn import_script(script: &Json) -> Result<Json, &'static str> {
     if script.field("about").is_ok() {
+        let first = script
+            .field("commands")?
+            .items()?
+            .first()
+            .ok_or("empty SolidCraft timeline")?;
+        if first
+            .field("params")?
+            .field("feature")?
+            .field("type")?
+            .text()?
+            == "box"
+        {
+            return crate::solidcraft_box_timeline::import_box_timeline(script);
+        }
         return crate::solidcraft_timeline::translate_timeline(script);
+    }
+    let first = script
+        .field("commands")?
+        .items()?
+        .first()
+        .ok_or("empty SolidCraft script")?;
+    if first.field("command")?.text()? == "solid.box" {
+        return crate::solidcraft_boxes::import_boxes(script);
     }
     let candidate = interchange::build(&bracket_recipe(script)?)?;
     if interchange::audit(&candidate)?.field("status")?.text()? != "valid" {

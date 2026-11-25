@@ -5,13 +5,16 @@ use solidcraft_trivariate::{
     boundary_traction::{integrate_traction, LoadPatch},
     constrained_elasticity::solve_constrained,
     constraint_system::{resolve, Ratio},
-    elasticity::{assemble, basis_geometry, gauss, BasisSample},
+    elasticity::{assemble, basis_geometry, gauss, BasisSample, Stiffness},
     h_refine::refine_cross_section,
     incidence::BlockSide,
     json::{object, Json},
     sections::section_blocks,
 };
-use std::{collections::BTreeSet, time::Instant};
+use std::{
+    collections::{BTreeMap, BTreeSet},
+    time::Instant,
+};
 
 const YOUNG: f64 = 210000.;
 fn n(x: impl ToString) -> Json {
@@ -230,6 +233,7 @@ fn run(
     p: Pressure,
     alternative: bool,
     projected: bool,
+    capture_field: bool,
 ) -> Result<Json, &'static str> {
     if level > 4
         || ![6, 8, 12].contains(&order)
@@ -328,7 +332,7 @@ fn run(
     let low = field_errors(&space, p, u, 8)?;
     let applied: [f64; 3] =
         std::array::from_fn(|a| force.as_chunks::<3>().0.iter().map(|x| x[a]).sum());
-    Ok(object([
+    let mut report = object([
         ("level", n(level)),
         ("order", n(order)),
         ("nu", n(p.nu)),
@@ -358,11 +362,515 @@ fn run(
         ("assembly_s", n(assembly)),
         ("solve_s", n(solve)),
         ("total_s", n(start.elapsed().as_secs_f64())),
-    ]))
+    ]);
+    if capture_field {
+        let Json::Object(fields) = &mut report else {
+            unreachable!()
+        };
+        fields.insert(
+            "displacement_mm_xyz".into(),
+            Json::Array(u.iter().copied().map(n).collect()),
+        );
+    }
+    Ok(report)
+}
+
+struct PlaneSystem {
+    space: AnalysisSpace,
+    force: Vec<f64>,
+    walls: [Vec<LoadPatch>; 2],
+    fixed: [BTreeSet<usize>; 3],
+    matrix: Stiffness,
+    projected: Option<ProjectedElasticity>,
+    preparation_s: f64,
+    assembly_s: f64,
+}
+
+fn plane_system(
+    level: usize,
+    order: usize,
+    p: Pressure,
+    alternative: bool,
+    projected: bool,
+) -> Result<PlaneSystem, &'static str> {
+    if level > 4
+        || ![6, 8, 12].contains(&order)
+        || !(0.0..0.5).contains(&p.nu)
+        || p.inner < 0.
+        || p.outer < 0.
+        || p.energy() <= 0.
+    {
+        return Err("invalid pressure cylinder case");
+    }
+    let start = Instant::now();
+    let family = "full_annulus_v1";
+    let mut space = section_analysis_space(family, &section_blocks(family)?)?;
+    for _ in 0..level {
+        space = refine_cross_section(&space)?;
+    }
+    let walls = [
+        wall_patches(&space, "circle_r2", true)?,
+        wall_patches(&space, "circle_r4", false)?,
+    ];
+    let exterior = walls
+        .iter()
+        .flatten()
+        .map(|patch| patch.side.clone())
+        .collect();
+    let mut force = vec![0.; 3 * space.ndof];
+    for (patches, pressure) in walls.iter().zip([p.inner, p.outer]) {
+        let load = integrate_traction(&space, &exterior, patches, order, |_, normal| {
+            normal.map(|x| -pressure * x)
+        })?;
+        for (target, value) in force.iter_mut().zip(load.nodal_force_n) {
+            *target += value;
+        }
+    }
+    let mut axes: [Vec<(f64, usize)>; 2] = [vec![], vec![]];
+    for block in &space.blocks {
+        for (h, &id) in block.controls.iter().zip(&block.dofs) {
+            if h[2] != 0 {
+                continue;
+            }
+            for c in 0..2 {
+                if h[c] == 0 {
+                    axes[c].push((h[1 - c] as f64 / h[3] as f64, id));
+                }
+            }
+        }
+    }
+    let mut prescribed: [Vec<(usize, Ratio)>; 3] = [vec![], vec![], vec![]];
+    for c in 0..2 {
+        axes[c].sort_by(|a, b| a.0.total_cmp(&b.0).then(a.1.cmp(&b.1)));
+        prescribed[c].push((
+            axes[c].first().ok_or("missing axial symmetry gauge")?.1,
+            Ratio::zero(),
+        ));
+        if c == usize::from(alternative) {
+            prescribed[c].push((
+                axes[c].last().ok_or("missing axial symmetry gauge")?.1,
+                Ratio::zero(),
+            ));
+        }
+    }
+    let axial_fixed: BTreeSet<_> = ["z0", "z8"]
+        .into_iter()
+        .flat_map(|tag| space.boundary_dofs[tag].iter().copied())
+        .collect();
+    prescribed[2] = axial_fixed
+        .into_iter()
+        .map(|id| (id, Ratio::zero()))
+        .collect();
+    let [lx, ly, lz] = prescribed.map(|values| resolve(space.ndof, &[], &values));
+    let lifts = [lx?, ly?, lz?];
+    let fixed = std::array::from_fn(|c| {
+        lifts[c]
+            .lines
+            .iter()
+            .filter(|line| line.terms.is_empty())
+            .map(|line| line.dof)
+            .collect()
+    });
+    let preparation_s = start.elapsed().as_secs_f64();
+    let clock = Instant::now();
+    let projected_matrix = if projected {
+        Some(assemble_projected_bulk(&space, YOUNG, p.nu, order)?)
+    } else {
+        None
+    };
+    let matrix = if let Some(m) = &projected_matrix {
+        m.stiffness.clone_for_example()?
+    } else {
+        assemble(&space, YOUNG, p.nu, order)?
+    };
+    let assembly_s = clock.elapsed().as_secs_f64();
+    Ok(PlaneSystem {
+        space,
+        force,
+        walls,
+        fixed,
+        matrix,
+        projected: projected_matrix,
+        preparation_s,
+        assembly_s,
+    })
+}
+
+trait CloneStiffnessForExample {
+    fn clone_for_example(&self) -> Result<Stiffness, &'static str>;
+}
+impl CloneStiffnessForExample for Stiffness {
+    fn clone_for_example(&self) -> Result<Stiffness, &'static str> {
+        Ok(Stiffness {
+            offsets: self.offsets.clone(),
+            columns: self.columns.clone(),
+            values: self.values.clone(),
+            integrated_volume: self.integrated_volume,
+        })
+    }
+}
+
+fn gcd_u128(mut a: u128, mut b: u128) -> u128 {
+    while b != 0 {
+        (a, b) = (b, a % b);
+    }
+    a
+}
+fn xy_key(h: [i128; 4]) -> Result<[i128; 3], &'static str> {
+    if h[3] <= 0 {
+        return Err("invalid plane-strain homogeneous weight");
+    }
+    let divisor = gcd_u128(
+        gcd_u128(h[0].unsigned_abs(), h[1].unsigned_abs()),
+        h[3] as u128,
+    );
+    let d = i128::try_from(divisor).map_err(|_| "plane-strain gauge overflow")?;
+    Ok([h[0] / d, h[1] / d, h[3] / d])
+}
+
+fn plane_map(space: &AnalysisSpace) -> Result<(Vec<usize>, Vec<[i128; 3]>), &'static str> {
+    let mut dof_keys = vec![None; space.ndof];
+    let mut unique = BTreeSet::new();
+    for block in &space.blocks {
+        for (&id, &control) in block.dofs.iter().zip(&block.controls) {
+            let key = xy_key(control)?;
+            if dof_keys[id].is_some_and(|prior| prior != key) {
+                return Err("one 3D scalar DOF has incompatible section coordinates");
+            }
+            dof_keys[id] = Some(key);
+            unique.insert(key);
+        }
+    }
+    if dof_keys.iter().any(Option::is_none) {
+        return Err("incomplete 3D-to-plane DOF map");
+    }
+    let coordinates = unique.into_iter().collect::<Vec<_>>();
+    let ids: BTreeMap<_, _> = coordinates
+        .iter()
+        .copied()
+        .enumerate()
+        .map(|(i, key)| (key, i))
+        .collect();
+    let mapping = dof_keys
+        .into_iter()
+        .map(|key| ids[&key.expect("checked map")])
+        .collect();
+    Ok((mapping, coordinates))
+}
+
+struct ReducedPlane {
+    mapping: Vec<usize>,
+    coordinates: Vec<[i128; 3]>,
+    row_ptr: Vec<usize>,
+    columns: Vec<usize>,
+    values: Vec<f64>,
+    rhs: Vec<f64>,
+    fixed: Vec<usize>,
+    free: Vec<usize>,
+    reduction_s: f64,
+}
+
+fn reduce_to_plane(system: &PlaneSystem) -> Result<ReducedPlane, &'static str> {
+    let started = Instant::now();
+    let (mapping, coordinates) = plane_map(&system.space)?;
+    let n = coordinates.len() * 2;
+    let mut rows = vec![BTreeMap::<usize, f64>::new(); n];
+    for i in 0..system.space.ndof {
+        for pos in system.matrix.offsets[i]..system.matrix.offsets[i + 1] {
+            let j = system.matrix.columns[pos];
+            for a in 0..2 {
+                for b in 0..2 {
+                    *rows[2 * mapping[i] + a]
+                        .entry(2 * mapping[j] + b)
+                        .or_default() += system.matrix.values[pos][a][b];
+                }
+            }
+        }
+    }
+    let mut row_ptr = vec![0];
+    let mut columns = vec![];
+    let mut values = vec![];
+    for row in rows {
+        for (col, value) in row {
+            if value != 0. {
+                columns.push(col);
+                values.push(value);
+            }
+        }
+        row_ptr.push(columns.len());
+    }
+    let mut rhs = vec![0.; n];
+    for i in 0..system.space.ndof {
+        for c in 0..2 {
+            rhs[2 * mapping[i] + c] += system.force[3 * i + c];
+        }
+    }
+    let mut fixed = BTreeSet::new();
+    for c in 0..2 {
+        for &dof in &system.fixed[c] {
+            fixed.insert(2 * mapping[dof] + c);
+        }
+    }
+    let free = (0..n).filter(|id| !fixed.contains(id)).collect::<Vec<_>>();
+    let reduction_s = started.elapsed().as_secs_f64();
+    Ok(ReducedPlane {
+        mapping,
+        coordinates,
+        row_ptr,
+        columns,
+        values,
+        rhs,
+        fixed: fixed.into_iter().collect(),
+        free,
+        reduction_s,
+    })
+}
+
+fn json_numbers<T: ToString>(v: impl IntoIterator<Item = T>) -> Json {
+    Json::Array(v.into_iter().map(n).collect())
+}
+fn write_json(path: &str, value: &Json) -> Result<(), Box<dyn std::error::Error>> {
+    std::fs::write(path, format!("{value}\n"))?;
+    Ok(())
+}
+
+fn plane_export(args: &[String]) -> Result<(), Box<dyn std::error::Error>> {
+    if args.len() != 8 {
+        return Err(
+            "usage: pressure_cylinder plane-export LEVEL ORDER NU PI PO full|projected OUTPUT.json"
+                .into(),
+        );
+    }
+    let level = args[1].parse()?;
+    let order = args[2].parse()?;
+    let p = Pressure {
+        nu: args[3].parse()?,
+        inner: args[4].parse()?,
+        outer: args[5].parse()?,
+    };
+    let projected = match args[6].as_str() {
+        "full" => false,
+        "projected" => true,
+        _ => return Err("expected full or projected formulation".into()),
+    };
+    let system = plane_system(level, order, p, false, projected)?;
+    let ReducedPlane {
+        mapping,
+        coordinates,
+        row_ptr,
+        columns,
+        values,
+        rhs,
+        fixed,
+        free,
+        reduction_s,
+    } = reduce_to_plane(&system)?;
+    let mut raw = Vec::new();
+    for key in &coordinates {
+        raw.push(Json::Array(key.iter().copied().map(n).collect()));
+    }
+    let matrix = object([
+        ("dimension", n(rhs.len())),
+        ("row_ptr", json_numbers(row_ptr)),
+        ("column_indices", json_numbers(columns)),
+        ("values", json_numbers(values)),
+    ]);
+    let output = object([
+        (
+            "schema",
+            Json::String("plane_strain_sparse_system_v1".into()),
+        ),
+        ("level", n(level)),
+        ("order", n(order)),
+        ("nu", n(p.nu)),
+        ("inner_mpa", n(p.inner)),
+        ("outer_mpa", n(p.outer)),
+        (
+            "formulation",
+            Json::String(
+                if projected {
+                    "projected_bulk_q1"
+                } else {
+                    "displacement"
+                }
+                .into(),
+            ),
+        ),
+        ("space_dofs_3d", n(system.space.ndof)),
+        ("scalar_dofs_2d", n(coordinates.len())),
+        ("vector_dofs_2d", n(rhs.len())),
+        ("plane_coordinates_homogeneous", Json::Array(raw)),
+        ("map_3d_scalar_dof_to_2d", json_numbers(mapping)),
+        ("matrix_csr", matrix),
+        ("rhs_xy", json_numbers(rhs)),
+        ("fixed_vector_dofs", json_numbers(fixed)),
+        ("free_vector_dofs", json_numbers(free)),
+        ("preparation_s", n(system.preparation_s)),
+        ("assembly_s", n(system.assembly_s)),
+        ("reduction_s", n(reduction_s)),
+    ]);
+    write_json(&args[7], &output)?;
+    Ok(())
+}
+
+fn plane_read(args: &[String]) -> Result<(), Box<dyn std::error::Error>> {
+    if args.len() != 9 {
+        return Err("usage: pressure_cylinder plane-read LEVEL ORDER NU PI PO full|projected SOLUTION.json OUTPUT.json".into());
+    }
+    let level = args[1].parse()?;
+    let order = args[2].parse()?;
+    let p = Pressure {
+        nu: args[3].parse()?,
+        inner: args[4].parse()?,
+        outer: args[5].parse()?,
+    };
+    let projected = match args[6].as_str() {
+        "full" => false,
+        "projected" => true,
+        _ => return Err("expected full or projected formulation".into()),
+    };
+    let solution = solidcraft_trivariate::json::parse(&std::fs::read_to_string(&args[7])?)?;
+    if solution.field("schema")?.text()? != "plane_strain_solution_v1"
+        || solution.field("level")?.number::<usize>()? != level
+        || solution.field("order")?.number::<usize>()? != order
+        || solution.field("nu")?.number::<f64>()? != p.nu
+        || solution.field("inner_mpa")?.number::<f64>()? != p.inner
+        || solution.field("outer_mpa")?.number::<f64>()? != p.outer
+    {
+        return Err("plane-strain solution metadata mismatch".into());
+    }
+    let system = plane_system(level, order, p, false, projected)?;
+    let ReducedPlane {
+        mapping,
+        coordinates,
+        free,
+        reduction_s,
+        ..
+    } = reduce_to_plane(&system)?;
+    let xy = solution
+        .field("displacement_xy")?
+        .items()?
+        .iter()
+        .map(Json::number::<f64>)
+        .collect::<Result<Vec<_>, _>>()?;
+    if xy.len() != 2 * coordinates.len() {
+        return Err("plane-strain solution coefficient count mismatch".into());
+    }
+    let mut u = vec![0.; 3 * system.space.ndof];
+    for (dof, &node) in mapping.iter().enumerate() {
+        u[3 * dof] = xy[2 * node];
+        u[3 * dof + 1] = xy[2 * node + 1];
+    }
+    let residual = system.matrix.equilibrium_residual(&u, &system.force)?;
+    let residual_norm = (0..system.space.ndof)
+        .flat_map(|node| (0..2).map(move |c| (node, c)))
+        .filter(|(node, c)| !system.fixed[*c].contains(node))
+        .map(|(node, c)| residual[3 * node + c].powi(2))
+        .sum::<f64>()
+        .sqrt();
+    let force_norm = system
+        .force
+        .iter()
+        .map(|x| x * x)
+        .sum::<f64>()
+        .sqrt()
+        .max(1.);
+    let projected_residual = residual_norm / force_norm;
+    let applied: [f64; 3] =
+        std::array::from_fn(|c| system.force.as_chunks::<3>().0.iter().map(|x| x[c]).sum());
+    let work = dot(&system.force, &u);
+    let energy = 0.5 * dot(&u, &system.matrix.apply(&u)?);
+    let wall = [
+        wall_metrics(
+            &system.space,
+            &system.walls[0],
+            p,
+            &u,
+            2.,
+            system.projected.as_ref(),
+        )?,
+        wall_metrics(
+            &system.space,
+            &system.walls[1],
+            p,
+            &u,
+            4.,
+            system.projected.as_ref(),
+        )?,
+    ];
+    let errors = field_errors(&system.space, p, &u, 12)?;
+    let mut report = object([
+        (
+            "schema",
+            Json::String("plane_strain_reconstruction_v1".into()),
+        ),
+        ("level", n(level)),
+        ("order", n(order)),
+        ("nu", n(p.nu)),
+        ("inner_mpa", n(p.inner)),
+        ("outer_mpa", n(p.outer)),
+        ("projected_bulk", Json::Bool(projected)),
+        ("relative_l2", n(errors.0)),
+        ("relative_energy_norm", n(errors.1)),
+        ("strain_energy_n_mm", n(errors.2)),
+        ("physical_strain_energy_n_mm", n(errors.2)),
+        ("work_n_mm", n(work)),
+        ("strain_energy_matrix_n_mm", n(energy)),
+        (
+            "energy_work_relative",
+            n((2. * energy - work).abs() / work.abs().max(1.)),
+        ),
+        ("pressure_resultant_n", json_numbers(applied)),
+        ("relative_residual_3d_free", n(projected_residual)),
+        ("inner", wall[0].clone()),
+        ("outer", wall[1].clone()),
+        ("space_dofs_3d", n(system.space.ndof)),
+        ("scalar_dofs_2d", n(coordinates.len())),
+        ("assembly_s", n(system.assembly_s)),
+        ("reduction_s", n(reduction_s)),
+        ("free_vector_dofs_2d", n(free.len())),
+        ("volume_mm3", n(system.matrix.integrated_volume)),
+    ]);
+    if let Json::Object(fields) = &mut report {
+        fields.insert("displacement_mm_xyz".into(), json_numbers(u));
+    }
+    write_json(&args[8], &report)?;
+    Ok(())
 }
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let a = std::env::args().skip(1).collect::<Vec<_>>();
+    if a.first().is_some_and(|arg| arg == "plane-export") {
+        return plane_export(&a);
+    }
+    if a.first().is_some_and(|arg| arg == "plane-read") {
+        return plane_read(&a);
+    }
+    if a.first().is_some_and(|arg| arg == "field") {
+        if a.len() != 9 {
+            return Err("usage: pressure_cylinder field LEVEL ORDER NU PI PO ALTERNATE full|projected OUTPUT.json".into());
+        }
+        let projected = match a[7].as_str() {
+            "full" => false,
+            "projected" => true,
+            _ => return Err("expected full or projected formulation".into()),
+        };
+        let report = run(
+            a[1].parse()?,
+            a[2].parse()?,
+            Pressure {
+                nu: a[3].parse()?,
+                inner: a[4].parse()?,
+                outer: a[5].parse()?,
+            },
+            a[6].parse()?,
+            projected,
+            true,
+        )?;
+        write_json(&a[8], &report)?;
+        println!("{{\"status\":\"field_exported\",\"path\":{:?}}}", a[8]);
+        return Ok(());
+    }
     if !(a.len() == 6 || (a.len() == 7 && a[6] == "--projected")) {
         return Err(
             "usage: pressure_cylinder level order nu inner_MPa outer_MPa alternate_gauge_boolean [--projected]"
@@ -380,7 +888,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 outer: a[4].parse()?
             },
             a[5].parse()?,
-            a.len() == 7
+            a.len() == 7,
+            false,
         )?
     );
     Ok(())

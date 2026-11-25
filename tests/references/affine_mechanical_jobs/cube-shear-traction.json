@@ -1,0 +1,12 @@
+{
+  "id": "cube-shear-traction-affine",
+  "recipe": {"family": "reference_rectangle_v1"},
+  "job": {
+    "schema": "solidcraft_mechanical_job_v2", "material": {"young_mpa": 1000, "poisson": 0},
+    "formulation": "displacement", "order": 4,
+    "plan": {"schema":"adaptive_refinement_plan_v1","max_depth":0,"max_cells":1024,"steps":[]},
+    "supports": [{"select":{"feature":"y-10"},"components":[0,1,2],"affine_mm":{"denominator":500,"numerators":[[10,0,1,0],[0,0,0,0],[0,0,0,0]]}}],
+    "loads": [{"select":{"feature":"*"},"stress_mpa":[[0,1,0],[1,0,0],[0,0,0]]}]
+  },
+  "oracle": {"kind":"affine","gradient":[[0,0.002,0],[0,0,0],[0,0,0]],"offset":[0.02,0,0],"name":"uniform shear"}
+}

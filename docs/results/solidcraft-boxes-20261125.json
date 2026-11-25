@@ -1,0 +1,1176 @@
+{
+  "schema": "solidcraft_box_program_parity_v1",
+  "solidcraft": "solidcraft-cli 0.48.1",
+  "occ": "7.8.1",
+  "cases": [
+    {
+      "id": "base",
+      "script": {
+        "commands": [
+          {
+            "command": "solid.box",
+            "params": {
+              "length": 12,
+              "width": 12,
+              "height": 12,
+              "corner": [
+                0,
+                0,
+                0
+              ],
+              "name": "base",
+              "operation": "new"
+            }
+          }
+        ]
+      },
+      "host_accepted": true,
+      "host_note": "",
+      "native": {
+        "blocks": 1,
+        "cavities": 0,
+        "determinant_lower_bound_mm3": 1728,
+        "exterior_sides": 6,
+        "method": "certified_orthogonal_feature_program",
+        "minimum_x_mm": 0,
+        "shared_faces": 0,
+        "status": "valid",
+        "volume_mm3": 1728
+      },
+      "expected": true,
+      "host_elapsed_s": 0.054461254039779305,
+      "native_elapsed_s": 0.0071652919868938625,
+      "single_valid": [
+        true,
+        true,
+        true
+      ],
+      "classified_points": 27,
+      "classification_mismatches": 0,
+      "volume_relative_error": 0.0,
+      "area_relative_error": 0.0,
+      "max_bbox_difference_mm": 1e-07,
+      "volume_mm3": 1728,
+      "exact_design_areas": true,
+      "saved_document_sha256": "b5d076090986b697ed52812e0c3e96b6c42db9a68e9e1c6c44e6e4743beab8b9",
+      "qualified": true
+    },
+    {
+      "id": "pocket",
+      "script": {
+        "commands": [
+          {
+            "command": "solid.box",
+            "params": {
+              "length": 12,
+              "width": 12,
+              "height": 12,
+              "corner": [
+                0,
+                0,
+                0
+              ],
+              "name": "base",
+              "operation": "new"
+            }
+          },
+          {
+            "command": "solid.box",
+            "params": {
+              "length": 4,
+              "width": 7,
+              "height": 7,
+              "center": [
+                4.0,
+                5.5,
+                11.5
+              ],
+              "name": "pocket",
+              "operation": "cut"
+            }
+          }
+        ]
+      },
+      "host_accepted": true,
+      "host_note": "",
+      "native": {
+        "blocks": 17,
+        "cavities": 0,
+        "determinant_lower_bound_mm3": 16,
+        "exterior_sides": 46,
+        "method": "certified_orthogonal_feature_program",
+        "minimum_x_mm": 0,
+        "shared_faces": 28,
+        "status": "valid",
+        "volume_mm3": 1616
+      },
+      "expected": true,
+      "host_elapsed_s": 0.04823196504730731,
+      "native_elapsed_s": 0.00621044501895085,
+      "single_valid": [
+        true,
+        true,
+        true
+      ],
+      "classified_points": 125,
+      "classification_mismatches": 0,
+      "volume_relative_error": 0.0,
+      "area_relative_error": 0.0,
+      "max_bbox_difference_mm": 1e-07,
+      "volume_mm3": 1616,
+      "exact_design_areas": true,
+      "saved_document_sha256": "8ceca540b64ffb70be5df8f54fe002694cd42990dda2da8059d11c8ff710ce8c",
+      "qualified": true
+    },
+    {
+      "id": "through",
+      "script": {
+        "commands": [
+          {
+            "command": "solid.box",
+            "params": {
+              "length": 12,
+              "width": 12,
+              "height": 12,
+              "corner": [
+                0,
+                0,
+                0
+              ],
+              "name": "base",
+              "operation": "new"
+            }
+          },
+          {
+            "command": "solid.box",
+            "params": {
+              "length": 16,
+              "width": 3,
+              "height": 3,
+              "center": [
+                6.0,
+                5.5,
+                5.5
+              ],
+              "name": "x_bore",
+              "operation": "cut"
+            }
+          }
+        ]
+      },
+      "host_accepted": true,
+      "host_note": "",
+      "native": {
+        "blocks": 8,
+        "cavities": 0,
+        "determinant_lower_bound_mm3": 144,
+        "exterior_sides": 32,
+        "method": "certified_orthogonal_feature_program",
+        "minimum_x_mm": 0,
+        "shared_faces": 8,
+        "status": "valid",
+        "volume_mm3": 1620
+      },
+      "expected": true,
+      "host_elapsed_s": 0.08115719101624563,
+      "native_elapsed_s": 0.011822625994682312,
+      "single_valid": [
+        true,
+        true,
+        true
+      ],
+      "classified_points": 125,
+      "classification_mismatches": 0,
+      "volume_relative_error": 0.0,
+      "area_relative_error": 0.0,
+      "max_bbox_difference_mm": 1e-07,
+      "volume_mm3": 1620,
+      "exact_design_areas": true,
+      "saved_document_sha256": "86711f9cfb16aa40e3584b2d513f83146baf8320144b10869ad007e39d0a7955",
+      "qualified": true
+    },
+    {
+      "id": "crossing_tunnels",
+      "script": {
+        "commands": [
+          {
+            "command": "solid.box",
+            "params": {
+              "length": 12,
+              "width": 12,
+              "height": 12,
+              "corner": [
+                0,
+                0,
+                0
+              ],
+              "name": "base",
+              "operation": "new"
+            }
+          },
+          {
+            "command": "solid.box",
+            "params": {
+              "length": 16,
+              "width": 3,
+              "height": 3,
+              "center": [
+                6.0,
+                5.5,
+                5.5
+              ],
+              "name": "x_bore",
+              "operation": "cut"
+            }
+          },
+          {
+            "command": "solid.box",
+            "params": {
+              "length": 3,
+              "width": 16,
+              "height": 3,
+              "corner": [
+                4,
+                -2,
+                4
+              ],
+              "name": "y_bore",
+              "operation": "cut"
+            }
+          }
+        ]
+      },
+      "host_accepted": true,
+      "host_note": "",
+      "native": {
+        "blocks": 22,
+        "cavities": 0,
+        "determinant_lower_bound_mm3": 36,
+        "exterior_sides": 68,
+        "method": "certified_orthogonal_feature_program",
+        "minimum_x_mm": 0,
+        "shared_faces": 32,
+        "status": "valid",
+        "volume_mm3": 1539
+      },
+      "expected": true,
+      "host_elapsed_s": 0.10220959695288911,
+      "native_elapsed_s": 0.00679237098665908,
+      "single_valid": [
+        true,
+        true,
+        true
+      ],
+      "classified_points": 245,
+      "classification_mismatches": 0,
+      "volume_relative_error": 1.1102230246251565e-16,
+      "area_relative_error": 0.0,
+      "max_bbox_difference_mm": 1e-07,
+      "volume_mm3": 1539,
+      "exact_design_areas": true,
+      "saved_document_sha256": "0b40e9fa6173dfe88d0fd13b1b31ed866a5c89773d1421dfeebc0c53d3c2d481",
+      "qualified": true
+    },
+    {
+      "id": "skew_tunnels",
+      "script": {
+        "commands": [
+          {
+            "command": "solid.box",
+            "params": {
+              "length": 12,
+              "width": 12,
+              "height": 12,
+              "corner": [
+                0,
+                0,
+                0
+              ],
+              "name": "base",
+              "operation": "new"
+            }
+          },
+          {
+            "command": "solid.box",
+            "params": {
+              "length": 16,
+              "width": 3,
+              "height": 3,
+              "center": [
+                6.0,
+                5.5,
+                5.5
+              ],
+              "name": "x_bore",
+              "operation": "cut"
+            }
+          },
+          {
+            "command": "solid.box",
+            "params": {
+              "length": 3,
+              "width": 16,
+              "height": 2,
+              "corner": [
+                4,
+                -2,
+                8
+              ],
+              "name": "y_bore",
+              "operation": "cut"
+            }
+          }
+        ]
+      },
+      "host_accepted": true,
+      "host_note": "",
+      "native": {
+        "blocks": 39,
+        "cavities": 0,
+        "determinant_lower_bound_mm3": 9,
+        "exterior_sides": 98,
+        "method": "certified_orthogonal_feature_program",
+        "minimum_x_mm": 0,
+        "shared_faces": 68,
+        "status": "valid",
+        "volume_mm3": 1548
+      },
+      "expected": true,
+      "host_elapsed_s": 0.07835112698376179,
+      "native_elapsed_s": 0.009482782043050975,
+      "single_valid": [
+        true,
+        true,
+        true
+      ],
+      "classified_points": 343,
+      "classification_mismatches": 0,
+      "volume_relative_error": 3.3306690738754696e-16,
+      "area_relative_error": 0.0,
+      "max_bbox_difference_mm": 1e-07,
+      "volume_mm3": 1548,
+      "exact_design_areas": true,
+      "saved_document_sha256": "2fe89a658831d7595d16d88ad3333107399e87e63aeac96c516359fe9511f690",
+      "qualified": true
+    },
+    {
+      "id": "two_cavities",
+      "script": {
+        "commands": [
+          {
+            "command": "solid.box",
+            "params": {
+              "length": 12,
+              "width": 12,
+              "height": 12,
+              "corner": [
+                0,
+                0,
+                0
+              ],
+              "name": "base",
+              "operation": "new"
+            }
+          },
+          {
+            "command": "solid.box",
+            "params": {
+              "length": 4,
+              "width": 6,
+              "height": 4,
+              "center": [
+                4.0,
+                6.0,
+                4.0
+              ],
+              "name": "cavity",
+              "operation": "cut"
+            }
+          },
+          {
+            "command": "solid.box",
+            "params": {
+              "length": 3,
+              "width": 3,
+              "height": 3,
+              "corner": [
+                7,
+                7,
+                7
+              ],
+              "name": "second",
+              "operation": "cut"
+            }
+          }
+        ]
+      },
+      "host_accepted": true,
+      "host_note": "",
+      "native": {
+        "blocks": 121,
+        "cavities": 2,
+        "determinant_lower_bound_mm3": 1,
+        "exterior_sides": 170,
+        "method": "certified_orthogonal_feature_program",
+        "minimum_x_mm": 0,
+        "shared_faces": 278,
+        "status": "valid",
+        "volume_mm3": 1605
+      },
+      "expected": true,
+      "host_elapsed_s": 0.1138362719793804,
+      "native_elapsed_s": 0.019947546999901533,
+      "single_valid": [
+        true,
+        true,
+        true
+      ],
+      "classified_points": 343,
+      "classification_mismatches": 0,
+      "volume_relative_error": 2.220446049250313e-16,
+      "area_relative_error": 0.0,
+      "max_bbox_difference_mm": 1e-07,
+      "volume_mm3": 1605,
+      "exact_design_areas": true,
+      "saved_document_sha256": "067e9bc27c84b395fd70e39e29e12782e7ae575e260ae4020a3670a9576f67b1",
+      "qualified": true
+    },
+    {
+      "id": "partial_boss",
+      "script": {
+        "commands": [
+          {
+            "command": "solid.box",
+            "params": {
+              "length": 12,
+              "width": 12,
+              "height": 12,
+              "corner": [
+                0,
+                0,
+                0
+              ],
+              "name": "base",
+              "operation": "new"
+            }
+          },
+          {
+            "command": "solid.box",
+            "params": {
+              "length": 5,
+              "width": 7,
+              "height": 5,
+              "center": [
+                5.5,
+                7.5,
+                13.5
+              ],
+              "name": "boss",
+              "operation": "join"
+            }
+          }
+        ]
+      },
+      "host_accepted": true,
+      "host_note": "",
+      "native": {
+        "blocks": 19,
+        "cavities": 0,
+        "determinant_lower_bound_mm3": 3,
+        "exterior_sides": 46,
+        "method": "certified_orthogonal_feature_program",
+        "minimum_x_mm": 0,
+        "shared_faces": 34,
+        "status": "valid",
+        "volume_mm3": 1868
+      },
+      "expected": true,
+      "host_elapsed_s": 0.06099208095110953,
+      "native_elapsed_s": 0.007773154997266829,
+      "single_valid": [
+        true,
+        true,
+        true
+      ],
+      "classified_points": 125,
+      "classification_mismatches": 0,
+      "volume_relative_error": 2.220446049250313e-16,
+      "area_relative_error": 0.0,
+      "max_bbox_difference_mm": 1.0000000116860974e-07,
+      "volume_mm3": 1868,
+      "exact_design_areas": true,
+      "saved_document_sha256": "f1a30aa4ed87d383e31e0c3061ccd82b9b6a2c38ba0555ffa2a7225c5b6b9e73",
+      "qualified": true
+    },
+    {
+      "id": "filled_cut",
+      "script": {
+        "commands": [
+          {
+            "command": "solid.box",
+            "params": {
+              "length": 12,
+              "width": 12,
+              "height": 12,
+              "corner": [
+                0,
+                0,
+                0
+              ],
+              "name": "base",
+              "operation": "new"
+            }
+          },
+          {
+            "command": "solid.box",
+            "params": {
+              "length": 4,
+              "width": 6,
+              "height": 4,
+              "center": [
+                4.0,
+                6.0,
+                4.0
+              ],
+              "name": "cavity",
+              "operation": "cut"
+            }
+          },
+          {
+            "command": "solid.box",
+            "params": {
+              "length": 4,
+              "width": 6,
+              "height": 4,
+              "corner": [
+                2,
+                3,
+                2
+              ],
+              "name": "plug",
+              "operation": "join"
+            }
+          }
+        ]
+      },
+      "host_accepted": true,
+      "host_note": "",
+      "native": {
+        "blocks": 27,
+        "cavities": 0,
+        "determinant_lower_bound_mm3": 12,
+        "exterior_sides": 54,
+        "method": "certified_orthogonal_feature_program",
+        "minimum_x_mm": 0,
+        "shared_faces": 54,
+        "status": "valid",
+        "volume_mm3": 1728
+      },
+      "expected": true,
+      "host_elapsed_s": 0.07082395697943866,
+      "native_elapsed_s": 0.006115001975558698,
+      "single_valid": [
+        true,
+        true,
+        true
+      ],
+      "classified_points": 125,
+      "classification_mismatches": 0,
+      "volume_relative_error": 2.220446049250313e-16,
+      "area_relative_error": 0.0,
+      "max_bbox_difference_mm": 1e-07,
+      "volume_mm3": 1728,
+      "exact_design_areas": true,
+      "saved_document_sha256": "37f3515ce74b03103f0338f327fbf60fa75c4fe44df12eff5cfb55d592accd35",
+      "qualified": true
+    },
+    {
+      "id": "redundant",
+      "script": {
+        "commands": [
+          {
+            "command": "solid.box",
+            "params": {
+              "length": 12,
+              "width": 12,
+              "height": 12,
+              "corner": [
+                0,
+                0,
+                0
+              ],
+              "name": "base",
+              "operation": "new"
+            }
+          },
+          {
+            "command": "solid.box",
+            "params": {
+              "length": 7,
+              "width": 5,
+              "height": 2,
+              "center": [
+                4.5,
+                5.5,
+                7.0
+              ],
+              "name": "redundant",
+              "operation": "join"
+            }
+          }
+        ]
+      },
+      "host_accepted": true,
+      "host_note": "",
+      "native": {
+        "blocks": 27,
+        "cavities": 0,
+        "determinant_lower_bound_mm3": 6,
+        "exterior_sides": 54,
+        "method": "certified_orthogonal_feature_program",
+        "minimum_x_mm": 0,
+        "shared_faces": 54,
+        "status": "valid",
+        "volume_mm3": 1728
+      },
+      "expected": true,
+      "host_elapsed_s": 0.05141528201056644,
+      "native_elapsed_s": 0.008581598987802863,
+      "single_valid": [
+        true,
+        true,
+        true
+      ],
+      "classified_points": 125,
+      "classification_mismatches": 0,
+      "volume_relative_error": 0.0,
+      "area_relative_error": 0.0,
+      "max_bbox_difference_mm": 1e-07,
+      "volume_mm3": 1728,
+      "exact_design_areas": true,
+      "saved_document_sha256": "453fc170ccfdab7a17f61f15f145424b61909e32b744fc21965ff705a91bad01",
+      "qualified": true
+    },
+    {
+      "id": "machined_plate",
+      "script": {
+        "commands": [
+          {
+            "command": "solid.box",
+            "params": {
+              "length": 12,
+              "width": 12,
+              "height": 12,
+              "corner": [
+                0,
+                0,
+                0
+              ],
+              "name": "base",
+              "operation": "new"
+            }
+          },
+          {
+            "command": "solid.box",
+            "params": {
+              "length": 8,
+              "width": 8,
+              "height": 7,
+              "center": [
+                6.0,
+                8.0,
+                13.5
+              ],
+              "name": "boss",
+              "operation": "join"
+            }
+          },
+          {
+            "command": "solid.box",
+            "params": {
+              "length": 4,
+              "width": 12,
+              "height": 9,
+              "corner": [
+                3,
+                1,
+                6
+              ],
+              "name": "groove",
+              "operation": "cut"
+            }
+          }
+        ]
+      },
+      "host_accepted": true,
+      "host_note": "",
+      "native": {
+        "blocks": 46,
+        "cavities": 0,
+        "determinant_lower_bound_mm3": 2,
+        "exterior_sides": 104,
+        "method": "certified_orthogonal_feature_program",
+        "minimum_x_mm": 0,
+        "shared_faces": 86,
+        "status": "valid",
+        "volume_mm3": 1688
+      },
+      "expected": true,
+      "host_elapsed_s": 0.07740957604255527,
+      "native_elapsed_s": 0.008386810019146651,
+      "single_valid": [
+        true,
+        true,
+        true
+      ],
+      "classified_points": 294,
+      "classification_mismatches": 0,
+      "volume_relative_error": 2.220446049250313e-16,
+      "area_relative_error": 0.0,
+      "max_bbox_difference_mm": 1.0000000116860974e-07,
+      "volume_mm3": 1688,
+      "exact_design_areas": true,
+      "saved_document_sha256": "f548bc2a8233222bf6d21bbf8b4aff06012d6180c6b6ba9c0fb61540419eed38",
+      "qualified": true
+    },
+    {
+      "id": "opened_cavity",
+      "script": {
+        "commands": [
+          {
+            "command": "solid.box",
+            "params": {
+              "length": 12,
+              "width": 12,
+              "height": 12,
+              "corner": [
+                0,
+                0,
+                0
+              ],
+              "name": "base",
+              "operation": "new"
+            }
+          },
+          {
+            "command": "solid.box",
+            "params": {
+              "length": 4,
+              "width": 6,
+              "height": 4,
+              "center": [
+                4.0,
+                6.0,
+                4.0
+              ],
+              "name": "cavity",
+              "operation": "cut"
+            }
+          },
+          {
+            "command": "solid.box",
+            "params": {
+              "length": 1,
+              "width": 1,
+              "height": 12,
+              "corner": [
+                4,
+                6,
+                2
+              ],
+              "name": "vent",
+              "operation": "cut"
+            }
+          }
+        ]
+      },
+      "host_accepted": true,
+      "host_note": "",
+      "native": {
+        "blocks": 65,
+        "cavities": 0,
+        "determinant_lower_bound_mm3": 2,
+        "exterior_sides": 142,
+        "method": "certified_orthogonal_feature_program",
+        "minimum_x_mm": 0,
+        "shared_faces": 124,
+        "status": "valid",
+        "volume_mm3": 1626
+      },
+      "expected": true,
+      "host_elapsed_s": 0.07875332597177476,
+      "native_elapsed_s": 0.010361458989791572,
+      "single_valid": [
+        true,
+        true,
+        true
+      ],
+      "classified_points": 294,
+      "classification_mismatches": 0,
+      "volume_relative_error": 1.1102230246251565e-16,
+      "area_relative_error": 0.0,
+      "max_bbox_difference_mm": 1e-07,
+      "volume_mm3": 1626,
+      "exact_design_areas": true,
+      "saved_document_sha256": "b4b1a20b02ff4f98ddd3d8bb497460a0817d0c7415b980570d81e28b6ebd3372",
+      "qualified": true
+    },
+    {
+      "id": "floating_box",
+      "script": {
+        "commands": [
+          {
+            "command": "solid.box",
+            "params": {
+              "length": 12,
+              "width": 12,
+              "height": 12,
+              "corner": [
+                0,
+                0,
+                0
+              ],
+              "name": "base",
+              "operation": "new"
+            }
+          },
+          {
+            "command": "solid.box",
+            "params": {
+              "length": 2,
+              "width": 2,
+              "height": 2,
+              "center": [
+                16.0,
+                16.0,
+                16.0
+              ],
+              "name": "box",
+              "operation": "join"
+            }
+          }
+        ]
+      },
+      "host_accepted": true,
+      "host_note": "",
+      "native": {
+        "reason": "orthogonal_disconnected_material",
+        "status": "error"
+      },
+      "expected": false,
+      "host_elapsed_s": 0.050909459008835256,
+      "native_elapsed_s": 0.0021295929909683764,
+      "previous_unchanged": true,
+      "qualified": true,
+      "host_solid_count": 2
+    },
+    {
+      "id": "edge_contact",
+      "script": {
+        "commands": [
+          {
+            "command": "solid.box",
+            "params": {
+              "length": 12,
+              "width": 12,
+              "height": 12,
+              "corner": [
+                0,
+                0,
+                0
+              ],
+              "name": "base",
+              "operation": "new"
+            }
+          },
+          {
+            "command": "solid.box",
+            "params": {
+              "length": 4,
+              "width": 4,
+              "height": 4,
+              "center": [
+                14.0,
+                14.0,
+                6.0
+              ],
+              "name": "box",
+              "operation": "join"
+            }
+          }
+        ]
+      },
+      "host_accepted": true,
+      "host_note": "",
+      "native": {
+        "reason": "orthogonal_nonmanifold_edge",
+        "status": "error"
+      },
+      "expected": false,
+      "host_elapsed_s": 0.06765753502259031,
+      "native_elapsed_s": 0.003203228989150375,
+      "previous_unchanged": true,
+      "qualified": true,
+      "host_solid_count": 2
+    },
+    {
+      "id": "corner_contact",
+      "script": {
+        "commands": [
+          {
+            "command": "solid.box",
+            "params": {
+              "length": 12,
+              "width": 12,
+              "height": 12,
+              "corner": [
+                0,
+                0,
+                0
+              ],
+              "name": "base",
+              "operation": "new"
+            }
+          },
+          {
+            "command": "solid.box",
+            "params": {
+              "length": 4,
+              "width": 4,
+              "height": 4,
+              "center": [
+                14.0,
+                14.0,
+                14.0
+              ],
+              "name": "box",
+              "operation": "join"
+            }
+          }
+        ]
+      },
+      "host_accepted": true,
+      "host_note": "",
+      "native": {
+        "reason": "orthogonal_nonmanifold_vertex",
+        "status": "error"
+      },
+      "expected": false,
+      "host_elapsed_s": 0.05985893995966762,
+      "native_elapsed_s": 0.0032741070026531816,
+      "previous_unchanged": true,
+      "qualified": true,
+      "host_solid_count": 2
+    },
+    {
+      "id": "empty",
+      "script": {
+        "commands": [
+          {
+            "command": "solid.box",
+            "params": {
+              "length": 12,
+              "width": 12,
+              "height": 12,
+              "corner": [
+                0,
+                0,
+                0
+              ],
+              "name": "base",
+              "operation": "new"
+            }
+          },
+          {
+            "command": "solid.box",
+            "params": {
+              "length": 13,
+              "width": 13,
+              "height": 13,
+              "center": [
+                5.5,
+                5.5,
+                5.5
+              ],
+              "name": "all",
+              "operation": "cut"
+            }
+          }
+        ]
+      },
+      "host_accepted": false,
+      "host_note": "error: nothing to export: the design has no bodies",
+      "native": {
+        "reason": "orthogonal_empty_material",
+        "status": "error"
+      },
+      "expected": false,
+      "host_elapsed_s": 0.04748716001631692,
+      "native_elapsed_s": 0.002939215977676213,
+      "previous_unchanged": true,
+      "qualified": true
+    },
+    {
+      "id": "flat",
+      "script": {
+        "commands": [
+          {
+            "command": "solid.box",
+            "params": {
+              "length": 12,
+              "width": 12,
+              "height": 12,
+              "corner": [
+                0,
+                0,
+                0
+              ],
+              "name": "base",
+              "operation": "new"
+            }
+          },
+          {
+            "command": "solid.box",
+            "params": {
+              "length": 0,
+              "width": 2,
+              "height": 2,
+              "center": [
+                0.0,
+                2.0,
+                2.0
+              ],
+              "name": "flat",
+              "operation": "cut"
+            }
+          }
+        ]
+      },
+      "host_accepted": false,
+      "host_note": "error: step 2 (solid.box): invalid input: box needs a positive size in x, y and z",
+      "native": {
+        "reason": "solid.box dimensions must be positive",
+        "status": "error"
+      },
+      "expected": false,
+      "host_elapsed_s": 0.02840762899722904,
+      "native_elapsed_s": 0.0029760149773210287,
+      "previous_unchanged": true,
+      "qualified": true
+    },
+    {
+      "id": "duplicate",
+      "script": {
+        "commands": [
+          {
+            "command": "solid.box",
+            "params": {
+              "length": 12,
+              "width": 12,
+              "height": 12,
+              "corner": [
+                0,
+                0,
+                0
+              ],
+              "name": "base",
+              "operation": "new"
+            }
+          },
+          {
+            "command": "solid.box",
+            "params": {
+              "length": 16,
+              "width": 3,
+              "height": 3,
+              "center": [
+                6.0,
+                5.5,
+                5.5
+              ],
+              "name": "x_bore",
+              "operation": "cut"
+            }
+          },
+          {
+            "command": "solid.box",
+            "params": {
+              "length": 16,
+              "width": 3,
+              "height": 3,
+              "corner": [
+                -2,
+                4,
+                4
+              ],
+              "name": "x_bore",
+              "operation": "cut"
+            }
+          }
+        ]
+      },
+      "host_accepted": true,
+      "host_note": "",
+      "native": {
+        "reason": "solid.box feature names must be unique",
+        "status": "error"
+      },
+      "expected": false,
+      "host_elapsed_s": 0.08457560901297256,
+      "native_elapsed_s": 0.0030133789987303317,
+      "previous_unchanged": true,
+      "qualified": true,
+      "host_solid_count": 1
+    }
+  ],
+  "additional_refusals": [
+    {
+      "id": "explicit_unresolved_target",
+      "diagnostic": {
+        "reason": "unexpected object fields",
+        "status": "error"
+      },
+      "qualified": true
+    },
+    {
+      "id": "new_body",
+      "diagnostic": {
+        "reason": "only the initial solid.box may create a body",
+        "status": "error"
+      },
+      "qualified": true
+    },
+    {
+      "id": "unresolved_expression",
+      "diagnostic": {
+        "reason": "solid.box values must be numeric literals",
+        "status": "error"
+      },
+      "qualified": true
+    },
+    {
+      "id": "nonintegral_plane",
+      "diagnostic": {
+        "reason": "solid.box center is outside the exact half-mm lattice",
+        "status": "error"
+      },
+      "qualified": true
+    },
+    {
+      "id": "unrecognized_option",
+      "diagnostic": {
+        "reason": "unexpected object fields",
+        "status": "error"
+      },
+      "qualified": true
+    },
+    {
+      "id": "unsupported_intersection",
+      "diagnostic": {
+        "reason": "solid.box operation is outside the qualified new/join/cut subset",
+        "status": "error"
+      },
+      "qualified": true
+    }
+  ]
+}

@@ -12,6 +12,7 @@ use crate::{
     incidence::{enumerate_faces, BlockSide},
     interchange,
     json::{object, Json},
+    prescribed_motion::Motion,
     projected_bulk::assemble_projected_bulk,
     solver_package::analysis_block_json,
 };
@@ -161,11 +162,11 @@ fn add(a: &mut Vector, b: Vector) {
         *v += w;
     }
 }
-fn nodes(space: &AnalysisSpace) -> Vec<Vector> {
-    let mut points = vec![[0.; 3]; space.ndof];
+fn homogeneous_nodes(space: &AnalysisSpace) -> Vec<[i128; 4]> {
+    let mut points = vec![[0; 4]; space.ndof];
     for b in &space.blocks {
         for (&id, h) in b.dofs.iter().zip(&b.controls) {
-            points[id] = std::array::from_fn(|i| h[i] as f64 / h[3] as f64);
+            points[id] = *h;
         }
     }
     points
@@ -173,7 +174,7 @@ fn nodes(space: &AnalysisSpace) -> Vec<Vector> {
 
 /// Rank of the evaluation of physical rigid fields on prescribed coefficients.
 /// Centering and uniform rescaling keep translations and rotations comparable.
-fn mounting_rank(points: &[Vector], fixed: &[BTreeSet<usize>; 3]) -> usize {
+fn mounting_rank(points: &[Vector], fixed: &[BTreeMap<usize, Ratio>; 3]) -> usize {
     let lo: Vector =
         std::array::from_fn(|j| points.iter().map(|x| x[j]).fold(f64::INFINITY, f64::min));
     let hi: Vector = std::array::from_fn(|j| {
@@ -188,7 +189,7 @@ fn mounting_rank(points: &[Vector], fixed: &[BTreeSet<usize>; 3]) -> usize {
     }
     let mut pivots = [None::<[f64; 6]>; 6];
     for (c, ids) in fixed.iter().enumerate() {
-        for &id in ids {
+        for &id in ids.keys() {
             let point = std::array::from_fn(|j| (points[id][j] - (lo[j] + hi[j]) * 0.5) / size);
             let unit: Vector = std::array::from_fn(|j| f64::from(c == j));
             let rotation = cross(point, unit);
@@ -220,7 +221,7 @@ fn mounting_rank(points: &[Vector], fixed: &[BTreeSet<usize>; 3]) -> usize {
     pivots.iter().flatten().count()
 }
 
-/// Build the effective space, apply homogeneous essential conditions, solve,
+/// Build the effective space, apply essential conditions, solve,
 /// and return a reproducible result document. Publication is the caller's job.
 pub fn solve_job(model: &Json, job: &Json) -> Result<Json, &'static str> {
     job.keys(&[
@@ -232,9 +233,11 @@ pub fn solve_job(model: &Json, job: &Json) -> Result<Json, &'static str> {
         "supports",
         "loads",
     ])?;
-    if job.field("schema")?.text()? != "solidcraft_mechanical_job_v1" {
-        return Err("unknown mechanical job schema");
-    }
+    let version_two = match job.field("schema")?.text()? {
+        "solidcraft_mechanical_job_v1" => false,
+        "solidcraft_mechanical_job_v2" => true,
+        _ => return Err("unknown mechanical job schema"),
+    };
     let audit = interchange::audit(model)?;
     if audit.field("status")?.text()? != "valid"
         || !matches!(
@@ -244,6 +247,7 @@ pub fn solve_job(model: &Json, job: &Json) -> Result<Json, &'static str> {
                 | "certified_coaxial_feature_program"
                 | "certified_circular_bend"
                 | "certified_orthogonal_feature_program"
+            | "certified_polygon_prism"
                 | "certified_parameterized_bracket"
         )
     {
@@ -328,10 +332,24 @@ pub fn solve_job(model: &Json, job: &Json) -> Result<Json, &'static str> {
             block: lookup[id.as_str()],
         });
     }
-    let mut fixed: [BTreeSet<usize>; 3] = Default::default();
+    let mut fixed: [BTreeMap<usize, Ratio>; 3] = Default::default();
+    let mut frame_motion = Motion::zero();
+    let mut frame_rows = [false; 3];
+    let hom = homogeneous_nodes(space);
+    let points = hom
+        .iter()
+        .map(|h| std::array::from_fn(|c| h[c] as f64 / h[3] as f64))
+        .collect::<Vec<Vector>>();
     let mut supports = Vec::new();
     for support in job.field("supports")?.items()? {
-        support.keys(&["select", "components"])?;
+        let explicit = support.field("affine_mm").ok();
+        let motion = if version_two && explicit.is_some() {
+            support.keys(&["select", "components", "affine_mm"])?;
+            Motion::parse(support.field("affine_mm")?)?
+        } else {
+            support.keys(&["select", "components"])?;
+            Motion::zero()
+        };
         let components = support
             .field("components")?
             .items()?
@@ -344,10 +362,24 @@ pub fn solve_job(model: &Json, job: &Json) -> Result<Json, &'static str> {
         {
             return Err("invalid mechanical support components");
         }
+        if explicit.is_some() {
+            for &c in &components {
+                if !frame_rows[c] {
+                    frame_motion.set_component(c, motion);
+                    frame_rows[c] = true;
+                }
+            }
+        }
         let selected = select(support.field("select")?, &faces)?;
         for f in &selected {
             for &c in &components {
-                fixed[c].extend(face_indices(&f.side).map(|i| f.block.dofs[i]));
+                for i in face_indices(&f.side) {
+                    let id = f.block.dofs[i];
+                    let value = motion.value(c, hom[id])?;
+                    if fixed[c].insert(id, value).is_some_and(|old| old != value) {
+                        return Err("conflicting displacement on shared mechanical support");
+                    }
+                }
             }
         }
         supports.push(object([
@@ -358,19 +390,32 @@ pub fn solve_job(model: &Json, job: &Json) -> Result<Json, &'static str> {
             ("components", numbers(components)),
         ]));
     }
-    let points = nodes(space);
     let rank = mounting_rank(&points, &fixed);
     if rank != 6 {
         return Err("mechanical mounting leaves a rigid mode");
     }
-    let [lx, ly, lz] = fixed.each_ref().map(|ids| {
-        resolve(
-            space.ndof,
-            &adaptive.constraints,
-            &ids.iter().map(|&i| (i, Ratio::zero())).collect::<Vec<_>>(),
-        )
-    });
-    let lifts = [lx?, ly?, lz?];
+    let make_lifts = |frame: &Motion| -> Result<_, &'static str> {
+        let mut lifts = Vec::with_capacity(3);
+        for (c, values) in fixed.iter().enumerate() {
+            let prescribed = values
+                .iter()
+                .map(|(&id, &value)| {
+                    let offset = frame.value(c, hom[id])?.checked_mul(Ratio::new(-1, 1)?)?;
+                    Ok((id, value.checked_add(offset)?))
+                })
+                .collect::<Result<Vec<_>, &'static str>>()?;
+            lifts.push(resolve(space.ndof, &adaptive.constraints, &prescribed)?);
+        }
+        Ok(lifts)
+    };
+    let rigid_frame = frame_rows
+        .iter()
+        .any(|v| *v)
+        .then(|| frame_motion.rigid_part())
+        .transpose()?;
+    let physical_lifts = make_lifts(&Motion::zero())?;
+    let relative_lifts = rigid_frame.as_ref().map(make_lifts).transpose()?;
+    let lifts = relative_lifts.as_ref().unwrap_or(&physical_lifts);
     let exterior = faces
         .iter()
         .map(|f| f.side.clone())
@@ -408,7 +453,10 @@ pub fn solve_job(model: &Json, job: &Json) -> Result<Json, &'static str> {
             ("moment_n_mm", numbers(load.moment_n_mm)),
         ]));
     }
-    if !scale.is_finite() || scale <= 0. {
+    let moving = fixed
+        .iter()
+        .any(|prescribed| prescribed.values().any(|&v| v != Ratio::zero()));
+    if !scale.is_finite() || (scale <= 0. && !moving) {
         return Err("mechanical job needs a finite nonzero load scale");
     }
     let formulation = job.field("formulation")?.text()?;
@@ -424,7 +472,7 @@ pub fn solve_job(model: &Json, job: &Json) -> Result<Json, &'static str> {
         .as_ref()
         .or_else(|| projected.as_ref().map(|p| &p.stiffness))
         .ok_or("missing mechanical stiffness")?;
-    let solved = solve_constrained(k, [&lifts[0], &lifts[1], &lifts[2]], &force, 1e-10, 20000)?;
+    let mut solved = solve_constrained(k, [&lifts[0], &lifts[1], &lifts[2]], &force, 1e-10, 20000)?;
     let mut mean_stress = BTreeMap::new();
     if let Some(system) = &projected {
         for block in &space.blocks {
@@ -442,23 +490,56 @@ pub fn solve_job(model: &Json, job: &Json) -> Result<Json, &'static str> {
             }
         }
     }
+    // Rigid motions have identically zero strain. Adding this exact physical
+    // field after the solve avoids subtracting nearly equal elastic energies.
+    if let Some(frame) = rigid_frame {
+        for (id, p) in hom.iter().enumerate() {
+            for c in 0..3 {
+                let r = frame.value(c, *p)?;
+                solved.displacement_mm[3 * id + c] += r.numerator() as f64 / r.denominator() as f64;
+            }
+        }
+    }
     let mut reactions = [0.; 3];
+    let mut support_work = 0.;
+    let mut support_scale = 0.;
     let mut reaction_moment = [0.; 3];
     for (j, &id) in adaptive.lift.free_roots.iter().enumerate() {
         let r = std::array::from_fn(|c| {
-            if fixed[c].contains(&id) {
+            if fixed[c].contains_key(&id) {
                 root_forces[j][c]
             } else {
                 0.
             }
         });
+        support_work += dot(
+            r,
+            std::array::from_fn(|c| solved.displacement_mm[3 * id + c]),
+        );
+        support_scale += norm(r);
         add(&mut reactions, r);
         add(&mut reaction_moment, cross(points[id], r));
     }
-    let balance = norm(std::array::from_fn(|c| reactions[c] + applied[c])) / scale;
+    if version_two {
+        scale = scale.max(support_scale);
+    }
+    // Zero load and zero reactions are possible for a pure prescribed rigid motion.
+    let normalize = |error: f64, scale: f64| {
+        if scale == 0. && error == 0. {
+            0.
+        } else {
+            error / scale
+        }
+    };
+    let balance = normalize(
+        norm(std::array::from_fn(|c| reactions[c] + applied[c])),
+        scale,
+    );
     let arm = points.iter().map(|&p| norm(p)).fold(1., f64::max);
-    let moment_balance =
-        norm(std::array::from_fn(|c| reaction_moment[c] + moment[c])) / (scale * arm);
+    let moment_balance = normalize(
+        norm(std::array::from_fn(|c| reaction_moment[c] + moment[c])),
+        scale * arm,
+    );
     if !balance.is_finite()
         || !moment_balance.is_finite()
         || balance > 1e-8
@@ -466,13 +547,18 @@ pub fn solve_job(model: &Json, job: &Json) -> Result<Json, &'static str> {
     {
         return Err("mechanical force or moment imbalance");
     }
-    let work = force
+    let traction_work = force
         .iter()
         .zip(&solved.displacement_mm)
         .map(|(a, b)| a * b)
         .sum::<f64>();
+    let work = traction_work + support_work;
     let twice_energy = 2. * solved.strain_energy_n_mm;
-    let work_scale = work.abs().max(twice_energy.abs());
+    let work_scale = work
+        .abs()
+        .max(twice_energy.abs())
+        .max(traction_work.abs())
+        .max(support_work.abs());
     let work_error = if work_scale == 0. {
         0.
     } else {
@@ -495,7 +581,7 @@ pub fn solve_job(model: &Json, job: &Json) -> Result<Json, &'static str> {
         ("scalar_dofs", n(space.ndof)),
         (
             "component_lifts",
-            Json::Array(lifts.iter().map(lift_json).collect()),
+            Json::Array(physical_lifts.iter().map(lift_json).collect()),
         ),
         ("supports", Json::Array(supports)),
         ("loads", Json::Array(loads)),
@@ -511,6 +597,10 @@ pub fn solve_job(model: &Json, job: &Json) -> Result<Json, &'static str> {
         ("volume_mm3", n(k.integrated_volume)),
         ("strain_energy_n_mm", n(solved.strain_energy_n_mm)),
         ("external_work_n_mm", n(work)),
+        ("traction_work_n_mm", n(traction_work)),
+        ("support_work_n_mm", n(support_work)),
+        ("work_normalization_n_mm", n(work_scale)),
+        ("equilibrium_normalization_n", n(scale)),
         ("iterations", n(solved.iterations)),
         ("relative_residual", n(solved.relative_residual)),
     ]))

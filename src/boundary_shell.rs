@@ -102,6 +102,7 @@ pub fn boundary_shell(model: &Json) -> Result<BoundaryShell, &'static str> {
             | "certified_coaxial_feature_program"
             | "certified_circular_bend"
             | "certified_orthogonal_feature_program"
+            | "certified_polygon_prism"
     ) {
         return Err("unsupported_boundary_model_family");
     }

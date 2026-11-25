@@ -1,0 +1,16 @@
+{
+  "id": "cube-component-selectors-on-different-faces",
+  "recipe": {"family": "reference_rectangle_v1"},
+  "job": {
+    "schema": "solidcraft_mechanical_job_v2", "material": {"young_mpa": 1000, "poisson": 0},
+    "formulation": "displacement", "order": 4,
+    "plan": {"schema":"adaptive_refinement_plan_v1","max_depth":0,"max_cells":1024,"steps":[]},
+    "supports": [
+      {"select":{"feature":"x-10"},"components":[0],"affine_mm":{"denominator":1,"numerators":[[0,0,0,0],[0,0,0,0],[0,0,0,0]]}},
+      {"select":{"feature":"y-10"},"components":[1],"affine_mm":{"denominator":1,"numerators":[[0,0,0,0],[0,0,0,0],[0,0,0,0]]}},
+      {"select":{"feature":"z0"},"components":[2],"affine_mm":{"denominator":1,"numerators":[[0,0,0,0],[0,0,0,0],[0,0,0,0]]}}
+    ],
+    "loads": [{"select":{"feature":"z8"},"stress_mpa":[[0,0,0],[0,0,0],[0,0,1]]}]
+  },
+  "oracle": {"kind":"affine","gradient":[[0,0,0],[0,0,0],[0,0,0.001]],"offset":[0,0,0],"name":"component-wise independent supports"}
+}

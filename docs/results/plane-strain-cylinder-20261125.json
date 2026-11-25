@@ -1,0 +1,1656 @@
+{
+  "schema": "plane_strain_lame_cylinder_campaign_v1",
+  "scope": "constant-height annulus under z-invariant pressure; not a general 3D reduction",
+  "method": "exact axial-invariant displacement map, 3D CSR reassembly, sparse SciPy LU",
+  "material_young_mpa": 210000.0,
+  "pressures_mpa": [
+    100.0,
+    0.0
+  ],
+  "environment": {
+    "python": "3.12.3",
+    "numpy": "2.4.4",
+    "scipy": "1.17.1",
+    "memory_budget_mib": 6144,
+    "timeout_seconds_per_child": 1800
+  },
+  "h1_h2_3d_equivalence": [
+    {
+      "level": 1,
+      "nu": 0.49,
+      "formulation": "displacement",
+      "relative_displacement_coefficient_error": 8.428162105981286e-12,
+      "max_abs_displacement_coefficient_error_mm": 4.641790856705124e-14,
+      "relative_physical_energy_error": 1.244873149421544e-13,
+      "three_dimensional_solve_wall_s": 0.09915848297532648,
+      "three_dimensional_iterations": 145,
+      "three_dimensional_relative_residual": 8.845120862485721e-11
+    },
+    {
+      "level": 1,
+      "nu": 0.49,
+      "formulation": "projected_bulk_q1",
+      "relative_displacement_coefficient_error": 1.9491284120960207e-11,
+      "max_abs_displacement_coefficient_error_mm": 7.097028813925542e-14,
+      "relative_physical_energy_error": 2.877596385370418e-13,
+      "three_dimensional_solve_wall_s": 0.12812659097835422,
+      "three_dimensional_iterations": 351,
+      "three_dimensional_relative_residual": 8.609576642970339e-11
+    },
+    {
+      "level": 2,
+      "nu": 0.49,
+      "formulation": "displacement",
+      "relative_displacement_coefficient_error": 1.8074846480237936e-11,
+      "max_abs_displacement_coefficient_error_mm": 8.128323318243313e-14,
+      "relative_physical_energy_error": 2.7533183119777578e-14,
+      "three_dimensional_solve_wall_s": 0.4109909440157935,
+      "three_dimensional_iterations": 515,
+      "three_dimensional_relative_residual": 6.595914416732553e-11
+    },
+    {
+      "level": 2,
+      "nu": 0.49,
+      "formulation": "projected_bulk_q1",
+      "relative_displacement_coefficient_error": 5.830480940283568e-11,
+      "max_abs_displacement_coefficient_error_mm": 2.3855765453328903e-13,
+      "relative_physical_energy_error": 4.0290692313497514e-14,
+      "three_dimensional_solve_wall_s": 0.5481043789768592,
+      "three_dimensional_iterations": 784,
+      "three_dimensional_relative_residual": 9.698978276840405e-11
+    },
+    {
+      "level": 1,
+      "nu": 0.4999,
+      "formulation": "displacement",
+      "relative_displacement_coefficient_error": 2.22323538977522e-11,
+      "max_abs_displacement_coefficient_error_mm": 3.864496461661797e-14,
+      "relative_physical_energy_error": 2.7403423918603064e-13,
+      "three_dimensional_solve_wall_s": 0.13682293298188597,
+      "three_dimensional_iterations": 806,
+      "three_dimensional_relative_residual": 9.073637838284933e-11
+    },
+    {
+      "level": 1,
+      "nu": 0.4999,
+      "formulation": "projected_bulk_q1",
+      "relative_displacement_coefficient_error": 2.719413111287867e-11,
+      "max_abs_displacement_coefficient_error_mm": 1.4188243033423136e-13,
+      "relative_physical_energy_error": 6.686577574757998e-13,
+      "three_dimensional_solve_wall_s": 0.22135147999506444,
+      "three_dimensional_iterations": 1830,
+      "three_dimensional_relative_residual": 9.737153255317719e-11
+    },
+    {
+      "level": 2,
+      "nu": 0.4999,
+      "formulation": "displacement",
+      "relative_displacement_coefficient_error": 2.4335335268879855e-11,
+      "max_abs_displacement_coefficient_error_mm": 9.043221900484344e-14,
+      "relative_physical_energy_error": 3.2826649688599422e-12,
+      "three_dimensional_solve_wall_s": 1.1935940340044908,
+      "three_dimensional_iterations": 3285,
+      "three_dimensional_relative_residual": 9.189502950602353e-11
+    },
+    {
+      "level": 2,
+      "nu": 0.4999,
+      "formulation": "projected_bulk_q1",
+      "relative_displacement_coefficient_error": 3.0935561148197364e-11,
+      "max_abs_displacement_coefficient_error_mm": 1.4842727741326556e-13,
+      "relative_physical_energy_error": 5.1303953457127e-13,
+      "three_dimensional_solve_wall_s": 2.3131307450239547,
+      "three_dimensional_iterations": 7023,
+      "three_dimensional_relative_residual": 7.983789632320762e-11
+    }
+  ],
+  "h4_runs": [
+    {
+      "status": "valid",
+      "indeterminate_reasons": [],
+      "level": 4,
+      "order": 8,
+      "nu": 0.49,
+      "pressures_mpa": [
+        100.0,
+        0.0
+      ],
+      "formulation": "displacement",
+      "vector_dofs_2d": 8448,
+      "scalar_dofs_2d": 4224,
+      "nnz_2d": 264192,
+      "free_vector_dofs_2d": 8445,
+      "reduced_residual": 8.623979780803202e-13,
+      "iterative_refinement_steps": 1,
+      "relative_residual_3d_free": 1.4345032933803186e-12,
+      "physical_metrics": {
+        "energy_work_relative": 1.198726575920352e-13,
+        "inner": {
+          "area_mm2": 100.53096491487341,
+          "exact_hoop_mpa": 166.66666666666669,
+          "exact_radial_displacement_mm": 0.0019015238095238095,
+          "max_sampled_hoop_error_mpa": 5.857109268466729,
+          "max_sampled_hoop_relative": 0.03514265561080037,
+          "mean_radial_displacement_mm": 0.0019015157981005413,
+          "primal_max_sampled_hoop_error_mpa": 5.857109268466729
+        },
+        "outer": {
+          "area_mm2": 201.06192982974682,
+          "exact_hoop_mpa": 66.66666666666667,
+          "exact_radial_displacement_mm": 0.0009649523809523809,
+          "max_sampled_hoop_error_mpa": 0.41655397811547346,
+          "max_sampled_hoop_relative": 0.006248309671732101,
+          "mean_radial_displacement_mm": 0.0009649483752407471,
+          "primal_max_sampled_hoop_error_mpa": 0.41655397811547346
+        },
+        "physical_strain_energy_n_mm": 9.558060899196496,
+        "pressure_resultant_n": [
+          1.0409451078885468e-12,
+          -7.105427357601002e-14,
+          5.658132637436267e-17
+        ],
+        "relative_energy_norm": 0.0020525982536857943,
+        "relative_l2": 5.747525181976394e-06,
+        "strain_energy_matrix_n_mm": 9.558060899197306,
+        "volume_mm3": 301.59289474462037,
+        "work_n_mm": 19.11612179839232
+      },
+      "timing_s": {
+        "rust_preparation": 0.149493848,
+        "rust_assembly": 2.6150893330000002,
+        "rust_reduction": 0.10838083,
+        "export_process_wall": 3.0112690670066513,
+        "scipy_factorization": 0.5101996380253695,
+        "scipy_backsolve": 0.02018694899743423,
+        "rust_field_readback_wall": 3.6924852859810926
+      },
+      "peak_rss_mib_campaign_process": 144.0546875,
+      "artifacts": {
+        "csr": "build/plane-strain-campaign/h4-q8-nu0.49-full.csr.json",
+        "solution": "build/plane-strain-campaign/h4-q8-nu0.49-full.solution.json",
+        "readback": "build/plane-strain-campaign/h4-q8-nu0.49-full.readback.json",
+        "readback_sha256": "e9c215918704cdfda15b8e3ea08afe0d46fe01b3d12aca00dbcd43851d07e871"
+      }
+    },
+    {
+      "status": "valid",
+      "indeterminate_reasons": [],
+      "level": 4,
+      "order": 8,
+      "nu": 0.49,
+      "pressures_mpa": [
+        100.0,
+        0.0
+      ],
+      "formulation": "projected_bulk_q1",
+      "vector_dofs_2d": 8448,
+      "scalar_dofs_2d": 4224,
+      "nnz_2d": 264192,
+      "free_vector_dofs_2d": 8445,
+      "reduced_residual": 8.604043505519623e-13,
+      "iterative_refinement_steps": 1,
+      "relative_residual_3d_free": 8.911367291243543e-13,
+      "physical_metrics": {
+        "energy_work_relative": 1.821313526181291e-14,
+        "inner": {
+          "area_mm2": 100.53096491487341,
+          "exact_hoop_mpa": 166.66666666666669,
+          "exact_radial_displacement_mm": 0.0019015238095238095,
+          "max_sampled_hoop_error_mpa": 0.07832000981628084,
+          "max_sampled_hoop_relative": 0.000469920058897685,
+          "mean_radial_displacement_mm": 0.001901523600063815,
+          "primal_max_sampled_hoop_error_mpa": 5.823828732234375
+        },
+        "outer": {
+          "area_mm2": 201.06192982974682,
+          "exact_hoop_mpa": 66.66666666666667,
+          "exact_radial_displacement_mm": 0.0009649523809523809,
+          "max_sampled_hoop_error_mpa": 0.005731012422174331,
+          "max_sampled_hoop_relative": 8.596518633261495e-05,
+          "mean_radial_displacement_mm": 0.0009649522762223811,
+          "primal_max_sampled_hoop_error_mpa": 0.41811810864838606
+        },
+        "physical_strain_energy_n_mm": 9.558139335125306,
+        "pressure_resultant_n": [
+          1.0409451078885468e-12,
+          -7.105427357601002e-14,
+          5.658132637436267e-17
+        ],
+        "relative_energy_norm": 0.0020526502299230676,
+        "relative_l2": 4.044111621986691e-06,
+        "strain_energy_matrix_n_mm": 9.558100116140762,
+        "volume_mm3": 301.59289474462037,
+        "work_n_mm": 19.116200232281873
+      },
+      "timing_s": {
+        "rust_preparation": 0.161016933,
+        "rust_assembly": 3.619897075,
+        "rust_reduction": 0.107830083,
+        "export_process_wall": 4.078363948035985,
+        "scipy_factorization": 0.5327481260173954,
+        "scipy_backsolve": 0.02126157295424491,
+        "rust_field_readback_wall": 4.695915593998507
+      },
+      "peak_rss_mib_campaign_process": 150.3203125,
+      "artifacts": {
+        "csr": "build/plane-strain-campaign/h4-q8-nu0.49-projected.csr.json",
+        "solution": "build/plane-strain-campaign/h4-q8-nu0.49-projected.solution.json",
+        "readback": "build/plane-strain-campaign/h4-q8-nu0.49-projected.readback.json",
+        "readback_sha256": "17f8cc64fa899dc05250c1d6fe1f20daf25936bcbdbd8bf6e480a90192a5d5d2"
+      }
+    },
+    {
+      "status": "valid",
+      "indeterminate_reasons": [],
+      "level": 4,
+      "order": 12,
+      "nu": 0.49,
+      "pressures_mpa": [
+        100.0,
+        0.0
+      ],
+      "formulation": "displacement",
+      "vector_dofs_2d": 8448,
+      "scalar_dofs_2d": 4224,
+      "nnz_2d": 264192,
+      "free_vector_dofs_2d": 8445,
+      "reduced_residual": 8.593179576274267e-13,
+      "iterative_refinement_steps": 1,
+      "relative_residual_3d_free": 2.0726132417510543e-12,
+      "physical_metrics": {
+        "energy_work_relative": 7.805661424587642e-14,
+        "inner": {
+          "area_mm2": 100.53096491487341,
+          "exact_hoop_mpa": 166.66666666666669,
+          "exact_radial_displacement_mm": 0.0019015238095238095,
+          "max_sampled_hoop_error_mpa": 5.857109269120457,
+          "max_sampled_hoop_relative": 0.03514265561472274,
+          "mean_radial_displacement_mm": 0.0019015157981029742,
+          "primal_max_sampled_hoop_error_mpa": 5.857109269120457
+        },
+        "outer": {
+          "area_mm2": 201.06192982974682,
+          "exact_hoop_mpa": 66.66666666666667,
+          "exact_radial_displacement_mm": 0.0009649523809523809,
+          "max_sampled_hoop_error_mpa": 0.41655397881153533,
+          "max_sampled_hoop_relative": 0.0062483096821730295,
+          "mean_radial_displacement_mm": 0.0009649483752420079,
+          "primal_max_sampled_hoop_error_mpa": 0.41655397881153533
+        },
+        "physical_strain_energy_n_mm": 9.558060899220791,
+        "pressure_resultant_n": [
+          1.0231815394945443e-12,
+          -2.5224267119483557e-13,
+          -1.4090423936813422e-17
+        ],
+        "relative_energy_norm": 0.002052598253685771,
+        "relative_l2": 5.7475242605142396e-06,
+        "strain_energy_matrix_n_mm": 9.558060899209151,
+        "volume_mm3": 301.5928947446249,
+        "work_n_mm": 19.11612179841681
+      },
+      "timing_s": {
+        "rust_preparation": 0.179798249,
+        "rust_assembly": 8.348266446,
+        "rust_reduction": 0.107656547,
+        "export_process_wall": 8.786061418009922,
+        "scipy_factorization": 0.5145512020098977,
+        "scipy_backsolve": 0.02110017999075353,
+        "rust_field_readback_wall": 9.435362985008396
+      },
+      "peak_rss_mib_campaign_process": 150.3203125,
+      "artifacts": {
+        "csr": "build/plane-strain-campaign/h4-q12-nu0.49-full.csr.json",
+        "solution": "build/plane-strain-campaign/h4-q12-nu0.49-full.solution.json",
+        "readback": "build/plane-strain-campaign/h4-q12-nu0.49-full.readback.json",
+        "readback_sha256": "a2ad4f43e05c0c23a38ca15fcf0fb15e3b3636eb88ca2ec248f8ecd3d2e04703"
+      }
+    },
+    {
+      "status": "valid",
+      "indeterminate_reasons": [],
+      "level": 4,
+      "order": 12,
+      "nu": 0.49,
+      "pressures_mpa": [
+        100.0,
+        0.0
+      ],
+      "formulation": "projected_bulk_q1",
+      "vector_dofs_2d": 8448,
+      "scalar_dofs_2d": 4224,
+      "nnz_2d": 264192,
+      "free_vector_dofs_2d": 8445,
+      "reduced_residual": 8.544819216958898e-13,
+      "iterative_refinement_steps": 1,
+      "relative_residual_3d_free": 1.0564334825354578e-12,
+      "physical_metrics": {
+        "energy_work_relative": 3.7169663799614063e-16,
+        "inner": {
+          "area_mm2": 100.53096491487341,
+          "exact_hoop_mpa": 166.66666666666669,
+          "exact_radial_displacement_mm": 0.0019015238095238095,
+          "max_sampled_hoop_error_mpa": 0.07832000979198028,
+          "max_sampled_hoop_relative": 0.00046992005875188164,
+          "mean_radial_displacement_mm": 0.0019015236000640226,
+          "primal_max_sampled_hoop_error_mpa": 5.823828733353764
+        },
+        "outer": {
+          "area_mm2": 201.06192982974682,
+          "exact_hoop_mpa": 66.66666666666667,
+          "exact_radial_displacement_mm": 0.0009649523809523809,
+          "max_sampled_hoop_error_mpa": 0.0057310127371721364,
+          "max_sampled_hoop_relative": 8.596519105758204e-05,
+          "mean_radial_displacement_mm": 0.00096495227622249,
+          "primal_max_sampled_hoop_error_mpa": 0.41811811184936687
+        },
+        "physical_strain_energy_n_mm": 9.558139335127452,
+        "pressure_resultant_n": [
+          1.0231815394945443e-12,
+          -2.5224267119483557e-13,
+          -1.4090423936813422e-17
+        ],
+        "relative_energy_norm": 0.0020526502299233287,
+        "relative_l2": 4.044111620097562e-06,
+        "strain_energy_matrix_n_mm": 9.558100116141999,
+        "volume_mm3": 301.5928947446249,
+        "work_n_mm": 19.11620023228399
+      },
+      "timing_s": {
+        "rust_preparation": 0.172113214,
+        "rust_assembly": 11.748726234,
+        "rust_reduction": 0.107735038,
+        "export_process_wall": 12.176806124974973,
+        "scipy_factorization": 0.5321860850090161,
+        "scipy_backsolve": 0.02118491503642872,
+        "rust_field_readback_wall": 12.814562823972665
+      },
+      "peak_rss_mib_campaign_process": 152.66796875,
+      "artifacts": {
+        "csr": "build/plane-strain-campaign/h4-q12-nu0.49-projected.csr.json",
+        "solution": "build/plane-strain-campaign/h4-q12-nu0.49-projected.solution.json",
+        "readback": "build/plane-strain-campaign/h4-q12-nu0.49-projected.readback.json",
+        "readback_sha256": "61224f3657dd70a444a1079ee491c720d5dcc3df495fa8ef943eb12cbf946eed"
+      }
+    },
+    {
+      "status": "indeterminate",
+      "indeterminate_reasons": [
+        "reconstructed initial-3D free residual exceeds 1e-10"
+      ],
+      "level": 4,
+      "order": 8,
+      "nu": 0.4999,
+      "pressures_mpa": [
+        100.0,
+        0.0
+      ],
+      "formulation": "displacement",
+      "vector_dofs_2d": 8448,
+      "scalar_dofs_2d": 4224,
+      "nnz_2d": 264192,
+      "free_vector_dofs_2d": 8445,
+      "reduced_residual": 8.947512837310433e-11,
+      "iterative_refinement_steps": 8,
+      "relative_residual_3d_free": 1.3314209597100524e-10,
+      "physical_metrics": {
+        "energy_work_relative": 3.88765340761759e-12,
+        "inner": {
+          "area_mm2": 100.53096491487341,
+          "exact_hoop_mpa": 166.66666666666669,
+          "exact_radial_displacement_mm": 0.0019047301523809524,
+          "max_sampled_hoop_error_mpa": 597.301442497343,
+          "max_sampled_hoop_relative": 3.583808654984058,
+          "mean_radial_displacement_mm": 0.0019039396668415372,
+          "primal_max_sampled_hoop_error_mpa": 597.301442497343
+        },
+        "outer": {
+          "area_mm2": 201.06192982974682,
+          "exact_hoop_mpa": 66.66666666666667,
+          "exact_radial_displacement_mm": 0.0009525079238095239,
+          "max_sampled_hoop_error_mpa": 42.48010792490125,
+          "max_sampled_hoop_relative": 0.6372016188735187,
+          "mean_radial_displacement_mm": 0.0009521126810398235,
+          "primal_max_sampled_hoop_error_mpa": 42.48010792490125
+        },
+        "physical_strain_energy_n_mm": 9.570244592533227,
+        "pressure_resultant_n": [
+          1.0409451078885468e-12,
+          -7.105427357601002e-14,
+          5.658132637436267e-17
+        ],
+        "relative_energy_norm": 0.020371839487565463,
+        "relative_l2": 0.000414903362183179,
+        "strain_energy_matrix_n_mm": 9.57024459232693,
+        "volume_mm3": 301.59289474462037,
+        "work_n_mm": 19.14048918472827
+      },
+      "timing_s": {
+        "rust_preparation": 0.260736333,
+        "rust_assembly": 4.53690162,
+        "rust_reduction": 0.143221103,
+        "export_process_wall": 5.120437261997722,
+        "scipy_factorization": 0.7041910660336725,
+        "scipy_backsolve": 0.11479382799006999,
+        "rust_field_readback_wall": 5.747303422016557
+      },
+      "peak_rss_mib_campaign_process": 153.140625,
+      "artifacts": {
+        "csr": "build/plane-strain-campaign/h4-q8-nu0.4999-full.csr.json",
+        "solution": "build/plane-strain-campaign/h4-q8-nu0.4999-full.solution.json",
+        "readback": "build/plane-strain-campaign/h4-q8-nu0.4999-full.readback.json",
+        "readback_sha256": "8d9e88950281a09e04b453bef88e72fe9cc7c18d997dfd2aadfa13b86f0dc9d3"
+      }
+    },
+    {
+      "status": "valid",
+      "indeterminate_reasons": [],
+      "level": 4,
+      "order": 8,
+      "nu": 0.4999,
+      "pressures_mpa": [
+        100.0,
+        0.0
+      ],
+      "formulation": "projected_bulk_q1",
+      "vector_dofs_2d": 8448,
+      "scalar_dofs_2d": 4224,
+      "nnz_2d": 264192,
+      "free_vector_dofs_2d": 8445,
+      "reduced_residual": 8.690036626599314e-11,
+      "iterative_refinement_steps": 8,
+      "relative_residual_3d_free": 8.417948755554765e-11,
+      "physical_metrics": {
+        "energy_work_relative": 6.426020997662354e-12,
+        "inner": {
+          "area_mm2": 100.53096491487341,
+          "exact_hoop_mpa": 166.66666666666669,
+          "exact_radial_displacement_mm": 0.0019047301523809524,
+          "max_sampled_hoop_error_mpa": 0.0782830596880899,
+          "max_sampled_hoop_relative": 0.0004696983581285394,
+          "mean_radial_displacement_mm": 0.001904729941532719,
+          "primal_max_sampled_hoop_error_mpa": 594.0591187207435
+        },
+        "outer": {
+          "area_mm2": 201.06192982974682,
+          "exact_hoop_mpa": 66.66666666666667,
+          "exact_radial_displacement_mm": 0.0009525079238095239,
+          "max_sampled_hoop_error_mpa": 0.005732567965949897,
+          "max_sampled_hoop_relative": 8.598851948924846e-05,
+          "mean_radial_displacement_mm": 0.0009525078183854046,
+          "primal_max_sampled_hoop_error_mpa": 42.66083764929439
+        },
+        "physical_strain_energy_n_mm": 9.578191144494477,
+        "pressure_resultant_n": [
+          1.0409451078885468e-12,
+          -7.105427357601002e-14,
+          5.658132637436267e-17
+        ],
+        "relative_energy_norm": 0.02037656667266198,
+        "relative_l2": 4.087520828608145e-06,
+        "strain_energy_matrix_n_mm": 9.57421694628825,
+        "volume_mm3": 301.59289474462037,
+        "work_n_mm": 19.14843389245345
+      },
+      "timing_s": {
+        "rust_preparation": 0.276681994,
+        "rust_assembly": 7.253241484,
+        "rust_reduction": 0.296952874,
+        "export_process_wall": 8.05945665098261,
+        "scipy_factorization": 1.1761339379590936,
+        "scipy_backsolve": 0.1750667780288495,
+        "rust_field_readback_wall": 8.45672024198575
+      },
+      "peak_rss_mib_campaign_process": 157.3046875,
+      "artifacts": {
+        "csr": "build/plane-strain-campaign/h4-q8-nu0.4999-projected.csr.json",
+        "solution": "build/plane-strain-campaign/h4-q8-nu0.4999-projected.solution.json",
+        "readback": "build/plane-strain-campaign/h4-q8-nu0.4999-projected.readback.json",
+        "readback_sha256": "837b08036646ab4c15bf658b7a7a9d05017b35fd59c890edca3eecd1b10645c1"
+      }
+    },
+    {
+      "status": "indeterminate",
+      "indeterminate_reasons": [
+        "reconstructed initial-3D free residual exceeds 1e-10"
+      ],
+      "level": 4,
+      "order": 12,
+      "nu": 0.4999,
+      "pressures_mpa": [
+        100.0,
+        0.0
+      ],
+      "formulation": "displacement",
+      "vector_dofs_2d": 8448,
+      "scalar_dofs_2d": 4224,
+      "nnz_2d": 264192,
+      "free_vector_dofs_2d": 8445,
+      "reduced_residual": 8.443818560893444e-11,
+      "iterative_refinement_steps": 8,
+      "relative_residual_3d_free": 1.865350344508775e-10,
+      "physical_metrics": {
+        "energy_work_relative": 4.77729402729313e-12,
+        "inner": {
+          "area_mm2": 100.53096491487341,
+          "exact_hoop_mpa": 166.66666666666669,
+          "exact_radial_displacement_mm": 0.0019047301523809524,
+          "max_sampled_hoop_error_mpa": 597.3014426553175,
+          "max_sampled_hoop_relative": 3.5838086559319047,
+          "mean_radial_displacement_mm": 0.0019039396669101706,
+          "primal_max_sampled_hoop_error_mpa": 597.3014426553175
+        },
+        "outer": {
+          "area_mm2": 201.06192982974682,
+          "exact_hoop_mpa": 66.66666666666667,
+          "exact_radial_displacement_mm": 0.0009525079238095239,
+          "max_sampled_hoop_error_mpa": 42.480107856217444,
+          "max_sampled_hoop_relative": 0.6372016178432616,
+          "mean_radial_displacement_mm": 0.0009521126810741506,
+          "primal_max_sampled_hoop_error_mpa": 42.480107856217444
+        },
+        "physical_strain_energy_n_mm": 9.57024459322361,
+        "pressure_resultant_n": [
+          1.0231815394945443e-12,
+          -2.5224267119483557e-13,
+          -1.4090423936813422e-17
+        ],
+        "relative_energy_norm": 0.02037183948756574,
+        "relative_l2": 0.0004149033261499828,
+        "strain_energy_matrix_n_mm": 9.570244592754838,
+        "volume_mm3": 301.5928947446249,
+        "work_n_mm": 19.140489185418236
+      },
+      "timing_s": {
+        "rust_preparation": 0.392958165,
+        "rust_assembly": 11.918388976,
+        "rust_reduction": 0.108226592,
+        "export_process_wall": 12.570625980966724,
+        "scipy_factorization": 0.521005171991419,
+        "scipy_backsolve": 0.08061656204517931,
+        "rust_field_readback_wall": 10.819806376995984
+      },
+      "peak_rss_mib_campaign_process": 157.3046875,
+      "artifacts": {
+        "csr": "build/plane-strain-campaign/h4-q12-nu0.4999-full.csr.json",
+        "solution": "build/plane-strain-campaign/h4-q12-nu0.4999-full.solution.json",
+        "readback": "build/plane-strain-campaign/h4-q12-nu0.4999-full.readback.json",
+        "readback_sha256": "b5a58c926b0a4260f752cd782e676cb9daf23af925b21dc4cd83eaee62b8147a"
+      }
+    },
+    {
+      "status": "valid",
+      "indeterminate_reasons": [],
+      "level": 4,
+      "order": 12,
+      "nu": 0.4999,
+      "pressures_mpa": [
+        100.0,
+        0.0
+      ],
+      "formulation": "projected_bulk_q1",
+      "vector_dofs_2d": 8448,
+      "scalar_dofs_2d": 4224,
+      "nnz_2d": 264192,
+      "free_vector_dofs_2d": 8445,
+      "reduced_residual": 8.776076279479268e-11,
+      "iterative_refinement_steps": 8,
+      "relative_residual_3d_free": 9.071502088288125e-11,
+      "physical_metrics": {
+        "energy_work_relative": 3.8804743515751534e-12,
+        "inner": {
+          "area_mm2": 100.53096491487341,
+          "exact_hoop_mpa": 166.66666666666669,
+          "exact_radial_displacement_mm": 0.0019047301523809524,
+          "max_sampled_hoop_error_mpa": 0.07828306016864417,
+          "max_sampled_hoop_relative": 0.000469698361011865,
+          "mean_radial_displacement_mm": 0.0019047299415228362,
+          "primal_max_sampled_hoop_error_mpa": 594.0591074105043
+        },
+        "outer": {
+          "area_mm2": 201.06192982974682,
+          "exact_hoop_mpa": 66.66666666666667,
+          "exact_radial_displacement_mm": 0.0009525079238095239,
+          "max_sampled_hoop_error_mpa": 0.005732594889138909,
+          "max_sampled_hoop_relative": 8.598892333708362e-05,
+          "mean_radial_displacement_mm": 0.0009525078183804639,
+          "primal_max_sampled_hoop_error_mpa": 42.660849916928
+        },
+        "physical_strain_energy_n_mm": 9.578191144395245,
+        "pressure_resultant_n": [
+          1.0231815394945443e-12,
+          -2.5224267119483557e-13,
+          -1.4090423936813422e-17
+        ],
+        "relative_energy_norm": 0.020376566672556856,
+        "relative_l2": 4.0875209150061994e-06,
+        "strain_energy_matrix_n_mm": 9.574216946139899,
+        "volume_mm3": 301.5928947446249,
+        "work_n_mm": 19.148433892354102
+      },
+      "timing_s": {
+        "rust_preparation": 0.198370724,
+        "rust_assembly": 11.669655369000001,
+        "rust_reduction": 0.107457236,
+        "export_process_wall": 12.167840316018555,
+        "scipy_factorization": 0.5238458929816261,
+        "scipy_backsolve": 0.08242361200973392,
+        "rust_field_readback_wall": 12.640751162951346
+      },
+      "peak_rss_mib_campaign_process": 159.0234375,
+      "artifacts": {
+        "csr": "build/plane-strain-campaign/h4-q12-nu0.4999-projected.csr.json",
+        "solution": "build/plane-strain-campaign/h4-q12-nu0.4999-projected.solution.json",
+        "readback": "build/plane-strain-campaign/h4-q12-nu0.4999-projected.readback.json",
+        "readback_sha256": "abd6e3ad1c3783f2140b7029031e7cf82da069606385d43f1879f539b3b3dc92"
+      }
+    }
+  ],
+  "prior_p1_p2_failures_preserved": {
+    "P1": [
+      {
+        "nu": 0.3,
+        "pressures_mpa": [
+          100,
+          0
+        ],
+        "level": 0,
+        "order": 8,
+        "projected_bulk": false,
+        "status": "completed",
+        "checks": {
+          "analytic_agreement": 1.3623005191583225e-15,
+          "pressure_force_relative": 4.137408382689686e-17,
+          "work_energy_relative": 6.397080175238701e-14,
+          "axial_reaction_relative": 1.1222693212033407e-11,
+          "affine": false,
+          "field_quadrature_delta": 4.285149873828331e-10,
+          "threshold_satisfied": false
+        },
+        "diagnostic": null
+      },
+      {
+        "nu": 0.3,
+        "pressures_mpa": [
+          100,
+          0
+        ],
+        "level": 1,
+        "order": 8,
+        "projected_bulk": false,
+        "status": "completed",
+        "checks": {
+          "analytic_agreement": 1.3623005191583225e-15,
+          "pressure_force_relative": 6.953900409919775e-17,
+          "work_energy_relative": 9.78951304516102e-13,
+          "axial_reaction_relative": 1.0423398616883748e-11,
+          "affine": false,
+          "field_quadrature_delta": 2.224782857940255e-13,
+          "threshold_satisfied": false
+        },
+        "diagnostic": null
+      },
+      {
+        "nu": 0.3,
+        "pressures_mpa": [
+          100,
+          0
+        ],
+        "level": 2,
+        "order": 8,
+        "projected_bulk": false,
+        "status": "completed",
+        "checks": {
+          "analytic_agreement": 1.3623005191583225e-15,
+          "pressure_force_relative": 8.373600693136947e-17,
+          "work_energy_relative": 3.4312673051387136e-13,
+          "axial_reaction_relative": 1.4612269235229847e-12,
+          "affine": false,
+          "field_quadrature_delta": 3.2282119685755895e-17,
+          "threshold_satisfied": false
+        },
+        "diagnostic": null
+      },
+      {
+        "nu": 0.3,
+        "pressures_mpa": [
+          100,
+          0
+        ],
+        "level": 3,
+        "order": 8,
+        "projected_bulk": false,
+        "status": "completed",
+        "checks": {
+          "analytic_agreement": 1.3623005191583225e-15,
+          "pressure_force_relative": 1.45826709906805e-16,
+          "work_energy_relative": 3.308457894523033e-15,
+          "axial_reaction_relative": 2.0973755552785797e-13,
+          "affine": false,
+          "field_quadrature_delta": 4.7271214720367993e-17,
+          "threshold_satisfied": false
+        },
+        "diagnostic": null
+      },
+      {
+        "nu": 0.3,
+        "pressures_mpa": [
+          100,
+          0
+        ],
+        "level": 1,
+        "order": 8,
+        "projected_bulk": false,
+        "status": "completed",
+        "checks": {
+          "analytic_agreement": 1.3623005191583225e-15,
+          "pressure_force_relative": 6.953900409919775e-17,
+          "work_energy_relative": 3.3170594341201017e-13,
+          "axial_reaction_relative": 3.866499019698679e-12,
+          "affine": false,
+          "field_quadrature_delta": 2.2247481634707356e-13,
+          "threshold_satisfied": false
+        },
+        "diagnostic": null
+      },
+      {
+        "nu": 0.3,
+        "pressures_mpa": [
+          100,
+          30
+        ],
+        "level": 0,
+        "order": 8,
+        "projected_bulk": false,
+        "status": "completed",
+        "checks": {
+          "analytic_agreement": 1.5167313472410474e-15,
+          "pressure_force_relative": 5.678323660176382e-17,
+          "work_energy_relative": 6.456420709387958e-13,
+          "axial_reaction_relative": 4.264129610008809e-11,
+          "affine": false,
+          "field_quadrature_delta": 4.4713405200624834e-10,
+          "threshold_satisfied": false
+        },
+        "diagnostic": null
+      },
+      {
+        "nu": 0.3,
+        "pressures_mpa": [
+          100,
+          30
+        ],
+        "level": 1,
+        "order": 8,
+        "projected_bulk": false,
+        "status": "completed",
+        "checks": {
+          "analytic_agreement": 1.5167313472410474e-15,
+          "pressure_force_relative": 3.520672608264302e-17,
+          "work_energy_relative": 1.475176961424704e-12,
+          "axial_reaction_relative": 2.0224935182447713e-11,
+          "affine": false,
+          "field_quadrature_delta": 2.321892678125437e-13,
+          "threshold_satisfied": false
+        },
+        "diagnostic": null
+      },
+      {
+        "nu": 0.3,
+        "pressures_mpa": [
+          100,
+          30
+        ],
+        "level": 2,
+        "order": 8,
+        "projected_bulk": false,
+        "status": "completed",
+        "checks": {
+          "analytic_agreement": 1.5167313472410474e-15,
+          "pressure_force_relative": 9.25471519145414e-17,
+          "work_energy_relative": 4.3576519840604485e-13,
+          "axial_reaction_relative": 1.1948519350007667e-11,
+          "affine": false,
+          "field_quadrature_delta": 4.85722573273506e-17,
+          "threshold_satisfied": false
+        },
+        "diagnostic": null
+      },
+      {
+        "nu": 0.3,
+        "pressures_mpa": [
+          100,
+          30
+        ],
+        "level": 3,
+        "order": 8,
+        "projected_bulk": false,
+        "status": "completed",
+        "checks": {
+          "analytic_agreement": 1.5167313472410474e-15,
+          "pressure_force_relative": 2.232799230596081e-16,
+          "work_energy_relative": 8.797081782312179e-14,
+          "axial_reaction_relative": 1.872333641816802e-12,
+          "affine": false,
+          "field_quadrature_delta": 2.42861286636753e-17,
+          "threshold_satisfied": false
+        },
+        "diagnostic": null
+      },
+      {
+        "nu": 0.3,
+        "pressures_mpa": [
+          100,
+          30
+        ],
+        "level": 1,
+        "order": 8,
+        "projected_bulk": false,
+        "status": "completed",
+        "checks": {
+          "analytic_agreement": 1.5167313472410474e-15,
+          "pressure_force_relative": 3.520672608264302e-17,
+          "work_energy_relative": 6.376095658044657e-14,
+          "axial_reaction_relative": 1.1464132651852928e-11,
+          "affine": false,
+          "field_quadrature_delta": 2.3219273725949563e-13,
+          "threshold_satisfied": false
+        },
+        "diagnostic": null
+      },
+      {
+        "nu": 0.49,
+        "pressures_mpa": [
+          100,
+          0
+        ],
+        "level": 0,
+        "order": 8,
+        "projected_bulk": false,
+        "status": "completed",
+        "checks": {
+          "analytic_agreement": 1.8758328224066606e-15,
+          "pressure_force_relative": 4.137408382689686e-17,
+          "work_energy_relative": 7.008018876439821e-14,
+          "axial_reaction_relative": 1.8422649711520313e-11,
+          "affine": false,
+          "field_quadrature_delta": 2.0790558163952255e-10,
+          "threshold_satisfied": false
+        },
+        "diagnostic": null
+      },
+      {
+        "nu": 0.49,
+        "pressures_mpa": [
+          100,
+          0
+        ],
+        "level": 1,
+        "order": 8,
+        "projected_bulk": false,
+        "status": "completed",
+        "checks": {
+          "analytic_agreement": 1.8758328224066606e-15,
+          "pressure_force_relative": 6.953900409919775e-17,
+          "work_energy_relative": 3.841968570075557e-14,
+          "axial_reaction_relative": 7.885029226304587e-12,
+          "affine": false,
+          "field_quadrature_delta": 1.1905754160324022e-13,
+          "threshold_satisfied": false
+        },
+        "diagnostic": null
+      },
+      {
+        "nu": 0.49,
+        "pressures_mpa": [
+          100,
+          0
+        ],
+        "level": 2,
+        "order": 8,
+        "projected_bulk": false,
+        "status": "completed",
+        "checks": {
+          "analytic_agreement": 1.8758328224066606e-15,
+          "pressure_force_relative": 8.373600693136947e-17,
+          "work_energy_relative": 1.1162101264773553e-15,
+          "axial_reaction_relative": 7.400004013166176e-13,
+          "affine": false,
+          "field_quadrature_delta": 6.175615574477433e-16,
+          "threshold_satisfied": false
+        },
+        "diagnostic": null
+      },
+      {
+        "nu": 0.49,
+        "pressures_mpa": [
+          100,
+          0
+        ],
+        "level": 3,
+        "order": 8,
+        "projected_bulk": false,
+        "status": "completed",
+        "checks": {
+          "analytic_agreement": 1.8758328224066606e-15,
+          "pressure_force_relative": 1.45826709906805e-16,
+          "work_energy_relative": 5.947540514161368e-15,
+          "axial_reaction_relative": 2.702995477863094e-13,
+          "affine": false,
+          "field_quadrature_delta": 1.0234868508263162e-16,
+          "threshold_satisfied": false
+        },
+        "diagnostic": null
+      },
+      {
+        "nu": 0.49,
+        "pressures_mpa": [
+          100,
+          0
+        ],
+        "level": 4,
+        "order": 8,
+        "projected_bulk": false,
+        "status": "completed",
+        "checks": {
+          "analytic_agreement": 1.8758328224066606e-15,
+          "pressure_force_relative": 1.0378566967918156e-16,
+          "work_energy_relative": 5.575472446141671e-15,
+          "axial_reaction_relative": 1.4510137609648946e-12,
+          "affine": false,
+          "field_quadrature_delta": 6.123573870198129e-16,
+          "threshold_satisfied": false
+        },
+        "diagnostic": null
+      },
+      {
+        "nu": 0.49,
+        "pressures_mpa": [
+          100,
+          0
+        ],
+        "level": 1,
+        "order": 8,
+        "projected_bulk": false,
+        "status": "completed",
+        "checks": {
+          "analytic_agreement": 1.8758328224066606e-15,
+          "pressure_force_relative": 6.953900409919775e-17,
+          "work_energy_relative": 3.6913031359555064e-14,
+          "axial_reaction_relative": 3.5502663964364368e-12,
+          "affine": false,
+          "field_quadrature_delta": 1.19224075056934e-13,
+          "threshold_satisfied": false
+        },
+        "diagnostic": null
+      },
+      {
+        "nu": 0.49,
+        "pressures_mpa": [
+          100,
+          0
+        ],
+        "level": 4,
+        "order": 12,
+        "projected_bulk": false,
+        "status": "completed",
+        "checks": {
+          "analytic_agreement": 1.8758328224066606e-15,
+          "pressure_force_relative": 1.0482495299687091e-16,
+          "work_energy_relative": 5.575472446134241e-16,
+          "axial_reaction_relative": 2.0298314401384465e-12,
+          "affine": false,
+          "field_quadrature_delta": 6.821800069278794e-16,
+          "threshold_satisfied": false
+        },
+        "diagnostic": null
+      },
+      {
+        "nu": 0.4999,
+        "pressures_mpa": [
+          100,
+          0
+        ],
+        "level": 0,
+        "order": 8,
+        "projected_bulk": false,
+        "status": "completed",
+        "checks": {
+          "analytic_agreement": 3.9633397270912743e-14,
+          "pressure_force_relative": 4.137408382689686e-17,
+          "work_energy_relative": 4.3063035413189035e-13,
+          "axial_reaction_relative": 1.567003182418503e-11,
+          "affine": false,
+          "field_quadrature_delta": 2.6860624835478575e-11,
+          "threshold_satisfied": false
+        },
+        "diagnostic": null
+      },
+      {
+        "nu": 0.4999,
+        "pressures_mpa": [
+          100,
+          0
+        ],
+        "level": 1,
+        "order": 8,
+        "projected_bulk": false,
+        "status": "completed",
+        "checks": {
+          "analytic_agreement": 3.9633397270912743e-14,
+          "pressure_force_relative": 6.953900409919775e-17,
+          "work_energy_relative": 2.0203308614506312e-14,
+          "axial_reaction_relative": 3.2106671277774565e-12,
+          "affine": false,
+          "field_quadrature_delta": 1.836308882730009e-13,
+          "threshold_satisfied": false
+        },
+        "diagnostic": null
+      },
+      {
+        "nu": 0.4999,
+        "pressures_mpa": [
+          100,
+          0
+        ],
+        "level": 2,
+        "order": 8,
+        "projected_bulk": false,
+        "status": "completed",
+        "checks": {
+          "analytic_agreement": 3.9633397270912743e-14,
+          "pressure_force_relative": 8.373600693136947e-17,
+          "work_energy_relative": 4.2554952419663796e-13,
+          "axial_reaction_relative": 1.4050672742997234e-11,
+          "affine": false,
+          "field_quadrature_delta": 3.83026943495679e-15,
+          "threshold_satisfied": false
+        },
+        "diagnostic": null
+      },
+      {
+        "nu": 0.4999,
+        "pressures_mpa": [
+          100,
+          0
+        ],
+        "level": 3,
+        "order": 8,
+        "projected_bulk": false,
+        "status": "completed",
+        "checks": {
+          "analytic_agreement": 3.9633397270912743e-14,
+          "pressure_force_relative": 1.45826709906805e-16,
+          "work_energy_relative": 7.372877666377785e-13,
+          "axial_reaction_relative": 1.7956824554391666e-11,
+          "affine": false,
+          "field_quadrature_delta": 6.245004513516506e-16,
+          "threshold_satisfied": false
+        },
+        "diagnostic": null
+      },
+      {
+        "nu": 0.4999,
+        "pressures_mpa": [
+          100,
+          0
+        ],
+        "level": 4,
+        "order": 8,
+        "projected_bulk": false,
+        "status": "execution_error",
+        "checks": null,
+        "diagnostic": "Error: \"conjugate-gradient iteration limit reached\"\n"
+      },
+      {
+        "nu": 0.4999,
+        "pressures_mpa": [
+          100,
+          0
+        ],
+        "level": 1,
+        "order": 8,
+        "projected_bulk": false,
+        "status": "completed",
+        "checks": {
+          "analytic_agreement": 3.9633397270912743e-14,
+          "pressure_force_relative": 6.953900409919775e-17,
+          "work_energy_relative": 2.7725817141184892e-14,
+          "axial_reaction_relative": 2.939748425884505e-12,
+          "affine": false,
+          "field_quadrature_delta": 1.8396395518038844e-13,
+          "threshold_satisfied": false
+        },
+        "diagnostic": null
+      },
+      {
+        "nu": 0.4999,
+        "pressures_mpa": [
+          100,
+          0
+        ],
+        "level": 4,
+        "order": 12,
+        "projected_bulk": false,
+        "status": "execution_error",
+        "checks": null,
+        "diagnostic": "Error: \"conjugate-gradient iteration limit reached\"\n"
+      }
+    ],
+    "P2": [
+      {
+        "nu": 0.3,
+        "pressures_mpa": [
+          100,
+          0
+        ],
+        "level": 0,
+        "order": 8,
+        "projected_bulk": true,
+        "status": "completed",
+        "checks": {
+          "analytic_agreement": 1.3623005191583225e-15,
+          "pressure_force_relative": 4.137408382689686e-17,
+          "work_energy_relative": 3.359949732401232e-13,
+          "axial_reaction_relative": 1.9802482129823613e-11,
+          "affine": false,
+          "field_quadrature_delta": 4.2588632620521594e-10,
+          "threshold_satisfied": false
+        },
+        "diagnostic": null
+      },
+      {
+        "nu": 0.3,
+        "pressures_mpa": [
+          100,
+          0
+        ],
+        "level": 1,
+        "order": 8,
+        "projected_bulk": true,
+        "status": "completed",
+        "checks": {
+          "analytic_agreement": 1.3623005191583225e-15,
+          "pressure_force_relative": 6.953900409919775e-17,
+          "work_energy_relative": 2.0577314098604736e-13,
+          "axial_reaction_relative": 3.808598788697458e-12,
+          "affine": false,
+          "field_quadrature_delta": 2.221278716518782e-13,
+          "threshold_satisfied": false
+        },
+        "diagnostic": null
+      },
+      {
+        "nu": 0.3,
+        "pressures_mpa": [
+          100,
+          0
+        ],
+        "level": 2,
+        "order": 8,
+        "projected_bulk": true,
+        "status": "completed",
+        "checks": {
+          "analytic_agreement": 1.3623005191583225e-15,
+          "pressure_force_relative": 8.373600693136947e-17,
+          "work_energy_relative": 1.825526524172992e-13,
+          "axial_reaction_relative": 2.1735203903192472e-12,
+          "affine": false,
+          "field_quadrature_delta": 3.629366772395226e-17,
+          "threshold_satisfied": false
+        },
+        "diagnostic": null
+      },
+      {
+        "nu": 0.3,
+        "pressures_mpa": [
+          100,
+          0
+        ],
+        "level": 3,
+        "order": 8,
+        "projected_bulk": true,
+        "status": "completed",
+        "checks": {
+          "analytic_agreement": 1.3623005191583225e-15,
+          "pressure_force_relative": 1.45826709906805e-16,
+          "work_energy_relative": 5.0599813845224295e-15,
+          "axial_reaction_relative": 1.7143896523017578e-12,
+          "affine": false,
+          "field_quadrature_delta": 5.2475385148298415e-17,
+          "threshold_satisfied": false
+        },
+        "diagnostic": null
+      },
+      {
+        "nu": 0.3,
+        "pressures_mpa": [
+          100,
+          0
+        ],
+        "level": 1,
+        "order": 8,
+        "projected_bulk": true,
+        "status": "completed",
+        "checks": {
+          "analytic_agreement": 1.3623005191583225e-15,
+          "pressure_force_relative": 6.953900409919775e-17,
+          "work_energy_relative": 2.2855030039508814e-13,
+          "axial_reaction_relative": 4.85653265707892e-12,
+          "affine": false,
+          "field_quadrature_delta": 2.2224930229519657e-13,
+          "threshold_satisfied": false
+        },
+        "diagnostic": null
+      },
+      {
+        "nu": 0.3,
+        "pressures_mpa": [
+          100,
+          30
+        ],
+        "level": 0,
+        "order": 8,
+        "projected_bulk": true,
+        "status": "completed",
+        "checks": {
+          "analytic_agreement": 1.5167313472410474e-15,
+          "pressure_force_relative": 5.678323660176382e-17,
+          "work_energy_relative": 8.190471915035328e-13,
+          "axial_reaction_relative": 1.0755985685974723e-10,
+          "affine": false,
+          "field_quadrature_delta": 4.443869577874793e-10,
+          "threshold_satisfied": false
+        },
+        "diagnostic": null
+      },
+      {
+        "nu": 0.3,
+        "pressures_mpa": [
+          100,
+          30
+        ],
+        "level": 1,
+        "order": 8,
+        "projected_bulk": true,
+        "status": "completed",
+        "checks": {
+          "analytic_agreement": 1.5167313472410474e-15,
+          "pressure_force_relative": 3.520672608264302e-17,
+          "work_energy_relative": 8.243059089089298e-13,
+          "axial_reaction_relative": 1.6327978228732774e-11,
+          "affine": false,
+          "field_quadrature_delta": 2.319498759728589e-13,
+          "threshold_satisfied": false
+        },
+        "diagnostic": null
+      },
+      {
+        "nu": 0.3,
+        "pressures_mpa": [
+          100,
+          30
+        ],
+        "level": 2,
+        "order": 8,
+        "projected_bulk": true,
+        "status": "completed",
+        "checks": {
+          "analytic_agreement": 1.5167313472410474e-15,
+          "pressure_force_relative": 9.25471519145414e-17,
+          "work_energy_relative": 6.95547881039312e-13,
+          "axial_reaction_relative": 5.3966709448500595e-12,
+          "affine": false,
+          "field_quadrature_delta": 6.245004513516506e-17,
+          "threshold_satisfied": false
+        },
+        "diagnostic": null
+      },
+      {
+        "nu": 0.3,
+        "pressures_mpa": [
+          100,
+          30
+        ],
+        "level": 3,
+        "order": 8,
+        "projected_bulk": true,
+        "status": "completed",
+        "checks": {
+          "analytic_agreement": 1.5167313472410474e-15,
+          "pressure_force_relative": 2.232799230596081e-16,
+          "work_energy_relative": 4.290190380015385e-14,
+          "axial_reaction_relative": 4.399060519428645e-12,
+          "affine": false,
+          "field_quadrature_delta": 4.206704429243757e-17,
+          "threshold_satisfied": false
+        },
+        "diagnostic": null
+      },
+      {
+        "nu": 0.3,
+        "pressures_mpa": [
+          100,
+          30
+        ],
+        "level": 1,
+        "order": 8,
+        "projected_bulk": true,
+        "status": "completed",
+        "checks": {
+          "analytic_agreement": 1.5167313472410474e-15,
+          "pressure_force_relative": 3.520672608264302e-17,
+          "work_energy_relative": 7.005408092563212e-13,
+          "axial_reaction_relative": 2.0746074956921586e-11,
+          "affine": false,
+          "field_quadrature_delta": 2.318804870338198e-13,
+          "threshold_satisfied": false
+        },
+        "diagnostic": null
+      },
+      {
+        "nu": 0.49,
+        "pressures_mpa": [
+          100,
+          0
+        ],
+        "level": 0,
+        "order": 8,
+        "projected_bulk": true,
+        "status": "completed",
+        "checks": {
+          "analytic_agreement": 1.8758328224066606e-15,
+          "pressure_force_relative": 4.137408382689686e-17,
+          "work_energy_relative": 3.4315259323313504e-13,
+          "axial_reaction_relative": 1.3551349664529886e-11,
+          "affine": false,
+          "field_quadrature_delta": 2.1493956614548893e-10,
+          "threshold_satisfied": false
+        },
+        "diagnostic": null
+      },
+      {
+        "nu": 0.49,
+        "pressures_mpa": [
+          100,
+          0
+        ],
+        "level": 1,
+        "order": 8,
+        "projected_bulk": true,
+        "status": "completed",
+        "checks": {
+          "analytic_agreement": 1.8758328224066606e-15,
+          "pressure_force_relative": 6.953900409919775e-17,
+          "work_energy_relative": 1.429673953339394e-13,
+          "axial_reaction_relative": 4.2964334677640265e-11,
+          "affine": false,
+          "field_quadrature_delta": 1.196959198423997e-13,
+          "threshold_satisfied": false
+        },
+        "diagnostic": null
+      },
+      {
+        "nu": 0.49,
+        "pressures_mpa": [
+          100,
+          0
+        ],
+        "level": 2,
+        "order": 8,
+        "projected_bulk": true,
+        "status": "completed",
+        "checks": {
+          "analytic_agreement": 1.8758328224066606e-15,
+          "pressure_force_relative": 8.373600693136947e-17,
+          "work_energy_relative": 5.575595510453632e-16,
+          "axial_reaction_relative": 2.4168176779527255e-12,
+          "affine": false,
+          "field_quadrature_delta": 5.48172618408671e-16,
+          "threshold_satisfied": false
+        },
+        "diagnostic": null
+      },
+      {
+        "nu": 0.49,
+        "pressures_mpa": [
+          100,
+          0
+        ],
+        "level": 3,
+        "order": 8,
+        "projected_bulk": true,
+        "status": "completed",
+        "checks": {
+          "analytic_agreement": 1.8758328224066606e-15,
+          "pressure_force_relative": 1.45826709906805e-16,
+          "work_energy_relative": 7.248096229453603e-15,
+          "axial_reaction_relative": 3.0301613239541735e-12,
+          "affine": false,
+          "field_quadrature_delta": 5.898059818321144e-17,
+          "threshold_satisfied": false
+        },
+        "diagnostic": null
+      },
+      {
+        "nu": 0.49,
+        "pressures_mpa": [
+          100,
+          0
+        ],
+        "level": 4,
+        "order": 8,
+        "projected_bulk": true,
+        "status": "completed",
+        "checks": {
+          "analytic_agreement": 1.8758328224066606e-15,
+          "pressure_force_relative": 1.0378566967918156e-16,
+          "work_energy_relative": 1.8584831899809205e-14,
+          "axial_reaction_relative": 2.9873269693869444e-13,
+          "affine": false,
+          "field_quadrature_delta": 6.487865800153259e-16,
+          "threshold_satisfied": false
+        },
+        "diagnostic": null
+      },
+      {
+        "nu": 0.49,
+        "pressures_mpa": [
+          100,
+          0
+        ],
+        "level": 1,
+        "order": 8,
+        "projected_bulk": true,
+        "status": "completed",
+        "checks": {
+          "analytic_agreement": 1.8758328224066606e-15,
+          "pressure_force_relative": 6.953900409919775e-17,
+          "work_energy_relative": 1.0522697757999412e-13,
+          "axial_reaction_relative": 5.4183058326642665e-11,
+          "affine": false,
+          "field_quadrature_delta": 1.199040866595169e-13,
+          "threshold_satisfied": false
+        },
+        "diagnostic": null
+      },
+      {
+        "nu": 0.49,
+        "pressures_mpa": [
+          100,
+          0
+        ],
+        "level": 4,
+        "order": 12,
+        "projected_bulk": true,
+        "status": "completed",
+        "checks": {
+          "analytic_agreement": 1.8758328224066606e-15,
+          "pressure_force_relative": 1.0482495299687091e-16,
+          "work_energy_relative": 2.3974433150752153e-14,
+          "axial_reaction_relative": 1.2813380202438437e-13,
+          "affine": false,
+          "field_quadrature_delta": 6.266688556966216e-16,
+          "threshold_satisfied": false
+        },
+        "diagnostic": null
+      },
+      {
+        "nu": 0.4999,
+        "pressures_mpa": [
+          100,
+          0
+        ],
+        "level": 0,
+        "order": 8,
+        "projected_bulk": true,
+        "status": "completed",
+        "checks": {
+          "analytic_agreement": 3.9633397270912743e-14,
+          "pressure_force_relative": 4.137408382689686e-17,
+          "work_energy_relative": 4.3518964988929885e-12,
+          "axial_reaction_relative": 2.3942734363216824e-11,
+          "affine": false,
+          "field_quadrature_delta": 1.0608820488755555e-09,
+          "threshold_satisfied": false
+        },
+        "diagnostic": null
+      },
+      {
+        "nu": 0.4999,
+        "pressures_mpa": [
+          100,
+          0
+        ],
+        "level": 1,
+        "order": 8,
+        "projected_bulk": true,
+        "status": "completed",
+        "checks": {
+          "analytic_agreement": 3.9633397270912743e-14,
+          "pressure_force_relative": 6.953900409919775e-17,
+          "work_energy_relative": 4.3616177448597863e-13,
+          "axial_reaction_relative": 4.538838372394939e-12,
+          "affine": false,
+          "field_quadrature_delta": 6.359357485052897e-13,
+          "threshold_satisfied": false
+        },
+        "diagnostic": null
+      },
+      {
+        "nu": 0.4999,
+        "pressures_mpa": [
+          100,
+          0
+        ],
+        "level": 2,
+        "order": 8,
+        "projected_bulk": true,
+        "status": "completed",
+        "checks": {
+          "analytic_agreement": 3.9633397270912743e-14,
+          "pressure_force_relative": 8.373600693136947e-17,
+          "work_energy_relative": 9.802096714816468e-13,
+          "axial_reaction_relative": 1.85281607881098e-12,
+          "affine": false,
+          "field_quadrature_delta": 5.662137425588298e-15,
+          "threshold_satisfied": false
+        },
+        "diagnostic": null
+      },
+      {
+        "nu": 0.4999,
+        "pressures_mpa": [
+          100,
+          0
+        ],
+        "level": 3,
+        "order": 8,
+        "projected_bulk": true,
+        "status": "completed",
+        "checks": {
+          "analytic_agreement": 3.9633397270912743e-14,
+          "pressure_force_relative": 1.45826709906805e-16,
+          "work_energy_relative": 2.0408935039863862e-13,
+          "axial_reaction_relative": 6.523041877775246e-12,
+          "affine": false,
+          "field_quadrature_delta": 1.8318679906315083e-15,
+          "threshold_satisfied": false
+        },
+        "diagnostic": null
+      },
+      {
+        "nu": 0.4999,
+        "pressures_mpa": [
+          100,
+          0
+        ],
+        "level": 4,
+        "order": 8,
+        "projected_bulk": true,
+        "status": "execution_error",
+        "checks": null,
+        "diagnostic": "Error: \"conjugate-gradient iteration limit reached\"\n"
+      },
+      {
+        "nu": 0.4999,
+        "pressures_mpa": [
+          100,
+          0
+        ],
+        "level": 1,
+        "order": 8,
+        "projected_bulk": true,
+        "status": "completed",
+        "checks": {
+          "analytic_agreement": 3.9633397270912743e-14,
+          "pressure_force_relative": 6.953900409919775e-17,
+          "work_energy_relative": 1.0653483342760981e-13,
+          "axial_reaction_relative": 1.8182137703260554e-11,
+          "affine": false,
+          "field_quadrature_delta": 6.288303211476887e-13,
+          "threshold_satisfied": false
+        },
+        "diagnostic": null
+      },
+      {
+        "nu": 0.4999,
+        "pressures_mpa": [
+          100,
+          0
+        ],
+        "level": 4,
+        "order": 12,
+        "projected_bulk": true,
+        "status": "execution_error",
+        "checks": null,
+        "diagnostic": "Error: \"conjugate-gradient iteration limit reached\"\n"
+      }
+    ]
+  },
+  "qualification": {
+    "h1_h2_displacement_and_energy_relative": "<=1e-8",
+    "reconstructed_3d_free_residual": "<=1e-10",
+    "status": "indeterminate",
+    "indeterminate_cases": [
+      {
+        "level": 4,
+        "order": 8,
+        "nu": 0.4999,
+        "formulation": "displacement",
+        "reasons": [
+          "reconstructed initial-3D free residual exceeds 1e-10"
+        ]
+      },
+      {
+        "level": 4,
+        "order": 12,
+        "nu": 0.4999,
+        "formulation": "displacement",
+        "reasons": [
+          "reconstructed initial-3D free residual exceeds 1e-10"
+        ]
+      }
+    ]
+  }
+}

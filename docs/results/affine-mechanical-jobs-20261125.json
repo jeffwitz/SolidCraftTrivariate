@@ -1,0 +1,499 @@
+{
+  "schema": "solidcraft_affine_mechanical_job_oracle_v1",
+  "oracle": "independent rational affine trace checks plus SciPy CSR congruence solve",
+  "cases": [
+    {
+      "id": "cube-normal-traction-affine",
+      "status": "qualified",
+      "scalar_dofs": 27,
+      "vector_dofs": 81,
+      "sparse_nonzeros": 6561,
+      "reduced_dofs": 54,
+      "independent_reduced_residual": 3.2428121839839443e-16,
+      "scipy_displacement_relative_error": 4.824245996815203e-12,
+      "scipy_displacement_max_abs_error_mm": 1.0131652461442542e-13,
+      "affine_support_trace_max_error_mm": 0.0,
+      "exact_affine_field_max_error_mm": 1.0132693295528128e-13,
+      "reintegrated_resultant_n": [
+        160.00000000000003,
+        0.0,
+        0.0
+      ],
+      "reintegrated_moment_n_mm": [
+        0.0,
+        640.0,
+        1.1368683772161603e-13
+      ],
+      "load_rhs_max_abs_error_n": 1.4210854715202004e-14,
+      "reaction_n_independent": [
+        -159.9999999999999,
+        4.413136522910847e-15,
+        -1.4793721803078512e-14
+      ],
+      "reaction_moment_n_mm_independent": [
+        -4.0245584641007563e-14,
+        -639.9999999999995,
+        5.781295435767881e-13
+      ],
+      "reaction_relative_error": 9.181230903232366e-13,
+      "reaction_moment_relative_error": 2.9270404519819607e-13,
+      "force_balance_relative": 8.93403979180861e-16,
+      "moment_balance_relative": 3.419024300548907e-16,
+      "traction_work_n_mm": 3.199999999999503,
+      "support_work_n_mm": -4.959577188161468e-13,
+      "external_work_n_mm": 3.1999999999990068,
+      "strain_energy_n_mm": 1.5999999999995034,
+      "work_energy_relative_error": 0.0,
+      "reported_work_relative_error": 1.5498678713006997e-13,
+      "rust_residual": 4.286913589817444e-11,
+      "rigid_constraint_rank": 6,
+      "quadrature_order": 4,
+      "load_groups": [
+        {
+          "area_mm2": 160.00000000000003,
+          "resultant_n": [
+            160.00000000000003,
+            0.0,
+            0.0
+          ],
+          "moment_n_mm": [
+            0.0,
+            640.0,
+            1.1368683772161603e-13
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cube-shear-traction-affine",
+      "status": "qualified",
+      "scalar_dofs": 27,
+      "vector_dofs": 81,
+      "sparse_nonzeros": 6561,
+      "reduced_dofs": 54,
+      "independent_reduced_residual": 5.233010078698226e-16,
+      "scipy_displacement_relative_error": 6.568394051326345e-12,
+      "scipy_displacement_max_abs_error_mm": 2.838874968436045e-13,
+      "affine_support_trace_max_error_mm": 0.0,
+      "exact_affine_field_max_error_mm": 2.8391872186617206e-13,
+      "reintegrated_resultant_n": [
+        9.274099140608802e-15,
+        6.309027216914337e-16,
+        0.0
+      ],
+      "reintegrated_moment_n_mm": [
+        6.277120166660837e-14,
+        -3.966907808740633e-15,
+        1.312337987582956e-13
+      ],
+      "load_rhs_max_abs_error_n": 1.4210854715202004e-14,
+      "reaction_n_independent": [
+        -6.258402010296054e-14,
+        1.635268935322421e-14,
+        -9.992007221807355e-15
+      ],
+      "reaction_moment_n_mm_independent": [
+        -7.068045234776124e-14,
+        -3.882164670946124e-13,
+        -1.7763568394002505e-13
+      ],
+      "reaction_relative_error": 2.3461670107726747e-13,
+      "reaction_moment_relative_error": 1.0939624667812615e-13,
+      "force_balance_relative": 8.880486696807073e-17,
+      "moment_balance_relative": 4.07334312343799e-17,
+      "traction_work_n_mm": 6.400000000001443,
+      "support_work_n_mm": 1.4426422168102959e-12,
+      "external_work_n_mm": 6.400000000002885,
+      "strain_energy_n_mm": 3.200000000001443,
+      "work_energy_relative_error": 1.3877787807808198e-16,
+      "reported_work_relative_error": 2.2593038551111747e-13,
+      "rust_residual": 6.635517017583994e-11,
+      "rigid_constraint_rank": 6,
+      "quadrature_order": 4,
+      "load_groups": [
+        {
+          "area_mm2": 1440.0,
+          "resultant_n": [
+            9.274099140608802e-15,
+            6.309027216914337e-16,
+            0.0
+          ],
+          "moment_n_mm": [
+            6.277120166660837e-14,
+            -3.966907808740633e-15,
+            1.312337987582956e-13
+          ]
+        }
+      ]
+    },
+    {
+      "id": "curved-sector-hanging-affine-trace",
+      "status": "qualified",
+      "scalar_dofs": 148,
+      "vector_dofs": 444,
+      "sparse_nonzeros": 50742,
+      "reduced_dofs": 306,
+      "independent_reduced_residual": 4.094570807054551e-16,
+      "scipy_displacement_relative_error": 2.258031067950829e-10,
+      "scipy_displacement_max_abs_error_mm": 1.8138050089655522e-11,
+      "affine_support_trace_max_error_mm": 0.0,
+      "exact_affine_field_max_error_mm": 2.2394449169941387e-11,
+      "reintegrated_resultant_n": [
+        0.0,
+        1.985874797938436e-09,
+        0.0
+      ],
+      "reintegrated_moment_n_mm": [
+        -2.1156409957256983e-12,
+        0.0,
+        -1.912290628069968e-07
+      ],
+      "load_rhs_max_abs_error_n": 2.5579538487363607e-13,
+      "reaction_n_independent": [
+        1.1854272880215505e-13,
+        -1.984869248015729e-09,
+        -1.3072141267061052e-13
+      ],
+      "reaction_moment_n_mm_independent": [
+        -7.318355084579367e-12,
+        -1.3531330926834353e-13,
+        1.9122741337498856e-07
+      ],
+      "reaction_relative_error": 1.0851378821039044e-12,
+      "reaction_moment_relative_error": 3.839792616625602e-13,
+      "force_balance_relative": 2.4541269240360754e-16,
+      "moment_balance_relative": 8.27903935192955e-17,
+      "traction_work_n_mm": 80.4247719337154,
+      "support_work_n_mm": -2.835149356629181e-10,
+      "external_work_n_mm": 80.42477193343188,
+      "strain_energy_n_mm": 40.21238596671595,
+      "work_energy_relative_error": 1.7669748229953733e-16,
+      "reported_work_relative_error": 3.5258215618049677e-12,
+      "rust_residual": 7.175662880023534e-11,
+      "rigid_constraint_rank": 6,
+      "quadrature_order": 10,
+      "load_groups": [
+        {
+          "area_mm2": 4821.238596595075,
+          "resultant_n": [
+            0.0,
+            1.985874797938436e-09,
+            0.0
+          ],
+          "moment_n_mm": [
+            -2.1156409957256983e-12,
+            0.0,
+            -1.912290628069968e-07
+          ]
+        }
+      ]
+    },
+    {
+      "id": "notched-plate-local-nonaffine-response",
+      "status": "qualified",
+      "scalar_dofs": 282,
+      "vector_dofs": 846,
+      "sparse_nonzeros": 100602,
+      "reduced_dofs": 570,
+      "independent_reduced_residual": 4.9869380052672354e-15,
+      "scipy_displacement_relative_error": 1.7586157963942292e-11,
+      "scipy_displacement_max_abs_error_mm": 1.2746852184886137e-12,
+      "affine_support_trace_max_error_mm": 0.0,
+      "exact_affine_field_max_error_mm": null,
+      "reintegrated_resultant_n": [
+        144.00000000000009,
+        0.0,
+        0.0
+      ],
+      "reintegrated_moment_n_mm": [
+        0.0,
+        864.0,
+        -864.0000000000001
+      ],
+      "load_rhs_max_abs_error_n": 3.552713678800501e-15,
+      "reaction_n_independent": [
+        -143.99999999999997,
+        -7.172040739078511e-14,
+        -4.721223412218478e-14
+      ],
+      "reaction_moment_n_mm_independent": [
+        1.6919798895287386e-13,
+        -863.9999999999999,
+        863.9999999999991
+      ],
+      "reaction_relative_error": 4.846593133486169e-12,
+      "reaction_moment_relative_error": 1.895251601904735e-12,
+      "force_balance_relative": 9.893703220608684e-16,
+      "moment_balance_relative": 3.567702908397799e-16,
+      "traction_work_n_mm": 3.377364490911131,
+      "support_work_n_mm": 2.1269209785288064e-14,
+      "external_work_n_mm": 3.377364490911152,
+      "strain_energy_n_mm": 1.6886822454555757,
+      "work_energy_relative_error": 2.6297973526112093e-16,
+      "reported_work_relative_error": 6.705983249158583e-15,
+      "rust_residual": 7.654214750478146e-11,
+      "rigid_constraint_rank": 6,
+      "quadrature_order": 4,
+      "load_groups": [
+        {
+          "area_mm2": 144.00000000000009,
+          "resultant_n": [
+            144.00000000000009,
+            0.0,
+            0.0
+          ],
+          "moment_n_mm": [
+            0.0,
+            864.0,
+            -864.0000000000001
+          ]
+        }
+      ]
+    },
+    {
+      "id": "refusal-conflicting-affine-traces",
+      "status": "refused",
+      "reason": "conflicting displacement on shared mechanical support",
+      "previous_output_preserved": true
+    },
+    {
+      "id": "refusal-affine-support-leaves-rigid-mode",
+      "status": "refused",
+      "reason": "mechanical mounting leaves a rigid mode",
+      "previous_output_preserved": true
+    },
+    {
+      "id": "refusal-affine-zero-denominator",
+      "status": "refused",
+      "reason": "nonpositive affine motion denominator",
+      "previous_output_preserved": true
+    },
+    {
+      "id": "cube-pure-rigid-rotation-and-translation",
+      "status": "qualified",
+      "scalar_dofs": 27,
+      "vector_dofs": 81,
+      "sparse_nonzeros": 6561,
+      "reduced_dofs": 3,
+      "independent_reduced_residual": 0.0,
+      "scipy_displacement_relative_error": 9.072193697121276e-17,
+      "scipy_displacement_max_abs_error_mm": 2.0816681711721685e-17,
+      "affine_support_trace_max_error_mm": 0.0,
+      "exact_affine_field_max_error_mm": 3.469446951953614e-18,
+      "reintegrated_resultant_n": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "reintegrated_moment_n_mm": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "load_rhs_max_abs_error_n": 0.0,
+      "reaction_n_independent": [
+        1.6325829577112927e-13,
+        -1.3383738561856262e-13,
+        -1.4770407119613083e-12
+      ],
+      "reaction_moment_n_mm_independent": [
+        8.72635297355373e-13,
+        -1.0010658968440111e-11,
+        5.3934634536290105e-12
+      ],
+      "reaction_relative_error": 1.4920505962327396e-12,
+      "reaction_moment_relative_error": 1.1404570722751151e-11,
+      "force_balance_relative": 1.4920505962327396e-12,
+      "moment_balance_relative": 1.1404570722751151e-11,
+      "traction_work_n_mm": 0.0,
+      "support_work_n_mm": -4.611366843931819e-14,
+      "external_work_n_mm": -4.611366843931819e-14,
+      "strain_energy_n_mm": -2.3056834219659096e-14,
+      "work_energy_relative_error": 0.0,
+      "reported_work_relative_error": 4.611366843931819e-14,
+      "rust_residual": 0,
+      "rigid_constraint_rank": 6,
+      "quadrature_order": 4,
+      "load_groups": []
+    },
+    {
+      "id": "cube-pure-rigid-translation",
+      "status": "qualified",
+      "scalar_dofs": 27,
+      "vector_dofs": 81,
+      "sparse_nonzeros": 6561,
+      "reduced_dofs": 3,
+      "independent_reduced_residual": 1.2523012388730042e-16,
+      "scipy_displacement_relative_error": 9.996225596169613e-17,
+      "scipy_displacement_max_abs_error_mm": 2.0816681711721685e-17,
+      "affine_support_trace_max_error_mm": 0.0,
+      "exact_affine_field_max_error_mm": 0.0,
+      "reintegrated_resultant_n": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "reintegrated_moment_n_mm": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "load_rhs_max_abs_error_n": 0.0,
+      "reaction_n_independent": [
+        -2.325917236589703e-14,
+        -4.3520742565306136e-14,
+        -1.4437340212225536e-12
+      ],
+      "reaction_moment_n_mm_independent": [
+        6.319389456166391e-13,
+        -1.070699084948501e-11,
+        4.0573100434926346e-12
+      ],
+      "reaction_relative_error": 1.444577089728349e-12,
+      "reaction_moment_relative_error": 1.1467378282369908e-11,
+      "force_balance_relative": 1.444577089728349e-12,
+      "moment_balance_relative": 1.1467378282369908e-11,
+      "traction_work_n_mm": 0.0,
+      "support_work_n_mm": -5.757672116857293e-14,
+      "external_work_n_mm": -5.757672116857293e-14,
+      "strain_energy_n_mm": -2.8788360584286466e-14,
+      "work_energy_relative_error": 0.0,
+      "reported_work_relative_error": 5.757672116857293e-14,
+      "rust_residual": 0,
+      "rigid_constraint_rank": 6,
+      "quadrature_order": 4,
+      "load_groups": []
+    },
+    {
+      "id": "cube-component-selectors-on-different-faces",
+      "status": "qualified",
+      "scalar_dofs": 27,
+      "vector_dofs": 81,
+      "sparse_nonzeros": 6561,
+      "reduced_dofs": 54,
+      "independent_reduced_residual": 1.138607792438694e-16,
+      "scipy_displacement_relative_error": 2.0431240285805618e-10,
+      "scipy_displacement_max_abs_error_mm": 1.633980714756695e-12,
+      "affine_support_trace_max_error_mm": 0.0,
+      "exact_affine_field_max_error_mm": 1.6339708238778897e-12,
+      "reintegrated_resultant_n": [
+        0.0,
+        0.0,
+        400.0
+      ],
+      "reintegrated_moment_n_mm": [
+        -3.410605131648481e-13,
+        0.0,
+        0.0
+      ],
+      "load_rhs_max_abs_error_n": 3.552713678800501e-14,
+      "reaction_n_independent": [
+        3.4139358007223564e-15,
+        -4.413136522884997e-15,
+        -400.0000000000002
+      ],
+      "reaction_moment_n_mm_independent": [
+        6.430411758628907e-13,
+        -1.1315393066979595e-12,
+        3.0253577421035516e-14
+      ],
+      "reaction_relative_error": 1.1995632267809639e-11,
+      "reaction_moment_relative_error": 2.652110850018536e-12,
+      "force_balance_relative": 5.68605305859133e-16,
+      "moment_balance_relative": 2.0100553326533515e-16,
+      "traction_work_n_mm": 3.1999999999976922,
+      "support_work_n_mm": -2.3068127224324224e-12,
+      "external_work_n_mm": 3.1999999999953856,
+      "strain_energy_n_mm": 1.5999999999976928,
+      "work_energy_relative_error": 0.0,
+      "reported_work_relative_error": 7.208789757606519e-13,
+      "rust_residual": 2.996048078550628e-11,
+      "rigid_constraint_rank": 6,
+      "quadrature_order": 4,
+      "load_groups": [
+        {
+          "area_mm2": 400.0,
+          "resultant_n": [
+            0.0,
+            0.0,
+            400.0
+          ],
+          "moment_n_mm": [
+            -3.410605131648481e-13,
+            0.0,
+            0.0
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cube-traction-with-moving-support",
+      "status": "qualified",
+      "scalar_dofs": 27,
+      "vector_dofs": 81,
+      "sparse_nonzeros": 6561,
+      "reduced_dofs": 54,
+      "independent_reduced_residual": 6.216519058493996e-16,
+      "scipy_displacement_relative_error": 1.4713680140227297e-12,
+      "scipy_displacement_max_abs_error_mm": 1.0133560657266116e-13,
+      "affine_support_trace_max_error_mm": 0.0,
+      "exact_affine_field_max_error_mm": 1.0132866767875726e-13,
+      "reintegrated_resultant_n": [
+        160.00000000000003,
+        0.0,
+        0.0
+      ],
+      "reintegrated_moment_n_mm": [
+        0.0,
+        640.0,
+        1.1368683772161603e-13
+      ],
+      "load_rhs_max_abs_error_n": 1.4210854715202004e-14,
+      "reaction_n_independent": [
+        -159.99999999999983,
+        7.380207556195728e-14,
+        7.647216193618078e-13
+      ],
+      "reaction_moment_n_mm_independent": [
+        -8.777423232686488e-13,
+        -639.9999999999941,
+        1.1457501614131615e-12
+      ],
+      "reaction_relative_error": 9.22740552384485e-13,
+      "reaction_moment_relative_error": 2.949579075569121e-13,
+      "force_balance_relative": 4.960105634022607e-15,
+      "moment_balance_relative": 2.5194136532771193e-15,
+      "traction_work_n_mm": 7.199999999999504,
+      "support_work_n_mm": -4.000000000000503,
+      "external_work_n_mm": 3.199999999999001,
+      "strain_energy_n_mm": 1.5999999999995005,
+      "work_energy_relative_error": 0.0,
+      "reported_work_relative_error": 5.750955267558708e-13,
+      "rust_residual": 4.286913589817444e-11,
+      "rigid_constraint_rank": 6,
+      "quadrature_order": 4,
+      "load_groups": [
+        {
+          "area_mm2": 160.00000000000003,
+          "resultant_n": [
+            160.00000000000003,
+            0.0,
+            0.0
+          ],
+          "moment_n_mm": [
+            0.0,
+            640.0,
+            1.1368683772161603e-13
+          ]
+        }
+      ]
+    }
+  ],
+  "elapsed_seconds": 11.238213017000817,
+  "thresholds": {
+    "reduced_residual": 1e-10,
+    "coefficient_relative_error": 1e-08,
+    "trace_and_affine_absolute_mm": 1e-10,
+    "work_and_balance_relative": 1e-08
+  }
+}

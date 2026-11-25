@@ -1,0 +1,6 @@
+{
+  "id":"refusal-conflicting-affine-traces",
+  "recipe":{"family":"reference_rectangle_v1"},
+  "job":{"schema":"solidcraft_mechanical_job_v2","material":{"young_mpa":1000,"poisson":0},"formulation":"displacement","order":3,"plan":{"schema":"adaptive_refinement_plan_v1","max_depth":0,"max_cells":16,"steps":[]},"supports":[{"select":{"feature":"x-10"},"components":[0,1,2],"affine_mm":{"denominator":1,"numerators":[[0,0,0,0],[0,0,0,0],[0,0,0,0]]}},{"select":{"feature":"y-10"},"components":[0,1,2],"affine_mm":{"denominator":1,"numerators":[[1,0,0,0],[0,0,0,0],[0,0,0,0]]}}],"loads":[]},
+  "expected_error":"conflicting displacement on shared mechanical support"
+}

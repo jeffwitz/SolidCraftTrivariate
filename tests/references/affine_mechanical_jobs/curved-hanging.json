@@ -1,0 +1,12 @@
+{
+  "id": "curved-sector-hanging-affine-trace",
+  "recipe": {"family":"circular_bend_v1","section":"reference_rectangle_v1","major_radius_mm":16,"quadrants":2},
+  "job": {
+    "schema":"solidcraft_mechanical_job_v2","material":{"young_mpa":1000,"poisson":0},
+    "formulation":"displacement","order":10,
+    "plan":{"schema":"adaptive_refinement_plan_v1","max_depth":1,"max_cells":64,"steps":[{"refine":[{"root":"bend0_rectangle_z0_8","level":0,"index":[0,0,0]}]}]},
+    "supports":[{"select":{"feature":"start"},"components":[0,1,2],"affine_mm":{"denominator":1,"numerators":[[0,0,0,0],[0,0,0,0],[0,0,0,0]]}}],
+    "loads":[{"select":{"feature":"*"},"stress_mpa":[[0,0,0],[0,2,0],[0,0,0]]}]
+  },
+  "oracle":{"kind":"affine","gradient":[[0,0,0],[0,0.002,0],[0,0,0]],"offset":[0,0,0],"name":"q2 curved sectors with one locally refined quadrant"}
+}

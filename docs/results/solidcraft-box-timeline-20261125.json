@@ -1,0 +1,165 @@
+{
+  "schema": "solidcraft_box_timeline_parity_v1",
+  "cases": [
+    {
+      "id": "base",
+      "steps": 1,
+      "identical_bytes": 839,
+      "has_centered": false,
+      "model_sha256": "294938b567b60a600fce5cf5cd3d663e1365e2db6d65356c092dbed20b77f698"
+    },
+    {
+      "id": "pocket",
+      "steps": 2,
+      "identical_bytes": 10433,
+      "has_centered": true,
+      "model_sha256": "9466f46f022fde76d16f2ef01e8503d8d305204e03114651979d53a0dbbdd3db"
+    },
+    {
+      "id": "through",
+      "steps": 2,
+      "identical_bytes": 5252,
+      "has_centered": true,
+      "model_sha256": "05204abf23dcfcce266ac11b0986c9165733b5289aa5276e1c2c6e7d5fbe7242"
+    },
+    {
+      "id": "crossing_tunnels",
+      "steps": 3,
+      "identical_bytes": 13635,
+      "has_centered": true,
+      "model_sha256": "e79a3e397dc6d140d7c9d938d4f503babe9f6d4e01589e16efcd8b7a9a0a839e"
+    },
+    {
+      "id": "skew_tunnels",
+      "steps": 3,
+      "identical_bytes": 23709,
+      "has_centered": true,
+      "model_sha256": "b6a28b0d08ed03fea5848b2863a4e2dde5b18dbc773510a9138cd6ac6f9e8a0f"
+    },
+    {
+      "id": "two_cavities",
+      "steps": 3,
+      "identical_bytes": 71592,
+      "has_centered": true,
+      "model_sha256": "76a1e2f35d55d83fb20c7a38ae8d097a6ce8516c3dcc0881f011debb4b7c65fc"
+    },
+    {
+      "id": "partial_boss",
+      "steps": 2,
+      "identical_bytes": 11966,
+      "has_centered": true,
+      "model_sha256": "f754adb52c0b29f6b0031d4c04e52024165342bb333210aa68609776ebf61168"
+    },
+    {
+      "id": "filled_cut",
+      "steps": 3,
+      "identical_bytes": 16146,
+      "has_centered": true,
+      "model_sha256": "ebe57d76ead3ec91e9ed80c56b10af42dca7499b45061ec24bd79c6510cd8416"
+    },
+    {
+      "id": "redundant",
+      "steps": 2,
+      "identical_bytes": 16085,
+      "has_centered": true,
+      "model_sha256": "1f978408e4e250c1a9c0d649422c328d9e4748dfc242274011d808e6f229e4b2"
+    },
+    {
+      "id": "machined_plate",
+      "steps": 3,
+      "identical_bytes": 28184,
+      "has_centered": true,
+      "model_sha256": "944b103ded975d1906594076ce9478112347f8046395ad96833433aaf963a82b"
+    },
+    {
+      "id": "opened_cavity",
+      "steps": 3,
+      "identical_bytes": 38537,
+      "has_centered": true,
+      "model_sha256": "2396eb9b974d36e880a39a07f97fe7bb032849e4e7154e909da8ddc8f9622b5a"
+    }
+  ],
+  "refusals": [
+    {
+      "id": "suppression",
+      "diagnostic": {
+        "reason": "suppressed box timeline features are not supported",
+        "status": "error"
+      },
+      "previous_unchanged": true
+    },
+    {
+      "id": "repeated_id",
+      "diagnostic": {
+        "reason": "box timeline feature ids must be consecutive",
+        "status": "error"
+      },
+      "previous_unchanged": true
+    },
+    {
+      "id": "expression",
+      "diagnostic": {
+        "reason": "box timeline length must be a finite decimal literal",
+        "status": "error"
+      },
+      "previous_unchanged": true
+    },
+    {
+      "id": "nonintegral_corner",
+      "diagnostic": {
+        "reason": "box timeline placement is outside the exact half-mm grid",
+        "status": "error"
+      },
+      "previous_unchanged": true
+    },
+    {
+      "id": "duplicate_parameter",
+      "diagnostic": {
+        "reason": "box timeline parameter references are missing, duplicated or reordered",
+        "status": "error"
+      },
+      "previous_unchanged": true
+    },
+    {
+      "id": "new_body",
+      "diagnostic": {
+        "reason": "box timeline operation is outside the base/join/cut subset",
+        "status": "error"
+      },
+      "previous_unchanged": true
+    },
+    {
+      "id": "extra_geometry",
+      "diagnostic": {
+        "reason": "unexpected object fields",
+        "status": "error"
+      },
+      "previous_unchanged": true
+    },
+    {
+      "id": "embedded_unit",
+      "diagnostic": {
+        "reason": "box timeline length must be a finite decimal literal",
+        "status": "error"
+      },
+      "previous_unchanged": true
+    }
+  ],
+  "length_edit": {
+    "from_mm": 4,
+    "to_mm": 6,
+    "changed_model": true,
+    "identical_direct_replay": true,
+    "audit": {
+      "blocks": 17,
+      "cavities": 0,
+      "determinant_lower_bound_mm3": 8,
+      "exterior_sides": 46,
+      "method": "certified_orthogonal_feature_program",
+      "minimum_x_mm": 0,
+      "shared_faces": 28,
+      "status": "valid",
+      "volume_mm3": 1560
+    }
+  }
+}

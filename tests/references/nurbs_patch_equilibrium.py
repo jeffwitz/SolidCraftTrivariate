@@ -57,8 +57,10 @@ def local_data(block: dict, q: tuple[float, float, float]):
     if denominator <= 0 or not math.isfinite(denominator):
         raise ArithmeticError("nonpositive rational basis denominator")
     ddenominator = np.einsum("aijk,ijk->a", db, weights)
-    homogeneous = np.einsum("ijk,ijkc->c", weighted_basis, controls)
-    dhomogeneous = np.einsum("aijk,ijkc->ac", db * weights[None, ...], controls)
+    # Controls are already homogeneous [wx, wy, wz, w]. Apply the polynomial
+    # basis once here; rational weights belong in the denominator and basis.
+    homogeneous = np.einsum("ijk,ijkc->c", b, controls)
+    dhomogeneous = np.einsum("aijk,ijkc->ac", db, controls)
     position = homogeneous[:3] / denominator
     jac = (
         dhomogeneous[:, :3] * denominator

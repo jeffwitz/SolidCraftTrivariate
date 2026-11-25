@@ -1,0 +1,34 @@
+{
+  "corpus": "nurbs_multiloop_geometry_v1",
+  "source_revision": "81cb61d",
+  "units": "mm",
+  "primary_recipe": "nurbs_multiloop.recipe.json",
+  "representation": "integer homogeneous controls [wx,wy,w], integer knot vectors, degree 3; common positive scaling of weights and common knot scaling preserve the encoded profiles",
+  "primary_observations": {
+    "stock_volume_mm3": 120000,
+    "profiles": [
+      {"id":"north-free-profile", "degree":3, "first_span_exact_fraction_conic_design_rank":6, "area_q32_mm2":226.25104937262634, "z_interval_mm":[0,20]},
+      {"id":"south-curved-pocket", "degree":3, "first_span_exact_fraction_conic_design_rank":6, "area_q32_mm2":316.76592036090483, "z_interval_mm":[0,8]}
+    ],
+    "mixed_depth_removed_volume_mm3": 7059.148350339766,
+    "mixed_depth_remaining_volume_mm3": 112940.85164966024,
+    "rank_note": "exact Fraction rank 6 on seven rational source evaluations proves the first span is not contained in a conic, hence the full curve is not one conic"
+  },
+  "case_derivations": {
+    "single-through": "retain loop index 0 only; interval [0,20]",
+    "single-blind-pocket": "retain loop index 0 only; interval [0,8]",
+    "independent-two-loop-mixed-depth": "use primary recipe as written; also reverse loops array and rename ids alpha/beta",
+    "touching-stock-boundary": "from loop 0, replace first control wx by 0 in both curves, preserving all other integer values; contour touches x_min=0",
+    "overlapping-x-projections": "translate loop 1's x control coordinates left by 35 mm in Euclidean space, preserving integer weights; its projection then overlaps loop 0",
+    "degenerate-z-interval": "replace loop 0 z interval by [8,8]",
+    "stationary-profile-counterexample": "original mixed fixture preserved verbatim in ../counterexamples/nurbs_multiloop_stationary.json; second loop has physical x poles [55,62,70,70,70,80] and x derivative 0 at interior knot t=2; mandatory scientific rejection"
+  },
+  "cases": [
+    {"id":"single-through", "accepted":true, "loops":["north-free-profile"], "z_intervals":[[0,20]]},
+    {"id":"single-blind-pocket", "accepted":true, "loops":["north-free-profile"], "z_intervals":[[0,8]]},
+    {"id":"independent-two-loop-mixed-depth", "accepted":true, "loops":["north-free-profile","south-curved-pocket"], "z_intervals":[[0,20],[0,8]], "permutations":[[0,1],[1,0]], "renamed_ids":["alpha","beta"]},
+    {"id":"touching-stock-boundary", "accepted":false, "reason":"interior contour must be strictly inside stock"},
+    {"id":"overlapping-x-projections", "accepted":false, "reason":"interior loop x-projections must be strictly disjoint"},
+    {"id":"degenerate-z-interval", "accepted":false, "reason":"z interval must have positive length"}
+  ]
+}

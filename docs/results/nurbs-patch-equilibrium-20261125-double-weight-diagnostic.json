@@ -1,0 +1,93 @@
+{
+  "schema": "nurbs_constant_stress_patch_equilibrium_v1",
+  "status": "invalid_historical_diagnostic",
+  "method": "independent NumPy rational-Q3 volume and exterior-face quadrature; no solve",
+  "recipe": "tests/references/nurbs_strip.recipe.json",
+  "model_blocks": 2,
+  "scalar_dofs": 112,
+  "tensor_degree": 3,
+  "stress_mpa": [
+    [
+      2.0,
+      0.4,
+      -0.3
+    ],
+    [
+      0.4,
+      3.0,
+      0.2
+    ],
+    [
+      -0.3,
+      0.2,
+      4.0
+    ]
+  ],
+  "traction": "sigma*n on every distinct selected exterior face",
+  "volume_term": "integral grad(N_i) dot sigma over the volume",
+  "free_surface_volume_force": "-div(sigma)=0 for constant sigma",
+  "orders": [
+    {
+      "order": 4,
+      "exterior_faces": 10,
+      "volume_term_linf": 1888433.1730076552,
+      "traction_term_linf": 1888430.6347383657,
+      "residual_linf": 674.9772192918172,
+      "relative_residual_linf": 0.0003574271141492392,
+      "volume_resultant": [
+        -1.280568540096283e-09,
+        -2.7939677238464355e-09,
+        -2.3283064365386963e-10
+      ],
+      "traction_resultant": [
+        -10368.744673409732,
+        -2073.7489346857183,
+        1555.311701011844
+      ]
+    },
+    {
+      "order": 8,
+      "exterior_faces": 10,
+      "volume_term_linf": 1888477.4014321412,
+      "traction_term_linf": 1888477.4014318332,
+      "residual_linf": 4.569061820442585,
+      "relative_residual_linf": 2.419442147932298e-06,
+      "volume_resultant": [
+        -2.444721758365631e-09,
+        4.423782229423523e-09,
+        -5.820766091346741e-10
+      ],
+      "traction_resultant": [
+        -15.696055629174225,
+        -3.1392111249733716,
+        2.354408342973329
+      ]
+    },
+    {
+      "order": 16,
+      "exterior_faces": 10,
+      "volume_term_linf": 1888477.4014497097,
+      "traction_term_linf": 1888477.401449712,
+      "residual_linf": 4.557979991659522e-06,
+      "relative_residual_linf": 2.4135740190274636e-12,
+      "volume_resultant": [
+        7.334165275096893e-09,
+        -9.313225746154785e-09,
+        1.6298145055770874e-09
+      ],
+      "traction_resultant": [
+        -5.183974280953407e-06,
+        -1.0384246706962585e-06,
+        7.80448317527771e-07
+      ]
+    }
+  ],
+  "q16_threshold_relative_linf": 1e-08,
+  "elapsed_seconds": 2.2522593149915338,
+  "limitations": [
+    "floating-point quadrature convergence is a diagnostic, not an exact integral proof",
+    "the production model, audit, Q3 elevation, and global DOF numbering are input artifacts; integral evaluation is independent"
+  ],
+  "invalidity": "Archived before correction: the oracle multiplied homogeneous coordinates by rational weights twice, invalidating these equilibrium values.",
+  "superseded_by": "docs/results/nurbs-patch-equilibrium-20261125.json"
+}

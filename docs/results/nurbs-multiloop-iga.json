@@ -1,0 +1,536 @@
+{
+  "cases": {
+    "independent-two-loop-mixed-depth": {
+      "artifacts": {
+        "model": "build/nurbs/multiloop-iga/independent-two-loop-mixed-depth.model.json",
+        "q3_package": "build/nurbs/multiloop-iga/independent-two-loop-mixed-depth.space.json"
+      },
+      "build_audit": {
+        "blocks": 45,
+        "cavities": 0,
+        "determinant_lower_bound_mm3": 124.41599999999994,
+        "exterior_sides": 120,
+        "hausdorff_error_upper_bound_mm": 0,
+        "method": "ordered_monotone_nurbs_contours_and_axial_layers",
+        "shared_faces": 75,
+        "status": "valid",
+        "through_bores": 1
+      },
+      "constant_stress_patch": {
+        "orders": [
+          {
+            "exterior_faces": 120,
+            "order": 4,
+            "relative_residual_linf": 0.0022754933771161807,
+            "residual_linf": 0.9560440173577458,
+            "traction_resultant": [
+              -0.7930042490087956,
+              -0.15860084980513278,
+              0.11895063733192046
+            ],
+            "traction_term_linf": 420.14801140374084,
+            "volume_resultant": [
+              -1.3500311979441904e-13,
+              -2.3163693185779266e-12,
+              -2.2225776774575934e-11
+            ],
+            "volume_term_linf": 420.0610844041024
+          },
+          {
+            "exterior_faces": 120,
+            "order": 8,
+            "relative_residual_linf": 3.125977844660573e-06,
+            "residual_linf": 0.0013317037872786486,
+            "traction_resultant": [
+              -0.0008545333654694787,
+              -0.00017090667014940664,
+              0.0001281800296055735
+            ],
+            "traction_term_linf": 426.01190841877144,
+            "volume_resultant": [
+              2.913225216616411e-13,
+              3.552713678800501e-13,
+              -1.5404566511278972e-11
+            ],
+            "volume_term_linf": 426.01179075050425
+          },
+          {
+            "exterior_faces": 120,
+            "order": 16,
+            "relative_residual_linf": 2.6484421634382446e-12,
+            "residual_linf": 1.1283027845365723e-09,
+            "traction_resultant": [
+              -4.889955107501009e-10,
+              -9.604406159269274e-11,
+              6.272671271290164e-11
+            ],
+            "traction_term_linf": 426.0250799933625,
+            "volume_resultant": [
+              2.8705926524708048e-12,
+              4.170885858911788e-12,
+              -1.944044925039634e-11
+            ],
+            "volume_term_linf": 426.0250799932661
+          }
+        ],
+        "q16_relative_linf_threshold": 1e-08,
+        "stress_mpa": [
+          [
+            2.0,
+            0.4,
+            -0.3
+          ],
+          [
+            0.4,
+            3.0,
+            0.2
+          ],
+          [
+            -0.3,
+            0.2,
+            4.0
+          ]
+        ],
+        "traction_convention": "sigma*n on every distinct design face; oriented outward by block side"
+      },
+      "design_face_feature_counts": {
+        "north-free-profile:end_lower": 2,
+        "north-free-profile:end_upper": 2,
+        "north-free-profile:wall_lower": 6,
+        "north-free-profile:wall_upper": 6,
+        "south-curved-pocket:ceiling": 3,
+        "south-curved-pocket:end_lower": 1,
+        "south-curved-pocket:end_upper": 1,
+        "south-curved-pocket:wall_lower": 3,
+        "south-curved-pocket:wall_upper": 3,
+        "stock:xmax": 6,
+        "stock:xmin": 6,
+        "stock:ymax": 18,
+        "stock:ymin": 18,
+        "stock:zmax": 24,
+        "stock:zmin": 21
+      },
+      "model_schema": "nurbs_multiloop_v1",
+      "recipe": "build/nurbs/multiloop-iga/independent-two-loop-mixed-depth.recipe.json",
+      "space_checks": {
+        "affine_value_and_gradient_checks": 2880,
+        "elevated_blocks": 45,
+        "exact_elevated_control_checks": 2880,
+        "exact_trace_dof_nodes": 1200,
+        "scalar_ndof": 1800,
+        "shared_interfaces": 75,
+        "source_blocks": 45,
+        "source_trace_map_samples": 1200,
+        "source_vs_package_map_samples": 2880,
+        "target_tensor_degree": 3
+      },
+      "space_export": {
+        "scalar_ndof": 1800,
+        "status": "exported"
+      }
+    },
+    "permuted-renamed-two-loop": {
+      "artifacts": {
+        "model": "build/nurbs/multiloop-iga/permuted-renamed-two-loop.model.json",
+        "q3_package": "build/nurbs/multiloop-iga/permuted-renamed-two-loop.space.json"
+      },
+      "build_audit": {
+        "blocks": 45,
+        "cavities": 0,
+        "determinant_lower_bound_mm3": 124.41599999999994,
+        "exterior_sides": 120,
+        "hausdorff_error_upper_bound_mm": 0,
+        "method": "ordered_monotone_nurbs_contours_and_axial_layers",
+        "shared_faces": 75,
+        "status": "valid",
+        "through_bores": 1
+      },
+      "constant_stress_patch": {
+        "orders": [
+          {
+            "exterior_faces": 120,
+            "order": 4,
+            "relative_residual_linf": 0.0022754933771161807,
+            "residual_linf": 0.9560440173577458,
+            "traction_resultant": [
+              -0.7930042490087956,
+              -0.15860084980513278,
+              0.11895063733192046
+            ],
+            "traction_term_linf": 420.14801140374084,
+            "volume_resultant": [
+              -1.3500311979441904e-13,
+              -2.3163693185779266e-12,
+              -2.2225776774575934e-11
+            ],
+            "volume_term_linf": 420.0610844041024
+          },
+          {
+            "exterior_faces": 120,
+            "order": 8,
+            "relative_residual_linf": 3.125977844660573e-06,
+            "residual_linf": 0.0013317037872786486,
+            "traction_resultant": [
+              -0.0008545333654694787,
+              -0.00017090667014940664,
+              0.0001281800296055735
+            ],
+            "traction_term_linf": 426.01190841877144,
+            "volume_resultant": [
+              2.913225216616411e-13,
+              3.552713678800501e-13,
+              -1.5404566511278972e-11
+            ],
+            "volume_term_linf": 426.01179075050425
+          },
+          {
+            "exterior_faces": 120,
+            "order": 16,
+            "relative_residual_linf": 2.6484421634382446e-12,
+            "residual_linf": 1.1283027845365723e-09,
+            "traction_resultant": [
+              -4.889955107501009e-10,
+              -9.604406159269274e-11,
+              6.272671271290164e-11
+            ],
+            "traction_term_linf": 426.0250799933625,
+            "volume_resultant": [
+              2.8705926524708048e-12,
+              4.170885858911788e-12,
+              -1.944044925039634e-11
+            ],
+            "volume_term_linf": 426.0250799932661
+          }
+        ],
+        "q16_relative_linf_threshold": 1e-08,
+        "stress_mpa": [
+          [
+            2.0,
+            0.4,
+            -0.3
+          ],
+          [
+            0.4,
+            3.0,
+            0.2
+          ],
+          [
+            -0.3,
+            0.2,
+            4.0
+          ]
+        ],
+        "traction_convention": "sigma*n on every distinct design face; oriented outward by block side"
+      },
+      "design_face_feature_counts": {
+        "loop-1:ceiling": 3,
+        "loop-1:end_lower": 1,
+        "loop-1:end_upper": 1,
+        "loop-1:wall_lower": 3,
+        "loop-1:wall_upper": 3,
+        "loop-2:end_lower": 2,
+        "loop-2:end_upper": 2,
+        "loop-2:wall_lower": 6,
+        "loop-2:wall_upper": 6,
+        "stock:xmax": 6,
+        "stock:xmin": 6,
+        "stock:ymax": 18,
+        "stock:ymin": 18,
+        "stock:zmax": 24,
+        "stock:zmin": 21
+      },
+      "model_schema": "nurbs_multiloop_v1",
+      "recipe": "build/nurbs/multiloop-iga/permuted-renamed-two-loop.recipe.json",
+      "space_checks": {
+        "affine_value_and_gradient_checks": 2880,
+        "elevated_blocks": 45,
+        "exact_elevated_control_checks": 2880,
+        "exact_trace_dof_nodes": 1200,
+        "scalar_ndof": 1800,
+        "shared_interfaces": 75,
+        "source_blocks": 45,
+        "source_trace_map_samples": 1200,
+        "source_vs_package_map_samples": 2880,
+        "target_tensor_degree": 3
+      },
+      "space_export": {
+        "scalar_ndof": 1800,
+        "status": "exported"
+      }
+    },
+    "single-blind-pocket": {
+      "artifacts": {
+        "model": "build/nurbs/multiloop-iga/single-blind-pocket.model.json",
+        "q3_package": "build/nurbs/multiloop-iga/single-blind-pocket.space.json"
+      },
+      "build_audit": {
+        "blocks": 27,
+        "cavities": 0,
+        "determinant_lower_bound_mm3": 124.41599999999994,
+        "exterior_sides": 70,
+        "hausdorff_error_upper_bound_mm": 0,
+        "method": "ordered_monotone_nurbs_contours_and_axial_layers",
+        "shared_faces": 46,
+        "status": "valid",
+        "through_bores": 0
+      },
+      "constant_stress_patch": {
+        "orders": [
+          {
+            "exterior_faces": 70,
+            "order": 4,
+            "relative_residual_linf": 0.0010021935515873357,
+            "residual_linf": 0.9560440173577307,
+            "traction_resultant": [
+              -0.33945305087917177,
+              -0.06789061017835252,
+              0.050917957603360264
+            ],
+            "traction_term_linf": 953.9052554720647,
+            "volume_resultant": [
+              -1.886490963443066e-12,
+              2.6432189770275727e-12,
+              -7.617018127348274e-12
+            ],
+            "volume_term_linf": 953.9514755842217
+          },
+          {
+            "exterior_faces": 70,
+            "order": 8,
+            "relative_residual_linf": 1.388614238700171e-06,
+            "residual_linf": 0.0013280023016744025,
+            "traction_resultant": [
+              -0.00035499318570941796,
+              -7.099863682924479e-05,
+              5.324898449998727e-05
+            ],
+            "traction_term_linf": 956.3507512231898,
+            "volume_resultant": [
+              7.922551503725117e-13,
+              1.1368683772161603e-12,
+              -3.842615114990622e-11
+            ],
+            "volume_term_linf": 956.3507737883308
+          },
+          {
+            "exterior_faces": 70,
+            "order": 16,
+            "relative_residual_linf": 1.1607696963714338e-12,
+            "residual_linf": 1.1101057850737561e-09,
+            "traction_resultant": [
+              -1.985753783628752e-10,
+              -3.979039320256561e-11,
+              2.376054908381775e-11
+            ],
+            "traction_term_linf": 956.3531754351849,
+            "volume_resultant": [
+              -1.2541079286165768e-12,
+              -2.5579538487363607e-12,
+              -4.524736141320318e-11
+            ],
+            "volume_term_linf": 956.3531754351831
+          }
+        ],
+        "q16_relative_linf_threshold": 1e-08,
+        "stress_mpa": [
+          [
+            2.0,
+            0.4,
+            -0.3
+          ],
+          [
+            0.4,
+            3.0,
+            0.2
+          ],
+          [
+            -0.3,
+            0.2,
+            4.0
+          ]
+        ],
+        "traction_convention": "sigma*n on every distinct design face; oriented outward by block side"
+      },
+      "design_face_feature_counts": {
+        "north-free-profile:ceiling": 3,
+        "north-free-profile:end_lower": 1,
+        "north-free-profile:end_upper": 1,
+        "north-free-profile:wall_lower": 3,
+        "north-free-profile:wall_upper": 3,
+        "stock:xmax": 6,
+        "stock:xmin": 6,
+        "stock:ymax": 10,
+        "stock:ymin": 10,
+        "stock:zmax": 15,
+        "stock:zmin": 12
+      },
+      "model_schema": "nurbs_multiloop_v1",
+      "recipe": "build/nurbs/multiloop-iga/single-blind-pocket.recipe.json",
+      "space_checks": {
+        "affine_value_and_gradient_checks": 1728,
+        "elevated_blocks": 27,
+        "exact_elevated_control_checks": 1728,
+        "exact_trace_dof_nodes": 736,
+        "scalar_ndof": 1072,
+        "shared_interfaces": 46,
+        "source_blocks": 27,
+        "source_trace_map_samples": 736,
+        "source_vs_package_map_samples": 1728,
+        "target_tensor_degree": 3
+      },
+      "space_export": {
+        "scalar_ndof": 1072,
+        "status": "exported"
+      }
+    },
+    "single-through": {
+      "artifacts": {
+        "model": "build/nurbs/multiloop-iga/single-through.model.json",
+        "q3_package": "build/nurbs/multiloop-iga/single-through.space.json"
+      },
+      "build_audit": {
+        "blocks": 12,
+        "cavities": 0,
+        "determinant_lower_bound_mm3": 311.0399999999998,
+        "exterior_sides": 48,
+        "hausdorff_error_upper_bound_mm": 0,
+        "method": "ordered_monotone_nurbs_contours_and_axial_layers",
+        "shared_faces": 12,
+        "status": "valid",
+        "through_bores": 1
+      },
+      "constant_stress_patch": {
+        "orders": [
+          {
+            "exterior_faces": 48,
+            "order": 4,
+            "relative_residual_linf": 0.001026052634837783,
+            "residual_linf": 0.9560440173577938,
+            "traction_resultant": [
+              -0.8486326272009421,
+              -0.1697265254396143,
+              0.12729489408172867
+            ],
+            "traction_term_linf": 931.7097521059939,
+            "volume_resultant": [
+              8.952838470577262e-13,
+              1.7053025658242404e-13,
+              -2.7284841053187847e-12
+            ],
+            "volume_term_linf": 931.7689803593191
+          },
+          {
+            "exterior_faces": 48,
+            "order": 8,
+            "relative_residual_linf": 1.4224799270371969e-06,
+            "residual_linf": 0.0013280023017454867,
+            "traction_resultant": [
+              -0.0008874829657514738,
+              -0.00017749659446053556,
+              0.0001331224447085333
+            ],
+            "traction_term_linf": 933.5824270908815,
+            "volume_resultant": [
+              -1.3642420526593924e-12,
+              -1.2505552149377763e-12,
+              -3.410605131648481e-13
+            ],
+            "volume_term_linf": 933.582454489539
+          },
+          {
+            "exterior_faces": 48,
+            "order": 16,
+            "relative_residual_linf": 1.1891383596346682e-12,
+            "residual_linf": 1.1101608521357775e-09,
+            "traction_resultant": [
+              -4.962714683642844e-10,
+              -1.0044232112704776e-10,
+              7.423750503221527e-11
+            ],
+            "traction_term_linf": 933.5842571564526,
+            "volume_resultant": [
+              5.243805389909539e-12,
+              8.355982572538778e-12,
+              4.320099833421409e-12
+            ],
+            "volume_term_linf": 933.5842571564554
+          }
+        ],
+        "q16_relative_linf_threshold": 1e-08,
+        "stress_mpa": [
+          [
+            2.0,
+            0.4,
+            -0.3
+          ],
+          [
+            0.4,
+            3.0,
+            0.2
+          ],
+          [
+            -0.3,
+            0.2,
+            4.0
+          ]
+        ],
+        "traction_convention": "sigma*n on every distinct design face; oriented outward by block side"
+      },
+      "design_face_feature_counts": {
+        "north-free-profile:end_lower": 1,
+        "north-free-profile:end_upper": 1,
+        "north-free-profile:wall_lower": 3,
+        "north-free-profile:wall_upper": 3,
+        "stock:xmax": 3,
+        "stock:xmin": 3,
+        "stock:ymax": 5,
+        "stock:ymin": 5,
+        "stock:zmax": 12,
+        "stock:zmin": 12
+      },
+      "model_schema": "nurbs_multiloop_v1",
+      "recipe": "build/nurbs/multiloop-iga/single-through.recipe.json",
+      "space_checks": {
+        "affine_value_and_gradient_checks": 768,
+        "elevated_blocks": 12,
+        "exact_elevated_control_checks": 768,
+        "exact_trace_dof_nodes": 192,
+        "scalar_ndof": 576,
+        "shared_interfaces": 12,
+        "source_blocks": 12,
+        "source_trace_map_samples": 192,
+        "source_vs_package_map_samples": 768,
+        "target_tensor_degree": 3
+      },
+      "space_export": {
+        "scalar_ndof": 576,
+        "status": "exported"
+      }
+    }
+  },
+  "elapsed_seconds": 191.56142901297426,
+  "environment": {
+    "cli": "/home/jeff/Code/SolidCraftTrivariate/build/m1-final-cli",
+    "cli_sha256": "72d0b6163bcd2eb5468b8783b9abaf52fc562cd87c5fffe7cc821889c9304040",
+    "quadrature_orders": [
+      4,
+      8,
+      16
+    ]
+  },
+  "homogeneous_kernel_check": {
+    "determinant": 0.9999999999999996,
+    "gauge_invariance_linf_error": 6.430136681049144e-16,
+    "jacobian_linf_error": 4.440892098500626e-16,
+    "position_error": 2.220446049250313e-16,
+    "uniform_homogeneous_gauge_factor": 7
+  },
+  "limits": [
+    "The checks apply to the listed audited recipes and their exported Q3 packages.",
+    "Quadrature equilibrium is a floating-point diagnostic, not an exact integral proof.",
+    "A passing patch test does not prove global geometry injectivity or approximation quality."
+  ],
+  "protocol": "Independent reuse of Fraction tensor-Bernstein degree-elevation, D4-oriented trace identity, and affine value/gradient checks from nurbs_space_oracle; independent NumPy rational-Q3 constant-stress volume and exterior-traction integration from nurbs_patch_equilibrium.",
+  "schema": "nurbs_multiloop_iga_report_v1",
+  "status": "verified"
+}

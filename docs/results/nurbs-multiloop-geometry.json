@@ -1,0 +1,111 @@
+{
+  "checks": {
+    "all_first_span_exact_conic_ranks_six": true,
+    "positive_loop_areas": true,
+    "profiles_synchronized_x": true,
+    "removed_volume_below_stock": true
+  },
+  "counterexamples": [
+    {
+      "case": "stationary-profile-counterexample",
+      "disposition": "preserved; regular mixed fixture changes the physical x controls to [55,62,67,70,74,80]",
+      "expected": "reject input before construction",
+      "path": "tests/counterexamples/nurbs_multiloop_stationary.json",
+      "reason": "second profile x'(2)=0 at an interior knot because physical x controls are [55,62,70,70,70,80]"
+    }
+  ],
+  "rust_cli_observation": {
+    "command": "target/debug/solidcraft-trivariate build tests/references/nurbs_multiloop.recipe.json /tmp/nurbs_multiloop.model.json",
+    "exit_status": "error",
+    "output": {"reason": "unattributed right loop end", "status": "error"},
+    "expected": "accepted regular two-loop mixed-depth geometry",
+    "coverage_result": "required accepted prospect refused; construction coverage failure"
+  },
+  "loops": [
+    {
+      "area_delta_mm2": -2.0199308892188128e-10,
+      "area_q16_mm2": 226.25104937282833,
+      "area_q32_mm2": 226.25104937262634,
+      "id": "north-free-profile",
+      "nonconic_samples": [
+        {
+          "curve": "lower",
+          "first_span_exact_fraction_conic_design_rank": 6,
+          "interpretation": "exact Fraction rank 6 means the first span is not contained in a conic; therefore the full curve is not one conic",
+          "samples": 7
+        },
+        {
+          "curve": "upper",
+          "first_span_exact_fraction_conic_design_rank": 6,
+          "interpretation": "exact Fraction rank 6 means the first span is not contained in a conic; therefore the full curve is not one conic",
+          "samples": 7
+        }
+      ],
+      "removed_volume_q32_mm3": 4525.020987452527,
+      "z_interval_mm": [
+        0,
+        20
+      ]
+    },
+    {
+      "area_delta_mm2": 3.4646063795662485e-10,
+      "area_q16_mm2": 316.76592036055837,
+      "area_q32_mm2": 316.76592036090483,
+      "id": "south-curved-pocket",
+      "nonconic_samples": [
+        {
+          "curve": "lower",
+          "first_span_exact_fraction_conic_design_rank": 6,
+          "interpretation": "exact Fraction rank 6 means the first span is not contained in a conic; therefore the full curve is not one conic",
+          "samples": 7
+        },
+        {
+          "curve": "upper",
+          "first_span_exact_fraction_conic_design_rank": 6,
+          "interpretation": "exact Fraction rank 6 means the first span is not contained in a conic; therefore the full curve is not one conic",
+          "samples": 7
+        }
+      ],
+      "removed_volume_q32_mm3": 2534.1273628872386,
+      "z_interval_mm": [
+        0,
+        8
+      ]
+    }
+  ],
+  "method": "homogeneous Cox/de Boor basis evaluation; rational quotient derivative; per-knot-span Gauss-Legendre integration",
+  "occ_reference_exploratory_not_qualifying": {
+    "available": true,
+    "cutters": [
+      {
+        "area_q32_times_depth_mm3": 4525.020987452527,
+        "id": "north-free-profile",
+        "valid": true,
+        "volume_mm3": 4524.830336690427
+      },
+      {
+        "area_q32_times_depth_mm3": 2534.1273628872386,
+        "id": "south-curved-pocket",
+        "valid": true,
+        "volume_mm3": 2534.0560845668565
+      }
+    ],
+    "faces": 15,
+    "solids": 1,
+    "valid": true,
+    "volume_mm3": 112941.07637723499
+  },
+  "oracle": "independent_cox_de_boor_gauss_legendre_v1",
+  "order_comparison": [
+    16,
+    32
+  ],
+  "qualification_limits": [
+    "OCC cutter volumes reported here are exploratory and not a qualification oracle; use adaptive OCC mass after STEP/BREP export for candidate comparisons",
+    "No candidate CLI/STEP was available during this measurement"
+  ],
+  "remaining_volume_mm3": 112940.85164966024,
+  "removed_volume_mm3": 7059.148350339766,
+  "source_revision": "81cb61d",
+  "stock_volume_mm3": 120000
+}

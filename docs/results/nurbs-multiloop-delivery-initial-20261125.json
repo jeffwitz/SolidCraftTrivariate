@@ -1,0 +1,760 @@
+{
+  "oracle": "nurbs_multiloop_delivery_step_adaptive_mass_walls_classification_v1",
+  "cli": "/home/jeff/Code/SolidCraftTrivariate/build/m1-final-cli",
+  "cli_sha256": "72d0b6163bcd2eb5468b8783b9abaf52fc562cd87c5fffe7cc821889c9304040",
+  "occ": "7.8.1",
+  "freecad": [
+    "26",
+    "3",
+    "0"
+  ],
+  "cases": [
+    {
+      "id": "single-through",
+      "expected_accepted": true,
+      "build_exit": 0,
+      "build_diagnostic": {
+        "blocks": 12,
+        "cavities": 0,
+        "determinant_lower_bound_mm3": 311.0399999999998,
+        "exterior_sides": 48,
+        "hausdorff_error_upper_bound_mm": 0,
+        "method": "ordered_monotone_nurbs_contours_and_axial_layers",
+        "shared_faces": 12,
+        "status": "valid",
+        "through_bores": 1
+      },
+      "audit_exit": 0,
+      "audit": {
+        "blocks": 12,
+        "cavities": 0,
+        "determinant_lower_bound_mm3": 311.0399999999998,
+        "exterior_sides": 48,
+        "hausdorff_error_upper_bound_mm": 0,
+        "method": "ordered_monotone_nurbs_contours_and_axial_layers",
+        "shared_faces": 12,
+        "status": "valid",
+        "through_bores": 1
+      },
+      "blocks": 12,
+      "design_faces": 48,
+      "source_quadrature": {
+        "oracle": "independent_cox_de_boor_gauss_legendre_v1",
+        "source_revision": "81cb61d",
+        "method": "homogeneous Cox/de Boor basis evaluation; rational quotient derivative; per-knot-span Gauss-Legendre integration",
+        "order_comparison": [
+          16,
+          32
+        ],
+        "stock_volume_mm3": 120000,
+        "removed_volume_mm3": 4525.020987452527,
+        "remaining_volume_mm3": 115474.97901254747,
+        "loops": [
+          {
+            "id": "north-free-profile",
+            "area_q16_mm2": 226.25104937282833,
+            "area_q32_mm2": 226.25104937262634,
+            "area_delta_mm2": -2.0199308892188128e-10,
+            "z_interval_mm": [
+              0,
+              20
+            ],
+            "removed_volume_q32_mm3": 4525.020987452527,
+            "nonconic_samples": [
+              {
+                "curve": "lower",
+                "samples": 7,
+                "first_span_exact_fraction_conic_design_rank": 6,
+                "interpretation": "exact Fraction rank 6 means the first span is not contained in a conic; therefore the full curve is not one conic"
+              },
+              {
+                "curve": "upper",
+                "samples": 7,
+                "first_span_exact_fraction_conic_design_rank": 6,
+                "interpretation": "exact Fraction rank 6 means the first span is not contained in a conic; therefore the full curve is not one conic"
+              }
+            ]
+          }
+        ],
+        "occ_reference_exploratory_not_qualifying": {
+          "available": true,
+          "valid": true,
+          "solids": 1,
+          "faces": 10,
+          "volume_mm3": 115475.16268490226,
+          "cutters": [
+            {
+              "id": "north-free-profile",
+              "volume_mm3": 4524.830336690427,
+              "area_q32_times_depth_mm3": 4525.020987452527,
+              "valid": true
+            }
+          ]
+        },
+        "counterexamples": [
+          {
+            "path": "tests/counterexamples/nurbs_multiloop_stationary.json",
+            "case": "stationary-profile-counterexample",
+            "reason": "second profile x'(2)=0 at an interior knot because physical x controls are [55,62,70,70,70,80]",
+            "expected": "reject input before construction",
+            "disposition": "preserved; regular mixed fixture changes the physical x controls to [55,62,67,70,74,80]"
+          }
+        ],
+        "qualification_limits": [
+          "OCC cutter volumes reported here are exploratory and not a qualification oracle; use adaptive OCC mass after STEP/BREP export for candidate comparisons",
+          "No candidate CLI/STEP was available during this measurement"
+        ],
+        "checks": {
+          "positive_loop_areas": true,
+          "removed_volume_below_stock": true,
+          "profiles_synchronized_x": true,
+          "all_first_span_exact_conic_ranks_six": true
+        }
+      },
+      "volume_q16_mm3": 265849.87075882265,
+      "volume_q32_mm3": -4537726550.646118,
+      "volume_relative_error": 39297.18857218455,
+      "volume_quadrature_relative_delta": 39298.490801403655,
+      "wall_face_count": 48,
+      "area_by_feature": {
+        "stock:xmin": 4799.999999999987,
+        "stock:ymin": 6717607.868533817,
+        "stock:zmin": 453821104.82977957,
+        "stock:zmax": 453821104.82977957,
+        "north-free-profile:end_lower": 800.000000000001,
+        "stock:ymax": 6717607.868533817,
+        "north-free-profile:wall_lower": 6712383.558191898,
+        "north-free-profile:wall_upper": 9692232.817867199,
+        "stock:xmax": 4799.999999999987,
+        "north-free-profile:end_upper": 800.000000000001
+      },
+      "wall_faces_valid": true,
+      "wall_max_error_mm": 1.4210854715202004e-14,
+      "step_export": {
+        "exit": 0,
+        "diagnostic": {
+          "format": "STEP AP214 boundary",
+          "status": "exported"
+        }
+      },
+      "step_valid": true,
+      "step_solids": 1,
+      "step_shells": 1,
+      "step_closed": true,
+      "step_faces": 48,
+      "step_default_volume_mm3": 115474.96161827326,
+      "step_adaptive_mass": [
+        {
+          "tolerance": 1e-09,
+          "volume_mm3": 115474.97901254742,
+          "estimated_error": 5.438774888428631e-12,
+          "surface_mm2": 19180.6236424673,
+          "surface_estimated_error": 2.9917588874109476e-16
+        },
+        {
+          "tolerance": 1e-12,
+          "volume_mm3": 115474.97901254742,
+          "estimated_error": 9.994641196020496e-15,
+          "surface_mm2": 19180.629162427467,
+          "surface_estimated_error": 3.419153014183941e-16
+        }
+      ],
+      "step_relative_volume_error": 3.3306690738754696e-16,
+      "classifications_checked": 350,
+      "classification_mismatches": [],
+      "qualified": false,
+      "wall_s": 11.449926313012838
+    },
+    {
+      "id": "single-blind-pocket",
+      "expected_accepted": true,
+      "build_exit": 0,
+      "build_diagnostic": {
+        "blocks": 27,
+        "cavities": 0,
+        "determinant_lower_bound_mm3": 124.41599999999994,
+        "exterior_sides": 70,
+        "hausdorff_error_upper_bound_mm": 0,
+        "method": "ordered_monotone_nurbs_contours_and_axial_layers",
+        "shared_faces": 46,
+        "status": "valid",
+        "through_bores": 0
+      },
+      "audit_exit": 0,
+      "audit": {
+        "blocks": 27,
+        "cavities": 0,
+        "determinant_lower_bound_mm3": 124.41599999999994,
+        "exterior_sides": 70,
+        "hausdorff_error_upper_bound_mm": 0,
+        "method": "ordered_monotone_nurbs_contours_and_axial_layers",
+        "shared_faces": 46,
+        "status": "valid",
+        "through_bores": 0
+      },
+      "blocks": 27,
+      "design_faces": 70,
+      "source_quadrature": {
+        "oracle": "independent_cox_de_boor_gauss_legendre_v1",
+        "source_revision": "81cb61d",
+        "method": "homogeneous Cox/de Boor basis evaluation; rational quotient derivative; per-knot-span Gauss-Legendre integration",
+        "order_comparison": [
+          16,
+          32
+        ],
+        "stock_volume_mm3": 120000,
+        "removed_volume_mm3": 1810.0083949810107,
+        "remaining_volume_mm3": 118189.991605019,
+        "loops": [
+          {
+            "id": "north-free-profile",
+            "area_q16_mm2": 226.25104937282833,
+            "area_q32_mm2": 226.25104937262634,
+            "area_delta_mm2": -2.0199308892188128e-10,
+            "z_interval_mm": [
+              0,
+              8
+            ],
+            "removed_volume_q32_mm3": 1810.0083949810107,
+            "nonconic_samples": [
+              {
+                "curve": "lower",
+                "samples": 7,
+                "first_span_exact_fraction_conic_design_rank": 6,
+                "interpretation": "exact Fraction rank 6 means the first span is not contained in a conic; therefore the full curve is not one conic"
+              },
+              {
+                "curve": "upper",
+                "samples": 7,
+                "first_span_exact_fraction_conic_design_rank": 6,
+                "interpretation": "exact Fraction rank 6 means the first span is not contained in a conic; therefore the full curve is not one conic"
+              }
+            ]
+          }
+        ],
+        "occ_reference_exploratory_not_qualifying": {
+          "available": true,
+          "valid": true,
+          "solids": 1,
+          "faces": 11,
+          "volume_mm3": 118190.06326361404,
+          "cutters": [
+            {
+              "id": "north-free-profile",
+              "volume_mm3": 1809.9321346761712,
+              "area_q32_times_depth_mm3": 1810.0083949810107,
+              "valid": true
+            }
+          ]
+        },
+        "counterexamples": [
+          {
+            "path": "tests/counterexamples/nurbs_multiloop_stationary.json",
+            "case": "stationary-profile-counterexample",
+            "reason": "second profile x'(2)=0 at an interior knot because physical x controls are [55,62,70,70,70,80]",
+            "expected": "reject input before construction",
+            "disposition": "preserved; regular mixed fixture changes the physical x controls to [55,62,67,70,74,80]"
+          }
+        ],
+        "qualification_limits": [
+          "OCC cutter volumes reported here are exploratory and not a qualification oracle; use adaptive OCC mass after STEP/BREP export for candidate comparisons",
+          "No candidate CLI/STEP was available during this measurement"
+        ],
+        "checks": {
+          "positive_loop_areas": true,
+          "removed_volume_below_stock": true,
+          "profiles_synchronized_x": true,
+          "all_first_span_exact_conic_ranks_six": true
+        }
+      },
+      "volume_q16_mm3": 314687.7194872696,
+      "volume_q32_mm3": -1694181806.7593906,
+      "volume_relative_error": 14335.393155904467,
+      "volume_quadrature_relative_delta": 14337.05571400447,
+      "wall_face_count": 70,
+      "area_by_feature": {
+        "stock:xmin": 4800.0,
+        "stock:ymin": 6717607.86853381,
+        "stock:zmin": 453821104.82977957,
+        "stock:zmax": 927745475.8280834,
+        "north-free-profile:end_lower": 320.00000000000006,
+        "stock:ymax": 6717607.86853381,
+        "north-free-profile:wall_lower": 2684953.423276583,
+        "north-free-profile:ceiling": 473924370.9983037,
+        "north-free-profile:wall_upper": 3876893.127146624,
+        "stock:xmax": 4800.0,
+        "north-free-profile:end_upper": 320.00000000000006
+      },
+      "wall_faces_valid": true,
+      "wall_max_error_mm": 1.4210854715202004e-14,
+      "step_export": {
+        "exit": 0,
+        "diagnostic": {
+          "format": "STEP AP214 boundary",
+          "status": "exported"
+        }
+      },
+      "step_valid": true,
+      "step_solids": 1,
+      "step_shells": 1,
+      "step_closed": true,
+      "step_faces": 70,
+      "step_default_volume_mm3": 118189.97146760896,
+      "step_adaptive_mass": [
+        {
+          "tolerance": 1e-09,
+          "volume_mm3": 118189.99160501892,
+          "estimated_error": 5.168011181628056e-12,
+          "surface_mm2": 18893.247641714166,
+          "surface_estimated_error": 3.6214717237559816e-16
+        },
+        {
+          "tolerance": 1e-12,
+          "volume_mm3": 118189.99160501892,
+          "estimated_error": 9.607549404993591e-15,
+          "surface_mm2": 18893.252436270763,
+          "surface_estimated_error": 3.419153014183941e-16
+        }
+      ],
+      "step_relative_volume_error": 6.661338147750939e-16,
+      "classifications_checked": 355,
+      "classification_mismatches": [],
+      "qualified": false,
+      "wall_s": 17.6067017299938
+    },
+    {
+      "id": "two-loops-mixed-depth",
+      "expected_accepted": true,
+      "build_exit": 0,
+      "build_diagnostic": {
+        "blocks": 45,
+        "cavities": 0,
+        "determinant_lower_bound_mm3": 124.41599999999994,
+        "exterior_sides": 120,
+        "hausdorff_error_upper_bound_mm": 0,
+        "method": "ordered_monotone_nurbs_contours_and_axial_layers",
+        "shared_faces": 75,
+        "status": "valid",
+        "through_bores": 1
+      },
+      "audit_exit": 0,
+      "audit": {
+        "blocks": 45,
+        "cavities": 0,
+        "determinant_lower_bound_mm3": 124.41599999999994,
+        "exterior_sides": 120,
+        "hausdorff_error_upper_bound_mm": 0,
+        "method": "ordered_monotone_nurbs_contours_and_axial_layers",
+        "shared_faces": 75,
+        "status": "valid",
+        "through_bores": 1
+      },
+      "blocks": 45,
+      "design_faces": 120,
+      "source_quadrature": {
+        "oracle": "independent_cox_de_boor_gauss_legendre_v1",
+        "source_revision": "81cb61d",
+        "method": "homogeneous Cox/de Boor basis evaluation; rational quotient derivative; per-knot-span Gauss-Legendre integration",
+        "order_comparison": [
+          16,
+          32
+        ],
+        "stock_volume_mm3": 120000,
+        "removed_volume_mm3": 7059.148350339766,
+        "remaining_volume_mm3": 112940.85164966024,
+        "loops": [
+          {
+            "id": "north-free-profile",
+            "area_q16_mm2": 226.25104937282833,
+            "area_q32_mm2": 226.25104937262634,
+            "area_delta_mm2": -2.0199308892188128e-10,
+            "z_interval_mm": [
+              0,
+              20
+            ],
+            "removed_volume_q32_mm3": 4525.020987452527,
+            "nonconic_samples": [
+              {
+                "curve": "lower",
+                "samples": 7,
+                "first_span_exact_fraction_conic_design_rank": 6,
+                "interpretation": "exact Fraction rank 6 means the first span is not contained in a conic; therefore the full curve is not one conic"
+              },
+              {
+                "curve": "upper",
+                "samples": 7,
+                "first_span_exact_fraction_conic_design_rank": 6,
+                "interpretation": "exact Fraction rank 6 means the first span is not contained in a conic; therefore the full curve is not one conic"
+              }
+            ]
+          },
+          {
+            "id": "south-curved-pocket",
+            "area_q16_mm2": 316.76592036055837,
+            "area_q32_mm2": 316.76592036090483,
+            "area_delta_mm2": 3.4646063795662485e-10,
+            "z_interval_mm": [
+              0,
+              8
+            ],
+            "removed_volume_q32_mm3": 2534.1273628872386,
+            "nonconic_samples": [
+              {
+                "curve": "lower",
+                "samples": 7,
+                "first_span_exact_fraction_conic_design_rank": 6,
+                "interpretation": "exact Fraction rank 6 means the first span is not contained in a conic; therefore the full curve is not one conic"
+              },
+              {
+                "curve": "upper",
+                "samples": 7,
+                "first_span_exact_fraction_conic_design_rank": 6,
+                "interpretation": "exact Fraction rank 6 means the first span is not contained in a conic; therefore the full curve is not one conic"
+              }
+            ]
+          }
+        ],
+        "occ_reference_exploratory_not_qualifying": {
+          "available": true,
+          "valid": true,
+          "solids": 1,
+          "faces": 15,
+          "volume_mm3": 112941.07637723499,
+          "cutters": [
+            {
+              "id": "north-free-profile",
+              "volume_mm3": 4524.830336690427,
+              "area_q32_times_depth_mm3": 4525.020987452527,
+              "valid": true
+            },
+            {
+              "id": "south-curved-pocket",
+              "volume_mm3": 2534.0560845668565,
+              "area_q32_times_depth_mm3": 2534.1273628872386,
+              "valid": true
+            }
+          ]
+        },
+        "counterexamples": [
+          {
+            "path": "tests/counterexamples/nurbs_multiloop_stationary.json",
+            "case": "stationary-profile-counterexample",
+            "reason": "second profile x'(2)=0 at an interior knot because physical x controls are [55,62,70,70,70,80]",
+            "expected": "reject input before construction",
+            "disposition": "preserved; regular mixed fixture changes the physical x controls to [55,62,67,70,74,80]"
+          }
+        ],
+        "qualification_limits": [
+          "OCC cutter volumes reported here are exploratory and not a qualification oracle; use adaptive OCC mass after STEP/BREP export for candidate comparisons",
+          "No candidate CLI/STEP was available during this measurement"
+        ],
+        "checks": {
+          "positive_loop_areas": true,
+          "removed_volume_below_stock": true,
+          "profiles_synchronized_x": true,
+          "all_first_span_exact_conic_ranks_six": true
+        }
+      },
+      "volume_q16_mm3": 523546.0223862095,
+      "volume_q32_mm3": -4027116985.547854,
+      "volume_relative_error": 35657.86752602037,
+      "volume_quadrature_relative_delta": 35661.50310309225,
+      "wall_face_count": 120,
+      "area_by_feature": {
+        "stock:xmin": 4800.0,
+        "stock:ymin": 22793042.18601531,
+        "stock:zmin": 2760016221.7948747,
+        "stock:zmax": 2767111634.3815937,
+        "north-free-profile:end_lower": 799.9999999999989,
+        "stock:ymax": 22793042.18601531,
+        "north-free-profile:wall_lower": 6712383.55819191,
+        "north-free-profile:wall_upper": 9692232.817867212,
+        "north-free-profile:end_upper": 799.9999999999989,
+        "south-curved-pocket:end_lower": 383.9999999999996,
+        "south-curved-pocket:wall_lower": 7071210.5223600725,
+        "south-curved-pocket:ceiling": 7095412.586719085,
+        "south-curved-pocket:wall_upper": 7053849.052193298,
+        "stock:xmax": 4799.999999999998,
+        "south-curved-pocket:end_upper": 383.9999999999996
+      },
+      "wall_faces_valid": true,
+      "wall_max_error_mm": 2.842170943040401e-14,
+      "step_export": {
+        "exit": 0,
+        "diagnostic": {
+          "format": "STEP AP214 boundary",
+          "status": "exported"
+        }
+      },
+      "step_valid": true,
+      "step_solids": 1,
+      "step_shells": 1,
+      "step_closed": true,
+      "step_faces": 120,
+      "step_default_volume_mm3": 112940.79204544512,
+      "step_adaptive_mass": [
+        {
+          "tolerance": 1e-09,
+          "volume_mm3": 112940.85164966017,
+          "estimated_error": 1.458252011027075e-11,
+          "surface_mm2": 19784.549366147934,
+          "surface_estimated_error": 4.689243973716807e-16
+        },
+        {
+          "tolerance": 1e-12,
+          "volume_mm3": 112940.85164966017,
+          "estimated_error": 2.321375773845912e-14,
+          "surface_mm2": 19784.56534326051,
+          "surface_estimated_error": 4.491534027654748e-16
+        }
+      ],
+      "step_relative_volume_error": 6.661338147750939e-16,
+      "classifications_checked": 405,
+      "classification_mismatches": [],
+      "qualified": false,
+      "wall_s": 31.56799204205163
+    },
+    {
+      "id": "permuted-renamed",
+      "expected_accepted": true,
+      "build_exit": 0,
+      "build_diagnostic": {
+        "blocks": 45,
+        "cavities": 0,
+        "determinant_lower_bound_mm3": 124.41599999999994,
+        "exterior_sides": 120,
+        "hausdorff_error_upper_bound_mm": 0,
+        "method": "ordered_monotone_nurbs_contours_and_axial_layers",
+        "shared_faces": 75,
+        "status": "valid",
+        "through_bores": 1
+      },
+      "audit_exit": 0,
+      "audit": {
+        "blocks": 45,
+        "cavities": 0,
+        "determinant_lower_bound_mm3": 124.41599999999994,
+        "exterior_sides": 120,
+        "hausdorff_error_upper_bound_mm": 0,
+        "method": "ordered_monotone_nurbs_contours_and_axial_layers",
+        "shared_faces": 75,
+        "status": "valid",
+        "through_bores": 1
+      },
+      "blocks": 45,
+      "design_faces": 120,
+      "source_quadrature": {
+        "oracle": "independent_cox_de_boor_gauss_legendre_v1",
+        "source_revision": "81cb61d",
+        "method": "homogeneous Cox/de Boor basis evaluation; rational quotient derivative; per-knot-span Gauss-Legendre integration",
+        "order_comparison": [
+          16,
+          32
+        ],
+        "stock_volume_mm3": 120000,
+        "removed_volume_mm3": 7059.148350339766,
+        "remaining_volume_mm3": 112940.85164966024,
+        "loops": [
+          {
+            "id": "alpha",
+            "area_q16_mm2": 316.76592036055837,
+            "area_q32_mm2": 316.76592036090483,
+            "area_delta_mm2": 3.4646063795662485e-10,
+            "z_interval_mm": [
+              0,
+              8
+            ],
+            "removed_volume_q32_mm3": 2534.1273628872386,
+            "nonconic_samples": [
+              {
+                "curve": "lower",
+                "samples": 7,
+                "first_span_exact_fraction_conic_design_rank": 6,
+                "interpretation": "exact Fraction rank 6 means the first span is not contained in a conic; therefore the full curve is not one conic"
+              },
+              {
+                "curve": "upper",
+                "samples": 7,
+                "first_span_exact_fraction_conic_design_rank": 6,
+                "interpretation": "exact Fraction rank 6 means the first span is not contained in a conic; therefore the full curve is not one conic"
+              }
+            ]
+          },
+          {
+            "id": "beta",
+            "area_q16_mm2": 226.25104937282833,
+            "area_q32_mm2": 226.25104937262634,
+            "area_delta_mm2": -2.0199308892188128e-10,
+            "z_interval_mm": [
+              0,
+              20
+            ],
+            "removed_volume_q32_mm3": 4525.020987452527,
+            "nonconic_samples": [
+              {
+                "curve": "lower",
+                "samples": 7,
+                "first_span_exact_fraction_conic_design_rank": 6,
+                "interpretation": "exact Fraction rank 6 means the first span is not contained in a conic; therefore the full curve is not one conic"
+              },
+              {
+                "curve": "upper",
+                "samples": 7,
+                "first_span_exact_fraction_conic_design_rank": 6,
+                "interpretation": "exact Fraction rank 6 means the first span is not contained in a conic; therefore the full curve is not one conic"
+              }
+            ]
+          }
+        ],
+        "occ_reference_exploratory_not_qualifying": {
+          "available": true,
+          "valid": true,
+          "solids": 1,
+          "faces": 15,
+          "volume_mm3": 112941.07637723499,
+          "cutters": [
+            {
+              "id": "alpha",
+              "volume_mm3": 2534.0560845668565,
+              "area_q32_times_depth_mm3": 2534.1273628872386,
+              "valid": true
+            },
+            {
+              "id": "beta",
+              "volume_mm3": 4524.830336690427,
+              "area_q32_times_depth_mm3": 4525.020987452527,
+              "valid": true
+            }
+          ]
+        },
+        "counterexamples": [
+          {
+            "path": "tests/counterexamples/nurbs_multiloop_stationary.json",
+            "case": "stationary-profile-counterexample",
+            "reason": "second profile x'(2)=0 at an interior knot because physical x controls are [55,62,70,70,70,80]",
+            "expected": "reject input before construction",
+            "disposition": "preserved; regular mixed fixture changes the physical x controls to [55,62,67,70,74,80]"
+          }
+        ],
+        "qualification_limits": [
+          "OCC cutter volumes reported here are exploratory and not a qualification oracle; use adaptive OCC mass after STEP/BREP export for candidate comparisons",
+          "No candidate CLI/STEP was available during this measurement"
+        ],
+        "checks": {
+          "positive_loop_areas": true,
+          "removed_volume_below_stock": true,
+          "profiles_synchronized_x": true,
+          "all_first_span_exact_conic_ranks_six": true
+        }
+      },
+      "volume_q16_mm3": 523546.0223862095,
+      "volume_q32_mm3": -4027116985.547854,
+      "volume_relative_error": 35657.86752602037,
+      "volume_quadrature_relative_delta": 35661.50310309225,
+      "wall_face_count": 120,
+      "area_by_feature": {
+        "stock:xmin": 4800.0,
+        "stock:ymin": 22793042.18601531,
+        "stock:zmin": 2760016221.7948747,
+        "stock:zmax": 2767111634.3815937,
+        "beta:end_lower": 799.9999999999989,
+        "stock:ymax": 22793042.18601531,
+        "beta:wall_lower": 6712383.55819191,
+        "beta:wall_upper": 9692232.817867212,
+        "beta:end_upper": 799.9999999999989,
+        "alpha:end_lower": 383.9999999999996,
+        "alpha:wall_lower": 7071210.5223600725,
+        "alpha:ceiling": 7095412.586719085,
+        "alpha:wall_upper": 7053849.052193298,
+        "stock:xmax": 4799.999999999998,
+        "alpha:end_upper": 383.9999999999996
+      },
+      "wall_faces_valid": true,
+      "wall_max_error_mm": 2.842170943040401e-14,
+      "step_export": {
+        "exit": 0,
+        "diagnostic": {
+          "format": "STEP AP214 boundary",
+          "status": "exported"
+        }
+      },
+      "step_valid": true,
+      "step_solids": 1,
+      "step_shells": 1,
+      "step_closed": true,
+      "step_faces": 120,
+      "step_default_volume_mm3": 112940.79204544512,
+      "step_adaptive_mass": [
+        {
+          "tolerance": 1e-09,
+          "volume_mm3": 112940.85164966017,
+          "estimated_error": 1.458252011027075e-11,
+          "surface_mm2": 19784.549366147934,
+          "surface_estimated_error": 4.689243973716807e-16
+        },
+        {
+          "tolerance": 1e-12,
+          "volume_mm3": 112940.85164966017,
+          "estimated_error": 2.321375773845912e-14,
+          "surface_mm2": 19784.56534326051,
+          "surface_estimated_error": 4.491534027654748e-16
+        }
+      ],
+      "step_relative_volume_error": 6.661338147750939e-16,
+      "classifications_checked": 405,
+      "classification_mismatches": [],
+      "qualified": false,
+      "invariance_reference_volume_mm3": 112940.85164966024,
+      "invariance_relative_delta": 0.0,
+      "wall_s": 32.558706439042
+    },
+    {
+      "id": "touching-stock-boundary",
+      "expected_accepted": false,
+      "build_exit": 1,
+      "build_diagnostic": {
+        "reason": "interior contour must be strictly inside stock",
+        "status": "error"
+      },
+      "previous_model_preserved": true,
+      "qualified": true,
+      "wall_s": 0.00664184003835544
+    },
+    {
+      "id": "overlapping-x-projections",
+      "expected_accepted": false,
+      "build_exit": 1,
+      "build_diagnostic": {
+        "reason": "interior loop x-projections must be strictly disjoint",
+        "status": "error"
+      },
+      "previous_model_preserved": true,
+      "qualified": true,
+      "wall_s": 0.005303515994455665
+    },
+    {
+      "id": "degenerate-z-interval",
+      "expected_accepted": false,
+      "build_exit": 1,
+      "build_diagnostic": {
+        "reason": "z interval must have positive length inside stock",
+        "status": "error"
+      },
+      "previous_model_preserved": true,
+      "qualified": true,
+      "wall_s": 0.007306775951292366
+    },
+    {
+      "id": "stationary-profile",
+      "expected_accepted": false,
+      "build_exit": 1,
+      "build_diagnostic": {
+        "reason": "strict sign is not certified by Bernstein subdivision",
+        "status": "error"
+      },
+      "previous_model_preserved": true,
+      "qualified": true,
+      "wall_s": 0.008999442972708493
+    }
+  ]
+}

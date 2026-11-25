@@ -261,9 +261,10 @@ fn run_job(
         "supports",
         "loads",
     ])?;
+    let eliminate_supports = job.field("schema")?.text()? == "solidcraft_mechanical_job_v3";
     let version_two = match job.field("schema")?.text()? {
         "solidcraft_mechanical_job_v1" => false,
-        "solidcraft_mechanical_job_v2" => true,
+        "solidcraft_mechanical_job_v2" | "solidcraft_mechanical_job_v3" => true,
         _ => return Err("unknown mechanical job schema"),
     };
     let audit = interchange::audit(model)?;
@@ -434,7 +435,11 @@ fn run_job(
                     Ok((id, value.checked_add(offset)?))
                 })
                 .collect::<Result<Vec<_>, &'static str>>()?;
-            lifts.push(resolve(space.ndof, &adaptive.constraints, &prescribed)?);
+            lifts.push(if eliminate_supports {
+                crate::constraint_system::impose_on_lift(&adaptive.lift, &prescribed)?
+            } else {
+                resolve(space.ndof, &adaptive.constraints, &prescribed)?
+            });
         }
         Ok(lifts)
     };
@@ -569,14 +574,29 @@ fn run_job(
     let mut support_work = 0.;
     let mut support_scale = 0.;
     let mut reaction_moment = [0.; 3];
+    // For q_e = C_e q_free + g_e, virtual work gives reaction
+    // (lambda_e, -C_e^T lambda_e) in the unmounted trace-root coordinates.
+    let mut constrained_forces = vec![[0.; 3]; adaptive.lift.free_roots.len()];
     for (j, &id) in adaptive.lift.free_roots.iter().enumerate() {
-        let r = std::array::from_fn(|c| {
-            if fixed[c].contains_key(&id) {
-                root_forces[j][c]
-            } else {
-                0.
+        for (c, mount) in physical_lifts.iter().enumerate() {
+            if mount.free_roots.binary_search(&id).is_ok() {
+                continue;
             }
-        });
+            let reaction = root_forces[j][c];
+            constrained_forces[j][c] += reaction;
+            for &(index, weight) in &mount.lines[id].terms {
+                let root = mount.free_roots[index];
+                let master = adaptive
+                    .lift
+                    .free_roots
+                    .binary_search(&root)
+                    .map_err(|_| "invalid support reaction root")?;
+                constrained_forces[master][c] -=
+                    reaction * (weight.numerator() as f64 / weight.denominator() as f64);
+            }
+        }
+    }
+    for (&id, &r) in adaptive.lift.free_roots.iter().zip(&constrained_forces) {
         support_work += dot(
             r,
             std::array::from_fn(|c| solved.displacement_mm[3 * id + c]),

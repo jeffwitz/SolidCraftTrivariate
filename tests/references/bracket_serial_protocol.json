@@ -1,0 +1,43 @@
+{
+  "schema": "bracket_serial_cost_protocol_v1",
+  "base_protocol": "tests/references/bracket_cost_corpus.json",
+  "baseline_report": "docs/results/bracket-cost-20261125.json",
+  "local_source_report": "docs/results/local-fillet-cost-20261125.json",
+  "corpus_radii_sixteenths_mm": [[40, 80], [80, 40], [50, 74], [51, 74]],
+  "methods": {
+    "tetra": {"method": "C3D10", "size_mm": 1.5, "physical_audit": "fillet_probe.py"},
+    "immersed": {"method": "immersed_multigrid", "size_mm": 1.25, "quadrature_order": 8},
+    "local": {"method": "J4d first qualified state only", "quadrature_order": 8, "selection": "from local_source_report; no substitute if absent"}
+  },
+  "repetitions": 2,
+  "balanced_order_by_radius_and_repetition": [
+    {"radii": [40, 80], "repeat": 1, "methods": ["tetra", "immersed", "local"]},
+    {"radii": [40, 80], "repeat": 2, "methods": ["immersed", "local", "tetra"]},
+    {"radii": [80, 40], "repeat": 1, "methods": ["immersed", "local", "tetra"]},
+    {"radii": [80, 40], "repeat": 2, "methods": ["local", "tetra", "immersed"]},
+    {"radii": [50, 74], "repeat": 1, "methods": ["local", "tetra", "immersed"]},
+    {"radii": [50, 74], "repeat": 2, "methods": ["tetra", "immersed", "local"]},
+    {"radii": [51, 74], "repeat": 1, "methods": ["tetra", "immersed", "local"]},
+    {"radii": [51, 74], "repeat": 2, "methods": ["immersed", "local", "tetra"]}
+  ],
+  "execution": {
+    "fresh_process_per_trial": true,
+    "reuse_cached_result": false,
+    "cpu_affinity": [2, 3],
+    "omp_num_threads": 2,
+    "openblas_num_threads": 1,
+    "mkl_num_threads": 2,
+    "numexpr_num_threads": 1,
+    "wall_timeout_s_per_trial": 1800,
+    "tree_rss_cap_kib": 6291456,
+    "timing_endpoint": "audited physical outputs persisted",
+    "retain_each_raw_trial": true
+  },
+  "comparison": {
+    "reused_reference_artifacts": "J4b C3D10 and immersed physical outputs; no numerical result is reused for a serial timing trial",
+    "thresholds": "unchanged from bracket_cost_corpus.json",
+    "missing_local_tier": "report local as not admissible and do not substitute another level without explicit approval",
+    "interference_log": ["active J4d/G16/campaign processes", "CPU load", "filesystem/build activity"]
+  },
+  "initial_j4b_trials_preserved": true
+}

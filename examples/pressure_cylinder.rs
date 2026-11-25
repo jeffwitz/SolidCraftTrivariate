@@ -393,7 +393,7 @@ fn plane_system(
     alternative: bool,
     projected: bool,
 ) -> Result<PlaneSystem, &'static str> {
-    if level > 4
+    if level > 6
         || ![6, 8, 12].contains(&order)
         || !(0.0..0.5).contains(&p.nu)
         || p.inner < 0.
@@ -838,8 +838,209 @@ fn plane_read(args: &[String]) -> Result<(), Box<dyn std::error::Error>> {
     Ok(())
 }
 
+fn full_export(args: &[String]) -> Result<(), Box<dyn std::error::Error>> {
+    if args.len() != 8 {
+        return Err(
+            "usage: pressure_cylinder full-export LEVEL ORDER NU PI PO full|projected OUTPUT.json"
+                .into(),
+        );
+    }
+    let level = args[1].parse()?;
+    let order = args[2].parse()?;
+    let p = Pressure {
+        nu: args[3].parse()?,
+        inner: args[4].parse()?,
+        outer: args[5].parse()?,
+    };
+    let projected = match args[6].as_str() {
+        "full" => false,
+        "projected" => true,
+        _ => return Err("expected full or projected formulation".into()),
+    };
+    let system = plane_system(level, order, p, false, projected)?;
+    let started = Instant::now();
+    let mut fixed = Vec::new();
+    for c in 0..3 {
+        for &dof in &system.fixed[c] {
+            fixed.push(3 * dof + c);
+        }
+    }
+    fixed.sort_unstable();
+    let row_ptr = &system.matrix.offsets;
+    let mut values = Vec::with_capacity(system.matrix.values.len() * 9);
+    for block in &system.matrix.values {
+        values.push(Json::Array(
+            block
+                .iter()
+                .map(|row| json_numbers(row.iter().copied()))
+                .collect(),
+        ));
+    }
+    let matrix = object([
+        ("block_size", n(3)),
+        ("block_rows", n(system.space.ndof)),
+        ("row_ptr", json_numbers(row_ptr.iter().copied())),
+        (
+            "column_indices",
+            json_numbers(system.matrix.columns.iter().copied()),
+        ),
+        ("values_3x3", Json::Array(values)),
+    ]);
+    let export_s = started.elapsed().as_secs_f64();
+    let output = object([
+        (
+            "schema",
+            Json::String("full_cylinder_sparse_system_v1".into()),
+        ),
+        ("level", n(level)),
+        ("order", n(order)),
+        ("nu", n(p.nu)),
+        ("inner_mpa", n(p.inner)),
+        ("outer_mpa", n(p.outer)),
+        (
+            "formulation",
+            Json::String(
+                if projected {
+                    "projected_bulk_q1"
+                } else {
+                    "displacement"
+                }
+                .into(),
+            ),
+        ),
+        ("space_dofs_3d", n(system.space.ndof)),
+        ("vector_dofs_3d", n(3 * system.space.ndof)),
+        ("matrix_block_csr", matrix),
+        ("rhs_xyz", json_numbers(system.force.iter().copied())),
+        ("fixed_vector_dofs", json_numbers(fixed)),
+        ("preparation_s", n(system.preparation_s)),
+        ("assembly_s", n(system.assembly_s)),
+        ("export_s", n(export_s)),
+        ("integrated_volume_mm3", n(system.matrix.integrated_volume)),
+    ]);
+    write_json(&args[7], &output)?;
+    Ok(())
+}
+
+fn full_read(args: &[String]) -> Result<(), Box<dyn std::error::Error>> {
+    if args.len() != 9 {
+        return Err("usage: pressure_cylinder full-read LEVEL ORDER NU PI PO full|projected SOLUTION.json OUTPUT.json".into());
+    }
+    let level = args[1].parse()?;
+    let order = args[2].parse()?;
+    let p = Pressure {
+        nu: args[3].parse()?,
+        inner: args[4].parse()?,
+        outer: args[5].parse()?,
+    };
+    let projected = match args[6].as_str() {
+        "full" => false,
+        "projected" => true,
+        _ => return Err("expected full or projected formulation".into()),
+    };
+    let solution = solidcraft_trivariate::json::parse(&std::fs::read_to_string(&args[7])?)?;
+    if solution.field("schema")?.text()? != "full_cylinder_solution_v1"
+        || solution.field("level")?.number::<usize>()? != level
+        || solution.field("order")?.number::<usize>()? != order
+        || solution.field("nu")?.number::<f64>()? != p.nu
+        || solution.field("inner_mpa")?.number::<f64>()? != p.inner
+        || solution.field("outer_mpa")?.number::<f64>()? != p.outer
+        || solution.field("formulation")?.text()?
+            != if projected {
+                "projected_bulk_q1"
+            } else {
+                "displacement"
+            }
+    {
+        return Err("full-cylinder solution metadata mismatch".into());
+    }
+    let system = plane_system(level, order, p, false, projected)?;
+    let u = solution
+        .field("displacement_xyz")?
+        .items()?
+        .iter()
+        .map(Json::number::<f64>)
+        .collect::<Result<Vec<_>, _>>()?;
+    if u.len() != 3 * system.space.ndof {
+        return Err("full-cylinder solution coefficient count mismatch".into());
+    }
+    let residual = system.matrix.equilibrium_residual(&u, &system.force)?;
+    let free_residual_squared = (0..system.space.ndof)
+        .flat_map(|node| (0..3).map(move |c| (node, c)))
+        .filter(|(node, c)| !system.fixed[*c].contains(node))
+        .map(|(node, c)| residual[3 * node + c].powi(2))
+        .sum::<f64>();
+    let force_norm = system
+        .force
+        .iter()
+        .map(|x| x * x)
+        .sum::<f64>()
+        .sqrt()
+        .max(1.);
+    let free_residual = free_residual_squared.sqrt() / force_norm;
+    let work = dot(&system.force, &u);
+    let energy = 0.5 * dot(&u, &system.matrix.apply(&u)?);
+    let applied: [f64; 3] =
+        std::array::from_fn(|c| system.force.as_chunks::<3>().0.iter().map(|x| x[c]).sum());
+    let wall = [
+        wall_metrics(
+            &system.space,
+            &system.walls[0],
+            p,
+            &u,
+            2.,
+            system.projected.as_ref(),
+        )?,
+        wall_metrics(
+            &system.space,
+            &system.walls[1],
+            p,
+            &u,
+            4.,
+            system.projected.as_ref(),
+        )?,
+    ];
+    let errors = field_errors(&system.space, p, &u, 12)?;
+    let report = object([
+        (
+            "schema",
+            Json::String("full_cylinder_reconstruction_v1".into()),
+        ),
+        ("level", n(level)),
+        ("order", n(order)),
+        ("nu", n(p.nu)),
+        ("inner_mpa", n(p.inner)),
+        ("outer_mpa", n(p.outer)),
+        ("projected_bulk", Json::Bool(projected)),
+        ("relative_l2", n(errors.0)),
+        ("relative_energy_norm", n(errors.1)),
+        ("physical_strain_energy_n_mm", n(errors.2)),
+        ("work_n_mm", n(work)),
+        ("strain_energy_matrix_n_mm", n(energy)),
+        (
+            "energy_work_relative",
+            n((2. * energy - work).abs() / work.abs().max(1.)),
+        ),
+        ("pressure_resultant_n", json_numbers(applied)),
+        ("relative_residual_3d_free", n(free_residual)),
+        ("inner", wall[0].clone()),
+        ("outer", wall[1].clone()),
+        ("space_dofs_3d", n(system.space.ndof)),
+        ("assembly_s", n(system.assembly_s)),
+        ("volume_mm3", n(system.matrix.integrated_volume)),
+    ]);
+    write_json(&args[8], &report)?;
+    Ok(())
+}
+
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let a = std::env::args().skip(1).collect::<Vec<_>>();
+    if a.first().is_some_and(|arg| arg == "full-export") {
+        return full_export(&a);
+    }
+    if a.first().is_some_and(|arg| arg == "full-read") {
+        return full_read(&a);
+    }
     if a.first().is_some_and(|arg| arg == "plane-export") {
         return plane_export(&a);
     }

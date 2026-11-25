@@ -123,7 +123,7 @@ impl Ratio {
         Self::new(numerator / reduce_by, denominator)
     }
 
-    fn checked_sub(self, other: Self) -> Result<Self, &'static str> {
+    pub(crate) fn checked_sub(self, other: Self) -> Result<Self, &'static str> {
         self.checked_add(other.checked_neg()?)
     }
 
@@ -400,6 +400,86 @@ pub fn resolve(
     Ok(Lift { free_roots, lines })
 }
 
+/// Impose physical values on an already resolved trace space. A prescribed
+/// dependent coefficient can constrain several roots; eliminate these affine
+/// equations exactly and retain physical root indices for the remaining basis.
+pub(crate) fn impose_on_lift(
+    base: &Lift,
+    prescribed: &[(usize, Ratio)],
+) -> Result<Lift, &'static str> {
+    type AffineRow = (Expansion, Ratio);
+    let mut requests = Vec::with_capacity(prescribed.len());
+    for &(id, value) in prescribed {
+        let line = base
+            .lines
+            .get(id)
+            .ok_or("prescribed DOF index is out of range")?;
+        requests.push((line, value));
+    }
+    requests.sort_by_key(|(line, _)| (line.terms.len(), line.dof));
+    let mut pivots = BTreeMap::<usize, AffineRow>::new();
+    for (line, value) in requests {
+        let mut row: Expansion = line.terms.iter().copied().collect();
+        let mut rhs = value.checked_sub(line.offset)?;
+        loop {
+            let Some((id, coeff)) = row.pop_first() else {
+                if !rhs.is_zero() {
+                    return Err("inconsistent essential displacement equations");
+                }
+                break;
+            };
+            if let Some((terms, offset)) = pivots.get(&id) {
+                add_scaled(&mut row, terms, coeff)?;
+                rhs = rhs.checked_sub(coeff.checked_mul(*offset)?)?;
+            } else {
+                for v in row.values_mut() {
+                    *v = v.checked_neg()?.checked_div(coeff)?;
+                }
+                pivots.insert(id, (row, rhs.checked_div(coeff)?));
+                break;
+            }
+        }
+    }
+    let remaining: Vec<_> = (0..base.free_roots.len())
+        .filter(|id| !pivots.contains_key(id))
+        .collect();
+    let mut reduced = vec![None; base.free_roots.len()];
+    for (i, &r) in remaining.iter().enumerate() {
+        reduced[r] = Some(i);
+    }
+    let mut expressions = vec![(Expansion::new(), Ratio::zero()); reduced.len()];
+    for i in (0..reduced.len()).rev() {
+        expressions[i] = if let Some(index) = reduced[i] {
+            (Expansion::from([(index, Ratio::one())]), Ratio::zero())
+        } else {
+            let (row, mut shift) = pivots.remove(&i).ok_or("missing essential pivot")?;
+            let mut free = Expansion::new();
+            for (j, w) in row {
+                let (terms, offset) = &expressions[j];
+                add_scaled(&mut free, terms, w)?;
+                shift = shift.checked_add(w.checked_mul(*offset)?)?;
+            }
+            (free, shift)
+        };
+    }
+    let mut lines = Vec::with_capacity(base.lines.len());
+    for original in &base.lines {
+        let mut free = Expansion::new();
+        let mut offset = original.offset;
+        for &(j, w) in &original.terms {
+            add_scaled(&mut free, &expressions[j].0, w)?;
+            offset = offset.checked_add(w.checked_mul(expressions[j].1)?)?;
+        }
+        lines.push(LiftLine {
+            dof: original.dof,
+            terms: free.into_iter().collect(),
+            offset,
+        });
+    }
+    let free_roots = remaining.into_iter().map(|j| base.free_roots[j]).collect();
+    Ok(Lift { free_roots, lines })
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -478,6 +558,32 @@ mod tests {
         )
         .is_err());
         assert!(resolve(3, &equations, &[(2, ratio(3, 1))]).is_err());
+    }
+
+    #[test]
+    fn physical_supports_eliminate_signed_root_combinations_exactly() {
+        let equations = [
+            (3, row(&[(0, 1), (1, 1)], 2)),
+            (4, row(&[(1, 1), (2, 1)], 2)),
+        ];
+        let base = resolve(5, &equations, &[]).unwrap();
+        let supports = [(3, ratio(3, 1)), (4, ratio(5, 1))];
+        let lift = impose_on_lift(&base, &supports).unwrap();
+        assert_eq!(lift.free_roots, [2]);
+        for (index, coefficient, offset) in [(0, 1, -4), (1, -1, 10), (2, 1, 0)] {
+            assert_eq!(lift.lines[index].terms, [(0, ratio(coefficient, 1))]);
+            assert_eq!(lift.lines[index].offset, ratio(offset, 1));
+        }
+        for (index, value) in supports {
+            assert!(lift.lines[index].terms.is_empty());
+            assert_eq!(lift.lines[index].offset, value);
+        }
+        assert_eq!(
+            lift,
+            impose_on_lift(&base, &[supports[1], supports[0], supports[1]]).unwrap()
+        );
+        assert!(impose_on_lift(&lift, &[(3, ratio(4, 1))]).is_err());
+        assert!(resolve(5, &equations, &supports).is_err());
     }
 
     #[test]

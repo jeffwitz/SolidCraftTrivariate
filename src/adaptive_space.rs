@@ -468,6 +468,58 @@ fn collapse_identity_rows(raw: &[RawConstraint], uf: &mut UnionFind) -> Result<b
     Ok(changed)
 }
 
+/// If two face restrictions describe the same coefficient and differ in just
+/// two master entries, their difference is c(u_i-u_j)=0. This identifies
+/// coarse edge coefficients even when their cells meet only across an edge.
+/// Every other relation is retained for the full constraint resolver.
+fn collapse_implied_edge_identities(
+    raw: &[RawConstraint],
+    uf: &mut UnionFind,
+) -> Result<bool, &'static str> {
+    use crate::constraint_system::Ratio;
+    type Weights = BTreeMap<usize, Ratio>;
+    let mut grouped: BTreeMap<usize, Vec<Weights>> = BTreeMap::new();
+    for row in raw {
+        let mut weights = Weights::new();
+        for &(id, numerator) in &row.terms {
+            let slot = weights.entry(uf.find(id)).or_insert(Ratio::zero());
+            *slot = slot.checked_add(Ratio::new(numerator, row.denominator)?)?;
+        }
+        let rows = grouped.entry(uf.find(row.dependent)).or_default();
+        if !rows.contains(&weights) {
+            rows.push(weights);
+        }
+    }
+    let mut changed = false;
+    for rows in grouped.values() {
+        for (j, a) in rows.iter().enumerate() {
+            for b in &rows[..j] {
+                let mut difference = BTreeMap::new();
+                for (&k, &v) in a {
+                    let delta = v.checked_sub(b.get(&k).copied().unwrap_or(Ratio::zero()))?;
+                    if delta != Ratio::zero() {
+                        difference.insert(k, delta);
+                    }
+                }
+                for (&k, &v) in b {
+                    if !a.contains_key(&k) {
+                        difference.insert(k, Ratio::zero().checked_sub(v)?);
+                    }
+                }
+                if difference.len() == 2 {
+                    let mut terms = difference.into_iter();
+                    let (i, ci) = terms.next().unwrap();
+                    let (k, ck) = terms.next().unwrap();
+                    if ci.checked_add(ck)? == Ratio::zero() {
+                        changed |= uf.join(i, k);
+                    }
+                }
+            }
+        }
+    }
+    Ok(changed)
+}
+
 fn local_to_global(uf: &mut UnionFind, children: &[Child]) -> (Vec<usize>, usize) {
     let mut representative = BTreeMap::<usize, (String, usize)>::new();
     for (block_index, child) in children.iter().enumerate() {
@@ -713,7 +765,12 @@ pub fn build_adaptive_space(
             &local_block_indices,
         )?;
     }
-    while collapse_identity_rows(&raw_constraints, &mut uf)? {}
+    loop {
+        while collapse_identity_rows(&raw_constraints, &mut uf)? {}
+        if !collapse_implied_edge_identities(&raw_constraints, &mut uf)? {
+            break;
+        }
+    }
     let (local_global, ndof) = local_to_global(&mut uf, &children);
     check_unified_positions(&children, &local_global, ndof)?;
     let constraints = canonical_constraints(&raw_constraints, &local_global)?;
@@ -1057,6 +1114,25 @@ mod tests {
         for axis in 0..3 {
             check_affine_lift(&adaptive, axis);
         }
+    }
+
+    #[test]
+    fn edge_identification_requires_an_exact_two_term_difference() {
+        let trace = |terms| RawConstraint {
+            dependent: 4,
+            terms,
+            denominator: 2,
+        };
+        let mut groups = UnionFind::new(5);
+        let a = trace(vec![(0, 1), (1, 1)]);
+        let b = trace(vec![(2, 1), (3, 1)]);
+        assert!(!collapse_implied_edge_identities(&[a, b], &mut groups).unwrap());
+        let a = trace(vec![(0, 1), (1, 1)]);
+        let b = trace(vec![(0, 1), (3, 1)]);
+        assert!(collapse_implied_edge_identities(&[a, b], &mut groups).unwrap());
+        assert_eq!(groups.find(1), groups.find(3));
+        assert_ne!(groups.find(0), groups.find(1));
+        assert_ne!(groups.find(2), groups.find(1));
     }
 
     #[test]

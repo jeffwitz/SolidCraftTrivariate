@@ -1,0 +1,3588 @@
+{
+  "schema": "bracket_serial_cost_protocol_v1",
+  "status": "completed",
+  "protocol": {
+    "schema": "bracket_serial_cost_protocol_v1",
+    "base_protocol": "tests/references/bracket_cost_corpus.json",
+    "baseline_report": "docs/results/bracket-cost-20261125.json",
+    "local_source_report": "docs/results/local-fillet-cost-20261125.json",
+    "corpus_radii_sixteenths_mm": [
+      [
+        40,
+        80
+      ],
+      [
+        80,
+        40
+      ],
+      [
+        50,
+        74
+      ],
+      [
+        51,
+        74
+      ]
+    ],
+    "methods": {
+      "tetra": {
+        "method": "C3D10",
+        "size_mm": 1.5,
+        "physical_audit": "fillet_probe.py"
+      },
+      "immersed": {
+        "method": "immersed_multigrid",
+        "size_mm": 1.25,
+        "quadrature_order": 8
+      },
+      "local": {
+        "method": "J4d first qualified state only",
+        "quadrature_order": 8,
+        "selection": "from local_source_report; no substitute if absent"
+      }
+    },
+    "repetitions": 2,
+    "balanced_order_by_radius_and_repetition": [
+      {
+        "radii": [
+          40,
+          80
+        ],
+        "repeat": 1,
+        "methods": [
+          "tetra",
+          "immersed",
+          "local"
+        ]
+      },
+      {
+        "radii": [
+          40,
+          80
+        ],
+        "repeat": 2,
+        "methods": [
+          "immersed",
+          "local",
+          "tetra"
+        ]
+      },
+      {
+        "radii": [
+          80,
+          40
+        ],
+        "repeat": 1,
+        "methods": [
+          "immersed",
+          "local",
+          "tetra"
+        ]
+      },
+      {
+        "radii": [
+          80,
+          40
+        ],
+        "repeat": 2,
+        "methods": [
+          "local",
+          "tetra",
+          "immersed"
+        ]
+      },
+      {
+        "radii": [
+          50,
+          74
+        ],
+        "repeat": 1,
+        "methods": [
+          "local",
+          "tetra",
+          "immersed"
+        ]
+      },
+      {
+        "radii": [
+          50,
+          74
+        ],
+        "repeat": 2,
+        "methods": [
+          "tetra",
+          "immersed",
+          "local"
+        ]
+      },
+      {
+        "radii": [
+          51,
+          74
+        ],
+        "repeat": 1,
+        "methods": [
+          "tetra",
+          "immersed",
+          "local"
+        ]
+      },
+      {
+        "radii": [
+          51,
+          74
+        ],
+        "repeat": 2,
+        "methods": [
+          "immersed",
+          "local",
+          "tetra"
+        ]
+      }
+    ],
+    "execution": {
+      "fresh_process_per_trial": true,
+      "reuse_cached_result": false,
+      "cpu_affinity": [
+        2,
+        3
+      ],
+      "omp_num_threads": 2,
+      "openblas_num_threads": 1,
+      "mkl_num_threads": 2,
+      "numexpr_num_threads": 1,
+      "wall_timeout_s_per_trial": 1800,
+      "tree_rss_cap_kib": 6291456,
+      "timing_endpoint": "audited physical outputs persisted",
+      "retain_each_raw_trial": true
+    },
+    "comparison": {
+      "reused_reference_artifacts": "J4b C3D10 and immersed physical outputs; no numerical result is reused for a serial timing trial",
+      "thresholds": "unchanged from bracket_cost_corpus.json",
+      "missing_local_tier": "report local as not admissible and do not substitute another level without explicit approval",
+      "interference_log": [
+        "active J4d/G16/campaign processes",
+        "CPU load",
+        "filesystem/build activity"
+      ]
+    },
+    "initial_j4b_trials_preserved": true
+  },
+  "baseline_reference_revision": "3d40313e3c376bb7ff2ecb3187b9959c16ea17b7",
+  "initial_j4b_trials_preserved": 76,
+  "python": "3.12.3",
+  "cpu_affinity": [
+    2,
+    3
+  ],
+  "thread_environment": {
+    "OMP_NUM_THREADS": "2",
+    "OPENBLAS_NUM_THREADS": "1",
+    "MKL_NUM_THREADS": "2",
+    "NUMEXPR_NUM_THREADS": "1"
+  },
+  "local_tiers": {
+    "(40, 80)": {
+      "path": "from_h1",
+      "step": 3,
+      "leaves": 624,
+      "search_wall_s": 17.981908023
+    },
+    "(80, 40)": {
+      "path": "from_h1",
+      "step": 3,
+      "leaves": 624,
+      "search_wall_s": 18.155309536
+    },
+    "(50, 74)": {
+      "path": "from_h1",
+      "step": 3,
+      "leaves": 624,
+      "search_wall_s": 17.92104044
+    },
+    "(51, 74)": {
+      "path": "from_h1",
+      "step": 3,
+      "leaves": 624,
+      "search_wall_s": 18.050585401
+    }
+  },
+  "schedule_rows": [
+    {
+      "radii_ticks": [
+        40,
+        80
+      ],
+      "repeat": 1,
+      "planned_method_order": [
+        "tetra",
+        "immersed",
+        "local"
+      ],
+      "elapsed_wall_s": 119.02732163097244,
+      "loadavg_before": [
+        20.91,
+        10.9,
+        7.45
+      ],
+      "loadavg_after": [
+        10.42,
+        10.21,
+        7.62
+      ],
+      "campaign_processes_before": [],
+      "campaign_processes_after": [],
+      "trials": [
+        {
+          "method": "tetra",
+          "status": "completed",
+          "wall_s": 76.18197763501666,
+          "command": [
+            "/usr/bin/taskset",
+            "-c",
+            "2,3",
+            "/usr/bin/time",
+            "-f",
+            "%e %M",
+            "-o",
+            "/home/jeff/Code/SolidCraftTrivariate/build/bracket-cost/serial/x40-y80-rep1/tetra/time.txt",
+            "/home/jeff/Code/FreeCAD/.pixi/envs/default/bin/python",
+            "/home/jeff/Code/SolidCraftTrivariate/tests/references/calculix_bracket.py",
+            "--ccx",
+            "/home/jeff/Code/FreeCAD/.pixi/envs/default/bin/ccx",
+            "--size",
+            "1.5",
+            "--store-displacements",
+            "--radius-x",
+            "2.5",
+            "--radius-y",
+            "5.0",
+            "/home/jeff/Code/SolidCraftTrivariate/build/bracket-cost/serial/x40-y80-rep1/tetra/mesh"
+          ],
+          "diagnostic": "{\"radius_x_mm\": 2.5, \"radius_y_mm\": 5.0, \"size_mm\": 1.5, \"occ_volume_mm3\": 32163.628481310214, \"nodes\": 71230, \"tet10\": 45134, \"loaded_area_mm2\": 320.00000000000034, \"reaction_n\": [-4.1589002066189096e-05, 999.9999764646997, -4.54220001500083e-06], \"mean_tip_y_mm\": -0.5208681110274459, \"point_tip_y_mm\": -0.5215913946237346, \"geometry_mesh_deck_s\": 11.385607609001454, \"solve_s\": 63.497706200985704, \"freecad_version\": [\"26\", \"3\", \"0\"], \"solver_peak_rss_kib\": 1482088, \"mesh_process_peak_rss_kib\": 230300}\n{\"element\": 46559, \"barycentric\": [0.492266640047059, 0.009099239872896528, 0.49863412008004443, 0.0], \"point_mm\": [9.7573593113125, 9.757359315739324, 20.000000007507076], \"distance_mm\": 8.184566317279842e-09, \"stress_mpa\": [[76.88333904801145, -71.65736573152901, 0.5703845826108324], [-71.65736573152901, 79.94795714893775, 0.893748577968563], [0.5703845826108324, 0.893748577968563, 38.61631631209976]], \"von_mises_mpa\": 130.37920574134807}\n",
+          "interference": {
+            "loadavg_before": [
+              20.91,
+              10.9,
+              7.45
+            ],
+            "loadavg_after": [
+              12.09,
+              10.41,
+              7.55
+            ],
+            "campaign_processes_before": [],
+            "campaign_processes_after": []
+          },
+          "process_wall_s": 76.17,
+          "tree_peak_rss_kib": 1482088,
+          "physical_audit_s": 2.0394337669713423,
+          "result": {
+            "radius_x_mm": 2.5,
+            "radius_y_mm": 5.0,
+            "size_mm": 1.5,
+            "occ_volume_mm3": 32163.628481310214,
+            "nodes": 71230,
+            "tet10": 45134,
+            "loaded_area_mm2": 320.00000000000034,
+            "reaction_n": [
+              -4.1589002066189096e-05,
+              999.9999764646997,
+              -4.54220001500083e-06
+            ],
+            "mean_tip_y_mm": -0.5208681110274459,
+            "point_tip_y_mm": -0.5215913946237346,
+            "geometry_mesh_deck_s": 11.385607609001454,
+            "solve_s": 63.497706200985704,
+            "freecad_version": [
+              "26",
+              "3",
+              "0"
+            ],
+            "solver_peak_rss_kib": 1482088,
+            "mesh_process_peak_rss_kib": 230300
+          },
+          "probe": {
+            "element": 46559,
+            "barycentric": [
+              0.492266640047059,
+              0.009099239872896528,
+              0.49863412008004443,
+              0.0
+            ],
+            "point_mm": [
+              9.7573593113125,
+              9.757359315739324,
+              20.000000007507076
+            ],
+            "distance_mm": 8.184566317279842e-09,
+            "stress_mpa": [
+              [
+                76.88333904801145,
+                -71.65736573152901,
+                0.5703845826108324
+              ],
+              [
+                -71.65736573152901,
+                79.94795714893775,
+                0.893748577968563
+              ],
+              [
+                0.5703845826108324,
+                0.893748577968563,
+                38.61631631209976
+              ]
+            ],
+            "von_mises_mpa": 130.37920574134807
+          },
+          "physical_qualification": {
+            "tip_relative_to_finest_tetra": 0.00015870904815817877,
+            "fillet_relative_to_finest_tetra": 0.011539084307802705,
+            "volume_relative": 3.3306690738754696e-16,
+            "reaction_relative": 4.800194824605278e-08,
+            "tree_rss_within_cap": true,
+            "qoi_qualified": true,
+            "clamp_boundary_prescribed": true,
+            "drift_from_frozen_replay_relative": 0.0,
+            "drift_qualified": true,
+            "status": "qualified"
+          }
+        },
+        {
+          "method": "immersed",
+          "status": "completed",
+          "wall_s": 36.592934701999184,
+          "command": [
+            "/usr/bin/taskset",
+            "-c",
+            "2,3",
+            "/usr/bin/time",
+            "-f",
+            "%e %M",
+            "-o",
+            "/home/jeff/Code/SolidCraftTrivariate/build/bracket-cost/serial/x40-y80-rep1/immersed/time.txt",
+            "/usr/bin/python3",
+            "/home/jeff/Code/SolidCraftTrivariate/tests/references/immersed_bracket.py",
+            "--solver",
+            "multigrid",
+            "--h",
+            "1.25",
+            "--order",
+            "8",
+            "--radius-x",
+            "2.5",
+            "--radius-y",
+            "5.0"
+          ],
+          "diagnostic": ",\n  \"loaded_area_mm2\": 320.00000000000006,\n  \"force_n\": [\n    0.0,\n    -999.9999999999998,\n    0.0\n  ],\n  \"reaction_n\": [\n    2.906827500925857e-09,\n    999.9999999849599,\n    3.437353568447321e-09\n  ],\n  \"relative_residual\": 7.200305916601608e-11,\n  \"point_tip_y_mm\": -0.5217958015870953,\n  \"mean_tip_y_mm\": -0.5210729770197381,\n  \"von_mises_mpa\": 133.31485227070308,\n  \"stress_mpa\": [\n    [\n      72.04651517684643,\n      -73.91411155932909,\n      -1.2690481898690306e-10\n    ],\n    [\n      -73.91411155932909,\n      72.20485497697015,\n      1.4346839492625083e-10\n    ],\n    [\n      -1.2690481898690306e-10,\n      1.4346839492625083e-10,\n      34.93773851454318\n    ]\n  ],\n  \"strain_energy_n_mm\": 260.5364885153043,\n  \"external_work_n_mm\": 521.0729770197381,\n  \"assembly_s\": 15.520656450127717,\n  \"diagonal_scaling_and_restriction_s\": 1.9996590749942698,\n  \"linear_solver\": \"multigrid\",\n  \"solver_detail\": {\n    \"levels\": [\n      {\n        \"fine_ncell\": [\n          48,\n          40,\n          32\n        ],\n        \"coarse_ncell\": [\n          24,\n          20,\n          16\n        ],\n        \"fine_dofs\": 75204,\n        \"coarse_dofs\": 13284,\n        \"energy_relative\": 5.341077819209121e-16,\n        \"spectral_upper\": 11.380077311531656,\n        \"P_nnz\": 541446\n      },\n      {\n        \"fine_ncell\": [\n          24,\n          20,\n          16\n        ],\n        \"coarse_ncell\": [\n          12,\n          10,\n          8\n        ],\n        \"fine_dofs\": 13284,\n        \"coarse_dofs\": 2520,\n        \"energy_relative\": 0.0,\n        \"spectral_upper\": 11.135452124470334,\n        \"P_nnz\": 88638\n      }\n    ],\n    \"coarse_lu_size\": 2520,\n    \"symmetry_defect\": 7.965148833810932e-16,\n    \"coarse_lu_nnz\": 1589738,\n    \"setup_s\": 2.921503085002769,\n    \"iterations\": 76,\n    \"status\": 0,\n    \"iterations_s\": 14.335610061010811\n  },\n  \"solver_s\": 17.29571356199449,\n  \"elapsed_s\": 35.761590594949666,\n  \"reduced_nnz\": 22955943,\n  \"scaling_dynamic_range\": 1886903.2540470269,\n  \"max_rss_kib\": 1610092\n}\n",
+          "interference": {
+            "loadavg_before": [
+              11.61,
+              10.34,
+              7.54
+            ],
+            "loadavg_after": [
+              10.72,
+              10.26,
+              7.62
+            ],
+            "campaign_processes_before": [],
+            "campaign_processes_after": []
+          },
+          "process_wall_s": 36.58,
+          "tree_peak_rss_kib": 1610092,
+          "result": {
+            "h_mm": 1.25,
+            "gauss_order": 8,
+            "volume_mm3": 32163.628395415493,
+            "radius_x_mm": 2.5,
+            "radius_y_mm": 5.0,
+            "volume_target_mm3": 32163.628481310225,
+            "active_cells": 17960,
+            "cut_cells": 2612,
+            "empty_cells": 43480,
+            "minimum_volume_fraction": 0.004680521124650382,
+            "quadrature_points": 9729024,
+            "quadrature_s": 0.7295859946170822,
+            "scalar_active": 25374,
+            "free_components": 75204,
+            "loaded_area_mm2": 320.00000000000006,
+            "force_n": [
+              0.0,
+              -999.9999999999998,
+              0.0
+            ],
+            "reaction_n": [
+              2.906827500925857e-09,
+              999.9999999849599,
+              3.437353568447321e-09
+            ],
+            "relative_residual": 7.200305916601608e-11,
+            "point_tip_y_mm": -0.5217958015870953,
+            "mean_tip_y_mm": -0.5210729770197381,
+            "von_mises_mpa": 133.31485227070308,
+            "stress_mpa": [
+              [
+                72.04651517684643,
+                -73.91411155932909,
+                -1.2690481898690306e-10
+              ],
+              [
+                -73.91411155932909,
+                72.20485497697015,
+                1.4346839492625083e-10
+              ],
+              [
+                -1.2690481898690306e-10,
+                1.4346839492625083e-10,
+                34.93773851454318
+              ]
+            ],
+            "strain_energy_n_mm": 260.5364885153043,
+            "external_work_n_mm": 521.0729770197381,
+            "assembly_s": 15.520656450127717,
+            "diagonal_scaling_and_restriction_s": 1.9996590749942698,
+            "linear_solver": "multigrid",
+            "solver_detail": {
+              "levels": [
+                {
+                  "fine_ncell": [
+                    48,
+                    40,
+                    32
+                  ],
+                  "coarse_ncell": [
+                    24,
+                    20,
+                    16
+                  ],
+                  "fine_dofs": 75204,
+                  "coarse_dofs": 13284,
+                  "energy_relative": 5.341077819209121e-16,
+                  "spectral_upper": 11.380077311531656,
+                  "P_nnz": 541446
+                },
+                {
+                  "fine_ncell": [
+                    24,
+                    20,
+                    16
+                  ],
+                  "coarse_ncell": [
+                    12,
+                    10,
+                    8
+                  ],
+                  "fine_dofs": 13284,
+                  "coarse_dofs": 2520,
+                  "energy_relative": 0.0,
+                  "spectral_upper": 11.135452124470334,
+                  "P_nnz": 88638
+                }
+              ],
+              "coarse_lu_size": 2520,
+              "symmetry_defect": 7.965148833810932e-16,
+              "coarse_lu_nnz": 1589738,
+              "setup_s": 2.921503085002769,
+              "iterations": 76,
+              "status": 0,
+              "iterations_s": 14.335610061010811
+            },
+            "solver_s": 17.29571356199449,
+            "elapsed_s": 35.761590594949666,
+            "reduced_nnz": 22955943,
+            "scaling_dynamic_range": 1886903.2540470269,
+            "max_rss_kib": 1610092
+          },
+          "physical_qualification": {
+            "tip_relative_to_finest_tetra": 0.00023311973627482274,
+            "fillet_relative_to_finest_tetra": 0.010717316473711103,
+            "volume_relative": 2.670554777317591e-09,
+            "reaction_relative": 1.569933909084099e-11,
+            "tree_rss_within_cap": true,
+            "qoi_qualified": true,
+            "drift_from_frozen_replay_relative": 0.0,
+            "drift_qualified": true,
+            "status": "qualified"
+          }
+        },
+        {
+          "method": "local",
+          "status": "completed",
+          "wall_s": 4.186658565013204,
+          "command": [
+            "/usr/bin/taskset",
+            "-c",
+            "2,3",
+            "/usr/bin/time",
+            "-f",
+            "%e %M",
+            "-o",
+            "/home/jeff/Code/SolidCraftTrivariate/build/bracket-cost/serial/x40-y80-rep1/local/time.txt",
+            "/home/jeff/Code/SolidCraftTrivariate/target/release/examples/local_fillet_cost",
+            "--tier",
+            "40",
+            "80",
+            "from_h1",
+            "3",
+            "/home/jeff/Code/SolidCraftTrivariate/build/bracket-cost/serial/x40-y80-rep1/local/physical.json"
+          ],
+          "diagnostic": "",
+          "interference": {
+            "loadavg_before": [
+              10.72,
+              10.26,
+              7.62
+            ],
+            "loadavg_after": [
+              10.42,
+              10.21,
+              7.62
+            ],
+            "campaign_processes_before": [],
+            "campaign_processes_after": []
+          },
+          "process_wall_s": 4.18,
+          "tree_peak_rss_kib": 83088,
+          "result": {
+            "constraints_s": 0.114734966,
+            "geometry_build_and_audit_s": 0.007614235,
+            "leaves": 624,
+            "local_partition_s": 0.050617192,
+            "local_refinement_counts": [
+              {
+                "incident": 4,
+                "induced": 0,
+                "requested": 16
+              },
+              {
+                "incident": 4,
+                "induced": 0,
+                "requested": 16
+              },
+              {
+                "incident": 4,
+                "induced": 0,
+                "requested": 16
+              }
+            ],
+            "local_steps": 3,
+            "max_depth": 4,
+            "path": "from_h1",
+            "q8": {
+              "assembly_s": 1.85680157,
+              "blocks": 624,
+              "constraint_s": 0.000761718,
+              "fillet_limits_mpa": {
+                "elbow_east_z10_30/010/011/011/011": 132.69532049848166,
+                "elbow_east_z10_30/011/010/010/010": 132.69532049851023,
+                "elbow_north_z10_30/110/111/111/111": 132.6897519375119,
+                "elbow_north_z10_30/111/110/110/110": 132.6897519375337
+              },
+              "force_s": 0.001317971,
+              "iterations": 615,
+              "loaded_area_mm2": 319.9999999999986,
+              "masters": 5523,
+              "q": 8,
+              "reaction_n": [
+                5.313742335033567e-09,
+                1000.0000000251631,
+                -3.093134637310868e-09
+              ],
+              "recovery_s": 0.004108228,
+              "relative_residual": 7.543642014777237e-12,
+              "scalar_dofs": 7167,
+              "solve_s": 2.130324552,
+              "strain_energy_n_mm": 259.62000085180176,
+              "tip_mm": [
+                -0.17654964462371497,
+                -0.519959322806831,
+                4.2640170119293106e-13
+              ],
+              "true_projected_residual": 1.4878809520628294e-11,
+              "volume_mm3": 32163.6284813115
+            },
+            "radii_ticks": [
+              40,
+              80
+            ],
+            "total_wall_s": 4.177172391,
+            "uniform_depth": 1,
+            "uniform_partition_s": 0.00710238
+          },
+          "j4d_tier": {
+            "path": "from_h1",
+            "step": 3,
+            "leaves": 624,
+            "search_wall_s": 17.981908023
+          },
+          "physical_qualification": {
+            "tip_relative_to_finest_tetra": 0.003287236108149516,
+            "fillet_relative_to_finest_tetra": 0.00602037926382315,
+            "volume_relative": 3.9745984281580604e-14,
+            "reaction_relative": 2.5903380518992437e-11,
+            "tree_rss_within_cap": true,
+            "qoi_qualified": true,
+            "drift_from_frozen_replay_relative": 0.0,
+            "drift_qualified": true,
+            "status": "qualified"
+          }
+        }
+      ]
+    },
+    {
+      "radii_ticks": [
+        40,
+        80
+      ],
+      "repeat": 2,
+      "planned_method_order": [
+        "immersed",
+        "local",
+        "tetra"
+      ],
+      "elapsed_wall_s": 113.25507410801947,
+      "loadavg_before": [
+        10.42,
+        10.21,
+        7.62
+      ],
+      "loadavg_after": [
+        9.02,
+        9.75,
+        7.74
+      ],
+      "campaign_processes_before": [],
+      "campaign_processes_after": [],
+      "trials": [
+        {
+          "method": "immersed",
+          "status": "completed",
+          "wall_s": 36.44684820395196,
+          "command": [
+            "/usr/bin/taskset",
+            "-c",
+            "2,3",
+            "/usr/bin/time",
+            "-f",
+            "%e %M",
+            "-o",
+            "/home/jeff/Code/SolidCraftTrivariate/build/bracket-cost/serial/x40-y80-rep2/immersed/time.txt",
+            "/usr/bin/python3",
+            "/home/jeff/Code/SolidCraftTrivariate/tests/references/immersed_bracket.py",
+            "--solver",
+            "multigrid",
+            "--h",
+            "1.25",
+            "--order",
+            "8",
+            "--radius-x",
+            "2.5",
+            "--radius-y",
+            "5.0"
+          ],
+          "diagnostic": ",\n  \"loaded_area_mm2\": 320.00000000000006,\n  \"force_n\": [\n    0.0,\n    -999.9999999999998,\n    0.0\n  ],\n  \"reaction_n\": [\n    2.906827500925857e-09,\n    999.9999999849599,\n    3.437353568447321e-09\n  ],\n  \"relative_residual\": 7.200305916601608e-11,\n  \"point_tip_y_mm\": -0.5217958015870953,\n  \"mean_tip_y_mm\": -0.5210729770197381,\n  \"von_mises_mpa\": 133.31485227070308,\n  \"stress_mpa\": [\n    [\n      72.04651517684643,\n      -73.91411155932909,\n      -1.2690481898690306e-10\n    ],\n    [\n      -73.91411155932909,\n      72.20485497697015,\n      1.4346839492625083e-10\n    ],\n    [\n      -1.2690481898690306e-10,\n      1.4346839492625083e-10,\n      34.93773851454318\n    ]\n  ],\n  \"strain_energy_n_mm\": 260.5364885153043,\n  \"external_work_n_mm\": 521.0729770197381,\n  \"assembly_s\": 15.282670805987436,\n  \"diagonal_scaling_and_restriction_s\": 1.469133505015634,\n  \"linear_solver\": \"multigrid\",\n  \"solver_detail\": {\n    \"levels\": [\n      {\n        \"fine_ncell\": [\n          48,\n          40,\n          32\n        ],\n        \"coarse_ncell\": [\n          24,\n          20,\n          16\n        ],\n        \"fine_dofs\": 75204,\n        \"coarse_dofs\": 13284,\n        \"energy_relative\": 5.341077819209121e-16,\n        \"spectral_upper\": 11.380077311531656,\n        \"P_nnz\": 541446\n      },\n      {\n        \"fine_ncell\": [\n          24,\n          20,\n          16\n        ],\n        \"coarse_ncell\": [\n          12,\n          10,\n          8\n        ],\n        \"fine_dofs\": 13284,\n        \"coarse_dofs\": 2520,\n        \"energy_relative\": 0.0,\n        \"spectral_upper\": 11.135452124470334,\n        \"P_nnz\": 88638\n      }\n    ],\n    \"coarse_lu_size\": 2520,\n    \"symmetry_defect\": 7.965148833810932e-16,\n    \"coarse_lu_nnz\": 1589738,\n    \"setup_s\": 2.6848749140044674,\n    \"iterations\": 76,\n    \"status\": 0,\n    \"iterations_s\": 15.272838967037387\n  },\n  \"solver_s\": 17.95995166595094,\n  \"elapsed_s\": 35.690798082971014,\n  \"reduced_nnz\": 22955943,\n  \"scaling_dynamic_range\": 1886903.2540470269,\n  \"max_rss_kib\": 1611784\n}\n",
+          "interference": {
+            "loadavg_before": [
+              10.42,
+              10.21,
+              7.62
+            ],
+            "loadavg_after": [
+              10.25,
+              10.14,
+              7.69
+            ],
+            "campaign_processes_before": [],
+            "campaign_processes_after": []
+          },
+          "process_wall_s": 36.43,
+          "tree_peak_rss_kib": 1611784,
+          "result": {
+            "h_mm": 1.25,
+            "gauss_order": 8,
+            "volume_mm3": 32163.628395415493,
+            "radius_x_mm": 2.5,
+            "radius_y_mm": 5.0,
+            "volume_target_mm3": 32163.628481310225,
+            "active_cells": 17960,
+            "cut_cells": 2612,
+            "empty_cells": 43480,
+            "minimum_volume_fraction": 0.004680521124650382,
+            "quadrature_points": 9729024,
+            "quadrature_s": 0.7562663736171089,
+            "scalar_active": 25374,
+            "free_components": 75204,
+            "loaded_area_mm2": 320.00000000000006,
+            "force_n": [
+              0.0,
+              -999.9999999999998,
+              0.0
+            ],
+            "reaction_n": [
+              2.906827500925857e-09,
+              999.9999999849599,
+              3.437353568447321e-09
+            ],
+            "relative_residual": 7.200305916601608e-11,
+            "point_tip_y_mm": -0.5217958015870953,
+            "mean_tip_y_mm": -0.5210729770197381,
+            "von_mises_mpa": 133.31485227070308,
+            "stress_mpa": [
+              [
+                72.04651517684643,
+                -73.91411155932909,
+                -1.2690481898690306e-10
+              ],
+              [
+                -73.91411155932909,
+                72.20485497697015,
+                1.4346839492625083e-10
+              ],
+              [
+                -1.2690481898690306e-10,
+                1.4346839492625083e-10,
+                34.93773851454318
+              ]
+            ],
+            "strain_energy_n_mm": 260.5364885153043,
+            "external_work_n_mm": 521.0729770197381,
+            "assembly_s": 15.282670805987436,
+            "diagonal_scaling_and_restriction_s": 1.469133505015634,
+            "linear_solver": "multigrid",
+            "solver_detail": {
+              "levels": [
+                {
+                  "fine_ncell": [
+                    48,
+                    40,
+                    32
+                  ],
+                  "coarse_ncell": [
+                    24,
+                    20,
+                    16
+                  ],
+                  "fine_dofs": 75204,
+                  "coarse_dofs": 13284,
+                  "energy_relative": 5.341077819209121e-16,
+                  "spectral_upper": 11.380077311531656,
+                  "P_nnz": 541446
+                },
+                {
+                  "fine_ncell": [
+                    24,
+                    20,
+                    16
+                  ],
+                  "coarse_ncell": [
+                    12,
+                    10,
+                    8
+                  ],
+                  "fine_dofs": 13284,
+                  "coarse_dofs": 2520,
+                  "energy_relative": 0.0,
+                  "spectral_upper": 11.135452124470334,
+                  "P_nnz": 88638
+                }
+              ],
+              "coarse_lu_size": 2520,
+              "symmetry_defect": 7.965148833810932e-16,
+              "coarse_lu_nnz": 1589738,
+              "setup_s": 2.6848749140044674,
+              "iterations": 76,
+              "status": 0,
+              "iterations_s": 15.272838967037387
+            },
+            "solver_s": 17.95995166595094,
+            "elapsed_s": 35.690798082971014,
+            "reduced_nnz": 22955943,
+            "scaling_dynamic_range": 1886903.2540470269,
+            "max_rss_kib": 1611784
+          },
+          "physical_qualification": {
+            "tip_relative_to_finest_tetra": 0.00023311973627482274,
+            "fillet_relative_to_finest_tetra": 0.010717316473711103,
+            "volume_relative": 2.670554777317591e-09,
+            "reaction_relative": 1.569933909084099e-11,
+            "tree_rss_within_cap": true,
+            "qoi_qualified": true,
+            "drift_from_frozen_replay_relative": 0.0,
+            "drift_qualified": true,
+            "status": "qualified"
+          }
+        },
+        {
+          "method": "local",
+          "status": "completed",
+          "wall_s": 3.927641296002548,
+          "command": [
+            "/usr/bin/taskset",
+            "-c",
+            "2,3",
+            "/usr/bin/time",
+            "-f",
+            "%e %M",
+            "-o",
+            "/home/jeff/Code/SolidCraftTrivariate/build/bracket-cost/serial/x40-y80-rep2/local/time.txt",
+            "/home/jeff/Code/SolidCraftTrivariate/target/release/examples/local_fillet_cost",
+            "--tier",
+            "40",
+            "80",
+            "from_h1",
+            "3",
+            "/home/jeff/Code/SolidCraftTrivariate/build/bracket-cost/serial/x40-y80-rep2/local/physical.json"
+          ],
+          "diagnostic": "",
+          "interference": {
+            "loadavg_before": [
+              10.25,
+              10.14,
+              7.69
+            ],
+            "loadavg_after": [
+              9.91,
+              10.07,
+              7.68
+            ],
+            "campaign_processes_before": [],
+            "campaign_processes_after": []
+          },
+          "process_wall_s": 3.92,
+          "tree_peak_rss_kib": 83116,
+          "result": {
+            "constraints_s": 0.113835082,
+            "geometry_build_and_audit_s": 0.007437263,
+            "leaves": 624,
+            "local_partition_s": 0.050025562,
+            "local_refinement_counts": [
+              {
+                "incident": 4,
+                "induced": 0,
+                "requested": 16
+              },
+              {
+                "incident": 4,
+                "induced": 0,
+                "requested": 16
+              },
+              {
+                "incident": 4,
+                "induced": 0,
+                "requested": 16
+              }
+            ],
+            "local_steps": 3,
+            "max_depth": 4,
+            "path": "from_h1",
+            "q8": {
+              "assembly_s": 1.588457732,
+              "blocks": 624,
+              "constraint_s": 0.000744993,
+              "fillet_limits_mpa": {
+                "elbow_east_z10_30/010/011/011/011": 132.69532049848166,
+                "elbow_east_z10_30/011/010/010/010": 132.69532049851023,
+                "elbow_north_z10_30/110/111/111/111": 132.6897519375119,
+                "elbow_north_z10_30/111/110/110/110": 132.6897519375337
+              },
+              "force_s": 0.001318324,
+              "iterations": 615,
+              "loaded_area_mm2": 319.9999999999986,
+              "masters": 5523,
+              "q": 8,
+              "reaction_n": [
+                5.313742335033567e-09,
+                1000.0000000251631,
+                -3.093134637310868e-09
+              ],
+              "recovery_s": 0.004111412,
+              "relative_residual": 7.543642014777237e-12,
+              "scalar_dofs": 7167,
+              "solve_s": 2.142446153,
+              "strain_energy_n_mm": 259.62000085180176,
+              "tip_mm": [
+                -0.17654964462371497,
+                -0.519959322806831,
+                4.2640170119293106e-13
+              ],
+              "true_projected_residual": 1.4878809520628294e-11,
+              "volume_mm3": 32163.6284813115
+            },
+            "radii_ticks": [
+              40,
+              80
+            ],
+            "total_wall_s": 3.918517564,
+            "uniform_depth": 1,
+            "uniform_partition_s": 0.006612602
+          },
+          "j4d_tier": {
+            "path": "from_h1",
+            "step": 3,
+            "leaves": 624,
+            "search_wall_s": 17.981908023
+          },
+          "physical_qualification": {
+            "tip_relative_to_finest_tetra": 0.003287236108149516,
+            "fillet_relative_to_finest_tetra": 0.00602037926382315,
+            "volume_relative": 3.9745984281580604e-14,
+            "reaction_relative": 2.5903380518992437e-11,
+            "tree_rss_within_cap": true,
+            "qoi_qualified": true,
+            "drift_from_frozen_replay_relative": 0.0,
+            "drift_qualified": true,
+            "status": "qualified"
+          }
+        },
+        {
+          "method": "tetra",
+          "status": "completed",
+          "wall_s": 70.96576004405506,
+          "command": [
+            "/usr/bin/taskset",
+            "-c",
+            "2,3",
+            "/usr/bin/time",
+            "-f",
+            "%e %M",
+            "-o",
+            "/home/jeff/Code/SolidCraftTrivariate/build/bracket-cost/serial/x40-y80-rep2/tetra/time.txt",
+            "/home/jeff/Code/FreeCAD/.pixi/envs/default/bin/python",
+            "/home/jeff/Code/SolidCraftTrivariate/tests/references/calculix_bracket.py",
+            "--ccx",
+            "/home/jeff/Code/FreeCAD/.pixi/envs/default/bin/ccx",
+            "--size",
+            "1.5",
+            "--store-displacements",
+            "--radius-x",
+            "2.5",
+            "--radius-y",
+            "5.0",
+            "/home/jeff/Code/SolidCraftTrivariate/build/bracket-cost/serial/x40-y80-rep2/tetra/mesh"
+          ],
+          "diagnostic": "{\"radius_x_mm\": 2.5, \"radius_y_mm\": 5.0, \"size_mm\": 1.5, \"occ_volume_mm3\": 32163.628481310214, \"nodes\": 71230, \"tet10\": 45134, \"loaded_area_mm2\": 320.00000000000034, \"reaction_n\": [-4.1589002066189096e-05, 999.9999764646997, -4.54220001500083e-06], \"mean_tip_y_mm\": -0.5208681110274459, \"point_tip_y_mm\": -0.5215913946237346, \"geometry_mesh_deck_s\": 9.543565576022957, \"solve_s\": 60.922924429003615, \"freecad_version\": [\"26\", \"3\", \"0\"], \"solver_peak_rss_kib\": 1482124, \"mesh_process_peak_rss_kib\": 232516}\n{\"element\": 46559, \"barycentric\": [0.492266640047059, 0.009099239872896528, 0.49863412008004443, 0.0], \"point_mm\": [9.7573593113125, 9.757359315739324, 20.000000007507076], \"distance_mm\": 8.184566317279842e-09, \"stress_mpa\": [[76.88333904801145, -71.65736573152901, 0.5703845826108324], [-71.65736573152901, 79.94795714893775, 0.893748577968563], [0.5703845826108324, 0.893748577968563, 38.61631631209976]], \"von_mises_mpa\": 130.37920574134807}\n",
+          "interference": {
+            "loadavg_before": [
+              9.91,
+              10.07,
+              7.68
+            ],
+            "loadavg_after": [
+              9.02,
+              9.75,
+              7.74
+            ],
+            "campaign_processes_before": [],
+            "campaign_processes_after": []
+          },
+          "process_wall_s": 70.95,
+          "tree_peak_rss_kib": 1482124,
+          "physical_audit_s": 1.881287115975283,
+          "result": {
+            "radius_x_mm": 2.5,
+            "radius_y_mm": 5.0,
+            "size_mm": 1.5,
+            "occ_volume_mm3": 32163.628481310214,
+            "nodes": 71230,
+            "tet10": 45134,
+            "loaded_area_mm2": 320.00000000000034,
+            "reaction_n": [
+              -4.1589002066189096e-05,
+              999.9999764646997,
+              -4.54220001500083e-06
+            ],
+            "mean_tip_y_mm": -0.5208681110274459,
+            "point_tip_y_mm": -0.5215913946237346,
+            "geometry_mesh_deck_s": 9.543565576022957,
+            "solve_s": 60.922924429003615,
+            "freecad_version": [
+              "26",
+              "3",
+              "0"
+            ],
+            "solver_peak_rss_kib": 1482124,
+            "mesh_process_peak_rss_kib": 232516
+          },
+          "probe": {
+            "element": 46559,
+            "barycentric": [
+              0.492266640047059,
+              0.009099239872896528,
+              0.49863412008004443,
+              0.0
+            ],
+            "point_mm": [
+              9.7573593113125,
+              9.757359315739324,
+              20.000000007507076
+            ],
+            "distance_mm": 8.184566317279842e-09,
+            "stress_mpa": [
+              [
+                76.88333904801145,
+                -71.65736573152901,
+                0.5703845826108324
+              ],
+              [
+                -71.65736573152901,
+                79.94795714893775,
+                0.893748577968563
+              ],
+              [
+                0.5703845826108324,
+                0.893748577968563,
+                38.61631631209976
+              ]
+            ],
+            "von_mises_mpa": 130.37920574134807
+          },
+          "physical_qualification": {
+            "tip_relative_to_finest_tetra": 0.00015870904815817877,
+            "fillet_relative_to_finest_tetra": 0.011539084307802705,
+            "volume_relative": 3.3306690738754696e-16,
+            "reaction_relative": 4.800194824605278e-08,
+            "tree_rss_within_cap": true,
+            "qoi_qualified": true,
+            "clamp_boundary_prescribed": true,
+            "drift_from_frozen_replay_relative": 0.0,
+            "drift_qualified": true,
+            "status": "qualified"
+          }
+        }
+      ]
+    },
+    {
+      "radii_ticks": [
+        80,
+        40
+      ],
+      "repeat": 1,
+      "planned_method_order": [
+        "immersed",
+        "local",
+        "tetra"
+      ],
+      "elapsed_wall_s": 182.0462076520198,
+      "loadavg_before": [
+        9.02,
+        9.75,
+        7.74
+      ],
+      "loadavg_after": [
+        15.59,
+        12.3,
+        9.08
+      ],
+      "campaign_processes_before": [],
+      "campaign_processes_after": [],
+      "trials": [
+        {
+          "method": "immersed",
+          "status": "completed",
+          "wall_s": 60.74192374601262,
+          "command": [
+            "/usr/bin/taskset",
+            "-c",
+            "2,3",
+            "/usr/bin/time",
+            "-f",
+            "%e %M",
+            "-o",
+            "/home/jeff/Code/SolidCraftTrivariate/build/bracket-cost/serial/x80-y40-rep1/immersed/time.txt",
+            "/usr/bin/python3",
+            "/home/jeff/Code/SolidCraftTrivariate/tests/references/immersed_bracket.py",
+            "--solver",
+            "multigrid",
+            "--h",
+            "1.25",
+            "--order",
+            "8",
+            "--radius-x",
+            "5.0",
+            "--radius-y",
+            "2.5"
+          ],
+          "diagnostic": "  \"loaded_area_mm2\": 320.00000000000006,\n  \"force_n\": [\n    0.0,\n    -999.9999999999998,\n    0.0\n  ],\n  \"reaction_n\": [\n    4.089316829603007e-09,\n    999.9999999903773,\n    3.2132816962793243e-09\n  ],\n  \"relative_residual\": 6.655450628472673e-11,\n  \"point_tip_y_mm\": -0.4963979657338034,\n  \"mean_tip_y_mm\": -0.4955399645406479,\n  \"von_mises_mpa\": 134.2038958848238,\n  \"stress_mpa\": [\n    [\n      72.52251057924991,\n      -74.40455957786457,\n      -1.1769378295589295e-10\n    ],\n    [\n      -74.40455957786457,\n      72.70264667614623,\n      1.0545506772636487e-10\n    ],\n    [\n      -1.1769378295589295e-10,\n      1.0545506772636487e-10,\n      35.16199951366335\n    ]\n  ],\n  \"strain_energy_n_mm\": 247.76998227545707,\n  \"external_work_n_mm\": 495.53996454064793,\n  \"assembly_s\": 30.742265993438195,\n  \"diagonal_scaling_and_restriction_s\": 3.199158121016808,\n  \"linear_solver\": \"multigrid\",\n  \"solver_detail\": {\n    \"levels\": [\n      {\n        \"fine_ncell\": [\n          48,\n          40,\n          32\n        ],\n        \"coarse_ncell\": [\n          24,\n          20,\n          16\n        ],\n        \"fine_dofs\": 75258,\n        \"coarse_dofs\": 13284,\n        \"energy_relative\": 1.333871082355872e-16,\n        \"spectral_upper\": 11.291505486186558,\n        \"P_nnz\": 541854\n      },\n      {\n        \"fine_ncell\": [\n          24,\n          20,\n          16\n        ],\n        \"coarse_ncell\": [\n          12,\n          10,\n          8\n        ],\n        \"fine_dofs\": 13284,\n        \"coarse_dofs\": 2520,\n        \"energy_relative\": 0.0,\n        \"spectral_upper\": 10.959861357375203,\n        \"P_nnz\": 88638\n      }\n    ],\n    \"coarse_lu_size\": 2520,\n    \"symmetry_defect\": 2.1337426287438997e-15,\n    \"coarse_lu_nnz\": 1589734,\n    \"setup_s\": 5.181665403011721,\n    \"iterations\": 75,\n    \"status\": 0,\n    \"iterations_s\": 18.753805911983363\n  },\n  \"solver_s\": 23.938931875047274,\n  \"elapsed_s\": 59.99871651100693,\n  \"reduced_nnz\": 22971761,\n  \"scaling_dynamic_range\": 150645.07987469327,\n  \"max_rss_kib\": 1612288\n}\n",
+          "interference": {
+            "loadavg_before": [
+              9.02,
+              9.75,
+              7.74
+            ],
+            "loadavg_after": [
+              12.19,
+              10.53,
+              8.15
+            ],
+            "campaign_processes_before": [],
+            "campaign_processes_after": []
+          },
+          "process_wall_s": 60.73,
+          "tree_peak_rss_kib": 1612288,
+          "result": {
+            "h_mm": 1.25,
+            "gauss_order": 8,
+            "volume_mm3": 32163.628395413976,
+            "radius_x_mm": 5.0,
+            "radius_y_mm": 2.5,
+            "volume_target_mm3": 32163.628481310225,
+            "active_cells": 17974,
+            "cut_cells": 2614,
+            "empty_cells": 43466,
+            "minimum_volume_fraction": 0.009446788277227025,
+            "quadrature_points": 9732096,
+            "quadrature_s": 1.6750951964058913,
+            "scalar_active": 25392,
+            "free_components": 75258,
+            "loaded_area_mm2": 320.00000000000006,
+            "force_n": [
+              0.0,
+              -999.9999999999998,
+              0.0
+            ],
+            "reaction_n": [
+              4.089316829603007e-09,
+              999.9999999903773,
+              3.2132816962793243e-09
+            ],
+            "relative_residual": 6.655450628472673e-11,
+            "point_tip_y_mm": -0.4963979657338034,
+            "mean_tip_y_mm": -0.4955399645406479,
+            "von_mises_mpa": 134.2038958848238,
+            "stress_mpa": [
+              [
+                72.52251057924991,
+                -74.40455957786457,
+                -1.1769378295589295e-10
+              ],
+              [
+                -74.40455957786457,
+                72.70264667614623,
+                1.0545506772636487e-10
+              ],
+              [
+                -1.1769378295589295e-10,
+                1.0545506772636487e-10,
+                35.16199951366335
+              ]
+            ],
+            "strain_energy_n_mm": 247.76998227545707,
+            "external_work_n_mm": 495.53996454064793,
+            "assembly_s": 30.742265993438195,
+            "diagonal_scaling_and_restriction_s": 3.199158121016808,
+            "linear_solver": "multigrid",
+            "solver_detail": {
+              "levels": [
+                {
+                  "fine_ncell": [
+                    48,
+                    40,
+                    32
+                  ],
+                  "coarse_ncell": [
+                    24,
+                    20,
+                    16
+                  ],
+                  "fine_dofs": 75258,
+                  "coarse_dofs": 13284,
+                  "energy_relative": 1.333871082355872e-16,
+                  "spectral_upper": 11.291505486186558,
+                  "P_nnz": 541854
+                },
+                {
+                  "fine_ncell": [
+                    24,
+                    20,
+                    16
+                  ],
+                  "coarse_ncell": [
+                    12,
+                    10,
+                    8
+                  ],
+                  "fine_dofs": 13284,
+                  "coarse_dofs": 2520,
+                  "energy_relative": 0.0,
+                  "spectral_upper": 10.959861357375203,
+                  "P_nnz": 88638
+                }
+              ],
+              "coarse_lu_size": 2520,
+              "symmetry_defect": 2.1337426287438997e-15,
+              "coarse_lu_nnz": 1589734,
+              "setup_s": 5.181665403011721,
+              "iterations": 75,
+              "status": 0,
+              "iterations_s": 18.753805911983363
+            },
+            "solver_s": 23.938931875047274,
+            "elapsed_s": 59.99871651100693,
+            "reduced_nnz": 22971761,
+            "scaling_dynamic_range": 150645.07987469327,
+            "max_rss_kib": 1612288
+          },
+          "physical_qualification": {
+            "tip_relative_to_finest_tetra": 0.00015286320387963848,
+            "fillet_relative_to_finest_tetra": 0.013764102961592029,
+            "volume_relative": 2.6706019617961374e-09,
+            "reaction_relative": 1.0938175677353058e-11,
+            "tree_rss_within_cap": true,
+            "qoi_qualified": true,
+            "drift_from_frozen_replay_relative": 0.0,
+            "drift_qualified": true,
+            "status": "qualified"
+          }
+        },
+        {
+          "method": "local",
+          "status": "completed",
+          "wall_s": 4.241315734980162,
+          "command": [
+            "/usr/bin/taskset",
+            "-c",
+            "2,3",
+            "/usr/bin/time",
+            "-f",
+            "%e %M",
+            "-o",
+            "/home/jeff/Code/SolidCraftTrivariate/build/bracket-cost/serial/x80-y40-rep1/local/time.txt",
+            "/home/jeff/Code/SolidCraftTrivariate/target/release/examples/local_fillet_cost",
+            "--tier",
+            "80",
+            "40",
+            "from_h1",
+            "3",
+            "/home/jeff/Code/SolidCraftTrivariate/build/bracket-cost/serial/x80-y40-rep1/local/physical.json"
+          ],
+          "diagnostic": "",
+          "interference": {
+            "loadavg_before": [
+              12.19,
+              10.53,
+              8.15
+            ],
+            "loadavg_after": [
+              12.19,
+              10.53,
+              8.15
+            ],
+            "campaign_processes_before": [],
+            "campaign_processes_after": []
+          },
+          "process_wall_s": 4.23,
+          "tree_peak_rss_kib": 83088,
+          "result": {
+            "constraints_s": 0.12023711,
+            "geometry_build_and_audit_s": 0.017336217,
+            "leaves": 624,
+            "local_partition_s": 0.11698209,
+            "local_refinement_counts": [
+              {
+                "incident": 4,
+                "induced": 0,
+                "requested": 16
+              },
+              {
+                "incident": 4,
+                "induced": 0,
+                "requested": 16
+              },
+              {
+                "incident": 4,
+                "induced": 0,
+                "requested": 16
+              }
+            ],
+            "local_steps": 3,
+            "max_depth": 4,
+            "path": "from_h1",
+            "q8": {
+              "assembly_s": 1.685530476,
+              "blocks": 624,
+              "constraint_s": 0.000764006,
+              "fillet_limits_mpa": {
+                "elbow_east_z10_30/010/011/011/011": 133.54926201040803,
+                "elbow_east_z10_30/011/010/010/010": 133.54926201043804,
+                "elbow_north_z10_30/110/111/111/111": 133.54271216748185,
+                "elbow_north_z10_30/111/110/110/110": 133.54271216750692
+              },
+              "force_s": 0.001325098,
+              "iterations": 579,
+              "loaded_area_mm2": 319.9999999999986,
+              "masters": 5523,
+              "q": 8,
+              "reaction_n": [
+                2.1731185739781722e-09,
+                1000.0000000343618,
+                -3.1300402270062477e-09
+              ],
+              "recovery_s": 0.004182423,
+              "relative_residual": 9.690503331102499e-12,
+              "scalar_dofs": 7167,
+              "solve_s": 2.265130665,
+              "strain_energy_n_mm": 246.90261429861133,
+              "tip_mm": [
+                -0.1617663359743707,
+                -0.4946543817434566,
+                3.771797358924243e-13
+              ],
+              "true_projected_residual": 1.4898252084210903e-11,
+              "volume_mm3": 32163.6284813115
+            },
+            "radii_ticks": [
+              80,
+              40
+            ],
+            "total_wall_s": 4.226318479,
+            "uniform_depth": 1,
+            "uniform_partition_s": 0.011818581
+          },
+          "j4d_tier": {
+            "path": "from_h1",
+            "step": 3,
+            "leaves": 624,
+            "search_wall_s": 18.155309536
+          },
+          "physical_qualification": {
+            "tip_relative_to_finest_tetra": 0.0033601457940600765,
+            "fillet_relative_to_finest_tetra": 0.008819057826654264,
+            "volume_relative": 3.9745984281580604e-14,
+            "reaction_relative": 3.457247611738136e-11,
+            "tree_rss_within_cap": true,
+            "qoi_qualified": true,
+            "drift_from_frozen_replay_relative": 0.0,
+            "drift_qualified": true,
+            "status": "qualified"
+          }
+        },
+        {
+          "method": "tetra",
+          "status": "completed",
+          "wall_s": 114.14380824496038,
+          "command": [
+            "/usr/bin/taskset",
+            "-c",
+            "2,3",
+            "/usr/bin/time",
+            "-f",
+            "%e %M",
+            "-o",
+            "/home/jeff/Code/SolidCraftTrivariate/build/bracket-cost/serial/x80-y40-rep1/tetra/time.txt",
+            "/home/jeff/Code/FreeCAD/.pixi/envs/default/bin/python",
+            "/home/jeff/Code/SolidCraftTrivariate/tests/references/calculix_bracket.py",
+            "--ccx",
+            "/home/jeff/Code/FreeCAD/.pixi/envs/default/bin/ccx",
+            "--size",
+            "1.5",
+            "--store-displacements",
+            "--radius-x",
+            "5.0",
+            "--radius-y",
+            "2.5",
+            "/home/jeff/Code/SolidCraftTrivariate/build/bracket-cost/serial/x80-y40-rep1/tetra/mesh"
+          ],
+          "diagnostic": "{\"radius_x_mm\": 5.0, \"radius_y_mm\": 2.5, \"size_mm\": 1.5, \"occ_volume_mm3\": 32163.628481310217, \"nodes\": 71579, \"tet10\": 45366, \"loaded_area_mm2\": 320.00000000000034, \"reaction_n\": [6.111599911307053e-05, 999.9999815049999, -6.977800131036105e-06], \"mean_tip_y_mm\": -0.495396935554204, \"point_tip_y_mm\": -0.4962544938177651, \"geometry_mesh_deck_s\": 10.85039981501177, \"solve_s\": 101.77908190398011, \"freecad_version\": [\"26\", \"3\", \"0\"], \"solver_peak_rss_kib\": 1495684, \"mesh_process_peak_rss_kib\": 232376}\n{\"element\": 52259, \"barycentric\": [0.49226664004722465, 0.0, 0.009099239872614831, 0.49863412008016056], \"point_mm\": [9.757359311312614, 9.757359315739217, 20.00000000750742], \"distance_mm\": 8.184823400686211e-09, \"stress_mpa\": [[78.6930417714722, -72.61877982885838, 0.3998540678096349], [-72.61877982885838, 79.40699674925662, 0.43115916220091194], [0.3998540678096349, 0.43115916220091194, 39.29935853374945]], \"von_mises_mpa\": 131.9166260293898}\n",
+          "interference": {
+            "loadavg_before": [
+              12.19,
+              10.53,
+              8.15
+            ],
+            "loadavg_after": [
+              15.9,
+              12.31,
+              9.06
+            ],
+            "campaign_processes_before": [],
+            "campaign_processes_after": []
+          },
+          "process_wall_s": 114.13,
+          "tree_peak_rss_kib": 1495684,
+          "physical_audit_s": 2.8899988760240376,
+          "result": {
+            "radius_x_mm": 5.0,
+            "radius_y_mm": 2.5,
+            "size_mm": 1.5,
+            "occ_volume_mm3": 32163.628481310217,
+            "nodes": 71579,
+            "tet10": 45366,
+            "loaded_area_mm2": 320.00000000000034,
+            "reaction_n": [
+              6.111599911307053e-05,
+              999.9999815049999,
+              -6.977800131036105e-06
+            ],
+            "mean_tip_y_mm": -0.495396935554204,
+            "point_tip_y_mm": -0.4962544938177651,
+            "geometry_mesh_deck_s": 10.85039981501177,
+            "solve_s": 101.77908190398011,
+            "freecad_version": [
+              "26",
+              "3",
+              "0"
+            ],
+            "solver_peak_rss_kib": 1495684,
+            "mesh_process_peak_rss_kib": 232376
+          },
+          "probe": {
+            "element": 52259,
+            "barycentric": [
+              0.49226664004722465,
+              0.0,
+              0.009099239872614831,
+              0.49863412008016056
+            ],
+            "point_mm": [
+              9.757359311312614,
+              9.757359315739217,
+              20.00000000750742
+            ],
+            "distance_mm": 8.184823400686211e-09,
+            "stress_mpa": [
+              [
+                78.6930417714722,
+                -72.61877982885838,
+                0.3998540678096349
+              ],
+              [
+                -72.61877982885838,
+                79.40699674925662,
+                0.43115916220091194
+              ],
+              [
+                0.3998540678096349,
+                0.43115916220091194,
+                39.29935853374945
+              ]
+            ],
+            "von_mises_mpa": 131.9166260293898
+          },
+          "physical_qualification": {
+            "tip_relative_to_finest_tetra": 0.00013620697271332638,
+            "fillet_relative_to_finest_tetra": 0.0035137268505553987,
+            "volume_relative": 2.220446049250313e-16,
+            "reaction_relative": 6.42333252259943e-08,
+            "tree_rss_within_cap": true,
+            "qoi_qualified": true,
+            "clamp_boundary_prescribed": true,
+            "drift_from_frozen_replay_relative": 0.0,
+            "drift_qualified": true,
+            "status": "qualified"
+          }
+        }
+      ]
+    },
+    {
+      "radii_ticks": [
+        80,
+        40
+      ],
+      "repeat": 2,
+      "planned_method_order": [
+        "local",
+        "tetra",
+        "immersed"
+      ],
+      "elapsed_wall_s": 114.99403352400986,
+      "loadavg_before": [
+        15.59,
+        12.3,
+        9.08
+      ],
+      "loadavg_after": [
+        8.08,
+        10.63,
+        8.85
+      ],
+      "campaign_processes_before": [],
+      "campaign_processes_after": [],
+      "trials": [
+        {
+          "method": "local",
+          "status": "completed",
+          "wall_s": 3.849877425993327,
+          "command": [
+            "/usr/bin/taskset",
+            "-c",
+            "2,3",
+            "/usr/bin/time",
+            "-f",
+            "%e %M",
+            "-o",
+            "/home/jeff/Code/SolidCraftTrivariate/build/bracket-cost/serial/x80-y40-rep2/local/time.txt",
+            "/home/jeff/Code/SolidCraftTrivariate/target/release/examples/local_fillet_cost",
+            "--tier",
+            "80",
+            "40",
+            "from_h1",
+            "3",
+            "/home/jeff/Code/SolidCraftTrivariate/build/bracket-cost/serial/x80-y40-rep2/local/physical.json"
+          ],
+          "diagnostic": "",
+          "interference": {
+            "loadavg_before": [
+              15.59,
+              12.3,
+              9.08
+            ],
+            "loadavg_after": [
+              15.06,
+              12.25,
+              9.08
+            ],
+            "campaign_processes_before": [],
+            "campaign_processes_after": []
+          },
+          "process_wall_s": 3.84,
+          "tree_peak_rss_kib": 83036,
+          "result": {
+            "constraints_s": 0.117468155,
+            "geometry_build_and_audit_s": 0.007698307,
+            "leaves": 624,
+            "local_partition_s": 0.053509603,
+            "local_refinement_counts": [
+              {
+                "incident": 4,
+                "induced": 0,
+                "requested": 16
+              },
+              {
+                "incident": 4,
+                "induced": 0,
+                "requested": 16
+              },
+              {
+                "incident": 4,
+                "induced": 0,
+                "requested": 16
+              }
+            ],
+            "local_steps": 3,
+            "max_depth": 4,
+            "path": "from_h1",
+            "q8": {
+              "assembly_s": 1.646269405,
+              "blocks": 624,
+              "constraint_s": 0.000755607,
+              "fillet_limits_mpa": {
+                "elbow_east_z10_30/010/011/011/011": 133.54926201040803,
+                "elbow_east_z10_30/011/010/010/010": 133.54926201043804,
+                "elbow_north_z10_30/110/111/111/111": 133.54271216748185,
+                "elbow_north_z10_30/111/110/110/110": 133.54271216750692
+              },
+              "force_s": 0.001320345,
+              "iterations": 579,
+              "loaded_area_mm2": 319.9999999999986,
+              "masters": 5523,
+              "q": 8,
+              "reaction_n": [
+                2.1731185739781722e-09,
+                1000.0000000343618,
+                -3.1300402270062477e-09
+              ],
+              "recovery_s": 0.004201222,
+              "relative_residual": 9.690503331102499e-12,
+              "scalar_dofs": 7167,
+              "solve_s": 1.999092527,
+              "strain_energy_n_mm": 246.90261429861133,
+              "tip_mm": [
+                -0.1617663359743707,
+                -0.4946543817434566,
+                3.771797358924243e-13
+              ],
+              "true_projected_residual": 1.4898252084210903e-11,
+              "volume_mm3": 32163.6284813115
+            },
+            "radii_ticks": [
+              80,
+              40
+            ],
+            "total_wall_s": 3.840022168,
+            "uniform_depth": 1,
+            "uniform_partition_s": 0.006713562
+          },
+          "j4d_tier": {
+            "path": "from_h1",
+            "step": 3,
+            "leaves": 624,
+            "search_wall_s": 18.155309536
+          },
+          "physical_qualification": {
+            "tip_relative_to_finest_tetra": 0.0033601457940600765,
+            "fillet_relative_to_finest_tetra": 0.008819057826654264,
+            "volume_relative": 3.9745984281580604e-14,
+            "reaction_relative": 3.457247611738136e-11,
+            "tree_rss_within_cap": true,
+            "qoi_qualified": true,
+            "drift_from_frozen_replay_relative": 0.0,
+            "drift_qualified": true,
+            "status": "qualified"
+          }
+        },
+        {
+          "method": "tetra",
+          "status": "completed",
+          "wall_s": 73.7665983249899,
+          "command": [
+            "/usr/bin/taskset",
+            "-c",
+            "2,3",
+            "/usr/bin/time",
+            "-f",
+            "%e %M",
+            "-o",
+            "/home/jeff/Code/SolidCraftTrivariate/build/bracket-cost/serial/x80-y40-rep2/tetra/time.txt",
+            "/home/jeff/Code/FreeCAD/.pixi/envs/default/bin/python",
+            "/home/jeff/Code/SolidCraftTrivariate/tests/references/calculix_bracket.py",
+            "--ccx",
+            "/home/jeff/Code/FreeCAD/.pixi/envs/default/bin/ccx",
+            "--size",
+            "1.5",
+            "--store-displacements",
+            "--radius-x",
+            "5.0",
+            "--radius-y",
+            "2.5",
+            "/home/jeff/Code/SolidCraftTrivariate/build/bracket-cost/serial/x80-y40-rep2/tetra/mesh"
+          ],
+          "diagnostic": "{\"radius_x_mm\": 5.0, \"radius_y_mm\": 2.5, \"size_mm\": 1.5, \"occ_volume_mm3\": 32163.628481310217, \"nodes\": 71579, \"tet10\": 45366, \"loaded_area_mm2\": 320.00000000000034, \"reaction_n\": [6.111599911307053e-05, 999.9999815049999, -6.977800131036105e-06], \"mean_tip_y_mm\": -0.495396935554204, \"point_tip_y_mm\": -0.4962544938177651, \"geometry_mesh_deck_s\": 10.884523965010885, \"solve_s\": 62.324057123973034, \"freecad_version\": [\"26\", \"3\", \"0\"], \"solver_peak_rss_kib\": 1495800, \"mesh_process_peak_rss_kib\": 232844}\n{\"element\": 52259, \"barycentric\": [0.49226664004722465, 0.0, 0.009099239872614831, 0.49863412008016056], \"point_mm\": [9.757359311312614, 9.757359315739217, 20.00000000750742], \"distance_mm\": 8.184823400686211e-09, \"stress_mpa\": [[78.6930417714722, -72.61877982885838, 0.3998540678096349], [-72.61877982885838, 79.40699674925662, 0.43115916220091194], [0.3998540678096349, 0.43115916220091194, 39.29935853374945]], \"von_mises_mpa\": 131.9166260293898}\n",
+          "interference": {
+            "loadavg_before": [
+              15.06,
+              12.25,
+              9.08
+            ],
+            "loadavg_after": [
+              9.49,
+              11.21,
+              8.95
+            ],
+            "campaign_processes_before": [],
+            "campaign_processes_after": []
+          },
+          "process_wall_s": 73.75,
+          "tree_peak_rss_kib": 1495800,
+          "physical_audit_s": 1.8898284810129553,
+          "result": {
+            "radius_x_mm": 5.0,
+            "radius_y_mm": 2.5,
+            "size_mm": 1.5,
+            "occ_volume_mm3": 32163.628481310217,
+            "nodes": 71579,
+            "tet10": 45366,
+            "loaded_area_mm2": 320.00000000000034,
+            "reaction_n": [
+              6.111599911307053e-05,
+              999.9999815049999,
+              -6.977800131036105e-06
+            ],
+            "mean_tip_y_mm": -0.495396935554204,
+            "point_tip_y_mm": -0.4962544938177651,
+            "geometry_mesh_deck_s": 10.884523965010885,
+            "solve_s": 62.324057123973034,
+            "freecad_version": [
+              "26",
+              "3",
+              "0"
+            ],
+            "solver_peak_rss_kib": 1495800,
+            "mesh_process_peak_rss_kib": 232844
+          },
+          "probe": {
+            "element": 52259,
+            "barycentric": [
+              0.49226664004722465,
+              0.0,
+              0.009099239872614831,
+              0.49863412008016056
+            ],
+            "point_mm": [
+              9.757359311312614,
+              9.757359315739217,
+              20.00000000750742
+            ],
+            "distance_mm": 8.184823400686211e-09,
+            "stress_mpa": [
+              [
+                78.6930417714722,
+                -72.61877982885838,
+                0.3998540678096349
+              ],
+              [
+                -72.61877982885838,
+                79.40699674925662,
+                0.43115916220091194
+              ],
+              [
+                0.3998540678096349,
+                0.43115916220091194,
+                39.29935853374945
+              ]
+            ],
+            "von_mises_mpa": 131.9166260293898
+          },
+          "physical_qualification": {
+            "tip_relative_to_finest_tetra": 0.00013620697271332638,
+            "fillet_relative_to_finest_tetra": 0.0035137268505553987,
+            "volume_relative": 2.220446049250313e-16,
+            "reaction_relative": 6.42333252259943e-08,
+            "tree_rss_within_cap": true,
+            "qoi_qualified": true,
+            "clamp_boundary_prescribed": true,
+            "drift_from_frozen_replay_relative": 0.0,
+            "drift_qualified": true,
+            "status": "qualified"
+          }
+        },
+        {
+          "method": "immersed",
+          "status": "completed",
+          "wall_s": 35.45415083703119,
+          "command": [
+            "/usr/bin/taskset",
+            "-c",
+            "2,3",
+            "/usr/bin/time",
+            "-f",
+            "%e %M",
+            "-o",
+            "/home/jeff/Code/SolidCraftTrivariate/build/bracket-cost/serial/x80-y40-rep2/immersed/time.txt",
+            "/usr/bin/python3",
+            "/home/jeff/Code/SolidCraftTrivariate/tests/references/immersed_bracket.py",
+            "--solver",
+            "multigrid",
+            "--h",
+            "1.25",
+            "--order",
+            "8",
+            "--radius-x",
+            "5.0",
+            "--radius-y",
+            "2.5"
+          ],
+          "diagnostic": "  \"loaded_area_mm2\": 320.00000000000006,\n  \"force_n\": [\n    0.0,\n    -999.9999999999998,\n    0.0\n  ],\n  \"reaction_n\": [\n    4.089316829603007e-09,\n    999.9999999903773,\n    3.2132816962793243e-09\n  ],\n  \"relative_residual\": 6.655450628472673e-11,\n  \"point_tip_y_mm\": -0.4963979657338034,\n  \"mean_tip_y_mm\": -0.4955399645406479,\n  \"von_mises_mpa\": 134.2038958848238,\n  \"stress_mpa\": [\n    [\n      72.52251057924991,\n      -74.40455957786457,\n      -1.1769378295589295e-10\n    ],\n    [\n      -74.40455957786457,\n      72.70264667614623,\n      1.0545506772636487e-10\n    ],\n    [\n      -1.1769378295589295e-10,\n      1.0545506772636487e-10,\n      35.16199951366335\n    ]\n  ],\n  \"strain_energy_n_mm\": 247.76998227545707,\n  \"external_work_n_mm\": 495.53996454064793,\n  \"assembly_s\": 15.46360151207773,\n  \"diagonal_scaling_and_restriction_s\": 1.8658575880108401,\n  \"linear_solver\": \"multigrid\",\n  \"solver_detail\": {\n    \"levels\": [\n      {\n        \"fine_ncell\": [\n          48,\n          40,\n          32\n        ],\n        \"coarse_ncell\": [\n          24,\n          20,\n          16\n        ],\n        \"fine_dofs\": 75258,\n        \"coarse_dofs\": 13284,\n        \"energy_relative\": 1.333871082355872e-16,\n        \"spectral_upper\": 11.291505486186558,\n        \"P_nnz\": 541854\n      },\n      {\n        \"fine_ncell\": [\n          24,\n          20,\n          16\n        ],\n        \"coarse_ncell\": [\n          12,\n          10,\n          8\n        ],\n        \"fine_dofs\": 13284,\n        \"coarse_dofs\": 2520,\n        \"energy_relative\": 0.0,\n        \"spectral_upper\": 10.959861357375203,\n        \"P_nnz\": 88638\n      }\n    ],\n    \"coarse_lu_size\": 2520,\n    \"symmetry_defect\": 2.1337426287438997e-15,\n    \"coarse_lu_nnz\": 1589734,\n    \"setup_s\": 2.683517921017483,\n    \"iterations\": 75,\n    \"status\": 0,\n    \"iterations_s\": 13.780713623971678\n  },\n  \"solver_s\": 16.46650395297911,\n  \"elapsed_s\": 34.719565253995825,\n  \"reduced_nnz\": 22971761,\n  \"scaling_dynamic_range\": 150645.07987469327,\n  \"max_rss_kib\": 1618000\n}\n",
+          "interference": {
+            "loadavg_before": [
+              9.29,
+              11.14,
+              8.94
+            ],
+            "loadavg_after": [
+              8.08,
+              10.63,
+              8.85
+            ],
+            "campaign_processes_before": [],
+            "campaign_processes_after": []
+          },
+          "process_wall_s": 35.44,
+          "tree_peak_rss_kib": 1618000,
+          "result": {
+            "h_mm": 1.25,
+            "gauss_order": 8,
+            "volume_mm3": 32163.628395413976,
+            "radius_x_mm": 5.0,
+            "radius_y_mm": 2.5,
+            "volume_target_mm3": 32163.628481310225,
+            "active_cells": 17974,
+            "cut_cells": 2614,
+            "empty_cells": 43466,
+            "minimum_volume_fraction": 0.009446788277227025,
+            "quadrature_points": 9732096,
+            "quadrature_s": 0.7096007679356262,
+            "scalar_active": 25392,
+            "free_components": 75258,
+            "loaded_area_mm2": 320.00000000000006,
+            "force_n": [
+              0.0,
+              -999.9999999999998,
+              0.0
+            ],
+            "reaction_n": [
+              4.089316829603007e-09,
+              999.9999999903773,
+              3.2132816962793243e-09
+            ],
+            "relative_residual": 6.655450628472673e-11,
+            "point_tip_y_mm": -0.4963979657338034,
+            "mean_tip_y_mm": -0.4955399645406479,
+            "von_mises_mpa": 134.2038958848238,
+            "stress_mpa": [
+              [
+                72.52251057924991,
+                -74.40455957786457,
+                -1.1769378295589295e-10
+              ],
+              [
+                -74.40455957786457,
+                72.70264667614623,
+                1.0545506772636487e-10
+              ],
+              [
+                -1.1769378295589295e-10,
+                1.0545506772636487e-10,
+                35.16199951366335
+              ]
+            ],
+            "strain_energy_n_mm": 247.76998227545707,
+            "external_work_n_mm": 495.53996454064793,
+            "assembly_s": 15.46360151207773,
+            "diagonal_scaling_and_restriction_s": 1.8658575880108401,
+            "linear_solver": "multigrid",
+            "solver_detail": {
+              "levels": [
+                {
+                  "fine_ncell": [
+                    48,
+                    40,
+                    32
+                  ],
+                  "coarse_ncell": [
+                    24,
+                    20,
+                    16
+                  ],
+                  "fine_dofs": 75258,
+                  "coarse_dofs": 13284,
+                  "energy_relative": 1.333871082355872e-16,
+                  "spectral_upper": 11.291505486186558,
+                  "P_nnz": 541854
+                },
+                {
+                  "fine_ncell": [
+                    24,
+                    20,
+                    16
+                  ],
+                  "coarse_ncell": [
+                    12,
+                    10,
+                    8
+                  ],
+                  "fine_dofs": 13284,
+                  "coarse_dofs": 2520,
+                  "energy_relative": 0.0,
+                  "spectral_upper": 10.959861357375203,
+                  "P_nnz": 88638
+                }
+              ],
+              "coarse_lu_size": 2520,
+              "symmetry_defect": 2.1337426287438997e-15,
+              "coarse_lu_nnz": 1589734,
+              "setup_s": 2.683517921017483,
+              "iterations": 75,
+              "status": 0,
+              "iterations_s": 13.780713623971678
+            },
+            "solver_s": 16.46650395297911,
+            "elapsed_s": 34.719565253995825,
+            "reduced_nnz": 22971761,
+            "scaling_dynamic_range": 150645.07987469327,
+            "max_rss_kib": 1618000
+          },
+          "physical_qualification": {
+            "tip_relative_to_finest_tetra": 0.00015286320387963848,
+            "fillet_relative_to_finest_tetra": 0.013764102961592029,
+            "volume_relative": 2.6706019617961374e-09,
+            "reaction_relative": 1.0938175677353058e-11,
+            "tree_rss_within_cap": true,
+            "qoi_qualified": true,
+            "drift_from_frozen_replay_relative": 0.0,
+            "drift_qualified": true,
+            "status": "qualified"
+          }
+        }
+      ]
+    },
+    {
+      "radii_ticks": [
+        50,
+        74
+      ],
+      "repeat": 1,
+      "planned_method_order": [
+        "local",
+        "tetra",
+        "immersed"
+      ],
+      "elapsed_wall_s": 129.89249472902156,
+      "loadavg_before": [
+        8.08,
+        10.63,
+        8.85
+      ],
+      "loadavg_after": [
+        7.88,
+        9.84,
+        8.79
+      ],
+      "campaign_processes_before": [],
+      "campaign_processes_after": [],
+      "trials": [
+        {
+          "method": "local",
+          "status": "completed",
+          "wall_s": 3.802756695949938,
+          "command": [
+            "/usr/bin/taskset",
+            "-c",
+            "2,3",
+            "/usr/bin/time",
+            "-f",
+            "%e %M",
+            "-o",
+            "/home/jeff/Code/SolidCraftTrivariate/build/bracket-cost/serial/x50-y74-rep1/local/time.txt",
+            "/home/jeff/Code/SolidCraftTrivariate/target/release/examples/local_fillet_cost",
+            "--tier",
+            "50",
+            "74",
+            "from_h1",
+            "3",
+            "/home/jeff/Code/SolidCraftTrivariate/build/bracket-cost/serial/x50-y74-rep1/local/physical.json"
+          ],
+          "diagnostic": "",
+          "interference": {
+            "loadavg_before": [
+              8.08,
+              10.63,
+              8.85
+            ],
+            "loadavg_after": [
+              7.91,
+              10.55,
+              8.83
+            ],
+            "campaign_processes_before": [],
+            "campaign_processes_after": []
+          },
+          "process_wall_s": 3.79,
+          "tree_peak_rss_kib": 83248,
+          "result": {
+            "constraints_s": 0.113934319,
+            "geometry_build_and_audit_s": 0.009500239,
+            "leaves": 624,
+            "local_partition_s": 0.049870559,
+            "local_refinement_counts": [
+              {
+                "incident": 4,
+                "induced": 0,
+                "requested": 16
+              },
+              {
+                "incident": 4,
+                "induced": 0,
+                "requested": 16
+              },
+              {
+                "incident": 4,
+                "induced": 0,
+                "requested": 16
+              }
+            ],
+            "local_steps": 3,
+            "max_depth": 4,
+            "path": "from_h1",
+            "q8": {
+              "assembly_s": 1.5884226529999999,
+              "blocks": 624,
+              "constraint_s": 0.00078324,
+              "fillet_limits_mpa": {
+                "elbow_east_z10_30/010/011/011/011": 132.91447826494982,
+                "elbow_east_z10_30/011/010/010/010": 132.9144782649874,
+                "elbow_north_z10_30/110/111/111/111": 132.90870714206915,
+                "elbow_north_z10_30/111/110/110/110": 132.90870714208063
+              },
+              "force_s": 0.001278284,
+              "iterations": 614,
+              "loaded_area_mm2": 319.9999999999986,
+              "masters": 5523,
+              "q": 8,
+              "reaction_n": [
+                5.93879789789753e-09,
+                1000.0000000365702,
+                -2.741018079177593e-09
+              ],
+              "recovery_s": 0.003961278,
+              "relative_residual": 9.492149598845242e-12,
+              "scalar_dofs": 7167,
+              "solve_s": 2.010552539,
+              "strain_energy_n_mm": 257.0930438627705,
+              "tip_mm": [
+                -0.17364619698949832,
+                -0.5149313573749168,
+                4.318607721090319e-13
+              ],
+              "true_projected_residual": 1.7334428132889932e-11,
+              "volume_mm3": 32165.984675802418
+            },
+            "radii_ticks": [
+              50,
+              74
+            ],
+            "total_wall_s": 3.787908676,
+            "uniform_depth": 1,
+            "uniform_partition_s": 0.006714341
+          },
+          "j4d_tier": {
+            "path": "from_h1",
+            "step": 3,
+            "leaves": 624,
+            "search_wall_s": 17.92104044
+          },
+          "physical_qualification": {
+            "tip_relative_to_finest_tetra": 0.0033027653801021017,
+            "fillet_relative_to_finest_tetra": 0.009807536840427122,
+            "volume_relative": 6.217248937900877e-14,
+            "reaction_relative": 3.71505453227914e-11,
+            "tree_rss_within_cap": true,
+            "qoi_qualified": true,
+            "drift_from_frozen_replay_relative": 0.0,
+            "drift_qualified": true,
+            "status": "qualified"
+          }
+        },
+        {
+          "method": "tetra",
+          "status": "completed",
+          "wall_s": 89.32763440697454,
+          "command": [
+            "/usr/bin/taskset",
+            "-c",
+            "2,3",
+            "/usr/bin/time",
+            "-f",
+            "%e %M",
+            "-o",
+            "/home/jeff/Code/SolidCraftTrivariate/build/bracket-cost/serial/x50-y74-rep1/tetra/time.txt",
+            "/home/jeff/Code/FreeCAD/.pixi/envs/default/bin/python",
+            "/home/jeff/Code/SolidCraftTrivariate/tests/references/calculix_bracket.py",
+            "--ccx",
+            "/home/jeff/Code/FreeCAD/.pixi/envs/default/bin/ccx",
+            "--size",
+            "1.5",
+            "--store-displacements",
+            "--radius-x",
+            "3.125",
+            "--radius-y",
+            "4.625",
+            "/home/jeff/Code/SolidCraftTrivariate/build/bracket-cost/serial/x50-y74-rep1/tetra/mesh"
+          ],
+          "diagnostic": "{\"radius_x_mm\": 3.125, \"radius_y_mm\": 4.625, \"size_mm\": 1.5, \"occ_volume_mm3\": 32165.98467580041, \"nodes\": 70939, \"tet10\": 44996, \"loaded_area_mm2\": 320.00000000000034, \"reaction_n\": [6.077999948672641e-05, 1000.0000270439958, 1.8516899974230228e-05], \"mean_tip_y_mm\": -0.515804993478594, \"point_tip_y_mm\": -0.5165553074302082, \"geometry_mesh_deck_s\": 9.455913660989609, \"solve_s\": 79.4231533940183, \"freecad_version\": [\"26\", \"3\", \"0\"], \"solver_peak_rss_kib\": 1493376, \"mesh_process_peak_rss_kib\": 231984}\n{\"element\": 13257, \"barycentric\": [0.0, 0.4986341285726349, 0.009099239406509663, 0.4922666320208554], \"point_mm\": [9.757359319387954, 9.757359307663862, 20.0000000028075], \"distance_mm\": 8.800100340650868e-09, \"stress_mpa\": [[78.3049712654587, -71.80792502891605, 0.04693691225547238], [-71.80792502891605, 79.64802377386907, 0.5040778087495191], [0.04693691225547238, 0.5040778087495191, 38.466778803976396]], \"von_mises_mpa\": 130.81396460761627}\n",
+          "interference": {
+            "loadavg_before": [
+              7.91,
+              10.55,
+              8.83
+            ],
+            "loadavg_after": [
+              9.75,
+              10.4,
+              8.92
+            ],
+            "campaign_processes_before": [],
+            "campaign_processes_after": []
+          },
+          "process_wall_s": 89.32,
+          "tree_peak_rss_kib": 1493376,
+          "physical_audit_s": 1.830439168959856,
+          "result": {
+            "radius_x_mm": 3.125,
+            "radius_y_mm": 4.625,
+            "size_mm": 1.5,
+            "occ_volume_mm3": 32165.98467580041,
+            "nodes": 70939,
+            "tet10": 44996,
+            "loaded_area_mm2": 320.00000000000034,
+            "reaction_n": [
+              6.077999948672641e-05,
+              1000.0000270439958,
+              1.8516899974230228e-05
+            ],
+            "mean_tip_y_mm": -0.515804993478594,
+            "point_tip_y_mm": -0.5165553074302082,
+            "geometry_mesh_deck_s": 9.455913660989609,
+            "solve_s": 79.4231533940183,
+            "freecad_version": [
+              "26",
+              "3",
+              "0"
+            ],
+            "solver_peak_rss_kib": 1493376,
+            "mesh_process_peak_rss_kib": 231984
+          },
+          "probe": {
+            "element": 13257,
+            "barycentric": [
+              0.0,
+              0.4986341285726349,
+              0.009099239406509663,
+              0.4922666320208554
+            ],
+            "point_mm": [
+              9.757359319387954,
+              9.757359307663862,
+              20.0000000028075
+            ],
+            "distance_mm": 8.800100340650868e-09,
+            "stress_mpa": [
+              [
+                78.3049712654587,
+                -71.80792502891605,
+                0.04693691225547238
+              ],
+              [
+                -71.80792502891605,
+                79.64802377386907,
+                0.5040778087495191
+              ],
+              [
+                0.04693691225547238,
+                0.5040778087495191,
+                38.466778803976396
+              ]
+            ],
+            "von_mises_mpa": 130.81396460761627
+          },
+          "physical_qualification": {
+            "tip_relative_to_finest_tetra": 0.00015945995484867304,
+            "fillet_relative_to_finest_tetra": 0.006150954289642407,
+            "volume_relative": 2.220446049250313e-16,
+            "reaction_relative": 6.905404863319698e-08,
+            "tree_rss_within_cap": true,
+            "qoi_qualified": true,
+            "clamp_boundary_prescribed": true,
+            "drift_from_frozen_replay_relative": 0.0,
+            "drift_qualified": true,
+            "status": "qualified"
+          }
+        },
+        {
+          "method": "immersed",
+          "status": "completed",
+          "wall_s": 34.87079492700286,
+          "command": [
+            "/usr/bin/taskset",
+            "-c",
+            "2,3",
+            "/usr/bin/time",
+            "-f",
+            "%e %M",
+            "-o",
+            "/home/jeff/Code/SolidCraftTrivariate/build/bracket-cost/serial/x50-y74-rep1/immersed/time.txt",
+            "/usr/bin/python3",
+            "/home/jeff/Code/SolidCraftTrivariate/tests/references/immersed_bracket.py",
+            "--solver",
+            "multigrid",
+            "--h",
+            "1.25",
+            "--order",
+            "8",
+            "--radius-x",
+            "3.125",
+            "--radius-y",
+            "4.625"
+          ],
+          "diagnostic": ": 320.00000000000006,\n  \"force_n\": [\n    0.0,\n    -999.9999999999998,\n    0.0\n  ],\n  \"reaction_n\": [\n    1.5842988587699836e-09,\n    999.9999999884493,\n    2.6912232997666763e-09\n  ],\n  \"relative_residual\": 7.078024877280994e-11,\n  \"point_tip_y_mm\": -0.516763007882659,\n  \"mean_tip_y_mm\": -0.5160122942064622,\n  \"von_mises_mpa\": 133.55363493164378,\n  \"stress_mpa\": [\n    [\n      72.17232705363455,\n      -74.04371960497986,\n      -9.791988079693146e-11\n    ],\n    [\n      -74.04371960497986,\n      72.33519471617194,\n      1.0573127965553867e-10\n    ],\n    [\n      -9.791988079693146e-11,\n      1.0573127965553867e-10,\n      34.982642438772245\n    ]\n  ],\n  \"strain_energy_n_mm\": 258.00614710984166,\n  \"external_work_n_mm\": 516.0122942064622,\n  \"assembly_s\": 15.157657877425663,\n  \"diagonal_scaling_and_restriction_s\": 1.5861275770002976,\n  \"linear_solver\": \"multigrid\",\n  \"solver_detail\": {\n    \"levels\": [\n      {\n        \"fine_ncell\": [\n          48,\n          40,\n          32\n        ],\n        \"coarse_ncell\": [\n          24,\n          20,\n          16\n        ],\n        \"fine_dofs\": 75366,\n        \"coarse_dofs\": 13284,\n        \"energy_relative\": 2.6687930207454063e-16,\n        \"spectral_upper\": 11.260712959587202,\n        \"P_nnz\": 542670\n      },\n      {\n        \"fine_ncell\": [\n          24,\n          20,\n          16\n        ],\n        \"coarse_ncell\": [\n          12,\n          10,\n          8\n        ],\n        \"fine_dofs\": 13284,\n        \"coarse_dofs\": 2520,\n        \"energy_relative\": 1.72581330404051e-16,\n        \"spectral_upper\": 10.769152651006005,\n        \"P_nnz\": 88638\n      }\n    ],\n    \"coarse_lu_size\": 2520,\n    \"symmetry_defect\": 3.8085863262686356e-15,\n    \"coarse_lu_nnz\": 1589735,\n    \"setup_s\": 2.7140136209782213,\n    \"iterations\": 76,\n    \"status\": 0,\n    \"iterations_s\": 13.788209087040741\n  },\n  \"solver_s\": 16.50448524503736,\n  \"elapsed_s\": 34.176081600016914,\n  \"reduced_nnz\": 22977685,\n  \"scaling_dynamic_range\": 1311470.4229413583,\n  \"max_rss_kib\": 1613244\n}\n",
+          "interference": {
+            "loadavg_before": [
+              9.37,
+              10.31,
+              8.9
+            ],
+            "loadavg_after": [
+              7.88,
+              9.84,
+              8.79
+            ],
+            "campaign_processes_before": [],
+            "campaign_processes_after": []
+          },
+          "process_wall_s": 34.86,
+          "tree_peak_rss_kib": 1613244,
+          "result": {
+            "h_mm": 1.25,
+            "gauss_order": 8,
+            "volume_mm3": 32165.9845899086,
+            "radius_x_mm": 3.125,
+            "radius_y_mm": 4.625,
+            "volume_target_mm3": 32165.984675800417,
+            "active_cells": 17960,
+            "cut_cells": 2660,
+            "empty_cells": 43480,
+            "minimum_volume_fraction": 0.001067091235103018,
+            "quadrature_points": 9788416,
+            "quadrature_s": 0.7159518502885476,
+            "scalar_active": 25428,
+            "free_components": 75366,
+            "loaded_area_mm2": 320.00000000000006,
+            "force_n": [
+              0.0,
+              -999.9999999999998,
+              0.0
+            ],
+            "reaction_n": [
+              1.5842988587699836e-09,
+              999.9999999884493,
+              2.6912232997666763e-09
+            ],
+            "relative_residual": 7.078024877280994e-11,
+            "point_tip_y_mm": -0.516763007882659,
+            "mean_tip_y_mm": -0.5160122942064622,
+            "von_mises_mpa": 133.55363493164378,
+            "stress_mpa": [
+              [
+                72.17232705363455,
+                -74.04371960497986,
+                -9.791988079693146e-11
+              ],
+              [
+                -74.04371960497986,
+                72.33519471617194,
+                1.0573127965553867e-10
+              ],
+              [
+                -9.791988079693146e-11,
+                1.0573127965553867e-10,
+                34.982642438772245
+              ]
+            ],
+            "strain_energy_n_mm": 258.00614710984166,
+            "external_work_n_mm": 516.0122942064622,
+            "assembly_s": 15.157657877425663,
+            "diagonal_scaling_and_restriction_s": 1.5861275770002976,
+            "linear_solver": "multigrid",
+            "solver_detail": {
+              "levels": [
+                {
+                  "fine_ncell": [
+                    48,
+                    40,
+                    32
+                  ],
+                  "coarse_ncell": [
+                    24,
+                    20,
+                    16
+                  ],
+                  "fine_dofs": 75366,
+                  "coarse_dofs": 13284,
+                  "energy_relative": 2.6687930207454063e-16,
+                  "spectral_upper": 11.260712959587202,
+                  "P_nnz": 542670
+                },
+                {
+                  "fine_ncell": [
+                    24,
+                    20,
+                    16
+                  ],
+                  "coarse_ncell": [
+                    12,
+                    10,
+                    8
+                  ],
+                  "fine_dofs": 13284,
+                  "coarse_dofs": 2520,
+                  "energy_relative": 1.72581330404051e-16,
+                  "spectral_upper": 10.769152651006005,
+                  "P_nnz": 88638
+                }
+              ],
+              "coarse_lu_size": 2520,
+              "symmetry_defect": 3.8085863262686356e-15,
+              "coarse_lu_nnz": 1589735,
+              "setup_s": 2.7140136209782213,
+              "iterations": 76,
+              "status": 0,
+              "iterations_s": 13.788209087040741
+            },
+            "solver_s": 16.50448524503736,
+            "elapsed_s": 34.176081600016914,
+            "reduced_nnz": 22977685,
+            "scaling_dynamic_range": 1311470.4229413583,
+            "max_rss_kib": 1613244
+          },
+          "physical_qualification": {
+            "tip_relative_to_finest_tetra": 0.00024256346754003566,
+            "fillet_relative_to_finest_tetra": 0.014663480509142124,
+            "volume_relative": 2.6702685618218425e-09,
+            "reaction_relative": 1.1965419885367764e-11,
+            "tree_rss_within_cap": true,
+            "qoi_qualified": true,
+            "drift_from_frozen_replay_relative": 0.0,
+            "drift_qualified": true,
+            "status": "qualified"
+          }
+        }
+      ]
+    },
+    {
+      "radii_ticks": [
+        50,
+        74
+      ],
+      "repeat": 2,
+      "planned_method_order": [
+        "tetra",
+        "immersed",
+        "local"
+      ],
+      "elapsed_wall_s": 115.50262198096607,
+      "loadavg_before": [
+        7.88,
+        9.84,
+        8.79
+      ],
+      "loadavg_after": [
+        7.24,
+        9.09,
+        8.65
+      ],
+      "campaign_processes_before": [],
+      "campaign_processes_after": [],
+      "trials": [
+        {
+          "method": "tetra",
+          "status": "completed",
+          "wall_s": 73.81908927799668,
+          "command": [
+            "/usr/bin/taskset",
+            "-c",
+            "2,3",
+            "/usr/bin/time",
+            "-f",
+            "%e %M",
+            "-o",
+            "/home/jeff/Code/SolidCraftTrivariate/build/bracket-cost/serial/x50-y74-rep2/tetra/time.txt",
+            "/home/jeff/Code/FreeCAD/.pixi/envs/default/bin/python",
+            "/home/jeff/Code/SolidCraftTrivariate/tests/references/calculix_bracket.py",
+            "--ccx",
+            "/home/jeff/Code/FreeCAD/.pixi/envs/default/bin/ccx",
+            "--size",
+            "1.5",
+            "--store-displacements",
+            "--radius-x",
+            "3.125",
+            "--radius-y",
+            "4.625",
+            "/home/jeff/Code/SolidCraftTrivariate/build/bracket-cost/serial/x50-y74-rep2/tetra/mesh"
+          ],
+          "diagnostic": "{\"radius_x_mm\": 3.125, \"radius_y_mm\": 4.625, \"size_mm\": 1.5, \"occ_volume_mm3\": 32165.98467580041, \"nodes\": 70939, \"tet10\": 44996, \"loaded_area_mm2\": 320.00000000000034, \"reaction_n\": [6.077999948672641e-05, 1000.0000270439958, 1.8516899974230228e-05], \"mean_tip_y_mm\": -0.515804993478594, \"point_tip_y_mm\": -0.5165553074302082, \"geometry_mesh_deck_s\": 9.50356979604112, \"solve_s\": 63.86883988598129, \"freecad_version\": [\"26\", \"3\", \"0\"], \"solver_peak_rss_kib\": 1493288, \"mesh_process_peak_rss_kib\": 232832}\n{\"element\": 13257, \"barycentric\": [0.0, 0.4986341285726349, 0.009099239406509663, 0.4922666320208554], \"point_mm\": [9.757359319387954, 9.757359307663862, 20.0000000028075], \"distance_mm\": 8.800100340650868e-09, \"stress_mpa\": [[78.3049712654587, -71.80792502891605, 0.04693691225547238], [-71.80792502891605, 79.64802377386907, 0.5040778087495191], [0.04693691225547238, 0.5040778087495191, 38.466778803976396]], \"von_mises_mpa\": 130.81396460761627}\n",
+          "interference": {
+            "loadavg_before": [
+              7.88,
+              9.84,
+              8.79
+            ],
+            "loadavg_after": [
+              8.1,
+              9.48,
+              8.75
+            ],
+            "campaign_processes_before": [],
+            "campaign_processes_after": []
+          },
+          "process_wall_s": 73.81,
+          "tree_peak_rss_kib": 1493288,
+          "physical_audit_s": 2.261871481023263,
+          "result": {
+            "radius_x_mm": 3.125,
+            "radius_y_mm": 4.625,
+            "size_mm": 1.5,
+            "occ_volume_mm3": 32165.98467580041,
+            "nodes": 70939,
+            "tet10": 44996,
+            "loaded_area_mm2": 320.00000000000034,
+            "reaction_n": [
+              6.077999948672641e-05,
+              1000.0000270439958,
+              1.8516899974230228e-05
+            ],
+            "mean_tip_y_mm": -0.515804993478594,
+            "point_tip_y_mm": -0.5165553074302082,
+            "geometry_mesh_deck_s": 9.50356979604112,
+            "solve_s": 63.86883988598129,
+            "freecad_version": [
+              "26",
+              "3",
+              "0"
+            ],
+            "solver_peak_rss_kib": 1493288,
+            "mesh_process_peak_rss_kib": 232832
+          },
+          "probe": {
+            "element": 13257,
+            "barycentric": [
+              0.0,
+              0.4986341285726349,
+              0.009099239406509663,
+              0.4922666320208554
+            ],
+            "point_mm": [
+              9.757359319387954,
+              9.757359307663862,
+              20.0000000028075
+            ],
+            "distance_mm": 8.800100340650868e-09,
+            "stress_mpa": [
+              [
+                78.3049712654587,
+                -71.80792502891605,
+                0.04693691225547238
+              ],
+              [
+                -71.80792502891605,
+                79.64802377386907,
+                0.5040778087495191
+              ],
+              [
+                0.04693691225547238,
+                0.5040778087495191,
+                38.466778803976396
+              ]
+            ],
+            "von_mises_mpa": 130.81396460761627
+          },
+          "physical_qualification": {
+            "tip_relative_to_finest_tetra": 0.00015945995484867304,
+            "fillet_relative_to_finest_tetra": 0.006150954289642407,
+            "volume_relative": 2.220446049250313e-16,
+            "reaction_relative": 6.905404863319698e-08,
+            "tree_rss_within_cap": true,
+            "qoi_qualified": true,
+            "clamp_boundary_prescribed": true,
+            "drift_from_frozen_replay_relative": 0.0,
+            "drift_qualified": true,
+            "status": "qualified"
+          }
+        },
+        {
+          "method": "immersed",
+          "status": "completed",
+          "wall_s": 35.52737484202953,
+          "command": [
+            "/usr/bin/taskset",
+            "-c",
+            "2,3",
+            "/usr/bin/time",
+            "-f",
+            "%e %M",
+            "-o",
+            "/home/jeff/Code/SolidCraftTrivariate/build/bracket-cost/serial/x50-y74-rep2/immersed/time.txt",
+            "/usr/bin/python3",
+            "/home/jeff/Code/SolidCraftTrivariate/tests/references/immersed_bracket.py",
+            "--solver",
+            "multigrid",
+            "--h",
+            "1.25",
+            "--order",
+            "8",
+            "--radius-x",
+            "3.125",
+            "--radius-y",
+            "4.625"
+          ],
+          "diagnostic": "2\": 320.00000000000006,\n  \"force_n\": [\n    0.0,\n    -999.9999999999998,\n    0.0\n  ],\n  \"reaction_n\": [\n    1.5842988587699836e-09,\n    999.9999999884493,\n    2.6912232997666763e-09\n  ],\n  \"relative_residual\": 7.078024877280994e-11,\n  \"point_tip_y_mm\": -0.516763007882659,\n  \"mean_tip_y_mm\": -0.5160122942064622,\n  \"von_mises_mpa\": 133.55363493164378,\n  \"stress_mpa\": [\n    [\n      72.17232705363455,\n      -74.04371960497986,\n      -9.791988079693146e-11\n    ],\n    [\n      -74.04371960497986,\n      72.33519471617194,\n      1.0573127965553867e-10\n    ],\n    [\n      -9.791988079693146e-11,\n      1.0573127965553867e-10,\n      34.982642438772245\n    ]\n  ],\n  \"strain_energy_n_mm\": 258.00614710984166,\n  \"external_work_n_mm\": 516.0122942064622,\n  \"assembly_s\": 15.558698698470835,\n  \"diagonal_scaling_and_restriction_s\": 1.4535395429702476,\n  \"linear_solver\": \"multigrid\",\n  \"solver_detail\": {\n    \"levels\": [\n      {\n        \"fine_ncell\": [\n          48,\n          40,\n          32\n        ],\n        \"coarse_ncell\": [\n          24,\n          20,\n          16\n        ],\n        \"fine_dofs\": 75366,\n        \"coarse_dofs\": 13284,\n        \"energy_relative\": 2.6687930207454063e-16,\n        \"spectral_upper\": 11.260712959587202,\n        \"P_nnz\": 542670\n      },\n      {\n        \"fine_ncell\": [\n          24,\n          20,\n          16\n        ],\n        \"coarse_ncell\": [\n          12,\n          10,\n          8\n        ],\n        \"fine_dofs\": 13284,\n        \"coarse_dofs\": 2520,\n        \"energy_relative\": 1.72581330404051e-16,\n        \"spectral_upper\": 10.769152651006005,\n        \"P_nnz\": 88638\n      }\n    ],\n    \"coarse_lu_size\": 2520,\n    \"symmetry_defect\": 3.8085863262686356e-15,\n    \"coarse_lu_nnz\": 1589735,\n    \"setup_s\": 2.792780372023117,\n    \"iterations\": 76,\n    \"status\": 0,\n    \"iterations_s\": 13.830969309026841\n  },\n  \"solver_s\": 16.62602580501698,\n  \"elapsed_s\": 34.58506030397257,\n  \"reduced_nnz\": 22977685,\n  \"scaling_dynamic_range\": 1311470.4229413583,\n  \"max_rss_kib\": 1611712\n}\n",
+          "interference": {
+            "loadavg_before": [
+              8.1,
+              9.48,
+              8.75
+            ],
+            "loadavg_after": [
+              7.26,
+              9.12,
+              8.66
+            ],
+            "campaign_processes_before": [],
+            "campaign_processes_after": []
+          },
+          "process_wall_s": 35.51,
+          "tree_peak_rss_kib": 1611712,
+          "result": {
+            "h_mm": 1.25,
+            "gauss_order": 8,
+            "volume_mm3": 32165.9845899086,
+            "radius_x_mm": 3.125,
+            "radius_y_mm": 4.625,
+            "volume_target_mm3": 32165.984675800417,
+            "active_cells": 17960,
+            "cut_cells": 2660,
+            "empty_cells": 43480,
+            "minimum_volume_fraction": 0.001067091235103018,
+            "quadrature_points": 9788416,
+            "quadrature_s": 0.7304035816341639,
+            "scalar_active": 25428,
+            "free_components": 75366,
+            "loaded_area_mm2": 320.00000000000006,
+            "force_n": [
+              0.0,
+              -999.9999999999998,
+              0.0
+            ],
+            "reaction_n": [
+              1.5842988587699836e-09,
+              999.9999999884493,
+              2.6912232997666763e-09
+            ],
+            "relative_residual": 7.078024877280994e-11,
+            "point_tip_y_mm": -0.516763007882659,
+            "mean_tip_y_mm": -0.5160122942064622,
+            "von_mises_mpa": 133.55363493164378,
+            "stress_mpa": [
+              [
+                72.17232705363455,
+                -74.04371960497986,
+                -9.791988079693146e-11
+              ],
+              [
+                -74.04371960497986,
+                72.33519471617194,
+                1.0573127965553867e-10
+              ],
+              [
+                -9.791988079693146e-11,
+                1.0573127965553867e-10,
+                34.982642438772245
+              ]
+            ],
+            "strain_energy_n_mm": 258.00614710984166,
+            "external_work_n_mm": 516.0122942064622,
+            "assembly_s": 15.558698698470835,
+            "diagonal_scaling_and_restriction_s": 1.4535395429702476,
+            "linear_solver": "multigrid",
+            "solver_detail": {
+              "levels": [
+                {
+                  "fine_ncell": [
+                    48,
+                    40,
+                    32
+                  ],
+                  "coarse_ncell": [
+                    24,
+                    20,
+                    16
+                  ],
+                  "fine_dofs": 75366,
+                  "coarse_dofs": 13284,
+                  "energy_relative": 2.6687930207454063e-16,
+                  "spectral_upper": 11.260712959587202,
+                  "P_nnz": 542670
+                },
+                {
+                  "fine_ncell": [
+                    24,
+                    20,
+                    16
+                  ],
+                  "coarse_ncell": [
+                    12,
+                    10,
+                    8
+                  ],
+                  "fine_dofs": 13284,
+                  "coarse_dofs": 2520,
+                  "energy_relative": 1.72581330404051e-16,
+                  "spectral_upper": 10.769152651006005,
+                  "P_nnz": 88638
+                }
+              ],
+              "coarse_lu_size": 2520,
+              "symmetry_defect": 3.8085863262686356e-15,
+              "coarse_lu_nnz": 1589735,
+              "setup_s": 2.792780372023117,
+              "iterations": 76,
+              "status": 0,
+              "iterations_s": 13.830969309026841
+            },
+            "solver_s": 16.62602580501698,
+            "elapsed_s": 34.58506030397257,
+            "reduced_nnz": 22977685,
+            "scaling_dynamic_range": 1311470.4229413583,
+            "max_rss_kib": 1611712
+          },
+          "physical_qualification": {
+            "tip_relative_to_finest_tetra": 0.00024256346754003566,
+            "fillet_relative_to_finest_tetra": 0.014663480509142124,
+            "volume_relative": 2.6702685618218425e-09,
+            "reaction_relative": 1.1965419885367764e-11,
+            "tree_rss_within_cap": true,
+            "qoi_qualified": true,
+            "drift_from_frozen_replay_relative": 0.0,
+            "drift_qualified": true,
+            "status": "qualified"
+          }
+        },
+        {
+          "method": "local",
+          "status": "completed",
+          "wall_s": 3.8243746369844303,
+          "command": [
+            "/usr/bin/taskset",
+            "-c",
+            "2,3",
+            "/usr/bin/time",
+            "-f",
+            "%e %M",
+            "-o",
+            "/home/jeff/Code/SolidCraftTrivariate/build/bracket-cost/serial/x50-y74-rep2/local/time.txt",
+            "/home/jeff/Code/SolidCraftTrivariate/target/release/examples/local_fillet_cost",
+            "--tier",
+            "50",
+            "74",
+            "from_h1",
+            "3",
+            "/home/jeff/Code/SolidCraftTrivariate/build/bracket-cost/serial/x50-y74-rep2/local/physical.json"
+          ],
+          "diagnostic": "",
+          "interference": {
+            "loadavg_before": [
+              7.26,
+              9.12,
+              8.66
+            ],
+            "loadavg_after": [
+              7.24,
+              9.09,
+              8.65
+            ],
+            "campaign_processes_before": [],
+            "campaign_processes_after": []
+          },
+          "process_wall_s": 3.81,
+          "tree_peak_rss_kib": 83196,
+          "result": {
+            "constraints_s": 0.112861148,
+            "geometry_build_and_audit_s": 0.009530587,
+            "leaves": 624,
+            "local_partition_s": 0.049950183,
+            "local_refinement_counts": [
+              {
+                "incident": 4,
+                "induced": 0,
+                "requested": 16
+              },
+              {
+                "incident": 4,
+                "induced": 0,
+                "requested": 16
+              },
+              {
+                "incident": 4,
+                "induced": 0,
+                "requested": 16
+              }
+            ],
+            "local_steps": 3,
+            "max_depth": 4,
+            "path": "from_h1",
+            "q8": {
+              "assembly_s": 1.585266194,
+              "blocks": 624,
+              "constraint_s": 0.000755293,
+              "fillet_limits_mpa": {
+                "elbow_east_z10_30/010/011/011/011": 132.91447826494982,
+                "elbow_east_z10_30/011/010/010/010": 132.9144782649874,
+                "elbow_north_z10_30/110/111/111/111": 132.90870714206915,
+                "elbow_north_z10_30/111/110/110/110": 132.90870714208063
+              },
+              "force_s": 0.001328088,
+              "iterations": 614,
+              "loaded_area_mm2": 319.9999999999986,
+              "masters": 5523,
+              "q": 8,
+              "reaction_n": [
+                5.93879789789753e-09,
+                1000.0000000365702,
+                -2.741018079177593e-09
+              ],
+              "recovery_s": 0.00408447,
+              "relative_residual": 9.492149598845242e-12,
+              "scalar_dofs": 7167,
+              "solve_s": 2.039608769,
+              "strain_energy_n_mm": 257.0930438627705,
+              "tip_mm": [
+                -0.17364619698949832,
+                -0.5149313573749168,
+                4.318607721090319e-13
+              ],
+              "true_projected_residual": 1.7334428132889932e-11,
+              "volume_mm3": 32165.984675802418
+            },
+            "radii_ticks": [
+              50,
+              74
+            ],
+            "total_wall_s": 3.813771315,
+            "uniform_depth": 1,
+            "uniform_partition_s": 0.006661687
+          },
+          "j4d_tier": {
+            "path": "from_h1",
+            "step": 3,
+            "leaves": 624,
+            "search_wall_s": 17.92104044
+          },
+          "physical_qualification": {
+            "tip_relative_to_finest_tetra": 0.0033027653801021017,
+            "fillet_relative_to_finest_tetra": 0.009807536840427122,
+            "volume_relative": 6.217248937900877e-14,
+            "reaction_relative": 3.71505453227914e-11,
+            "tree_rss_within_cap": true,
+            "qoi_qualified": true,
+            "drift_from_frozen_replay_relative": 0.0,
+            "drift_qualified": true,
+            "status": "qualified"
+          }
+        }
+      ]
+    },
+    {
+      "radii_ticks": [
+        51,
+        74
+      ],
+      "repeat": 1,
+      "planned_method_order": [
+        "tetra",
+        "immersed",
+        "local"
+      ],
+      "elapsed_wall_s": 154.08527943398803,
+      "loadavg_before": [
+        7.24,
+        9.09,
+        8.65
+      ],
+      "loadavg_after": [
+        15.42,
+        10.97,
+        9.36
+      ],
+      "campaign_processes_before": [],
+      "campaign_processes_after": [],
+      "trials": [
+        {
+          "method": "tetra",
+          "status": "completed",
+          "wall_s": 75.4903761659516,
+          "command": [
+            "/usr/bin/taskset",
+            "-c",
+            "2,3",
+            "/usr/bin/time",
+            "-f",
+            "%e %M",
+            "-o",
+            "/home/jeff/Code/SolidCraftTrivariate/build/bracket-cost/serial/x51-y74-rep1/tetra/time.txt",
+            "/home/jeff/Code/FreeCAD/.pixi/envs/default/bin/python",
+            "/home/jeff/Code/SolidCraftTrivariate/tests/references/calculix_bracket.py",
+            "--ccx",
+            "/home/jeff/Code/FreeCAD/.pixi/envs/default/bin/ccx",
+            "--size",
+            "1.5",
+            "--store-displacements",
+            "--radius-x",
+            "3.1875",
+            "--radius-y",
+            "4.625",
+            "/home/jeff/Code/SolidCraftTrivariate/build/bracket-cost/serial/x51-y74-rep1/tetra/mesh"
+          ],
+          "diagnostic": "{\"radius_x_mm\": 3.1875, \"radius_y_mm\": 4.625, \"size_mm\": 1.5, \"occ_volume_mm3\": 32156.069023987522, \"nodes\": 71258, \"tet10\": 45183, \"loaded_area_mm2\": 320.00000000000034, \"reaction_n\": [-3.847410237156623e-05, 1000.0000362462027, 1.76402000249265e-05], \"mean_tip_y_mm\": -0.5158917334012255, \"point_tip_y_mm\": -0.5166449971514397, \"geometry_mesh_deck_s\": 9.220890682947356, \"solve_s\": 65.6759790040087, \"freecad_version\": [\"26\", \"3\", \"0\"], \"solver_peak_rss_kib\": 1487676, \"mesh_process_peak_rss_kib\": 232100}\n{\"element\": 29677, \"barycentric\": [0.0, 0.009099252207718012, 0.49226662951316963, 0.49863411827911236], \"point_mm\": [9.757359309627844, 9.75735931742399, 19.9999999903794], \"distance_mm\": 1.112557631975154e-08, \"stress_mpa\": [[77.1189162020091, -72.53214940255192, 0.43534428886606147], [-72.53214940255192, 78.45445740716099, 0.11036211814884292], [0.43534428886606147, 0.11036211814884292, 38.80442736231043]], \"von_mises_mpa\": 131.54580003999007}\n",
+          "interference": {
+            "loadavg_before": [
+              7.24,
+              9.09,
+              8.65
+            ],
+            "loadavg_after": [
+              8.47,
+              8.95,
+              8.63
+            ],
+            "campaign_processes_before": [],
+            "campaign_processes_after": []
+          },
+          "process_wall_s": 75.48,
+          "tree_peak_rss_kib": 1487676,
+          "physical_audit_s": 3.8654265469522215,
+          "result": {
+            "radius_x_mm": 3.1875,
+            "radius_y_mm": 4.625,
+            "size_mm": 1.5,
+            "occ_volume_mm3": 32156.069023987522,
+            "nodes": 71258,
+            "tet10": 45183,
+            "loaded_area_mm2": 320.00000000000034,
+            "reaction_n": [
+              -3.847410237156623e-05,
+              1000.0000362462027,
+              1.76402000249265e-05
+            ],
+            "mean_tip_y_mm": -0.5158917334012255,
+            "point_tip_y_mm": -0.5166449971514397,
+            "geometry_mesh_deck_s": 9.220890682947356,
+            "solve_s": 65.6759790040087,
+            "freecad_version": [
+              "26",
+              "3",
+              "0"
+            ],
+            "solver_peak_rss_kib": 1487676,
+            "mesh_process_peak_rss_kib": 232100
+          },
+          "probe": {
+            "element": 29677,
+            "barycentric": [
+              0.0,
+              0.009099252207718012,
+              0.49226662951316963,
+              0.49863411827911236
+            ],
+            "point_mm": [
+              9.757359309627844,
+              9.75735931742399,
+              19.9999999903794
+            ],
+            "distance_mm": 1.112557631975154e-08,
+            "stress_mpa": [
+              [
+                77.1189162020091,
+                -72.53214940255192,
+                0.43534428886606147
+              ],
+              [
+                -72.53214940255192,
+                78.45445740716099,
+                0.11036211814884292
+              ],
+              [
+                0.43534428886606147,
+                0.11036211814884292,
+                38.80442736231043
+              ]
+            ],
+            "von_mises_mpa": 131.54580003999007
+          },
+          "physical_qualification": {
+            "tip_relative_to_finest_tetra": 0.00015577469522964904,
+            "fillet_relative_to_finest_tetra": 0.009389867966207555,
+            "volume_relative": 1.1102230246251565e-16,
+            "reaction_relative": 5.572450469284466e-08,
+            "tree_rss_within_cap": true,
+            "qoi_qualified": true,
+            "clamp_boundary_prescribed": true,
+            "drift_from_frozen_replay_relative": 0.0,
+            "drift_qualified": true,
+            "status": "qualified"
+          }
+        },
+        {
+          "method": "immersed",
+          "status": "completed",
+          "wall_s": 65.39718422299484,
+          "command": [
+            "/usr/bin/taskset",
+            "-c",
+            "2,3",
+            "/usr/bin/time",
+            "-f",
+            "%e %M",
+            "-o",
+            "/home/jeff/Code/SolidCraftTrivariate/build/bracket-cost/serial/x51-y74-rep1/immersed/time.txt",
+            "/usr/bin/python3",
+            "/home/jeff/Code/SolidCraftTrivariate/tests/references/immersed_bracket.py",
+            "--solver",
+            "multigrid",
+            "--h",
+            "1.25",
+            "--order",
+            "8",
+            "--radius-x",
+            "3.1875",
+            "--radius-y",
+            "4.625"
+          ],
+          "diagnostic": "2\": 320.00000000000006,\n  \"force_n\": [\n    0.0,\n    -999.9999999999998,\n    0.0\n  ],\n  \"reaction_n\": [\n    -3.116228386446096e-10,\n    999.9999999872265,\n    3.259167491442838e-09\n  ],\n  \"relative_residual\": 7.098616069227072e-11,\n  \"point_tip_y_mm\": -0.5168509220254146,\n  \"mean_tip_y_mm\": -0.5160971610597117,\n  \"von_mises_mpa\": 133.55533493364376,\n  \"stress_mpa\": [\n    [\n      72.17308535298983,\n      -74.04453023171865,\n      -1.3456009547966312e-10\n    ],\n    [\n      -74.04453023171865,\n      72.33597590567075,\n      1.5770075547582516e-10\n    ],\n    [\n      -1.3456009547966312e-10,\n      1.5770075547582516e-10,\n      34.982151881375955\n    ]\n  ],\n  \"strain_energy_n_mm\": 258.0485805354937,\n  \"external_work_n_mm\": 516.0971610597117,\n  \"assembly_s\": 27.42569073929917,\n  \"diagonal_scaling_and_restriction_s\": 2.6828188900253735,\n  \"linear_solver\": \"multigrid\",\n  \"solver_detail\": {\n    \"levels\": [\n      {\n        \"fine_ncell\": [\n          48,\n          40,\n          32\n        ],\n        \"coarse_ncell\": [\n          24,\n          20,\n          16\n        ],\n        \"fine_dofs\": 75366,\n        \"coarse_dofs\": 13284,\n        \"energy_relative\": 5.337276440853463e-16,\n        \"spectral_upper\": 11.260712959587202,\n        \"P_nnz\": 542670\n      },\n      {\n        \"fine_ncell\": [\n          24,\n          20,\n          16\n        ],\n        \"coarse_ncell\": [\n          12,\n          10,\n          8\n        ],\n        \"fine_dofs\": 13284,\n        \"coarse_dofs\": 2520,\n        \"energy_relative\": 1.7259103923055858e-16,\n        \"spectral_upper\": 10.769152651006005,\n        \"P_nnz\": 88638\n      }\n    ],\n    \"coarse_lu_size\": 2520,\n    \"symmetry_defect\": 3.64833358990743e-15,\n    \"coarse_lu_nnz\": 1589735,\n    \"setup_s\": 5.862279774970375,\n    \"iterations\": 76,\n    \"status\": 0,\n    \"iterations_s\": 25.675581876013894\n  },\n  \"solver_s\": 31.543154240993317,\n  \"elapsed_s\": 63.61815618199762,\n  \"reduced_nnz\": 22977733,\n  \"scaling_dynamic_range\": 1311470.4229413583,\n  \"max_rss_kib\": 1612084\n}\n",
+          "interference": {
+            "loadavg_before": [
+              8.75,
+              9.01,
+              8.65
+            ],
+            "loadavg_after": [
+              15.22,
+              10.78,
+              9.29
+            ],
+            "campaign_processes_before": [],
+            "campaign_processes_after": []
+          },
+          "process_wall_s": 65.38,
+          "tree_peak_rss_kib": 1612084,
+          "result": {
+            "h_mm": 1.25,
+            "gauss_order": 8,
+            "volume_mm3": 32156.06893809567,
+            "radius_x_mm": 3.1875,
+            "radius_y_mm": 4.625,
+            "volume_target_mm3": 32156.069023987526,
+            "active_cells": 17960,
+            "cut_cells": 2660,
+            "empty_cells": 43480,
+            "minimum_volume_fraction": 0.001067091235103018,
+            "quadrature_points": 9788416,
+            "quadrature_s": 1.5107925158226863,
+            "scalar_active": 25428,
+            "free_components": 75366,
+            "loaded_area_mm2": 320.00000000000006,
+            "force_n": [
+              0.0,
+              -999.9999999999998,
+              0.0
+            ],
+            "reaction_n": [
+              -3.116228386446096e-10,
+              999.9999999872265,
+              3.259167491442838e-09
+            ],
+            "relative_residual": 7.098616069227072e-11,
+            "point_tip_y_mm": -0.5168509220254146,
+            "mean_tip_y_mm": -0.5160971610597117,
+            "von_mises_mpa": 133.55533493364376,
+            "stress_mpa": [
+              [
+                72.17308535298983,
+                -74.04453023171865,
+                -1.3456009547966312e-10
+              ],
+              [
+                -74.04453023171865,
+                72.33597590567075,
+                1.5770075547582516e-10
+              ],
+              [
+                -1.3456009547966312e-10,
+                1.5770075547582516e-10,
+                34.982151881375955
+              ]
+            ],
+            "strain_energy_n_mm": 258.0485805354937,
+            "external_work_n_mm": 516.0971610597117,
+            "assembly_s": 27.42569073929917,
+            "diagonal_scaling_and_restriction_s": 2.6828188900253735,
+            "linear_solver": "multigrid",
+            "solver_detail": {
+              "levels": [
+                {
+                  "fine_ncell": [
+                    48,
+                    40,
+                    32
+                  ],
+                  "coarse_ncell": [
+                    24,
+                    20,
+                    16
+                  ],
+                  "fine_dofs": 75366,
+                  "coarse_dofs": 13284,
+                  "energy_relative": 5.337276440853463e-16,
+                  "spectral_upper": 11.260712959587202,
+                  "P_nnz": 542670
+                },
+                {
+                  "fine_ncell": [
+                    24,
+                    20,
+                    16
+                  ],
+                  "coarse_ncell": [
+                    12,
+                    10,
+                    8
+                  ],
+                  "fine_dofs": 13284,
+                  "coarse_dofs": 2520,
+                  "energy_relative": 1.7259103923055858e-16,
+                  "spectral_upper": 10.769152651006005,
+                  "P_nnz": 88638
+                }
+              ],
+              "coarse_lu_size": 2520,
+              "symmetry_defect": 3.64833358990743e-15,
+              "coarse_lu_nnz": 1589735,
+              "setup_s": 5.862279774970375,
+              "iterations": 76,
+              "status": 0,
+              "iterations_s": 25.675581876013894
+            },
+            "solver_s": 31.543154240993317,
+            "elapsed_s": 63.61815618199762,
+            "reduced_nnz": 22977733,
+            "scaling_dynamic_range": 1311470.4229413583,
+            "max_rss_kib": 1612084
+          },
+          "physical_qualification": {
+            "tip_relative_to_finest_tetra": 0.0002427442050318973,
+            "fillet_relative_to_finest_tetra": 0.005743003062161689,
+            "volume_relative": 2.671093235484534e-09,
+            "reaction_relative": 1.3186428288446351e-11,
+            "tree_rss_within_cap": true,
+            "qoi_qualified": true,
+            "drift_from_frozen_replay_relative": 0.0,
+            "drift_qualified": true,
+            "status": "qualified"
+          }
+        },
+        {
+          "method": "local",
+          "status": "completed",
+          "wall_s": 9.235454748966731,
+          "command": [
+            "/usr/bin/taskset",
+            "-c",
+            "2,3",
+            "/usr/bin/time",
+            "-f",
+            "%e %M",
+            "-o",
+            "/home/jeff/Code/SolidCraftTrivariate/build/bracket-cost/serial/x51-y74-rep1/local/time.txt",
+            "/home/jeff/Code/SolidCraftTrivariate/target/release/examples/local_fillet_cost",
+            "--tier",
+            "51",
+            "74",
+            "from_h1",
+            "3",
+            "/home/jeff/Code/SolidCraftTrivariate/build/bracket-cost/serial/x51-y74-rep1/local/physical.json"
+          ],
+          "diagnostic": "",
+          "interference": {
+            "loadavg_before": [
+              15.22,
+              10.78,
+              9.29
+            ],
+            "loadavg_after": [
+              15.42,
+              10.97,
+              9.36
+            ],
+            "campaign_processes_before": [],
+            "campaign_processes_after": []
+          },
+          "process_wall_s": 9.22,
+          "tree_peak_rss_kib": 83132,
+          "result": {
+            "constraints_s": 0.323704734,
+            "geometry_build_and_audit_s": 0.01921797,
+            "leaves": 624,
+            "local_partition_s": 0.100819414,
+            "local_refinement_counts": [
+              {
+                "incident": 4,
+                "induced": 0,
+                "requested": 16
+              },
+              {
+                "incident": 4,
+                "induced": 0,
+                "requested": 16
+              },
+              {
+                "incident": 4,
+                "induced": 0,
+                "requested": 16
+              }
+            ],
+            "local_steps": 3,
+            "max_depth": 4,
+            "path": "from_h1",
+            "q8": {
+              "assembly_s": 4.227401378,
+              "blocks": 624,
+              "constraint_s": 0.000753528,
+              "fillet_limits_mpa": {
+                "elbow_east_z10_30/010/011/011/011": 132.9159899531206,
+                "elbow_east_z10_30/011/010/010/010": 132.91598995314678,
+                "elbow_north_z10_30/110/111/111/111": 132.91021766553482,
+                "elbow_north_z10_30/111/110/110/110": 132.9102176655553
+              },
+              "force_s": 0.007360567,
+              "iterations": 583,
+              "loaded_area_mm2": 319.9999999999986,
+              "masters": 5523,
+              "q": 8,
+              "reaction_n": [
+                2.689297673441615e-10,
+                1000.0000000402243,
+                -3.0082532020969666e-09
+              ],
+              "recovery_s": 0.010056549,
+              "relative_residual": 7.335733510845454e-12,
+              "scalar_dofs": 7167,
+              "solve_s": 4.504041498,
+              "strain_energy_n_mm": 257.1350851729291,
+              "tip_mm": [
+                -0.17364580590431644,
+                -0.5150182946683446,
+                4.4364675987081817e-13
+              ],
+              "true_projected_residual": 1.5932173530178568e-11,
+              "volume_mm3": 32156.069023990083
+            },
+            "radii_ticks": [
+              51,
+              74
+            ],
+            "total_wall_s": 9.216021279,
+            "uniform_depth": 1,
+            "uniform_partition_s": 0.012625042
+          },
+          "j4d_tier": {
+            "path": "from_h1",
+            "step": 3,
+            "leaves": 624,
+            "search_wall_s": 18.050585401
+          },
+          "physical_qualification": {
+            "tip_relative_to_finest_tetra": 0.0033038726986539535,
+            "fillet_relative_to_finest_tetra": 0.0009283938891380128,
+            "volume_relative": 7.949196856316121e-14,
+            "reaction_relative": 4.033756445422378e-11,
+            "tree_rss_within_cap": true,
+            "qoi_qualified": true,
+            "drift_from_frozen_replay_relative": 0.0,
+            "drift_qualified": true,
+            "status": "qualified"
+          }
+        }
+      ]
+    },
+    {
+      "radii_ticks": [
+        51,
+        74
+      ],
+      "repeat": 2,
+      "planned_method_order": [
+        "immersed",
+        "local",
+        "tetra"
+      ],
+      "elapsed_wall_s": 126.80762520903954,
+      "loadavg_before": [
+        15.42,
+        10.97,
+        9.36
+      ],
+      "loadavg_after": [
+        10.38,
+        10.73,
+        9.5
+      ],
+      "campaign_processes_before": [],
+      "campaign_processes_after": [],
+      "trials": [
+        {
+          "method": "immersed",
+          "status": "completed",
+          "wall_s": 42.22828607499832,
+          "command": [
+            "/usr/bin/taskset",
+            "-c",
+            "2,3",
+            "/usr/bin/time",
+            "-f",
+            "%e %M",
+            "-o",
+            "/home/jeff/Code/SolidCraftTrivariate/build/bracket-cost/serial/x51-y74-rep2/immersed/time.txt",
+            "/usr/bin/python3",
+            "/home/jeff/Code/SolidCraftTrivariate/tests/references/immersed_bracket.py",
+            "--solver",
+            "multigrid",
+            "--h",
+            "1.25",
+            "--order",
+            "8",
+            "--radius-x",
+            "3.1875",
+            "--radius-y",
+            "4.625"
+          ],
+          "diagnostic": "2\": 320.00000000000006,\n  \"force_n\": [\n    0.0,\n    -999.9999999999998,\n    0.0\n  ],\n  \"reaction_n\": [\n    -3.116228386446096e-10,\n    999.9999999872265,\n    3.259167491442838e-09\n  ],\n  \"relative_residual\": 7.098616069227072e-11,\n  \"point_tip_y_mm\": -0.5168509220254146,\n  \"mean_tip_y_mm\": -0.5160971610597117,\n  \"von_mises_mpa\": 133.55533493364376,\n  \"stress_mpa\": [\n    [\n      72.17308535298983,\n      -74.04453023171865,\n      -1.3456009547966312e-10\n    ],\n    [\n      -74.04453023171865,\n      72.33597590567075,\n      1.5770075547582516e-10\n    ],\n    [\n      -1.3456009547966312e-10,\n      1.5770075547582516e-10,\n      34.982151881375955\n    ]\n  ],\n  \"strain_energy_n_mm\": 258.0485805354937,\n  \"external_work_n_mm\": 516.0971610597117,\n  \"assembly_s\": 17.118121306819376,\n  \"diagonal_scaling_and_restriction_s\": 1.8920744949718937,\n  \"linear_solver\": \"multigrid\",\n  \"solver_detail\": {\n    \"levels\": [\n      {\n        \"fine_ncell\": [\n          48,\n          40,\n          32\n        ],\n        \"coarse_ncell\": [\n          24,\n          20,\n          16\n        ],\n        \"fine_dofs\": 75366,\n        \"coarse_dofs\": 13284,\n        \"energy_relative\": 5.337276440853463e-16,\n        \"spectral_upper\": 11.260712959587202,\n        \"P_nnz\": 542670\n      },\n      {\n        \"fine_ncell\": [\n          24,\n          20,\n          16\n        ],\n        \"coarse_ncell\": [\n          12,\n          10,\n          8\n        ],\n        \"fine_dofs\": 13284,\n        \"coarse_dofs\": 2520,\n        \"energy_relative\": 1.7259103923055858e-16,\n        \"spectral_upper\": 10.769152651006005,\n        \"P_nnz\": 88638\n      }\n    ],\n    \"coarse_lu_size\": 2520,\n    \"symmetry_defect\": 3.64833358990743e-15,\n    \"coarse_lu_nnz\": 1589735,\n    \"setup_s\": 3.07759190001525,\n    \"iterations\": 76,\n    \"status\": 0,\n    \"iterations_s\": 17.73330638697371\n  },\n  \"solver_s\": 20.813137545948848,\n  \"elapsed_s\": 40.977379636024125,\n  \"reduced_nnz\": 22977733,\n  \"scaling_dynamic_range\": 1311470.4229413583,\n  \"max_rss_kib\": 1611932\n}\n",
+          "interference": {
+            "loadavg_before": [
+              15.42,
+              10.97,
+              9.36
+            ],
+            "loadavg_after": [
+              14.45,
+              11.23,
+              9.51
+            ],
+            "campaign_processes_before": [],
+            "campaign_processes_after": []
+          },
+          "process_wall_s": 42.21,
+          "tree_peak_rss_kib": 1611932,
+          "result": {
+            "h_mm": 1.25,
+            "gauss_order": 8,
+            "volume_mm3": 32156.06893809567,
+            "radius_x_mm": 3.1875,
+            "radius_y_mm": 4.625,
+            "volume_target_mm3": 32156.069023987526,
+            "active_cells": 17960,
+            "cut_cells": 2660,
+            "empty_cells": 43480,
+            "minimum_volume_fraction": 0.001067091235103018,
+            "quadrature_points": 9788416,
+            "quadrature_s": 0.8774179446045309,
+            "scalar_active": 25428,
+            "free_components": 75366,
+            "loaded_area_mm2": 320.00000000000006,
+            "force_n": [
+              0.0,
+              -999.9999999999998,
+              0.0
+            ],
+            "reaction_n": [
+              -3.116228386446096e-10,
+              999.9999999872265,
+              3.259167491442838e-09
+            ],
+            "relative_residual": 7.098616069227072e-11,
+            "point_tip_y_mm": -0.5168509220254146,
+            "mean_tip_y_mm": -0.5160971610597117,
+            "von_mises_mpa": 133.55533493364376,
+            "stress_mpa": [
+              [
+                72.17308535298983,
+                -74.04453023171865,
+                -1.3456009547966312e-10
+              ],
+              [
+                -74.04453023171865,
+                72.33597590567075,
+                1.5770075547582516e-10
+              ],
+              [
+                -1.3456009547966312e-10,
+                1.5770075547582516e-10,
+                34.982151881375955
+              ]
+            ],
+            "strain_energy_n_mm": 258.0485805354937,
+            "external_work_n_mm": 516.0971610597117,
+            "assembly_s": 17.118121306819376,
+            "diagonal_scaling_and_restriction_s": 1.8920744949718937,
+            "linear_solver": "multigrid",
+            "solver_detail": {
+              "levels": [
+                {
+                  "fine_ncell": [
+                    48,
+                    40,
+                    32
+                  ],
+                  "coarse_ncell": [
+                    24,
+                    20,
+                    16
+                  ],
+                  "fine_dofs": 75366,
+                  "coarse_dofs": 13284,
+                  "energy_relative": 5.337276440853463e-16,
+                  "spectral_upper": 11.260712959587202,
+                  "P_nnz": 542670
+                },
+                {
+                  "fine_ncell": [
+                    24,
+                    20,
+                    16
+                  ],
+                  "coarse_ncell": [
+                    12,
+                    10,
+                    8
+                  ],
+                  "fine_dofs": 13284,
+                  "coarse_dofs": 2520,
+                  "energy_relative": 1.7259103923055858e-16,
+                  "spectral_upper": 10.769152651006005,
+                  "P_nnz": 88638
+                }
+              ],
+              "coarse_lu_size": 2520,
+              "symmetry_defect": 3.64833358990743e-15,
+              "coarse_lu_nnz": 1589735,
+              "setup_s": 3.07759190001525,
+              "iterations": 76,
+              "status": 0,
+              "iterations_s": 17.73330638697371
+            },
+            "solver_s": 20.813137545948848,
+            "elapsed_s": 40.977379636024125,
+            "reduced_nnz": 22977733,
+            "scaling_dynamic_range": 1311470.4229413583,
+            "max_rss_kib": 1611932
+          },
+          "physical_qualification": {
+            "tip_relative_to_finest_tetra": 0.0002427442050318973,
+            "fillet_relative_to_finest_tetra": 0.005743003062161689,
+            "volume_relative": 2.671093235484534e-09,
+            "reaction_relative": 1.3186428288446351e-11,
+            "tree_rss_within_cap": true,
+            "qoi_qualified": true,
+            "drift_from_frozen_replay_relative": 0.0,
+            "drift_qualified": true,
+            "status": "qualified"
+          }
+        },
+        {
+          "method": "local",
+          "status": "completed",
+          "wall_s": 4.814273417985532,
+          "command": [
+            "/usr/bin/taskset",
+            "-c",
+            "2,3",
+            "/usr/bin/time",
+            "-f",
+            "%e %M",
+            "-o",
+            "/home/jeff/Code/SolidCraftTrivariate/build/bracket-cost/serial/x51-y74-rep2/local/time.txt",
+            "/home/jeff/Code/SolidCraftTrivariate/target/release/examples/local_fillet_cost",
+            "--tier",
+            "51",
+            "74",
+            "from_h1",
+            "3",
+            "/home/jeff/Code/SolidCraftTrivariate/build/bracket-cost/serial/x51-y74-rep2/local/physical.json"
+          ],
+          "diagnostic": "",
+          "interference": {
+            "loadavg_before": [
+              14.45,
+              11.23,
+              9.51
+            ],
+            "loadavg_after": [
+              14.01,
+              11.19,
+              9.51
+            ],
+            "campaign_processes_before": [],
+            "campaign_processes_after": []
+          },
+          "process_wall_s": 4.8,
+          "tree_peak_rss_kib": 83120,
+          "result": {
+            "constraints_s": 0.113699296,
+            "geometry_build_and_audit_s": 0.016183543,
+            "leaves": 624,
+            "local_partition_s": 0.082830377,
+            "local_refinement_counts": [
+              {
+                "incident": 4,
+                "induced": 0,
+                "requested": 16
+              },
+              {
+                "incident": 4,
+                "induced": 0,
+                "requested": 16
+              },
+              {
+                "incident": 4,
+                "induced": 0,
+                "requested": 16
+              }
+            ],
+            "local_steps": 3,
+            "max_depth": 4,
+            "path": "from_h1",
+            "q8": {
+              "assembly_s": 1.752881602,
+              "blocks": 624,
+              "constraint_s": 0.000774474,
+              "fillet_limits_mpa": {
+                "elbow_east_z10_30/010/011/011/011": 132.9159899531206,
+                "elbow_east_z10_30/011/010/010/010": 132.91598995314678,
+                "elbow_north_z10_30/110/111/111/111": 132.91021766553482,
+                "elbow_north_z10_30/111/110/110/110": 132.9102176655553
+              },
+              "force_s": 0.001351849,
+              "iterations": 583,
+              "loaded_area_mm2": 319.9999999999986,
+              "masters": 5523,
+              "q": 8,
+              "reaction_n": [
+                2.689297673441615e-10,
+                1000.0000000402243,
+                -3.0082532020969666e-09
+              ],
+              "recovery_s": 0.010596743,
+              "relative_residual": 7.335733510845454e-12,
+              "scalar_dofs": 7167,
+              "solve_s": 2.804490792,
+              "strain_energy_n_mm": 257.1350851729291,
+              "tip_mm": [
+                -0.17364580590431644,
+                -0.5150182946683446,
+                4.4364675987081817e-13
+              ],
+              "true_projected_residual": 1.5932173530178568e-11,
+              "volume_mm3": 32156.069023990083
+            },
+            "radii_ticks": [
+              51,
+              74
+            ],
+            "total_wall_s": 4.798886597,
+            "uniform_depth": 1,
+            "uniform_partition_s": 0.011785922
+          },
+          "j4d_tier": {
+            "path": "from_h1",
+            "step": 3,
+            "leaves": 624,
+            "search_wall_s": 18.050585401
+          },
+          "physical_qualification": {
+            "tip_relative_to_finest_tetra": 0.0033038726986539535,
+            "fillet_relative_to_finest_tetra": 0.0009283938891380128,
+            "volume_relative": 7.949196856316121e-14,
+            "reaction_relative": 4.033756445422378e-11,
+            "tree_rss_within_cap": true,
+            "qoi_qualified": true,
+            "drift_from_frozen_replay_relative": 0.0,
+            "drift_qualified": true,
+            "status": "qualified"
+          }
+        },
+        {
+          "method": "tetra",
+          "status": "completed",
+          "wall_s": 77.68376952101244,
+          "command": [
+            "/usr/bin/taskset",
+            "-c",
+            "2,3",
+            "/usr/bin/time",
+            "-f",
+            "%e %M",
+            "-o",
+            "/home/jeff/Code/SolidCraftTrivariate/build/bracket-cost/serial/x51-y74-rep2/tetra/time.txt",
+            "/home/jeff/Code/FreeCAD/.pixi/envs/default/bin/python",
+            "/home/jeff/Code/SolidCraftTrivariate/tests/references/calculix_bracket.py",
+            "--ccx",
+            "/home/jeff/Code/FreeCAD/.pixi/envs/default/bin/ccx",
+            "--size",
+            "1.5",
+            "--store-displacements",
+            "--radius-x",
+            "3.1875",
+            "--radius-y",
+            "4.625",
+            "/home/jeff/Code/SolidCraftTrivariate/build/bracket-cost/serial/x51-y74-rep2/tetra/mesh"
+          ],
+          "diagnostic": "{\"radius_x_mm\": 3.1875, \"radius_y_mm\": 4.625, \"size_mm\": 1.5, \"occ_volume_mm3\": 32156.069023987522, \"nodes\": 71258, \"tet10\": 45183, \"loaded_area_mm2\": 320.00000000000034, \"reaction_n\": [-3.847410237156623e-05, 1000.0000362462027, 1.76402000249265e-05], \"mean_tip_y_mm\": -0.5158917334012255, \"point_tip_y_mm\": -0.5166449971514397, \"geometry_mesh_deck_s\": 10.948969735007267, \"solve_s\": 66.05241394700715, \"freecad_version\": [\"26\", \"3\", \"0\"], \"solver_peak_rss_kib\": 1487868, \"mesh_process_peak_rss_kib\": 232588}\n{\"element\": 29677, \"barycentric\": [0.0, 0.009099252207718012, 0.49226662951316963, 0.49863411827911236], \"point_mm\": [9.757359309627844, 9.75735931742399, 19.9999999903794], \"distance_mm\": 1.112557631975154e-08, \"stress_mpa\": [[77.1189162020091, -72.53214940255192, 0.43534428886606147], [-72.53214940255192, 78.45445740716099, 0.11036211814884292], [0.43534428886606147, 0.11036211814884292, 38.80442736231043]], \"von_mises_mpa\": 131.54580003999007}\n",
+          "interference": {
+            "loadavg_before": [
+              14.01,
+              11.19,
+              9.51
+            ],
+            "loadavg_after": [
+              10.38,
+              10.73,
+              9.5
+            ],
+            "campaign_processes_before": [],
+            "campaign_processes_after": []
+          },
+          "process_wall_s": 77.67,
+          "tree_peak_rss_kib": 1487868,
+          "physical_audit_s": 2.0040554309962317,
+          "result": {
+            "radius_x_mm": 3.1875,
+            "radius_y_mm": 4.625,
+            "size_mm": 1.5,
+            "occ_volume_mm3": 32156.069023987522,
+            "nodes": 71258,
+            "tet10": 45183,
+            "loaded_area_mm2": 320.00000000000034,
+            "reaction_n": [
+              -3.847410237156623e-05,
+              1000.0000362462027,
+              1.76402000249265e-05
+            ],
+            "mean_tip_y_mm": -0.5158917334012255,
+            "point_tip_y_mm": -0.5166449971514397,
+            "geometry_mesh_deck_s": 10.948969735007267,
+            "solve_s": 66.05241394700715,
+            "freecad_version": [
+              "26",
+              "3",
+              "0"
+            ],
+            "solver_peak_rss_kib": 1487868,
+            "mesh_process_peak_rss_kib": 232588
+          },
+          "probe": {
+            "element": 29677,
+            "barycentric": [
+              0.0,
+              0.009099252207718012,
+              0.49226662951316963,
+              0.49863411827911236
+            ],
+            "point_mm": [
+              9.757359309627844,
+              9.75735931742399,
+              19.9999999903794
+            ],
+            "distance_mm": 1.112557631975154e-08,
+            "stress_mpa": [
+              [
+                77.1189162020091,
+                -72.53214940255192,
+                0.43534428886606147
+              ],
+              [
+                -72.53214940255192,
+                78.45445740716099,
+                0.11036211814884292
+              ],
+              [
+                0.43534428886606147,
+                0.11036211814884292,
+                38.80442736231043
+              ]
+            ],
+            "von_mises_mpa": 131.54580003999007
+          },
+          "physical_qualification": {
+            "tip_relative_to_finest_tetra": 0.00015577469522964904,
+            "fillet_relative_to_finest_tetra": 0.009389867966207555,
+            "volume_relative": 1.1102230246251565e-16,
+            "reaction_relative": 5.572450469284466e-08,
+            "tree_rss_within_cap": true,
+            "qoi_qualified": true,
+            "clamp_boundary_prescribed": true,
+            "drift_from_frozen_replay_relative": 0.0,
+            "drift_qualified": true,
+            "status": "qualified"
+          }
+        }
+      ]
+    }
+  ]
+}

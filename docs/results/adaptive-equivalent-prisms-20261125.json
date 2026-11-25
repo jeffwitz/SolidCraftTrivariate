@@ -1,0 +1,398 @@
+{
+  "schema": "paired_adaptive_physical_energy_discrepancy_v1",
+  "cases": [
+    {
+      "case": "L",
+      "rounds": [
+        {
+          "round": 0,
+          "leaves": [
+            192,
+            768
+          ],
+          "field": {
+            "levels": [
+              {
+                "n_per_box_scramble": 128,
+                "energy_distance": 0.14130939363156317,
+                "l2_distance": 0.005437989591060758,
+                "empirical_half_width_95": [
+                  0.023461199927780552,
+                  9.40718020902289e-06
+                ],
+                "relative_energy_recovery": [
+                  -0.019020114590181714,
+                  -0.02876518438613429
+                ]
+              },
+              {
+                "n_per_box_scramble": 512,
+                "energy_distance": 0.14963150945356307,
+                "l2_distance": 0.005455582407586737,
+                "empirical_half_width_95": [
+                  0.01304593125724505,
+                  2.286657909860599e-06
+                ],
+                "relative_energy_recovery": [
+                  -0.0025953265463204422,
+                  -0.00995615696359986
+                ]
+              },
+              {
+                "n_per_box_scramble": 2048,
+                "energy_distance": 0.15791252978021314,
+                "l2_distance": 0.00545631754984848,
+                "empirical_half_width_95": [
+                  0.002517574410819059,
+                  2.19864450546879e-06
+                ],
+                "relative_energy_recovery": [
+                  0.0006322072053766004,
+                  0.0006053956379430403
+                ]
+              }
+            ],
+            "checks": {
+              "energy": false,
+              "work": true,
+              "recovery": true,
+              "energy_distance_stable": false,
+              "l2_distance_stable": true
+            },
+            "qualified": false,
+            "work_n_mm": [
+              0.0619410254890967,
+              0.062238308952499814
+            ]
+          },
+          "marking": [
+            {
+              "selected": 5,
+              "captured_indicator_fraction": 0.5596188852624467,
+              "integrated_difference_n_mm": 0.0007984355376578626,
+              "largest_leaf_fraction": 0.213844688208959
+            },
+            {
+              "selected": 6,
+              "captured_indicator_fraction": 0.5277998098287541,
+              "integrated_difference_n_mm": 0.0007984355376578626,
+              "largest_leaf_fraction": 0.15587058021738434
+            }
+          ],
+          "next_solves": [
+            {
+              "status": "completed",
+              "exit_code": 0,
+              "elapsed_s": 0.6057547330274247,
+              "tree_peak_rss_kib": 21896,
+              "compact": {
+                "status": "completed",
+                "exit_code": 0,
+                "elapsed_s": 0.3038687520311214,
+                "tree_peak_rss_kib": 30064
+              },
+              "physical": {
+                "strain_energy_n_mm": 0.03117194009798287,
+                "external_work_n_mm": 0.06234388019596552,
+                "relative_residual": 8.606078307849373e-11,
+                "relative_force_balance": 2.848115524436634e-12,
+                "relative_moment_balance": 1.6222617790252725e-12,
+                "applied_resultant_n": [
+                  23.99999999999993,
+                  -11.999999999999964,
+                  5.999999999999982
+                ],
+                "applied_moment_n_mm": [
+                  32.999999999999986,
+                  -24.00000000000001,
+                  -179.99999999999955
+                ],
+                "volume_mm3": 272.0000000000114,
+                "scalar_dofs": 2485,
+                "iterations": 272,
+                "cells": 227,
+                "load_area_mm2": 11.999999999999964
+              },
+              "relative_to_h2_geometry_and_loading": {
+                "volume_mm3": 1.2538989454589491e-15,
+                "load_area_mm2": 0.0,
+                "applied_resultant_n": 0.0,
+                "applied_moment_n_mm": 0.0
+              }
+            },
+            {
+              "status": "completed",
+              "exit_code": 0,
+              "elapsed_s": 3.4743715040385723,
+              "tree_peak_rss_kib": 74632,
+              "compact": {
+                "status": "completed",
+                "exit_code": 0,
+                "elapsed_s": 0.45464250701479614,
+                "tree_peak_rss_kib": 32232
+              },
+              "physical": {
+                "strain_energy_n_mm": 0.03128434684883156,
+                "external_work_n_mm": 0.06256869369767017,
+                "relative_residual": 9.573269372591172e-11,
+                "relative_force_balance": 2.349859734403053e-12,
+                "relative_moment_balance": 1.2165339671739898e-12,
+                "applied_resultant_n": [
+                  23.999999999999925,
+                  -11.999999999999963,
+                  5.999999999999981
+                ],
+                "applied_moment_n_mm": [
+                  32.99999999999999,
+                  -24.000000000000014,
+                  -180.0000000000005
+                ],
+                "volume_mm3": 271.99999999999926,
+                "scalar_dofs": 7944,
+                "iterations": 674,
+                "cells": 810,
+                "load_area_mm2": 11.999999999999963
+              },
+              "relative_to_h2_geometry_and_loading": {
+                "volume_mm3": 5.851528412141983e-15,
+                "load_area_mm2": 0.0,
+                "applied_resultant_n": 0.0,
+                "applied_moment_n_mm": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "round": 1,
+          "leaves": [
+            227,
+            810
+          ],
+          "field": {
+            "levels": [
+              {
+                "n_per_box_scramble": 128,
+                "energy_distance": 0.11503937559112079,
+                "l2_distance": 0.004717508893507505,
+                "empirical_half_width_95": [
+                  0.00995995612899436,
+                  8.74407654799089e-06
+                ],
+                "relative_energy_recovery": [
+                  -0.024341086133983336,
+                  -0.025350143307529716
+                ]
+              },
+              {
+                "n_per_box_scramble": 512,
+                "energy_distance": 0.1354853066625092,
+                "l2_distance": 0.004724071552974784,
+                "empirical_half_width_95": [
+                  0.015319482793655078,
+                  3.929295111141007e-06
+                ],
+                "relative_energy_recovery": [
+                  -0.003441064068016586,
+                  -0.008765350848842113
+                ]
+              },
+              {
+                "n_per_box_scramble": 2048,
+                "energy_distance": 0.14257382905200516,
+                "l2_distance": 0.004727404385512706,
+                "empirical_half_width_95": [
+                  0.0042326676438553,
+                  1.6569009032205303e-06
+                ],
+                "relative_energy_recovery": [
+                  0.000818375220029921,
+                  0.0001216116325399863
+                ]
+              }
+            ],
+            "checks": {
+              "energy": false,
+              "work": true,
+              "recovery": true,
+              "energy_distance_stable": true,
+              "l2_distance_stable": true
+            },
+            "qualified": false,
+            "work_n_mm": [
+              0.06234388019596552,
+              0.06256869369767017
+            ]
+          },
+          "marking": [
+            {
+              "selected": 8,
+              "captured_indicator_fraction": 0.5327328296666898,
+              "integrated_difference_n_mm": 0.0006309219045636206,
+              "largest_leaf_fraction": 0.13957745704674296
+            },
+            {
+              "selected": 10,
+              "captured_indicator_fraction": 0.5030354889909964,
+              "integrated_difference_n_mm": 0.0006309219045636207,
+              "largest_leaf_fraction": 0.1295053179787881
+            }
+          ],
+          "next_solves": [
+            {
+              "status": "execution_error",
+              "exit_code": 1,
+              "elapsed_s": 0.15291610598796979,
+              "tree_peak_rss_kib": 4976
+            },
+            {
+              "status": "completed",
+              "exit_code": 0,
+              "elapsed_s": 3.9327342659817077,
+              "tree_peak_rss_kib": 82684,
+              "compact": {
+                "status": "completed",
+                "exit_code": 0,
+                "elapsed_s": 0.4544451970141381,
+                "tree_peak_rss_kib": 38508
+              },
+              "physical": {
+                "strain_energy_n_mm": 0.031432931207563145,
+                "external_work_n_mm": 0.06286586241512714,
+                "relative_residual": 9.573566368579649e-11,
+                "relative_force_balance": 2.31491574277923e-12,
+                "relative_moment_balance": 1.1679149131525516e-12,
+                "applied_resultant_n": [
+                  23.999999999999925,
+                  -11.999999999999963,
+                  5.999999999999981
+                ],
+                "applied_moment_n_mm": [
+                  32.99999999999999,
+                  -24.000000000000014,
+                  -180.0000000000005
+                ],
+                "volume_mm3": 271.9999999999995,
+                "scalar_dofs": 8900,
+                "iterations": 682,
+                "cells": 887,
+                "load_area_mm2": 11.999999999999963
+              },
+              "relative_to_h2_geometry_and_loading": {
+                "volume_mm3": 5.015595781835986e-15,
+                "load_area_mm2": 0.0,
+                "applied_resultant_n": 0.0,
+                "applied_moment_n_mm": 0.0
+              }
+            }
+          ]
+        }
+      ],
+      "qualified": false,
+      "training_seed": 503430912,
+      "validation_seed": 20261125,
+      "confirmation_seed": 9031175,
+      "stop": "incomplete_paired_solve"
+    },
+    {
+      "case": "two_holes",
+      "rounds": [
+        {
+          "round": 0,
+          "leaves": [
+            1344,
+            2688
+          ],
+          "field": {
+            "levels": [
+              {
+                "n_per_box_scramble": 128,
+                "energy_distance": 0.08088135287231257,
+                "l2_distance": 0.0008334082463792409,
+                "empirical_half_width_95": [
+                  0.003634103092800254,
+                  5.905291807881409e-07
+                ],
+                "relative_energy_recovery": [
+                  -0.0003554724698316969,
+                  -2.420857389451303e-05
+                ]
+              },
+              {
+                "n_per_box_scramble": 512,
+                "energy_distance": 0.08287108464813318,
+                "l2_distance": 0.0008332362105601852,
+                "empirical_half_width_95": [
+                  0.0017276329241496752,
+                  2.0705392774498035e-07
+                ],
+                "relative_energy_recovery": [
+                  -0.0002587840367886951,
+                  -0.0010552110823015548
+                ]
+              },
+              {
+                "n_per_box_scramble": 2048,
+                "energy_distance": 0.08313167898163583,
+                "l2_distance": 0.0008332946600686383,
+                "empirical_half_width_95": [
+                  0.0009953943613172653,
+                  3.3079075125562896e-08
+                ],
+                "relative_energy_recovery": [
+                  -2.197946878013113e-05,
+                  -0.0002044712339646093
+                ]
+              }
+            ],
+            "checks": {
+              "energy": false,
+              "work": true,
+              "recovery": true,
+              "energy_distance_stable": true,
+              "l2_distance_stable": true
+            },
+            "qualified": false,
+            "work_n_mm": [
+              3.500616028925966,
+              3.4973469604856486
+            ]
+          },
+          "marking": [
+            {
+              "selected": 34,
+              "captured_indicator_fraction": 0.5047919703364985,
+              "integrated_difference_n_mm": 0.01230346130834523,
+              "largest_leaf_fraction": 0.02907338209074989
+            },
+            {
+              "selected": 40,
+              "captured_indicator_fraction": 0.506337656822803,
+              "integrated_difference_n_mm": 0.012303461308345233,
+              "largest_leaf_fraction": 0.03556681565095591
+            }
+          ],
+          "next_solves": [
+            {
+              "status": "execution_error",
+              "exit_code": 1,
+              "elapsed_s": 0.3039423819864169,
+              "tree_peak_rss_kib": 15336
+            },
+            {
+              "status": "execution_error",
+              "exit_code": 1,
+              "elapsed_s": 0.6064866269589402,
+              "tree_peak_rss_kib": 29780
+            }
+          ]
+        }
+      ],
+      "qualified": false,
+      "training_seed": 503430912,
+      "validation_seed": 20261125,
+      "confirmation_seed": 9031175,
+      "stop": "incomplete_paired_solve"
+    }
+  ],
+  "elapsed_s": 27.499336476961616
+}

@@ -1,0 +1,238 @@
+{
+  "cli_sha256": "283bd43f8ed3770a753c19cbe24c7a792b65a8caebf093e4928c1553decc6428",
+  "parent_q32_volume_mm3": 53200.395274197734,
+  "results": [
+    {
+      "name": "wide",
+      "operation": {
+        "support_feature": "rect_x/zmin",
+        "frame": {
+          "origin_mm": [
+            0,
+            0,
+            4
+          ],
+          "u": [
+            1,
+            0,
+            0
+          ],
+          "v": [
+            0,
+            1,
+            0
+          ]
+        },
+        "direction": [
+          0,
+          0,
+          -1
+        ],
+        "depth_mm": 2,
+        "loop": {
+          "id": "pocket",
+          "primitive": {
+            "kind": "rectangle",
+            "min": [
+              [
+                54,
+                1
+              ],
+              [
+                5893,
+                266
+              ]
+            ],
+            "max": [
+              [
+                75,
+                1
+              ],
+              [
+                25,
+                1
+              ]
+            ]
+          }
+        }
+      },
+      "returncode": 1,
+      "passed": false,
+      "diagnostic": "{\"reason\":\"S3 rectangle is outside the registered conforming pocket prospects\",\"status\":\"error\"}"
+    },
+    {
+      "name": "narrow",
+      "operation": {
+        "support_feature": "rect_x/zmin",
+        "frame": {
+          "origin_mm": [
+            0,
+            0,
+            4
+          ],
+          "u": [
+            1,
+            0,
+            0
+          ],
+          "v": [
+            0,
+            1,
+            0
+          ]
+        },
+        "direction": [
+          0,
+          0,
+          -1
+        ],
+        "depth_mm": 2,
+        "loop": {
+          "id": "pocket",
+          "primitive": {
+            "kind": "rectangle",
+            "min": [
+              [
+                56,
+                1
+              ],
+              [
+                5893,
+                266
+              ]
+            ],
+            "max": [
+              [
+                75,
+                1
+              ],
+              [
+                25,
+                1
+              ]
+            ]
+          }
+        }
+      },
+      "returncode": 1,
+      "passed": false,
+      "diagnostic": "{\"reason\":\"S3 rectangle is outside the registered conforming pocket prospects\",\"status\":\"error\"}"
+    },
+    {
+      "name": "shallow",
+      "operation": {
+        "support_feature": "rect_x/zmin",
+        "frame": {
+          "origin_mm": [
+            0,
+            0,
+            4
+          ],
+          "u": [
+            1,
+            0,
+            0
+          ],
+          "v": [
+            0,
+            1,
+            0
+          ]
+        },
+        "direction": [
+          0,
+          0,
+          -1
+        ],
+        "depth_mm": 1,
+        "loop": {
+          "id": "pocket",
+          "primitive": {
+            "kind": "rectangle",
+            "min": [
+              [
+                55,
+                1
+              ],
+              [
+                5893,
+                266
+              ]
+            ],
+            "max": [
+              [
+                75,
+                1
+              ],
+              [
+                25,
+                1
+              ]
+            ]
+          }
+        }
+      },
+      "returncode": 1,
+      "passed": false,
+      "diagnostic": "{\"reason\":\"S3 pocket must run from z=4 to z=2 in the negative Z direction\",\"status\":\"error\"}"
+    },
+    {
+      "name": "new_rational_cut",
+      "operation": {
+        "support_feature": "rect_x/zmin",
+        "frame": {
+          "origin_mm": [
+            0,
+            0,
+            4
+          ],
+          "u": [
+            1,
+            0,
+            0
+          ],
+          "v": [
+            0,
+            1,
+            0
+          ]
+        },
+        "direction": [
+          0,
+          0,
+          -1
+        ],
+        "depth_mm": 2,
+        "loop": {
+          "id": "pocket",
+          "primitive": {
+            "kind": "rectangle",
+            "min": [
+              [
+                54,
+                1
+              ],
+              [
+                48689,
+                2070
+              ]
+            ],
+            "max": [
+              [
+                74,
+                1
+              ],
+              [
+                25,
+                1
+              ]
+            ]
+          }
+        }
+      },
+      "returncode": 1,
+      "passed": false,
+      "diagnostic": "{\"reason\":\"S3 rectangle is outside the registered conforming pocket prospects\",\"status\":\"error\"}"
+    }
+  ]
+}

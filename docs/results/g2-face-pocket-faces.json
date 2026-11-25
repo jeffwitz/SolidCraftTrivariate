@@ -1,0 +1,746 @@
+{
+  "method": "direct tensor-product Bernstein integration of rational V-Rep boundary faces; 16/32 Gauss rules; source expectations from independent Cox/de Boor oracle",
+  "cases": {
+    "interior_principal": {
+      "status": "measured",
+      "model_path": "build/s3_face_pocket.delivery.json",
+      "model_sha256": "f5bc0939201da16ef718d2b12ff0d46fae30b0d524b15480d69acaacc0d96140",
+      "topology_counts": {
+        "blocks": 93,
+        "exterior_sides": 176,
+        "interfaces": 191
+      },
+      "pocket_face_areas_mm2_by_gauss_order": {
+        "16": {
+          "pocket/floor": 31.42690143847079,
+          "pocket/wall_ymin": 22.263157894736853,
+          "pocket/wall_ymax": 22.000000000000043,
+          "pocket/wall_xmin": 5.691729323308266
+        },
+        "32": {
+          "pocket/floor": 31.426901438470814,
+          "pocket/wall_ymin": 22.263157894736896,
+          "pocket/wall_ymax": 21.999999999999996,
+          "pocket/wall_xmin": 5.691729323308283
+        }
+      },
+      "source_oracle": {
+        "floor_area_mm2": 31.42690143847066,
+        "side_wall_area_mm2": 49.954887218045094,
+        "side_wall_components_mm2": {
+          "pocket/wall_ymin": 22.26315789473685,
+          "pocket/wall_ymax": 21.99999999999997,
+          "pocket/wall_xmin": 5.691729323308273
+        },
+        "truncated_arc_length_relocated_mm": 2.849996949390312
+      },
+      "differences_order32_mm2": {
+        "floor": 1.5276668818842154e-13,
+        "sum_walls": 7.815970093361102e-14,
+        "wall_components": {
+          "pocket/wall_ymin": 4.618527782440651e-14,
+          "pocket/wall_ymax": 2.4868995751603507e-14,
+          "pocket/wall_xmin": 9.769962616701378e-15
+        }
+      },
+      "quadrature_delta_order32_minus16_mm2": {
+        "pocket/floor": 2.4868995751603507e-14,
+        "pocket/wall_xmin": 1.687538997430238e-14,
+        "pocket/wall_ymax": -4.618527782440651e-14,
+        "pocket/wall_ymin": 4.263256414560601e-14
+      },
+      "model_face_counts": {
+        "pocket/floor": 1,
+        "pocket/wall_xmin": 1,
+        "pocket/wall_ymax": 1,
+        "pocket/wall_ymin": 1
+      },
+      "source_edge_traces": {
+        "retained_z4_left": [
+          {
+            "block": "s3_i_u_z2_4_g2_s3_p0_z0_src2",
+            "feature": "rect_x/zmin",
+            "face_side": "w1",
+            "source_parameter_interval": [
+              2.5,
+              3.0
+            ],
+            "edge_orientation_reversed": false,
+            "integrated_edge_length_mm": 5.0599179450835985,
+            "direct_source_jet_comparison": {
+              "sample_count": 17,
+              "max_position_error_mm": 1.464821375527116e-14,
+              "max_tangent_1_minus_dot": 1.1102230246251565e-16,
+              "max_curvature_vector_error_per_mm": 1.1813451149664058e-16,
+              "samples": [
+                {
+                  "fraction": 0.0,
+                  "position_error_mm": 3.552713678800501e-15,
+                  "tangent_dot": 1.0,
+                  "curvature_vector_error_per_mm": 4.1777673608052095e-17
+                },
+                {
+                  "fraction": 0.0625,
+                  "position_error_mm": 3.552713678800501e-15,
+                  "tangent_dot": 1.0000000000000002,
+                  "curvature_vector_error_per_mm": 6.664589960562512e-17
+                },
+                {
+                  "fraction": 0.125,
+                  "position_error_mm": 3.552713678800501e-15,
+                  "tangent_dot": 1.0000000000000002,
+                  "curvature_vector_error_per_mm": 3.1031676915590914e-17
+                },
+                {
+                  "fraction": 0.1875,
+                  "position_error_mm": 1.4210854715202004e-14,
+                  "tangent_dot": 0.9999999999999999,
+                  "curvature_vector_error_per_mm": 2.6020852139652106e-17
+                },
+                {
+                  "fraction": 0.25,
+                  "position_error_mm": 3.552713678800501e-15,
+                  "tangent_dot": 0.9999999999999999,
+                  "curvature_vector_error_per_mm": 1.0649845920537046e-16
+                },
+                {
+                  "fraction": 0.3125,
+                  "position_error_mm": 3.552713678800501e-15,
+                  "tangent_dot": 1.0,
+                  "curvature_vector_error_per_mm": 4.734873626495502e-17
+                },
+                {
+                  "fraction": 0.375,
+                  "position_error_mm": 1.4210854715202004e-14,
+                  "tangent_dot": 1.0,
+                  "curvature_vector_error_per_mm": 2.359479019930958e-17
+                },
+                {
+                  "fraction": 0.4375,
+                  "position_error_mm": 1.464821375527116e-14,
+                  "tangent_dot": 0.9999999999999999,
+                  "curvature_vector_error_per_mm": 1.1755551738375762e-16
+                },
+                {
+                  "fraction": 0.5,
+                  "position_error_mm": 0.0,
+                  "tangent_dot": 0.9999999999999999,
+                  "curvature_vector_error_per_mm": 7.632783294297951e-17
+                },
+                {
+                  "fraction": 0.5625,
+                  "position_error_mm": 3.552713678800501e-15,
+                  "tangent_dot": 1.0,
+                  "curvature_vector_error_per_mm": 7.799627147739501e-17
+                },
+                {
+                  "fraction": 0.625,
+                  "position_error_mm": 1.4210854715202004e-14,
+                  "tangent_dot": 1.0,
+                  "curvature_vector_error_per_mm": 7.790820618110712e-17
+                },
+                {
+                  "fraction": 0.6875,
+                  "position_error_mm": 3.552713678800501e-15,
+                  "tangent_dot": 1.0,
+                  "curvature_vector_error_per_mm": 4.3885418357208765e-17
+                },
+                {
+                  "fraction": 0.75,
+                  "position_error_mm": 0.0,
+                  "tangent_dot": 1.0,
+                  "curvature_vector_error_per_mm": 2.0383000842727483e-17
+                },
+                {
+                  "fraction": 0.8125,
+                  "position_error_mm": 0.0,
+                  "tangent_dot": 1.0000000000000002,
+                  "curvature_vector_error_per_mm": 1.1268715665146956e-16
+                },
+                {
+                  "fraction": 0.875,
+                  "position_error_mm": 1.4210854715202004e-14,
+                  "tangent_dot": 1.0000000000000002,
+                  "curvature_vector_error_per_mm": 1.1813451149664058e-16
+                },
+                {
+                  "fraction": 0.9375,
+                  "position_error_mm": 0.0,
+                  "tangent_dot": 1.0,
+                  "curvature_vector_error_per_mm": 0.0
+                },
+                {
+                  "fraction": 1.0,
+                  "position_error_mm": 1.4210854715202004e-14,
+                  "tangent_dot": 1.0,
+                  "curvature_vector_error_per_mm": 1.1102230246251565e-16
+                }
+              ]
+            }
+          }
+        ],
+        "retained_z4_right": [
+          {
+            "block": "s3_i_u1_z2_4_g2_s4_p0_z0_src3_cut0b",
+            "feature": "rect_x/zmin",
+            "face_side": "w1",
+            "source_parameter_interval": [
+              3.2500000000000004,
+              3.5
+            ],
+            "edge_orientation_reversed": false,
+            "integrated_edge_length_mm": 2.209920995693291,
+            "direct_source_jet_comparison": {
+              "sample_count": 17,
+              "max_position_error_mm": 1.5888218580782548e-14,
+              "max_tangent_1_minus_dot": 3.3306690738754696e-16,
+              "max_curvature_vector_error_per_mm": 1.809479265955811e-16,
+              "samples": [
+                {
+                  "fraction": 0.0,
+                  "position_error_mm": 3.552713678800501e-15,
+                  "tangent_dot": 1.0,
+                  "curvature_vector_error_per_mm": 1.3985787785349405e-17
+                },
+                {
+                  "fraction": 0.0625,
+                  "position_error_mm": 3.552713678800501e-15,
+                  "tangent_dot": 0.9999999999999999,
+                  "curvature_vector_error_per_mm": 1.2026820930153127e-16
+                },
+                {
+                  "fraction": 0.125,
+                  "position_error_mm": 1.464821375527116e-14,
+                  "tangent_dot": 0.9999999999999999,
+                  "curvature_vector_error_per_mm": 1.3149901938165234e-16
+                },
+                {
+                  "fraction": 0.1875,
+                  "position_error_mm": 7.105427357601002e-15,
+                  "tangent_dot": 0.9999999999999999,
+                  "curvature_vector_error_per_mm": 1.809479265955811e-16
+                },
+                {
+                  "fraction": 0.25,
+                  "position_error_mm": 7.105427357601002e-15,
+                  "tangent_dot": 1.0,
+                  "curvature_vector_error_per_mm": 1.5290187691960546e-16
+                },
+                {
+                  "fraction": 0.3125,
+                  "position_error_mm": 1.5888218580782548e-14,
+                  "tangent_dot": 0.9999999999999999,
+                  "curvature_vector_error_per_mm": 1.547724329449556e-16
+                },
+                {
+                  "fraction": 0.375,
+                  "position_error_mm": 3.552713678800501e-15,
+                  "tangent_dot": 1.0,
+                  "curvature_vector_error_per_mm": 1.1159342773238595e-16
+                },
+                {
+                  "fraction": 0.4375,
+                  "position_error_mm": 3.552713678800501e-15,
+                  "tangent_dot": 1.0,
+                  "curvature_vector_error_per_mm": 1.4883904259077384e-17
+                },
+                {
+                  "fraction": 0.5,
+                  "position_error_mm": 0.0,
+                  "tangent_dot": 0.9999999999999999,
+                  "curvature_vector_error_per_mm": 1.0649845920537046e-16
+                },
+                {
+                  "fraction": 0.5625,
+                  "position_error_mm": 3.552713678800501e-15,
+                  "tangent_dot": 0.9999999999999998,
+                  "curvature_vector_error_per_mm": 3.5381555418772973e-17
+                },
+                {
+                  "fraction": 0.625,
+                  "position_error_mm": 1.4210854715202004e-14,
+                  "tangent_dot": 0.9999999999999999,
+                  "curvature_vector_error_per_mm": 2.6020852139652106e-17
+                },
+                {
+                  "fraction": 0.6875,
+                  "position_error_mm": 3.552713678800501e-15,
+                  "tangent_dot": 0.9999999999999997,
+                  "curvature_vector_error_per_mm": 1.5337349416169413e-16
+                },
+                {
+                  "fraction": 0.75,
+                  "position_error_mm": 0.0,
+                  "tangent_dot": 1.0000000000000002,
+                  "curvature_vector_error_per_mm": 5.310067616522823e-17
+                },
+                {
+                  "fraction": 0.8125,
+                  "position_error_mm": 3.552713678800501e-15,
+                  "tangent_dot": 1.0000000000000002,
+                  "curvature_vector_error_per_mm": 5.721958498152797e-17
+                },
+                {
+                  "fraction": 0.875,
+                  "position_error_mm": 3.552713678800501e-15,
+                  "tangent_dot": 1.0000000000000002,
+                  "curvature_vector_error_per_mm": 1.3964254612015911e-16
+                },
+                {
+                  "fraction": 0.9375,
+                  "position_error_mm": 3.552713678800501e-15,
+                  "tangent_dot": 1.0000000000000002,
+                  "curvature_vector_error_per_mm": 2.8040065788051327e-17
+                },
+                {
+                  "fraction": 1.0,
+                  "position_error_mm": 3.552713678800501e-15,
+                  "tangent_dot": 1.0,
+                  "curvature_vector_error_per_mm": 2.797157557069881e-17
+                }
+              ]
+            }
+          }
+        ],
+        "relocated_floor_z2": [
+          {
+            "block": "s3_i_u0_z0_2_g2_s4_p0_z0_src3_cut0a",
+            "feature": "pocket/floor",
+            "face_side": "w1",
+            "source_parameter_interval": [
+              3.0,
+              3.2500000000000004
+            ],
+            "edge_orientation_reversed": false,
+            "integrated_edge_length_mm": 2.8499969493903077,
+            "direct_source_jet_comparison": {
+              "sample_count": 17,
+              "max_position_error_mm": 1.5888218580782548e-14,
+              "max_tangent_1_minus_dot": 2.220446049250313e-16,
+              "max_curvature_vector_error_per_mm": 1.4659760543567343e-16,
+              "samples": [
+                {
+                  "fraction": 0.0,
+                  "position_error_mm": 1.4210854715202004e-14,
+                  "tangent_dot": 1.0,
+                  "curvature_vector_error_per_mm": 1.1102230246251565e-16
+                },
+                {
+                  "fraction": 0.0625,
+                  "position_error_mm": 3.552713678800501e-15,
+                  "tangent_dot": 1.0,
+                  "curvature_vector_error_per_mm": 1.1103343244694777e-16
+                },
+                {
+                  "fraction": 0.125,
+                  "position_error_mm": 3.552713678800501e-15,
+                  "tangent_dot": 1.0,
+                  "curvature_vector_error_per_mm": 6.938893903907228e-18
+                },
+                {
+                  "fraction": 0.1875,
+                  "position_error_mm": 1.4210854715202004e-14,
+                  "tangent_dot": 1.0000000000000002,
+                  "curvature_vector_error_per_mm": 1.110668157082426e-16
+                },
+                {
+                  "fraction": 0.25,
+                  "position_error_mm": 1.5888218580782548e-14,
+                  "tangent_dot": 1.0000000000000002,
+                  "curvature_vector_error_per_mm": 1.1813451149664058e-16
+                },
+                {
+                  "fraction": 0.3125,
+                  "position_error_mm": 3.552713678800501e-15,
+                  "tangent_dot": 0.9999999999999998,
+                  "curvature_vector_error_per_mm": 6.939740885162004e-18
+                },
+                {
+                  "fraction": 0.375,
+                  "position_error_mm": 0.0,
+                  "tangent_dot": 1.0000000000000002,
+                  "curvature_vector_error_per_mm": 1.1268715665146956e-16
+                },
+                {
+                  "fraction": 0.4375,
+                  "position_error_mm": 1.4210854715202004e-14,
+                  "tangent_dot": 1.0,
+                  "curvature_vector_error_per_mm": 1.1587336852967668e-16
+                },
+                {
+                  "fraction": 0.5,
+                  "position_error_mm": 3.552713678800501e-15,
+                  "tangent_dot": 0.9999999999999998,
+                  "curvature_vector_error_per_mm": 9.6609653480017e-18
+                },
+                {
+                  "fraction": 0.5625,
+                  "position_error_mm": 1.5888218580782548e-14,
+                  "tangent_dot": 1.0,
+                  "curvature_vector_error_per_mm": 1.4650520308040408e-16
+                },
+                {
+                  "fraction": 0.625,
+                  "position_error_mm": 1.5888218580782548e-14,
+                  "tangent_dot": 1.0000000000000002,
+                  "curvature_vector_error_per_mm": 1.4659760543567343e-16
+                },
+                {
+                  "fraction": 0.6875,
+                  "position_error_mm": 1.464821375527116e-14,
+                  "tangent_dot": 0.9999999999999998,
+                  "curvature_vector_error_per_mm": 1.4046172853913364e-17
+                },
+                {
+                  "fraction": 0.75,
+                  "position_error_mm": 1.5888218580782548e-14,
+                  "tangent_dot": 1.0,
+                  "curvature_vector_error_per_mm": 1.1236938283130691e-16
+                },
+                {
+                  "fraction": 0.8125,
+                  "position_error_mm": 1.5888218580782548e-14,
+                  "tangent_dot": 0.9999999999999999,
+                  "curvature_vector_error_per_mm": 1.2628478432125585e-16
+                },
+                {
+                  "fraction": 0.875,
+                  "position_error_mm": 1.5888218580782548e-14,
+                  "tangent_dot": 1.0000000000000002,
+                  "curvature_vector_error_per_mm": 1.3347228920484555e-16
+                },
+                {
+                  "fraction": 0.9375,
+                  "position_error_mm": 3.552713678800501e-15,
+                  "tangent_dot": 0.9999999999999999,
+                  "curvature_vector_error_per_mm": 1.1272561804967908e-16
+                },
+                {
+                  "fraction": 1.0,
+                  "position_error_mm": 3.552713678800501e-15,
+                  "tangent_dot": 1.0,
+                  "curvature_vector_error_per_mm": 1.3985787785349405e-17
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "arc_length_comparison_mm": {
+        "z4_retained_source_expected": 7.269838940776886,
+        "z4_retained_model_measured": 7.269838940776889,
+        "z4_retained_model_minus_source": 3.552713678800501e-15,
+        "z2_relocated_source_expected": 2.849996949390312,
+        "z2_relocated_model_measured": 2.8499969493903077,
+        "z2_relocated_model_minus_source": -4.440892098500626e-15
+      }
+    },
+    "open_stock_edge_witness": {
+      "status": "measured",
+      "model_path": "build/s3_face_pocket_open_side.delivery.json",
+      "model_sha256": "fdafec4e7dc4eeceea006ccc65754ba4ee1bdd21d64a82ac2be69362b9d87672",
+      "topology_counts": {
+        "blocks": 86,
+        "exterior_sides": 162,
+        "interfaces": 177
+      },
+      "pocket_face_areas_mm2_by_gauss_order": {
+        "16": {
+          "pocket/floor": 332.561498994991,
+          "pocket/wall_ymax": 132.0,
+          "pocket/wall_ymin": 132.94444444444434
+        },
+        "32": {
+          "pocket/floor": 332.5614989949907,
+          "pocket/wall_ymax": 132.00000000000006,
+          "pocket/wall_ymin": 132.94444444444454
+        }
+      },
+      "source_oracle": {
+        "floor_area_mm2": 332.56149899499087,
+        "side_wall_area_mm2": 264.94444444444446,
+        "side_wall_components_mm2": {
+          "pocket/wall_ymin": 132.94444444444446,
+          "pocket/wall_ymax": 131.99999999999997,
+          "pocket/wall_xmin": 0.0
+        },
+        "truncated_arc_length_relocated_mm": 5.0599179450835985
+      },
+      "differences_order32_mm2": {
+        "floor": -1.7053025658242404e-13,
+        "sum_walls": 1.1368683772161603e-13,
+        "wall_components": {
+          "pocket/wall_ymin": 8.526512829121202e-14,
+          "pocket/wall_ymax": 8.526512829121202e-14,
+          "pocket/wall_xmin": 0.0
+        }
+      },
+      "quadrature_delta_order32_minus16_mm2": {
+        "pocket/floor": -2.8421709430404007e-13,
+        "pocket/wall_ymax": 5.684341886080802e-14,
+        "pocket/wall_ymin": 1.9895196601282805e-13
+      },
+      "model_face_counts": {
+        "pocket/floor": 2,
+        "pocket/wall_ymax": 2,
+        "pocket/wall_ymin": 2
+      },
+      "source_edge_traces": {
+        "retained_z4_left": [
+          {
+            "block": "s3_i_u_z2_4_g2_s3_p0_z0_src2",
+            "feature": "rect_x/zmin",
+            "face_side": "w1",
+            "source_parameter_interval": [
+              2.5,
+              3.0
+            ],
+            "edge_orientation_reversed": false,
+            "integrated_edge_length_mm": 5.0599179450835985,
+            "direct_source_jet_comparison": {
+              "sample_count": 17,
+              "max_position_error_mm": 1.464821375527116e-14,
+              "max_tangent_1_minus_dot": 1.1102230246251565e-16,
+              "max_curvature_vector_error_per_mm": 1.1813451149664058e-16,
+              "samples": [
+                {
+                  "fraction": 0.0,
+                  "position_error_mm": 3.552713678800501e-15,
+                  "tangent_dot": 1.0,
+                  "curvature_vector_error_per_mm": 4.1777673608052095e-17
+                },
+                {
+                  "fraction": 0.0625,
+                  "position_error_mm": 3.552713678800501e-15,
+                  "tangent_dot": 1.0000000000000002,
+                  "curvature_vector_error_per_mm": 6.664589960562512e-17
+                },
+                {
+                  "fraction": 0.125,
+                  "position_error_mm": 3.552713678800501e-15,
+                  "tangent_dot": 1.0000000000000002,
+                  "curvature_vector_error_per_mm": 3.1031676915590914e-17
+                },
+                {
+                  "fraction": 0.1875,
+                  "position_error_mm": 1.4210854715202004e-14,
+                  "tangent_dot": 0.9999999999999999,
+                  "curvature_vector_error_per_mm": 2.6020852139652106e-17
+                },
+                {
+                  "fraction": 0.25,
+                  "position_error_mm": 3.552713678800501e-15,
+                  "tangent_dot": 0.9999999999999999,
+                  "curvature_vector_error_per_mm": 1.0649845920537046e-16
+                },
+                {
+                  "fraction": 0.3125,
+                  "position_error_mm": 3.552713678800501e-15,
+                  "tangent_dot": 1.0,
+                  "curvature_vector_error_per_mm": 4.734873626495502e-17
+                },
+                {
+                  "fraction": 0.375,
+                  "position_error_mm": 1.4210854715202004e-14,
+                  "tangent_dot": 1.0,
+                  "curvature_vector_error_per_mm": 2.359479019930958e-17
+                },
+                {
+                  "fraction": 0.4375,
+                  "position_error_mm": 1.464821375527116e-14,
+                  "tangent_dot": 0.9999999999999999,
+                  "curvature_vector_error_per_mm": 1.1755551738375762e-16
+                },
+                {
+                  "fraction": 0.5,
+                  "position_error_mm": 0.0,
+                  "tangent_dot": 0.9999999999999999,
+                  "curvature_vector_error_per_mm": 7.632783294297951e-17
+                },
+                {
+                  "fraction": 0.5625,
+                  "position_error_mm": 3.552713678800501e-15,
+                  "tangent_dot": 1.0,
+                  "curvature_vector_error_per_mm": 7.799627147739501e-17
+                },
+                {
+                  "fraction": 0.625,
+                  "position_error_mm": 1.4210854715202004e-14,
+                  "tangent_dot": 1.0,
+                  "curvature_vector_error_per_mm": 7.790820618110712e-17
+                },
+                {
+                  "fraction": 0.6875,
+                  "position_error_mm": 3.552713678800501e-15,
+                  "tangent_dot": 1.0,
+                  "curvature_vector_error_per_mm": 4.3885418357208765e-17
+                },
+                {
+                  "fraction": 0.75,
+                  "position_error_mm": 0.0,
+                  "tangent_dot": 1.0,
+                  "curvature_vector_error_per_mm": 2.0383000842727483e-17
+                },
+                {
+                  "fraction": 0.8125,
+                  "position_error_mm": 0.0,
+                  "tangent_dot": 1.0000000000000002,
+                  "curvature_vector_error_per_mm": 1.1268715665146956e-16
+                },
+                {
+                  "fraction": 0.875,
+                  "position_error_mm": 1.4210854715202004e-14,
+                  "tangent_dot": 1.0000000000000002,
+                  "curvature_vector_error_per_mm": 1.1813451149664058e-16
+                },
+                {
+                  "fraction": 0.9375,
+                  "position_error_mm": 0.0,
+                  "tangent_dot": 1.0,
+                  "curvature_vector_error_per_mm": 0.0
+                },
+                {
+                  "fraction": 1.0,
+                  "position_error_mm": 1.4210854715202004e-14,
+                  "tangent_dot": 1.0,
+                  "curvature_vector_error_per_mm": 1.1102230246251565e-16
+                }
+              ]
+            }
+          }
+        ],
+        "relocated_floor_z2": [
+          {
+            "block": "s3_i_u0_z0_2_g2_s4_p0_z0_src3",
+            "feature": "pocket/floor",
+            "face_side": "w1",
+            "source_parameter_interval": [
+              3.0,
+              3.5
+            ],
+            "edge_orientation_reversed": false,
+            "integrated_edge_length_mm": 5.0599179450835985,
+            "direct_source_jet_comparison": {
+              "sample_count": 17,
+              "max_position_error_mm": 1.5888218580782548e-14,
+              "max_tangent_1_minus_dot": 2.220446049250313e-16,
+              "max_curvature_vector_error_per_mm": 1.3964254612015911e-16,
+              "samples": [
+                {
+                  "fraction": 0.0,
+                  "position_error_mm": 1.4210854715202004e-14,
+                  "tangent_dot": 1.0,
+                  "curvature_vector_error_per_mm": 1.1102230246251565e-16
+                },
+                {
+                  "fraction": 0.0625,
+                  "position_error_mm": 3.552713678800501e-15,
+                  "tangent_dot": 1.0,
+                  "curvature_vector_error_per_mm": 6.938893903907228e-18
+                },
+                {
+                  "fraction": 0.125,
+                  "position_error_mm": 1.5888218580782548e-14,
+                  "tangent_dot": 1.0000000000000002,
+                  "curvature_vector_error_per_mm": 1.1813451149664058e-16
+                },
+                {
+                  "fraction": 0.1875,
+                  "position_error_mm": 0.0,
+                  "tangent_dot": 1.0000000000000002,
+                  "curvature_vector_error_per_mm": 1.1268715665146956e-16
+                },
+                {
+                  "fraction": 0.25,
+                  "position_error_mm": 3.552713678800501e-15,
+                  "tangent_dot": 0.9999999999999998,
+                  "curvature_vector_error_per_mm": 9.6609653480017e-18
+                },
+                {
+                  "fraction": 0.3125,
+                  "position_error_mm": 0.0,
+                  "tangent_dot": 1.0,
+                  "curvature_vector_error_per_mm": 6.952433221959954e-18
+                },
+                {
+                  "fraction": 0.375,
+                  "position_error_mm": 1.464821375527116e-14,
+                  "tangent_dot": 1.0,
+                  "curvature_vector_error_per_mm": 7.790820618110712e-17
+                },
+                {
+                  "fraction": 0.4375,
+                  "position_error_mm": 3.552713678800501e-15,
+                  "tangent_dot": 1.0,
+                  "curvature_vector_error_per_mm": 7.799627147739501e-17
+                },
+                {
+                  "fraction": 0.5,
+                  "position_error_mm": 3.552713678800501e-15,
+                  "tangent_dot": 1.0,
+                  "curvature_vector_error_per_mm": 2.7097246932071044e-17
+                },
+                {
+                  "fraction": 0.5625,
+                  "position_error_mm": 1.464821375527116e-14,
+                  "tangent_dot": 0.9999999999999999,
+                  "curvature_vector_error_per_mm": 1.1755551738375762e-16
+                },
+                {
+                  "fraction": 0.625,
+                  "position_error_mm": 1.4210854715202004e-14,
+                  "tangent_dot": 1.0,
+                  "curvature_vector_error_per_mm": 2.359479019930958e-17
+                },
+                {
+                  "fraction": 0.6875,
+                  "position_error_mm": 0.0,
+                  "tangent_dot": 1.0,
+                  "curvature_vector_error_per_mm": 7.380733662959718e-17
+                },
+                {
+                  "fraction": 0.75,
+                  "position_error_mm": 0.0,
+                  "tangent_dot": 0.9999999999999999,
+                  "curvature_vector_error_per_mm": 1.0649845920537046e-16
+                },
+                {
+                  "fraction": 0.8125,
+                  "position_error_mm": 1.4210854715202004e-14,
+                  "tangent_dot": 0.9999999999999999,
+                  "curvature_vector_error_per_mm": 2.6020852139652106e-17
+                },
+                {
+                  "fraction": 0.875,
+                  "position_error_mm": 0.0,
+                  "tangent_dot": 1.0000000000000002,
+                  "curvature_vector_error_per_mm": 5.310067616522823e-17
+                },
+                {
+                  "fraction": 0.9375,
+                  "position_error_mm": 3.552713678800501e-15,
+                  "tangent_dot": 1.0000000000000002,
+                  "curvature_vector_error_per_mm": 1.3964254612015911e-16
+                },
+                {
+                  "fraction": 1.0,
+                  "position_error_mm": 3.552713678800501e-15,
+                  "tangent_dot": 1.0,
+                  "curvature_vector_error_per_mm": 2.797157557069881e-17
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "arc_length_comparison_mm": {
+        "z4_retained_source_expected": 5.0599179450835985,
+        "z4_retained_model_measured": 5.0599179450835985,
+        "z4_retained_model_minus_source": 0.0,
+        "z2_relocated_source_expected": 5.0599179450835985,
+        "z2_relocated_model_measured": 5.0599179450835985,
+        "z2_relocated_model_minus_source": 0.0
+      }
+    }
+  }
+}

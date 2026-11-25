@@ -1,0 +1,47 @@
+{
+  "target_sha256_before": "f5bc0939201da16ef718d2b12ff0d46fae30b0d524b15480d69acaacc0d96140",
+  "cases": [
+    {
+      "case": "wrong_support",
+      "returncode": 1,
+      "target_sha256_after": "f5bc0939201da16ef718d2b12ff0d46fae30b0d524b15480d69acaacc0d96140",
+      "diagnostic": "{\"reason\":\"S3 pocket support must be rect_x/zmin\",\"status\":\"error\"}"
+    },
+    {
+      "case": "floor_outside_stock",
+      "returncode": 1,
+      "target_sha256_after": "f5bc0939201da16ef718d2b12ff0d46fae30b0d524b15480d69acaacc0d96140",
+      "diagnostic": "{\"reason\":\"S3 pocket depth must remain strictly inside the stock\",\"status\":\"error\"}"
+    },
+    {
+      "case": "xmax_outside_void",
+      "returncode": 1,
+      "target_sha256_after": "f5bc0939201da16ef718d2b12ff0d46fae30b0d524b15480d69acaacc0d96140",
+      "diagnostic": "{\"reason\":\"pocket xmax is not strictly inside the global right bore flank\",\"status\":\"error\"}"
+    },
+    {
+      "case": "tampered_parent",
+      "returncode": 1,
+      "target_sha256_after": "f5bc0939201da16ef718d2b12ff0d46fae30b0d524b15480d69acaacc0d96140",
+      "diagnostic": "{\"reason\":\"periodic_plate_stored_partition_mismatch\",\"status\":\"error\"}"
+    },
+    {
+      "case": "wrong_frame",
+      "returncode": 1,
+      "target_sha256_after": "f5bc0939201da16ef718d2b12ff0d46fae30b0d524b15480d69acaacc0d96140",
+      "diagnostic": "{\"reason\":\"S3 pocket must use rect_x/zmin and run in the negative Z direction\",\"status\":\"error\"}"
+    },
+    {
+      "case": "empty_rectangle",
+      "returncode": 1,
+      "target_sha256_after": "f5bc0939201da16ef718d2b12ff0d46fae30b0d524b15480d69acaacc0d96140",
+      "diagnostic": "{\"reason\":\"S3 rectangle is outside the stock bounds\",\"status\":\"error\"}"
+    },
+    {
+      "case": "outside_support",
+      "returncode": 1,
+      "target_sha256_after": "f5bc0939201da16ef718d2b12ff0d46fae30b0d524b15480d69acaacc0d96140",
+      "diagnostic": "{\"reason\":\"right-wing source rows do not cover the complete pocket ordinate band\",\"status\":\"error\"}"
+    }
+  ]
+}

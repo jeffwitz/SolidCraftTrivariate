@@ -71,10 +71,20 @@ def invert_xy(block, target, z, tol=1e-8):
                     break
                 du = (rx*jv[1]-ry*jv[0])/det
                 dv = (ju[0]*ry-ju[1]*rx)/det
-                # Damping keeps Newton steps within a useful basin.
+                # Keep every evaluation in the closed parameter square; a
+                # positive-weight rational map need not have a nonzero
+                # denominator for extrapolated parameters outside that square.
                 scale = max(1.0, abs(du)/0.75, abs(dv)/0.75)
-                u -= du/scale
-                v -= dv/scale
+                accepted = False
+                for _ in range(24):
+                    next_u, next_v = u-du/scale, v-dv/scale
+                    if 0.0 <= next_u <= 1.0 and 0.0 <= next_v <= 1.0:
+                        u, v = next_u, next_v
+                        accepted = True
+                        break
+                    scale *= 2.0
+                if not accepted:
+                    break
     return None
 
 

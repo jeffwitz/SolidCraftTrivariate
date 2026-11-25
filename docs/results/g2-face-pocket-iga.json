@@ -1,0 +1,421 @@
+{
+  "atomic_refusal": {
+    "exit_code": 1,
+    "preserved_atomically": true,
+    "recipe": "/home/jeff/Code/SolidCraftTrivariate/tests/counterexamples/s3_face_pocket_wrong_support.recipe.json",
+    "sha256_after": "f5bc0939201da16ef718d2b12ff0d46fae30b0d524b15480d69acaacc0d96140",
+    "sha256_before": "f5bc0939201da16ef718d2b12ff0d46fae30b0d524b15480d69acaacc0d96140",
+    "stderr": "",
+    "stdout": "{\"reason\":\"S3 pocket support must be rect_x/zmin\",\"status\":\"error\"}\n",
+    "target": "/home/jeff/Code/SolidCraftTrivariate/build/s3-final-refusal-target.json"
+  },
+  "block_count": 93,
+  "boundary_and_old_seam_witnesses": {
+    "checks": [
+      {
+        "actual": "ON",
+        "agreement": true,
+        "candidate_maps": 1,
+        "expected": "ON",
+        "name": "new_wall_xmin",
+        "point_mm": [
+          55.0,
+          23.577067669172934,
+          3.0
+        ]
+      },
+      {
+        "actual": "IN",
+        "agreement": true,
+        "candidate_maps": 1,
+        "expected": "IN",
+        "name": "material_left_of_new_wall",
+        "point_mm": [
+          54.9,
+          23.577067669172934,
+          3.0
+        ]
+      },
+      {
+        "actual": "OUT",
+        "agreement": true,
+        "candidate_maps": 0,
+        "expected": "OUT",
+        "name": "pocket_void_right_of_new_wall",
+        "point_mm": [
+          55.1,
+          23.577067669172934,
+          3.0
+        ]
+      },
+      {
+        "actual": "ON",
+        "agreement": true,
+        "candidate_maps": 1,
+        "expected": "ON",
+        "name": "new_floor",
+        "point_mm": [
+          60.0,
+          23.577067669172934,
+          2.0
+        ]
+      },
+      {
+        "actual": "ON",
+        "agreement": true,
+        "candidate_maps": 1,
+        "expected": "ON",
+        "name": "old_floor_preserved_x_left_of_pocket",
+        "point_mm": [
+          54.9,
+          23.577067669172934,
+          4.0
+        ]
+      },
+      {
+        "actual": "ON",
+        "agreement": true,
+        "candidate_maps": 1,
+        "expected": "ON",
+        "name": "old_floor_y_above_pocket_preserved",
+        "point_mm": [
+          60.0,
+          26.0,
+          4.0
+        ]
+      },
+      {
+        "actual": "ON",
+        "agreement": true,
+        "candidate_maps": 1,
+        "expected": "ON",
+        "name": "old_profile_edge_y_gt_pocket_preserved",
+        "point_mm": [
+          66.02209533267131,
+          26.18892750744787,
+          4.0
+        ]
+      },
+      {
+        "actual": "OUT",
+        "agreement": true,
+        "candidate_maps": 0,
+        "expected": "OUT",
+        "name": "old_profile_edge_y_lt_pocket_recut",
+        "point_mm": [
+          66.02209533267131,
+          23.811072492552135,
+          4.0
+        ]
+      },
+      {
+        "actual": "OUT",
+        "agreement": true,
+        "candidate_maps": 0,
+        "expected": "OUT",
+        "name": "old_cap_y_lt_pocket_recut",
+        "point_mm": [
+          60.0,
+          23.577067669172934,
+          4.0
+        ]
+      }
+    ],
+    "classification_method": "inverse Newton in every actual S3 volume map; exterior labels distinguish ON from internal shared faces",
+    "counts": {
+      "agreements": 9,
+      "disagreements": 0,
+      "samples": 9
+    },
+    "status": "verified"
+  },
+  "build_audit": {
+    "blocks": 93,
+    "cavities": 0,
+    "determinant_lower_bound_mm3": 2.1833038027716114,
+    "exterior_sides": 176,
+    "hausdorff_error_upper_bound_mm": 0,
+    "method": "face_attached_rectangular_pocket_partition",
+    "shared_faces": 191,
+    "status": "valid",
+    "through_bores": 2
+  },
+  "cli": "/home/jeff/Code/SolidCraftTrivariate/build/s3-final-candidate-cli",
+  "cli_sha256": "da12e81b6a8eeffdabeec0b7017a7f2548d148238ed88d96f1127555ac2abe6b",
+  "constant_stress_equilibrium_orders": [
+    {
+      "exterior_faces": 176,
+      "order": 4,
+      "relative_residual_linf": 0.0009901466250821658,
+      "residual_linf": 0.4107080021434939,
+      "traction_resultant": [
+        -6.184680199083914e-07,
+        -4.638516757027311e-06,
+        -3.09219975846986e-07
+      ],
+      "traction_term_linf": 414.78625377825847,
+      "volume_resultant": [
+        -4.622968674539152e-13,
+        -2.3282487049414158e-12,
+        2.425437628517102e-11
+      ],
+      "volume_term_linf": 414.79513411401257
+    },
+    {
+      "exterior_faces": 176,
+      "order": 8,
+      "relative_residual_linf": 1.1972648043103748e-07,
+      "residual_linf": 4.9616107030914236e-05,
+      "traction_resultant": [
+        -1.100008972798605e-12,
+        7.801537194040975e-13,
+        -6.743050562363351e-12
+      ],
+      "traction_term_linf": 414.4121395957586,
+      "volume_resultant": [
+        7.211786723360092e-12,
+        3.881117649484622e-12,
+        2.7192470497539034e-11
+      ],
+      "volume_term_linf": 414.41214050799016
+    },
+    {
+      "exterior_faces": 176,
+      "order": 16,
+      "relative_residual_linf": 2.9490799768132834e-15,
+      "residual_linf": 1.2221335055073723e-12,
+      "traction_resultant": [
+        -4.0611958240788226e-13,
+        4.39648317751562e-13,
+        4.8121506779352785e-12
+      ],
+      "traction_term_linf": 414.4117877833829,
+      "volume_resultant": [
+        -2.4358293160275934e-13,
+        1.0376144388146713e-12,
+        1.13473674900888e-11
+      ],
+      "volume_term_linf": 414.41178778338366
+    }
+  ],
+  "design_face_feature_counts": {
+    "nurbs_z_hole/wall": 46,
+    "pocket/floor": 1,
+    "pocket/wall_xmin": 1,
+    "pocket/wall_ymax": 1,
+    "pocket/wall_ymin": 1,
+    "rect_x/ymax": 4,
+    "rect_x/ymin": 4,
+    "rect_x/zmax": 10,
+    "rect_x/zmin": 9,
+    "stock/xmax": 14,
+    "stock/xmin": 17,
+    "stock/ymax": 8,
+    "stock/ymin": 8,
+    "stock/zmax": 26,
+    "stock/zmin": 26
+  },
+  "exact_trace_affine_audit": {
+    "affine_value_and_gradient_checks": 5952,
+    "elevated_blocks": 93,
+    "exact_elevated_control_checks": 5952,
+    "exact_trace_dof_nodes": 3056,
+    "scalar_ndof": 3349,
+    "shared_interfaces": 191,
+    "source_blocks": 93,
+    "source_trace_map_samples": 3056,
+    "source_vs_package_map_samples": 5952,
+    "target_tensor_degree": 3
+  },
+  "limits": [
+    "The volume maps and Q3 space are audited independently of any external Boolean kernel.",
+    "The refusal check qualifies output preservation for only the supplied counterexample."
+  ],
+  "model": "/home/jeff/Code/SolidCraftTrivariate/build/s3_face_pocket.delivery.json",
+  "model_sha256": "f5bc0939201da16ef718d2b12ff0d46fae30b0d524b15480d69acaacc0d96140",
+  "operation_geometry": {
+    "depth_mm": 2.0,
+    "floor_z_mm": 2.0,
+    "support_z_mm": 4.0,
+    "x_mm": [
+      55.0,
+      75.0
+    ],
+    "y_mm": [
+      22.154135338345863,
+      25.0
+    ]
+  },
+  "operation_recipe": "/home/jeff/Code/SolidCraftTrivariate/tests/references/s3_face_pocket.recipe.json",
+  "q16_relative_residual_threshold": 1e-08,
+  "source_map_image_preservation": {
+    "expected_removed_envelope_samples": 0,
+    "limits": [
+      "Samples check image coverage of the old material maps, not a global inclusion proof.",
+      "The independent Q32/Q64 volume balance checks total and per-layer material measure."
+    ],
+    "mismatches": [],
+    "preserved_material_agreements": 864,
+    "sample_count": 864,
+    "sample_rule": "3x3x3 interior Bernstein nodes per source map; skip only points strictly inside the new pocket envelope",
+    "source_map_count": 32,
+    "status": "verified"
+  },
+  "source_map_preservation": {
+    "changed_source_blocks": [],
+    "contract": "IDs and control nets are diagnostic; geometric image is checked by point samples and layer volume because radial-guide refinement can change every control count",
+    "omitted_source_blocks": [
+      "g2_s0_p0_z0_src0",
+      "g2_s1_p0_z0_src1",
+      "g2_s2_p0_z0_src2",
+      "g2_s3_p0_z0_src2",
+      "g2_s4_p0_z0_src3",
+      "g2_s5_p0_z0_src3",
+      "g2_s6_p0_z0_src4",
+      "g2_s7_p0_z0_src5",
+      "g2_s8_p0_z0_src6",
+      "g2_s9_p0_z0_src6",
+      "g2_s10_p0_z0_src7",
+      "g2_s11_p0_z0_src7",
+      "g2_s0_p0_z1_src0",
+      "g2_s1_p0_z1_src1",
+      "g2_s2_p0_z1_src2",
+      "g2_s5_p0_z1_src3",
+      "g2_s6_p0_z1_src4",
+      "g2_s7_p0_z1_src5",
+      "g2_s8_p0_z1_src6",
+      "g2_s11_p0_z1_src7",
+      "g2_s0_p0_z2_src0",
+      "g2_s1_p0_z2_src1",
+      "g2_s2_p0_z2_src2",
+      "g2_s3_p0_z2_src2",
+      "g2_s4_p0_z2_src3",
+      "g2_s5_p0_z2_src3",
+      "g2_s6_p0_z2_src4",
+      "g2_s7_p0_z2_src5",
+      "g2_s8_p0_z2_src6",
+      "g2_s9_p0_z2_src6",
+      "g2_s10_p0_z2_src7",
+      "g2_s11_p0_z2_src7"
+    ],
+    "source_blocks": 32,
+    "status": "diagnostic_only",
+    "target_blocks": 93,
+    "unchanged_exact_source_blocks": [],
+    "unexpected_non_s4_changes": [
+      "g2_s0_p0_z0_src0",
+      "g2_s1_p0_z0_src1",
+      "g2_s2_p0_z0_src2",
+      "g2_s3_p0_z0_src2",
+      "g2_s5_p0_z0_src3",
+      "g2_s6_p0_z0_src4",
+      "g2_s7_p0_z0_src5",
+      "g2_s8_p0_z0_src6",
+      "g2_s9_p0_z0_src6",
+      "g2_s10_p0_z0_src7",
+      "g2_s11_p0_z0_src7",
+      "g2_s0_p0_z1_src0",
+      "g2_s1_p0_z1_src1",
+      "g2_s2_p0_z1_src2",
+      "g2_s5_p0_z1_src3",
+      "g2_s6_p0_z1_src4",
+      "g2_s7_p0_z1_src5",
+      "g2_s8_p0_z1_src6",
+      "g2_s11_p0_z1_src7",
+      "g2_s0_p0_z2_src0",
+      "g2_s1_p0_z2_src1",
+      "g2_s2_p0_z2_src2",
+      "g2_s3_p0_z2_src2",
+      "g2_s5_p0_z2_src3",
+      "g2_s6_p0_z2_src4",
+      "g2_s7_p0_z2_src5",
+      "g2_s8_p0_z2_src6",
+      "g2_s9_p0_z2_src6",
+      "g2_s10_p0_z2_src7",
+      "g2_s11_p0_z2_src7"
+    ]
+  },
+  "source_model": "/home/jeff/Code/SolidCraftTrivariate/docs/results/g2-cross-plate.model.json",
+  "source_model_sha256": "19bda241a12bb0cae9e87ad7fa2e02a3e71c45be119115aec9fd8aeb0b48847c",
+  "source_recipe": "/home/jeff/Code/SolidCraftTrivariate/tests/references/g2_cross_sketches.recipe.json",
+  "space_export": {
+    "scalar_ndof": 3349,
+    "status": "exported"
+  },
+  "space_package_sha256": "c25d72f1fc9254aaca20555dc4e4227420bbe10d8584df958d281a004ef6bec7",
+  "status": "verified",
+  "volume_map_audit": {
+    "expected_removed_volume_mm3": 62.85380287694162,
+    "expected_s3_volume_mm3": 53137.541471320794,
+    "independent_source_pocket_integral": {
+      "depth_mm": 2.0,
+      "method": "source periodic NURBS horizontal-ray intersections with Gauss-Legendre in y",
+      "quadrature": [
+        {
+          "order": 32,
+          "removed_area_mm2": 31.4269014384708,
+          "removed_volume_mm3": 62.8538028769416
+        },
+        {
+          "order": 64,
+          "removed_area_mm2": 31.42690143847081,
+          "removed_volume_mm3": 62.85380287694162
+        }
+      ],
+      "relative_order_delta": 3.391406899362495e-16,
+      "x_mm": [
+        55.0,
+        75.0
+      ],
+      "y_mm": [
+        22.154135338345863,
+        25.0
+      ]
+    },
+    "layers": [
+      {
+        "expected_volume_mm3": 9418.37802450108,
+        "relative_error": 3.862638341366031e-16,
+        "volume_mm3": 9418.378024501077,
+        "z_mm": [
+          0.0,
+          2.0
+        ]
+      },
+      {
+        "expected_volume_mm3": 9355.524221624139,
+        "relative_error": 3.888588945858292e-16,
+        "volume_mm3": 9355.524221624135,
+        "z_mm": [
+          2.0,
+          4.0
+        ]
+      },
+      {
+        "expected_volume_mm3": 15526.883176193413,
+        "relative_error": 2.343019372149101e-16,
+        "volume_mm3": 15526.883176193416,
+        "z_mm": [
+          4.0,
+          8.0
+        ]
+      },
+      {
+        "expected_volume_mm3": 18836.75604900216,
+        "relative_error": 3.862638341366031e-16,
+        "volume_mm3": 18836.756049002153,
+        "z_mm": [
+          8.0,
+          12.0
+        ]
+      }
+    ],
+    "max_relative_layer_error": 3.888588945858292e-16,
+    "method": "Q32 determinant integration over actual S3 tensor-product Bezier maps",
+    "relative_total_error": 2.7385375434090717e-16,
+    "s3_model_volume_q32_mm3": 53137.54147132078,
+    "source_model_volume_q32_mm3": 53200.395274197734,
+    "status": "verified",
+    "threshold_relative": 1e-08
+  }
+}

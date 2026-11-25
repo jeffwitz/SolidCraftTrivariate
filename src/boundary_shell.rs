@@ -101,6 +101,7 @@ pub fn boundary_shell(model: &Json) -> Result<BoundaryShell, &'static str> {
             | "certified_ruled_similarity_sweep"
             | "certified_coaxial_feature_program"
             | "certified_circular_bend"
+            | "certified_orthogonal_feature_program"
     ) {
         return Err("unsupported_boundary_model_family");
     }
@@ -212,7 +213,9 @@ pub fn boundary_shell(model: &Json) -> Result<BoundaryShell, &'static str> {
     }
     let expected_voids = if matches!(
         method,
-        "certified_coaxial_feature_program" | "certified_circular_bend"
+        "certified_coaxial_feature_program"
+            | "certified_circular_bend"
+            | "certified_orthogonal_feature_program"
     ) {
         report.field("cavities")?.number::<usize>()?
     } else {
@@ -242,6 +245,11 @@ pub fn boundary_shell(model: &Json) -> Result<BoundaryShell, &'static str> {
         } else {
             None
         };
+        let anchor_x = if method == "certified_orthogonal_feature_program" {
+            i128::from(report.field("minimum_x_mm")?.number::<i32>()?)
+        } else {
+            10
+        };
         let mut outer = components.iter().enumerate().filter(|(_, component)| {
             component.iter().any(|&f| {
                 if let Some(tag) = bend_anchor {
@@ -250,7 +258,7 @@ pub fn boundary_shell(model: &Json) -> Result<BoundaryShell, &'static str> {
                 faces[f]
                     .controls
                     .iter()
-                    .all(|p| i128::from(p[0]) == 10 * i128::from(p[3]))
+                    .all(|p| i128::from(p[0]) == anchor_x * i128::from(p[3]))
             })
         });
         let index = outer.next().ok_or("outer_shell_missing")?.0;

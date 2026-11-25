@@ -171,7 +171,7 @@ fn exterior_json(
     }
     Ok(Json::Object(fields))
 }
-fn lift_json(lift: &Lift) -> Json {
+pub(crate) fn lift_json(lift: &Lift) -> Json {
     object([
         ("free_roots", numbers(&lift.free_roots)),
         (

@@ -1,0 +1,123 @@
+{
+  "protocol": "solidcraft_timeline_v66_bracket_subset_v1",
+  "host_binary": "/usr/bin/solidcraft-cli",
+  "host_version": "0.48.1",
+  "native_binary": "target/release/solidcraft-trivariate",
+  "platform": "Linux-7.0.0-43-generic-x86_64-with-glibc2.39",
+  "python": "3.12.3",
+  "cases": [
+    {
+      "case": "x40-y80",
+      "host_history_format": "solidcraft/66",
+      "host_version": "0.48.1",
+      "timeline_operations": 5,
+      "semantic_recipe_equal_to_direct": true,
+      "model_byte_equal_to_direct": true,
+      "model_byte_equal_to_saved_sc1_native": true,
+      "model_bytes": 33475,
+      "extract_s": 0.019977467018179595,
+      "timeline_translation_s": 0.024622016004286706,
+      "direct_translation_s": 0.012357830011751503
+    },
+    {
+      "case": "x50-y74",
+      "host_history_format": "solidcraft/66",
+      "host_version": "0.48.1",
+      "timeline_operations": 5,
+      "semantic_recipe_equal_to_direct": true,
+      "model_byte_equal_to_direct": true,
+      "model_byte_equal_to_saved_sc1_native": true,
+      "model_bytes": 33475,
+      "extract_s": 0.013732800958678126,
+      "timeline_translation_s": 0.017080891993828118,
+      "direct_translation_s": 0.012778921984136105
+    },
+    {
+      "case": "x51-y74",
+      "host_history_format": "solidcraft/66",
+      "host_version": "0.48.1",
+      "timeline_operations": 5,
+      "semantic_recipe_equal_to_direct": true,
+      "model_byte_equal_to_direct": true,
+      "model_byte_equal_to_saved_sc1_native": true,
+      "model_bytes": 33475,
+      "extract_s": 0.019025524030439556,
+      "timeline_translation_s": 0.02321042399853468,
+      "direct_translation_s": 0.01319701795000583
+    },
+    {
+      "case": "x64-y64",
+      "host_history_format": "solidcraft/66",
+      "host_version": "0.48.1",
+      "timeline_operations": 5,
+      "semantic_recipe_equal_to_direct": true,
+      "model_byte_equal_to_direct": true,
+      "model_byte_equal_to_saved_sc1_native": true,
+      "model_bytes": 33475,
+      "extract_s": 0.016285861958749592,
+      "timeline_translation_s": 0.023477898037526757,
+      "direct_translation_s": 0.015544821973890066
+    },
+    {
+      "case": "x80-y40",
+      "host_history_format": "solidcraft/66",
+      "host_version": "0.48.1",
+      "timeline_operations": 5,
+      "semantic_recipe_equal_to_direct": true,
+      "model_byte_equal_to_direct": true,
+      "model_byte_equal_to_saved_sc1_native": true,
+      "model_bytes": 33475,
+      "extract_s": 0.018780377053190023,
+      "timeline_translation_s": 0.017548600037116557,
+      "direct_translation_s": 0.012796349998097867
+    }
+  ],
+  "invalid_cases": [
+    {
+      "case": "construction_geometry",
+      "rejected": true,
+      "target_preserved": true,
+      "elapsed_s": 0.002628286019898951
+    },
+    {
+      "case": "unknown_constraint",
+      "rejected": true,
+      "target_preserved": true,
+      "elapsed_s": 0.002436216047499329
+    },
+    {
+      "case": "suppressed_feature",
+      "rejected": true,
+      "target_preserved": true,
+      "elapsed_s": 0.0022282969439402223
+    },
+    {
+      "case": "removed_operation",
+      "rejected": true,
+      "target_preserved": true,
+      "elapsed_s": 0.002198136004153639
+    },
+    {
+      "case": "unresolved_expression",
+      "rejected": true,
+      "target_preserved": true,
+      "elapsed_s": 0.002589116047602147
+    },
+    {
+      "case": "inconsistent_selection",
+      "rejected": true,
+      "target_preserved": true,
+      "elapsed_s": 0.0025396200362592936
+    },
+    {
+      "case": "wrong_hole_direction",
+      "rejected": true,
+      "target_preserved": true,
+      "elapsed_s": 0.0023666740162298083
+    }
+  ],
+  "all_five_model_bytes_equal": true,
+  "all_invalid_targets_preserved": true,
+  "elapsed_s": 0.29559343098662794,
+  "scope": "Only the canonical five-operation solidcraft/66 L-bracket timeline is supported; scripts are extracted, not executed in the SolidCraft kernel."
+}

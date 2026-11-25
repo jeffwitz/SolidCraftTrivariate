@@ -1,0 +1,517 @@
+//! Solve a versioned, linear mechanical job against an independently audited native model.
+use crate::{
+    adaptive_package::{lift_json, parse_refinement_plan},
+    adaptive_partition::AdaptivePartition,
+    adaptive_space::build_adaptive_space,
+    analysis_space::{from_certified_faces, AnalysisBlock, AnalysisSpace},
+    boundary_traction::{integrate_traction, LoadPatch},
+    bracket_json::{decode_blocks, side_json},
+    constrained_elasticity::solve_constrained,
+    constraint_system::{resolve, Ratio},
+    elasticity::{assemble, Vector},
+    incidence::{enumerate_faces, BlockSide},
+    interchange,
+    json::{object, Json},
+    projected_bulk::assemble_projected_bulk,
+    solver_package::analysis_block_json,
+};
+use std::collections::{BTreeMap, BTreeSet};
+
+fn n(x: impl ToString) -> Json {
+    Json::Number(x.to_string())
+}
+fn text(x: &str) -> Json {
+    Json::String(x.into())
+}
+fn numbers<T: ToString>(v: impl IntoIterator<Item = T>) -> Json {
+    Json::Array(v.into_iter().map(n).collect())
+}
+fn finite(x: &Json) -> Result<f64, &'static str> {
+    let v = x.number::<f64>()?;
+    if v.is_finite() {
+        Ok(v)
+    } else {
+        Err("nonfinite mechanical job scalar")
+    }
+}
+fn vector(x: &Json) -> Result<Vector, &'static str> {
+    let [a, b, c] = x.items()? else {
+        return Err("expected mechanical vector of length three");
+    };
+    Ok([finite(a)?, finite(b)?, finite(c)?])
+}
+fn side(block: &str, s: &str) -> Result<BlockSide, &'static str> {
+    let (axis, upper) = match s {
+        "u0" => (0, false),
+        "u1" => (0, true),
+        "v0" => (1, false),
+        "v1" => (1, true),
+        "w0" => (2, false),
+        "w1" => (2, true),
+        _ => return Err("invalid mechanical face side"),
+    };
+    Ok(BlockSide {
+        block: block.into(),
+        axis,
+        upper,
+    })
+}
+fn face_indices(side: &BlockSide) -> impl Iterator<Item = usize> + '_ {
+    (0..27).filter(move |&i| [i / 9, (i / 3) % 3, i % 3][side.axis] == 2 * usize::from(side.upper))
+}
+
+struct Surface<'a> {
+    side: BlockSide,
+    feature: &'a str,
+    block: &'a AnalysisBlock,
+}
+fn select<'a>(
+    input: &Json,
+    faces: &'a [Surface<'a>],
+) -> Result<Vec<&'a Surface<'a>>, &'static str> {
+    let feature = input.field("feature")?.text()?;
+    let plane = if let Ok(p) = input.field("plane") {
+        input.keys(&["feature", "plane"])?;
+        p.keys(&["axis", "coordinate_mm"])?;
+        let axis = p.field("axis")?.number::<usize>()?;
+        if axis >= 3 {
+            return Err("invalid selector plane axis");
+        }
+        Some((axis, i128::from(p.field("coordinate_mm")?.number::<i64>()?)))
+    } else {
+        input.keys(&["feature"])?;
+        None
+    };
+    let mut selection = Vec::new();
+    for f in faces {
+        if feature != "*" && f.feature != feature {
+            continue;
+        }
+        if let Some((axis, offset)) = plane {
+            if !face_indices(&f.side).all(|i| {
+                let h = f.block.controls[i];
+                h[3].checked_mul(offset) == Some(h[axis])
+            }) {
+                continue;
+            }
+        }
+        selection.push(f);
+    }
+    if selection.is_empty() {
+        return Err("empty mechanical face selection");
+    }
+    Ok(selection)
+}
+
+enum Traction {
+    Vector(Vector),
+    Pressure(f64),
+    Stress([Vector; 3]),
+}
+impl Traction {
+    fn parse(x: &Json) -> Result<Self, &'static str> {
+        if let Ok(v) = x.field("vector_mpa") {
+            x.keys(&["select", "vector_mpa"])?;
+            return Ok(Self::Vector(vector(v)?));
+        }
+        if let Ok(v) = x.field("pressure_mpa") {
+            x.keys(&["select", "pressure_mpa"])?;
+            let p = finite(v)?;
+            if p < 0. {
+                return Err("negative compressive pressure");
+            }
+            return Ok(Self::Pressure(p));
+        }
+        x.keys(&["select", "stress_mpa"])?;
+        let [a, b, c] = x.field("stress_mpa")?.items()? else {
+            return Err("expected stress tensor");
+        };
+        let s = [vector(a)?, vector(b)?, vector(c)?];
+        if (0..3).any(|i| (0..i).any(|j| s[i][j] != s[j][i])) {
+            return Err("nonsymmetric prescribed stress tensor");
+        }
+        Ok(Self::Stress(s))
+    }
+    fn value(&self, normal: Vector) -> Vector {
+        match self {
+            Self::Vector(v) => *v,
+            Self::Pressure(p) => normal.map(|v| -p * v),
+            Self::Stress(s) => s.map(|row| dot(row, normal)),
+        }
+    }
+    fn magnitude_bound(&self) -> f64 {
+        match self {
+            Self::Vector(x) => norm(*x),
+            Self::Pressure(p) => *p,
+            Self::Stress(s) => s.iter().map(|r| dot(*r, *r)).sum::<f64>().sqrt(),
+        }
+    }
+}
+fn dot(x: Vector, y: Vector) -> f64 {
+    x.iter().zip(y).map(|(a, b)| a * b).sum()
+}
+fn norm(x: Vector) -> f64 {
+    dot(x, x).sqrt()
+}
+fn cross(x: Vector, y: Vector) -> Vector {
+    std::array::from_fn(|i| x[(i + 1) % 3] * y[(i + 2) % 3] - x[(i + 2) % 3] * y[(i + 1) % 3])
+}
+fn add(a: &mut Vector, b: Vector) {
+    for (v, w) in a.iter_mut().zip(b) {
+        *v += w;
+    }
+}
+fn nodes(space: &AnalysisSpace) -> Vec<Vector> {
+    let mut points = vec![[0.; 3]; space.ndof];
+    for b in &space.blocks {
+        for (&id, h) in b.dofs.iter().zip(&b.controls) {
+            points[id] = std::array::from_fn(|i| h[i] as f64 / h[3] as f64);
+        }
+    }
+    points
+}
+
+/// Rank of the evaluation of physical rigid fields on prescribed coefficients.
+/// Centering and uniform rescaling keep translations and rotations comparable.
+fn mounting_rank(points: &[Vector], fixed: &[BTreeSet<usize>; 3]) -> usize {
+    let lo: Vector =
+        std::array::from_fn(|j| points.iter().map(|x| x[j]).fold(f64::INFINITY, f64::min));
+    let hi: Vector = std::array::from_fn(|j| {
+        points
+            .iter()
+            .map(|x| x[j])
+            .fold(f64::NEG_INFINITY, f64::max)
+    });
+    let size = (0..3).map(|j| hi[j] - lo[j]).fold(0., f64::max);
+    if size <= 0. {
+        return 0;
+    }
+    let mut pivots = [None::<[f64; 6]>; 6];
+    for (c, ids) in fixed.iter().enumerate() {
+        for &id in ids {
+            let point = std::array::from_fn(|j| (points[id][j] - (lo[j] + hi[j]) * 0.5) / size);
+            let unit: Vector = std::array::from_fn(|j| f64::from(c == j));
+            let rotation = cross(point, unit);
+            let mut row = [
+                unit[0],
+                unit[1],
+                unit[2],
+                rotation[0],
+                rotation[1],
+                rotation[2],
+            ];
+            for j in 0..6 {
+                if let Some(b) = pivots[j] {
+                    let factor = row[j];
+                    for k in j..6 {
+                        row[k] -= factor * b[k];
+                    }
+                } else if row[j].abs() > 1e-11 {
+                    let scale = row[j];
+                    for x in &mut row[j..] {
+                        *x /= scale;
+                    }
+                    pivots[j] = Some(row);
+                    break;
+                }
+            }
+        }
+    }
+    pivots.iter().flatten().count()
+}
+
+/// Build the effective space, apply homogeneous essential conditions, solve,
+/// and return a reproducible result document. Publication is the caller's job.
+pub fn solve_job(model: &Json, job: &Json) -> Result<Json, &'static str> {
+    job.keys(&[
+        "schema",
+        "material",
+        "formulation",
+        "order",
+        "plan",
+        "supports",
+        "loads",
+    ])?;
+    if job.field("schema")?.text()? != "solidcraft_mechanical_job_v1" {
+        return Err("unknown mechanical job schema");
+    }
+    let audit = interchange::audit(model)?;
+    if audit.field("status")?.text()? != "valid"
+        || !matches!(
+            audit.field("method")?.text()?,
+            "certified_fixed_extrusion_partition"
+                | "certified_ruled_similarity_sweep"
+                | "certified_coaxial_feature_program"
+                | "certified_circular_bend"
+                | "certified_orthogonal_feature_program"
+                | "certified_parameterized_bracket"
+        )
+    {
+        return Err("unsupported or unaudited mechanical model");
+    }
+    let material = job.field("material")?;
+    material.keys(&["young_mpa", "poisson"])?;
+    let young = finite(material.field("young_mpa")?)?;
+    let poisson = finite(material.field("poisson")?)?;
+    let order = job.field("order")?.number::<usize>()?;
+    if !(2..=32).contains(&order) {
+        return Err("invalid mechanical quadrature order");
+    }
+    let plan = parse_refinement_plan(job.field("plan")?)?;
+    let blocks = decode_blocks(model)?;
+    let incidence = enumerate_faces(&blocks)?;
+    let mut neighbors: BTreeMap<&str, Vec<&str>> =
+        blocks.iter().map(|b| (b.id.as_str(), Vec::new())).collect();
+    for interface in &incidence.interfaces {
+        let a = interface.first.block.as_str();
+        let b = interface.second.block.as_str();
+        neighbors
+            .get_mut(a)
+            .ok_or("unknown interface block")?
+            .push(b);
+        neighbors
+            .get_mut(b)
+            .ok_or("unknown interface block")?
+            .push(a);
+    }
+    let mut pending = vec![*neighbors.keys().next().ok_or("empty mechanical model")?];
+    let mut visited = BTreeSet::new();
+    while let Some(id) = pending.pop() {
+        if visited.insert(id) {
+            pending.extend(neighbors[id].iter().copied());
+        }
+    }
+    if visited.len() != blocks.len() {
+        return Err("mechanical job requires one face-connected material domain");
+    }
+    let mut groups = BTreeMap::new();
+    for face in model.field("design_faces")?.items()? {
+        let s = side(face.field("block")?.text()?, face.field("side")?.text()?)?;
+        if groups
+            .insert(s, face.field("feature")?.text()?.to_owned())
+            .is_some()
+        {
+            return Err("duplicate mechanical design face");
+        }
+    }
+    if incidence.exterior.iter().collect::<BTreeSet<_>>() != groups.keys().collect() {
+        return Err("incomplete mechanical exterior provenance");
+    }
+    let design = groups
+        .iter()
+        .map(|(s, t)| (s.clone(), t.clone()))
+        .collect::<Vec<_>>();
+    let parent = from_certified_faces(&blocks, &incidence, &design)?;
+    let roots = parent
+        .blocks
+        .iter()
+        .map(|b| b.id.clone())
+        .collect::<Vec<_>>();
+    let mut partition = AdaptivePartition::new(&roots, &incidence, plan.max_depth, plan.max_cells)?;
+    for step in &plan.steps {
+        partition.refine(step)?;
+    }
+    let adaptive = build_adaptive_space(&parent, &partition)?;
+    let space = &adaptive.space;
+    let lookup: BTreeMap<_, _> = space.blocks.iter().map(|b| (b.id.as_str(), b)).collect();
+    let mut faces = Vec::new();
+    for p in partition.exterior_patches() {
+        let root = p.side.root_side;
+        let id = &adaptive.leaf_blocks[&p.side.leaf];
+        faces.push(Surface {
+            side: BlockSide {
+                block: id.clone(),
+                axis: root.axis,
+                upper: root.upper,
+            },
+            feature: &groups[&root],
+            block: lookup[id.as_str()],
+        });
+    }
+    let mut fixed: [BTreeSet<usize>; 3] = Default::default();
+    let mut supports = Vec::new();
+    for support in job.field("supports")?.items()? {
+        support.keys(&["select", "components"])?;
+        let components = support
+            .field("components")?
+            .items()?
+            .iter()
+            .map(Json::number::<usize>)
+            .collect::<Result<Vec<_>, _>>()?;
+        if components.is_empty()
+            || components.iter().any(|&c| c >= 3)
+            || components.iter().collect::<BTreeSet<_>>().len() != components.len()
+        {
+            return Err("invalid mechanical support components");
+        }
+        let selected = select(support.field("select")?, &faces)?;
+        for f in &selected {
+            for &c in &components {
+                fixed[c].extend(face_indices(&f.side).map(|i| f.block.dofs[i]));
+            }
+        }
+        supports.push(object([
+            (
+                "faces",
+                Json::Array(selected.iter().map(|f| side_json(&f.side)).collect()),
+            ),
+            ("components", numbers(components)),
+        ]));
+    }
+    let points = nodes(space);
+    let rank = mounting_rank(&points, &fixed);
+    if rank != 6 {
+        return Err("mechanical mounting leaves a rigid mode");
+    }
+    let [lx, ly, lz] = fixed.each_ref().map(|ids| {
+        resolve(
+            space.ndof,
+            &adaptive.constraints,
+            &ids.iter().map(|&i| (i, Ratio::zero())).collect::<Vec<_>>(),
+        )
+    });
+    let lifts = [lx?, ly?, lz?];
+    let exterior = faces
+        .iter()
+        .map(|f| f.side.clone())
+        .collect::<BTreeSet<_>>();
+    let mut seen = BTreeSet::new();
+    let mut force = vec![0.; 3 * space.ndof];
+    let mut applied = [0.; 3];
+    let mut moment = [0.; 3];
+    let mut scale = 0.;
+    let mut loads = Vec::new();
+    for specification in job.field("loads")?.items()? {
+        let law = Traction::parse(specification)?;
+        let selected = select(specification.field("select")?, &faces)?;
+        let mut patches = Vec::new();
+        for f in selected {
+            if !seen.insert(f.side.clone()) {
+                return Err("overlapping mechanical loads");
+            }
+            patches.push(LoadPatch::whole(f.side.clone()));
+        }
+        let load = integrate_traction(space, &exterior, &patches, order, |_, n| law.value(n))?;
+        add(&mut applied, load.resultant_n);
+        add(&mut moment, load.moment_n_mm);
+        scale += load.area_mm2 * law.magnitude_bound();
+        for (f, v) in force.iter_mut().zip(load.nodal_force_n) {
+            *f += v;
+        }
+        loads.push(object([
+            (
+                "faces",
+                Json::Array(patches.iter().map(|p| side_json(&p.side)).collect()),
+            ),
+            ("area_mm2", n(load.area_mm2)),
+            ("resultant_n", numbers(load.resultant_n)),
+            ("moment_n_mm", numbers(load.moment_n_mm)),
+        ]));
+    }
+    if !scale.is_finite() || scale <= 0. {
+        return Err("mechanical job needs a finite nonzero load scale");
+    }
+    let formulation = job.field("formulation")?.text()?;
+    let (full, projected) = match formulation {
+        "displacement" => (Some(assemble(space, young, poisson, order)?), None),
+        "projected_bulk_q1" => (
+            None,
+            Some(assemble_projected_bulk(space, young, poisson, order)?),
+        ),
+        _ => return Err("unknown mechanical formulation"),
+    };
+    let k = full
+        .as_ref()
+        .or_else(|| projected.as_ref().map(|p| &p.stiffness))
+        .ok_or("missing mechanical stiffness")?;
+    let solved = solve_constrained(k, [&lifts[0], &lifts[1], &lifts[2]], &force, 1e-10, 20000)?;
+    let mut mean_stress = BTreeMap::new();
+    if let Some(system) = &projected {
+        for block in &space.blocks {
+            let values = system.mean_stress_coefficients(&block.id, &solved.displacement_mm)?;
+            mean_stress.insert(block.id.clone(), numbers(values));
+        }
+    }
+    let residual = k.equilibrium_residual(&solved.displacement_mm, &force)?;
+    let mut root_forces = vec![[0.; 3]; adaptive.lift.free_roots.len()];
+    for line in &adaptive.lift.lines {
+        for &(j, w) in &line.terms {
+            let weight = w.numerator() as f64 / w.denominator() as f64;
+            for c in 0..3 {
+                root_forces[j][c] -= weight * residual[3 * line.dof + c];
+            }
+        }
+    }
+    let mut reactions = [0.; 3];
+    let mut reaction_moment = [0.; 3];
+    for (j, &id) in adaptive.lift.free_roots.iter().enumerate() {
+        let r = std::array::from_fn(|c| {
+            if fixed[c].contains(&id) {
+                root_forces[j][c]
+            } else {
+                0.
+            }
+        });
+        add(&mut reactions, r);
+        add(&mut reaction_moment, cross(points[id], r));
+    }
+    let balance = norm(std::array::from_fn(|c| reactions[c] + applied[c])) / scale;
+    let arm = points.iter().map(|&p| norm(p)).fold(1., f64::max);
+    let moment_balance =
+        norm(std::array::from_fn(|c| reaction_moment[c] + moment[c])) / (scale * arm);
+    if !balance.is_finite()
+        || !moment_balance.is_finite()
+        || balance > 1e-8
+        || moment_balance > 1e-8
+    {
+        return Err("mechanical force or moment imbalance");
+    }
+    let work = force
+        .iter()
+        .zip(&solved.displacement_mm)
+        .map(|(a, b)| a * b)
+        .sum::<f64>();
+    let twice_energy = 2. * solved.strain_energy_n_mm;
+    let work_scale = work.abs().max(twice_energy.abs());
+    let work_error = if work_scale == 0. {
+        0.
+    } else {
+        (work - twice_energy).abs() / work_scale
+    };
+    if !work_error.is_finite() || work_error > 1e-8 {
+        return Err("mechanical work-energy imbalance");
+    }
+    Ok(object([
+        ("relative_work_energy_error", n(work_error)),
+        ("mean_stress_q1_mpa_by_block", Json::Object(mean_stress)),
+        ("schema", text("solidcraft_mechanical_result_v1")),
+        ("source_family", model.field("schema")?.clone()),
+        ("source_audit", audit),
+        ("job", job.clone()),
+        (
+            "analysis_blocks",
+            Json::Array(space.blocks.iter().map(analysis_block_json).collect()),
+        ),
+        ("scalar_dofs", n(space.ndof)),
+        (
+            "component_lifts",
+            Json::Array(lifts.iter().map(lift_json).collect()),
+        ),
+        ("supports", Json::Array(supports)),
+        ("loads", Json::Array(loads)),
+        ("rigid_constraint_rank", n(rank)),
+        ("force_n_xyz", numbers(force)),
+        ("displacement_mm_xyz", numbers(solved.displacement_mm)),
+        ("applied_resultant_n", numbers(applied)),
+        ("applied_moment_n_mm", numbers(moment)),
+        ("support_reaction_n", numbers(reactions)),
+        ("support_moment_n_mm", numbers(reaction_moment)),
+        ("relative_force_balance", n(balance)),
+        ("relative_moment_balance", n(moment_balance)),
+        ("volume_mm3", n(k.integrated_volume)),
+        ("strain_energy_n_mm", n(solved.strain_energy_n_mm)),
+        ("external_work_n_mm", n(work)),
+        ("iterations", n(solved.iterations)),
+        ("relative_residual", n(solved.relative_residual)),
+    ]))
+}

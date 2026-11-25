@@ -1,0 +1,14 @@
+{
+  "id": "cube-traction-affine",
+  "recipe": {"family": "reference_rectangle_v1"},
+  "job": {
+    "schema": "solidcraft_mechanical_job_v1",
+    "material": {"young_mpa": 1000.0, "poisson": 0.0},
+    "formulation": "displacement",
+    "order": 4,
+    "plan": {"schema": "adaptive_refinement_plan_v1", "max_depth": 0, "max_cells": 1024, "steps": []},
+    "supports": [{"select": {"feature": "z0"}, "components": [0, 1, 2]}],
+    "loads": [{"select": {"feature": "z8"}, "stress_mpa": [[0, 0, 0], [0, 0, 0], [0, 0, 1]]}]
+  },
+  "oracle": {"kind": "affine_displacement", "gradient": [[0,0,0],[0,0,0],[0,0,0.001]], "offset": [0,0,0]}
+}

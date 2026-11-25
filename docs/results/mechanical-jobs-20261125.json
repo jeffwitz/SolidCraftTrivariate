@@ -1,0 +1,313 @@
+{
+  "schema": "solidcraft_mechanical_job_oracle_v1",
+  "oracle": "independent SciPy Q2 assembly, boundary quadrature, and constrained sparse solve",
+  "environment": {
+    "python": "3.12.3",
+    "numpy": "2.4.4",
+    "scipy": "1.17.1"
+  },
+  "cases": [
+    {
+      "id": "bracket-x60-local-refinement",
+      "status": "qualified",
+      "ndof": 642,
+      "effective_blocks": 43,
+      "load_area_mm2": 320.00000000000017,
+      "reintegrated_resultant_n": [
+        0.0,
+        -1000.0000000000003,
+        0.0
+      ],
+      "reintegrated_moment_n_mm": [
+        20000.000000000007,
+        0.0,
+        -60000.00000000004
+      ],
+      "load_rhs_max_abs_error_n": 9.947598300641403e-14,
+      "load_groups": [
+        {
+          "area_mm2": 320.00000000000017,
+          "resultant_n": [
+            0.0,
+            -1000.0000000000003,
+            0.0
+          ],
+          "moment_n_mm": [
+            20000.000000000007,
+            0.0,
+            -60000.00000000004
+          ]
+        }
+      ],
+      "scipy_displacement_relative_error": 1.2708001961953308e-12,
+      "scipy_displacement_max_abs_error_mm": 2.5172572359899448e-14,
+      "displacement_coefficient_layout": "scalar_dof_major_xyz_interleaved",
+      "displacement_coefficient_count": 1926,
+      "affine_displacement_max_error_mm": null,
+      "energy_from_scipy_stiffness_n_mm": 6.608375212620387,
+      "external_work_n_mm": 13.216750425241061,
+      "energy_work_relative_difference": 2.17731135660445e-14,
+      "support_reaction_n": [
+        -7.408534230535224e-09,
+        999.9999999990356,
+        -9.589686378319584e-09
+      ],
+      "force_balance_relative": 1.2156446853347727e-11,
+      "moment_balance_relative": 5.592563109721613e-12,
+      "scipy_reaction_relative_error": 1.2160598683938275e-11,
+      "scipy_reaction_moment_relative_error": 5.58949844549459e-12,
+      "stiffness_symmetry_relative": 1.8875499990015795e-17,
+      "rust_relative_residual": 8.211843487231052e-11,
+      "quadrature_order": 3,
+      "matrix_order": 1926,
+      "reduced_order": 1566
+    },
+    {
+      "id": "closed-pierced-bend-physical-mount",
+      "status": "qualified",
+      "ndof": 192,
+      "effective_blocks": 16,
+      "load_area_mm2": 2526.6248464928312,
+      "reintegrated_resultant_n": [
+        -2.636779683484747e-16,
+        7.130580848002666e-15,
+        -1.2809198146612744e-14
+      ],
+      "reintegrated_moment_n_mm": [
+        -9.145462165349727e-15,
+        4.440892098500626e-16,
+        1.0968544629751507e-14
+      ],
+      "load_rhs_max_abs_error_n": 8.881784197001252e-16,
+      "load_groups": [
+        {
+          "area_mm2": 2526.6248464928312,
+          "resultant_n": [
+            -2.636779683484747e-16,
+            7.130580848002666e-15,
+            -1.2809198146612744e-14
+          ],
+          "moment_n_mm": [
+            -9.145462165349727e-15,
+            4.440892098500626e-16,
+            1.0968544629751507e-14
+          ]
+        }
+      ],
+      "scipy_displacement_relative_error": 2.8765922473436225e-10,
+      "scipy_displacement_max_abs_error_mm": 2.380017569744014e-13,
+      "displacement_coefficient_layout": "scalar_dof_major_xyz_interleaved",
+      "displacement_coefficient_count": 576,
+      "affine_displacement_max_error_mm": null,
+      "energy_from_scipy_stiffness_n_mm": 0.015113297279460024,
+      "external_work_n_mm": 0.0302265945588564,
+      "energy_work_relative_difference": 6.364700433358905e-14,
+      "support_reaction_n": [
+        -9.010070467496689e-12,
+        -5.518337176102506e-11,
+        1.6006433678494858e-10
+      ],
+      "force_balance_relative": 1.6953493797755916e-10,
+      "moment_balance_relative": 2.878030826313088e-13,
+      "scipy_reaction_relative_error": 1.3418549395083766e-12,
+      "scipy_reaction_moment_relative_error": 2.8781933887905735e-13,
+      "stiffness_symmetry_relative": 2.6776901058661502e-17,
+      "rust_relative_residual": 4.380331210471861e-11,
+      "quadrature_order": 4,
+      "matrix_order": 576,
+      "reduced_order": 504
+    },
+    {
+      "id": "cube-traction-affine",
+      "status": "qualified",
+      "ndof": 27,
+      "effective_blocks": 1,
+      "load_area_mm2": 400.0,
+      "reintegrated_resultant_n": [
+        0.0,
+        0.0,
+        400.0
+      ],
+      "reintegrated_moment_n_mm": [
+        -3.410605131648481e-13,
+        0.0,
+        0.0
+      ],
+      "load_rhs_max_abs_error_n": 3.552713678800501e-14,
+      "load_groups": [
+        {
+          "area_mm2": 400.0,
+          "resultant_n": [
+            0.0,
+            0.0,
+            400.0
+          ],
+          "moment_n_mm": [
+            -3.410605131648481e-13,
+            0.0,
+            0.0
+          ]
+        }
+      ],
+      "scipy_displacement_relative_error": 5.1507916048878746e-11,
+      "scipy_displacement_max_abs_error_mm": 5.319355336810899e-13,
+      "displacement_coefficient_layout": "scalar_dof_major_xyz_interleaved",
+      "displacement_coefficient_count": 81,
+      "affine_displacement_max_error_mm": 5.319385340103219e-13,
+      "energy_from_scipy_stiffness_n_mm": 1.6000000000017274,
+      "external_work_n_mm": 3.2000000000017272,
+      "energy_work_relative_difference": 5.39845945723691e-13,
+      "support_reaction_n": [
+        -1.936982568002299e-10,
+        -3.2905128481728144e-11,
+        -400.00000000000875
+      ],
+      "force_balance_relative": 4.916705750346315e-13,
+      "moment_balance_relative": 4.5708806938343545e-12,
+      "scipy_reaction_relative_error": 4.916666687650729e-13,
+      "scipy_reaction_moment_relative_error": 4.570790320052823e-12,
+      "stiffness_symmetry_relative": 0.0,
+      "rust_relative_residual": 6.259756552351358e-11,
+      "quadrature_order": 4,
+      "matrix_order": 81,
+      "reduced_order": 54
+    },
+    {
+      "id": "open-bend-affine-field",
+      "status": "qualified",
+      "ndof": 27,
+      "effective_blocks": 1,
+      "load_area_mm2": 2810.619298297633,
+      "reintegrated_resultant_n": [
+        0.0,
+        -1.2301604179754122e-10,
+        0.0
+      ],
+      "reintegrated_moment_n_mm": [
+        -6.927791673660977e-14,
+        0.0,
+        1.912290628069968e-07
+      ],
+      "load_rhs_max_abs_error_n": 1.9895196601282805e-13,
+      "load_groups": [
+        {
+          "area_mm2": 2810.619298297633,
+          "resultant_n": [
+            0.0,
+            -1.2301604179754122e-10,
+            0.0
+          ],
+          "moment_n_mm": [
+            -6.927791673660977e-14,
+            0.0,
+            1.912290628069968e-07
+          ]
+        }
+      ],
+      "scipy_displacement_relative_error": 1.4428694887388108e-09,
+      "scipy_displacement_max_abs_error_mm": 9.824456526086323e-11,
+      "displacement_coefficient_layout": "scalar_dof_major_xyz_interleaved",
+      "displacement_coefficient_count": 81,
+      "affine_displacement_max_error_mm": 9.603632472598989e-11,
+      "energy_from_scipy_stiffness_n_mm": 20.10619298191527,
+      "external_work_n_mm": 40.21238596384305,
+      "energy_work_relative_difference": 3.109875688704999e-13,
+      "support_reaction_n": [
+        2.6254485900584945e-09,
+        5.189475215175514e-10,
+        1.8275960590130023e-10
+      ],
+      "force_balance_relative": 2.661417499984287e-09,
+      "moment_balance_relative": 5.636302280123787e-13,
+      "scipy_reaction_relative_error": 1.2795402702968097e-12,
+      "scipy_reaction_moment_relative_error": 5.633678690876525e-13,
+      "stiffness_symmetry_relative": 0.0,
+      "rust_relative_residual": 9.33921960591133e-11,
+      "quadrature_order": 10,
+      "matrix_order": 81,
+      "reduced_order": 54
+    },
+    {
+      "id": "refusal-empty-face-selection",
+      "status": "refused",
+      "reason": "empty mechanical face selection",
+      "output_unchanged": true
+    },
+    {
+      "id": "coaxial-two-cavities-pressure",
+      "status": "qualified",
+      "ndof": 1217,
+      "effective_blocks": 108,
+      "load_area_mm2": 251.346952600722,
+      "reintegrated_resultant_n": [
+        -2.869457582896224e-16,
+        3.941068325034324e-16,
+        -2.789435349370706e-15
+      ],
+      "reintegrated_moment_n_mm": [
+        -5.146545082462817e-15,
+        -8.882868399173738e-16,
+        -4.449420874143357e-16
+      ],
+      "load_rhs_max_abs_error_n": 1.6653345369377348e-16,
+      "load_groups": [
+        {
+          "area_mm2": 50.275251509933014,
+          "resultant_n": [
+            -4.995013550368942e-17,
+            1.7383734315854379e-16,
+            2.8828935766389563e-16
+          ],
+          "moment_n_mm": [
+            5.480641981914225e-17,
+            1.5178830414797062e-16,
+            2.1936515293970802e-16
+          ]
+        },
+        {
+          "area_mm2": 201.071701090789,
+          "resultant_n": [
+            -2.3699562278593294e-16,
+            2.2026948934488866e-16,
+            -3.0777247070346014e-15
+          ],
+          "moment_n_mm": [
+            -5.201351502281959e-15,
+            -1.0400751440653444e-15,
+            -6.643072403540438e-16
+          ]
+        }
+      ],
+      "scipy_displacement_relative_error": 3.4022518248563546e-10,
+      "scipy_displacement_max_abs_error_mm": 2.2741430253151416e-13,
+      "displacement_coefficient_layout": "scalar_dof_major_xyz_interleaved",
+      "displacement_coefficient_count": 3651,
+      "affine_displacement_max_error_mm": null,
+      "energy_from_scipy_stiffness_n_mm": 0.001817608507508162,
+      "external_work_n_mm": 0.0036352170150179787,
+      "energy_work_relative_difference": 1.6544925152128798e-15,
+      "support_reaction_n": [
+        -1.7526941269857543e-14,
+        -1.5063623532405885e-12,
+        1.2861785421425243e-10
+      ],
+      "force_balance_relative": 1.2862388248601108e-10,
+      "moment_balance_relative": 9.872444073692281e-14,
+      "scipy_reaction_relative_error": 5.1174383750421155e-12,
+      "scipy_reaction_moment_relative_error": 9.87246055624598e-14,
+      "stiffness_symmetry_relative": 2.4306812660249012e-17,
+      "rust_relative_residual": 9.127251525269423e-11,
+      "quadrature_order": 4,
+      "matrix_order": 3651,
+      "reduced_order": 2493
+    }
+  ],
+  "elapsed_seconds": 8.820744369993918,
+  "thresholds": {
+    "rhs_max_abs_error_n": 1e-08,
+    "displacement_relative_error": 1e-08,
+    "force_and_moment_balance_relative": 1e-08,
+    "energy_work_relative": 1e-08,
+    "affine_displacement_max_error_mm": 1e-09
+  }
+}

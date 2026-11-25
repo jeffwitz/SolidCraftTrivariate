@@ -208,6 +208,7 @@ pub fn build(recipe: &Json) -> Result<Json, &'static str> {
         "ruled_section_sweep_v1" => super::ruled_json::build(recipe),
         super::coaxial_json::FAMILY => super::coaxial_json::build(recipe),
         super::circular_bend_json::FAMILY => super::circular_bend_json::build(recipe),
+        super::orthogonal_json::FAMILY => super::orthogonal_json::build(recipe),
         "axial_boolean_v1" => super::axial_json::build(recipe),
         family
             if family == "filleted_bracket_v1"
@@ -235,6 +236,7 @@ pub fn audit(model: &Json) -> Result<Json, &'static str> {
         "ruled_section_sweep_v1" => super::ruled_json::audit(model),
         super::coaxial_json::FAMILY => super::coaxial_json::audit(model),
         super::circular_bend_json::FAMILY => super::circular_bend_json::audit(model),
+        super::orthogonal_json::FAMILY => super::orthogonal_json::audit(model),
         "axial_boolean_v1" => super::axial_json::audit(model),
         family
             if family == "filleted_bracket_v1"

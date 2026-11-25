@@ -165,3 +165,112 @@ fn invalid_inputs_and_unknown_schema_have_distinct_cli_statuses() {
     assert!(!result.status.success());
     assert_eq!(status(&result), "indeterminate");
 }
+
+#[test]
+fn mechanical_job_validates_inputs_before_replacing_a_solved_result() {
+    use solidcraft_trivariate::json::Json;
+    let fixture = parse(include_str!("references/mechanical_jobs/cube.json")).unwrap();
+    let dir = TempDir::new();
+    let recipe = dir.path().join("recipe.json");
+    let model = dir.path().join("model.json");
+    let job = dir.path().join("job.json");
+    let result = dir.path().join("result.json");
+    write(&recipe, &fixture.field("recipe").unwrap().to_string());
+    let model_path = model.to_str().unwrap();
+    assert!(cli(&["build", recipe.to_str().unwrap(), model_path])
+        .status
+        .success());
+    let original = fixture.field("job").unwrap();
+    write(&job, &original.to_string());
+    let args = [
+        "solve-job",
+        model_path,
+        job.to_str().unwrap(),
+        result.to_str().unwrap(),
+    ];
+    assert!(cli(&args).status.success());
+    let before = fs::read(&result).unwrap();
+    let solved = parse(std::str::from_utf8(&before).unwrap()).unwrap();
+    assert!(
+        solved
+            .field("relative_work_energy_error")
+            .unwrap()
+            .number::<f64>()
+            .unwrap()
+            < 1e-10
+    );
+
+    let vtu = dir.path().join("sample.vtu");
+    let result_path = result.to_str().unwrap();
+    let field_path = vtu.to_str().unwrap();
+    assert!(cli(&["export-field-vtu", result_path, "2", field_path])
+        .status
+        .success());
+    let original_vtu = fs::read(&vtu).unwrap();
+    for subdivisions in ["0", "33", "2.5"] {
+        assert!(
+            !cli(&["export-field-vtu", result_path, subdivisions, field_path])
+                .status
+                .success()
+        );
+        assert_eq!(fs::read(&vtu).unwrap(), original_vtu);
+    }
+    let Json::Object(mut invalid_fields) = solved.clone() else {
+        unreachable!()
+    };
+    invalid_fields.insert("displacement_mm_xyz".into(), Json::Array(vec![]));
+    let bad_result = dir.path().join("bad-result.json");
+    write(&bad_result, &Json::Object(invalid_fields).to_string());
+    assert!(!cli(&[
+        "export-field-vtu",
+        bad_result.to_str().unwrap(),
+        "2",
+        field_path
+    ])
+    .status
+    .success());
+    assert_eq!(fs::read(&vtu).unwrap(), original_vtu);
+
+    let first_load = &original.field("loads").unwrap().items().unwrap()[0];
+    let duplicate = Json::Array(vec![first_load.clone(), first_load.clone()]);
+    let invalid = [
+        ("supports", parse("[]").unwrap()),
+        ("supports", parse(r#"[{"select":{"feature":"z0"},"components":[2]}]"#).unwrap()),
+        ("loads", duplicate),
+        ("loads", parse(r#"[{"select":{"feature":"z8"},"pressure_mpa":0}]"#).unwrap()),
+        ("loads", parse(r#"[{"select":{"feature":"absent"},"pressure_mpa":1}]"#).unwrap()),
+        ("loads", parse(r#"[{"select":{"feature":"z8"},"stress_mpa":[[0,1,0],[0,0,0],[0,0,0]]}]"#).unwrap()),
+        ("material", parse(r#"{"young_mpa":1000,"poisson":0.5}"#).unwrap()),
+        ("plan", parse(r#"{"schema":"adaptive_refinement_plan_v1","max_depth":0,"max_cells":0,"steps":[]}"#).unwrap()),
+    ];
+    for (field, bad) in invalid {
+        let Json::Object(mut fields) = original.clone() else {
+            unreachable!()
+        };
+        fields.insert(field.into(), bad);
+        write(&job, &Json::Object(fields).to_string());
+        assert!(!cli(&args).status.success(), "{field}");
+        assert_eq!(fs::read(&result).unwrap(), before, "{field}");
+    }
+    write(&job, &original.to_string());
+    let mut data = parse(&fs::read_to_string(&model).unwrap()).unwrap();
+    let Json::Object(fields) = &mut data else {
+        unreachable!()
+    };
+    let Some(Json::Array(blocks)) = fields.get_mut("blocks") else {
+        unreachable!()
+    };
+    let Json::Object(block) = &mut blocks[0] else {
+        unreachable!()
+    };
+    let Some(Json::Array(controls)) = block.get_mut("controls") else {
+        unreachable!()
+    };
+    let Json::Array(control) = &mut controls[0] else {
+        unreachable!()
+    };
+    control[0] = Json::Number("123456".into());
+    write(&model, &data.to_string());
+    assert!(!cli(&args).status.success());
+    assert_eq!(fs::read(&result).unwrap(), before);
+}

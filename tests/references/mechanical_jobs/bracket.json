@@ -1,0 +1,14 @@
+{
+  "id": "bracket-x60-local-refinement",
+  "recipe": {"family": "filleted_bracket_v1"},
+  "job": {
+    "schema": "solidcraft_mechanical_job_v1",
+    "material": {"young_mpa": 210000.0, "poisson": 0.3},
+    "formulation": "displacement",
+    "order": 3,
+    "plan": {"schema": "adaptive_refinement_plan_v1", "max_depth": 1, "max_cells": 1024, "steps": [{"refine": [{"root": "hole_x_sector_east_z10_30", "level": 0, "index": [0,0,0]}]}]},
+    "supports": [{"select": {"feature": "z0"}, "components": [0,1,2]}],
+    "loads": [{"select": {"feature": "x60"}, "vector_mpa": [0, -3.125, 0]}]
+  },
+  "oracle": {"kind": "independent_scipy", "expected_resultant_n": [0,-1000,0], "expected_area_mm2": 320}
+}

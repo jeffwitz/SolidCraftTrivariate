@@ -1,0 +1,906 @@
+{
+  "schema": "solidcraft_host_bracket_parity_v1",
+  "solidcraft_cli": "solidcraft-cli 0.48.1",
+  "source_fixture": "upstream/fieldcraft/tests/oracle/filleted-bracket-fillet-stress/design.json",
+  "fixture_sha256": "9d30bb28184a95165b25971343e2caae486851e7cdaaaa70884719a4a0d7e357",
+  "fieldcraft_revision": "35e834652d8548384c2da8ef1b28d588c9af2ffd",
+  "occ": "7.8.1",
+  "freecad": [
+    "26",
+    "3",
+    "0"
+  ],
+  "cases": [
+    {
+      "radii_ticks": [
+        64,
+        64
+      ],
+      "rotated_contour_vertices": 0,
+      "reversed_independent_holes": false,
+      "source_sha256": "b9cfc6a449ca4ec54022b9cf7b8ef46adc2017548b93e9441cb10bdb0565ee7f",
+      "native": {
+        "blocks": 36,
+        "determinant_lower_bound_mm3": 160,
+        "exterior_sides": 106,
+        "ideal_volume_mm3": 32144.778925388684,
+        "method": "certified_fixed_extrusion_partition",
+        "radial_error_upper_bound_mm": 4.2e-15,
+        "shared_faces": 55,
+        "status": "valid"
+      },
+      "host_timing": {
+        "timings": [
+          {
+            "command": "sketch.create",
+            "index": 0,
+            "ms": 1.746
+          },
+          {
+            "command": "sketch.line",
+            "index": 1,
+            "ms": 1.113
+          },
+          {
+            "command": "sketch.finish",
+            "index": 2,
+            "ms": 0.081
+          },
+          {
+            "command": "solid.extrude",
+            "index": 3,
+            "ms": 14.125
+          },
+          {
+            "command": "solid.fillet",
+            "index": 4,
+            "ms": 36.819
+          },
+          {
+            "command": "solid.hole",
+            "index": 5,
+            "ms": 74.299
+          },
+          {
+            "command": "solid.hole",
+            "index": 6,
+            "ms": 88.564
+          }
+        ],
+        "total_ms": 216.866
+      },
+      "host_build_save_step_wall_s": 0.2745905009796843,
+      "native_translate_build_wall_s": 0.013055793009698391,
+      "saved_document_bytes": 20247,
+      "shape_order": [
+        "native",
+        "host",
+        "reopened"
+      ],
+      "valid_single_solid": [
+        true,
+        true,
+        true
+      ],
+      "faces": [
+        106,
+        11,
+        11
+      ],
+      "edges": [
+        212,
+        27,
+        27
+      ],
+      "mass_properties": [
+        [
+          {
+            "tolerance": 1e-09,
+            "volume_mm3": 32144.7789253887,
+            "estimated_error": 1.928250726371328e-10,
+            "surface_mm2": 10545.504429644761,
+            "surface_estimated_error": 3.389070985741329e-16
+          },
+          {
+            "tolerance": 1e-12,
+            "volume_mm3": 32144.7789253887,
+            "estimated_error": 6.864565827386307e-13,
+            "surface_mm2": 10545.504380597908,
+            "surface_estimated_error": 4.240739575324135e-16
+          }
+        ],
+        [
+          {
+            "tolerance": 1e-09,
+            "volume_mm3": 32144.778925388673,
+            "estimated_error": 5.73917575751492e-12,
+            "surface_mm2": 10545.504380495906,
+            "surface_estimated_error": 1.725192658155146e-15
+          },
+          {
+            "tolerance": 1e-12,
+            "volume_mm3": 32144.778925388673,
+            "estimated_error": 2.421011644157311e-15,
+            "surface_mm2": 10545.504380495904,
+            "surface_estimated_error": 2.045117903573518e-16
+          }
+        ],
+        [
+          {
+            "tolerance": 1e-09,
+            "volume_mm3": 32144.778925388673,
+            "estimated_error": 5.73917575751492e-12,
+            "surface_mm2": 10545.504380495906,
+            "surface_estimated_error": 1.725192658155146e-15
+          },
+          {
+            "tolerance": 1e-12,
+            "volume_mm3": 32144.778925388673,
+            "estimated_error": 2.421011644157311e-15,
+            "surface_mm2": 10545.504380495904,
+            "surface_estimated_error": 2.045117903573518e-16
+          }
+        ]
+      ],
+      "analytic_volume_mm3": 32144.778925388688,
+      "relative_volume_error": 4.440892098500626e-16,
+      "maximum_relative_surface_difference": 9.672707079744214e-12,
+      "optimal_bounds_mm": [
+        [
+          -1e-07,
+          -1e-07,
+          -1e-07,
+          60.0000001,
+          50.0000001,
+          40.00000010000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          60.0,
+          50.0,
+          40.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          60.0,
+          50.0,
+          40.0
+        ]
+      ],
+      "bounds_error_mm": 1.000000082740371e-07,
+      "classified_points": 2096,
+      "mismatches": [],
+      "qualified": true
+    },
+    {
+      "radii_ticks": [
+        40,
+        80
+      ],
+      "rotated_contour_vertices": 1,
+      "reversed_independent_holes": true,
+      "source_sha256": "830ee65bd8ad0ba9231e7522d403815f36d4edc30ddb3853902484827e54e924",
+      "native": {
+        "blocks": 36,
+        "determinant_lower_bound_mm3": 151.42135623730815,
+        "exterior_sides": 106,
+        "ideal_volume_mm3": 32163.628481310225,
+        "method": "certified_fixed_extrusion_partition",
+        "radial_error_upper_bound_mm": 5.25e-15,
+        "shared_faces": 55,
+        "status": "valid"
+      },
+      "host_timing": {
+        "timings": [
+          {
+            "command": "sketch.create",
+            "index": 0,
+            "ms": 1.781
+          },
+          {
+            "command": "sketch.line",
+            "index": 1,
+            "ms": 0.965
+          },
+          {
+            "command": "sketch.finish",
+            "index": 2,
+            "ms": 0.075
+          },
+          {
+            "command": "solid.extrude",
+            "index": 3,
+            "ms": 13.895
+          },
+          {
+            "command": "solid.fillet",
+            "index": 4,
+            "ms": 34.436
+          },
+          {
+            "command": "solid.hole",
+            "index": 5,
+            "ms": 69.335
+          },
+          {
+            "command": "solid.hole",
+            "index": 6,
+            "ms": 80.066
+          }
+        ],
+        "total_ms": 200.639
+      },
+      "host_build_save_step_wall_s": 0.25684915599413216,
+      "native_translate_build_wall_s": 0.012434939970262349,
+      "saved_document_bytes": 20312,
+      "shape_order": [
+        "native",
+        "host",
+        "reopened"
+      ],
+      "valid_single_solid": [
+        true,
+        true,
+        true
+      ],
+      "faces": [
+        106,
+        11,
+        11
+      ],
+      "edges": [
+        212,
+        27,
+        27
+      ],
+      "mass_properties": [
+        [
+          {
+            "tolerance": 1e-09,
+            "volume_mm3": 32163.62848131023,
+            "estimated_error": 1.9838405127970912e-10,
+            "surface_mm2": 10525.08407437103,
+            "surface_estimated_error": 3.536575842797545e-16
+          },
+          {
+            "tolerance": 1e-12,
+            "volume_mm3": 32163.62848131023,
+            "estimated_error": 7.263562876433245e-13,
+            "surface_mm2": 10525.08402834327,
+            "surface_estimated_error": 5.304864030845141e-16
+          }
+        ],
+        [
+          {
+            "tolerance": 1e-09,
+            "volume_mm3": 32163.628481310236,
+            "estimated_error": 6.778561271256111e-12,
+            "surface_mm2": 10525.084028247575,
+            "surface_estimated_error": 1.725192658155146e-15
+          },
+          {
+            "tolerance": 1e-12,
+            "volume_mm3": 32163.628481310236,
+            "estimated_error": 2.0085373108984646e-15,
+            "surface_mm2": 10525.08402824757,
+            "surface_estimated_error": 5.65431943371292e-16
+          }
+        ],
+        [
+          {
+            "tolerance": 1e-09,
+            "volume_mm3": 32163.628481310236,
+            "estimated_error": 6.778561271256111e-12,
+            "surface_mm2": 10525.084028247575,
+            "surface_estimated_error": 1.725192658155146e-15
+          },
+          {
+            "tolerance": 1e-12,
+            "volume_mm3": 32163.628481310236,
+            "estimated_error": 2.0085373108984646e-15,
+            "surface_mm2": 10525.08402824757,
+            "surface_estimated_error": 5.65431943371292e-16
+          }
+        ]
+      ],
+      "analytic_volume_mm3": 32163.628481310225,
+      "relative_volume_error": 4.440892098500626e-16,
+      "maximum_relative_surface_difference": 9.092726571680032e-12,
+      "optimal_bounds_mm": [
+        [
+          -1e-07,
+          -1e-07,
+          -1e-07,
+          60.0000001,
+          50.0000001,
+          40.00000010000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          60.0,
+          50.0,
+          40.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          60.0,
+          50.0,
+          40.0
+        ]
+      ],
+      "bounds_error_mm": 1.000000082740371e-07,
+      "classified_points": 2096,
+      "mismatches": [],
+      "qualified": true
+    },
+    {
+      "radii_ticks": [
+        80,
+        40
+      ],
+      "rotated_contour_vertices": 2,
+      "reversed_independent_holes": false,
+      "source_sha256": "89d24566cd6ae4dd2e8298ec5c17109be9c30b50ea810c35cf32bdf02a572e3a",
+      "native": {
+        "blocks": 36,
+        "determinant_lower_bound_mm3": 151.42135623730815,
+        "exterior_sides": 106,
+        "ideal_volume_mm3": 32163.628481310225,
+        "method": "certified_fixed_extrusion_partition",
+        "radial_error_upper_bound_mm": 5.25e-15,
+        "shared_faces": 55,
+        "status": "valid"
+      },
+      "host_timing": {
+        "timings": [
+          {
+            "command": "sketch.create",
+            "index": 0,
+            "ms": 2.895
+          },
+          {
+            "command": "sketch.line",
+            "index": 1,
+            "ms": 1.428
+          },
+          {
+            "command": "sketch.finish",
+            "index": 2,
+            "ms": 0.118
+          },
+          {
+            "command": "solid.extrude",
+            "index": 3,
+            "ms": 15.18
+          },
+          {
+            "command": "solid.fillet",
+            "index": 4,
+            "ms": 35.733
+          },
+          {
+            "command": "solid.hole",
+            "index": 5,
+            "ms": 76.331
+          },
+          {
+            "command": "solid.hole",
+            "index": 6,
+            "ms": 93.32
+          }
+        ],
+        "total_ms": 225.149
+      },
+      "host_build_save_step_wall_s": 0.2933176750084385,
+      "native_translate_build_wall_s": 0.01775570202153176,
+      "saved_document_bytes": 20259,
+      "shape_order": [
+        "native",
+        "host",
+        "reopened"
+      ],
+      "valid_single_solid": [
+        true,
+        true,
+        true
+      ],
+      "faces": [
+        106,
+        11,
+        11
+      ],
+      "edges": [
+        212,
+        27,
+        27
+      ],
+      "mass_properties": [
+        [
+          {
+            "tolerance": 1e-09,
+            "volume_mm3": 32163.628481310225,
+            "estimated_error": 2.0253020853787765e-10,
+            "surface_mm2": 10525.08407437103,
+            "surface_estimated_error": 3.389070985741329e-16
+          },
+          {
+            "tolerance": 1e-12,
+            "volume_mm3": 32163.62848131022,
+            "estimated_error": 7.712681149040676e-13,
+            "surface_mm2": 10525.08402834327,
+            "surface_estimated_error": 3.536576020563427e-16
+          }
+        ],
+        [
+          {
+            "tolerance": 1e-09,
+            "volume_mm3": 32163.628481310232,
+            "estimated_error": 5.0178205517123184e-12,
+            "surface_mm2": 10525.084028247575,
+            "surface_estimated_error": 1.725192658155146e-15
+          },
+          {
+            "tolerance": 1e-12,
+            "volume_mm3": 32163.628481310232,
+            "estimated_error": 1.9808838855171027e-15,
+            "surface_mm2": 10525.084028247571,
+            "surface_estimated_error": 5.65431943371292e-16
+          }
+        ],
+        [
+          {
+            "tolerance": 1e-09,
+            "volume_mm3": 32163.628481310232,
+            "estimated_error": 5.0178205517123184e-12,
+            "surface_mm2": 10525.084028247575,
+            "surface_estimated_error": 1.725192658155146e-15
+          },
+          {
+            "tolerance": 1e-12,
+            "volume_mm3": 32163.628481310232,
+            "estimated_error": 1.9808838855171027e-15,
+            "surface_mm2": 10525.084028247571,
+            "surface_estimated_error": 5.65431943371292e-16
+          }
+        ]
+      ],
+      "analytic_volume_mm3": 32163.628481310225,
+      "relative_volume_error": 2.220446049250313e-16,
+      "maximum_relative_surface_difference": 9.092504527075107e-12,
+      "optimal_bounds_mm": [
+        [
+          -1e-07,
+          -1e-07,
+          -1e-07,
+          60.0000001,
+          50.0000001,
+          40.00000010000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          60.0,
+          50.0,
+          40.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          60.0,
+          50.0,
+          40.0
+        ]
+      ],
+      "bounds_error_mm": 1.000000082740371e-07,
+      "classified_points": 2096,
+      "mismatches": [],
+      "qualified": true
+    },
+    {
+      "radii_ticks": [
+        50,
+        74
+      ],
+      "rotated_contour_vertices": 3,
+      "reversed_independent_holes": true,
+      "source_sha256": "445614af81985a823ef4ee1019409bad2ccce0d36602ab33ece7153417fa6af0",
+      "native": {
+        "blocks": 36,
+        "determinant_lower_bound_mm3": 160,
+        "exterior_sides": 106,
+        "ideal_volume_mm3": 32165.984675800417,
+        "method": "certified_fixed_extrusion_partition",
+        "radial_error_upper_bound_mm": 4.856249999999999e-15,
+        "shared_faces": 55,
+        "status": "valid"
+      },
+      "host_timing": {
+        "timings": [
+          {
+            "command": "sketch.create",
+            "index": 0,
+            "ms": 2.732
+          },
+          {
+            "command": "sketch.line",
+            "index": 1,
+            "ms": 1.303
+          },
+          {
+            "command": "sketch.finish",
+            "index": 2,
+            "ms": 0.105
+          },
+          {
+            "command": "solid.extrude",
+            "index": 3,
+            "ms": 16.826
+          },
+          {
+            "command": "solid.fillet",
+            "index": 4,
+            "ms": 38.436
+          },
+          {
+            "command": "solid.hole",
+            "index": 5,
+            "ms": 66.183
+          },
+          {
+            "command": "solid.hole",
+            "index": 6,
+            "ms": 77.076
+          }
+        ],
+        "total_ms": 202.779
+      },
+      "host_build_save_step_wall_s": 0.22871042502811179,
+      "native_translate_build_wall_s": 0.012028886005282402,
+      "saved_document_bytes": 20226,
+      "shape_order": [
+        "native",
+        "host",
+        "reopened"
+      ],
+      "valid_single_solid": [
+        true,
+        true,
+        true
+      ],
+      "faces": [
+        106,
+        11,
+        11
+      ],
+      "edges": [
+        212,
+        27,
+        27
+      ],
+      "mass_properties": [
+        [
+          {
+            "tolerance": 1e-09,
+            "volume_mm3": 32165.984675800424,
+            "estimated_error": 1.9670289243489708e-10,
+            "surface_mm2": 10538.23949510328,
+            "surface_estimated_error": 3.389070985741329e-16
+          },
+          {
+            "tolerance": 1e-12,
+            "volume_mm3": 32165.984675800424,
+            "estimated_error": 7.020208856088905e-13,
+            "surface_mm2": 10538.2394475833,
+            "surface_estimated_error": 4.617407103666675e-16
+          }
+        ],
+        [
+          {
+            "tolerance": 1e-09,
+            "volume_mm3": 32165.98467580041,
+            "estimated_error": 6.215333124301297e-12,
+            "surface_mm2": 10538.23944748448,
+            "surface_estimated_error": 1.725192658155146e-15
+          },
+          {
+            "tolerance": 1e-12,
+            "volume_mm3": 32165.98467580041,
+            "estimated_error": 2.0337632556657524e-15,
+            "surface_mm2": 10538.23944748448,
+            "surface_estimated_error": 3.6187644375762673e-16
+          }
+        ],
+        [
+          {
+            "tolerance": 1e-09,
+            "volume_mm3": 32165.98467580041,
+            "estimated_error": 6.215333124301297e-12,
+            "surface_mm2": 10538.23944748448,
+            "surface_estimated_error": 1.725192658155146e-15
+          },
+          {
+            "tolerance": 1e-12,
+            "volume_mm3": 32165.98467580041,
+            "estimated_error": 2.0337632556657524e-15,
+            "surface_mm2": 10538.23944748448,
+            "surface_estimated_error": 3.6187644375762673e-16
+          }
+        ]
+      ],
+      "analytic_volume_mm3": 32165.984675800417,
+      "relative_volume_error": 2.220446049250313e-16,
+      "maximum_relative_surface_difference": 9.377387755193922e-12,
+      "optimal_bounds_mm": [
+        [
+          -1e-07,
+          -1e-07,
+          -1e-07,
+          60.0000001,
+          50.0000001,
+          40.00000010000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          60.0,
+          50.0,
+          40.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          60.0,
+          50.0,
+          40.0
+        ]
+      ],
+      "bounds_error_mm": 1.000000082740371e-07,
+      "classified_points": 2096,
+      "mismatches": [],
+      "qualified": true
+    },
+    {
+      "radii_ticks": [
+        51,
+        74
+      ],
+      "rotated_contour_vertices": 4,
+      "reversed_independent_holes": false,
+      "source_sha256": "1351082f4b871ad3260419b7c641d4358ee3c941a784001336bb26f7cd0ca03c",
+      "native": {
+        "blocks": 36,
+        "determinant_lower_bound_mm3": 160,
+        "exterior_sides": 106,
+        "ideal_volume_mm3": 32156.069023987522,
+        "method": "certified_fixed_extrusion_partition",
+        "radial_error_upper_bound_mm": 4.856249999999999e-15,
+        "shared_faces": 55,
+        "status": "valid"
+      },
+      "host_timing": {
+        "timings": [
+          {
+            "command": "sketch.create",
+            "index": 0,
+            "ms": 1.859
+          },
+          {
+            "command": "sketch.line",
+            "index": 1,
+            "ms": 1.004
+          },
+          {
+            "command": "sketch.finish",
+            "index": 2,
+            "ms": 0.077
+          },
+          {
+            "command": "solid.extrude",
+            "index": 3,
+            "ms": 15.743
+          },
+          {
+            "command": "solid.fillet",
+            "index": 4,
+            "ms": 40.551
+          },
+          {
+            "command": "solid.hole",
+            "index": 5,
+            "ms": 71.317
+          },
+          {
+            "command": "solid.hole",
+            "index": 6,
+            "ms": 79.136
+          }
+        ],
+        "total_ms": 209.833
+      },
+      "host_build_save_step_wall_s": 0.26996764400973916,
+      "native_translate_build_wall_s": 0.015416479029227048,
+      "saved_document_bytes": 20444,
+      "shape_order": [
+        "native",
+        "host",
+        "reopened"
+      ],
+      "valid_single_solid": [
+        true,
+        true,
+        true
+      ],
+      "faces": [
+        106,
+        11,
+        11
+      ],
+      "edges": [
+        212,
+        27,
+        27
+      ],
+      "mass_properties": [
+        [
+          {
+            "tolerance": 1e-09,
+            "volume_mm3": 32156.06902398753,
+            "estimated_error": 1.9561780471456402e-10,
+            "surface_mm2": 10538.902175192963,
+            "surface_estimated_error": 3.389070985741329e-16
+          },
+          {
+            "tolerance": 1e-12,
+            "volume_mm3": 32156.06902398753,
+            "estimated_error": 6.967895224618608e-13,
+            "surface_mm2": 10538.902127284471,
+            "surface_estimated_error": 3.667666659739794e-16
+          }
+        ],
+        [
+          {
+            "tolerance": 1e-09,
+            "volume_mm3": 32156.06902398752,
+            "estimated_error": 6.278877174524606e-12,
+            "surface_mm2": 10538.902127184847,
+            "surface_estimated_error": 1.725192658155146e-15
+          },
+          {
+            "tolerance": 1e-12,
+            "volume_mm3": 32156.06902398752,
+            "estimated_error": 2.365660532783899e-15,
+            "surface_mm2": 10538.902127184847,
+            "surface_estimated_error": 2.445111106470455e-16
+          }
+        ],
+        [
+          {
+            "tolerance": 1e-09,
+            "volume_mm3": 32156.06902398752,
+            "estimated_error": 6.278877174524606e-12,
+            "surface_mm2": 10538.902127184847,
+            "surface_estimated_error": 1.725192658155146e-15
+          },
+          {
+            "tolerance": 1e-12,
+            "volume_mm3": 32156.06902398752,
+            "estimated_error": 2.365660532783899e-15,
+            "surface_mm2": 10538.902127184847,
+            "surface_estimated_error": 2.445111106470455e-16
+          }
+        ]
+      ],
+      "analytic_volume_mm3": 32156.069023987526,
+      "relative_volume_error": 2.220446049250313e-16,
+      "maximum_relative_surface_difference": 9.453104965473358e-12,
+      "optimal_bounds_mm": [
+        [
+          -1e-07,
+          -1e-07,
+          -1e-07,
+          60.0000001,
+          50.0000001,
+          40.00000010000001
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          60.0,
+          50.0,
+          40.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          60.0,
+          50.0,
+          40.0
+        ]
+      ],
+      "bounds_error_mm": 1.000000082740371e-07,
+      "classified_points": 2096,
+      "mismatches": [],
+      "qualified": true
+    }
+  ],
+  "refusals": {
+    "missing_fillet": {
+      "code": 1,
+      "diagnostic": {
+        "reason": "unsupported SolidCraft history length",
+        "status": "error"
+      },
+      "previous_unchanged": true
+    },
+    "unknown_command": {
+      "code": 1,
+      "diagnostic": {
+        "reason": "unsupported SolidCraft operation sequence",
+        "status": "error"
+      },
+      "previous_unchanged": true
+    },
+    "different_fillet": {
+      "code": 1,
+      "diagnostic": {
+        "reason": "unsupported SolidCraft fillet",
+        "status": "error"
+      },
+      "previous_unchanged": true
+    },
+    "blind_hole": {
+      "code": 1,
+      "diagnostic": {
+        "reason": "unexpected object fields",
+        "status": "error"
+      },
+      "previous_unchanged": true
+    },
+    "duplicate_hole": {
+      "code": 1,
+      "diagnostic": {
+        "reason": "duplicate SolidCraft through-hole support",
+        "status": "error"
+      },
+      "previous_unchanged": true
+    },
+    "off_lattice": {
+      "code": 1,
+      "diagnostic": {
+        "reason": "SolidCraft length is outside the eighth-millimeter lattice",
+        "status": "error"
+      },
+      "previous_unchanged": true
+    },
+    "extrusion": {
+      "code": 1,
+      "diagnostic": {
+        "reason": "unsupported SolidCraft bracket extrusion",
+        "status": "error"
+      },
+      "previous_unchanged": true
+    },
+    "wrong_outline": {
+      "code": 1,
+      "diagnostic": {
+        "reason": "unrecognized SolidCraft bracket contour",
+        "status": "error"
+      },
+      "previous_unchanged": true
+    }
+  }
+}

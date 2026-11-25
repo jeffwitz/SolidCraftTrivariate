@@ -1,0 +1,56 @@
+[
+  {
+    "id": "g2-cross-plate",
+    "title": "Plaque G2 à perçages croisés",
+    "description": "Plaque de 100 × 50 × 12 mm avec un profil cubique périodique G2 et un perçage transversal rectangulaire. Le modèle trivarié conserve ses faces de conception ; le fichier STEP a été relu comme un solide par le parseur SolidCore.",
+    "model": "data/models/g2-cross-plate.model.json",
+    "step": "data/steps/g2-cross-trivariate.step",
+    "source": "data/sources/g2-cross-plate.recipe.json",
+    "audit": "data/audits/g2-cross-step-reader.json",
+    "metrics": [
+      { "label": "Blocs trivariés", "value": "32" },
+      { "label": "Interfaces partagées", "value": "46" },
+      { "label": "Faces de conception", "value": "100" },
+      { "label": "Volume", "value": "≈ 53 200 mm³ (quadrature d’ordre 32)" },
+      { "label": "Écart maximal de volume par couche", "value": "3,91 × 10⁻¹² relatif à la référence indépendante" },
+      { "label": "Relecture STEP", "value": "1 solide fermé ; 50 boucles de faces réorientées selon same_sense" },
+      { "label": "Continuité des parois", "value": "64 contrôles exacts des jets aux extrémités ; écart de courbure nul" }
+    ]
+  },
+  {
+    "id": "filleted-bracket",
+    "title": "Équerre à congé et deux perçages traversants",
+    "description": "Équerre de 60 × 50 × 40 mm, avec un congé intérieur de rayon 6 mm et deux perçages traversants. Le modèle natif et l’export STEP AP214 ont été comparés à une frontière OpenCascade indépendante et au volume analytique.",
+    "model": "data/models/filleted-bracket.model.json",
+    "step": "data/steps/filleted-bracket.step",
+    "source": "data/sources/filleted-bracket.recipe.json",
+    "audit": "data/audits/step-boundary-20261125.json",
+    "metrics": [
+      { "label": "Blocs trivariés", "value": "36" },
+      { "label": "Interfaces partagées", "value": "55" },
+      { "label": "Faces de conception exposées", "value": "106" },
+      { "label": "Audit STEP", "value": "1 solide fermé et valide ; 106 faces et 212 arêtes" },
+      { "label": "Volume", "value": "≈ 32 144,779 mm³" },
+      { "label": "Écart au volume analytique", "value": "4,54 × 10⁻¹² relatif" },
+      { "label": "Échantillons de frontière", "value": "2 650 ; distance maximale ≈ 1,6 × 10⁻¹⁴ mm" }
+    ]
+  },
+  {
+    "id": "full-annulus",
+    "title": "Anneau circulaire complet",
+    "description": "Anneau de rayon intérieur 2 mm, de rayon extérieur 4 mm et de hauteur axiale 8 mm, construit avec quatre blocs trivariés rationnels et exporté en STEP. L’audit indépendant vérifie le solide OCC fermé, la topologie de frontière, les distances sur des points échantillonnés et le volume analytique.",
+    "model": "data/models/full-annulus.model.json",
+    "step": "data/steps/full-annulus.step",
+    "source": "data/sources/full-annulus.recipe.json",
+    "audit": "data/audits/step-boundary-20261125.json",
+    "metrics": [
+      { "label": "Blocs trivariés", "value": "4" },
+      { "label": "Interfaces partagées", "value": "4" },
+      { "label": "Faces de conception exposées", "value": "16" },
+      { "label": "Audit STEP", "value": "1 solide fermé et valide ; 16 faces et 32 arêtes" },
+      { "label": "Volume", "value": "≈ 301,593 mm³" },
+      { "label": "Écart au volume analytique", "value": "9,30 × 10⁻¹² relatif" },
+      { "label": "Échantillons de frontière", "value": "400 ; distance maximale ≈ 1,0 × 10⁻¹⁵ mm" }
+    ]
+  }
+]

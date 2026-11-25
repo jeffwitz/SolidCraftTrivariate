@@ -1,0 +1,92 @@
+{
+  "schema": "solidcore_native_step_reread_v1",
+  "status": "verified",
+  "reader": {
+    "reader": "SolidCore native Part 21 parser + topology::read_solids + solidcore-convert::to_kernel(false)",
+    "solidcore_revision": "765f26e0d1fc7c66a0d03ea2dae28ee3b65270b8",
+    "harness_source": "build/g2-trivariate-reader/src/main.rs",
+    "harness_manifest": "build/g2-trivariate-reader/Cargo.toml",
+    "build_command": [
+      "rtk",
+      "cargo",
+      "run",
+      "--offline",
+      "--manifest-path",
+      "build/g2-trivariate-reader/Cargo.toml",
+      "--",
+      "<STEP>"
+    ],
+    "volume_method": "brep_volume_default(accuracy=1e-8)",
+    "reference_volume_mm3": 53200.395274197734,
+    "classification_probes": {
+      "material": "Inside",
+      "periodic_bore_only_at_[75,25,2]": "Outside",
+      "overlap_of_bores_at_[75,25,6]": "Outside",
+      "rectangle_bore_only_at_[50,25,6]": "Outside",
+      "stock_boundary_at_[0,40,10]": "OnBoundary"
+    }
+  },
+  "steps": [
+    {
+      "path": "docs/results/g2-cross-trivariate.step",
+      "description": "SolidCraft rational boundary export",
+      "sha256": "7259579b5d5330a38277d2c8132f4a010e3367f11d5b5c892d1b15a348c86e7d",
+      "reader_status": "read_and_converted",
+      "exchange_entities": 2790,
+      "read_solids": 1,
+      "read_failures": 0,
+      "sheet": false,
+      "regions": 2,
+      "shells": 1,
+      "faces": 100,
+      "edges": 200,
+      "vertices": 96,
+      "tolerance_mm": 1e-07,
+      "volume_mm3": 53200.39527419774,
+      "absolute_volume_difference_mm3": 7.275957614183426e-12,
+      "relative_volume_difference": 1.367651044072651e-16,
+      "reader_notes": "50 faces turned over: their loops disagree with their same_sense",
+      "classifications": {
+        "material": "Inside",
+        "periodic_bore_only": "Outside",
+        "overlap_both_bores": "Outside",
+        "rectangular_bore": "Outside",
+        "stock_boundary": "OnBoundary"
+      },
+      "runtime_stderr": ""
+    },
+    {
+      "path": "docs/results/g2-cross-solidcore.step",
+      "description": "SolidCore AP242 export",
+      "sha256": "526e21e5b17f475488cb67bbeea83c71ff46928f35c26039afe535a26a2b69d6",
+      "reader_status": "read_and_converted",
+      "exchange_entities": 1067,
+      "read_solids": 1,
+      "read_failures": 0,
+      "sheet": false,
+      "regions": 2,
+      "shells": 1,
+      "faces": 22,
+      "edges": 66,
+      "vertices": 44,
+      "tolerance_mm": 2.000000001421e-05,
+      "volume_mm3": 53200.39527419774,
+      "absolute_volume_difference_mm3": 7.275957614183426e-12,
+      "relative_volume_difference": 1.367651044072651e-16,
+      "reader_notes": "",
+      "classifications": {
+        "material": "Inside",
+        "periodic_bore_only": "Outside",
+        "overlap_both_bores": "Outside",
+        "rectangular_bore": "Outside",
+        "stock_boundary": "OnBoundary"
+      },
+      "runtime_stderr": ""
+    }
+  ],
+  "limits": [
+    "This validates native SolidCore Part 21 parsing, topology assembly, conversion to the kernel B-rep, volume integration and five sample classifications.",
+    "The trivariate STEP reader flips 50 face orientations because boundary-loop senses disagree with same_sense; import succeeds and the final kernel solid is manifold, but the repair is recorded rather than treated as source fidelity.",
+    "These sampled classifications and the mass result do not certify arbitrary STEP entities or all points on the boundary."
+  ]
+}

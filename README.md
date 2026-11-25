@@ -2,6 +2,8 @@
 
 Noyau volumique natif en Rust pour la conception paramétrique et l’IGA, avec des références de test en Python. Le cas de départ construit deux prismes unitaires en hauteur et profondeur, de largeurs réglables, et vérifie leurs coefficients homogènes sur toute la carte.
 
+La galerie interactive permet de couper les modèles, d’examiner leurs blocs et de télécharger les recettes, les cartes rationnelles et les fichiers STEP. [Ouvrir la galerie](https://jeffwitz.github.io/SolidCraftTrivariate/)
+
 ## Démarrer avec Luna
 
 Depuis la racine, avec Cargo, Rust, Python 3.10+, Git, Bash et Make :

@@ -164,7 +164,19 @@ pub fn import_script(script: &Json) -> Result<Json, &'static str> {
             .field("type")?
             .text()?;
         match first_type {
-            "box" => return crate::solidcraft_box_timeline::import_box_timeline(script),
+            "box" => {
+                let commands = script.field("commands")?.items()?;
+                let second_type = commands
+                    .get(1)
+                    .and_then(|step| step.field("params").ok())
+                    .and_then(|params| params.field("feature").ok())
+                    .and_then(|feature| feature.field("type").ok())
+                    .and_then(|value| value.text().ok());
+                if commands.len() == 2 && second_type == Some("hole") {
+                    return crate::solidcraft_blind_bore::import_blind_bore_timeline(script);
+                }
+                return crate::solidcraft_box_timeline::import_box_timeline(script);
+            }
             "sketch" => {
                 let commands = script.field("commands")?.items()?;
                 let second_type = commands
@@ -179,12 +191,17 @@ pub fn import_script(script: &Json) -> Result<Json, &'static str> {
                     if plane.field("type").and_then(Json::text) != Ok("origin")
                         || plane.field("name").and_then(Json::text) != Ok("XY")
                     {
-                        return crate::solidcraft_oriented_plane::import_oriented_plane_timeline(script);
+                        return crate::solidcraft_oriented_plane::import_oriented_plane_timeline(
+                            script,
+                        );
                     }
                     let sketch = feature.field("sketch")?;
-                    if sketch.field("curves")?.items()?.iter().any(|curve| {
-                        curve.field("type").and_then(Json::text) == Ok("circle")
-                    }) {
+                    if sketch
+                        .field("curves")?
+                        .items()?
+                        .iter()
+                        .any(|curve| curve.field("type").and_then(Json::text) == Ok("circle"))
+                    {
                         return crate::solidcraft_circular_polygon::import_circular_polygon_timeline(script);
                     }
                     return crate::solidcraft_polygon::import_polygon_timeline(script);
@@ -199,6 +216,17 @@ pub fn import_script(script: &Json) -> Result<Json, &'static str> {
         .items()?
         .first()
         .ok_or("empty SolidCraft script")?;
+    if first.field("command")?.text()? == "solid.box"
+        && script
+            .field("commands")?
+            .items()?
+            .get(1)
+            .and_then(|step| step.field("command").ok())
+            .and_then(|command| command.text().ok())
+            == Some("solid.hole")
+    {
+        return crate::solidcraft_blind_bore::import_blind_bore_direct(script);
+    }
     if first.field("command")?.text()? == "solid.box" {
         return crate::solidcraft_boxes::import_boxes(script);
     }

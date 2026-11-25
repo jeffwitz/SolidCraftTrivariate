@@ -1,0 +1,26 @@
+{
+  "base_revision": "25676c2 plus G22 candidate",
+  "fixture": "interval_bores_corpus.json#mixed",
+  "edit": {
+    "bore": "a",
+    "z_interval_mm": [
+      0,
+      10
+    ],
+    "require_features": [
+      "start",
+      "end",
+      "bore/a/wall"
+    ]
+  },
+  "observed": {
+    "json_status": "updated",
+    "exit_code": 1,
+    "initial_cli_admissions": 0,
+    "mandatory_edits": 96
+  },
+  "expected": {
+    "json_status": "updated",
+    "exit_code": 0
+  }
+}

@@ -6,6 +6,8 @@ from pathlib import Path
 import subprocess
 import time
 
+import refine_tetra_fields as process_budget
+
 ROOT = Path(__file__).resolve().parents[2]
 BASELINE = ROOT / "docs/results/bracket-cost-20261125.json"
 MANIFEST = ROOT / "tests/references/bracket_cost_corpus.json"
@@ -102,18 +104,18 @@ def main():
       for radii in manifest["mandatory_radii_sixteenths_mm"]:
         case_dir=WORK/("x%d-y%d"%tuple(radii));case_dir.mkdir(parents=True,exist_ok=True)
         raw=case_dir/f"{path}.json";resources=case_dir/f"{path}-resources.txt"
-        start=time.monotonic()
-        cmd=["/usr/bin/time","-f","%e %M","-o",str(resources),str(executable),"--path",str(radii[0]),str(radii[1]),path,str(raw)]
-        try:
-            run=subprocess.run(cmd,cwd=ROOT,env=env,capture_output=True,text=True,timeout=1800)
-            status="completed" if run.returncode==0 else "failed";diagnostic=(run.stderr+run.stdout)[-2500:]
-        except subprocess.TimeoutExpired as exc:
-            status="timeout_1800s";diagnostic=str(exc)[-2500:]
-        wall=time.monotonic()-start
-        row={"radii_ticks":radii,"path":path,"command":cmd,"wall_s":wall,"status":status,"diagnostic":diagnostic}
-        if resources.exists():
-            vals=resources.read_text().split()
-            if len(vals)==2:row["process_wall_s"]=float(vals[0]);row["peak_rss_kib"]=int(vals[1])
+        log=case_dir/f"{path}-process.log"
+        cmd=[str(executable),"--path",str(radii[0]),str(radii[1]),path,str(raw)]
+        measured=process_budget.measure(cmd,env,log,cwd=ROOT,seconds=1800)
+        wall=measured["elapsed_s"]
+        status={"completed":"completed","timeout":"timeout_1800s",
+                "rss_budget_exceeded":"rss_budget_exceeded","execution_error":"failed"}[measured["status"]]
+        diagnostic=log.read_text(errors="replace")[-2500:] if log.exists() else ""
+        row={"radii_ticks":radii,"path":path,"command":cmd,"wall_s":wall,"status":status,
+             "diagnostic":diagnostic,"tree_peak_rss_kib":measured["tree_peak_rss_kib"]}
+        # Keep the legacy resource artifact shape for report reconstruction.
+        resources.write_text(f"{wall:.6f} {measured['tree_peak_rss_kib']}\n")
+        row["process_wall_s"]=wall;row["peak_rss_kib"]=measured["tree_peak_rss_kib"]
         if raw.exists():
             measured=json.loads(raw.read_text());reference=baseline_cases[tuple(radii)]
             reference_run=next(r for r in reference["runs"] if r["method"]=="tetra" and r["resolution"]==1.25 and r["status"]=="completed")
@@ -141,8 +143,19 @@ def reassess_existing():
         resource=folder/f"{path}-resources.txt";old=prior.get((radii,path));row=dict(old or {})
         row.update(radii_ticks=list(radii),path=path)
         if old is None:
-            row.update(status="not_started_after_prior_h2_timeout" if path=="from_h2" else "missing_raw_output",
-                       diagnostic="The serial runner stopped progressing through this path while the first h2 run remained timed out.")
+            if path=="from_h2" and radii==(51,74):
+                row.update(status="launched_termination_unconfirmed",
+                           diagnostic="Direct process observation recorded PID 2117636 running `local_fillet_cost --path 51 74 from_h2` at about 20m27s elapsed; no final JSON or GNU time resource line survives, so completion, termination time, and final RSS are unknown.",
+                           launch_observed=True,last_observed_elapsed_s=1227,
+                           process_pid=2117636)
+            else:
+                row.update(status="not_started_after_prior_h2_timeout" if path=="from_h2" else "missing_raw_output",
+                           diagnostic="The serial runner stopped progressing through this path while the first h2 run remained timed out.")
+        if path=="from_h2" and radii==(51,74) and not raw.exists():
+            row.update(status="launched_termination_unconfirmed",
+                       diagnostic="Direct process observation recorded PID 2117636 running `local_fillet_cost --path 51 74 from_h2` at about 20m27s elapsed; no final JSON or GNU time resource line survives, so completion, termination time, and final RSS are unknown.",
+                       launch_observed=True,last_observed_elapsed_s=1227,
+                       process_pid=2117636)
         if raw.exists():
             measured=json.loads(raw.read_text());reference=baseline_cases[radii]
             ref_run=next(r for r in reference["runs"] if r["method"]=="tetra" and r["resolution"]==1.25 and r["status"]=="completed")
@@ -161,13 +174,24 @@ def reassess_existing():
             row["resource_record"]="missing"
         rows.append(row)
     running=[]
+    ancestors={os.getpid()}
+    parent=os.getppid()
+    while parent > 1 and parent not in ancestors:
+        ancestors.add(parent)
+        try:
+            stat=(Path("/proc")/str(parent)/"stat").read_text().rsplit(")",1)[1].split()
+            parent=int(stat[1])
+        except (FileNotFoundError,PermissionError,ProcessLookupError,ValueError,IndexError):
+            break
     ticks=os.sysconf("SC_CLK_TCK")
     for entry in Path("/proc").iterdir():
-        if not entry.name.isdigit():continue
+        if not entry.name.isdigit() or int(entry.name) in ancestors:continue
         try:
-            cmd=(entry/"cmdline").read_bytes().replace(b"\0",b" ").decode(errors="replace").strip()
+            args=[part.decode(errors="replace") for part in (entry/"cmdline").read_bytes().split(b"\0") if part]
+            cmd=" ".join(args)
             stat=(entry/"stat").read_text().rsplit(")",1)[1].split();state=stat[0];start_ticks=int(stat[19])
-            if "local_fillet_cost.py" in cmd or "local_fillet_cost --path" in cmd:
+            executable=Path(args[0]).name if args else ""
+            if executable=="local_fillet_cost":
                 uptime=float(Path("/proc/uptime").read_text().split()[0])
                 running.append({"pid":int(entry.name),"state":state,"elapsed_s":round(uptime-start_ticks/ticks,2),"command":cmd[:500]})
         except (FileNotFoundError,PermissionError,ProcessLookupError,ValueError):pass

@@ -326,7 +326,7 @@ fn core_block(
     )
 }
 
-fn validate(recipe: &IntervalBorePrism) -> Result<Vec<IntervalBore>, &'static str> {
+pub(crate) fn validate(recipe: &IntervalBorePrism) -> Result<Vec<IntervalBore>, &'static str> {
     if !(1..=4).contains(&recipe.bores.len())
         || !(1..=64).contains(&recipe.height_mm)
         || recipe.outer.vertices.len() + 4 * recipe.bores.len() > 32
@@ -386,36 +386,73 @@ pub fn build_interval_bore_prism(
     recipe: &IntervalBorePrism,
 ) -> Result<Vec<BracketBlock>, &'static str> {
     let bores = validate(recipe)?;
-    let mut events = BTreeSet::from([0, recipe.height_mm]);
-    for bore in &bores {
+    let base = prepare_profile(recipe, &bores)?;
+    let mut blocks = Vec::new();
+    for [z0, z1] in layer_intervals(recipe.height_mm, &bores) {
+        blocks.extend(build_layer(&base, recipe, &bores, z0, z1)?);
+    }
+    sort_partition(&mut blocks)?;
+    Ok(blocks)
+}
+
+pub(crate) fn layer_intervals(height: i32, bores: &[IntervalBore]) -> Vec<[i32; 2]> {
+    let mut events = BTreeSet::from([0, height]);
+    for bore in bores {
         events.insert(bore.z_interval_mm[0]);
         events.insert(bore.z_interval_mm[1]);
     }
     let events = events.into_iter().collect::<Vec<_>>();
+    events.windows(2).map(|z| [z[0], z[1]]).collect()
+}
+
+pub(crate) fn prepare_profile(
+    recipe: &IntervalBorePrism,
+    bores: &[IntervalBore],
+) -> Result<Vec<BracketBlock>, &'static str> {
     let guards = bores
         .iter()
         .map(|bore| guard_loop(&bore.bore))
         .collect::<Result<Vec<_>, _>>()?;
-    let base = build_perforated_prism(&PerforatedPrism {
+    build_perforated_prism(&PerforatedPrism {
         outer: recipe.outer.clone(),
         holes: guards,
         height_mm: recipe.height_mm,
         top_shift_mm: recipe.top_shift_mm,
-    })?;
+    })
+}
+
+pub(crate) fn build_layer(
+    base: &[BracketBlock],
+    recipe: &IntervalBorePrism,
+    bores: &[IntervalBore],
+    z0: i32,
+    z1: i32,
+) -> Result<Vec<BracketBlock>, &'static str> {
     let mut blocks = Vec::new();
-    for pair in events.windows(2) {
-        let [z0, z1] = [pair[0], pair[1]];
-        let slab = Slab {
-            height_mm: recipe.height_mm,
-            shift_mm: recipe.top_shift_mm,
-            z0,
-            z1,
-        };
-        for block in &base {
-            blocks.push(slice_prism_block(block, recipe.height_mm, z0, z1)?);
+    let slab = Slab {
+        height_mm: recipe.height_mm,
+        shift_mm: recipe.top_shift_mm,
+        z0,
+        z1,
+    };
+    for block in base {
+        blocks.push(slice_prism_block(block, recipe.height_mm, z0, z1)?);
+    }
+    for interval in bores {
+        let bore = &interval.bore;
+        for quadrant in 0..4 {
+            for half in 0..2 {
+                blocks.push(ring_block(
+                    bore,
+                    slab,
+                    quadrant,
+                    half,
+                    RingKind::GuardToCircle,
+                )?);
+            }
         }
-        for interval in &bores {
-            let bore = &interval.bore;
+        let [lo, hi] = interval.z_interval_mm;
+        if z1 <= lo || z0 >= hi {
             for quadrant in 0..4 {
                 for half in 0..2 {
                     blocks.push(ring_block(
@@ -423,35 +460,25 @@ pub fn build_interval_bore_prism(
                         slab,
                         quadrant,
                         half,
-                        RingKind::GuardToCircle,
+                        RingKind::CircleToInnerDiamond,
                     )?);
                 }
             }
-            let [lo, hi] = interval.z_interval_mm;
-            if z1 <= lo || z0 >= hi {
-                for quadrant in 0..4 {
-                    for half in 0..2 {
-                        blocks.push(ring_block(
-                            bore,
-                            slab,
-                            quadrant,
-                            half,
-                            RingKind::CircleToInnerDiamond,
-                        )?);
-                    }
-                }
-                for quadrant in 0..4 {
-                    blocks.push(core_block(bore, slab, quadrant)?);
-                }
+            for quadrant in 0..4 {
+                blocks.push(core_block(bore, slab, quadrant)?);
             }
         }
     }
+    Ok(blocks)
+}
+
+pub(crate) fn sort_partition(blocks: &mut [BracketBlock]) -> Result<(), &'static str> {
     blocks.sort_by(|a, b| a.id.cmp(&b.id));
     let mut ids = BTreeSet::new();
     if blocks.iter().any(|block| !ids.insert(block.id.clone())) {
         return Err("interval_bore_duplicate_block_id");
     }
-    Ok(blocks)
+    Ok(())
 }
 
 #[cfg(test)]

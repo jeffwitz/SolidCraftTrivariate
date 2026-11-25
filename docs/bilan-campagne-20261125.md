@@ -27,6 +27,8 @@ Les deux coupes suivantes proviennent directement des VTU géométriques, à six
 
 ![Conditionnement de deux extrusions à mi-hauteur](figures/cartes-geometriques-20261125.png)
 
+G21 traite les perçages borgnes depuis chaque extrémité et les vides fermés dans les prismes cisaillés. Les 127 décisions concordent avec l’oracle ; les 11 comparaisons STEP ont passé 4 742 classifications. Les trois historiques de perçage réellement enregistrés puis rouverts dans SolidCraft ont un écart maximal de volume de 6,15e−9 mm³ avec le STEP natif. G22 a rejoué 96 éditions d’intervalles avec égalité de tout le modèle à une reconstruction froide, réutilisant 14 084 blocs et en construisant 26 010. Douze refus de lots ont préservé le fichier cible. [Volumes et pressions](results/interval-bores-20261125.json) · [Historiques hôtes](results/solidcraft-blind-bore-20261125.json) · [Éditions](results/interval-edits-20261125.json)
+
 ## Coût à précision de champ et observables imposées
 
 J4g ajoute aux deux observables de J4b un seuil de 3 % en distance énergétique du champ et de 0,5 % en déplacement L² par rapport au C3D10 h1,0. Les quatre rayons admettent le deuxième raffinement local natif à partir de h2 (2 528 feuilles), avec 2,448–2,697 % en énergie et 0,0480–0,0645 % en déplacement. La sensibilité du comparateur C3D10 h1,25/h1,0 vaut 2,006–2,099 % en énergie. Chaque distance s’appuie sur 589 824 points physiques communs par géométrie. [Comparaisons](results/bracket-candidate-fields-20261125.json) · [Niveaux natifs](results/bracket-field-tiers-20261125.json)
@@ -40,6 +42,10 @@ J4g ajoute aux deux observables de J4b un seuil de 3 % en distance énergétique
 Les 24 essais J4g ont satisfait les contrôles. Chaque méthode a été relancée deux fois sur chaque couple de rayons, en série sur les cœurs 2 et 3, avec les autres activités de campagne en cours. Le temps inclut la production du champ et le contrôle physique du congé. La vérification indépendante des coefficients prend en sus jusqu’à 2,78 s pour C3D10. Les références fines, la recherche du premier état admissible et le calcul initial des distances de champ ont leur propre coût. Les checkpoints natifs contiennent les chemins, les poids et les déplacements. Quatre relances complémentaires reproduisent leurs octets et comparent exactement les 273 024 coordonnées homogènes par géométrie au découpage de la carte racine. [Contrôles des coordonnées](results/bracket-checkpoint-geometry-20261125.json)
 
 La mémoire J4g est la somme des RSS échantillonnées toutes les 150 ms dans la session de processus ; la métrique GNU time de J4r est un maximum par processus. [24 mesures brutes](results/bracket-field-matched-cost-20261125.json)
+
+Sur les deux parcours J4h, l’édition mineure de rayon 50/16→51/16 mm reprend 2 272 des 2 528 contributions de raideur. Le retour reprend les 2 528. Les vérifications froides font partie de cette transaction et portent le temps de l’édition mineure à 34,2–34,3 s. Le pic mémoire des deux parcours est de 762–775 Mio. Sur les dix états adoptés, l’écart maximal des coefficients de déplacement à J4f est de 5,50e−12 relatif. Les deux rayons invalides ont préservé l’état et le cache. [Éditions mécaniques mesurées](results/bracket-matched-edits-20261125.json)
+
+Le premier parcours historique J4d a terminé quatre échelles h1 ; trois parcours h2 ont atteint le plafond de 1 800 s, dont un avec un état partiel. Le dernier h2 a été observé en calcul. Sa durée finale et son pic mémoire ne sont pas documentés. [Clôture des parcours J4d](results/local-fillet-cost-20261125.md)
 
 ## Convergence et limites mécaniques
 

@@ -112,3 +112,6 @@ pub mod geometry_vtu;
 pub mod interval_bores;
 pub mod interval_bores_audit;
 mod interval_bores_json;
+pub mod interval_bores_session;
+pub mod interval_bores_edit;
+pub mod solidcraft_blind_bore;

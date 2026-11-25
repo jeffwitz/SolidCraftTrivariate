@@ -1,0 +1,639 @@
+{
+  "schema": "matched_bracket_edit_verification_v1",
+  "cache_cap_mib": 384,
+  "max_cells": 3000,
+  "cpu_affinity": [
+    2,
+    3
+  ],
+  "trials": [
+    {
+      "repeat": 1,
+      "process": {
+        "status": "completed",
+        "exit_code": 0,
+        "elapsed_s": 172.30678592895856,
+        "tree_peak_rss_kib": 780508
+      },
+      "command": [
+        "/usr/bin/taskset",
+        "-c",
+        "2,3",
+        "/home/jeff/Code/SolidCraftTrivariate/target/release/examples/bracket_edit_cost",
+        "--verified-plan",
+        "/home/jeff/Code/SolidCraftTrivariate/build/j4h/plans",
+        "/home/jeff/Code/SolidCraftTrivariate/build/j4h/repeat-1"
+      ],
+      "events": [
+        {
+          "elapsed_with_checkpoint_s": 27.10881074,
+          "fillet_mpa": {
+            "elbow_east_z10_30/010/011/011/011": 132.8290863892354,
+            "elbow_east_z10_30/011/010/010/010": 132.82908638925912,
+            "elbow_north_z10_30/110/111/111/111": 132.82341810443506,
+            "elbow_north_z10_30/111/110/110/110": 132.823418104443
+          },
+          "metrics": {
+            "audit_and_space_s": 0.5809297,
+            "cache_bytes_estimated": 217916832,
+            "cache_entries": 2528,
+            "candidate_cells": 2528,
+            "cold_assembly_s": 6.422712515,
+            "cold_relative_residual": 4.227573245898e-11,
+            "cold_solve_iterations": 999,
+            "cold_solve_s": 13.178227265,
+            "comparison_s": 0.021275223,
+            "contribution_lookup_s": 0.000574923,
+            "energy_n_mm": 257.886783669938,
+            "generation_s": 9.8467e-05,
+            "integrated_contributions": 2528,
+            "load_area_mm2": 319.999999999996,
+            "load_s": 0.005178676,
+            "local_integration_s": 6.394597525,
+            "merge_s": 0.390522493,
+            "ndof_scalar": 24591,
+            "reused_contributions": 0,
+            "stiffness_action_relative_error": 0.0,
+            "tip_displacement_mm": [
+              -0.174220872818,
+              -0.516524005541,
+              1e-12
+            ],
+            "volume_mm3": 32165.984675800417,
+            "warm_cold_displacement_relative_error": null,
+            "warm_cold_energy_relative_error": null,
+            "warm_relative_residual": null,
+            "warm_solve_iterations": null,
+            "warm_solve_s": 0.0,
+            "warm_start_used": false
+          },
+          "radii_ticks": [
+            50,
+            74
+          ],
+          "status": "accepted",
+          "fillet_replay_error": 0.0,
+          "tip_replay_error": 7.832623438730479e-13,
+          "energy_replay_error": 8.881784197001252e-16,
+          "field_coefficients_relative": 0.0,
+          "identical_weights": true,
+          "exact_geometry": true,
+          "leaves": 2528,
+          "passed": true
+        },
+        {
+          "elapsed_with_checkpoint_s": 34.345029022,
+          "fillet_mpa": {
+            "elbow_east_z10_30/010/011/011/011": 132.8307930380693,
+            "elbow_east_z10_30/011/010/010/010": 132.83079303810575,
+            "elbow_north_z10_30/110/111/111/111": 132.82512355355703,
+            "elbow_north_z10_30/111/110/110/110": 132.82512355356965
+          },
+          "metrics": {
+            "audit_and_space_s": 0.566452247,
+            "cache_bytes_estimated": 239986848,
+            "cache_entries": 2784,
+            "candidate_cells": 2528,
+            "cold_assembly_s": 6.493976629,
+            "cold_relative_residual": 4.521618866187e-11,
+            "cold_solve_iterations": 999,
+            "cold_solve_s": 12.887563328,
+            "comparison_s": 0.021368542,
+            "contribution_lookup_s": 0.003574499,
+            "energy_n_mm": 257.929172842409,
+            "generation_s": 0.000151719,
+            "integrated_contributions": 256,
+            "load_area_mm2": 319.999999999996,
+            "load_s": 0.005207801,
+            "local_integration_s": 0.621262029,
+            "merge_s": 0.363475477,
+            "ndof_scalar": 24591,
+            "reused_contributions": 2272,
+            "stiffness_action_relative_error": 0.0,
+            "tip_displacement_mm": [
+              -0.174220455028,
+              -0.516611809069,
+              3e-12
+            ],
+            "volume_mm3": 32156.069023987522,
+            "warm_cold_displacement_relative_error": 4.602749610478e-12,
+            "warm_cold_energy_relative_error": 5.104089492123e-13,
+            "warm_relative_residual": 4.917315124122e-11,
+            "warm_solve_iterations": 1020,
+            "warm_solve_s": 13.175572099,
+            "warm_start_used": true
+          },
+          "radii_ticks": [
+            51,
+            74
+          ],
+          "status": "accepted",
+          "fillet_replay_error": 3.017919247838563e-12,
+          "tip_replay_error": 1.937561222575823e-12,
+          "energy_replay_error": 5.087041898832467e-13,
+          "field_coefficients_relative": 4.603209412192279e-12,
+          "identical_weights": true,
+          "exact_geometry": true,
+          "leaves": 2528,
+          "passed": true
+        },
+        {
+          "elapsed_with_checkpoint_s": 35.436333274,
+          "fillet_mpa": {
+            "elbow_east_z10_30/010/011/011/011": 132.82908638957647,
+            "elbow_east_z10_30/011/010/010/010": 132.82908638960848,
+            "elbow_north_z10_30/110/111/111/111": 132.8234181037855,
+            "elbow_north_z10_30/111/110/110/110": 132.82341810381374
+          },
+          "metrics": {
+            "audit_and_space_s": 0.566786266,
+            "cache_bytes_estimated": 239986848,
+            "cache_entries": 2784,
+            "candidate_cells": 2528,
+            "cold_assembly_s": 6.444883152,
+            "cold_relative_residual": 4.227573245898e-11,
+            "cold_solve_iterations": 999,
+            "cold_solve_s": 13.036746208,
+            "comparison_s": 0.02450049,
+            "contribution_lookup_s": 0.003787453,
+            "energy_n_mm": 257.886783671109,
+            "generation_s": 0.000202016,
+            "integrated_contributions": 0,
+            "load_area_mm2": 319.999999999996,
+            "load_s": 0.005229361,
+            "local_integration_s": 3.93e-07,
+            "merge_s": 0.328868348,
+            "ndof_scalar": 24591,
+            "reused_contributions": 2528,
+            "stiffness_action_relative_error": 0.0,
+            "tip_displacement_mm": [
+              -0.174220872819,
+              -0.516524005542,
+              1e-12
+            ],
+            "volume_mm3": 32165.984675800417,
+            "warm_cold_displacement_relative_error": 3.228611174978e-12,
+            "warm_cold_energy_relative_error": 4.540432698608e-12,
+            "warm_relative_residual": 4.576835775084e-11,
+            "warm_solve_iterations": 1133,
+            "warm_solve_s": 14.819315816,
+            "warm_start_used": true
+          },
+          "radii_ticks": [
+            50,
+            74
+          ],
+          "status": "accepted",
+          "fillet_replay_error": 4.8903103788688895e-12,
+          "tip_replay_error": 1.1526335441658375e-12,
+          "energy_replay_error": 4.53992399229719e-12,
+          "field_coefficients_relative": 3.2331922294465077e-12,
+          "identical_weights": true,
+          "exact_geometry": true,
+          "leaves": 2528,
+          "passed": true
+        },
+        {
+          "cache_preserved": true,
+          "diagnostic": "hole radius must be between 2.5 and 5 mm",
+          "elapsed_with_checkpoint_s": 0.001398148,
+          "prior_state_preserved": true,
+          "radii_ticks": [
+            81,
+            74
+          ],
+          "status": "refused",
+          "passed": true
+        },
+        {
+          "elapsed_with_checkpoint_s": 37.163340102,
+          "fillet_mpa": {
+            "elbow_east_z10_30/010/011/011/011": 132.59685785213242,
+            "elbow_east_z10_30/011/010/010/010": 132.59685785215183,
+            "elbow_north_z10_30/110/111/111/111": 132.5913956098778,
+            "elbow_north_z10_30/111/110/110/110": 132.59139560989766
+          },
+          "metrics": {
+            "audit_and_space_s": 0.58553694,
+            "cache_bytes_estimated": 284126880,
+            "cache_entries": 3296,
+            "candidate_cells": 2528,
+            "cold_assembly_s": 6.337648313,
+            "cold_relative_residual": 4.695979052048e-11,
+            "cold_solve_iterations": 1002,
+            "cold_solve_s": 13.237594621,
+            "comparison_s": 0.021409934,
+            "contribution_lookup_s": 0.003328555,
+            "energy_n_mm": 260.418812975396,
+            "generation_s": 0.000190804,
+            "integrated_contributions": 512,
+            "load_area_mm2": 319.999999999996,
+            "load_s": 0.005194479,
+            "local_integration_s": 1.291147401,
+            "merge_s": 0.354902289,
+            "ndof_scalar": 24591,
+            "reused_contributions": 2016,
+            "stiffness_action_relative_error": 0.0,
+            "tip_displacement_mm": [
+              -0.177133782513,
+              -0.521560146344,
+              4e-12
+            ],
+            "volume_mm3": 32163.628481310225,
+            "warm_cold_displacement_relative_error": 5.493698728323e-12,
+            "warm_cold_energy_relative_error": 7.335851044174e-12,
+            "warm_relative_residual": 4.20434963062e-11,
+            "warm_solve_iterations": 1126,
+            "warm_solve_s": 15.122070967,
+            "warm_start_used": true
+          },
+          "radii_ticks": [
+            40,
+            80
+          ],
+          "status": "accepted",
+          "fillet_replay_error": 7.2166717046684425e-12,
+          "tip_replay_error": 1.681543793097262e-12,
+          "energy_replay_error": 7.335465568303334e-12,
+          "field_coefficients_relative": 5.490904816646926e-12,
+          "identical_weights": true,
+          "exact_geometry": true,
+          "leaves": 2528,
+          "passed": true
+        },
+        {
+          "elapsed_with_checkpoint_s": 38.017154662,
+          "fillet_mpa": {
+            "elbow_east_z10_30/010/011/011/011": 133.46117265908268,
+            "elbow_east_z10_30/011/010/010/010": 133.46117265909533,
+            "elbow_north_z10_30/110/111/111/111": 133.45470977931365,
+            "elbow_north_z10_30/111/110/110/110": 133.45470977932317
+          },
+          "metrics": {
+            "audit_and_space_s": 0.586273213,
+            "cache_bytes_estimated": 328266912,
+            "cache_entries": 3808,
+            "candidate_cells": 2528,
+            "cold_assembly_s": 6.340300556,
+            "cold_relative_residual": 4.876407878354e-11,
+            "cold_solve_iterations": 1000,
+            "cold_solve_s": 13.064748649,
+            "comparison_s": 0.021541752,
+            "contribution_lookup_s": 0.003233431,
+            "energy_n_mm": 247.652953540983,
+            "generation_s": 0.000224168,
+            "integrated_contributions": 512,
+            "load_area_mm2": 319.999999999996,
+            "load_s": 0.005203796,
+            "local_integration_s": 1.288148028,
+            "merge_s": 0.354261451,
+            "ndof_scalar": 24591,
+            "reused_contributions": 2016,
+            "stiffness_action_relative_error": 0.0,
+            "tip_displacement_mm": [
+              -0.162289573346,
+              -0.496163949468,
+              -1e-12
+            ],
+            "volume_mm3": 32163.628481310225,
+            "warm_cold_displacement_relative_error": 4.383913307489e-12,
+            "warm_cold_energy_relative_error": 3.305440388708e-12,
+            "warm_relative_residual": 4.432067242967e-11,
+            "warm_solve_iterations": 1238,
+            "warm_solve_s": 16.145341496,
+            "warm_start_used": true
+          },
+          "radii_ticks": [
+            80,
+            40
+          ],
+          "status": "accepted",
+          "fillet_replay_error": 6.030953514368775e-12,
+          "tip_replay_error": 1.3871126469666706e-12,
+          "energy_replay_error": 3.304467810494316e-12,
+          "field_coefficients_relative": 4.385789571390704e-12,
+          "identical_weights": true,
+          "exact_geometry": true,
+          "leaves": 2528,
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    {
+      "repeat": 2,
+      "process": {
+        "status": "completed",
+        "exit_code": 0,
+        "elapsed_s": 184.41839410597458,
+        "tree_peak_rss_kib": 793248
+      },
+      "command": [
+        "/usr/bin/taskset",
+        "-c",
+        "2,3",
+        "/home/jeff/Code/SolidCraftTrivariate/target/release/examples/bracket_edit_cost",
+        "--verified-plan",
+        "/home/jeff/Code/SolidCraftTrivariate/build/j4h/plans",
+        "/home/jeff/Code/SolidCraftTrivariate/build/j4h/repeat-2"
+      ],
+      "events": [
+        {
+          "elapsed_with_checkpoint_s": 26.800874985,
+          "fillet_mpa": {
+            "elbow_east_z10_30/010/011/011/011": 132.8290863892354,
+            "elbow_east_z10_30/011/010/010/010": 132.82908638925912,
+            "elbow_north_z10_30/110/111/111/111": 132.82341810443506,
+            "elbow_north_z10_30/111/110/110/110": 132.823418104443
+          },
+          "metrics": {
+            "audit_and_space_s": 0.597794352,
+            "cache_bytes_estimated": 217916832,
+            "cache_entries": 2528,
+            "candidate_cells": 2528,
+            "cold_assembly_s": 6.352859428,
+            "cold_relative_residual": 4.227573245898e-11,
+            "cold_solve_iterations": 999,
+            "cold_solve_s": 13.00142736,
+            "comparison_s": 0.021295081,
+            "contribution_lookup_s": 0.000591431,
+            "energy_n_mm": 257.886783669938,
+            "generation_s": 9.4518e-05,
+            "integrated_contributions": 2528,
+            "load_area_mm2": 319.999999999996,
+            "load_s": 0.005218676,
+            "local_integration_s": 6.318335448,
+            "merge_s": 0.390038325,
+            "ndof_scalar": 24591,
+            "reused_contributions": 0,
+            "stiffness_action_relative_error": 0.0,
+            "tip_displacement_mm": [
+              -0.174220872818,
+              -0.516524005541,
+              1e-12
+            ],
+            "volume_mm3": 32165.984675800417,
+            "warm_cold_displacement_relative_error": null,
+            "warm_cold_energy_relative_error": null,
+            "warm_relative_residual": null,
+            "warm_solve_iterations": null,
+            "warm_solve_s": 0.0,
+            "warm_start_used": false
+          },
+          "radii_ticks": [
+            50,
+            74
+          ],
+          "status": "accepted",
+          "fillet_replay_error": 0.0,
+          "tip_replay_error": 7.832623438730479e-13,
+          "energy_replay_error": 8.881784197001252e-16,
+          "field_coefficients_relative": 0.0,
+          "identical_weights": true,
+          "exact_geometry": true,
+          "leaves": 2528,
+          "passed": true
+        },
+        {
+          "elapsed_with_checkpoint_s": 34.208655062,
+          "fillet_mpa": {
+            "elbow_east_z10_30/010/011/011/011": 132.8307930380693,
+            "elbow_east_z10_30/011/010/010/010": 132.83079303810575,
+            "elbow_north_z10_30/110/111/111/111": 132.82512355355703,
+            "elbow_north_z10_30/111/110/110/110": 132.82512355356965
+          },
+          "metrics": {
+            "audit_and_space_s": 0.566934858,
+            "cache_bytes_estimated": 239986848,
+            "cache_entries": 2784,
+            "candidate_cells": 2528,
+            "cold_assembly_s": 6.362336773,
+            "cold_relative_residual": 4.521618866187e-11,
+            "cold_solve_iterations": 999,
+            "cold_solve_s": 12.822379092,
+            "comparison_s": 0.021457201,
+            "contribution_lookup_s": 0.003602084,
+            "energy_n_mm": 257.929172842409,
+            "generation_s": 0.000158715,
+            "integrated_contributions": 256,
+            "load_area_mm2": 319.999999999996,
+            "load_s": 0.005235815,
+            "local_integration_s": 0.624354564,
+            "merge_s": 0.364814742,
+            "ndof_scalar": 24591,
+            "reused_contributions": 2272,
+            "stiffness_action_relative_error": 0.0,
+            "tip_displacement_mm": [
+              -0.174220455028,
+              -0.516611809069,
+              3e-12
+            ],
+            "volume_mm3": 32156.069023987522,
+            "warm_cold_displacement_relative_error": 4.602749610478e-12,
+            "warm_cold_energy_relative_error": 5.104089492123e-13,
+            "warm_relative_residual": 4.917315124122e-11,
+            "warm_solve_iterations": 1020,
+            "warm_solve_s": 13.230347306,
+            "warm_start_used": true
+          },
+          "radii_ticks": [
+            51,
+            74
+          ],
+          "status": "accepted",
+          "fillet_replay_error": 3.017919247838563e-12,
+          "tip_replay_error": 1.937561222575823e-12,
+          "energy_replay_error": 5.087041898832467e-13,
+          "field_coefficients_relative": 4.603209412192279e-12,
+          "identical_weights": true,
+          "exact_geometry": true,
+          "leaves": 2528,
+          "passed": true
+        },
+        {
+          "elapsed_with_checkpoint_s": 35.296105964,
+          "fillet_mpa": {
+            "elbow_east_z10_30/010/011/011/011": 132.82908638957647,
+            "elbow_east_z10_30/011/010/010/010": 132.82908638960848,
+            "elbow_north_z10_30/110/111/111/111": 132.8234181037855,
+            "elbow_north_z10_30/111/110/110/110": 132.82341810381374
+          },
+          "metrics": {
+            "audit_and_space_s": 0.604964692,
+            "cache_bytes_estimated": 239986848,
+            "cache_entries": 2784,
+            "candidate_cells": 2528,
+            "cold_assembly_s": 6.408999333,
+            "cold_relative_residual": 4.227573245898e-11,
+            "cold_solve_iterations": 999,
+            "cold_solve_s": 13.058439981,
+            "comparison_s": 0.021151087,
+            "contribution_lookup_s": 0.009154406,
+            "energy_n_mm": 257.886783671109,
+            "generation_s": 0.000204382,
+            "integrated_contributions": 0,
+            "load_area_mm2": 319.999999999996,
+            "load_s": 0.005229714,
+            "local_integration_s": 2.27e-07,
+            "merge_s": 0.328242108,
+            "ndof_scalar": 24591,
+            "reused_contributions": 2528,
+            "stiffness_action_relative_error": 0.0,
+            "tip_displacement_mm": [
+              -0.174220872819,
+              -0.516524005542,
+              1e-12
+            ],
+            "volume_mm3": 32165.984675800417,
+            "warm_cold_displacement_relative_error": 3.228611174978e-12,
+            "warm_cold_energy_relative_error": 4.540432698608e-12,
+            "warm_relative_residual": 4.576835775084e-11,
+            "warm_solve_iterations": 1133,
+            "warm_solve_s": 14.652038999,
+            "warm_start_used": true
+          },
+          "radii_ticks": [
+            50,
+            74
+          ],
+          "status": "accepted",
+          "fillet_replay_error": 4.8903103788688895e-12,
+          "tip_replay_error": 1.1526335441658375e-12,
+          "energy_replay_error": 4.53992399229719e-12,
+          "field_coefficients_relative": 3.2331922294465077e-12,
+          "identical_weights": true,
+          "exact_geometry": true,
+          "leaves": 2528,
+          "passed": true
+        },
+        {
+          "cache_preserved": true,
+          "diagnostic": "hole radius must be between 2.5 and 5 mm",
+          "elapsed_with_checkpoint_s": 0.001347205,
+          "prior_state_preserved": true,
+          "radii_ticks": [
+            81,
+            74
+          ],
+          "status": "refused",
+          "passed": true
+        },
+        {
+          "elapsed_with_checkpoint_s": 38.475167728,
+          "fillet_mpa": {
+            "elbow_east_z10_30/010/011/011/011": 132.59685785213242,
+            "elbow_east_z10_30/011/010/010/010": 132.59685785215183,
+            "elbow_north_z10_30/110/111/111/111": 132.5913956098778,
+            "elbow_north_z10_30/111/110/110/110": 132.59139560989766
+          },
+          "metrics": {
+            "audit_and_space_s": 0.591248259,
+            "cache_bytes_estimated": 284126880,
+            "cache_entries": 3296,
+            "candidate_cells": 2528,
+            "cold_assembly_s": 6.378678492,
+            "cold_relative_residual": 4.695979052048e-11,
+            "cold_solve_iterations": 1002,
+            "cold_solve_s": 13.092540228,
+            "comparison_s": 0.026028532,
+            "contribution_lookup_s": 0.003222361,
+            "energy_n_mm": 260.418812975396,
+            "generation_s": 0.000200063,
+            "integrated_contributions": 512,
+            "load_area_mm2": 319.999999999996,
+            "load_s": 0.005609834,
+            "local_integration_s": 1.249358447,
+            "merge_s": 0.356849355,
+            "ndof_scalar": 24591,
+            "reused_contributions": 2016,
+            "stiffness_action_relative_error": 0.0,
+            "tip_displacement_mm": [
+              -0.177133782513,
+              -0.521560146344,
+              4e-12
+            ],
+            "volume_mm3": 32163.628481310225,
+            "warm_cold_displacement_relative_error": 5.493698728323e-12,
+            "warm_cold_energy_relative_error": 7.335851044174e-12,
+            "warm_relative_residual": 4.20434963062e-11,
+            "warm_solve_iterations": 1126,
+            "warm_solve_s": 16.566393605,
+            "warm_start_used": true
+          },
+          "radii_ticks": [
+            40,
+            80
+          ],
+          "status": "accepted",
+          "fillet_replay_error": 7.2166717046684425e-12,
+          "tip_replay_error": 1.681543793097262e-12,
+          "energy_replay_error": 7.335465568303334e-12,
+          "field_coefficients_relative": 5.490904816646926e-12,
+          "identical_weights": true,
+          "exact_geometry": true,
+          "leaves": 2528,
+          "passed": true
+        },
+        {
+          "elapsed_with_checkpoint_s": 49.491941588,
+          "fillet_mpa": {
+            "elbow_east_z10_30/010/011/011/011": 133.46117265908268,
+            "elbow_east_z10_30/011/010/010/010": 133.46117265909533,
+            "elbow_north_z10_30/110/111/111/111": 133.45470977931365,
+            "elbow_north_z10_30/111/110/110/110": 133.45470977932317
+          },
+          "metrics": {
+            "audit_and_space_s": 0.583405497,
+            "cache_bytes_estimated": 328266912,
+            "cache_entries": 3808,
+            "candidate_cells": 2528,
+            "cold_assembly_s": 10.655775097,
+            "cold_relative_residual": 4.876407878354e-11,
+            "cold_solve_iterations": 1000,
+            "cold_solve_s": 20.305333733,
+            "comparison_s": 0.021493256,
+            "contribution_lookup_s": 0.003249282,
+            "energy_n_mm": 247.652953540983,
+            "generation_s": 0.000244372,
+            "integrated_contributions": 512,
+            "load_area_mm2": 319.999999999996,
+            "load_s": 0.005191619,
+            "local_integration_s": 1.245223817,
+            "merge_s": 0.353202008,
+            "ndof_scalar": 24591,
+            "reused_contributions": 2016,
+            "stiffness_action_relative_error": 0.0,
+            "tip_displacement_mm": [
+              -0.162289573346,
+              -0.496163949468,
+              -1e-12
+            ],
+            "volume_mm3": 32163.628481310225,
+            "warm_cold_displacement_relative_error": 4.383913307489e-12,
+            "warm_cold_energy_relative_error": 3.305440388708e-12,
+            "warm_relative_residual": 4.432067242967e-11,
+            "warm_solve_iterations": 1238,
+            "warm_solve_s": 16.113322877,
+            "warm_start_used": true
+          },
+          "radii_ticks": [
+            80,
+            40
+          ],
+          "status": "accepted",
+          "fillet_replay_error": 6.030953514368775e-12,
+          "tip_replay_error": 1.3871126469666706e-12,
+          "energy_replay_error": 3.304467810494316e-12,
+          "field_coefficients_relative": 4.385789571390704e-12,
+          "identical_weights": true,
+          "exact_geometry": true,
+          "leaves": 2528,
+          "passed": true
+        }
+      ],
+      "passed": true
+    }
+  ],
+  "finished": true,
+  "qualified": true
+}

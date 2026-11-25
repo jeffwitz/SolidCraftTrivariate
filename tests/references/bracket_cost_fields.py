@@ -51,11 +51,13 @@ def summarize(rows,counts,scales,pairs,nblock):
     return out
 
 
-def compare(blocks,fields,scales,log2):
+def compare(blocks,fields,scales,log2,reference_keys=None):
     counts=[n for n in (128,512,2048,8192) if n<=2**log2]
     totals={n:[{} for _ in range(8)] for n in counts}
     tetra={k:v for k,v in fields.items() if isinstance(v,TetraField)}
     pairs=[(a,b) for b in ("tetra_h125","tetra_h1") if b in fields for a in fields if a!=b and (a!="tetra_h1")]
+    if reference_keys is not None:
+        pairs=[(a,b) for b in reference_keys for a in fields if a!=b]
     pairs=list(dict.fromkeys(pairs))
     checks={k:{"not_located":0,"multiple":0,"max_affine_inverse_error":0.} for k in tetra}
     outside_witness=[]

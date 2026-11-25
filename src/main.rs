@@ -49,7 +49,7 @@ fn publish(target: &Path, contents: &str) -> std::io::Result<()> {
     }
 }
 
-const COMMANDS_AND_EVALUATORS: &str = r#"{"commands":["build","audit","evaluate","capabilities","export-step","certify-map","export-analysis","export-adaptive","inspect-travel","solve-job","differentiate-job","import-solidcraft","export-field-vtu","export-geometry-vtu"],"evaluators":{"rational_bezier_tensor":{"degrees":[[1,1,1],[1,1,2],[1,2,1],[1,2,2],[2,1,1],[2,1,2],[2,2,1],[2,2,2]],"domain":[[0,1],[0,1],[0,1]]}}}"#;
+const COMMANDS_AND_EVALUATORS: &str = r#"{"commands":["build","audit","evaluate","capabilities","export-step","certify-map","export-analysis","export-adaptive","inspect-travel","solve-job","differentiate-job","import-solidcraft","export-field-vtu","export-geometry-vtu","edit-bore-intervals"],"evaluators":{"rational_bezier_tensor":{"degrees":[[1,1,1],[1,1,2],[1,2,1],[1,2,2],[2,1,1],[2,1,2],[2,2,1],[2,2,2]],"domain":[[0,1],[0,1],[0,1]]}}}"#;
 
 fn capabilities() -> Result<Json,String> {
     let mut result = parse(COMMANDS_AND_EVALUATORS)?;
@@ -163,6 +163,11 @@ fn run(args: &[String]) -> Result<Json, String> {
             publish(Path::new(target),&result.to_string()).map_err(|e|e.to_string())?;
             Ok(object([("status",Json::String("evaluated".into())),("schema",result.field("schema")?.clone())]))
         }
+        [cmd,model,edits,target] if cmd=="edit-bore-intervals"=>{
+            let (candidate, report) = solidcraft_trivariate::interval_bores_edit::edit(&read(model)?,&read(edits)?)?;
+            publish(Path::new(target),&candidate.to_string()).map_err(|e|e.to_string())?;
+            Ok(report)
+        }
         [cmd,model,job,target] if cmd=="solve-job"=>{
             let solution=solidcraft_trivariate::mechanical_job::solve_job(&read(model)?,&read(job)?)?;
             publish(Path::new(target),&solution.to_string()).map_err(|e|e.to_string())?;
@@ -211,7 +216,7 @@ fn run(args: &[String]) -> Result<Json, String> {
             Ok(object([("status",Json::String("evaluated".into())),("position",vector(res.position)),
                 ("jacobian_columns",Json::Array(res.jacobian_columns.into_iter().map(vector).collect()))]))
         }
-        _=>Err("usage: solidcraft-trivariate capabilities | build RECIPE OUTPUT | audit MODEL | evaluate MAP U V W | export-step MODEL OUTPUT | certify-map MAP MAX_LEAVES MAX_DEPTH | export-analysis MODEL GAUSS_ORDER OUTPUT | export-adaptive MODEL PLAN GAUSS_ORDER OUTPUT | import-solidcraft SCRIPT OUTPUT | solve-job MODEL JOB OUTPUT | differentiate-job MODEL JOB DIRECTION OUTPUT | export-field-vtu RESULT SUBDIVISIONS OUTPUT | export-geometry-vtu MODEL SUBDIVISIONS OUTPUT | inspect-travel CENTER_X_UM".into()),
+        _=>Err("usage: solidcraft-trivariate capabilities | build RECIPE OUTPUT | audit MODEL | evaluate MAP U V W | export-step MODEL OUTPUT | certify-map MAP MAX_LEAVES MAX_DEPTH | export-analysis MODEL GAUSS_ORDER OUTPUT | export-adaptive MODEL PLAN GAUSS_ORDER OUTPUT | import-solidcraft SCRIPT OUTPUT | solve-job MODEL JOB OUTPUT | differentiate-job MODEL JOB DIRECTION OUTPUT | export-field-vtu RESULT SUBDIVISIONS OUTPUT | export-geometry-vtu MODEL SUBDIVISIONS OUTPUT | edit-bore-intervals MODEL EDITS OUTPUT | inspect-travel CENTER_X_UM".into()),
     }
 }
 
@@ -225,7 +230,7 @@ fn main() -> ExitCode {
     });
     println!("{report}");
     match report.field("status").and_then(Json::text) {
-        Ok("valid" | "evaluated" | "exported" | "solved") | Err(_) => ExitCode::SUCCESS,
+        Ok("valid" | "evaluated" | "exported" | "solved" | "updated") | Err(_) => ExitCode::SUCCESS,
         _ => ExitCode::FAILURE,
     }
 }

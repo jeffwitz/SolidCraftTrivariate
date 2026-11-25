@@ -2,7 +2,16 @@
 use solidcraft_trivariate::bracket_mechanics_session::{
     cache_preflight, BracketMechanicsConfig, BracketMechanicsSession,
 };
-use std::{fmt::Write, fs, sync::Arc, time::Instant};
+use solidcraft_trivariate::{
+    adaptive_package::parse_refinement_plan,
+    json::{self, object, Json},
+    stress::fillet_limits,
+};
+use std::{fmt::Write, fs, path::Path, sync::Arc, time::Instant};
+#[path = "support/bracket_field.rs"]
+mod bracket_field;
+#[path = "support/bracket_geometry.rs"]
+mod bracket_geometry;
 
 fn metrics<W: Write>(
     out: &mut W,
@@ -60,7 +69,100 @@ fn run_level<W: Write>(out: &mut W, level: u8) -> Result<(), Box<dyn std::error:
     Ok(())
 }
 
+fn run_matched(plans: &Path, folder: &Path) -> Result<(), Box<dyn std::error::Error>> {
+    fs::create_dir_all(folder)?;
+    let mut session = BracketMechanicsSession::new(BracketMechanicsConfig {
+        max_cells: 3000,
+        ..BracketMechanicsConfig::campaign(2)
+    })?;
+    let sequence = [[50, 74], [51, 74], [50, 74], [81, 74], [40, 80], [80, 40]];
+    for (index, radii) in sequence.into_iter().enumerate() {
+        let [rx, ry] = radii;
+        let start = Instant::now();
+        let plan_id = if rx == 81 { [50, 74] } else { radii };
+        let source = plans.join(format!("x{}-y{}.json", plan_id[0], plan_id[1]));
+        let plan = parse_refinement_plan(&json::parse(&fs::read_to_string(source)?)?)?;
+        let prior = session.state().cloned();
+        let bytes = session.cache_bytes_estimated();
+        let entries = session.cache_entries();
+        let mut row = match session.update_with_plan(radii, &plan) {
+            Ok(state) => {
+                let mut encoded = String::new();
+                metrics(&mut encoded, state)?;
+                let limits = fillet_limits(&state.adaptive.space, &state.displacement_mm)?;
+                let field = folder.join(format!("event-{index}.bin"));
+                bracket_field::write(
+                    &field,
+                    None,
+                    radii,
+                    8,
+                    &state.adaptive.space,
+                    &state.displacement_mm,
+                )?;
+                bracket_geometry::write(
+                    &field.with_extension("geometry.bin"),
+                    &state.adaptive.space,
+                )?;
+                object([
+                    ("status", Json::String("accepted".into())),
+                    ("metrics", json::parse(&encoded)?),
+                    (
+                        "fillet_mpa",
+                        Json::Object(
+                            limits
+                                .into_iter()
+                                .map(|(k, v)| (k, Json::Number(v.to_string())))
+                                .collect(),
+                        ),
+                    ),
+                ])
+            }
+            Err(e) => {
+                let preserved = match (&prior, session.state()) {
+                    (Some(old), Some(new)) => Arc::ptr_eq(old, new),
+                    (None, None) => true,
+                    _ => false,
+                };
+                object([
+                    ("status", Json::String("refused".into())),
+                    ("diagnostic", Json::String(e.into())),
+                    ("prior_state_preserved", Json::Bool(preserved)),
+                    (
+                        "cache_preserved",
+                        Json::Bool(
+                            session.cache_bytes_estimated() == bytes
+                                && session.cache_entries() == entries,
+                        ),
+                    ),
+                ])
+            }
+        };
+        if let Json::Object(fields) = &mut row {
+            fields.insert(
+                "elapsed_with_checkpoint_s".into(),
+                Json::Number(start.elapsed().as_secs_f64().to_string()),
+            );
+            fields.insert(
+                "radii_ticks".into(),
+                Json::Array(radii.map(|v| Json::Number(v.to_string())).to_vec()),
+            );
+        }
+        fs::write(
+            folder.join(format!("event-{index}.json")),
+            format!("{row}\n"),
+        )?;
+        println!("event {index}, radii {rx}/{ry}");
+    }
+    Ok(())
+}
+
 fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let args = std::env::args().skip(1).collect::<Vec<_>>();
+    if let [mode, plans, folder] = args.as_slice() {
+        if mode == "--verified-plan" {
+            return run_matched(Path::new(plans), Path::new(folder));
+        }
+    }
     let path = std::env::args()
         .nth(1)
         .unwrap_or_else(|| "docs/results/bracket-edit-cost-20261125.json".to_owned());

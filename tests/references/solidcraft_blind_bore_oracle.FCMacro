@@ -1,0 +1,107 @@
+import FreeCAD as App
+import Part
+import json
+import math
+import os
+
+host = Part.read(os.environ['SC8_HOST_STEP'])
+native = Part.read(os.environ['SC8_NATIVE_STEP'])
+def check(condition, label):
+    if not condition:
+        raise RuntimeError(label)
+
+check(host.isValid() and native.isValid(), 'invalid STEP solid')
+check(len(host.Solids) == len(native.Solids) == 1, 'expected one solid in each STEP')
+expected_volume = float(os.environ['SC8_EXPECTED_VOLUME'])
+expected_interval = json.loads(os.environ['SC8_EXPECTED_INTERVAL'])
+expected_center = json.loads(os.environ['SC8_EXPECTED_CENTER'])
+expected_radius = float(os.environ['SC8_EXPECTED_RADIUS'])
+expected_bbox = json.loads(os.environ['SC8_EXPECTED_BOUNDS'])
+expected_cap = expected_interval[0] if expected_interval[0] > 0 else expected_interval[1]
+
+def bounds(shape):
+    box = shape.BoundBox
+    return [box.XMin, box.XMax, box.YMin, box.YMax, box.ZMin, box.ZMax]
+
+def bore_walls(shape):
+    cx, cy = expected_center
+    guard = 2 * expected_radius
+    return [face for face in shape.Faces
+            if abs(face.BoundBox.ZMin - expected_interval[0]) < 1e-8
+            and abs(face.BoundBox.ZMax - expected_interval[1]) < 1e-8
+            and face.BoundBox.XMin >= cx - guard - 1e-8
+            and face.BoundBox.XMax <= cx + guard + 1e-8
+            and face.BoundBox.YMin >= cy - guard - 1e-8
+            and face.BoundBox.YMax <= cy + guard + 1e-8]
+
+volume_error = abs(host.Volume - expected_volume)
+volume_difference = abs(host.Volume - native.Volume)
+area_difference = abs(host.Area - native.Area)
+centroid_difference = math.dist(
+    (host.Solids[0].CenterOfMass.x, host.Solids[0].CenterOfMass.y, host.Solids[0].CenterOfMass.z),
+    (native.Solids[0].CenterOfMass.x, native.Solids[0].CenterOfMass.y, native.Solids[0].CenterOfMass.z))
+host_minus_native = host.cut(native).Volume
+native_minus_host = native.cut(host).Volume
+check(max(abs(a-b) for a,b in zip(bounds(host), expected_bbox)) < 1e-8, 'host bounds mismatch')
+check(max(abs(a-b) for a,b in zip(bounds(native), expected_bbox)) < 1e-8, 'native bounds mismatch')
+check(volume_error < 1e-8 and volume_difference < 1e-8, 'volume mismatch')
+check(area_difference < 1e-8 and centroid_difference < 1e-9, 'area or centroid mismatch')
+check(host_minus_native < 1e-8 and native_minus_host < 1e-8, 'boolean difference mismatch')
+
+wall_face_counts = []
+floor_face_counts = []
+for shape in (host, native):
+    walls = bore_walls(shape)
+    wall_face_counts.append(len(walls))
+    expected_wall_area = 2 * math.pi * expected_radius * (expected_interval[1] - expected_interval[0])
+    check(len(walls) >= 1, 'missing blind wall faces')
+    check(abs(sum(face.Area for face in walls) - expected_wall_area) < 1e-7,
+          'wall area or axial extent mismatch: got %s expected %s with %s' %
+          (sum(face.Area for face in walls), expected_wall_area,
+           [(face.BoundBox.ZMin, face.BoundBox.ZMax, face.Area) for face in walls]))
+    cx, cy = expected_center
+    guard = 2 * expected_radius
+    floor_candidates = [face for face in shape.Faces
+                        if abs(face.BoundBox.ZMax - face.BoundBox.ZMin) < 1e-8
+                        and abs(face.BoundBox.ZMin - expected_cap) < 1e-8
+                        and face.BoundBox.XMin >= cx - guard - 1e-8
+                        and face.BoundBox.XMax <= cx + guard + 1e-8
+                        and face.BoundBox.YMin >= cy - guard - 1e-8
+                        and face.BoundBox.YMax <= cy + guard + 1e-8]
+    floor_face_counts.append(len(floor_candidates))
+    floor_area = sum(face.Area for face in floor_candidates)
+    check(abs(floor_area - math.pi * expected_radius ** 2) < 1e-7,
+          'floor area mismatch at z=%s: %s' % (expected_cap, floor_area))
+    floor_x = sum(face.Area * face.CenterOfMass.x for face in floor_candidates) / floor_area
+    floor_y = sum(face.Area * face.CenterOfMass.y for face in floor_candidates) / floor_area
+    check(abs(floor_x - expected_center[0]) < 1e-8, 'floor x center mismatch')
+    check(abs(floor_y - expected_center[1]) < 1e-8, 'floor y center mismatch')
+
+probes = json.loads(os.environ['SC8_PROBES'])
+for x, y, z, expected_inside in probes:
+    point = App.Vector(x, y, z)
+    check(host.isInside(point, 1e-8, False) == expected_inside, 'host point classification mismatch: %s' % ([x,y,z],))
+    check(native.isInside(point, 1e-8, False) == expected_inside, 'native point classification mismatch: %s' % ([x,y,z],))
+
+metrics = {
+    'valid': True,
+    'freecad_version': list(App.Version()),
+    'host_volume_mm3': host.Volume,
+    'expected_volume_mm3': expected_volume,
+    'volume_error_mm3': volume_error,
+    'host_native_volume_difference_mm3': volume_difference,
+    'host_native_area_difference_mm2': area_difference,
+    'centroid_difference_mm': centroid_difference,
+    'host_minus_native_mm3': host_minus_native,
+    'native_minus_host_mm3': native_minus_host,
+    'host_bounds_mm': bounds(host),
+    'native_bounds_mm': bounds(native),
+    'blind_interval_mm': expected_interval,
+    'floor_z_mm': expected_cap,
+    'wall_face_counts': wall_face_counts,
+    'floor_face_counts': floor_face_counts,
+    'classifications': len(probes),
+}
+with open(os.environ['SC8_METRICS'], 'w') as output:
+    json.dump(metrics, output, sort_keys=True)
+print(json.dumps(metrics, sort_keys=True))

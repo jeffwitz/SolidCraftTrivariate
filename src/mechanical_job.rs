@@ -266,13 +266,22 @@ fn run_job(
     let supports_body = version == "solidcraft_mechanical_job_v4"
         || (adaptive_surface && job.field("body_load").is_ok());
     let mut quadrature = if adaptive_surface {
-        if velocity.is_some() {
-            return Err("shape derivative requires a fixed surface quadrature plan");
-        }
         fields.push("surface_quadrature");
         let q = job.field("surface_quadrature")?;
         use crate::adaptive_traction::SurfaceSplit;
         let mut keys = vec!["relative_tolerance", "max_depth", "max_panels"];
+        let freeze_primal = if let Ok(mode) = q.field("derivative") {
+            keys.push("derivative");
+            if mode.text()? != "freeze_primal" {
+                return Err("unknown surface derivative plan");
+            }
+            true
+        } else {
+            false
+        };
+        if velocity.is_some() && !freeze_primal {
+            return Err("shape derivative requires a fixed surface quadrature plan");
+        }
         let strategy = if let Ok(split) = q.field("split") {
             keys.push("split");
             match split.text()? {
@@ -290,7 +299,7 @@ fn run_job(
             max_panels: q.field("max_panels")?.number()?,
         };
         config.validate()?;
-        Some((config, strategy))
+        Some((config, strategy, freeze_primal))
     } else {
         None
     };
@@ -329,7 +338,7 @@ fn run_job(
                 | "certified_polygon_prism"
                 | "certified_perforated_polygon_prism"
                 | crate::interval_bores_json::METHOD
-            | crate::circular_polygon_json::METHOD
+                | crate::circular_polygon_json::METHOD
                 | crate::affine_image::METHOD
                 | "certified_parameterized_bracket"
         )
@@ -541,7 +550,14 @@ fn run_job(
             }
             patches.push(LoadPatch::whole(f.side.clone()));
         }
-        let (load, integration) = if let Some((config, strategy)) = &mut quadrature {
+        let rate_law = |velocity: &crate::affine_job_sensitivity::Velocity, normal| {
+            let oriented = velocity.oriented_area_rate(normal);
+            match &law {
+                Traction::Vector(v) => v.map(|value| value * dot(normal, oriented)),
+                Traction::Pressure(_) | Traction::Stress(_) => law.value(oriented),
+            }
+        };
+        let (load, integration) = if let Some((config, strategy, freeze_primal)) = &mut quadrature {
             let out = crate::adaptive_traction::integrate_surface_traction(
                 space,
                 &exterior,
@@ -562,7 +578,7 @@ fn run_job(
                     n(out.maximum_estimated_relative_error),
                 ),
             ]);
-            if *strategy == crate::adaptive_traction::SurfaceSplit::Directional {
+            if *strategy == crate::adaptive_traction::SurfaceSplit::Directional || *freeze_primal {
                 let plans = patches
                     .iter()
                     .zip(&out.patch_depths)
@@ -576,12 +592,41 @@ fn run_job(
                     })
                     .collect();
                 if let Json::Object(fields) = &mut info {
-                    fields.insert("split".into(), Json::String("directional".into()));
+                    let split = match strategy {
+                        crate::adaptive_traction::SurfaceSplit::Directional => "directional",
+                        crate::adaptive_traction::SurfaceSplit::Isotropic => "isotropic",
+                    };
+                    fields.insert("split".into(), text(split));
                     fields.insert("patch_plans".into(), Json::Array(plans));
+                }
+            }
+            if let (Some(velocity), Some(rhs)) = (velocity, &mut force_rate) {
+                let (rate, count) = crate::adaptive_traction::replay_traction_rate(
+                    space,
+                    &patches,
+                    &out.patch_depths,
+                    order,
+                    config.max_panels,
+                    |_, normal| rate_law(velocity, normal),
+                )?;
+                config.max_panels -= count;
+                for (a, b) in rhs.iter_mut().zip(rate) {
+                    *a += b;
+                }
+                if let Json::Object(fields) = &mut info {
+                    fields.insert("replay_panels".into(), n(count));
                 }
             }
             (out.load, Some(info))
         } else {
+            if let (Some(velocity), Some(rhs)) = (velocity, &mut force_rate) {
+                let rate = integrate_traction(space, &exterior, &patches, order, |_, normal| {
+                    rate_law(velocity, normal)
+                })?;
+                for (a, b) in rhs.iter_mut().zip(rate.nodal_force_n) {
+                    *a += b;
+                }
+            }
             (
                 integrate_traction(space, &exterior, &patches, order, |_, normal| {
                     law.value(normal)
@@ -589,18 +634,6 @@ fn run_job(
                 None,
             )
         };
-        if let (Some(velocity), Some(rhs)) = (velocity, &mut force_rate) {
-            let rate = integrate_traction(space, &exterior, &patches, order, |_, normal| {
-                let oriented = velocity.oriented_area_rate(normal);
-                match &law {
-                    Traction::Vector(v) => v.map(|value| value * dot(normal, oriented)),
-                    Traction::Pressure(_) | Traction::Stress(_) => law.value(oriented),
-                }
-            })?;
-            for (a, b) in rhs.iter_mut().zip(rate.nodal_force_n) {
-                *a += b;
-            }
-        }
         add(&mut applied, load.resultant_n);
         add(&mut moment, load.moment_n_mm);
         scale += load.area_mm2 * law.magnitude_bound();
@@ -672,7 +705,7 @@ fn run_job(
         } else {
             None
         };
-        return affine_job_sensitivity::solve(
+        let mut result = affine_job_sensitivity::solve(
             velocity,
             SensitivityJob {
                 space,
@@ -689,7 +722,14 @@ fn run_job(
                 },
                 order,
             },
-        );
+        )?;
+        if adaptive_surface {
+            if let Json::Object(fields) = &mut result {
+                fields.insert("surface_derivative_plan".into(), text("freeze_primal"));
+                fields.insert("surface_loads".into(), Json::Array(loads));
+            }
+        }
+        return Ok(result);
     }
     let formulation = job.field("formulation")?.text()?;
     let (full, projected) = match formulation {

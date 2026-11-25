@@ -6,6 +6,7 @@
 //! for every candidate before local CSR entries are merged.
 
 use crate::{
+    adaptive_package::RefinementPlan,
     adaptive_partition::AdaptivePartition,
     adaptive_space::{build_adaptive_space, AdaptiveSpace},
     analysis_space::{from_certified_faces, AnalysisSpace},
@@ -191,11 +192,24 @@ fn make_partition(
     blocks: &[BracketBlock],
     incidence: &crate::incidence::Incidence,
     config: BracketMechanicsConfig,
+    plan: Option<&RefinementPlan>,
 ) -> Result<AdaptivePartition, &'static str> {
     let roots = blocks
         .iter()
         .map(|block| block.id.clone())
         .collect::<Vec<_>>();
+    if let Some(plan) = plan {
+        let mut partition = AdaptivePartition::new(
+            &roots,
+            incidence,
+            plan.max_depth,
+            config.max_cells.min(plan.max_cells),
+        )?;
+        for step in &plan.steps {
+            partition.refine(step)?;
+        }
+        return Ok(partition);
+    }
     let mut partition =
         AdaptivePartition::new(&roots, incidence, config.uniform_level, config.max_cells)?;
     for _ in 0..config.uniform_level {
@@ -215,7 +229,7 @@ fn mounted_lifts(adaptive: &AdaptiveSpace) -> Result<(Lift, Lift), &'static str>
         .iter()
         .map(|&dof| Ok((dof, Ratio::zero())))
         .collect::<Result<Vec<_>, &'static str>>()?;
-    let clamped = resolve(adaptive.space.ndof, &adaptive.constraints, &fixed)?;
+    let clamped = crate::constraint_system::impose_on_lift(&unconstrained, &fixed)?;
     Ok((unconstrained, clamped))
 }
 
@@ -337,27 +351,23 @@ fn reduced_residual(
     lifts: [&Lift; 3],
 ) -> Result<f64, &'static str> {
     let residual = stiffness.equilibrium_residual(&solution.displacement_mm, force)?;
-    let mut projected = Vec::new();
-    for component in 0..3 {
-        for root in 0..lifts[component].free_roots.len() {
-            let mut value = 0.0;
-            for line in &lifts[component].lines {
-                for &(master, ratio) in &line.terms {
-                    if master == root {
-                        value += ratio.numerator() as f64 / ratio.denominator() as f64
-                            * residual[3 * line.dof + component];
-                    }
-                }
+    let mut norm_squared = 0.;
+    let mut rhs_squared = 0.;
+    for (component, lift) in lifts.into_iter().enumerate() {
+        let mut projected = vec![0.; lift.free_roots.len()];
+        let mut rhs = vec![0.; lift.free_roots.len()];
+        for line in &lift.lines {
+            for &(root, ratio) in &line.terms {
+                let weight = ratio.numerator() as f64 / ratio.denominator() as f64;
+                projected[root] += weight * residual[3 * line.dof + component];
+                rhs[root] += weight * force[3 * line.dof + component];
             }
-            projected.push(value);
         }
+        norm_squared += projected.iter().map(|x| x * x).sum::<f64>();
+        rhs_squared += rhs.iter().map(|x| x * x).sum::<f64>();
     }
-    let rhs_norm = force.iter().map(|value| value * value).sum::<f64>().sqrt();
-    let residual_norm = projected
-        .iter()
-        .map(|value| value * value)
-        .sum::<f64>()
-        .sqrt();
+    let rhs_norm = rhs_squared.sqrt();
+    let residual_norm = norm_squared.sqrt();
     if rhs_norm <= 0.0 || !rhs_norm.is_finite() || !residual_norm.is_finite() {
         return Err("invalid true bracket residual");
     }
@@ -396,6 +406,29 @@ impl BracketMechanicsSession {
         &mut self,
         radii_sixteenths_mm: [u8; 2],
     ) -> Result<&Arc<BracketMechanicsState>, &'static str> {
+        self.update_candidate(radii_sixteenths_mm, None)
+    }
+
+    /// Use the supplied root-relative refinement steps for this candidate.
+    /// The session cell and stiffness-cache budgets still apply.
+    pub fn update_with_plan(
+        &mut self,
+        radii_sixteenths_mm: [u8; 2],
+        plan: &RefinementPlan,
+    ) -> Result<&Arc<BracketMechanicsState>, &'static str> {
+        self.update_candidate(radii_sixteenths_mm, Some(plan))
+    }
+
+    fn update_candidate(
+        &mut self,
+        radii_sixteenths_mm: [u8; 2],
+        plan: Option<&RefinementPlan>,
+    ) -> Result<&Arc<BracketMechanicsState>, &'static str> {
+        let tolerance = if plan.is_some() {
+            5e-11
+        } else {
+            SOLVE_TOLERANCE
+        };
         let config = self.config.ok_or("uninitialized bracket session")?;
         let preflight = cache_preflight(config.uniform_level, config.cache_cap_bytes)?;
         if !preflight.fits {
@@ -417,7 +450,7 @@ impl BracketMechanicsSession {
             &certificate.certificate.incidence,
             &certificate.certificate.design_faces,
         )?;
-        let partition = make_partition(&blocks, &certificate.certificate.incidence, config)?;
+        let partition = make_partition(&blocks, &certificate.certificate.incidence, config, plan)?;
         let adaptive = build_adaptive_space(&root, &partition)?;
         let (unconstrained_lift, clamped_lift) = mounted_lifts(&adaptive)?;
         timing.audit_and_space_s = started.elapsed().as_secs_f64();
@@ -528,14 +561,9 @@ impl BracketMechanicsSession {
         // components are prescribed on the selected face.
         let lifts = [&clamped_lift, &clamped_lift, &clamped_lift];
         let started = Instant::now();
-        let cold_solution = solve_constrained(
-            &cold,
-            lifts,
-            &force_n,
-            SOLVE_TOLERANCE,
-            MAX_SOLVE_ITERATIONS,
-        )
-        .map_err(|_| "cold bracket solve failed")?;
+        let cold_solution =
+            solve_constrained(&cold, lifts, &force_n, tolerance, MAX_SOLVE_ITERATIONS)
+                .map_err(|_| "cold bracket solve failed")?;
         timing.cold_solve_s = started.elapsed().as_secs_f64();
         timing.cold_solve_iterations = cold_solution.iterations;
         timing.cold_relative_residual = reduced_residual(&cold, &force_n, &cold_solution, lifts)?;
@@ -551,10 +579,10 @@ impl BracketMechanicsSession {
         if let Some(initial) = warm_guess {
             let started = Instant::now();
             let solved = solve_constrained_from(
-                &cold,
+                &merged,
                 lifts,
                 &force_n,
-                SOLVE_TOLERANCE,
+                tolerance,
                 MAX_SOLVE_ITERATIONS,
                 &initial,
             )

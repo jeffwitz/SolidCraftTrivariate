@@ -273,6 +273,78 @@ pub enum SurfaceSplit {
     Directional,
 }
 
+fn composite_grid(
+    rect: Rect,
+    depths: [u8; 2],
+    limit: usize,
+    evaluated: &mut usize,
+    sample: impl Fn(Rect) -> Result<PanelIntegral, &'static str>,
+) -> Result<PanelIntegral, &'static str> {
+    let [nu, nv] = depths.map(|depth| 1_usize << depth);
+    let count = nu.checked_mul(nv).ok_or("surface panel count overflow")?;
+    if count > limit.saturating_sub(*evaluated) {
+        return Err("adaptive surface quadrature panel budget exceeded");
+    }
+    let span = |axis: usize, i: usize, n: usize| {
+        let [lo, hi] = rect[axis];
+        [i, i + 1].map(|j| lo + (hi - lo) * (j as f64 / n as f64))
+    };
+    let mut sum = PanelIntegral::default();
+    for i in 0..nu {
+        let u = span(0, i, nu);
+        for j in 0..nv {
+            add(&mut sum, &sample([u, span(1, j, nv)])?);
+        }
+    }
+    *evaluated += count;
+    Ok(sum)
+}
+
+/// Reuse the accepted grid from the immediately preceding primal integration.
+/// Job loads select whole certified faces; patch ordering is shared with the primal.
+pub(crate) fn replay_traction_rate(
+    space: &AnalysisSpace,
+    patches: &[LoadPatch],
+    depths: &[[u8; 2]],
+    order: usize,
+    budget: usize,
+    traction: impl Fn(Vector, Vector) -> Vector,
+) -> Result<(Vec<f64>, usize), &'static str> {
+    if patches.len() != depths.len() {
+        return Err("frozen surface plan does not match load patches");
+    }
+    let blocks: BTreeMap<_, _> = space.blocks.iter().map(|b| (b.id.as_str(), b)).collect();
+    let quadrature = gauss(order)?;
+    let mut count = 0;
+    let mut nodal = vec![
+        0.;
+        space
+            .ndof
+            .checked_mul(3)
+            .ok_or("force vector dimension overflow")?
+    ];
+    for (patch, &depth) in patches.iter().zip(depths) {
+        if depth.into_iter().any(|level| level > 30) {
+            return Err("invalid frozen surface plan depth");
+        }
+        let block = blocks
+            .get(patch.side.block.as_str())
+            .ok_or("unknown traction block")?;
+        let integral = composite_grid(patch_rect(patch)?, depth, budget, &mut count, |r| {
+            integrate_panel(block, &patch.side, r, &quadrature, &traction)
+        })?;
+        for (&id, force) in block.dofs.iter().zip(&integral.nodal) {
+            for (component, value) in force.iter().enumerate() {
+                nodal[3 * id + component] += value;
+            }
+        }
+    }
+    if nodal.iter().any(|value| !value.is_finite()) {
+        return Err("nonfinite frozen surface load rate");
+    }
+    Ok((nodal, count))
+}
+
 fn directional_patch(
     rect: Rect,
     first: PanelIntegral,
@@ -282,26 +354,8 @@ fn directional_patch(
 ) -> Result<(PanelIntegral, [u8; 2], f64), &'static str> {
     let mut depths = [0_u8; 2];
     let mut coarse = first;
-    let mut composite = |depths: [u8; 2]| -> Result<PanelIntegral, &'static str> {
-        let [nu, nv] = depths.map(|depth| 1_usize << depth);
-        let count = nu.checked_mul(nv).ok_or("surface panel count overflow")?;
-        if count > config.max_panels.saturating_sub(*evaluated) {
-            return Err("adaptive surface quadrature panel budget exceeded");
-        }
-        let span = |axis: usize, i: usize, n: usize| {
-            let [lo, hi] = rect[axis];
-            [i, i + 1].map(|j| lo + (hi - lo) * (j as f64 / n as f64))
-        };
-        let mut sum = PanelIntegral::default();
-        for i in 0..nu {
-            let u = span(0, i, nu);
-            for j in 0..nv {
-                add(&mut sum, &sample([u, span(1, j, nv)])?);
-            }
-        }
-        *evaluated += count;
-        Ok(sum)
-    };
+    let mut composite =
+        |depths| composite_grid(rect, depths, config.max_panels, evaluated, &sample);
     loop {
         let [du, dv] = depths;
         if du >= config.max_depth || dv >= config.max_depth {

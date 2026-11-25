@@ -12,7 +12,7 @@ pub(crate) const FAMILY: &str = "polygon_interval_bores_v1";
 pub(crate) const METHOD: &str = "certified_polygon_interval_bores";
 const PARAMETERS: [&str; 4] = ["outer", "bores", "height_mm", "top_shift_mm"];
 
-fn parse(data: &Json) -> Result<IntervalBorePrism, &'static str> {
+pub(crate) fn parse(data: &Json) -> Result<IntervalBorePrism, &'static str> {
     let list = data.field("bores")?.items()?;
     if !(1..=4).contains(&list.len()) {
         return Err("interval_bore_count");
@@ -38,7 +38,15 @@ pub(crate) fn build(recipe: &Json) -> Result<Json, &'static str> {
     let r = parse(recipe)?;
     let blocks = build_interval_bore_prism(&r)?;
     let certified = audit_interval_bore_prism(&r, &blocks)?;
-    let mut model = encode(FAMILY, blocks, &certified.certificate);
+    encoded_model(recipe, blocks, &certified.certificate)
+}
+
+pub(crate) fn encoded_model(
+    recipe: &Json,
+    blocks: Vec<crate::bracket::BracketBlock>,
+    certificate: &crate::bracket_audit::BracketCertificate,
+) -> Result<Json, &'static str> {
+    let mut model = encode(FAMILY, blocks, certificate);
     if let Json::Object(fields) = &mut model {
         for k in PARAMETERS {
             fields.insert(k.into(), recipe.field(k)?.clone());

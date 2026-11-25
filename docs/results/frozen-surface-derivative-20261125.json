@@ -1,0 +1,486 @@
+{
+  "absolute_tolerance": 1e-09,
+  "adjoint_tolerance": 1e-08,
+  "cases": [
+    {
+      "derivative_residuals": [
+        8.068912607390526e-12,
+        7.980199786145399e-12,
+        8.068912607390526e-12
+      ],
+      "derivative_wall_s": 0.1549424880067818,
+      "direction": {
+        "linear": [
+          [
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0
+          ]
+        ],
+        "offset_mm": [
+          0,
+          0,
+          0
+        ],
+        "schema": "solidcraft_affine_velocity_v1"
+      },
+      "errors_vs_extrapolation": [
+        {
+          "displacement": {
+            "absolute": 5.852327715233378e-09,
+            "accepted": true,
+            "relative": 1.0256845518898665e-06
+          },
+          "force": {
+            "absolute": 4.3414878281622195e-14,
+            "accepted": true,
+            "relative": 4.341487828162219e+16
+          },
+          "work": {
+            "absolute": 3.345344782440529e-10,
+            "accepted": true,
+            "relative": 2.2397914128276243e-08
+          }
+        },
+        {
+          "displacement": {
+            "absolute": 4.648615208747238e-10,
+            "accepted": true,
+            "relative": 8.14720746905779e-08
+          },
+          "force": {
+            "absolute": 1.4439934711348865e-13,
+            "accepted": true,
+            "relative": 1.4439934711348864e+17
+          },
+          "work": {
+            "absolute": 1.4524237715307642e-11,
+            "accepted": true,
+            "relative": 9.724337857002782e-10
+          }
+        }
+      ],
+      "fd_steps": [
+        {
+          "displacement_rate_fd_norm_mm_per_unit": 0.0057035977713747466,
+          "minus_panels": 10,
+          "minus_plan_changed_faces": 0,
+          "nodal_force_rate_fd_norm_n_per_unit": 0.0,
+          "plus_panels": 10,
+          "plus_plan_changed_faces": 0,
+          "step": "1/16",
+          "work_rate_fd_n_mm": 0.014943497409655837
+        },
+        {
+          "displacement_rate_fd_norm_mm_per_unit": 0.00570523021369214,
+          "minus_panels": 10,
+          "minus_plan_changed_faces": 0,
+          "nodal_force_rate_fd_norm_n_per_unit": 3.256115871121665e-14,
+          "plus_panels": 10,
+          "plus_plan_changed_faces": 0,
+          "step": "1/32",
+          "work_rate_fd_n_mm": 0.014937848914230223
+        },
+        {
+          "displacement_rate_fd_norm_mm_per_unit": 0.0057056404249876715,
+          "minus_panels": 10,
+          "minus_plan_changed_faces": 0,
+          "nodal_force_rate_fd_norm_n_per_unit": 1.0296742478167742e-13,
+          "plus_panels": 10,
+          "plus_plan_changed_faces": 0,
+          "step": "1/64",
+          "work_rate_fd_n_mm": 0.014936436550366139
+        }
+      ],
+      "feature": "edge/outer/v00/v01",
+      "frozen_plan_matches_primal": true,
+      "id": "rectangle_vector_isotropic",
+      "law": {
+        "vector_mpa": [
+          0.2,
+          0.4,
+          -0.1
+        ]
+      },
+      "panel_budget": 262144,
+      "primal_cells": 32,
+      "primal_panels": 10,
+      "primal_residual": 9.552080251429676e-11,
+      "qualified": true,
+      "recipe_id": "one_round",
+      "replay_panels": 8,
+      "richardson_extrapolations": [
+        {
+          "displacement_rate_norm_mm_per_unit": 0.005705776007272256,
+          "from_steps": [
+            "1/16",
+            "1/32"
+          ],
+          "nodal_force_rate_norm_n_per_unit": 4.3414878281622195e-14,
+          "work_rate_n_mm": 0.014935966082421684
+        },
+        {
+          "displacement_rate_norm_mm_per_unit": 0.005705777265357585,
+          "from_steps": [
+            "1/32",
+            "1/64"
+          ],
+          "nodal_force_rate_norm_n_per_unit": 1.4439934711348865e-13,
+          "work_rate_n_mm": 0.014935965762411444
+        }
+      ],
+      "scalar_dofs": 432,
+      "split": "isotropic",
+      "tangent_adjoint_relative_error": 4.2217965234847554e-14,
+      "total_panels": 18
+    },
+    {
+      "derivative_residuals": [
+        8.779159974735582e-12,
+        9.715681066296275e-12,
+        8.779159974735582e-12
+      ],
+      "derivative_wall_s": 0.8047945029684342,
+      "direction": {
+        "linear": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            0,
+            0
+          ]
+        ],
+        "offset_mm": [
+          0,
+          0,
+          0
+        ],
+        "schema": "solidcraft_affine_velocity_v1"
+      },
+      "errors_vs_extrapolation": [
+        {
+          "displacement": {
+            "absolute": 8.259079148613705e-14,
+            "accepted": true,
+            "relative": 7.557738096612121e-09
+          },
+          "force": {
+            "absolute": 9.413835079597242e-15,
+            "accepted": true,
+            "relative": 2.9852135635088236e-13
+          },
+          "work": {
+            "absolute": 3.179283110377445e-16,
+            "accepted": true,
+            "relative": 9.943490563231681e-11
+          }
+        },
+        {
+          "displacement": {
+            "absolute": 1.3393733877382026e-13,
+            "accepted": true,
+            "relative": 1.2256370348256739e-08
+          },
+          "force": {
+            "absolute": 2.3067464593405778e-14,
+            "accepted": true,
+            "relative": 7.314904881777536e-13
+          },
+          "work": {
+            "absolute": 9.536955711372981e-17,
+            "accepted": true,
+            "relative": 2.982767681445564e-11
+          }
+        }
+      ],
+      "fd_steps": [
+        {
+          "displacement_rate_fd_norm_mm_per_unit": 1.0928197578342628e-05,
+          "minus_panels": 2504,
+          "minus_plan_changed_faces": 0,
+          "nodal_force_rate_fd_norm_n_per_unit": 0.03153487976428888,
+          "plus_panels": 2504,
+          "plus_plan_changed_faces": 0,
+          "step": "1/16",
+          "work_rate_fd_n_mm": 3.1974443005192577e-06
+        },
+        {
+          "displacement_rate_fd_norm_mm_per_unit": 1.092803248449901e-05,
+          "minus_panels": 2504,
+          "minus_plan_changed_faces": 0,
+          "nodal_force_rate_fd_norm_n_per_unit": 0.031534879764287156,
+          "plus_panels": 2504,
+          "plus_plan_changed_faces": 0,
+          "step": "1/32",
+          "work_rate_fd_n_mm": 3.19737444664874e-06
+        },
+        {
+          "displacement_rate_fd_norm_mm_per_unit": 1.0927991208435624e-05,
+          "minus_panels": 2504,
+          "minus_plan_changed_faces": 0,
+          "nodal_force_rate_fd_norm_n_per_unit": 0.031534879764285755,
+          "plus_panels": 2504,
+          "plus_plan_changed_faces": 0,
+          "step": "1/64",
+          "work_rate_fd_n_mm": 3.197356982871137e-06
+        }
+      ],
+      "feature": "bore/micro",
+      "frozen_plan_matches_primal": true,
+      "id": "inclined_bore_pressure_directional",
+      "law": {
+        "pressure_mpa": 0.05
+      },
+      "panel_budget": 262144,
+      "primal_cells": 32,
+      "primal_panels": 2504,
+      "primal_residual": 9.900424601759089e-11,
+      "qualified": true,
+      "recipe_id": "extreme_shear",
+      "replay_panels": 640,
+      "richardson_extrapolations": [
+        {
+          "displacement_rate_norm_mm_per_unit": 1.0927977458950077e-05,
+          "from_steps": [
+            "1/16",
+            "1/32"
+          ],
+          "nodal_force_rate_norm_n_per_unit": 0.03153487976428658,
+          "work_rate_n_mm": 3.197351162025234e-06
+        },
+        {
+          "displacement_rate_norm_mm_per_unit": 1.092797745010606e-05,
+          "from_steps": [
+            "1/32",
+            "1/64"
+          ],
+          "nodal_force_rate_norm_n_per_unit": 0.03153487976428528,
+          "work_rate_n_mm": 3.1973511616119363e-06
+        }
+      ],
+      "scalar_dofs": 432,
+      "split": "directional",
+      "tangent_adjoint_relative_error": 2.425055327989062e-18,
+      "total_panels": 3144
+    },
+    {
+      "derivative_residuals": [
+        9.93613813690035e-12,
+        9.504752669866172e-12,
+        9.93613813690035e-12
+      ],
+      "derivative_wall_s": 0.40717368602054194,
+      "direction": {
+        "linear": [
+          [
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0
+          ]
+        ],
+        "offset_mm": [
+          0,
+          0,
+          0
+        ],
+        "schema": "solidcraft_affine_velocity_v1"
+      },
+      "errors_vs_extrapolation": [
+        {
+          "displacement": {
+            "absolute": 1.9658599281071488e-08,
+            "accepted": true,
+            "relative": 1.7417391194508376e-06
+          },
+          "force": {
+            "absolute": 4.7964798021012445e-14,
+            "accepted": true,
+            "relative": 1.27120876502751e-14
+          },
+          "work": {
+            "absolute": 1.0418336089668134e-08,
+            "accepted": true,
+            "relative": 3.0236187939652445e-07
+          }
+        },
+        {
+          "displacement": {
+            "absolute": 1.2321107325217649e-09,
+            "accepted": true,
+            "relative": 1.0916421010700908e-07
+          },
+          "force": {
+            "absolute": 7.170667339872999e-14,
+            "accepted": true,
+            "relative": 1.900438561119296e-14
+          },
+          "work": {
+            "absolute": 6.528999979549255e-10,
+            "accepted": true,
+            "relative": 1.8948521984754535e-08
+          }
+        }
+      ],
+      "fd_steps": [
+        {
+          "displacement_rate_fd_norm_mm_per_unit": 0.011265728102126399,
+          "minus_panels": 680,
+          "minus_plan_changed_faces": 0,
+          "nodal_force_rate_fd_norm_n_per_unit": 3.7731645140107557,
+          "plus_panels": 680,
+          "plus_plan_changed_faces": 0,
+          "step": "1/16",
+          "work_rate_fd_n_mm": 0.0344338752739457
+        },
+        {
+          "displacement_rate_fd_norm_mm_per_unit": 0.011281498298507622,
+          "minus_panels": 680,
+          "minus_plan_changed_faces": 0,
+          "nodal_force_rate_fd_norm_n_per_unit": 3.773164514010769,
+          "plus_panels": 680,
+          "plus_plan_changed_faces": 0,
+          "step": "1/32",
+          "work_rate_fd_n_mm": 0.034450845907376015
+        },
+        {
+          "displacement_rate_fd_norm_mm_per_unit": 0.011285447512578881,
+          "minus_panels": 680,
+          "minus_plan_changed_faces": 0,
+          "nodal_force_rate_fd_norm_n_per_unit": 3.7731645140107526,
+          "plus_panels": 680,
+          "plus_plan_changed_faces": 0,
+          "step": "1/64",
+          "work_rate_fd_n_mm": 0.03445509588981066
+        }
+      ],
+      "feature": "bore/left",
+      "frozen_plan_matches_primal": true,
+      "id": "oblique_bore_stress_isotropic",
+      "law": {
+        "stress_mpa": [
+          [
+            0,
+            0.3,
+            0.1
+          ],
+          [
+            0.3,
+            0,
+            -0.2
+          ],
+          [
+            0.1,
+            -0.2,
+            0
+          ]
+        ]
+      },
+      "panel_budget": 262144,
+      "primal_cells": 67,
+      "primal_panels": 680,
+      "primal_residual": 8.986951071988969e-11,
+      "qualified": true,
+      "recipe_id": "oblique_profile",
+      "replay_panels": 512,
+      "richardson_extrapolations": [
+        {
+          "displacement_rate_norm_mm_per_unit": 0.01128675890508466,
+          "from_steps": [
+            "1/16",
+            "1/32"
+          ],
+          "nodal_force_rate_norm_n_per_unit": 3.7731645140107735,
+          "work_rate_n_mm": 0.03445650278518612
+        },
+        {
+          "displacement_rate_norm_mm_per_unit": 0.011286764160492525,
+          "from_steps": [
+            "1/32",
+            "1/64"
+          ],
+          "nodal_force_rate_norm_n_per_unit": 3.773164514010747,
+          "work_rate_n_mm": 0.03445651255062221
+        }
+      ],
+      "scalar_dofs": 891,
+      "split": "isotropic",
+      "tangent_adjoint_relative_error": 4.42562653191203e-14,
+      "total_panels": 1192
+    }
+  ],
+  "commands": [
+    "rtk python3 tests/references/frozen_surface_derivative.py",
+    "target/release/solidcraft-trivariate build",
+    "target/release/solidcraft-trivariate solve-job",
+    "target/release/solidcraft-trivariate differentiate-job"
+  ],
+  "environment": {
+    "numpy": "2.4.4",
+    "python": "3.12.3"
+  },
+  "limits": [
+    "finite differences compare perturbed geometries whose adaptively selected plans may change",
+    "the sensitivity is that of the primal frozen quadrature plan, not an error bound for the continuous derivative"
+  ],
+  "protocol": "S4 frozen surface derivative oracle v1",
+  "refusals": [
+    {
+      "diagnostic": "{\"reason\":\"shape derivative requires a fixed surface quadrature plan\",\"status\":\"error\"}",
+      "exit_code": 1,
+      "id": "missing_opt_in",
+      "max_panels": null,
+      "previous_output_preserved": true
+    },
+    {
+      "diagnostic": "{\"reason\":\"unknown surface derivative plan\",\"status\":\"error\"}",
+      "exit_code": 1,
+      "id": "unknown_mode",
+      "max_panels": null,
+      "previous_output_preserved": true
+    },
+    {
+      "diagnostic": "{\"reason\":\"adaptive surface quadrature panel budget exceeded\",\"status\":\"error\"}",
+      "exit_code": 1,
+      "id": "replay_budget",
+      "max_panels": 3143,
+      "previous_output_preserved": true
+    }
+  ],
+  "relative_tolerance": 1e-05,
+  "revision": "25676c258521462814353fc72e9e10228cb1f634",
+  "status": "qualified",
+  "steps": [
+    "1/16",
+    "1/32",
+    "1/64"
+  ]
+}

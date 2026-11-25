@@ -100,6 +100,7 @@ pub(crate) fn supports_source_method(method: &str) -> bool {
             | "certified_orthogonal_feature_program"
             | "certified_polygon_prism"
             | "certified_perforated_polygon_prism"
+            | crate::rational_sector_json::METHOD
             | crate::counterbores_json::METHOD
             | crate::interval_bores_json::METHOD
             | crate::circular_polygon_json::METHOD

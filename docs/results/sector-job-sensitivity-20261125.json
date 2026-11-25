@@ -1,0 +1,393 @@
+{
+  "schema": "rational_sector_job_derivative_oracle_v1",
+  "executable_sha256": "7935c5e7ae47332a69fb95555f4d1ab85728d3517825ee53c12af1af93324d0c",
+  "cases": [
+    {
+      "recipe": {
+        "family": "rational_sector_prism_v1",
+        "half_angle_tangent": [
+          1,
+          2
+        ],
+        "radii_mm": [
+          3,
+          8
+        ],
+        "height_mm": 7
+      },
+      "job": {
+        "schema": "solidcraft_mechanical_job_v1",
+        "order": 16,
+        "formulation": "displacement",
+        "material": {
+          "young_mpa": 1700,
+          "poisson": 0.27
+        },
+        "supports": [
+          {
+            "select": {
+              "feature": "angle_start"
+            },
+            "components": [
+              0,
+              1,
+              2
+            ]
+          }
+        ],
+        "loads": [
+          {
+            "select": {
+              "feature": "inner"
+            },
+            "pressure_mpa": 0.3
+          }
+        ],
+        "plan": {
+          "schema": "adaptive_refinement_plan_v1",
+          "max_depth": 0,
+          "max_cells": 16,
+          "steps": []
+        }
+      },
+      "volume_rate_mm3": 308.00000000000153,
+      "resultant_rate_n": [
+        6.048000000000004,
+        8.064000000000005,
+        -2.8527871155970134e-17
+      ],
+      "work_rate_n_mm": 0.01980632660552851,
+      "residuals": [
+        7.259865446308969e-13,
+        9.685532003484878e-13,
+        7.259865446308969e-13
+      ],
+      "checks": {
+        "volume_relative": 4.884981308350689e-15,
+        "resultant_relative": 7.881111620089961e-16,
+        "adjoint_threshold_fraction": 5.169475958410885e-07
+      },
+      "history": [
+        {
+          "step": 0.0625,
+          "centered_threshold_fractions": [
+            322.1822148121247,
+            533.1325325728235,
+            51.207913728291494
+          ],
+          "forward_work_remainder": 0.00012736800128490978
+        },
+        {
+          "step": 0.03125,
+          "centered_threshold_fractions": [
+            80.66513453921026,
+            134.0815382820675,
+            12.905701952677656
+          ],
+          "forward_work_remainder": 3.1892003522467635e-05,
+          "fourth_threshold_fractions": [
+            0.25736781999066766,
+            1.135195331780359,
+            0.13829802747304348
+          ]
+        },
+        {
+          "step": 0.015625,
+          "centered_threshold_fractions": [
+            20.17375987357057,
+            33.57068834762819,
+            3.23289568134695
+          ],
+          "forward_work_remainder": 7.97111948489524e-06,
+          "fourth_threshold_fractions": [
+            0.01611451578672788,
+            0.07154068942595712,
+            0.008626924236714396
+          ],
+          "sixth_threshold_fractions": [
+            5.105683552064518e-05,
+            0.0008845172209561909,
+            1.7815980208668354e-05
+          ]
+        }
+      ],
+      "passed": true
+    },
+    {
+      "recipe": {
+        "family": "rational_sector_prism_v1",
+        "half_angle_tangent": [
+          3,
+          2
+        ],
+        "radii_mm": [
+          3,
+          8
+        ],
+        "height_mm": 7
+      },
+      "job": {
+        "schema": "solidcraft_mechanical_job_v1",
+        "order": 16,
+        "formulation": "displacement",
+        "material": {
+          "young_mpa": 1700,
+          "poisson": 0.27
+        },
+        "supports": [
+          {
+            "select": {
+              "feature": "angle_start"
+            },
+            "components": [
+              0,
+              1,
+              2
+            ]
+          }
+        ],
+        "loads": [
+          {
+            "select": {
+              "feature": "end"
+            },
+            "vector_mpa": [
+              0.13,
+              -0.2,
+              0.09
+            ]
+          }
+        ],
+        "plan": {
+          "schema": "adaptive_refinement_plan_v1",
+          "max_depth": 0,
+          "max_cells": 16,
+          "steps": []
+        }
+      },
+      "volume_rate_mm3": 118.46153846153831,
+      "resultant_rate_n": [
+        2.1999999999999997,
+        -3.384615384615384,
+        1.5230769230769223
+      ],
+      "work_rate_n_mm": 0.06006771674390551,
+      "residuals": [
+        9.0592969307878e-12,
+        2.197162448152512e-12,
+        9.0592969307878e-12
+      ],
+      "checks": {
+        "volume_relative": 1.3322676295501878e-15,
+        "resultant_relative": 2.5212147514763337e-16,
+        "adjoint_threshold_fraction": 4.170275236248244e-06
+      },
+      "history": [
+        {
+          "step": 0.0625,
+          "centered_threshold_fractions": [
+            62.357738543898435,
+            66.83836031578878,
+            32.48607496196299
+          ],
+          "forward_work_remainder": 4.0315701457507066e-05
+        },
+        {
+          "step": 0.03125,
+          "centered_threshold_fractions": [
+            15.586317416499833,
+            16.708454132509058,
+            8.110958807947288
+          ],
+          "forward_work_remainder": 9.941133323374983e-06,
+          "fourth_threshold_fractions": [
+            0.006359711400841495,
+            0.03744453897866705,
+            0.014079910061798276
+          ]
+        },
+        {
+          "step": 0.015625,
+          "centered_threshold_fractions": [
+            3.896384192500559,
+            4.1770402089871395,
+            2.0270784740805503
+          ],
+          "forward_work_remainder": 2.4671739880984802e-06,
+          "fourth_threshold_fractions": [
+            0.00039784175954194975,
+            0.002341040165083633,
+            0.0008816372045117464
+          ],
+          "sixth_threshold_fractions": [
+            5.264504311070526e-07,
+            3.749582174410735e-05,
+            1.752348129430113e-06
+          ]
+        }
+      ],
+      "passed": true
+    },
+    {
+      "recipe": {
+        "family": "rational_sector_prism_v1",
+        "half_angle_tangent": [
+          3,
+          1
+        ],
+        "radii_mm": [
+          3,
+          8
+        ],
+        "height_mm": 7
+      },
+      "job": {
+        "schema": "solidcraft_mechanical_job_v1",
+        "order": 16,
+        "formulation": "displacement",
+        "material": {
+          "young_mpa": 1700,
+          "poisson": 0.27
+        },
+        "supports": [
+          {
+            "select": {
+              "feature": "angle_start"
+            },
+            "components": [
+              0,
+              1,
+              2
+            ]
+          }
+        ],
+        "loads": [
+          {
+            "select": {
+              "feature": "angle_end"
+            },
+            "stress_mpa": [
+              [
+                0.3,
+                0.15,
+                0
+              ],
+              [
+                0.15,
+                -0.2,
+                0.3
+              ],
+              [
+                0,
+                0.3,
+                0.4
+              ]
+            ]
+          }
+        ],
+        "plan": {
+          "schema": "adaptive_refinement_plan_v1",
+          "max_depth": 0,
+          "max_cells": 16,
+          "steps": []
+        }
+      },
+      "volume_rate_mm3": 38.500000000000036,
+      "resultant_rate_n": [
+        1.0500000000000012,
+        1.6800000000000002,
+        -1.2600000000000002
+      ],
+      "work_rate_n_mm": 0.11822136742315828,
+      "residuals": [
+        6.924041406669189e-12,
+        9.554362676190491e-12,
+        6.924041406669189e-12
+      ],
+      "checks": {
+        "volume_relative": 8.881784197001252e-16,
+        "resultant_relative": 4.822281939264146e-16,
+        "adjoint_threshold_fraction": 0.00012159064748322632
+      },
+      "history": [
+        {
+          "step": 0.0625,
+          "centered_threshold_fractions": [
+            43.793276619860876,
+            34.187765285606915,
+            22.9643852933307
+          ],
+          "forward_work_remainder": 9.097715199960117e-05
+        },
+        {
+          "step": 0.03125,
+          "centered_threshold_fractions": [
+            10.945434518115716,
+            8.548104245168863,
+            5.731481479910065
+          ],
+          "forward_work_remainder": 2.2555167384850396e-05,
+          "fourth_threshold_fractions": [
+            0.004514335277298686,
+            0.005882364406597885,
+            0.012819791226233827
+          ]
+        },
+        {
+          "step": 0.015625,
+          "centered_threshold_fractions": [
+            2.736178371821293,
+            2.1370992685183725,
+            1.4322701490683025
+          ],
+          "forward_work_remainder": 5.6137702977511646e-06,
+          "fourth_threshold_fractions": [
+            0.00028208779640671427,
+            0.0003765880169396454,
+            0.0008002945456182928
+          ],
+          "sixth_threshold_fractions": [
+            7.794906874106584e-08,
+            8.870499875076022e-05,
+            1.0052299590588066e-06
+          ]
+        }
+      ],
+      "passed": true
+    }
+  ],
+  "across_chart_change": [
+    {
+      "t": "70/29",
+      "charts": 1,
+      "volume_mm3": 453.543729545643,
+      "analytic_volume_mm3": 453.5437295456664,
+      "work_n_mm": 0.11184761669971839
+    },
+    {
+      "t": "169/70",
+      "charts": 2,
+      "volume_mm3": 453.57150732339574,
+      "analytic_volume_mm3": 453.57150732339596,
+      "work_n_mm": 0.13370736257904833
+    }
+  ],
+  "refusals": [
+    {
+      "name": "family",
+      "diagnostic": "{\"reason\":\"angle direction requires an audited rational sector\",\"status\":\"error\"}",
+      "passed": true
+    },
+    {
+      "name": "refinement",
+      "diagnostic": "{\"reason\":\"angle derivative v1 requires an unrefined job\",\"status\":\"error\"}",
+      "passed": true
+    },
+    {
+      "name": "spatial_selector",
+      "diagnostic": "{\"reason\":\"spatial plane selection requires event analysis\",\"status\":\"error\"}",
+      "passed": true
+    }
+  ],
+  "qualified": true
+}

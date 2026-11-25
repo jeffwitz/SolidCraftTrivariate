@@ -36,6 +36,10 @@ impl Motion {
         Ok(motion)
     }
 
+    pub(crate) fn same_component(self, component: usize, other: Self) -> bool {
+        self.coefficients[component] == other.coefficients[component]
+    }
+
     pub(crate) fn set_component(&mut self, c: usize, from: Self) {
         self.coefficients[c] = from.coefficients[c];
     }

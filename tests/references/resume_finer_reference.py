@@ -3,7 +3,6 @@ import argparse
 import os
 from pathlib import Path
 import sys
-import time
 from bracket_cost_fields import read,save,ROOT
 from finer_matched_fields import measured_assessment
 from iterative_tetra_fields import defect_corrected

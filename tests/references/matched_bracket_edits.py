@@ -1,5 +1,8 @@
 """Compare transactional, locally refined radius edits with the J4f full fields."""
 import argparse
+import hashlib
+import platform
+import time
 import json
 import os
 from pathlib import Path
@@ -84,18 +87,26 @@ def run(work,output,incremental=False):
         (plans/(case+".json")).write_text(json.dumps(plan_for(field)))
     out = dict(schema="matched_incremental_bracket_edits_v1" if incremental else "matched_bracket_edit_verification_v1",cache_cap_mib=384,
                max_cells=3000,cpu_affinity=[2,3],trials=[],finished=False)
+    exe=ROOT/"target/release/examples/bracket_edit_cost"
+    out["executable_sha256"]=hashlib.sha256(exe.read_bytes()).hexdigest()
+    out["environment"]=dict(kernel=platform.release(),architecture=platform.machine(),sampled_tree_rss_interval_s=.15,
+                            omp_num_threads=2,openblas_num_threads=1)
     env=dict(os.environ,OMP_NUM_THREADS="2",OPENBLAS_NUM_THREADS="1")
     for repeat in (1,2):
         folder=work/f"repeat-{repeat}"
         folder.mkdir(exist_ok=False)
         cmd=["/usr/bin/taskset","-c","2,3",str(ROOT/"target/release/examples/bracket_edit_cost"),
              "--incremental-plan" if incremental else "--verified-plan",str(plans),str(folder)]
+        load_before=list(os.getloadavg())
         proc=measure(cmd,env,folder/"run.log",seconds=1800)
+        verification_start=time.monotonic()
         rows=events(folder,tiers,cold,incremental)
         out["trials"].append(dict(repeat=repeat,process=proc,command=cmd,events=rows,
+                                  verification_s=time.monotonic()-verification_start,load_average_before=load_before,
                                   passed=proc["status"]=="completed" and all(r["passed"] for r in rows)))
         output.write_text(json.dumps(out,indent=2,allow_nan=False)+"\n")
         print(repeat,proc["status"],[(r["radii_ticks"],r["passed"]) for r in rows],flush=True)
+    if hashlib.sha256(exe.read_bytes()).hexdigest()!=out["executable_sha256"]:raise ValueError("benchmark executable changed")
     out["finished"]=True
     out["qualified"]=all(t["passed"] for t in out["trials"])
     output.write_text(json.dumps(out,indent=2,allow_nan=False)+"\n")

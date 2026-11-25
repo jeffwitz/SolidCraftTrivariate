@@ -1,0 +1,14 @@
+{
+  "recipe": {
+    "family": "rational_sector_prism_v1",
+    "half_angle_tangent": [1, 2],
+    "radii_mm": [2, 6],
+    "height_mm": 8
+  },
+  "analysis_partition": "angular_halves",
+  "root_chart_ids": ["first", "second"],
+  "old_behavior": "SectorMotion selected first/second only when the geometric chart split threshold was crossed.",
+  "old_failure": "first chart was rejected for a valid sector with t=1/2 and a fixed angular_halves analysis partition",
+  "assertion": "SectorMotion.jets accepts both first and second analysis roots independently of the geometric split regime",
+  "fixed_rule": "whole is allowed only in the one-chart geometric regime; first and second always denote [0,1/2] and [1/2,1]"
+}

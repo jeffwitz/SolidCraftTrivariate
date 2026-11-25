@@ -1,0 +1,192 @@
+{
+  "schema": "sector_quadrature_modes_v1",
+  "recipe": {
+    "family": "rational_sector_prism_v1",
+    "radii_mm": [
+      2,
+      6
+    ],
+    "half_angle_tangent": [
+      1,
+      2
+    ],
+    "height_mm": 8
+  },
+  "job": {
+    "schema": "solidcraft_mechanical_job_v1",
+    "order": 4,
+    "formulation": "displacement",
+    "material": {
+      "young_mpa": 210000,
+      "poisson": 0.3
+    },
+    "supports": [
+      {
+        "select": {
+          "feature": "angle_start"
+        },
+        "components": [
+          0,
+          1,
+          2
+        ]
+      }
+    ],
+    "loads": [
+      {
+        "select": {
+          "feature": "inner"
+        },
+        "pressure_mpa": 0.3
+      }
+    ],
+    "plan": {
+      "schema": "adaptive_refinement_plan_v1",
+      "max_depth": 2,
+      "max_cells": 128,
+      "steps": [
+        {
+          "refine": [
+            {
+              "root": "whole",
+              "level": 0,
+              "index": [
+                0,
+                0,
+                0
+              ]
+            }
+          ]
+        },
+        {
+          "refine": [
+            {
+              "root": "whole",
+              "level": 1,
+              "index": [
+                0,
+                0,
+                0
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "cases": [
+    {
+      "order": 2,
+      "scalar_dofs": 235,
+      "mounted_dimension": 432,
+      "nullity": 8,
+      "lowest_eigenvalues": [
+        -6.823560515252299e-12,
+        -5.3773471420027155e-12,
+        -4.610313330048023e-12,
+        -1.7732002447472061e-12,
+        -9.871673350250376e-13,
+        2.540630457631622e-13,
+        2.6473492350208755e-12,
+        3.087072698371595e-12,
+        9.418612620916912,
+        31.275944219468325,
+        68.80118537015643,
+        83.92174344157395,
+        116.61608425729123,
+        152.07571451749197,
+        191.39785421792246,
+        234.13381288812204
+      ],
+      "largest_eigenvalue": 1081741.5374273302,
+      "threshold": 0.00010817415374273302,
+      "force_fraction_in_kernel": 5.483391695537611e-15,
+      "free_rigid_relative_residuals": [
+        3.952917470590066e-17,
+        3.7679818819794184e-17,
+        1.8845297753635452e-17,
+        5.746809664716596e-17,
+        4.600922248024466e-17,
+        8.59975041876351e-17
+      ],
+      "native_relative_residual": 8.001777513450554e-11,
+      "negative_below_tolerance": 0
+    },
+    {
+      "order": 3,
+      "scalar_dofs": 235,
+      "mounted_dimension": 432,
+      "nullity": 0,
+      "lowest_eigenvalues": [
+        2812.3487144922806,
+        3054.147889326543,
+        3378.8533510413704,
+        3939.37464420729,
+        3989.4563298877947,
+        4014.2674104886205,
+        4164.3823093358715,
+        4309.214208460885,
+        4661.312219911502,
+        4674.8707173527,
+        4743.981542398936,
+        4850.075654136674,
+        4863.950566327636,
+        4943.520153198462,
+        5095.638425602804,
+        5244.061464630075
+      ],
+      "largest_eigenvalue": 1089507.2911103524,
+      "threshold": 0.00010895072911103524,
+      "force_fraction_in_kernel": 0.0,
+      "free_rigid_relative_residuals": [
+        3.9154617287418324e-17,
+        3.772140035792817e-17,
+        1.6566649491481676e-17,
+        3.897307608100056e-17,
+        3.640299702366023e-17,
+        7.185532684232925e-17
+      ],
+      "native_relative_residual": 9.517024332192365e-11,
+      "negative_below_tolerance": 0
+    },
+    {
+      "order": 4,
+      "scalar_dofs": 235,
+      "mounted_dimension": 432,
+      "nullity": 0,
+      "lowest_eigenvalues": [
+        2840.983592383195,
+        3052.6654540774107,
+        3384.9817741344064,
+        3981.1494750234087,
+        3993.094205693835,
+        4033.130356465351,
+        4188.88667335797,
+        4369.390379972041,
+        4669.621348854293,
+        4683.563435782579,
+        4768.039906909015,
+        4848.268477213049,
+        4862.869369961969,
+        4943.883488823109,
+        5091.17621102504,
+        5265.555339294087
+      ],
+      "largest_eigenvalue": 1089744.165468343,
+      "threshold": 0.00010897441654683431,
+      "force_fraction_in_kernel": 0.0,
+      "free_rigid_relative_residuals": [
+        4.529308981687652e-17,
+        4.756368056215944e-17,
+        2.073566619259576e-17,
+        4.25660742209931e-17,
+        3.8644124482353296e-17,
+        6.428355682564464e-17
+      ],
+      "native_relative_residual": 7.989483248659487e-11,
+      "negative_below_tolerance": 0
+    }
+  ],
+  "executable_sha256": "783d08c6373f3d810fc06273d4add85b56cbabdfda651aaf24386a83613bc2aa",
+  "qualified": true
+}

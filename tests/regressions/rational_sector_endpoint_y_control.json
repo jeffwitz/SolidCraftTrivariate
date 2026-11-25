@@ -1,0 +1,13 @@
+{
+  "family": "rational_sector_prism_v1",
+  "recipe": {
+    "half_angle_tangent": [1, 4],
+    "radii_mm": [1, 2],
+    "height_mm": 1
+  },
+  "old_formula": "quadratic angular Y Bernstein endpoint was incorrectly 4*Q*n*r; the correct endpoint is 8*Q*n*r",
+  "old_normalized_control_u2_outer_w0": [30, 8, 0, 17],
+  "correct_normalized_control_u2_outer_w0": [30, 16, 0, 17],
+  "assertion": "rational_sector_audit::audit_rational_sector rejects the old net with sector_homogeneous_polynomial_identity",
+  "origin": "G24 initial builder endpoint coefficient regression"
+}

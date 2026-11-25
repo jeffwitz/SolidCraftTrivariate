@@ -104,7 +104,7 @@ fn select<'a>(
     Ok(selection)
 }
 
-enum Traction {
+pub(crate) enum Traction {
     Vector(Vector),
     Pressure(f64),
     Stress([Vector; 3]),
@@ -133,7 +133,7 @@ impl Traction {
         }
         Ok(Self::Stress(s))
     }
-    fn value(&self, normal: Vector) -> Vector {
+    pub(crate) fn value(&self, normal: Vector) -> Vector {
         match self {
             Self::Vector(v) => *v,
             Self::Pressure(p) => normal.map(|v| -p * v),
@@ -224,13 +224,41 @@ fn mounting_rank(points: &[Vector], fixed: &[BTreeMap<usize, Ratio>; 3]) -> usiz
 /// Build the effective space, apply essential conditions, solve,
 /// and return a reproducible result document. Publication is the caller's job.
 pub fn solve_job(model: &Json, job: &Json) -> Result<Json, &'static str> {
-    run_job(model, job, None)
+    let (inner, fixed) = crate::sector_analysis::unpack(model, job)?;
+    let mut result = run_job(model, inner, None, fixed)?;
+    if fixed {
+        crate::sector_analysis::annotate(&mut result, model, job)?;
+    }
+    Ok(result)
 }
 
 /// Differentiate a fixed material selection and homogeneous mounting with respect
 /// to a global affine deformation of the audited configuration.
 pub fn differentiate_job(model: &Json, job: &Json, direction: &Json) -> Result<Json, &'static str> {
+    let wrapper = job;
+    let (job, fixed) = crate::sector_analysis::unpack(model, wrapper)?;
     let velocity = crate::affine_job_sensitivity::Velocity::parse(model, direction)?;
+    if velocity.sector.is_some() {
+        if job.field("order")?.number::<usize>()? < 3 {
+            return Err("sector sensitivity requires volume quadrature order at least three");
+        }
+        let version = job.field("schema")?.text()?;
+        if velocity.moving_sector_supports {
+            if !matches!(
+                version,
+                "solidcraft_mechanical_job_v2" | "solidcraft_mechanical_job_v3"
+            ) {
+                return Err("sector moving supports require a v2 or v3 mechanical job");
+            }
+        } else if version != "solidcraft_mechanical_job_v1" {
+            return Err("angle derivative requires a v1 displacement job");
+        }
+        if direction.field("schema")?.text()? == "solidcraft_sector_angle_velocity_v1"
+            && !job.field("plan")?.field("steps")?.items()?.is_empty()
+        {
+            return Err("angle derivative v1 requires an unrefined job");
+        }
+    }
     if job.field("formulation")?.text()? != "displacement" {
         return Err("shape derivative requires displacement formulation");
     }
@@ -239,18 +267,26 @@ pub fn differentiate_job(model: &Json, job: &Json, direction: &Json) -> Result<J
             if entry.field("select")?.field("plane").is_ok() {
                 return Err("spatial plane selection requires event analysis");
             }
-            if entry.field("affine_mm").is_ok() && velocity.exact.is_none() {
+            if entry.field("affine_mm").is_ok()
+                && velocity.exact.is_none()
+                && !velocity.moving_sector_supports
+            {
                 return Err("prescribed motion derivative unavailable");
             }
         }
     }
-    run_job(model, job, Some(&velocity))
+    let mut result = run_job(model, job, Some(&velocity), fixed)?;
+    if fixed {
+        crate::sector_analysis::annotate(&mut result, model, wrapper)?;
+    }
+    Ok(result)
 }
 
 fn run_job(
     model: &Json,
     job: &Json,
     velocity: Option<&crate::affine_job_sensitivity::Velocity>,
+    fixed_angular_partition: bool,
 ) -> Result<Json, &'static str> {
     let version = job.field("schema")?.text()?;
     let mut fields = vec![
@@ -350,6 +386,7 @@ fn run_job(
                 | "certified_orthogonal_feature_program"
                 | "certified_polygon_prism"
                 | "certified_perforated_polygon_prism"
+                | crate::rational_sector_json::METHOD
                 | crate::counterbores_json::METHOD
                 | crate::interval_bores_json::METHOD
                 | crate::circular_polygon_json::METHOD
@@ -368,7 +405,20 @@ fn run_job(
         return Err("invalid mechanical quadrature order");
     }
     let plan = parse_refinement_plan(job.field("plan")?)?;
-    let blocks = decode_blocks(model)?;
+    let mut blocks = decode_blocks(model)?;
+    let mut groups = BTreeMap::new();
+    for face in model.field("design_faces")?.items()? {
+        let s = side(face.field("block")?.text()?, face.field("side")?.text()?)?;
+        if groups
+            .insert(s, face.field("feature")?.text()?.to_owned())
+            .is_some()
+        {
+            return Err("duplicate mechanical design face");
+        }
+    }
+    if fixed_angular_partition {
+        crate::sector_analysis::fix_partition(&mut blocks, &mut groups)?;
+    }
     let incidence = enumerate_faces(&blocks)?;
     let mut neighbors: BTreeMap<&str, Vec<&str>> =
         blocks.iter().map(|b| (b.id.as_str(), Vec::new())).collect();
@@ -393,16 +443,6 @@ fn run_job(
     }
     if visited.len() != blocks.len() {
         return Err("mechanical job requires one face-connected material domain");
-    }
-    let mut groups = BTreeMap::new();
-    for face in model.field("design_faces")?.items()? {
-        let s = side(face.field("block")?.text()?, face.field("side")?.text()?)?;
-        if groups
-            .insert(s, face.field("feature")?.text()?.to_owned())
-            .is_some()
-        {
-            return Err("duplicate mechanical design face");
-        }
     }
     if incidence.exterior.iter().collect::<BTreeSet<_>>() != groups.keys().collect() {
         return Err("incomplete mechanical exterior provenance");
@@ -443,6 +483,8 @@ fn run_job(
     let mut fixed_rates: [BTreeMap<usize, Ratio>; 3] = Default::default();
     let mut frame_motion = Motion::zero();
     let mut frame_rows = [false; 3];
+    let mut sector_support_motion = Motion::zero();
+    let mut sector_rows = [false; 3];
     let hom = homogeneous_nodes(space);
     let points = hom
         .iter()
@@ -469,6 +511,15 @@ fn run_job(
             || components.iter().collect::<BTreeSet<_>>().len() != components.len()
         {
             return Err("invalid mechanical support components");
+        }
+        if velocity.is_some_and(|v| v.moving_sector_supports) {
+            for &c in &components {
+                if sector_rows[c] && !sector_support_motion.same_component(c, motion) {
+                    return Err("sector derivative requires one affine support law per component");
+                }
+                sector_support_motion.set_component(c, motion);
+                sector_rows[c] = true;
+            }
         }
         if explicit.is_some() {
             for &c in &components {
@@ -634,10 +685,15 @@ fn run_job(
             (out.load, Some(info))
         } else {
             if let (Some(velocity), Some(rhs)) = (velocity, &mut force_rate) {
-                let rate = integrate_traction(space, &exterior, &patches, order, |x, normal| {
-                    rate_law(velocity, x, normal)
-                })?;
-                for (a, b) in rhs.iter_mut().zip(rate.nodal_force_n) {
+                let rate = if let Some(sector) = &velocity.sector {
+                    sector.surface_force_rate(space, &patches, order, &law)?
+                } else {
+                    integrate_traction(space, &exterior, &patches, order, |x, normal| {
+                        rate_law(velocity, x, normal)
+                    })?
+                    .nodal_force_n
+                };
+                for (a, b) in rhs.iter_mut().zip(rate) {
                     *a += b;
                 }
             }
@@ -702,7 +758,21 @@ fn run_job(
             affine_job_sensitivity::{self, SensitivityJob},
             elasticity_sensitivity::MaterialJet,
         };
-        let support_rates = if velocity.exact.is_some() {
+        let support_rates = if let Some(sector) = &velocity.sector {
+            let rates = |c: usize| {
+                if velocity.moving_sector_supports {
+                    sector.lift_rates_with_motion(
+                        space,
+                        &physical_lifts[c],
+                        c,
+                        sector_support_motion,
+                    )
+                } else {
+                    sector.lift_rates(space, &physical_lifts[c])
+                }
+            };
+            Some([rates(0)?, rates(1)?, rates(2)?])
+        } else if velocity.exact.is_some() {
             let derivative_lifts = make_lifts(&fixed_rates, &Motion::zero())?;
             let mut rates: [Vec<crate::mechanical_sensitivity::LiftRate>; 3] = Default::default();
             for c in 0..3 {

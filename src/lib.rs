@@ -109,6 +109,11 @@ pub mod solidcraft_oriented_plane;
 pub mod adaptive_traction;
 pub mod geometry_vtu;
 
+pub mod rational_sector;
+pub mod rational_sector_audit;
+mod rational_sector_json;
+mod sector_sensitivity;
+mod sector_analysis;
 pub mod counterbores;
 pub mod counterbores_audit;
 mod counterbores_json;

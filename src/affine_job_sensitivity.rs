@@ -12,6 +12,8 @@ pub(crate) struct Velocity {
     linear: [Vector; 3],
     offset: Vector,
     endpoint: Option<EndpointFlow>,
+    pub(crate) sector: Option<crate::sector_sensitivity::SectorMotion>,
+    pub(crate) moving_sector_supports: bool,
     pub(crate) exact: Option<crate::prescribed_motion::Motion>,
 }
 
@@ -45,6 +47,27 @@ impl EndpointFlow {
 
 impl Velocity {
     pub(crate) fn parse(model: &Json, spec: &Json) -> Result<Self, &'static str> {
+        if matches!(
+            spec.field("schema")?.text()?,
+            "solidcraft_sector_angle_velocity_v1"
+                | "solidcraft_sector_angle_velocity_v2"
+                | "solidcraft_sector_angle_velocity_v3"
+        ) {
+            spec.keys(&["schema"])?;
+            if model.field("schema")?.text()? != crate::rational_sector_json::FAMILY {
+                return Err("angle direction requires an audited rational sector");
+            }
+            let recipe = crate::rational_sector_json::parse(model)?;
+            return Ok(Self {
+                linear: [[0.; 3]; 3],
+                offset: [0.; 3],
+                moving_sector_supports: spec.field("schema")?.text()?
+                    == "solidcraft_sector_angle_velocity_v3",
+                exact: None,
+                endpoint: None,
+                sector: Some(crate::sector_sensitivity::SectorMotion(recipe)),
+            });
+        }
         if spec.field("schema")?.text()? == "solidcraft_interval_endpoint_velocity_v1" {
             spec.keys(&["schema", "bore", "endpoint"])?;
             if model.field("schema")?.text()? != crate::interval_bores_json::FAMILY {
@@ -81,7 +104,9 @@ impl Velocity {
             return Ok(Self {
                 linear: [[0.; 3]; 3],
                 offset: [0.; 3],
+                moving_sector_supports: false,
                 exact: None,
+                sector: None,
                 endpoint: Some(EndpointFlow {
                     lower: lower.into(),
                     moving: z.into(),
@@ -97,8 +122,10 @@ impl Velocity {
             return Ok(Self {
                 linear: coefficients.map(|r| [r[1], r[2], r[3]]),
                 offset: coefficients.map(|r| r[0]),
+                moving_sector_supports: false,
                 exact: Some(map),
                 endpoint: None,
+                sector: None,
             });
         }
         spec.keys(&["schema", "linear", "offset_mm"])?;
@@ -112,8 +139,10 @@ impl Velocity {
         Ok(Self {
             linear: [row(a)?, row(b)?, row(c)?],
             offset: row(spec.field("offset_mm")?)?,
+            moving_sector_supports: false,
             exact: None,
             endpoint: None,
+            sector: None,
         })
     }
 
@@ -167,6 +196,16 @@ pub(crate) fn solve(velocity: &Velocity, data: SensitivityJob<'_>) -> Result<Jso
     let mut point_velocities = vec![[0.; 3]; space.ndof];
     let mut jets = Vec::with_capacity(space.blocks.len());
     for block in &space.blocks {
+        if let Some(sector) = &velocity.sector {
+            let local = sector.jets(block)?;
+            for ((p, dp), &i) in block.controls.iter().zip(&local).zip(&block.dofs) {
+                let w = p[3] as f64;
+                point_velocities[i] =
+                    std::array::from_fn(|k| (dp[k] - (p[k] as f64 / w) * dp[3]) / w);
+            }
+            jets.push(local);
+            continue;
+        }
         let mut local = Vec::with_capacity(block.controls.len());
         for (p, &i) in block.controls.iter().zip(&block.dofs) {
             let weight = p[3] as f64;
@@ -260,6 +299,55 @@ pub(crate) fn solve(velocity: &Velocity, data: SensitivityJob<'_>) -> Result<Jso
             ]),
         ),
     ]);
+    if let (Some(_), Json::Object(fields)) = (&velocity.sector, &mut report) {
+        fields.insert(
+            "schema".into(),
+            Json::String("solidcraft_sector_angle_derivative_v1".into()),
+        );
+        fields.insert(
+            "parameter".into(),
+            Json::String("t = tan(theta/2), within the current chart regime".into()),
+        );
+        if let Some(lifts) = &data.support_rates {
+            let derivatives = lifts
+                .iter()
+                .zip(data.lifts)
+                .map(|(component, lift)| {
+                    let lines = component
+                        .iter()
+                        .enumerate()
+                        .filter_map(|(dof, row)| {
+                            let terms: Vec<_> = row
+                                .terms
+                                .iter()
+                                .filter(|(_, v)| *v != 0.)
+                                .map(|&(j, dc)| {
+                                    Json::Array(vec![
+                                        Json::Number(lift.free_roots[j].to_string()),
+                                        num(dc),
+                                    ])
+                                })
+                                .collect();
+                            if terms.is_empty() && row.offset == 0. {
+                                None
+                            } else {
+                                Some(object([
+                                    ("dof", Json::Number(dof.to_string())),
+                                    ("terms", Json::Array(terms)),
+                                    ("offset_rate", num(row.offset)),
+                                ]))
+                            }
+                        })
+                        .collect();
+                    Json::Array(lines)
+                })
+                .collect();
+            fields.insert("component_lift_rates".into(), Json::Array(derivatives));
+        }
+        if let Some(v) = fields.remove("geometry_velocity_mm_xyz") {
+            fields.insert("control_point_velocity_mm_xyz".into(), v);
+        }
+    }
     if let (Some(cap), Json::Object(fields)) = (&velocity.endpoint, &mut report) {
         fields.insert(
             "schema".into(),
@@ -275,7 +363,10 @@ pub(crate) fn solve(velocity: &Velocity, data: SensitivityJob<'_>) -> Result<Jso
         );
         fields.insert("material_axis_per_mm".into(), numbers(&cap.axis));
     }
-    if let (Some(_), Json::Object(fields)) = (velocity.exact, &mut report) {
+    if let (true, Json::Object(fields)) = (
+        velocity.exact.is_some() || velocity.moving_sector_supports,
+        &mut report,
+    ) {
         let u = &result.primal.displacement_mm;
         let du = &result.physical_tangent;
         let ku = k.stiffness.apply(u)?;
@@ -294,7 +385,20 @@ pub(crate) fn solve(velocity: &Velocity, data: SensitivityJob<'_>) -> Result<Jso
             .0
             .iter()
             .enumerate()
-            .map(|(i, r)| (0..3).map(|c| r[c] * rates[c][i].offset).sum::<f64>())
+            .map(|(i, r)| {
+                (0..3)
+                    .map(|c| {
+                        let row = &rates[c][i];
+                        let motion = row.offset
+                            + row
+                                .terms
+                                .iter()
+                                .map(|&(j, dc)| dc * u[3 * data.lifts[c].free_roots[j] + c])
+                                .sum::<f64>();
+                        r[c] * motion
+                    })
+                    .sum::<f64>()
+            })
             .sum();
         let strain_rate = energy_shape + dot(&ku, du);
         let adjoint_strain_rate = energy_shape + result.objective_adjoint + reaction_lift_work;
@@ -302,7 +406,14 @@ pub(crate) fn solve(velocity: &Velocity, data: SensitivityJob<'_>) -> Result<Jso
         let applied_rate = result.objective_tangent + explicit;
         fields.insert(
             "schema".into(),
-            Json::String("solidcraft_affine_job_derivative_v2".into()),
+            Json::String(
+                if velocity.moving_sector_supports {
+                    "solidcraft_sector_angle_derivative_v3"
+                } else {
+                    "solidcraft_affine_job_derivative_v2"
+                }
+                .into(),
+            ),
         );
         fields.remove("compliance_n_mm");
         fields.remove("compliance_rate_tangent_n_mm");

@@ -22,6 +22,8 @@ pub struct MaterialJet {
 pub struct GeometryJetSample {
     pub position_mm: Vector,
     pub position_derivative: Vector,
+    pub jacobian_columns: Matrix,
+    pub jacobian_column_rates: Matrix,
     pub basis: [f64; 27],
     pub basis_derivative: [f64; 27],
     pub gradients_per_mm: [Vector; 27],
@@ -180,6 +182,8 @@ pub fn evaluate_geometry_jet(
     Ok(GeometryJetSample {
         position_mm: position,
         position_derivative: position_p,
+        jacobian_columns: jac,
+        jacobian_column_rates: jac_p,
         basis: rational,
         basis_derivative: rational_p,
         gradients_per_mm: gradients,

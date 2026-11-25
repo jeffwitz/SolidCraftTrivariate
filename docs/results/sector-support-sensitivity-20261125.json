@@ -1,0 +1,373 @@
+{
+  "schema": "sector_support_sensitivity_oracle_v1",
+  "cases": [
+    {
+      "recipe": {
+        "family": "rational_sector_prism_v1",
+        "half_angle_tangent": [
+          1,
+          2
+        ],
+        "radii_mm": [
+          3,
+          8
+        ],
+        "height_mm": 7
+      },
+      "job": {
+        "schema": "solidcraft_mechanical_job_v2",
+        "order": 12,
+        "formulation": "displacement",
+        "material": {
+          "young_mpa": 1700,
+          "poisson": 0.27
+        },
+        "supports": [
+          {
+            "select": {
+              "feature": "start"
+            },
+            "components": [
+              0,
+              1,
+              2
+            ],
+            "affine_mm": {
+              "denominator": 4096,
+              "numerators": [
+                [
+                  3,
+                  4,
+                  6,
+                  0
+                ],
+                [
+                  1,
+                  -2,
+                  3,
+                  1
+                ],
+                [
+                  -2,
+                  3,
+                  -4,
+                  5
+                ]
+              ]
+            }
+          }
+        ],
+        "loads": [
+          {
+            "select": {
+              "feature": "inner"
+            },
+            "pressure_mpa": 0.3
+          }
+        ],
+        "plan": {
+          "schema": "adaptive_refinement_plan_v1",
+          "max_depth": 2,
+          "max_cells": 64,
+          "steps": [
+            {
+              "refine": [
+                {
+                  "root": "whole",
+                  "level": 0,
+                  "index": [
+                    0,
+                    0,
+                    0
+                  ]
+                }
+              ]
+            },
+            {
+              "refine": [
+                {
+                  "root": "whole",
+                  "level": 1,
+                  "index": [
+                    0,
+                    0,
+                    0
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "checks": {
+        "cold_models": true,
+        "nonzero_offsets": true,
+        "nonzero_lift_terms": true,
+        "work_balance": true,
+        "applied_work_adjoint": true,
+        "strain_energy_adjoint": true
+      },
+      "history": [
+        {
+          "step": 0.0625,
+          "centered": [
+            228.5464192869685,
+            770.0501064395062,
+            94.49510401540462,
+            258.6132179407165,
+            334.9938883568382,
+            178.84493072441876
+          ]
+        },
+        {
+          "step": 0.03125,
+          "centered": [
+            57.08136721318986,
+            193.8147926109063,
+            24.08235865984163,
+            64.70236007134096,
+            83.88531709034201,
+            44.79580679337925
+          ],
+          "fourth": [
+            0.0736501447406996,
+            1.736354668039656,
+            0.6114435413147656,
+            0.5386066505686273,
+            0.2768717505087661,
+            0.17061588828124646
+          ]
+        },
+        {
+          "step": 0.015625,
+          "centered": [
+            14.266844291194174,
+            48.535327857960375,
+            6.049257706083618,
+            16.178654617215827,
+            20.97988787313501,
+            11.204247313101373
+          ],
+          "fourth": [
+            0.004663349475395041,
+            0.1088396069738608,
+            0.03822405482507397,
+            0.03364464965970745,
+            0.017337320009864383,
+            0.01068462714846896
+          ],
+          "sixth": [
+            6.422979190943204e-05,
+            0.0003386029064382818,
+            9.422388904502137e-06,
+            0.00042031758997290296,
+            5.575376274205994e-05,
+            2.8841372550200535e-05
+          ]
+        }
+      ],
+      "work_rates_n_mm": [
+        0.10658475896332308,
+        0.05096743709630234,
+        0.07877609802981264
+      ],
+      "max_offset_rate_mm": 0.015,
+      "passed": true
+    },
+    {
+      "recipe": {
+        "family": "rational_sector_prism_v1",
+        "half_angle_tangent": [
+          3,
+          1
+        ],
+        "radii_mm": [
+          3,
+          8
+        ],
+        "height_mm": 7
+      },
+      "job": {
+        "schema": "solidcraft_mechanical_job_v3",
+        "order": 12,
+        "formulation": "displacement",
+        "material": {
+          "young_mpa": 1700,
+          "poisson": 0.27
+        },
+        "supports": [
+          {
+            "select": {
+              "feature": "start"
+            },
+            "components": [
+              0,
+              1,
+              2
+            ],
+            "affine_mm": {
+              "denominator": 4096,
+              "numerators": [
+                [
+                  3,
+                  4,
+                  6,
+                  0
+                ],
+                [
+                  1,
+                  -2,
+                  3,
+                  1
+                ],
+                [
+                  -2,
+                  3,
+                  -4,
+                  5
+                ]
+              ]
+            }
+          }
+        ],
+        "loads": [
+          {
+            "select": {
+              "feature": "inner"
+            },
+            "pressure_mpa": 0.3
+          }
+        ],
+        "plan": {
+          "schema": "adaptive_refinement_plan_v1",
+          "max_depth": 2,
+          "max_cells": 64,
+          "steps": [
+            {
+              "refine": [
+                {
+                  "root": "first",
+                  "level": 0,
+                  "index": [
+                    0,
+                    0,
+                    0
+                  ]
+                }
+              ]
+            },
+            {
+              "refine": [
+                {
+                  "root": "first",
+                  "level": 1,
+                  "index": [
+                    0,
+                    0,
+                    0
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "checks": {
+        "cold_models": true,
+        "nonzero_offsets": true,
+        "nonzero_lift_terms": true,
+        "work_balance": true,
+        "applied_work_adjoint": true,
+        "strain_energy_adjoint": true
+      },
+      "history": [
+        {
+          "step": 0.0625,
+          "centered": [
+            146.13546816141604,
+            12.007019845596817,
+            15.854446839072365,
+            21.04455457674606,
+            32.21088970363538,
+            23.306471737905728
+          ]
+        },
+        {
+          "step": 0.03125,
+          "centered": [
+            36.51158803510895,
+            3.002612657331485,
+            3.963726917777318,
+            5.260742450212902,
+            8.051945420168737,
+            5.826133949597689
+          ],
+          "fourth": [
+            0.029705340332245755,
+            0.0011435945763743456,
+            0.00015361068401403193,
+            0.0017037778437627316,
+            0.003160396775500972,
+            0.001752349779103896
+          ]
+        },
+        {
+          "step": 0.015625,
+          "centered": [
+            9.126399405195984,
+            0.7508876692602965,
+            0.990932970305052,
+            1.3151584309775437,
+            2.012937789614573,
+            1.4565032401253628
+          ],
+          "fourth": [
+            0.001996804775004451,
+            0.00031267324176115837,
+            1.6544809633783117e-06,
+            0.00016047612696580012,
+            0.00019748729922766127,
+            0.00010950515516083882
+          ],
+          "sixth": [
+            0.00014956906019565155,
+            0.0002572784933920539,
+            8.475930555278452e-06,
+            0.00012115254582640799,
+            7.837054823952137e-08,
+            3.456517786450522e-08
+          ]
+        }
+      ],
+      "work_rates_n_mm": [
+        0.001315055685650368,
+        0.0445304020266653,
+        0.022922728856157537
+      ],
+      "max_offset_rate_mm": 0.003605769230769231,
+      "passed": true
+    }
+  ],
+  "refusals": [
+    {
+      "name": "incompatible_laws",
+      "diagnostic": "{\"reason\":\"sector derivative requires one affine support law per component\",\"status\":\"error\"}",
+      "passed": true
+    },
+    {
+      "name": "fixed_spatial_plane",
+      "diagnostic": "{\"reason\":\"spatial plane selection requires event analysis\",\"status\":\"error\"}",
+      "passed": true
+    }
+  ],
+  "observables": [
+    "applied_work",
+    "support_work",
+    "strain_energy",
+    "field",
+    "nodal_force",
+    "lift_offsets"
+  ],
+  "executable_sha256": "5697573f689feb889897c0c1c1b76e4cff254dbc2f25219778360fb14deb32da",
+  "qualified": true
+}

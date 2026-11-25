@@ -69,17 +69,29 @@ def measured_assessment(root,rx,ry,prefix):
     save(case/"probe-h1-process.json",old)
 
 
-def aggregate(root,output):
+def aggregate(root,output,original_root=None):
     replay=read(ROOT/"docs/results/bracket-field-matched-cost-20261125.json")
     qoi=read(MANIFEST)["qoi"]
     rows=[]
     for rx,ry in RADII:
         folder=root/f"x{rx}-y{ry}"
-        row=dict(radii_ticks=[rx,ry],reference_status="pending",matched_trials=[])
+        source="initial_1800s"
+        if original_root is not None:
+            if (folder/"preparation.json").exists():source="continued_3600s_cumulative"
+            else:folder=original_root/f"x{rx}-y{ry}"
+        row=dict(radii_ticks=[rx,ry],reference_status="pending",matched_trials=[],reference_source=source)
         rows.append(row)
         if not (folder/"preparation.json").exists():continue
         prep=read(folder/"preparation.json")
         row.update(preparation=prep,reference_status="qualified" if prep["qualified"] else "unqualified")
+        if source=="continued_3600s_cumulative":
+            children=prep.get("solve",{}).get("passes",[])
+            bound=prep["continued_process"]["tree_peak_rss_kib"]+max(
+                (p["tree_peak_rss_kib"] for p in children if not p.get("reused")),default=0)
+            row["continuation_tree_rss_upper_bound_kib"]=bound
+            row["rss_accounting"]="sum of separately sampled parent-session and largest non-overlapping child-session peaks"
+            if bound>6*1024**2:
+                row["reference_status"]="unqualified"
         if not (folder/"field-process.json").exists():continue
         row["field_process"]=read(folder/"field-process.json")
         if row["field_process"]["status"]!="completed":continue
@@ -99,7 +111,7 @@ def aggregate(root,output):
                 m=metrics(method,trial)
                 dist=comp["levels"][-1]["distances"][FIELD_NAMES[method]+"__tetra_h09"]
                 tip=abs(m["tip_mm"]/new_tip-1);vm=abs(m["stress_mpa"]/new_vm-1)
-                within=(trial["qualified"] and prep["qualified"] and comp["recovered_energies"] and
+                within=(trial["qualified"] and row["reference_status"]=="qualified" and comp["recovered_energies"] and
                         comp["all_points_located_once"] and tip<=qoi["tip_relative_to_finest_tetra"]
                         and vm<=qoi["fillet_von_mises_relative_to_finest_tetra"] and
                         all(dist[k]["stable"] and dist[k]["mean"]<=v for k,v in (("energy",.03),("l2",.005))))
@@ -108,19 +120,19 @@ def aggregate(root,output):
     done=all(r["reference_status"]!="pending" and (r["reference_status"]=="unqualified" or
             "previous_probe_process" in r or r.get("field_process",{}).get("status") in
             ("timeout","rss_budget_exceeded","execution_error")) for r in rows)
-    save(output,dict(schema="bracket_finer_reference_v1",base_revision="4d5ae4c",qualified_reference_count=
+    save(output,dict(schema="bracket_finer_reference_extended_v1" if original_root else "bracket_finer_reference_v1",base_revision="40cfd98" if original_root else "4d5ae4c",qualified_reference_count=
          sum(r["reference_status"]=="qualified" for r in rows),matched_trials_qualified=sum(
          t["qualified"] for r in rows for t in r["matched_trials"]),mandatory_trials=24,finished=done,cases=rows))
 
 
 if __name__=="__main__":
     p=argparse.ArgumentParser(description=__doc__)
-    p.add_argument("mode",choices=["prepare","assess","lane","measured","aggregate"])
+    p.add_argument("mode",choices=["prepare","assess","lane","measured","aggregate","aggregate-extended"])
     p.add_argument("folder",type=Path);p.add_argument("prefix",type=Path)
     p.add_argument("radii",type=int,nargs="*")
     args=p.parse_args()
-    if args.mode=="aggregate":
-        aggregate(args.folder,args.prefix);sys.exit(0)
+    if args.mode in ("aggregate","aggregate-extended"):
+        aggregate(args.folder,args.prefix,ROOT/"build/j4j" if args.mode=="aggregate-extended" else None);sys.exit(0)
     if not args.radii:raise ValueError("expected radius pairs")
     if len(args.radii)%2:raise ValueError("expected radius pairs")
     for rx,ry in zip(args.radii[::2],args.radii[1::2]):

@@ -1,0 +1,667 @@
+{
+  "schema": "sector_chart_transition_oracle_v1",
+  "executable_sha256": "11e3108e40dd100f072b91a3627433dc9cbf0d2e7966988629d332a11a56a3aa",
+  "cases": [
+    {
+      "name": "cap_vector",
+      "job": {
+        "schema": "solidcraft_sector_analysis_job_v1",
+        "analysis_partition": "angular_halves",
+        "job": {
+          "schema": "solidcraft_mechanical_job_v1",
+          "order": 12,
+          "formulation": "displacement",
+          "material": {
+            "young_mpa": 1700,
+            "poisson": 0.27
+          },
+          "supports": [
+            {
+              "select": {
+                "feature": "angle_start"
+              },
+              "components": [
+                0,
+                1,
+                2
+              ]
+            }
+          ],
+          "loads": [
+            {
+              "select": {
+                "feature": "end"
+              },
+              "vector_mpa": [
+                0.13,
+                -0.2,
+                0.09
+              ]
+            }
+          ],
+          "plan": {
+            "schema": "adaptive_refinement_plan_v1",
+            "max_depth": 0,
+            "max_cells": 16,
+            "steps": []
+          }
+        }
+      },
+      "intervals": [
+        {
+          "left": {
+            "t": "12/5",
+            "assembly": {
+              "analysis_root_charts": 2,
+              "policy": "angular_halves",
+              "source_charts": 1
+            },
+            "cells": 2,
+            "dofs": 45,
+            "work": 0.13302693433401167,
+            "work_rate": 0.047861781107275785,
+            "adjoint_work_rate": 0.04786178110720072,
+            "volume": 452.7620047316247,
+            "reference_volume": 452.762004731627,
+            "source_partition_work": 0.11130891036721795
+          },
+          "right": {
+            "t": "17/7",
+            "assembly": {
+              "analysis_root_charts": 2,
+              "policy": "angular_halves",
+              "source_charts": 2
+            },
+            "cells": 2,
+            "dofs": 45,
+            "work": 0.13438119745231197,
+            "work_rate": 0.04693871886633209,
+            "adjoint_work_rate": 0.04693871886626393,
+            "volume": 454.3728739924238,
+            "reference_volume": 454.3728739924258,
+            "source_partition_work": 0.13438119745231197
+          },
+          "gap_t": 0.02857142857142857,
+          "extrapolated_work_gap_relative": 2.7569371658193994e-07,
+          "secant_work_rate_relative": 2.1958666746067037e-05,
+          "secant_field_rate_relative": 4.692506941613788e-05
+        },
+        {
+          "left": {
+            "t": "41/17",
+            "assembly": {
+              "analysis_root_charts": 2,
+              "policy": "angular_halves",
+              "source_charts": 1
+            },
+            "cells": 2,
+            "dofs": 45,
+            "work": 0.1335877673809593,
+            "work_rate": 0.04748018571822095,
+            "adjoint_work_rate": 0.04748018571815299,
+            "volume": 453.42924843099064,
+            "reference_volume": 453.4292484309912,
+            "source_partition_work": 0.11176868155974685
+          },
+          "right": {
+            "t": "29/12",
+            "assembly": {
+              "analysis_root_charts": 2,
+              "policy": "angular_halves",
+              "source_charts": 2
+            },
+            "cells": 2,
+            "dofs": 45,
+            "work": 0.13382012505986088,
+            "work_rate": 0.04732180855258312,
+            "adjoint_work_rate": 0.04732180855250751,
+            "volume": 453.7056302930618,
+            "reference_volume": 453.70563029306163,
+            "source_partition_work": 0.13382012505986088
+          },
+          "gap_t": 0.004901960784313725,
+          "extrapolated_work_gap_relative": 1.3925083006755897e-09,
+          "secant_work_rate_relative": 6.463888839315835e-07,
+          "secant_field_rate_relative": 1.381361608520514e-06
+        },
+        {
+          "left": {
+            "t": "70/29",
+            "assembly": {
+              "analysis_root_charts": 2,
+              "policy": "angular_halves",
+              "source_charts": 1
+            },
+            "cells": 2,
+            "dofs": 45,
+            "work": 0.1336840095523545,
+            "work_rate": 0.04741460575518683,
+            "adjoint_work_rate": 0.04741460575512965,
+            "volume": 453.54372954566435,
+            "reference_volume": 453.5437295456664,
+            "source_partition_work": 0.11184766373040941
+          },
+          "right": {
+            "t": "99/41",
+            "assembly": {
+              "analysis_root_charts": 2,
+              "policy": "angular_halves",
+              "source_charts": 2
+            },
+            "cells": 2,
+            "dofs": 45,
+            "work": 0.1337238758418678,
+            "work_rate": 0.04738743250562165,
+            "adjoint_work_rate": 0.04738743250553816,
+            "volume": 453.59114917838434,
+            "reference_volume": 453.59114917838633,
+            "source_partition_work": 0.1337238758418678
+          },
+          "gap_t": 0.0008410428931875525,
+          "extrapolated_work_gap_relative": 7.0509952283913874e-12,
+          "secant_work_rate_relative": 1.8967703517222682e-08,
+          "secant_field_rate_relative": 4.078798260992735e-08
+        },
+        {
+          "left": {
+            "t": "239/99",
+            "assembly": {
+              "analysis_root_charts": 2,
+              "policy": "angular_halves",
+              "source_charts": 1
+            },
+            "cells": 2,
+            "dofs": 45,
+            "work": 0.1337005226064002,
+            "work_rate": 0.04740335087424137,
+            "adjoint_work_rate": 0.047403350874191175,
+            "volume": 453.56337140065364,
+            "reference_volume": 453.56337140065676,
+            "source_partition_work": 0.11186121780330857
+          },
+          "right": {
+            "t": "169/70",
+            "assembly": {
+              "analysis_root_charts": 2,
+              "policy": "angular_halves",
+              "source_charts": 2
+            },
+            "cells": 2,
+            "dofs": 45,
+            "work": 0.13370736258039118,
+            "work_rate": 0.04739868868161072,
+            "adjoint_work_rate": 0.04739868868156525,
+            "volume": 453.57150732339306,
+            "reference_volume": 453.57150732339596,
+            "source_partition_work": 0.13370736258039118
+          },
+          "gap_t": 0.0001443001443001443,
+          "extrapolated_work_gap_relative": 4.214073076136697e-14,
+          "secant_work_rate_relative": 4.31147241126726e-10,
+          "secant_field_rate_relative": 1.1264744715449431e-08
+        }
+      ],
+      "checks": {
+        "extrapolated_work": true,
+        "work_rate": true,
+        "field_rate": true,
+        "charts": true,
+        "adjoint": true,
+        "analytic_volume": true,
+        "scalar_dimension": true
+      },
+      "passed": true
+    },
+    {
+      "name": "inner_pressure",
+      "job": {
+        "schema": "solidcraft_sector_analysis_job_v1",
+        "analysis_partition": "angular_halves",
+        "job": {
+          "schema": "solidcraft_mechanical_job_v1",
+          "order": 12,
+          "formulation": "displacement",
+          "material": {
+            "young_mpa": 1700,
+            "poisson": 0.27
+          },
+          "supports": [
+            {
+              "select": {
+                "feature": "angle_start"
+              },
+              "components": [
+                0,
+                1,
+                2
+              ]
+            }
+          ],
+          "loads": [
+            {
+              "select": {
+                "feature": "inner"
+              },
+              "pressure_mpa": 0.3
+            }
+          ],
+          "plan": {
+            "schema": "adaptive_refinement_plan_v1",
+            "max_depth": 0,
+            "max_cells": 16,
+            "steps": []
+          }
+        }
+      },
+      "intervals": [
+        {
+          "left": {
+            "t": "12/5",
+            "assembly": {
+              "analysis_root_charts": 2,
+              "policy": "angular_halves",
+              "source_charts": 1
+            },
+            "cells": 2,
+            "dofs": 45,
+            "work": 0.06764531545466655,
+            "work_rate": 0.013067261974971189,
+            "adjoint_work_rate": 0.013067261975088782,
+            "volume": 452.7620047316247,
+            "reference_volume": 452.762004731627,
+            "source_partition_work": 0.0530830463600956
+          },
+          "right": {
+            "t": "17/7",
+            "assembly": {
+              "analysis_root_charts": 2,
+              "policy": "angular_halves",
+              "source_charts": 2
+            },
+            "cells": 2,
+            "dofs": 45,
+            "work": 0.06801094810891947,
+            "work_rate": 0.012530188343518928,
+            "adjoint_work_rate": 0.012530188343646456,
+            "volume": 454.3728739924238,
+            "reference_volume": 454.3728739924258,
+            "source_partition_work": 0.06801094810891947
+          },
+          "gap_t": 0.02857142857142857,
+          "extrapolated_work_gap_relative": 9.5185763481227e-08,
+          "secant_work_rate_relative": 0.00012362640600210195,
+          "secant_field_rate_relative": 9.653635559119187e-05
+        },
+        {
+          "left": {
+            "t": "41/17",
+            "assembly": {
+              "analysis_root_charts": 2,
+              "policy": "angular_halves",
+              "source_charts": 1
+            },
+            "cells": 2,
+            "dofs": 45,
+            "work": 0.0677977303632002,
+            "work_rate": 0.012843812870788422,
+            "adjoint_work_rate": 0.012843812870865822,
+            "volume": 453.42924843099064,
+            "reference_volume": 453.4292484309912,
+            "source_partition_work": 0.05320642986311238
+          },
+          "right": {
+            "t": "29/12",
+            "assembly": {
+              "analysis_root_charts": 2,
+              "policy": "angular_halves",
+              "source_charts": 2
+            },
+            "cells": 2,
+            "dofs": 45,
+            "work": 0.06786046414465348,
+            "work_rate": 0.012751663121826153,
+            "adjoint_work_rate": 0.012751663121833068,
+            "volume": 453.7056302930618,
+            "reference_volume": 453.70563029306163,
+            "source_partition_work": 0.06786046414465348
+          },
+          "gap_t": 0.004901960784313725,
+          "extrapolated_work_gap_relative": 4.808487358222705e-10,
+          "secant_work_rate_relative": 3.639693179962208e-06,
+          "secant_field_rate_relative": 2.8420715616431965e-06
+        },
+        {
+          "left": {
+            "t": "70/29",
+            "assembly": {
+              "analysis_root_charts": 2,
+              "policy": "angular_halves",
+              "source_charts": 1
+            },
+            "cells": 2,
+            "dofs": 45,
+            "work": 0.06782374396465979,
+            "work_rate": 0.012805614140903187,
+            "adjoint_work_rate": 0.012805614140966736,
+            "volume": 453.54372954566435,
+            "reference_volume": 453.5437295456664,
+            "source_partition_work": 0.05322754780702736
+          },
+          "right": {
+            "t": "99/41",
+            "assembly": {
+              "analysis_root_charts": 2,
+              "policy": "angular_halves",
+              "source_charts": 2
+            },
+            "cells": 2,
+            "dofs": 45,
+            "work": 0.06783450738564158,
+            "work_rate": 0.012789803730978622,
+            "adjoint_work_rate": 0.012789803730991969,
+            "volume": 453.59114917838434,
+            "reference_volume": 453.59114917838633,
+            "source_partition_work": 0.06783450738564158
+          },
+          "gap_t": 0.0008410428931875525,
+          "extrapolated_work_gap_relative": 2.644649724472822e-12,
+          "secant_work_rate_relative": 1.0850339728805052e-07,
+          "secant_field_rate_relative": 1.134103104866876e-07
+        },
+        {
+          "left": {
+            "t": "239/99",
+            "assembly": {
+              "analysis_root_charts": 2,
+              "policy": "angular_halves",
+              "source_charts": 1
+            },
+            "cells": 2,
+            "dofs": 45,
+            "work": 0.06782820315624057,
+            "work_rate": 0.012799064399307142,
+            "adjoint_work_rate": 0.012799064399302607,
+            "volume": 453.56337140065364,
+            "reference_volume": 453.56337140065676,
+            "source_partition_work": 0.05323116955836392
+          },
+          "right": {
+            "t": "169/70",
+            "assembly": {
+              "analysis_root_charts": 2,
+              "policy": "angular_halves",
+              "source_charts": 2
+            },
+            "cells": 2,
+            "dofs": 45,
+            "work": 0.06783004986736574,
+            "work_rate": 0.012796351761780659,
+            "adjoint_work_rate": 0.012796351761871634,
+            "volume": 453.57150732339306,
+            "reference_volume": 453.57150732339596,
+            "source_partition_work": 0.06783004986736574
+          },
+          "gap_t": 0.0001443001443001443,
+          "extrapolated_work_gap_relative": 1.096651931017558e-13,
+          "secant_work_rate_relative": 1.3206296432420249e-09,
+          "secant_field_rate_relative": 1.1661594813576891e-08
+        }
+      ],
+      "checks": {
+        "extrapolated_work": true,
+        "work_rate": true,
+        "field_rate": true,
+        "charts": true,
+        "adjoint": true,
+        "analytic_volume": true,
+        "scalar_dimension": true
+      },
+      "passed": true
+    },
+    {
+      "name": "local_cap_vector",
+      "job": {
+        "schema": "solidcraft_sector_analysis_job_v1",
+        "analysis_partition": "angular_halves",
+        "job": {
+          "schema": "solidcraft_mechanical_job_v1",
+          "order": 12,
+          "formulation": "displacement",
+          "material": {
+            "young_mpa": 1700,
+            "poisson": 0.27
+          },
+          "supports": [
+            {
+              "select": {
+                "feature": "angle_start"
+              },
+              "components": [
+                0,
+                1,
+                2
+              ]
+            }
+          ],
+          "loads": [
+            {
+              "select": {
+                "feature": "end"
+              },
+              "vector_mpa": [
+                0.13,
+                -0.2,
+                0.09
+              ]
+            }
+          ],
+          "plan": {
+            "schema": "adaptive_refinement_plan_v1",
+            "max_depth": 2,
+            "max_cells": 64,
+            "steps": [
+              {
+                "refine": [
+                  {
+                    "root": "first",
+                    "level": 0,
+                    "index": [
+                      0,
+                      0,
+                      0
+                    ]
+                  }
+                ]
+              },
+              {
+                "refine": [
+                  {
+                    "root": "first",
+                    "level": 1,
+                    "index": [
+                      0,
+                      0,
+                      0
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      },
+      "intervals": [
+        {
+          "left": {
+            "t": "12/5",
+            "assembly": {
+              "analysis_root_charts": 2,
+              "policy": "angular_halves",
+              "source_charts": 1
+            },
+            "cells": 16,
+            "dofs": 258,
+            "work": 0.16119398142715416,
+            "work_rate": 0.07465754959278459,
+            "adjoint_work_rate": 0.07465754959266735,
+            "volume": 452.7620047316211,
+            "reference_volume": 452.762004731627
+          },
+          "right": {
+            "t": "17/7",
+            "assembly": {
+              "analysis_root_charts": 2,
+              "policy": "angular_halves",
+              "source_charts": 2
+            },
+            "cells": 16,
+            "dofs": 258,
+            "work": 0.16331285978172974,
+            "work_rate": 0.07366212315758294,
+            "adjoint_work_rate": 0.07366212315748533,
+            "volume": 454.372873992422,
+            "reference_volume": 454.3728739924258,
+            "source_partition_work": 0.16331285978172974
+          },
+          "gap_t": 0.02857142857142857,
+          "extrapolated_work_gap_relative": 6.021913370403562e-07,
+          "secant_work_rate_relative": 1.2217326869685644e-05,
+          "secant_field_rate_relative": 4.362086630805721e-05
+        },
+        {
+          "left": {
+            "t": "41/17",
+            "assembly": {
+              "analysis_root_charts": 2,
+              "policy": "angular_halves",
+              "source_charts": 1
+            },
+            "cells": 16,
+            "dofs": 258,
+            "work": 0.1620699041212725,
+            "work_rate": 0.07424898972475286,
+            "adjoint_work_rate": 0.07424898972461011,
+            "volume": 453.429248430993,
+            "reference_volume": 453.4292484309912
+          },
+          "right": {
+            "t": "29/12",
+            "assembly": {
+              "analysis_root_charts": 2,
+              "policy": "angular_halves",
+              "source_charts": 2
+            },
+            "cells": 16,
+            "dofs": 258,
+            "work": 0.16243345128767964,
+            "work_rate": 0.07407820081690443,
+            "adjoint_work_rate": 0.07407820081677162,
+            "volume": 453.70563029306163,
+            "reference_volume": 453.70563029306163,
+            "source_partition_work": 0.16243345128767964
+          },
+          "gap_t": 0.004901960784313725,
+          "extrapolated_work_gap_relative": 3.041598560212186e-09,
+          "secant_work_rate_relative": 3.596943455848659e-07,
+          "secant_field_rate_relative": 1.2840490946828819e-06
+        },
+        {
+          "left": {
+            "t": "70/29",
+            "assembly": {
+              "analysis_root_charts": 2,
+              "policy": "angular_halves",
+              "source_charts": 1
+            },
+            "cells": 16,
+            "dofs": 258,
+            "work": 0.1622204389653034,
+            "work_rate": 0.07417835730076995,
+            "adjoint_work_rate": 0.07417835730067543,
+            "volume": 453.5437295456711,
+            "reference_volume": 453.5437295456664
+          },
+          "right": {
+            "t": "99/41",
+            "assembly": {
+              "analysis_root_charts": 2,
+              "policy": "angular_halves",
+              "source_charts": 2
+            },
+            "cells": 16,
+            "dofs": 258,
+            "work": 0.16228281382376736,
+            "work_rate": 0.07414905455307422,
+            "adjoint_work_rate": 0.0741490545529556,
+            "volume": 453.59114917838554,
+            "reference_volume": 453.59114917838633,
+            "source_partition_work": 0.16228281382376736
+          },
+          "gap_t": 0.0008410428931875525,
+          "extrapolated_work_gap_relative": 1.5369506480559547e-11,
+          "secant_work_rate_relative": 1.0608138184416356e-08,
+          "secant_field_rate_relative": 3.7728575839066424e-08
+        },
+        {
+          "left": {
+            "t": "239/99",
+            "assembly": {
+              "analysis_root_charts": 2,
+              "policy": "angular_halves",
+              "source_charts": 1
+            },
+            "cells": 16,
+            "dofs": 258,
+            "work": 0.1622462739671403,
+            "work_rate": 0.07416622296269709,
+            "adjoint_work_rate": 0.07416622296260567,
+            "volume": 453.56337140065665,
+            "reference_volume": 453.56337140065676
+          },
+          "right": {
+            "t": "169/70",
+            "assembly": {
+              "analysis_root_charts": 2,
+              "policy": "angular_halves",
+              "source_charts": 2
+            },
+            "cells": 16,
+            "dofs": 258,
+            "work": 0.16225697580108042,
+            "work_rate": 0.07416119540597534,
+            "adjoint_work_rate": 0.07416119540584774,
+            "volume": 453.57150732338704,
+            "reference_volume": 453.57150732339596,
+            "source_partition_work": 0.16225697580108042
+          },
+          "gap_t": 0.0001443001443001443,
+          "extrapolated_work_gap_relative": 7.543966879746359e-14,
+          "secant_work_rate_relative": 2.784202332868405e-10,
+          "secant_field_rate_relative": 2.585536802205594e-09
+        }
+      ],
+      "checks": {
+        "extrapolated_work": true,
+        "work_rate": true,
+        "field_rate": true,
+        "charts": true,
+        "adjoint": true,
+        "analytic_volume": true
+      },
+      "passed": true
+    }
+  ],
+  "refusals": [
+    {
+      "id": "wrong_family",
+      "diagnostic": "{\"reason\":\"fixed angular partition requires a rational sector\",\"status\":\"error\"}",
+      "passed": true
+    },
+    {
+      "id": "unknown_policy",
+      "diagnostic": "{\"reason\":\"unsupported sector analysis partition\",\"status\":\"error\"}",
+      "passed": true
+    }
+  ],
+  "qualified": true
+}

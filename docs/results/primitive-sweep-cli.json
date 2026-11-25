@@ -1,0 +1,273 @@
+{
+  "schema": "primitive_sweep_cli_checks_v1",
+  "cli_sha256": "edc389c28b66c55f76680be4095cf13fa29659482bd976609a12a47a53728c31",
+  "cases": [
+    {
+      "recipe": {
+        "family": "primitive_sweep_v1",
+        "primitive": {
+          "kind": "rectangle",
+          "min": [
+            [
+              3,
+              1
+            ],
+            [
+              -1,
+              1
+            ]
+          ],
+          "max": [
+            [
+              7,
+              1
+            ],
+            [
+              1,
+              1
+            ]
+          ]
+        },
+        "operation": {
+          "kind": "extrude",
+          "length_mm": 3
+        }
+      },
+      "blocks": 1,
+      "audit": {
+        "blocks": 1,
+        "cavities": 0,
+        "determinant_lower_bound_mm3": 23.999999999999716,
+        "exterior_sides": 6,
+        "hausdorff_error_upper_bound_mm": 0,
+        "method": "native_primitive_sweep_template",
+        "shared_faces": 0,
+        "status": "valid",
+        "through_bores": 0
+      },
+      "step_bytes": 14345,
+      "space_schema": "solidcraft_nurbs_h1_space_v1",
+      "scalar_dofs": 8
+    },
+    {
+      "recipe": {
+        "family": "primitive_sweep_v1",
+        "primitive": {
+          "kind": "rectangle",
+          "min": [
+            [
+              3,
+              1
+            ],
+            [
+              -1,
+              1
+            ]
+          ],
+          "max": [
+            [
+              7,
+              1
+            ],
+            [
+              1,
+              1
+            ]
+          ]
+        },
+        "operation": {
+          "kind": "revolve"
+        }
+      },
+      "blocks": 4,
+      "audit": {
+        "blocks": 4,
+        "cavities": 0,
+        "determinant_lower_bound_mm3": 2.9999999999999654,
+        "exterior_sides": 16,
+        "hausdorff_error_upper_bound_mm": 0,
+        "method": "native_primitive_sweep_template",
+        "shared_faces": 4,
+        "status": "valid",
+        "through_bores": 1
+      },
+      "step_bytes": 39882,
+      "space_schema": "solidcraft_nurbs_h1_space_v1",
+      "scalar_dofs": 72
+    },
+    {
+      "recipe": {
+        "family": "primitive_sweep_v1",
+        "primitive": {
+          "kind": "circle",
+          "center": [
+            [
+              5,
+              1
+            ],
+            [
+              0,
+              1
+            ]
+          ],
+          "radius": [
+            1,
+            1
+          ]
+        },
+        "operation": {
+          "kind": "extrude",
+          "length_mm": 3
+        }
+      },
+      "blocks": 5,
+      "audit": {
+        "blocks": 5,
+        "cavities": 0,
+        "determinant_lower_bound_mm3": 0.0468749999999992,
+        "exterior_sides": 14,
+        "hausdorff_error_upper_bound_mm": 0,
+        "method": "native_primitive_sweep_template",
+        "shared_faces": 8,
+        "status": "valid",
+        "through_bores": 0
+      },
+      "step_bytes": 35526,
+      "space_schema": "solidcraft_nurbs_h1_space_v1",
+      "scalar_dofs": 75
+    },
+    {
+      "recipe": {
+        "family": "primitive_sweep_v1",
+        "primitive": {
+          "kind": "circle",
+          "center": [
+            [
+              5,
+              1
+            ],
+            [
+              0,
+              1
+            ]
+          ],
+          "radius": [
+            1,
+            1
+          ]
+        },
+        "operation": {
+          "kind": "revolve"
+        }
+      },
+      "blocks": 20,
+      "audit": {
+        "blocks": 20,
+        "cavities": 0,
+        "determinant_lower_bound_mm3": 0.008789062499999844,
+        "exterior_sides": 16,
+        "hausdorff_error_upper_bound_mm": 0,
+        "method": "native_primitive_sweep_template",
+        "shared_faces": 52,
+        "status": "valid",
+        "through_bores": 1
+      },
+      "step_bytes": 45092,
+      "space_schema": "solidcraft_nurbs_h1_space_v1",
+      "scalar_dofs": 200
+    },
+    {
+      "recipe": {
+        "family": "primitive_sweep_v1",
+        "primitive": {
+          "kind": "ellipse",
+          "center": [
+            [
+              5,
+              1
+            ],
+            [
+              0,
+              1
+            ]
+          ],
+          "radii": [
+            [
+              2,
+              1
+            ],
+            [
+              1,
+              1
+            ]
+          ]
+        },
+        "operation": {
+          "kind": "extrude",
+          "length_mm": 3
+        }
+      },
+      "blocks": 5,
+      "audit": {
+        "blocks": 5,
+        "cavities": 0,
+        "determinant_lower_bound_mm3": 0.09374999999999872,
+        "exterior_sides": 14,
+        "hausdorff_error_upper_bound_mm": 0,
+        "method": "native_primitive_sweep_template",
+        "shared_faces": 8,
+        "status": "valid",
+        "through_bores": 0
+      },
+      "step_bytes": 35526,
+      "space_schema": "solidcraft_nurbs_h1_space_v1",
+      "scalar_dofs": 75
+    },
+    {
+      "recipe": {
+        "family": "primitive_sweep_v1",
+        "primitive": {
+          "kind": "ellipse",
+          "center": [
+            [
+              5,
+              1
+            ],
+            [
+              0,
+              1
+            ]
+          ],
+          "radii": [
+            [
+              2,
+              1
+            ],
+            [
+              1,
+              1
+            ]
+          ]
+        },
+        "operation": {
+          "kind": "revolve"
+        }
+      },
+      "blocks": 20,
+      "audit": {
+        "blocks": 20,
+        "cavities": 0,
+        "determinant_lower_bound_mm3": 0.01562499999999983,
+        "exterior_sides": 16,
+        "hausdorff_error_upper_bound_mm": 0,
+        "method": "native_primitive_sweep_template",
+        "shared_faces": 52,
+        "status": "valid",
+        "through_bores": 1
+      },
+      "step_bytes": 45092,
+      "space_schema": "solidcraft_nurbs_h1_space_v1",
+      "scalar_dofs": 200
+    }
+  ]
+}

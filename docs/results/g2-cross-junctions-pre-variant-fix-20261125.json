@@ -1,0 +1,3101 @@
+{
+  "c0_iga": {
+    "artifacts": {
+      "model": "build/g2-cross-junctions-final2/cross.model.json",
+      "q3_package": "build/g2-cross-junctions-final2/cross.space.json"
+    },
+    "build_audit": {
+      "blocks": 32,
+      "cavities": 0,
+      "determinant_lower_bound_mm3": 5.729862499996598,
+      "exterior_sides": 100,
+      "hausdorff_error_upper_bound_mm": 0,
+      "method": "periodic_cubic_transverse_bore_partition",
+      "shared_faces": 46,
+      "status": "valid",
+      "through_bores": 2
+    },
+    "cli": "/home/jeff/Code/SolidCraftTrivariate/build/g2-s2-cli",
+    "cli_sha256": "ef61bbdeab9907c75b0dc028a46f2a321968537c96b13d5208e07d56f15422df",
+    "constant_stress_equilibrium_orders": [
+      {
+        "exterior_faces": 100,
+        "order": 4,
+        "relative_residual_linf": 0.0019745360627635294,
+        "residual_linf": 0.7748449556787653,
+        "traction_resultant": [
+          1.199040866595169e-12,
+          -4.3454129183828627e-13,
+          1.7465140444983263e-11
+        ],
+        "traction_term_linf": 392.3961298231118,
+        "volume_resultant": [
+          3.5296210398882977e-12,
+          1.9340085088970227e-13,
+          6.828315690654563e-12
+        ],
+        "volume_term_linf": 392.4187409341638
+      },
+      {
+        "exterior_faces": 100,
+        "order": 8,
+        "relative_residual_linf": 2.8017524408966047e-07,
+        "residual_linf": 0.00011100485293091822,
+        "traction_resultant": [
+          1.687538997430238e-14,
+          -2.928768338961163e-13,
+          -1.2512657576735364e-11
+        ],
+        "traction_term_linf": 396.19793154937213,
+        "volume_resultant": [
+          1.3367085216486885e-12,
+          -1.4783729795908584e-12,
+          2.0598633909685304e-11
+        ],
+        "volume_term_linf": 396.197934230745
+      },
+      {
+        "exterior_faces": 100,
+        "order": 16,
+        "relative_residual_linf": 2.8694312516310862e-15,
+        "residual_linf": 1.1368683772161603e-12,
+        "traction_resultant": [
+          7.815970093361102e-13,
+          -1.91402449445377e-13,
+          2.8350655156827997e-12
+        ],
+        "traction_term_linf": 396.19990078867477,
+        "volume_resultant": [
+          1.5543122344752192e-12,
+          3.609335053056384e-12,
+          1.8616219676914625e-12
+        ],
+        "volume_term_linf": 396.19990078867517
+      }
+    ],
+    "constructed_wall_one_sided_jets": {
+      "all_constructed_profile_joins_g2": true,
+      "face_patch_count": 12,
+      "junction_count": 12,
+      "junctions": [
+        {
+          "after_sector": 0,
+          "before_sector": 1,
+          "classification": "G2",
+          "curvature_vector_jump_per_mm": 0.0,
+          "extruded_surface_normal_jump": 0.0,
+          "kind": "source_periodic_knot",
+          "oriented_unit_tangent_jump": 0.0,
+          "position_jump_mm": 0.0,
+          "source_parameter": 0.9999999999999956
+        },
+        {
+          "after_sector": 1,
+          "before_sector": 2,
+          "classification": "G2",
+          "curvature_vector_jump_per_mm": 0.0,
+          "extruded_surface_normal_jump": 0.0,
+          "kind": "source_periodic_knot",
+          "oriented_unit_tangent_jump": 0.0,
+          "position_jump_mm": 0.0,
+          "source_parameter": 1.9999999999999956
+        },
+        {
+          "after_sector": 2,
+          "before_sector": 3,
+          "classification": "G2",
+          "curvature_vector_jump_per_mm": 0.0,
+          "extruded_surface_normal_jump": 0.0,
+          "kind": "rectangle_intersection_cut",
+          "oriented_unit_tangent_jump": 0.0,
+          "position_jump_mm": 0.0,
+          "source_parameter": 2.499999999999999
+        },
+        {
+          "after_sector": 3,
+          "before_sector": 4,
+          "classification": "G2",
+          "curvature_vector_jump_per_mm": 0.0,
+          "extruded_surface_normal_jump": 0.0,
+          "kind": "source_periodic_knot",
+          "oriented_unit_tangent_jump": 0.0,
+          "position_jump_mm": 0.0,
+          "source_parameter": 2.9999999999999956
+        },
+        {
+          "after_sector": 4,
+          "before_sector": 5,
+          "classification": "G2",
+          "curvature_vector_jump_per_mm": 0.0,
+          "extruded_surface_normal_jump": 0.0,
+          "kind": "rectangle_intersection_cut",
+          "oriented_unit_tangent_jump": 0.0,
+          "position_jump_mm": 0.0,
+          "source_parameter": 3.5
+        },
+        {
+          "after_sector": 5,
+          "before_sector": 6,
+          "classification": "G2",
+          "curvature_vector_jump_per_mm": 0.0,
+          "extruded_surface_normal_jump": 0.0,
+          "kind": "source_periodic_knot",
+          "oriented_unit_tangent_jump": 0.0,
+          "position_jump_mm": 0.0,
+          "source_parameter": 3.9999999999999956
+        },
+        {
+          "after_sector": 6,
+          "before_sector": 7,
+          "classification": "G2",
+          "curvature_vector_jump_per_mm": 0.0,
+          "extruded_surface_normal_jump": 0.0,
+          "kind": "source_periodic_knot",
+          "oriented_unit_tangent_jump": 0.0,
+          "position_jump_mm": 0.0,
+          "source_parameter": 4.999999999999996
+        },
+        {
+          "after_sector": 7,
+          "before_sector": 8,
+          "classification": "G2",
+          "curvature_vector_jump_per_mm": 0.0,
+          "extruded_surface_normal_jump": 0.0,
+          "kind": "source_periodic_knot",
+          "oriented_unit_tangent_jump": 0.0,
+          "position_jump_mm": 0.0,
+          "source_parameter": 5.999999999999996
+        },
+        {
+          "after_sector": 8,
+          "before_sector": 9,
+          "classification": "G2",
+          "curvature_vector_jump_per_mm": 0.0,
+          "extruded_surface_normal_jump": 0.0,
+          "kind": "rectangle_intersection_cut",
+          "oriented_unit_tangent_jump": 0.0,
+          "position_jump_mm": 0.0,
+          "source_parameter": 6.500000000000001
+        },
+        {
+          "after_sector": 9,
+          "before_sector": 10,
+          "classification": "G2",
+          "curvature_vector_jump_per_mm": 0.0,
+          "extruded_surface_normal_jump": 0.0,
+          "kind": "source_periodic_knot",
+          "oriented_unit_tangent_jump": 0.0,
+          "position_jump_mm": 0.0,
+          "source_parameter": 6.999999999999996
+        },
+        {
+          "after_sector": 10,
+          "before_sector": 11,
+          "classification": "G2",
+          "curvature_vector_jump_per_mm": 0.0,
+          "extruded_surface_normal_jump": 0.0,
+          "kind": "rectangle_intersection_cut",
+          "oriented_unit_tangent_jump": 0.0,
+          "position_jump_mm": 0.0,
+          "source_parameter": 7.499999999999999
+        },
+        {
+          "after_sector": 11,
+          "before_sector": 0,
+          "classification": "G2",
+          "curvature_vector_jump_per_mm": 0.0,
+          "extruded_surface_normal_jump": 0.0,
+          "kind": "source_periodic_knot",
+          "oriented_unit_tangent_jump": 0.0,
+          "position_jump_mm": 0.0,
+          "source_parameter": 7.999999999999996
+        }
+      ],
+      "maximum_span_sample_error_mm": 7.184918763469982e-14,
+      "pieces": [
+        {
+          "max_sample_error_mm": 4.322062729257126e-14,
+          "parameter_interval": [
+            4.514000584921713e-15,
+            0.9999999999999956
+          ],
+          "piece": 0,
+          "sector": 0,
+          "source_span": 0
+        },
+        {
+          "max_sample_error_mm": 4.322062729257126e-14,
+          "parameter_interval": [
+            1.0000000000000044,
+            1.9999999999999956
+          ],
+          "piece": 0,
+          "sector": 1,
+          "source_span": 1
+        },
+        {
+          "max_sample_error_mm": 2.5618982671915014e-14,
+          "parameter_interval": [
+            2.0000000000000044,
+            2.499999999999999
+          ],
+          "piece": 0,
+          "sector": 2,
+          "source_span": 2
+        },
+        {
+          "max_sample_error_mm": 4.973799150320701e-14,
+          "parameter_interval": [
+            2.499999999999999,
+            2.9999999999999956
+          ],
+          "piece": 0,
+          "sector": 3,
+          "source_span": 2
+        },
+        {
+          "max_sample_error_mm": 4.973799150320701e-14,
+          "parameter_interval": [
+            3.0000000000000044,
+            3.5
+          ],
+          "piece": 0,
+          "sector": 4,
+          "source_span": 3
+        },
+        {
+          "max_sample_error_mm": 1.7763568394002505e-14,
+          "parameter_interval": [
+            3.5,
+            3.9999999999999956
+          ],
+          "piece": 0,
+          "sector": 5,
+          "source_span": 3
+        },
+        {
+          "max_sample_error_mm": 4.2780337774645346e-14,
+          "parameter_interval": [
+            4.000000000000004,
+            4.999999999999996
+          ],
+          "piece": 0,
+          "sector": 6,
+          "source_span": 4
+        },
+        {
+          "max_sample_error_mm": 7.184918763469982e-14,
+          "parameter_interval": [
+            5.000000000000004,
+            5.999999999999996
+          ],
+          "piece": 0,
+          "sector": 7,
+          "source_span": 5
+        },
+        {
+          "max_sample_error_mm": 3.03543989777123e-14,
+          "parameter_interval": [
+            6.000000000000004,
+            6.500000000000001
+          ],
+          "piece": 0,
+          "sector": 8,
+          "source_span": 6
+        },
+        {
+          "max_sample_error_mm": 4.973799150320701e-14,
+          "parameter_interval": [
+            6.500000000000001,
+            6.999999999999996
+          ],
+          "piece": 0,
+          "sector": 9,
+          "source_span": 6
+        },
+        {
+          "max_sample_error_mm": 4.973799150320701e-14,
+          "parameter_interval": [
+            7.000000000000004,
+            7.499999999999999
+          ],
+          "piece": 0,
+          "sector": 10,
+          "source_span": 7
+        },
+        {
+          "max_sample_error_mm": 4.322062729257126e-14,
+          "parameter_interval": [
+            7.499999999999999,
+            7.999999999999996
+          ],
+          "piece": 0,
+          "sector": 11,
+          "source_span": 7
+        }
+      ],
+      "source_position_tangent_curvature_thresholds": {
+        "curvature_mm_inverse": 1e-09,
+        "position_mm": 1e-09,
+        "unit_tangent": 1e-09
+      }
+    },
+    "design_face_feature_counts": {
+      "nurbs_z_hole/wall": 32,
+      "rect_x/intersection_spoke": 4,
+      "rect_x/zmax": 4,
+      "rect_x/zmin": 4,
+      "stock/xmax": 10,
+      "stock/xmin": 10,
+      "stock/ymax": 6,
+      "stock/ymin": 6,
+      "stock/zmax": 12,
+      "stock/zmin": 12
+    },
+    "exact_c0_trace_and_affine_checks": {
+      "affine_value_and_gradient_checks": 2048,
+      "elevated_blocks": 32,
+      "exact_elevated_control_checks": 2048,
+      "exact_trace_dof_nodes": 736,
+      "scalar_ndof": 1360,
+      "shared_interfaces": 46,
+      "source_blocks": 32,
+      "source_trace_map_samples": 736,
+      "source_vs_package_map_samples": 2048,
+      "target_tensor_degree": 3
+    },
+    "periodic_wall_vs_source_curve": {
+      "max_xy_source_curve_distance_mm": 3.019806626980426e-13,
+      "sample_count": 512,
+      "source_parameterization": "periodic B-spline from raw recipe controls",
+      "status": "verified",
+      "threshold_mm": 1e-10
+    },
+    "q16_relative_linf_threshold": 1e-08,
+    "source_recipe_preserved": true,
+    "space_export": {
+      "scalar_ndof": 1360,
+      "status": "exported"
+    },
+    "status": "verified"
+  },
+  "exact_intersection_witnesses": [
+    {
+      "exact_source_point_xy_mm": [
+        "2393/36",
+        "719/36"
+      ],
+      "parameter": "7/2",
+      "y_matches_rectangle_level_exactly": true,
+      "y_mm": "719/36"
+    },
+    {
+      "exact_source_point_xy_mm": [
+        "3007/36",
+        "719/36"
+      ],
+      "parameter": "13/2",
+      "y_matches_rectangle_level_exactly": true,
+      "y_mm": "719/36"
+    },
+    {
+      "exact_source_point_xy_mm": [
+        "2393/36",
+        "1081/36"
+      ],
+      "parameter": "5/2",
+      "y_matches_rectangle_level_exactly": true,
+      "y_mm": "1081/36"
+    },
+    {
+      "exact_source_point_xy_mm": [
+        "3007/36",
+        "1081/36"
+      ],
+      "parameter": "15/2",
+      "y_matches_rectangle_level_exactly": true,
+      "y_mm": "1081/36"
+    }
+  ],
+  "exploratory_levels": {
+    "20": {
+      "classification": "refused_exact_rational_parameter_domain_intersection_exists",
+      "interpretation": "The level set crosses the source profile transversely in real parameters; refusal denotes the exact rational-parameter representation limit, not absence of a geometric intersection. A B-rep approximation can represent this geometry approximately.",
+      "no_rational_root_in_each_candidate_span": true,
+      "polynomial_by_root_span": [
+        {
+          "has_rational_root": false,
+          "integer_coefficients_c0_to_c3": [
+            20,
+            -48,
+            15,
+            1
+          ],
+          "local_parameter_numeric": 0.49613168514116435,
+          "rational_root_theorem_candidates_checked": 12,
+          "rational_roots": [],
+          "root_parameter_numeric": 3.4961316851411643,
+          "span": [
+            3,
+            4
+          ]
+        },
+        {
+          "has_rational_root": false,
+          "integer_coefficients_c0_to_c3": [
+            12,
+            -15,
+            -18,
+            1
+          ],
+          "local_parameter_numeric": 0.5038683148588348,
+          "rational_root_theorem_candidates_checked": 12,
+          "rational_roots": [],
+          "root_parameter_numeric": 6.503868314858835,
+          "span": [
+            6,
+            7
+          ]
+        }
+      ],
+      "rational_root_theorem": "all signed divisors of the constant term checked against reduced integer span polynomial",
+      "roots_numeric": [
+        3.4961316851411643,
+        6.503868314858835
+      ],
+      "transverse_level_crossings": true
+    },
+    "30": {
+      "classification": "refused_exact_rational_parameter_domain_intersection_exists",
+      "interpretation": "The level set crosses the source profile transversely in real parameters; refusal denotes the exact rational-parameter representation limit, not absence of a geometric intersection. A B-rep approximation can represent this geometry approximately.",
+      "no_rational_root_in_each_candidate_span": true,
+      "polynomial_by_root_span": [
+        {
+          "has_rational_root": false,
+          "integer_coefficients_c0_to_c3": [
+            12,
+            -15,
+            -18,
+            1
+          ],
+          "local_parameter_numeric": 0.5038683148588348,
+          "rational_root_theorem_candidates_checked": 12,
+          "rational_roots": [],
+          "root_parameter_numeric": 2.5038683148588348,
+          "span": [
+            2,
+            3
+          ]
+        },
+        {
+          "has_rational_root": false,
+          "integer_coefficients_c0_to_c3": [
+            20,
+            -48,
+            15,
+            1
+          ],
+          "local_parameter_numeric": 0.49613168514116524,
+          "rational_root_theorem_candidates_checked": 12,
+          "rational_roots": [],
+          "root_parameter_numeric": 7.496131685141165,
+          "span": [
+            7,
+            8
+          ]
+        }
+      ],
+      "rational_root_theorem": "all signed divisors of the constant term checked against reduced integer span polynomial",
+      "roots_numeric": [
+        2.5038683148588348,
+        7.496131685141165
+      ],
+      "transverse_level_crossings": true
+    }
+  },
+  "horizontal_profile_arc_seam_loci": [
+    {
+      "branch": "arc@z=4",
+      "endpoint_sketch_junction_classification": "G0_sharp_rectangle_corner; no G2 claim",
+      "intersection_classification": "transverse_surface_intersection",
+      "parameter_interval": [
+        2.5,
+        3.5
+      ],
+      "profile_arc_length_mm_q32": 10.119833988030118,
+      "profile_surface_normal_midpoint": [
+        -1.0,
+        -0.0,
+        0.0
+      ],
+      "projections": {
+        "xy": [
+          [
+            66.47222222222223,
+            30.027777777777775
+          ],
+          [
+            66.28099547511312,
+            29.03574660633484
+          ],
+          [
+            66.13157894736842,
+            27.845864661654137
+          ],
+          [
+            66.0342995169082,
+            26.478743961352656
+          ],
+          [
+            65.99999999999999,
+            25.0
+          ],
+          [
+            66.0342995169082,
+            23.52125603864734
+          ],
+          [
+            66.13157894736842,
+            22.154135338345867
+          ],
+          [
+            66.28099547511312,
+            20.964253393665157
+          ],
+          [
+            66.47222222222223,
+            19.972222222222225
+          ]
+        ],
+        "xz": [
+          [
+            66.47222222222223,
+            4.0
+          ],
+          [
+            66.28099547511312,
+            4.0
+          ],
+          [
+            66.13157894736842,
+            4.0
+          ],
+          [
+            66.0342995169082,
+            4.0
+          ],
+          [
+            65.99999999999999,
+            4.0
+          ],
+          [
+            66.0342995169082,
+            4.0
+          ],
+          [
+            66.13157894736842,
+            4.0
+          ],
+          [
+            66.28099547511312,
+            4.0
+          ],
+          [
+            66.47222222222223,
+            4.0
+          ]
+        ],
+        "yz": [
+          [
+            30.027777777777775,
+            4.0
+          ],
+          [
+            29.03574660633484,
+            4.0
+          ],
+          [
+            27.845864661654137,
+            4.0
+          ],
+          [
+            26.478743961352656,
+            4.0
+          ],
+          [
+            25.0,
+            4.0
+          ],
+          [
+            23.52125603864734,
+            4.0
+          ],
+          [
+            22.154135338345867,
+            4.0
+          ],
+          [
+            20.964253393665157,
+            4.0
+          ],
+          [
+            19.972222222222225,
+            4.0
+          ]
+        ]
+      },
+      "rectangle_face_normal": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "sampled_curve_3d_mm": [
+        [
+          66.47222222222223,
+          30.027777777777775,
+          4.0
+        ],
+        [
+          66.28099547511312,
+          29.03574660633484,
+          4.0
+        ],
+        [
+          66.13157894736842,
+          27.845864661654137,
+          4.0
+        ],
+        [
+          66.0342995169082,
+          26.478743961352656,
+          4.0
+        ],
+        [
+          65.99999999999999,
+          25.0,
+          4.0
+        ],
+        [
+          66.0342995169082,
+          23.52125603864734,
+          4.0
+        ],
+        [
+          66.13157894736842,
+          22.154135338345867,
+          4.0
+        ],
+        [
+          66.28099547511312,
+          20.964253393665157,
+          4.0
+        ],
+        [
+          66.47222222222223,
+          19.972222222222225,
+          4.0
+        ]
+      ],
+      "sketch_provenance": [
+        "free:boundary",
+        "cross:boundary"
+      ],
+      "surface_normal_sine": 1.0,
+      "z_mm": 4.0
+    },
+    {
+      "branch": "arc@z=4",
+      "endpoint_sketch_junction_classification": "G0_sharp_rectangle_corner; no G2 claim",
+      "intersection_classification": "transverse_surface_intersection",
+      "parameter_interval": [
+        6.5,
+        7.5
+      ],
+      "profile_arc_length_mm_q32": 10.119833988030118,
+      "profile_surface_normal_midpoint": [
+        1.0,
+        -0.0,
+        0.0
+      ],
+      "projections": {
+        "xy": [
+          [
+            83.52777777777779,
+            19.972222222222225
+          ],
+          [
+            83.71900452488687,
+            20.964253393665157
+          ],
+          [
+            83.86842105263159,
+            22.154135338345867
+          ],
+          [
+            83.9657004830918,
+            23.52125603864734
+          ],
+          [
+            83.99999999999999,
+            25.0
+          ],
+          [
+            83.9657004830918,
+            26.478743961352656
+          ],
+          [
+            83.86842105263159,
+            27.845864661654137
+          ],
+          [
+            83.71900452488687,
+            29.03574660633484
+          ],
+          [
+            83.52777777777779,
+            30.027777777777782
+          ]
+        ],
+        "xz": [
+          [
+            83.52777777777779,
+            4.0
+          ],
+          [
+            83.71900452488687,
+            4.0
+          ],
+          [
+            83.86842105263159,
+            4.0
+          ],
+          [
+            83.9657004830918,
+            4.0
+          ],
+          [
+            83.99999999999999,
+            4.0
+          ],
+          [
+            83.9657004830918,
+            4.0
+          ],
+          [
+            83.86842105263159,
+            4.0
+          ],
+          [
+            83.71900452488687,
+            4.0
+          ],
+          [
+            83.52777777777779,
+            4.0
+          ]
+        ],
+        "yz": [
+          [
+            19.972222222222225,
+            4.0
+          ],
+          [
+            20.964253393665157,
+            4.0
+          ],
+          [
+            22.154135338345867,
+            4.0
+          ],
+          [
+            23.52125603864734,
+            4.0
+          ],
+          [
+            25.0,
+            4.0
+          ],
+          [
+            26.478743961352656,
+            4.0
+          ],
+          [
+            27.845864661654137,
+            4.0
+          ],
+          [
+            29.03574660633484,
+            4.0
+          ],
+          [
+            30.027777777777782,
+            4.0
+          ]
+        ]
+      },
+      "rectangle_face_normal": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "sampled_curve_3d_mm": [
+        [
+          83.52777777777779,
+          19.972222222222225,
+          4.0
+        ],
+        [
+          83.71900452488687,
+          20.964253393665157,
+          4.0
+        ],
+        [
+          83.86842105263159,
+          22.154135338345867,
+          4.0
+        ],
+        [
+          83.9657004830918,
+          23.52125603864734,
+          4.0
+        ],
+        [
+          83.99999999999999,
+          25.0,
+          4.0
+        ],
+        [
+          83.9657004830918,
+          26.478743961352656,
+          4.0
+        ],
+        [
+          83.86842105263159,
+          27.845864661654137,
+          4.0
+        ],
+        [
+          83.71900452488687,
+          29.03574660633484,
+          4.0
+        ],
+        [
+          83.52777777777779,
+          30.027777777777782,
+          4.0
+        ]
+      ],
+      "sketch_provenance": [
+        "free:boundary",
+        "cross:boundary"
+      ],
+      "surface_normal_sine": 1.0,
+      "z_mm": 4.0
+    },
+    {
+      "branch": "arc@z=8",
+      "endpoint_sketch_junction_classification": "G0_sharp_rectangle_corner; no G2 claim",
+      "intersection_classification": "transverse_surface_intersection",
+      "parameter_interval": [
+        2.5,
+        3.5
+      ],
+      "profile_arc_length_mm_q32": 10.119833988030118,
+      "profile_surface_normal_midpoint": [
+        -1.0,
+        -0.0,
+        0.0
+      ],
+      "projections": {
+        "xy": [
+          [
+            66.47222222222223,
+            30.027777777777775
+          ],
+          [
+            66.28099547511312,
+            29.03574660633484
+          ],
+          [
+            66.13157894736842,
+            27.845864661654137
+          ],
+          [
+            66.0342995169082,
+            26.478743961352656
+          ],
+          [
+            65.99999999999999,
+            25.0
+          ],
+          [
+            66.0342995169082,
+            23.52125603864734
+          ],
+          [
+            66.13157894736842,
+            22.154135338345867
+          ],
+          [
+            66.28099547511312,
+            20.964253393665157
+          ],
+          [
+            66.47222222222223,
+            19.972222222222225
+          ]
+        ],
+        "xz": [
+          [
+            66.47222222222223,
+            8.0
+          ],
+          [
+            66.28099547511312,
+            8.0
+          ],
+          [
+            66.13157894736842,
+            8.0
+          ],
+          [
+            66.0342995169082,
+            8.0
+          ],
+          [
+            65.99999999999999,
+            8.0
+          ],
+          [
+            66.0342995169082,
+            8.0
+          ],
+          [
+            66.13157894736842,
+            8.0
+          ],
+          [
+            66.28099547511312,
+            8.0
+          ],
+          [
+            66.47222222222223,
+            8.0
+          ]
+        ],
+        "yz": [
+          [
+            30.027777777777775,
+            8.0
+          ],
+          [
+            29.03574660633484,
+            8.0
+          ],
+          [
+            27.845864661654137,
+            8.0
+          ],
+          [
+            26.478743961352656,
+            8.0
+          ],
+          [
+            25.0,
+            8.0
+          ],
+          [
+            23.52125603864734,
+            8.0
+          ],
+          [
+            22.154135338345867,
+            8.0
+          ],
+          [
+            20.964253393665157,
+            8.0
+          ],
+          [
+            19.972222222222225,
+            8.0
+          ]
+        ]
+      },
+      "rectangle_face_normal": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "sampled_curve_3d_mm": [
+        [
+          66.47222222222223,
+          30.027777777777775,
+          8.0
+        ],
+        [
+          66.28099547511312,
+          29.03574660633484,
+          8.0
+        ],
+        [
+          66.13157894736842,
+          27.845864661654137,
+          8.0
+        ],
+        [
+          66.0342995169082,
+          26.478743961352656,
+          8.0
+        ],
+        [
+          65.99999999999999,
+          25.0,
+          8.0
+        ],
+        [
+          66.0342995169082,
+          23.52125603864734,
+          8.0
+        ],
+        [
+          66.13157894736842,
+          22.154135338345867,
+          8.0
+        ],
+        [
+          66.28099547511312,
+          20.964253393665157,
+          8.0
+        ],
+        [
+          66.47222222222223,
+          19.972222222222225,
+          8.0
+        ]
+      ],
+      "sketch_provenance": [
+        "free:boundary",
+        "cross:boundary"
+      ],
+      "surface_normal_sine": 1.0,
+      "z_mm": 8.0
+    },
+    {
+      "branch": "arc@z=8",
+      "endpoint_sketch_junction_classification": "G0_sharp_rectangle_corner; no G2 claim",
+      "intersection_classification": "transverse_surface_intersection",
+      "parameter_interval": [
+        6.5,
+        7.5
+      ],
+      "profile_arc_length_mm_q32": 10.119833988030118,
+      "profile_surface_normal_midpoint": [
+        1.0,
+        -0.0,
+        0.0
+      ],
+      "projections": {
+        "xy": [
+          [
+            83.52777777777779,
+            19.972222222222225
+          ],
+          [
+            83.71900452488687,
+            20.964253393665157
+          ],
+          [
+            83.86842105263159,
+            22.154135338345867
+          ],
+          [
+            83.9657004830918,
+            23.52125603864734
+          ],
+          [
+            83.99999999999999,
+            25.0
+          ],
+          [
+            83.9657004830918,
+            26.478743961352656
+          ],
+          [
+            83.86842105263159,
+            27.845864661654137
+          ],
+          [
+            83.71900452488687,
+            29.03574660633484
+          ],
+          [
+            83.52777777777779,
+            30.027777777777782
+          ]
+        ],
+        "xz": [
+          [
+            83.52777777777779,
+            8.0
+          ],
+          [
+            83.71900452488687,
+            8.0
+          ],
+          [
+            83.86842105263159,
+            8.0
+          ],
+          [
+            83.9657004830918,
+            8.0
+          ],
+          [
+            83.99999999999999,
+            8.0
+          ],
+          [
+            83.9657004830918,
+            8.0
+          ],
+          [
+            83.86842105263159,
+            8.0
+          ],
+          [
+            83.71900452488687,
+            8.0
+          ],
+          [
+            83.52777777777779,
+            8.0
+          ]
+        ],
+        "yz": [
+          [
+            19.972222222222225,
+            8.0
+          ],
+          [
+            20.964253393665157,
+            8.0
+          ],
+          [
+            22.154135338345867,
+            8.0
+          ],
+          [
+            23.52125603864734,
+            8.0
+          ],
+          [
+            25.0,
+            8.0
+          ],
+          [
+            26.478743961352656,
+            8.0
+          ],
+          [
+            27.845864661654137,
+            8.0
+          ],
+          [
+            29.03574660633484,
+            8.0
+          ],
+          [
+            30.027777777777782,
+            8.0
+          ]
+        ]
+      },
+      "rectangle_face_normal": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "sampled_curve_3d_mm": [
+        [
+          83.52777777777779,
+          19.972222222222225,
+          8.0
+        ],
+        [
+          83.71900452488687,
+          20.964253393665157,
+          8.0
+        ],
+        [
+          83.86842105263159,
+          22.154135338345867,
+          8.0
+        ],
+        [
+          83.9657004830918,
+          23.52125603864734,
+          8.0
+        ],
+        [
+          83.99999999999999,
+          25.0,
+          8.0
+        ],
+        [
+          83.9657004830918,
+          26.478743961352656,
+          8.0
+        ],
+        [
+          83.86842105263159,
+          27.845864661654137,
+          8.0
+        ],
+        [
+          83.71900452488687,
+          29.03574660633484,
+          8.0
+        ],
+        [
+          83.52777777777779,
+          30.027777777777782,
+          8.0
+        ]
+      ],
+      "sketch_provenance": [
+        "free:boundary",
+        "cross:boundary"
+      ],
+      "surface_normal_sine": 1.0,
+      "z_mm": 8.0
+    }
+  ],
+  "independent_volume_reference": {
+    "coordinator_reference": {
+      "intersection_volume_mm3": 712.3493494134791,
+      "periodic_profile_removed_volume_mm3": 3489.731852993521,
+      "provenance": "independent SciPy coordinate reference supplied by the parent coordinator",
+      "rectangle_removed_volume_mm3": 4022.222222222222,
+      "remaining_stock_volume_mm3": 53200.395274197734,
+      "union_removed_volume_mm3": 6799.604725802264
+    },
+    "intersection_relative_order_delta": 1.2350137954196158e-09,
+    "intersection_volume_q32_mm3": 712.3493484730362,
+    "intersection_volume_q64_mm3": 712.3493493527975,
+    "method": "periodic B-spline Green integral and independent horizontal-slice integration of source-profile intersections",
+    "periodic_profile_removed_volume_mm3": 3489.731852993528,
+    "rectangle_removed_volume_mm3": 4022.2222222222226,
+    "relative_difference_q64": {
+      "intersection_volume_mm3": 8.51851696630177e-11,
+      "periodic_profile_removed_volume_mm3": 1.9546516897697086e-15,
+      "rectangle_removed_volume_mm3": 1.13058733645806e-16,
+      "remaining_stock_volume_mm3": 1.140620970756591e-12,
+      "union_removed_volume_mm3": 8.92533682577313e-12
+    },
+    "remaining_stock_volume_mm3": 53200.39527413705,
+    "union_removed_volume_mm3": 6799.604725862952
+  },
+  "intersection_roots_by_y": {
+    "19.97222222222222": [
+      3.5,
+      6.5
+    ],
+    "30.02777777777778": [
+      2.5,
+      7.5
+    ]
+  },
+  "limits": [
+    "Only transverse intersections of the supplied source periodic curve with the two rectangle y-levels are certified by this oracle.",
+    "Seam loci are source-curve constructions; they do not prove that the production Boolean or stitched surface complex is valid.",
+    "Exploratory level classifications are root-isolation diagnostics, not a general intersection certificate."
+  ],
+  "metamorphic_curve_checks": {
+    "inserted_knot": 4.5,
+    "integer_recipe_knot_parameter_scale": 2.0,
+    "intersection_parameters_by_y_after_insertion": {
+      "19.97222222222222": [
+        3.5,
+        6.5
+      ],
+      "30.02777777777778": [
+        2.5,
+        7.5
+      ]
+    },
+    "intersection_parameters_by_y_after_integer_recipe_insertion": {
+      "19.97222222222222": [
+        3.5,
+        6.5
+      ],
+      "30.02777777777778": [
+        2.5,
+        7.5
+      ]
+    },
+    "intersection_parameters_by_y_after_periodic_reindex": {
+      "19.97222222222222": [
+        2.5,
+        5.5
+      ],
+      "30.02777777777778": [
+        1.5,
+        6.5
+      ]
+    },
+    "intersection_parameters_by_y_after_reversal": {
+      "19.97222222222222": [
+        1.5,
+        4.5
+      ],
+      "30.02777777777778": [
+        0.4999999999999999,
+        5.5
+      ]
+    },
+    "invariance_threshold_mm": 1e-10,
+    "invariant": true,
+    "max_position_error_after_integer_recipe_knot_insertion_mm": 2.842170943040401e-14,
+    "max_position_error_after_knot_insertion_mm": 1.464821375527116e-14,
+    "max_position_error_after_parameter_reversal_mm": 1.5888218580782548e-14,
+    "max_position_error_after_periodic_control_reindex_mm": 0.0,
+    "roots": {
+      "19.97222222222222": [
+        3.5,
+        6.5
+      ],
+      "30.02777777777778": [
+        2.5,
+        7.5
+      ]
+    },
+    "sample_count": 65
+  },
+  "method": "independent periodic NURBS source evaluation; spanwise level-set bisection; exact homogeneous knot insertion; reverse and cyclic reindex metamorphic checks",
+  "production_variant_builds": {
+    "periodic_profile_knot_inserted": {
+      "blocks": 35,
+      "build_audit": {
+        "blocks": 35,
+        "cavities": 0,
+        "determinant_lower_bound_mm3": 5.729862499996598,
+        "exterior_sides": 108,
+        "hausdorff_error_upper_bound_mm": 0,
+        "method": "periodic_cubic_transverse_bore_partition",
+        "shared_faces": 51,
+        "status": "valid",
+        "through_bores": 2
+      },
+      "design_faces": 108,
+      "source_recipe_preserved": true,
+      "status": "accepted"
+    },
+    "periodic_profile_reindexed": {
+      "detail": "CLI build /home/jeff/Code/SolidCraftTrivariate/build/g2-cross-junctions-final2/periodic_profile_reindexed.recipe.json /home/jeff/Code/SolidCraftTrivariate/build/g2-cross-junctions-final2/periodic_profile_reindexed.model.json failed: {\"reason\":\"periodic profile omitted a required cage sector\",\"status\":\"error\"}\n",
+      "status": "rejected_or_unavailable"
+    },
+    "periodic_profile_reversed": {
+      "detail": "CLI build /home/jeff/Code/SolidCraftTrivariate/build/g2-cross-junctions-final2/periodic_profile_reversed.recipe.json /home/jeff/Code/SolidCraftTrivariate/build/g2-cross-junctions-final2/periodic_profile_reversed.model.json failed: {\"reason\":\"periodic profile omitted a required cage sector\",\"status\":\"error\"}\n",
+      "status": "rejected_or_unavailable"
+    },
+    "rectangle_degree3_elevated": {
+      "blocks": 32,
+      "build_audit": {
+        "blocks": 32,
+        "cavities": 0,
+        "determinant_lower_bound_mm3": 5.729862499996598,
+        "exterior_sides": 100,
+        "hausdorff_error_upper_bound_mm": 0,
+        "method": "periodic_cubic_transverse_bore_partition",
+        "shared_faces": 46,
+        "status": "valid",
+        "through_bores": 2
+      },
+      "design_faces": 100,
+      "source_recipe_preserved": true,
+      "status": "accepted"
+    },
+    "rectangle_degree3_side_knot": {
+      "detail": "CLI build /home/jeff/Code/SolidCraftTrivariate/build/g2-cross-junctions-final2/rectangle_degree3_side_knot.recipe.json /home/jeff/Code/SolidCraftTrivariate/build/g2-cross-junctions-final2/rectangle_degree3_side_knot.model.json failed: {\"reason\":\"number outside expected type\",\"status\":\"error\"}\n",
+      "status": "rejected_or_unavailable"
+    }
+  },
+  "recipe": "tests/references/g2_cross_sketches.recipe.json",
+  "rectangle_loop_variants": {
+    "degree_one": {
+      "closure": {
+        "classification": "G0_sharp",
+        "extruded_surface_normal_jump": 1.4142135623730951,
+        "generator_curvature_jump_per_mm": 0.0,
+        "oriented_unit_tangent_jump": 1.4142135623730951,
+        "position_jump_mm": 0.0
+      },
+      "degree": 1,
+      "internal_junctions": [
+        {
+          "c0": true,
+          "classification": "G0_sharp",
+          "curvature_vector_jump_per_mm": 0.0,
+          "extruded_surface": {
+            "extrusion_axis_world": [
+              1.0,
+              0.0,
+              0.0
+            ],
+            "generator_curvature_jump_per_mm": 0.0,
+            "generator_curvature_left_per_mm": 0.0,
+            "generator_curvature_right_per_mm": 0.0,
+            "oriented_unit_normal_jump": 1.4142135623730951,
+            "oriented_unit_normal_left": [
+              0.0,
+              0.0,
+              -1.0
+            ],
+            "oriented_unit_normal_right": [
+              0.0,
+              1.0,
+              -0.0
+            ],
+            "section_curvature_jump_per_mm": 0.0
+          },
+          "g1": false,
+          "g2": false,
+          "left": {
+            "curvature_vector_per_mm": [
+              0.0,
+              0.0
+            ],
+            "first_derivative": [
+              10.055555555555555,
+              0.0
+            ],
+            "position_mm": [
+              30.02777777777778,
+              4.0
+            ],
+            "second_derivative": [
+              0.0,
+              0.0
+            ],
+            "speed_mm_per_parameter": 10.055555555555555,
+            "unit_tangent_oriented": [
+              1.0,
+              0.0
+            ]
+          },
+          "oriented_unit_tangent_jump": 1.4142135623730951,
+          "parameter": 1,
+          "position_jump_mm": 0.0,
+          "right": {
+            "curvature_vector_per_mm": [
+              0.0,
+              0.0
+            ],
+            "first_derivative": [
+              0.0,
+              4.0
+            ],
+            "position_mm": [
+              30.02777777777778,
+              4.0
+            ],
+            "second_derivative": [
+              0.0,
+              0.0
+            ],
+            "speed_mm_per_parameter": 4.0,
+            "unit_tangent_oriented": [
+              0.0,
+              1.0
+            ]
+          }
+        },
+        {
+          "c0": true,
+          "classification": "G0_sharp",
+          "curvature_vector_jump_per_mm": 0.0,
+          "extruded_surface": {
+            "extrusion_axis_world": [
+              1.0,
+              0.0,
+              0.0
+            ],
+            "generator_curvature_jump_per_mm": 0.0,
+            "generator_curvature_left_per_mm": 0.0,
+            "generator_curvature_right_per_mm": 0.0,
+            "oriented_unit_normal_jump": 1.4142135623730951,
+            "oriented_unit_normal_left": [
+              0.0,
+              1.0,
+              -0.0
+            ],
+            "oriented_unit_normal_right": [
+              0.0,
+              0.0,
+              1.0
+            ],
+            "section_curvature_jump_per_mm": 0.0
+          },
+          "g1": false,
+          "g2": false,
+          "left": {
+            "curvature_vector_per_mm": [
+              0.0,
+              0.0
+            ],
+            "first_derivative": [
+              0.0,
+              4.0
+            ],
+            "position_mm": [
+              30.02777777777778,
+              8.0
+            ],
+            "second_derivative": [
+              0.0,
+              0.0
+            ],
+            "speed_mm_per_parameter": 4.0,
+            "unit_tangent_oriented": [
+              0.0,
+              1.0
+            ]
+          },
+          "oriented_unit_tangent_jump": 1.4142135623730951,
+          "parameter": 2,
+          "position_jump_mm": 0.0,
+          "right": {
+            "curvature_vector_per_mm": [
+              0.0,
+              0.0
+            ],
+            "first_derivative": [
+              -10.055555555555555,
+              0.0
+            ],
+            "position_mm": [
+              30.02777777777778,
+              8.0
+            ],
+            "second_derivative": [
+              0.0,
+              0.0
+            ],
+            "speed_mm_per_parameter": 10.055555555555555,
+            "unit_tangent_oriented": [
+              -1.0,
+              0.0
+            ]
+          }
+        },
+        {
+          "c0": true,
+          "classification": "G0_sharp",
+          "curvature_vector_jump_per_mm": 0.0,
+          "extruded_surface": {
+            "extrusion_axis_world": [
+              1.0,
+              0.0,
+              0.0
+            ],
+            "generator_curvature_jump_per_mm": 0.0,
+            "generator_curvature_left_per_mm": 0.0,
+            "generator_curvature_right_per_mm": 0.0,
+            "oriented_unit_normal_jump": 1.4142135623730951,
+            "oriented_unit_normal_left": [
+              0.0,
+              0.0,
+              1.0
+            ],
+            "oriented_unit_normal_right": [
+              0.0,
+              -1.0,
+              -0.0
+            ],
+            "section_curvature_jump_per_mm": 0.0
+          },
+          "g1": false,
+          "g2": false,
+          "left": {
+            "curvature_vector_per_mm": [
+              0.0,
+              0.0
+            ],
+            "first_derivative": [
+              -10.055555555555555,
+              0.0
+            ],
+            "position_mm": [
+              19.97222222222222,
+              8.0
+            ],
+            "second_derivative": [
+              0.0,
+              0.0
+            ],
+            "speed_mm_per_parameter": 10.055555555555555,
+            "unit_tangent_oriented": [
+              -1.0,
+              0.0
+            ]
+          },
+          "oriented_unit_tangent_jump": 1.4142135623730951,
+          "parameter": 3,
+          "position_jump_mm": 0.0,
+          "right": {
+            "curvature_vector_per_mm": [
+              0.0,
+              0.0
+            ],
+            "first_derivative": [
+              0.0,
+              -4.0
+            ],
+            "position_mm": [
+              19.97222222222222,
+              8.0
+            ],
+            "second_derivative": [
+              0.0,
+              0.0
+            ],
+            "speed_mm_per_parameter": 4.0,
+            "unit_tangent_oriented": [
+              0.0,
+              -1.0
+            ]
+          }
+        }
+      ],
+      "knot_multiplicities": {
+        "1": 1,
+        "2": 1,
+        "3": 1
+      },
+      "max_position_error_to_degree_one_mm": 0.0,
+      "smooth_internal_knots": 0,
+      "true_sharp_corners": 4
+    },
+    "degree_three_elevated": {
+      "closure": {
+        "classification": "G0_sharp",
+        "extruded_surface_normal_jump": 1.4142135623730951,
+        "generator_curvature_jump_per_mm": 0.0,
+        "oriented_unit_tangent_jump": 1.4142135623730951,
+        "position_jump_mm": 0.0
+      },
+      "degree": 3,
+      "internal_junctions": [
+        {
+          "c0": true,
+          "classification": "G0_sharp",
+          "curvature_vector_jump_per_mm": 0.0,
+          "extruded_surface": {
+            "extrusion_axis_world": [
+              1.0,
+              0.0,
+              0.0
+            ],
+            "generator_curvature_jump_per_mm": 0.0,
+            "generator_curvature_left_per_mm": 0.0,
+            "generator_curvature_right_per_mm": 0.0,
+            "oriented_unit_normal_jump": 1.4142135623730951,
+            "oriented_unit_normal_left": [
+              0.0,
+              0.0,
+              -1.0
+            ],
+            "oriented_unit_normal_right": [
+              0.0,
+              1.0,
+              -0.0
+            ],
+            "section_curvature_jump_per_mm": 0.0
+          },
+          "g1": false,
+          "g2": false,
+          "left": {
+            "curvature_vector_per_mm": [
+              0.0,
+              0.0
+            ],
+            "first_derivative": [
+              10.055555555555555,
+              0.0
+            ],
+            "position_mm": [
+              30.02777777777778,
+              4.0
+            ],
+            "second_derivative": [
+              0.0,
+              0.0
+            ],
+            "speed_mm_per_parameter": 10.055555555555555,
+            "unit_tangent_oriented": [
+              1.0,
+              0.0
+            ]
+          },
+          "oriented_unit_tangent_jump": 1.4142135623730951,
+          "parameter": 1,
+          "position_jump_mm": 0.0,
+          "right": {
+            "curvature_vector_per_mm": [
+              0.0,
+              0.0
+            ],
+            "first_derivative": [
+              0.0,
+              4.0
+            ],
+            "position_mm": [
+              30.02777777777778,
+              4.0
+            ],
+            "second_derivative": [
+              0.0,
+              0.0
+            ],
+            "speed_mm_per_parameter": 4.0,
+            "unit_tangent_oriented": [
+              0.0,
+              1.0
+            ]
+          }
+        },
+        {
+          "c0": true,
+          "classification": "G0_sharp",
+          "curvature_vector_jump_per_mm": 0.0,
+          "extruded_surface": {
+            "extrusion_axis_world": [
+              1.0,
+              0.0,
+              0.0
+            ],
+            "generator_curvature_jump_per_mm": 0.0,
+            "generator_curvature_left_per_mm": 0.0,
+            "generator_curvature_right_per_mm": 0.0,
+            "oriented_unit_normal_jump": 1.4142135623730951,
+            "oriented_unit_normal_left": [
+              0.0,
+              1.0,
+              -0.0
+            ],
+            "oriented_unit_normal_right": [
+              0.0,
+              0.0,
+              1.0
+            ],
+            "section_curvature_jump_per_mm": 0.0
+          },
+          "g1": false,
+          "g2": false,
+          "left": {
+            "curvature_vector_per_mm": [
+              0.0,
+              0.0
+            ],
+            "first_derivative": [
+              0.0,
+              4.0
+            ],
+            "position_mm": [
+              30.02777777777778,
+              8.0
+            ],
+            "second_derivative": [
+              0.0,
+              0.0
+            ],
+            "speed_mm_per_parameter": 4.0,
+            "unit_tangent_oriented": [
+              0.0,
+              1.0
+            ]
+          },
+          "oriented_unit_tangent_jump": 1.4142135623730951,
+          "parameter": 2,
+          "position_jump_mm": 0.0,
+          "right": {
+            "curvature_vector_per_mm": [
+              0.0,
+              0.0
+            ],
+            "first_derivative": [
+              -10.055555555555555,
+              0.0
+            ],
+            "position_mm": [
+              30.02777777777778,
+              8.0
+            ],
+            "second_derivative": [
+              0.0,
+              0.0
+            ],
+            "speed_mm_per_parameter": 10.055555555555555,
+            "unit_tangent_oriented": [
+              -1.0,
+              0.0
+            ]
+          }
+        },
+        {
+          "c0": true,
+          "classification": "G0_sharp",
+          "curvature_vector_jump_per_mm": 0.0,
+          "extruded_surface": {
+            "extrusion_axis_world": [
+              1.0,
+              0.0,
+              0.0
+            ],
+            "generator_curvature_jump_per_mm": 0.0,
+            "generator_curvature_left_per_mm": 0.0,
+            "generator_curvature_right_per_mm": 0.0,
+            "oriented_unit_normal_jump": 1.4142135623730951,
+            "oriented_unit_normal_left": [
+              0.0,
+              0.0,
+              1.0
+            ],
+            "oriented_unit_normal_right": [
+              0.0,
+              -1.0,
+              -0.0
+            ],
+            "section_curvature_jump_per_mm": 0.0
+          },
+          "g1": false,
+          "g2": false,
+          "left": {
+            "curvature_vector_per_mm": [
+              0.0,
+              0.0
+            ],
+            "first_derivative": [
+              -10.055555555555555,
+              0.0
+            ],
+            "position_mm": [
+              19.97222222222222,
+              8.0
+            ],
+            "second_derivative": [
+              0.0,
+              0.0
+            ],
+            "speed_mm_per_parameter": 10.055555555555555,
+            "unit_tangent_oriented": [
+              -1.0,
+              0.0
+            ]
+          },
+          "oriented_unit_tangent_jump": 1.4142135623730951,
+          "parameter": 3,
+          "position_jump_mm": 0.0,
+          "right": {
+            "curvature_vector_per_mm": [
+              0.0,
+              0.0
+            ],
+            "first_derivative": [
+              0.0,
+              -4.0
+            ],
+            "position_mm": [
+              19.97222222222222,
+              8.0
+            ],
+            "second_derivative": [
+              0.0,
+              0.0
+            ],
+            "speed_mm_per_parameter": 4.0,
+            "unit_tangent_oriented": [
+              0.0,
+              -1.0
+            ]
+          }
+        }
+      ],
+      "knot_multiplicities": {
+        "1": 3,
+        "2": 3,
+        "3": 3
+      },
+      "max_position_error_to_degree_one_mm": 0.0,
+      "smooth_internal_knots": 0,
+      "true_sharp_corners": 4
+    },
+    "degree_three_with_side_knot": {
+      "closure": {
+        "classification": "G0_sharp",
+        "extruded_surface_normal_jump": 1.4142135623730951,
+        "generator_curvature_jump_per_mm": 0.0,
+        "oriented_unit_tangent_jump": 1.4142135623730951,
+        "position_jump_mm": 0.0
+      },
+      "degree": 3,
+      "internal_junctions": [
+        {
+          "c0": true,
+          "classification": "G2",
+          "curvature_vector_jump_per_mm": 0.0,
+          "extruded_surface": {
+            "extrusion_axis_world": [
+              1.0,
+              0.0,
+              0.0
+            ],
+            "generator_curvature_jump_per_mm": 0.0,
+            "generator_curvature_left_per_mm": 0.0,
+            "generator_curvature_right_per_mm": 0.0,
+            "oriented_unit_normal_jump": 0.0,
+            "oriented_unit_normal_left": [
+              0.0,
+              0.0,
+              -1.0
+            ],
+            "oriented_unit_normal_right": [
+              0.0,
+              0.0,
+              -1.0
+            ],
+            "section_curvature_jump_per_mm": 0.0
+          },
+          "g1": true,
+          "g2": true,
+          "left": {
+            "curvature_vector_per_mm": [
+              0.0,
+              0.0
+            ],
+            "first_derivative": [
+              10.055555555555555,
+              0.0
+            ],
+            "position_mm": [
+              25.0,
+              4.0
+            ],
+            "second_derivative": [
+              0.0,
+              0.0
+            ],
+            "speed_mm_per_parameter": 10.055555555555555,
+            "unit_tangent_oriented": [
+              1.0,
+              0.0
+            ]
+          },
+          "oriented_unit_tangent_jump": 0.0,
+          "parameter": 0.5,
+          "position_jump_mm": 0.0,
+          "right": {
+            "curvature_vector_per_mm": [
+              0.0,
+              0.0
+            ],
+            "first_derivative": [
+              10.055555555555555,
+              0.0
+            ],
+            "position_mm": [
+              25.0,
+              4.0
+            ],
+            "second_derivative": [
+              0.0,
+              0.0
+            ],
+            "speed_mm_per_parameter": 10.055555555555555,
+            "unit_tangent_oriented": [
+              1.0,
+              0.0
+            ]
+          }
+        },
+        {
+          "c0": true,
+          "classification": "G0_sharp",
+          "curvature_vector_jump_per_mm": 0.0,
+          "extruded_surface": {
+            "extrusion_axis_world": [
+              1.0,
+              0.0,
+              0.0
+            ],
+            "generator_curvature_jump_per_mm": 0.0,
+            "generator_curvature_left_per_mm": 0.0,
+            "generator_curvature_right_per_mm": 0.0,
+            "oriented_unit_normal_jump": 1.4142135623730951,
+            "oriented_unit_normal_left": [
+              0.0,
+              0.0,
+              -1.0
+            ],
+            "oriented_unit_normal_right": [
+              0.0,
+              1.0,
+              -0.0
+            ],
+            "section_curvature_jump_per_mm": 0.0
+          },
+          "g1": false,
+          "g2": false,
+          "left": {
+            "curvature_vector_per_mm": [
+              0.0,
+              0.0
+            ],
+            "first_derivative": [
+              10.055555555555555,
+              0.0
+            ],
+            "position_mm": [
+              30.02777777777778,
+              4.0
+            ],
+            "second_derivative": [
+              0.0,
+              0.0
+            ],
+            "speed_mm_per_parameter": 10.055555555555555,
+            "unit_tangent_oriented": [
+              1.0,
+              0.0
+            ]
+          },
+          "oriented_unit_tangent_jump": 1.4142135623730951,
+          "parameter": 1,
+          "position_jump_mm": 0.0,
+          "right": {
+            "curvature_vector_per_mm": [
+              0.0,
+              0.0
+            ],
+            "first_derivative": [
+              0.0,
+              4.0
+            ],
+            "position_mm": [
+              30.02777777777778,
+              4.0
+            ],
+            "second_derivative": [
+              0.0,
+              0.0
+            ],
+            "speed_mm_per_parameter": 4.0,
+            "unit_tangent_oriented": [
+              0.0,
+              1.0
+            ]
+          }
+        },
+        {
+          "c0": true,
+          "classification": "G0_sharp",
+          "curvature_vector_jump_per_mm": 0.0,
+          "extruded_surface": {
+            "extrusion_axis_world": [
+              1.0,
+              0.0,
+              0.0
+            ],
+            "generator_curvature_jump_per_mm": 0.0,
+            "generator_curvature_left_per_mm": 0.0,
+            "generator_curvature_right_per_mm": 0.0,
+            "oriented_unit_normal_jump": 1.4142135623730951,
+            "oriented_unit_normal_left": [
+              0.0,
+              1.0,
+              -0.0
+            ],
+            "oriented_unit_normal_right": [
+              0.0,
+              0.0,
+              1.0
+            ],
+            "section_curvature_jump_per_mm": 0.0
+          },
+          "g1": false,
+          "g2": false,
+          "left": {
+            "curvature_vector_per_mm": [
+              0.0,
+              0.0
+            ],
+            "first_derivative": [
+              0.0,
+              4.0
+            ],
+            "position_mm": [
+              30.02777777777778,
+              8.0
+            ],
+            "second_derivative": [
+              0.0,
+              0.0
+            ],
+            "speed_mm_per_parameter": 4.0,
+            "unit_tangent_oriented": [
+              0.0,
+              1.0
+            ]
+          },
+          "oriented_unit_tangent_jump": 1.4142135623730951,
+          "parameter": 2,
+          "position_jump_mm": 0.0,
+          "right": {
+            "curvature_vector_per_mm": [
+              0.0,
+              0.0
+            ],
+            "first_derivative": [
+              -10.055555555555555,
+              0.0
+            ],
+            "position_mm": [
+              30.02777777777778,
+              8.0
+            ],
+            "second_derivative": [
+              0.0,
+              0.0
+            ],
+            "speed_mm_per_parameter": 10.055555555555555,
+            "unit_tangent_oriented": [
+              -1.0,
+              0.0
+            ]
+          }
+        },
+        {
+          "c0": true,
+          "classification": "G0_sharp",
+          "curvature_vector_jump_per_mm": 0.0,
+          "extruded_surface": {
+            "extrusion_axis_world": [
+              1.0,
+              0.0,
+              0.0
+            ],
+            "generator_curvature_jump_per_mm": 0.0,
+            "generator_curvature_left_per_mm": 0.0,
+            "generator_curvature_right_per_mm": 0.0,
+            "oriented_unit_normal_jump": 1.4142135623730951,
+            "oriented_unit_normal_left": [
+              0.0,
+              0.0,
+              1.0
+            ],
+            "oriented_unit_normal_right": [
+              0.0,
+              -1.0,
+              -0.0
+            ],
+            "section_curvature_jump_per_mm": 0.0
+          },
+          "g1": false,
+          "g2": false,
+          "left": {
+            "curvature_vector_per_mm": [
+              0.0,
+              0.0
+            ],
+            "first_derivative": [
+              -10.055555555555555,
+              0.0
+            ],
+            "position_mm": [
+              19.97222222222222,
+              8.0
+            ],
+            "second_derivative": [
+              0.0,
+              0.0
+            ],
+            "speed_mm_per_parameter": 10.055555555555555,
+            "unit_tangent_oriented": [
+              -1.0,
+              0.0
+            ]
+          },
+          "oriented_unit_tangent_jump": 1.4142135623730951,
+          "parameter": 3,
+          "position_jump_mm": 0.0,
+          "right": {
+            "curvature_vector_per_mm": [
+              0.0,
+              0.0
+            ],
+            "first_derivative": [
+              0.0,
+              -4.0
+            ],
+            "position_mm": [
+              19.97222222222222,
+              8.0
+            ],
+            "second_derivative": [
+              0.0,
+              0.0
+            ],
+            "speed_mm_per_parameter": 4.0,
+            "unit_tangent_oriented": [
+              0.0,
+              -1.0
+            ]
+          }
+        }
+      ],
+      "knot_multiplicities": {
+        "0.5": 3,
+        "1": 3,
+        "2": 3,
+        "3": 3
+      },
+      "max_position_error_to_degree_one_mm": 0.0,
+      "smooth_internal_knots": 1,
+      "true_sharp_corners": 4
+    }
+  },
+  "rectangle_y_mm": [
+    19.97222222222222,
+    30.02777777777778
+  ],
+  "rectangle_z_mm": [
+    4.0,
+    8.0
+  ],
+  "schema": "g2_cross_seam_junctions_v1",
+  "source_junctions_and_closure": {
+    "all_internal_and_closure_g2": true,
+    "domain": [
+      0,
+      8
+    ],
+    "expectation_met": true,
+    "expected_classification": "G2",
+    "id": "periodic-profile",
+    "internal_junctions": [
+      {
+        "c0": true,
+        "classification": "G2",
+        "curvature_vector_jump_per_mm": 0.0,
+        "extruded_surface": {
+          "generator_curvature_jump_per_mm": 0.0,
+          "generator_curvature_left_per_mm": 0.0,
+          "generator_curvature_right_per_mm": 0.0,
+          "oriented_unit_normal_jump": 0.0,
+          "section_curvature_jump_per_mm": 0.0
+        },
+        "g1": true,
+        "g2": true,
+        "left": {
+          "curvature_vector_per_mm": [
+            0.0,
+            -0.03125
+          ],
+          "first_derivative": [
+            -11.999999999999998,
+            0.0
+          ],
+          "position_mm": [
+            74.99999999999999,
+            34.0
+          ],
+          "second_derivative": [
+            2.1316282072803002e-14,
+            -4.499999999999999
+          ],
+          "speed_mm_per_parameter": 11.999999999999998,
+          "unit_tangent_oriented": [
+            -1.0,
+            0.0
+          ]
+        },
+        "oriented_unit_tangent_jump": 0.0,
+        "parameter": 1,
+        "position_jump_mm": 0.0,
+        "right": {
+          "curvature_vector_per_mm": [
+            0.0,
+            -0.03125
+          ],
+          "first_derivative": [
+            -11.999999999999998,
+            0.0
+          ],
+          "position_mm": [
+            74.99999999999999,
+            34.0
+          ],
+          "second_derivative": [
+            2.1316282072803002e-14,
+            -4.499999999999999
+          ],
+          "speed_mm_per_parameter": 11.999999999999998,
+          "unit_tangent_oriented": [
+            -1.0,
+            0.0
+          ]
+        }
+      },
+      {
+        "c0": true,
+        "classification": "G2",
+        "curvature_vector_jump_per_mm": 0.0,
+        "extruded_surface": {
+          "generator_curvature_jump_per_mm": 0.0,
+          "generator_curvature_left_per_mm": 0.0,
+          "generator_curvature_right_per_mm": 0.0,
+          "oriented_unit_normal_jump": 0.0,
+          "section_curvature_jump_per_mm": 0.0
+        },
+        "g1": true,
+        "g2": true,
+        "left": {
+          "curvature_vector_per_mm": [
+            0.23999999999999957,
+            -0.23999999999999957
+          ],
+          "first_derivative": [
+            -3.0000000000000004,
+            -3.0000000000000004
+          ],
+          "position_mm": [
+            67.6,
+            32.400000000000006
+          ],
+          "second_derivative": [
+            4.319999999999993,
+            -4.319999999999993
+          ],
+          "speed_mm_per_parameter": 4.242640687119286,
+          "unit_tangent_oriented": [
+            -0.7071067811865476,
+            -0.7071067811865476
+          ]
+        },
+        "oriented_unit_tangent_jump": 0.0,
+        "parameter": 2,
+        "position_jump_mm": 0.0,
+        "right": {
+          "curvature_vector_per_mm": [
+            0.23999999999999957,
+            -0.23999999999999957
+          ],
+          "first_derivative": [
+            -3.0000000000000004,
+            -3.0000000000000004
+          ],
+          "position_mm": [
+            67.6,
+            32.400000000000006
+          ],
+          "second_derivative": [
+            4.319999999999993,
+            -4.319999999999993
+          ],
+          "speed_mm_per_parameter": 4.242640687119286,
+          "unit_tangent_oriented": [
+            -0.7071067811865476,
+            -0.7071067811865476
+          ]
+        }
+      },
+      {
+        "c0": true,
+        "classification": "G2",
+        "curvature_vector_jump_per_mm": 0.0,
+        "extruded_surface": {
+          "generator_curvature_jump_per_mm": 0.0,
+          "generator_curvature_left_per_mm": 0.0,
+          "generator_curvature_right_per_mm": 0.0,
+          "oriented_unit_normal_jump": 0.0,
+          "section_curvature_jump_per_mm": 0.0
+        },
+        "g1": true,
+        "g2": true,
+        "left": {
+          "curvature_vector_per_mm": [
+            0.031250000000000146,
+            0.0
+          ],
+          "first_derivative": [
+            0.0,
+            -11.999999999999998
+          ],
+          "position_mm": [
+            65.99999999999999,
+            25.0
+          ],
+          "second_derivative": [
+            4.50000000000002,
+            0.0
+          ],
+          "speed_mm_per_parameter": 11.999999999999998,
+          "unit_tangent_oriented": [
+            0.0,
+            -1.0
+          ]
+        },
+        "oriented_unit_tangent_jump": 0.0,
+        "parameter": 3,
+        "position_jump_mm": 0.0,
+        "right": {
+          "curvature_vector_per_mm": [
+            0.031250000000000146,
+            0.0
+          ],
+          "first_derivative": [
+            0.0,
+            -11.999999999999998
+          ],
+          "position_mm": [
+            65.99999999999999,
+            25.0
+          ],
+          "second_derivative": [
+            4.50000000000002,
+            0.0
+          ],
+          "speed_mm_per_parameter": 11.999999999999998,
+          "unit_tangent_oriented": [
+            0.0,
+            -1.0
+          ]
+        }
+      },
+      {
+        "c0": true,
+        "classification": "G2",
+        "curvature_vector_jump_per_mm": 0.0,
+        "extruded_surface": {
+          "generator_curvature_jump_per_mm": 0.0,
+          "generator_curvature_left_per_mm": 0.0,
+          "generator_curvature_right_per_mm": 0.0,
+          "oriented_unit_normal_jump": 0.0,
+          "section_curvature_jump_per_mm": 0.0
+        },
+        "g1": true,
+        "g2": true,
+        "left": {
+          "curvature_vector_per_mm": [
+            0.24000000000000032,
+            0.24000000000000032
+          ],
+          "first_derivative": [
+            3.0000000000000004,
+            -3.0000000000000004
+          ],
+          "position_mm": [
+            67.60000000000001,
+            17.6
+          ],
+          "second_derivative": [
+            4.320000000000011,
+            4.320000000000002
+          ],
+          "speed_mm_per_parameter": 4.242640687119286,
+          "unit_tangent_oriented": [
+            0.7071067811865476,
+            -0.7071067811865476
+          ]
+        },
+        "oriented_unit_tangent_jump": 0.0,
+        "parameter": 4,
+        "position_jump_mm": 0.0,
+        "right": {
+          "curvature_vector_per_mm": [
+            0.24000000000000032,
+            0.24000000000000032
+          ],
+          "first_derivative": [
+            3.0000000000000004,
+            -3.0000000000000004
+          ],
+          "position_mm": [
+            67.60000000000001,
+            17.6
+          ],
+          "second_derivative": [
+            4.320000000000011,
+            4.320000000000002
+          ],
+          "speed_mm_per_parameter": 4.242640687119286,
+          "unit_tangent_oriented": [
+            0.7071067811865476,
+            -0.7071067811865476
+          ]
+        }
+      },
+      {
+        "c0": true,
+        "classification": "G2",
+        "curvature_vector_jump_per_mm": 0.0,
+        "extruded_surface": {
+          "generator_curvature_jump_per_mm": 0.0,
+          "generator_curvature_left_per_mm": 0.0,
+          "generator_curvature_right_per_mm": 0.0,
+          "oriented_unit_normal_jump": 0.0,
+          "section_curvature_jump_per_mm": 0.0
+        },
+        "g1": true,
+        "g2": true,
+        "left": {
+          "curvature_vector_per_mm": [
+            0.0,
+            0.03125
+          ],
+          "first_derivative": [
+            11.999999999999998,
+            0.0
+          ],
+          "position_mm": [
+            74.99999999999999,
+            16.0
+          ],
+          "second_derivative": [
+            2.1316282072803002e-14,
+            4.499999999999999
+          ],
+          "speed_mm_per_parameter": 11.999999999999998,
+          "unit_tangent_oriented": [
+            1.0,
+            0.0
+          ]
+        },
+        "oriented_unit_tangent_jump": 0.0,
+        "parameter": 5,
+        "position_jump_mm": 0.0,
+        "right": {
+          "curvature_vector_per_mm": [
+            0.0,
+            0.03125
+          ],
+          "first_derivative": [
+            11.999999999999998,
+            0.0
+          ],
+          "position_mm": [
+            74.99999999999999,
+            16.0
+          ],
+          "second_derivative": [
+            2.1316282072803002e-14,
+            4.499999999999999
+          ],
+          "speed_mm_per_parameter": 11.999999999999998,
+          "unit_tangent_oriented": [
+            1.0,
+            0.0
+          ]
+        }
+      },
+      {
+        "c0": true,
+        "classification": "G2",
+        "curvature_vector_jump_per_mm": 0.0,
+        "extruded_surface": {
+          "generator_curvature_jump_per_mm": 0.0,
+          "generator_curvature_left_per_mm": 0.0,
+          "generator_curvature_right_per_mm": 0.0,
+          "oriented_unit_normal_jump": 0.0,
+          "section_curvature_jump_per_mm": 0.0
+        },
+        "g1": true,
+        "g2": true,
+        "left": {
+          "curvature_vector_per_mm": [
+            -0.23999999999999932,
+            0.23999999999999938
+          ],
+          "first_derivative": [
+            3.0000000000000004,
+            3.0000000000000004
+          ],
+          "position_mm": [
+            82.40000000000002,
+            17.6
+          ],
+          "second_derivative": [
+            -4.319999999999976,
+            4.320000000000002
+          ],
+          "speed_mm_per_parameter": 4.242640687119286,
+          "unit_tangent_oriented": [
+            0.7071067811865476,
+            0.7071067811865476
+          ]
+        },
+        "oriented_unit_tangent_jump": 0.0,
+        "parameter": 6,
+        "position_jump_mm": 0.0,
+        "right": {
+          "curvature_vector_per_mm": [
+            -0.23999999999999932,
+            0.23999999999999938
+          ],
+          "first_derivative": [
+            3.0000000000000004,
+            3.0000000000000004
+          ],
+          "position_mm": [
+            82.40000000000002,
+            17.6
+          ],
+          "second_derivative": [
+            -4.319999999999976,
+            4.320000000000002
+          ],
+          "speed_mm_per_parameter": 4.242640687119286,
+          "unit_tangent_oriented": [
+            0.7071067811865476,
+            0.7071067811865476
+          ]
+        }
+      },
+      {
+        "c0": true,
+        "classification": "G2",
+        "curvature_vector_jump_per_mm": 0.0,
+        "extruded_surface": {
+          "generator_curvature_jump_per_mm": 0.0,
+          "generator_curvature_left_per_mm": 0.0,
+          "generator_curvature_right_per_mm": 0.0,
+          "oriented_unit_normal_jump": 0.0,
+          "section_curvature_jump_per_mm": 0.0
+        },
+        "g1": true,
+        "g2": true,
+        "left": {
+          "curvature_vector_per_mm": [
+            -0.03124999999999985,
+            0.0
+          ],
+          "first_derivative": [
+            0.0,
+            11.999999999999998
+          ],
+          "position_mm": [
+            83.99999999999999,
+            25.0
+          ],
+          "second_derivative": [
+            -4.499999999999978,
+            0.0
+          ],
+          "speed_mm_per_parameter": 11.999999999999998,
+          "unit_tangent_oriented": [
+            0.0,
+            1.0
+          ]
+        },
+        "oriented_unit_tangent_jump": 0.0,
+        "parameter": 7,
+        "position_jump_mm": 0.0,
+        "right": {
+          "curvature_vector_per_mm": [
+            -0.03124999999999985,
+            0.0
+          ],
+          "first_derivative": [
+            0.0,
+            11.999999999999998
+          ],
+          "position_mm": [
+            83.99999999999999,
+            25.0
+          ],
+          "second_derivative": [
+            -4.499999999999978,
+            0.0
+          ],
+          "speed_mm_per_parameter": 11.999999999999998,
+          "unit_tangent_oriented": [
+            0.0,
+            1.0
+          ]
+        }
+      }
+    ],
+    "nonconic_diagnostic": {
+      "certifies_not_one_conic": true,
+      "conic_design_matrix_rank": 6,
+      "exact_sample_count": 7
+    },
+    "periodic_closure": {
+      "c0": true,
+      "classification": "G2",
+      "curvature_vector_jump_per_mm": 0.0,
+      "extruded_surface": {
+        "generator_curvature_jump_per_mm": 0.0,
+        "generator_curvature_left_per_mm": 0.0,
+        "generator_curvature_right_per_mm": 0.0,
+        "oriented_unit_normal_jump": 0.0,
+        "section_curvature_jump_per_mm": 0.0
+      },
+      "g1": true,
+      "g2": true,
+      "left": {
+        "curvature_vector_per_mm": [
+          -0.23999999999999913,
+          -0.23999999999999908
+        ],
+        "first_derivative": [
+          -3.0000000000000004,
+          3.0000000000000004
+        ],
+        "position_mm": [
+          82.40000000000002,
+          32.400000000000006
+        ],
+        "second_derivative": [
+          -4.319999999999976,
+          -4.319999999999993
+        ],
+        "speed_mm_per_parameter": 4.242640687119286,
+        "unit_tangent_oriented": [
+          -0.7071067811865476,
+          0.7071067811865476
+        ]
+      },
+      "oriented_unit_tangent_jump": 0.0,
+      "parameter": 0,
+      "periodic_end_to_start": {
+        "classification": "G2",
+        "curvature_vector_jump_per_mm": 0.0,
+        "extruded_surface_normal_jump": 0.0,
+        "generator_curvature_jump_per_mm": 0.0,
+        "oriented_unit_tangent_jump": 0.0,
+        "position_jump_mm": 0.0
+      },
+      "position_jump_mm": 0.0,
+      "right": {
+        "curvature_vector_per_mm": [
+          -0.23999999999999913,
+          -0.23999999999999908
+        ],
+        "first_derivative": [
+          -3.0000000000000004,
+          3.0000000000000004
+        ],
+        "position_mm": [
+          82.40000000000002,
+          32.400000000000006
+        ],
+        "second_derivative": [
+          -4.319999999999976,
+          -4.319999999999993
+        ],
+        "speed_mm_per_parameter": 4.242640687119286,
+        "unit_tangent_oriented": [
+          -0.7071067811865476,
+          0.7071067811865476
+        ]
+      }
+    }
+  },
+  "status": "verified",
+  "vertical_generatrix_seam_loci": [
+    {
+      "3d_endpoints_mm": [
+        [
+          66.47222222222223,
+          19.972222222222225,
+          4.0
+        ],
+        [
+          66.47222222222223,
+          19.972222222222225,
+          8.0
+        ]
+      ],
+      "branch": "y=19.9722",
+      "curvature_vector_xy_per_mm": [
+        0.08860454103568569,
+        0.020746988263207086
+      ],
+      "endpoint_sketch_junction_classification": "G0_sharp_rectangle_corner; no G2 claim",
+      "generatrix_tangent_xyz": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "intersection_classification": "transverse",
+      "length_mm": 4.0,
+      "parameter": 3.5,
+      "projections": {
+        "xy": [
+          [
+            66.47222222222223,
+            19.972222222222225
+          ],
+          [
+            66.47222222222223,
+            19.972222222222225
+          ]
+        ],
+        "xz": [
+          [
+            66.47222222222223,
+            4.0
+          ],
+          [
+            66.47222222222223,
+            8.0
+          ]
+        ],
+        "yz": [
+          [
+            19.972222222222225,
+            4.0
+          ],
+          [
+            19.972222222222225,
+            8.0
+          ]
+        ]
+      },
+      "sketch_provenance": [
+        "free:boundary",
+        "cross:boundary"
+      ],
+      "source_position_xy_mm": [
+        66.47222222222223,
+        19.972222222222225
+      ],
+      "surface_normal_sine": 0.9736643872111955,
+      "unit_tangent_oriented_xy": [
+        0.22798609842849438,
+        -0.9736643872111955
+      ]
+    },
+    {
+      "3d_endpoints_mm": [
+        [
+          83.52777777777779,
+          19.972222222222225,
+          4.0
+        ],
+        [
+          83.52777777777779,
+          19.972222222222225,
+          8.0
+        ]
+      ],
+      "branch": "y=19.9722",
+      "curvature_vector_xy_per_mm": [
+        -0.08860454103568571,
+        0.020746988263207113
+      ],
+      "endpoint_sketch_junction_classification": "G0_sharp_rectangle_corner; no G2 claim",
+      "generatrix_tangent_xyz": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "intersection_classification": "transverse",
+      "length_mm": 4.0,
+      "parameter": 6.5,
+      "projections": {
+        "xy": [
+          [
+            83.52777777777779,
+            19.972222222222225
+          ],
+          [
+            83.52777777777779,
+            19.972222222222225
+          ]
+        ],
+        "xz": [
+          [
+            83.52777777777779,
+            4.0
+          ],
+          [
+            83.52777777777779,
+            8.0
+          ]
+        ],
+        "yz": [
+          [
+            19.972222222222225,
+            4.0
+          ],
+          [
+            19.972222222222225,
+            8.0
+          ]
+        ]
+      },
+      "sketch_provenance": [
+        "free:boundary",
+        "cross:boundary"
+      ],
+      "source_position_xy_mm": [
+        83.52777777777779,
+        19.972222222222225
+      ],
+      "surface_normal_sine": 0.9736643872111954,
+      "unit_tangent_oriented_xy": [
+        0.22798609842849496,
+        0.9736643872111954
+      ]
+    },
+    {
+      "3d_endpoints_mm": [
+        [
+          66.47222222222223,
+          30.027777777777775,
+          4.0
+        ],
+        [
+          66.47222222222223,
+          30.027777777777775,
+          8.0
+        ]
+      ],
+      "branch": "y=30.0278",
+      "curvature_vector_xy_per_mm": [
+        0.08860454103568569,
+        -0.020746988263207086
+      ],
+      "endpoint_sketch_junction_classification": "G0_sharp_rectangle_corner; no G2 claim",
+      "generatrix_tangent_xyz": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "intersection_classification": "transverse",
+      "length_mm": 4.0,
+      "parameter": 2.5,
+      "projections": {
+        "xy": [
+          [
+            66.47222222222223,
+            30.027777777777775
+          ],
+          [
+            66.47222222222223,
+            30.027777777777775
+          ]
+        ],
+        "xz": [
+          [
+            66.47222222222223,
+            4.0
+          ],
+          [
+            66.47222222222223,
+            8.0
+          ]
+        ],
+        "yz": [
+          [
+            30.027777777777775,
+            4.0
+          ],
+          [
+            30.027777777777775,
+            8.0
+          ]
+        ]
+      },
+      "sketch_provenance": [
+        "free:boundary",
+        "cross:boundary"
+      ],
+      "source_position_xy_mm": [
+        66.47222222222223,
+        30.027777777777775
+      ],
+      "surface_normal_sine": 0.9736643872111955,
+      "unit_tangent_oriented_xy": [
+        -0.22798609842849438,
+        -0.9736643872111955
+      ]
+    },
+    {
+      "3d_endpoints_mm": [
+        [
+          83.52777777777779,
+          30.027777777777782,
+          4.0
+        ],
+        [
+          83.52777777777779,
+          30.027777777777782,
+          8.0
+        ]
+      ],
+      "branch": "y=30.0278",
+      "curvature_vector_xy_per_mm": [
+        -0.08860454103568578,
+        -0.020746988263207162
+      ],
+      "endpoint_sketch_junction_classification": "G0_sharp_rectangle_corner; no G2 claim",
+      "generatrix_tangent_xyz": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "intersection_classification": "transverse",
+      "length_mm": 4.0,
+      "parameter": 7.5,
+      "projections": {
+        "xy": [
+          [
+            83.52777777777779,
+            30.027777777777782
+          ],
+          [
+            83.52777777777779,
+            30.027777777777782
+          ]
+        ],
+        "xz": [
+          [
+            83.52777777777779,
+            4.0
+          ],
+          [
+            83.52777777777779,
+            8.0
+          ]
+        ],
+        "yz": [
+          [
+            30.027777777777782,
+            4.0
+          ],
+          [
+            30.027777777777782,
+            8.0
+          ]
+        ]
+      },
+      "sketch_provenance": [
+        "free:boundary",
+        "cross:boundary"
+      ],
+      "source_position_xy_mm": [
+        83.52777777777779,
+        30.027777777777782
+      ],
+      "surface_normal_sine": 0.9736643872111953,
+      "unit_tangent_oriented_xy": [
+        -0.22798609842849504,
+        0.9736643872111954
+      ]
+    }
+  ]
+}

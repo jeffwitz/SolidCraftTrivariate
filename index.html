@@ -1,71 +1,71 @@
 <!doctype html>
-<html lang="fr">
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#f5f4ef">
-  <meta name="description" content="Six modèles historiques et cinq équerres FieldCraft, explorables en coupe.">
-  <title>Pièces trivariées · SolidCraft</title>
+  <meta name="description" content="Explore six historical models and five FieldCraft brackets as 3D solids or cross-sections.">
+  <title>Trivariate parts · SolidCraft</title>
   <link rel="stylesheet" href="./style.css?v=5e63da9c6524">
-  <link id="catalog-url" rel="alternate" type="application/json" href="./experiments.json?v=07be25cc133d">
-  <script type="module" src="./app.js?v=a2fc035ba353"></script>
+  <link id="catalog-url" rel="alternate" type="application/json" href="./experiments.json?v=052e2a8df703">
+  <script type="module" src="./app.js?v=42e67434d79f"></script>
 </head>
 <body>
   <header class="topbar">
-    <a class="wordmark" href="./" aria-label="SolidCraft, accueil"><span class="mark" aria-hidden="true">S</span><span>SolidCraft <span class="wordmark-light">/ Trivariate</span></span></a>
-    <a class="topbar-source" href="https://github.com/jeffwitz/SolidCraftTrivariate/tree/main" target="_blank" rel="noopener noreferrer">Code source <span aria-hidden="true">↗</span></a>
+    <a class="wordmark" href="./" aria-label="SolidCraft home"><span class="mark" aria-hidden="true">S</span><span>SolidCraft <span class="wordmark-light">/ Trivariate</span></span></a>
+    <a class="topbar-source" href="https://github.com/jeffwitz/SolidCraftTrivariate/tree/main" target="_blank" rel="noopener noreferrer">Source code <span aria-hidden="true">↗</span></a>
   </header>
 
   <main>
     <section class="intro" aria-labelledby="page-title">
-      <h1 id="page-title">Modèles trivariés et équerres FieldCraft</h1>
-      <p class="lede">Six pièces à profils courbes et cinq équerres FieldCraft à comparer en volume ou en coupe.</p>
+      <h1 id="page-title">Trivariate models and FieldCraft brackets</h1>
+      <p class="lede">Explore six curved-profile parts and five FieldCraft brackets as 3D solids or cross-sections.</p>
     </section>
 
-    <section class="workspace" aria-label="Explorateur de modèles">
+    <section class="workspace" aria-label="Model explorer">
       <div class="viewport-panel">
         <div class="viewport-head">
-          <div><h2 id="view-title">Chargement du modèle…</h2></div>
+          <div><h2 id="view-title">Loading model…</h2></div>
           <span class="view-coordinate">X&nbsp;·&nbsp;Y&nbsp;·&nbsp;Z <span class="dot" aria-hidden="true"></span> mm</span>
         </div>
         <div class="canvas-wrap" id="canvas-wrap">
-          <canvas id="model-canvas" tabindex="0" aria-label="Modèle 3D interactif. Flèches pour tourner, plus et moins pour zoomer." aria-describedby="viewport-caption"></canvas>
-          <div class="canvas-state" id="canvas-state" role="status">Chargement des expériences…</div>
+          <canvas id="model-canvas" tabindex="0" aria-label="Interactive 3D model. Use the arrow keys to rotate, and plus or minus to zoom." aria-describedby="viewport-caption"></canvas>
+          <div class="canvas-state" id="canvas-state" role="status">Loading experiments…</div>
           <div class="axis-key" aria-hidden="true"><span><i class="axis-x"></i>X</span><span><i class="axis-y"></i>Y</span><span><i class="axis-z"></i>Z</span></div>
-          <div class="viewport-caption" id="viewport-caption">Glisser pour tourner · Molette ou +/− pour zoomer · Flèches au clavier</div>
+          <div class="viewport-caption" id="viewport-caption">Drag to rotate · Scroll or use +/− to zoom · Arrow keys to rotate</div>
         </div>
-        <div class="viewport-toolbar" aria-label="Commandes de visualisation">
+        <div class="viewport-toolbar" aria-label="Viewer controls">
           <fieldset class="segmented">
-            <legend>Affichage</legend>
+            <legend>Display</legend>
             <button type="button" class="segment" data-mode="surface" aria-pressed="false">Surface</button>
-            <button type="button" class="segment is-active" data-mode="blocks" aria-pressed="true">Blocs</button>
+            <button type="button" class="segment is-active" data-mode="blocks" aria-pressed="true">Blocks</button>
           </fieldset>
           <div class="clip-control">
-            <label for="clip-axis">Coupe</label>
-            <select id="clip-axis" aria-label="Axe de coupe"><option value="">Désactivée</option><option value="x">X</option><option value="y">Y</option><option value="z">Z</option></select>
-            <label class="sr-only" for="clip-fraction">Position de la coupe</label>
+            <label for="clip-axis">Section</label>
+            <select id="clip-axis" aria-label="Section axis"><option value="">Off</option><option value="x">X</option><option value="y">Y</option><option value="z">Z</option></select>
+            <label class="sr-only" for="clip-fraction">Section position</label>
             <input id="clip-fraction" type="range" min="5" max="95" value="50" disabled>
             <output id="clip-value" for="clip-fraction">50&nbsp;%</output>
           </div>
-          <button type="button" class="section-button" id="s3-face-pocket" hidden>Voir la poche en coupe</button>
-          <button type="button" class="reset-button" id="reset-view"><span aria-hidden="true">↺</span> Réinitialiser la vue</button>
+          <button type="button" class="section-button" id="s3-face-pocket" hidden>Show pocket section</button>
+          <button type="button" class="reset-button" id="reset-view"><span aria-hidden="true">↺</span> Reset view</button>
         </div>
       </div>
 
-      <aside class="side-panel" aria-label="Expériences et mesures">
-        <div class="experiment-head"><label for="experiment-select">Expérience</label><select id="experiment-select" disabled><option>Chargement…</option></select></div>
+      <aside class="side-panel" aria-label="Experiments and measurements">
+        <div class="experiment-head"><label for="experiment-select">Experiment</label><select id="experiment-select" disabled><option>Loading…</option></select></div>
         <div class="experiment-copy"><p id="experiment-description"></p></div>
-        <figure class="profile-card" id="profile-card" hidden aria-label="Profil réel des trous"></figure>
-        <div class="metrics-section"><div class="section-rule"><span>Repères du modèle</span><span class="rule-line"></span></div><dl id="metrics-list" class="metrics-list"><div class="metric-empty">En attente des données.</div></dl></div>
-        <nav class="source-links" aria-label="Fichiers de l’expérience"><a id="model-link" href="#" hidden><span>Modèle trivarié (JSON)</span><span aria-hidden="true">↗</span></a><a id="source-link" href="#" hidden><span>Recette source</span><span aria-hidden="true">↗</span></a><a id="step-link" href="#" hidden><span>Modèle STEP</span><span aria-hidden="true">↗</span></a><a id="audit-link" href="#" hidden><span>Audit du modèle</span><span aria-hidden="true">↗</span></a><a id="figure-link" href="#" hidden><span>Figure annotée</span><span aria-hidden="true">↗</span></a><a class="campaign-link" href="https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/galerie-esquisses-courbes.md" target="_blank" rel="noopener noreferrer">Protocole et résultats <span aria-hidden="true">↗</span></a></nav>
+        <figure class="profile-card" id="profile-card" hidden aria-label="Actual hole profiles"></figure>
+        <div class="metrics-section"><div class="section-rule"><span>Model data</span><span class="rule-line"></span></div><dl id="metrics-list" class="metrics-list"><div class="metric-empty">Waiting for data.</div></dl></div>
+        <nav class="source-links" aria-label="Experiment files"><a id="model-link" href="#" hidden><span>Trivariate model (JSON)</span><span aria-hidden="true">↗</span></a><a id="source-link" href="#" hidden><span>Source recipe</span><span aria-hidden="true">↗</span></a><a id="step-link" href="#" hidden><span>STEP model</span><span aria-hidden="true">↗</span></a><a id="audit-link" href="#" hidden><span>Model audit</span><span aria-hidden="true">↗</span></a><a id="figure-link" href="#" hidden><span>Annotated figure</span><span aria-hidden="true">↗</span></a><a class="campaign-link" href="https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/galerie-esquisses-courbes.md" target="_blank" rel="noopener noreferrer">Protocol and results <span aria-hidden="true">↗</span></a></nav>
       </aside>
     </section>
 
-    <details class="proof"><summary>Comment lire les repères ?</summary>
-      <p>Les nombres de blocs et d’interfaces décrivent le graphe fourni pour chaque configuration. Pour les six modèles historiques, toute revendication de minimalité se limite aux jonctions d’arc prescrites et à la classe de partitions alignées sur les couches. Les cinq équerres FieldCraft sont des modèles de référence sans revendication de minimalité.</p>
-      <p>Les coupes sont un aperçu visuel du modèle trivarié; elles ne constituent pas un certificat géométrique. La recette et l’audit associés documentent les données et leur domaine.</p>
+    <details class="proof"><summary>How should I read these values?</summary>
+      <p>The block and interface counts describe the graph supplied for each configuration. For the six historical models, any minimality claim applies only to the prescribed arc junctions and the class of layer-aligned partitions. The five FieldCraft brackets are reference models, with no minimality claim.</p>
+      <p>Sections provide a visual preview of the trivariate model; they are not a geometric certificate. The associated recipe and audit document the data and their scope.</p>
     </details>
-    <footer class="page-footer"><span>SolidCraft Trivariate</span><span></span><a href="https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/architecture.md" target="_blank" rel="noopener noreferrer">Architecture du projet ↗</a></footer>
+    <footer class="page-footer"><span>SolidCraft Trivariate</span><span></span><a href="https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/architecture.md" target="_blank" rel="noopener noreferrer">Project architecture ↗</a></footer>
   </main>
 </body>
 </html>

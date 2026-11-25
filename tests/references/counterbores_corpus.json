@@ -1,0 +1,1752 @@
+[
+  {
+    "id": "from_end",
+    "recipe": {
+      "family": "polygon_counterbores_v1",
+      "outer": {
+        "id": "outer",
+        "vertices": [
+          {
+            "id": "v00",
+            "xy_mm": [
+              -24,
+              -16
+            ]
+          },
+          {
+            "id": "v01",
+            "xy_mm": [
+              24,
+              -16
+            ]
+          },
+          {
+            "id": "v02",
+            "xy_mm": [
+              24,
+              16
+            ]
+          },
+          {
+            "id": "v03",
+            "xy_mm": [
+              -24,
+              16
+            ]
+          }
+        ]
+      },
+      "bores": [
+        {
+          "id": "pilot",
+          "center_mm": [
+            2,
+            -1
+          ],
+          "radius_mm": 5,
+          "guard_mm": 12,
+          "counterbore_radius_mm": 6,
+          "opening": "end",
+          "depth_mm": 5
+        }
+      ],
+      "height_mm": 12,
+      "top_shift_mm": [
+        3,
+        -2
+      ]
+    },
+    "expected": true
+  },
+  {
+    "id": "from_end_reordered",
+    "recipe": {
+      "family": "polygon_counterbores_v1",
+      "outer": {
+        "id": "outer",
+        "vertices": [
+          {
+            "id": "v01",
+            "xy_mm": [
+              24,
+              -16
+            ]
+          },
+          {
+            "id": "v02",
+            "xy_mm": [
+              24,
+              16
+            ]
+          },
+          {
+            "id": "v03",
+            "xy_mm": [
+              -24,
+              16
+            ]
+          },
+          {
+            "id": "v00",
+            "xy_mm": [
+              -24,
+              -16
+            ]
+          }
+        ]
+      },
+      "bores": [
+        {
+          "id": "pilot",
+          "center_mm": [
+            2,
+            -1
+          ],
+          "radius_mm": 5,
+          "guard_mm": 12,
+          "counterbore_radius_mm": 6,
+          "opening": "end",
+          "depth_mm": 5
+        }
+      ],
+      "height_mm": 12,
+      "top_shift_mm": [
+        3,
+        -2
+      ]
+    },
+    "expected": true,
+    "equivalent_to": "from_end"
+  },
+  {
+    "id": "from_start",
+    "recipe": {
+      "family": "polygon_counterbores_v1",
+      "outer": {
+        "id": "outer",
+        "vertices": [
+          {
+            "id": "v00",
+            "xy_mm": [
+              -24,
+              -16
+            ]
+          },
+          {
+            "id": "v01",
+            "xy_mm": [
+              24,
+              -16
+            ]
+          },
+          {
+            "id": "v02",
+            "xy_mm": [
+              24,
+              16
+            ]
+          },
+          {
+            "id": "v03",
+            "xy_mm": [
+              -24,
+              16
+            ]
+          }
+        ]
+      },
+      "bores": [
+        {
+          "id": "pilot",
+          "center_mm": [
+            2,
+            -1
+          ],
+          "radius_mm": 5,
+          "guard_mm": 12,
+          "counterbore_radius_mm": 6,
+          "opening": "start",
+          "depth_mm": 5
+        }
+      ],
+      "height_mm": 12,
+      "top_shift_mm": [
+        3,
+        -2
+      ]
+    },
+    "expected": true
+  },
+  {
+    "id": "from_start_reordered",
+    "recipe": {
+      "family": "polygon_counterbores_v1",
+      "outer": {
+        "id": "outer",
+        "vertices": [
+          {
+            "id": "v01",
+            "xy_mm": [
+              24,
+              -16
+            ]
+          },
+          {
+            "id": "v02",
+            "xy_mm": [
+              24,
+              16
+            ]
+          },
+          {
+            "id": "v03",
+            "xy_mm": [
+              -24,
+              16
+            ]
+          },
+          {
+            "id": "v00",
+            "xy_mm": [
+              -24,
+              -16
+            ]
+          }
+        ]
+      },
+      "bores": [
+        {
+          "id": "pilot",
+          "center_mm": [
+            2,
+            -1
+          ],
+          "radius_mm": 5,
+          "guard_mm": 12,
+          "counterbore_radius_mm": 6,
+          "opening": "start",
+          "depth_mm": 5
+        }
+      ],
+      "height_mm": 12,
+      "top_shift_mm": [
+        3,
+        -2
+      ]
+    },
+    "expected": true,
+    "equivalent_to": "from_start"
+  },
+  {
+    "id": "four_alternating",
+    "recipe": {
+      "family": "polygon_counterbores_v1",
+      "outer": {
+        "id": "outer",
+        "vertices": [
+          {
+            "id": "v00",
+            "xy_mm": [
+              -24,
+              -16
+            ]
+          },
+          {
+            "id": "v01",
+            "xy_mm": [
+              24,
+              -16
+            ]
+          },
+          {
+            "id": "v02",
+            "xy_mm": [
+              24,
+              16
+            ]
+          },
+          {
+            "id": "v03",
+            "xy_mm": [
+              -24,
+              16
+            ]
+          }
+        ]
+      },
+      "bores": [
+        {
+          "id": "a",
+          "center_mm": [
+            -14,
+            -7
+          ],
+          "radius_mm": 1,
+          "guard_mm": 4,
+          "counterbore_radius_mm": 2,
+          "opening": "start",
+          "depth_mm": 4
+        },
+        {
+          "id": "b",
+          "center_mm": [
+            13,
+            -7
+          ],
+          "radius_mm": 2,
+          "guard_mm": 6,
+          "counterbore_radius_mm": 3,
+          "opening": "end",
+          "depth_mm": 8
+        },
+        {
+          "id": "c",
+          "center_mm": [
+            -10,
+            8
+          ],
+          "radius_mm": 1,
+          "guard_mm": 5,
+          "counterbore_radius_mm": 2,
+          "opening": "start",
+          "depth_mm": 6
+        },
+        {
+          "id": "d",
+          "center_mm": [
+            13,
+            8
+          ],
+          "radius_mm": 1,
+          "guard_mm": 4,
+          "counterbore_radius_mm": 2,
+          "opening": "end",
+          "depth_mm": 2
+        }
+      ],
+      "height_mm": 12,
+      "top_shift_mm": [
+        5,
+        -7
+      ]
+    },
+    "expected": true
+  },
+  {
+    "id": "four_alternating_reordered",
+    "recipe": {
+      "family": "polygon_counterbores_v1",
+      "outer": {
+        "id": "outer",
+        "vertices": [
+          {
+            "id": "v01",
+            "xy_mm": [
+              24,
+              -16
+            ]
+          },
+          {
+            "id": "v02",
+            "xy_mm": [
+              24,
+              16
+            ]
+          },
+          {
+            "id": "v03",
+            "xy_mm": [
+              -24,
+              16
+            ]
+          },
+          {
+            "id": "v00",
+            "xy_mm": [
+              -24,
+              -16
+            ]
+          }
+        ]
+      },
+      "bores": [
+        {
+          "id": "d",
+          "center_mm": [
+            13,
+            8
+          ],
+          "radius_mm": 1,
+          "guard_mm": 4,
+          "counterbore_radius_mm": 2,
+          "opening": "end",
+          "depth_mm": 2
+        },
+        {
+          "id": "c",
+          "center_mm": [
+            -10,
+            8
+          ],
+          "radius_mm": 1,
+          "guard_mm": 5,
+          "counterbore_radius_mm": 2,
+          "opening": "start",
+          "depth_mm": 6
+        },
+        {
+          "id": "b",
+          "center_mm": [
+            13,
+            -7
+          ],
+          "radius_mm": 2,
+          "guard_mm": 6,
+          "counterbore_radius_mm": 3,
+          "opening": "end",
+          "depth_mm": 8
+        },
+        {
+          "id": "a",
+          "center_mm": [
+            -14,
+            -7
+          ],
+          "radius_mm": 1,
+          "guard_mm": 4,
+          "counterbore_radius_mm": 2,
+          "opening": "start",
+          "depth_mm": 4
+        }
+      ],
+      "height_mm": 12,
+      "top_shift_mm": [
+        5,
+        -7
+      ]
+    },
+    "expected": true,
+    "equivalent_to": "four_alternating"
+  },
+  {
+    "id": "plane_coincidence",
+    "recipe": {
+      "family": "polygon_counterbores_v1",
+      "outer": {
+        "id": "outer",
+        "vertices": [
+          {
+            "id": "v00",
+            "xy_mm": [
+              -24,
+              -16
+            ]
+          },
+          {
+            "id": "v01",
+            "xy_mm": [
+              24,
+              -16
+            ]
+          },
+          {
+            "id": "v02",
+            "xy_mm": [
+              24,
+              16
+            ]
+          },
+          {
+            "id": "v03",
+            "xy_mm": [
+              -24,
+              16
+            ]
+          }
+        ]
+      },
+      "bores": [
+        {
+          "id": "left",
+          "center_mm": [
+            -12,
+            -2
+          ],
+          "radius_mm": 2,
+          "guard_mm": 6,
+          "counterbore_radius_mm": 3,
+          "opening": "start",
+          "depth_mm": 5
+        },
+        {
+          "id": "right",
+          "center_mm": [
+            10,
+            3
+          ],
+          "radius_mm": 3,
+          "guard_mm": 8,
+          "counterbore_radius_mm": 4,
+          "opening": "end",
+          "depth_mm": 7
+        }
+      ],
+      "height_mm": 12,
+      "top_shift_mm": [
+        3,
+        1
+      ]
+    },
+    "expected": true
+  },
+  {
+    "id": "plane_coincidence_reordered",
+    "recipe": {
+      "family": "polygon_counterbores_v1",
+      "outer": {
+        "id": "outer",
+        "vertices": [
+          {
+            "id": "v01",
+            "xy_mm": [
+              24,
+              -16
+            ]
+          },
+          {
+            "id": "v02",
+            "xy_mm": [
+              24,
+              16
+            ]
+          },
+          {
+            "id": "v03",
+            "xy_mm": [
+              -24,
+              16
+            ]
+          },
+          {
+            "id": "v00",
+            "xy_mm": [
+              -24,
+              -16
+            ]
+          }
+        ]
+      },
+      "bores": [
+        {
+          "id": "right",
+          "center_mm": [
+            10,
+            3
+          ],
+          "radius_mm": 3,
+          "guard_mm": 8,
+          "counterbore_radius_mm": 4,
+          "opening": "end",
+          "depth_mm": 7
+        },
+        {
+          "id": "left",
+          "center_mm": [
+            -12,
+            -2
+          ],
+          "radius_mm": 2,
+          "guard_mm": 6,
+          "counterbore_radius_mm": 3,
+          "opening": "start",
+          "depth_mm": 5
+        }
+      ],
+      "height_mm": 12,
+      "top_shift_mm": [
+        3,
+        1
+      ]
+    },
+    "expected": true,
+    "equivalent_to": "plane_coincidence"
+  },
+  {
+    "id": "thin_ligament",
+    "recipe": {
+      "family": "polygon_counterbores_v1",
+      "outer": {
+        "id": "outer",
+        "vertices": [
+          {
+            "id": "v00",
+            "xy_mm": [
+              -24,
+              -16
+            ]
+          },
+          {
+            "id": "v01",
+            "xy_mm": [
+              24,
+              -16
+            ]
+          },
+          {
+            "id": "v02",
+            "xy_mm": [
+              24,
+              16
+            ]
+          },
+          {
+            "id": "v03",
+            "xy_mm": [
+              -24,
+              16
+            ]
+          }
+        ]
+      },
+      "bores": [
+        {
+          "id": "left",
+          "center_mm": [
+            -7,
+            0
+          ],
+          "radius_mm": 2,
+          "guard_mm": 6,
+          "counterbore_radius_mm": 3,
+          "opening": "end",
+          "depth_mm": 1
+        },
+        {
+          "id": "right",
+          "center_mm": [
+            6,
+            0
+          ],
+          "radius_mm": 2,
+          "guard_mm": 6,
+          "counterbore_radius_mm": 3,
+          "opening": "start",
+          "depth_mm": 11
+        }
+      ],
+      "height_mm": 12,
+      "top_shift_mm": [
+        7,
+        0
+      ]
+    },
+    "expected": true
+  },
+  {
+    "id": "thin_ligament_reordered",
+    "recipe": {
+      "family": "polygon_counterbores_v1",
+      "outer": {
+        "id": "outer",
+        "vertices": [
+          {
+            "id": "v01",
+            "xy_mm": [
+              24,
+              -16
+            ]
+          },
+          {
+            "id": "v02",
+            "xy_mm": [
+              24,
+              16
+            ]
+          },
+          {
+            "id": "v03",
+            "xy_mm": [
+              -24,
+              16
+            ]
+          },
+          {
+            "id": "v00",
+            "xy_mm": [
+              -24,
+              -16
+            ]
+          }
+        ]
+      },
+      "bores": [
+        {
+          "id": "right",
+          "center_mm": [
+            6,
+            0
+          ],
+          "radius_mm": 2,
+          "guard_mm": 6,
+          "counterbore_radius_mm": 3,
+          "opening": "start",
+          "depth_mm": 11
+        },
+        {
+          "id": "left",
+          "center_mm": [
+            -7,
+            0
+          ],
+          "radius_mm": 2,
+          "guard_mm": 6,
+          "counterbore_radius_mm": 3,
+          "opening": "end",
+          "depth_mm": 1
+        }
+      ],
+      "height_mm": 12,
+      "top_shift_mm": [
+        7,
+        0
+      ]
+    },
+    "expected": true,
+    "equivalent_to": "thin_ligament"
+  },
+  {
+    "id": "concave",
+    "recipe": {
+      "family": "polygon_counterbores_v1",
+      "outer": {
+        "id": "outer",
+        "vertices": [
+          {
+            "id": "v00",
+            "xy_mm": [
+              0,
+              0
+            ]
+          },
+          {
+            "id": "v01",
+            "xy_mm": [
+              48,
+              0
+            ]
+          },
+          {
+            "id": "v02",
+            "xy_mm": [
+              48,
+              18
+            ]
+          },
+          {
+            "id": "v03",
+            "xy_mm": [
+              20,
+              18
+            ]
+          },
+          {
+            "id": "v04",
+            "xy_mm": [
+              20,
+              44
+            ]
+          },
+          {
+            "id": "v05",
+            "xy_mm": [
+              0,
+              44
+            ]
+          }
+        ]
+      },
+      "bores": [
+        {
+          "id": "stem",
+          "center_mm": [
+            10,
+            30
+          ],
+          "radius_mm": 1,
+          "guard_mm": 4,
+          "counterbore_radius_mm": 2,
+          "opening": "start",
+          "depth_mm": 3
+        },
+        {
+          "id": "foot",
+          "center_mm": [
+            32,
+            8
+          ],
+          "radius_mm": 1,
+          "guard_mm": 4,
+          "counterbore_radius_mm": 2,
+          "opening": "end",
+          "depth_mm": 6
+        }
+      ],
+      "height_mm": 12,
+      "top_shift_mm": [
+        -2,
+        -5
+      ]
+    },
+    "expected": true
+  },
+  {
+    "id": "concave_reordered",
+    "recipe": {
+      "family": "polygon_counterbores_v1",
+      "outer": {
+        "id": "outer",
+        "vertices": [
+          {
+            "id": "v01",
+            "xy_mm": [
+              48,
+              0
+            ]
+          },
+          {
+            "id": "v02",
+            "xy_mm": [
+              48,
+              18
+            ]
+          },
+          {
+            "id": "v03",
+            "xy_mm": [
+              20,
+              18
+            ]
+          },
+          {
+            "id": "v04",
+            "xy_mm": [
+              20,
+              44
+            ]
+          },
+          {
+            "id": "v05",
+            "xy_mm": [
+              0,
+              44
+            ]
+          },
+          {
+            "id": "v00",
+            "xy_mm": [
+              0,
+              0
+            ]
+          }
+        ]
+      },
+      "bores": [
+        {
+          "id": "foot",
+          "center_mm": [
+            32,
+            8
+          ],
+          "radius_mm": 1,
+          "guard_mm": 4,
+          "counterbore_radius_mm": 2,
+          "opening": "end",
+          "depth_mm": 6
+        },
+        {
+          "id": "stem",
+          "center_mm": [
+            10,
+            30
+          ],
+          "radius_mm": 1,
+          "guard_mm": 4,
+          "counterbore_radius_mm": 2,
+          "opening": "start",
+          "depth_mm": 3
+        }
+      ],
+      "height_mm": 12,
+      "top_shift_mm": [
+        -2,
+        -5
+      ]
+    },
+    "expected": true,
+    "equivalent_to": "concave"
+  },
+  {
+    "id": "strong_shear",
+    "recipe": {
+      "family": "polygon_counterbores_v1",
+      "outer": {
+        "id": "outer",
+        "vertices": [
+          {
+            "id": "v00",
+            "xy_mm": [
+              -24,
+              -16
+            ]
+          },
+          {
+            "id": "v01",
+            "xy_mm": [
+              24,
+              -16
+            ]
+          },
+          {
+            "id": "v02",
+            "xy_mm": [
+              24,
+              16
+            ]
+          },
+          {
+            "id": "v03",
+            "xy_mm": [
+              -24,
+              16
+            ]
+          }
+        ]
+      },
+      "bores": [
+        {
+          "id": "micro",
+          "center_mm": [
+            1,
+            2
+          ],
+          "radius_mm": 1,
+          "guard_mm": 4,
+          "counterbore_radius_mm": 2,
+          "opening": "start",
+          "depth_mm": 1
+        }
+      ],
+      "height_mm": 3,
+      "top_shift_mm": [
+        32,
+        -32
+      ]
+    },
+    "expected": true
+  },
+  {
+    "id": "strong_shear_reordered",
+    "recipe": {
+      "family": "polygon_counterbores_v1",
+      "outer": {
+        "id": "outer",
+        "vertices": [
+          {
+            "id": "v01",
+            "xy_mm": [
+              24,
+              -16
+            ]
+          },
+          {
+            "id": "v02",
+            "xy_mm": [
+              24,
+              16
+            ]
+          },
+          {
+            "id": "v03",
+            "xy_mm": [
+              -24,
+              16
+            ]
+          },
+          {
+            "id": "v00",
+            "xy_mm": [
+              -24,
+              -16
+            ]
+          }
+        ]
+      },
+      "bores": [
+        {
+          "id": "micro",
+          "center_mm": [
+            1,
+            2
+          ],
+          "radius_mm": 1,
+          "guard_mm": 4,
+          "counterbore_radius_mm": 2,
+          "opening": "start",
+          "depth_mm": 1
+        }
+      ],
+      "height_mm": 3,
+      "top_shift_mm": [
+        32,
+        -32
+      ]
+    },
+    "expected": true,
+    "equivalent_to": "strong_shear"
+  },
+  {
+    "id": "zero_pilot",
+    "recipe": {
+      "family": "polygon_counterbores_v1",
+      "outer": {
+        "id": "outer",
+        "vertices": [
+          {
+            "id": "v00",
+            "xy_mm": [
+              -24,
+              -16
+            ]
+          },
+          {
+            "id": "v01",
+            "xy_mm": [
+              24,
+              -16
+            ]
+          },
+          {
+            "id": "v02",
+            "xy_mm": [
+              24,
+              16
+            ]
+          },
+          {
+            "id": "v03",
+            "xy_mm": [
+              -24,
+              16
+            ]
+          }
+        ]
+      },
+      "bores": [
+        {
+          "id": "pilot",
+          "center_mm": [
+            2,
+            -1
+          ],
+          "radius_mm": 0,
+          "guard_mm": 12,
+          "counterbore_radius_mm": 6,
+          "opening": "end",
+          "depth_mm": 5
+        }
+      ],
+      "height_mm": 12,
+      "top_shift_mm": [
+        3,
+        -2
+      ]
+    },
+    "expected": false
+  },
+  {
+    "id": "equal_radii",
+    "recipe": {
+      "family": "polygon_counterbores_v1",
+      "outer": {
+        "id": "outer",
+        "vertices": [
+          {
+            "id": "v00",
+            "xy_mm": [
+              -24,
+              -16
+            ]
+          },
+          {
+            "id": "v01",
+            "xy_mm": [
+              24,
+              -16
+            ]
+          },
+          {
+            "id": "v02",
+            "xy_mm": [
+              24,
+              16
+            ]
+          },
+          {
+            "id": "v03",
+            "xy_mm": [
+              -24,
+              16
+            ]
+          }
+        ]
+      },
+      "bores": [
+        {
+          "id": "pilot",
+          "center_mm": [
+            2,
+            -1
+          ],
+          "radius_mm": 6,
+          "guard_mm": 12,
+          "counterbore_radius_mm": 6,
+          "opening": "end",
+          "depth_mm": 5
+        }
+      ],
+      "height_mm": 12,
+      "top_shift_mm": [
+        3,
+        -2
+      ]
+    },
+    "expected": false
+  },
+  {
+    "id": "inverted",
+    "recipe": {
+      "family": "polygon_counterbores_v1",
+      "outer": {
+        "id": "outer",
+        "vertices": [
+          {
+            "id": "v00",
+            "xy_mm": [
+              -24,
+              -16
+            ]
+          },
+          {
+            "id": "v01",
+            "xy_mm": [
+              24,
+              -16
+            ]
+          },
+          {
+            "id": "v02",
+            "xy_mm": [
+              24,
+              16
+            ]
+          },
+          {
+            "id": "v03",
+            "xy_mm": [
+              -24,
+              16
+            ]
+          }
+        ]
+      },
+      "bores": [
+        {
+          "id": "pilot",
+          "center_mm": [
+            2,
+            -1
+          ],
+          "radius_mm": 5,
+          "guard_mm": 12,
+          "counterbore_radius_mm": 3,
+          "opening": "end",
+          "depth_mm": 5
+        }
+      ],
+      "height_mm": 12,
+      "top_shift_mm": [
+        3,
+        -2
+      ]
+    },
+    "expected": false
+  },
+  {
+    "id": "zero_depth",
+    "recipe": {
+      "family": "polygon_counterbores_v1",
+      "outer": {
+        "id": "outer",
+        "vertices": [
+          {
+            "id": "v00",
+            "xy_mm": [
+              -24,
+              -16
+            ]
+          },
+          {
+            "id": "v01",
+            "xy_mm": [
+              24,
+              -16
+            ]
+          },
+          {
+            "id": "v02",
+            "xy_mm": [
+              24,
+              16
+            ]
+          },
+          {
+            "id": "v03",
+            "xy_mm": [
+              -24,
+              16
+            ]
+          }
+        ]
+      },
+      "bores": [
+        {
+          "id": "pilot",
+          "center_mm": [
+            2,
+            -1
+          ],
+          "radius_mm": 5,
+          "guard_mm": 12,
+          "counterbore_radius_mm": 6,
+          "opening": "end",
+          "depth_mm": 0
+        }
+      ],
+      "height_mm": 12,
+      "top_shift_mm": [
+        3,
+        -2
+      ]
+    },
+    "expected": false
+  },
+  {
+    "id": "full_depth",
+    "recipe": {
+      "family": "polygon_counterbores_v1",
+      "outer": {
+        "id": "outer",
+        "vertices": [
+          {
+            "id": "v00",
+            "xy_mm": [
+              -24,
+              -16
+            ]
+          },
+          {
+            "id": "v01",
+            "xy_mm": [
+              24,
+              -16
+            ]
+          },
+          {
+            "id": "v02",
+            "xy_mm": [
+              24,
+              16
+            ]
+          },
+          {
+            "id": "v03",
+            "xy_mm": [
+              -24,
+              16
+            ]
+          }
+        ]
+      },
+      "bores": [
+        {
+          "id": "pilot",
+          "center_mm": [
+            2,
+            -1
+          ],
+          "radius_mm": 5,
+          "guard_mm": 12,
+          "counterbore_radius_mm": 6,
+          "opening": "end",
+          "depth_mm": 12
+        }
+      ],
+      "height_mm": 12,
+      "top_shift_mm": [
+        3,
+        -2
+      ]
+    },
+    "expected": false
+  },
+  {
+    "id": "negative_depth",
+    "recipe": {
+      "family": "polygon_counterbores_v1",
+      "outer": {
+        "id": "outer",
+        "vertices": [
+          {
+            "id": "v00",
+            "xy_mm": [
+              -24,
+              -16
+            ]
+          },
+          {
+            "id": "v01",
+            "xy_mm": [
+              24,
+              -16
+            ]
+          },
+          {
+            "id": "v02",
+            "xy_mm": [
+              24,
+              16
+            ]
+          },
+          {
+            "id": "v03",
+            "xy_mm": [
+              -24,
+              16
+            ]
+          }
+        ]
+      },
+      "bores": [
+        {
+          "id": "pilot",
+          "center_mm": [
+            2,
+            -1
+          ],
+          "radius_mm": 5,
+          "guard_mm": 12,
+          "counterbore_radius_mm": 6,
+          "opening": "end",
+          "depth_mm": -1
+        }
+      ],
+      "height_mm": 12,
+      "top_shift_mm": [
+        3,
+        -2
+      ]
+    },
+    "expected": false
+  },
+  {
+    "id": "deep",
+    "recipe": {
+      "family": "polygon_counterbores_v1",
+      "outer": {
+        "id": "outer",
+        "vertices": [
+          {
+            "id": "v00",
+            "xy_mm": [
+              -24,
+              -16
+            ]
+          },
+          {
+            "id": "v01",
+            "xy_mm": [
+              24,
+              -16
+            ]
+          },
+          {
+            "id": "v02",
+            "xy_mm": [
+              24,
+              16
+            ]
+          },
+          {
+            "id": "v03",
+            "xy_mm": [
+              -24,
+              16
+            ]
+          }
+        ]
+      },
+      "bores": [
+        {
+          "id": "pilot",
+          "center_mm": [
+            2,
+            -1
+          ],
+          "radius_mm": 5,
+          "guard_mm": 12,
+          "counterbore_radius_mm": 6,
+          "opening": "end",
+          "depth_mm": 13
+        }
+      ],
+      "height_mm": 12,
+      "top_shift_mm": [
+        3,
+        -2
+      ]
+    },
+    "expected": false
+  },
+  {
+    "id": "bad_opening",
+    "recipe": {
+      "family": "polygon_counterbores_v1",
+      "outer": {
+        "id": "outer",
+        "vertices": [
+          {
+            "id": "v00",
+            "xy_mm": [
+              -24,
+              -16
+            ]
+          },
+          {
+            "id": "v01",
+            "xy_mm": [
+              24,
+              -16
+            ]
+          },
+          {
+            "id": "v02",
+            "xy_mm": [
+              24,
+              16
+            ]
+          },
+          {
+            "id": "v03",
+            "xy_mm": [
+              -24,
+              16
+            ]
+          }
+        ]
+      },
+      "bores": [
+        {
+          "id": "pilot",
+          "center_mm": [
+            2,
+            -1
+          ],
+          "radius_mm": 5,
+          "guard_mm": 12,
+          "counterbore_radius_mm": 6,
+          "opening": "top",
+          "depth_mm": 5
+        }
+      ],
+      "height_mm": 12,
+      "top_shift_mm": [
+        3,
+        -2
+      ]
+    },
+    "expected": false
+  },
+  {
+    "id": "small_guard",
+    "recipe": {
+      "family": "polygon_counterbores_v1",
+      "outer": {
+        "id": "outer",
+        "vertices": [
+          {
+            "id": "v00",
+            "xy_mm": [
+              -24,
+              -16
+            ]
+          },
+          {
+            "id": "v01",
+            "xy_mm": [
+              24,
+              -16
+            ]
+          },
+          {
+            "id": "v02",
+            "xy_mm": [
+              24,
+              16
+            ]
+          },
+          {
+            "id": "v03",
+            "xy_mm": [
+              -24,
+              16
+            ]
+          }
+        ]
+      },
+      "bores": [
+        {
+          "id": "pilot",
+          "center_mm": [
+            2,
+            -1
+          ],
+          "radius_mm": 5,
+          "guard_mm": 11,
+          "counterbore_radius_mm": 6,
+          "opening": "end",
+          "depth_mm": 5
+        }
+      ],
+      "height_mm": 12,
+      "top_shift_mm": [
+        3,
+        -2
+      ]
+    },
+    "expected": false
+  },
+  {
+    "id": "nonintegral",
+    "recipe": {
+      "family": "polygon_counterbores_v1",
+      "outer": {
+        "id": "outer",
+        "vertices": [
+          {
+            "id": "v00",
+            "xy_mm": [
+              -24,
+              -16
+            ]
+          },
+          {
+            "id": "v01",
+            "xy_mm": [
+              24,
+              -16
+            ]
+          },
+          {
+            "id": "v02",
+            "xy_mm": [
+              24,
+              16
+            ]
+          },
+          {
+            "id": "v03",
+            "xy_mm": [
+              -24,
+              16
+            ]
+          }
+        ]
+      },
+      "bores": [
+        {
+          "id": "pilot",
+          "center_mm": [
+            2,
+            -1
+          ],
+          "radius_mm": 5,
+          "guard_mm": 12,
+          "counterbore_radius_mm": 6,
+          "opening": "end",
+          "depth_mm": 3.5
+        }
+      ],
+      "height_mm": 12,
+      "top_shift_mm": [
+        3,
+        -2
+      ]
+    },
+    "expected": false
+  },
+  {
+    "id": "unknown_field",
+    "recipe": {
+      "family": "polygon_counterbores_v1",
+      "outer": {
+        "id": "outer",
+        "vertices": [
+          {
+            "id": "v00",
+            "xy_mm": [
+              -24,
+              -16
+            ]
+          },
+          {
+            "id": "v01",
+            "xy_mm": [
+              24,
+              -16
+            ]
+          },
+          {
+            "id": "v02",
+            "xy_mm": [
+              24,
+              16
+            ]
+          },
+          {
+            "id": "v03",
+            "xy_mm": [
+              -24,
+              16
+            ]
+          }
+        ]
+      },
+      "bores": [
+        {
+          "id": "pilot",
+          "center_mm": [
+            2,
+            -1
+          ],
+          "radius_mm": 5,
+          "guard_mm": 12,
+          "counterbore_radius_mm": 6,
+          "opening": "end",
+          "depth_mm": 5,
+          "angle": 90
+        }
+      ],
+      "height_mm": 12,
+      "top_shift_mm": [
+        3,
+        -2
+      ]
+    },
+    "expected": false
+  },
+  {
+    "id": "guard_overlap",
+    "recipe": {
+      "family": "polygon_counterbores_v1",
+      "outer": {
+        "id": "outer",
+        "vertices": [
+          {
+            "id": "v00",
+            "xy_mm": [
+              -24,
+              -16
+            ]
+          },
+          {
+            "id": "v01",
+            "xy_mm": [
+              24,
+              -16
+            ]
+          },
+          {
+            "id": "v02",
+            "xy_mm": [
+              24,
+              16
+            ]
+          },
+          {
+            "id": "v03",
+            "xy_mm": [
+              -24,
+              16
+            ]
+          }
+        ]
+      },
+      "bores": [
+        {
+          "id": "a",
+          "center_mm": [
+            -14,
+            -7
+          ],
+          "radius_mm": 1,
+          "guard_mm": 4,
+          "counterbore_radius_mm": 2,
+          "opening": "start",
+          "depth_mm": 4
+        },
+        {
+          "id": "b",
+          "center_mm": [
+            -14,
+            -7
+          ],
+          "radius_mm": 2,
+          "guard_mm": 6,
+          "counterbore_radius_mm": 3,
+          "opening": "end",
+          "depth_mm": 8
+        },
+        {
+          "id": "c",
+          "center_mm": [
+            -10,
+            8
+          ],
+          "radius_mm": 1,
+          "guard_mm": 5,
+          "counterbore_radius_mm": 2,
+          "opening": "start",
+          "depth_mm": 6
+        },
+        {
+          "id": "d",
+          "center_mm": [
+            13,
+            8
+          ],
+          "radius_mm": 1,
+          "guard_mm": 4,
+          "counterbore_radius_mm": 2,
+          "opening": "end",
+          "depth_mm": 2
+        }
+      ],
+      "height_mm": 12,
+      "top_shift_mm": [
+        5,
+        -7
+      ]
+    },
+    "expected": false
+  }
+]

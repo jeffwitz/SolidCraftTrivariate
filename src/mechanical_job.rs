@@ -230,7 +230,7 @@ pub fn solve_job(model: &Json, job: &Json) -> Result<Json, &'static str> {
 /// Differentiate a fixed material selection and homogeneous mounting with respect
 /// to a global affine deformation of the audited configuration.
 pub fn differentiate_job(model: &Json, job: &Json, direction: &Json) -> Result<Json, &'static str> {
-    let velocity = crate::affine_job_sensitivity::Velocity::parse(direction)?;
+    let velocity = crate::affine_job_sensitivity::Velocity::parse(model, direction)?;
     if job.field("formulation")?.text()? != "displacement" {
         return Err("shape derivative requires displacement formulation");
     }
@@ -262,8 +262,11 @@ fn run_job(
         "supports",
         "loads",
     ];
-    let adaptive_surface = version == "solidcraft_mechanical_job_v5";
-    let supports_body = version == "solidcraft_mechanical_job_v4"
+    let adaptive_body = version == "solidcraft_mechanical_job_v6";
+    let adaptive_surface = version == "solidcraft_mechanical_job_v5"
+        || (adaptive_body && job.field("surface_quadrature").is_ok());
+    let supports_body = adaptive_body
+        || version == "solidcraft_mechanical_job_v4"
         || (adaptive_surface && job.field("body_load").is_ok());
     let mut quadrature = if adaptive_surface {
         fields.push("surface_quadrature");
@@ -306,6 +309,14 @@ fn run_job(
     if supports_body {
         fields.push("body_load");
     }
+    let body_rule = if adaptive_body {
+        fields.push("body_quadrature");
+        Some(crate::volume_load::BodyQuadrature::parse(
+            job.field("body_quadrature")?,
+        )?)
+    } else {
+        None
+    };
     job.keys(&fields)?;
     let density = if supports_body {
         Some(crate::volume_load::Density::parse(job.field("body_load")?)?)
@@ -317,13 +328,15 @@ fn run_job(
         "solidcraft_mechanical_job_v3"
             | "solidcraft_mechanical_job_v4"
             | "solidcraft_mechanical_job_v5"
+            | "solidcraft_mechanical_job_v6"
     );
     let version_two = match version {
         "solidcraft_mechanical_job_v1" => false,
         "solidcraft_mechanical_job_v2"
         | "solidcraft_mechanical_job_v3"
         | "solidcraft_mechanical_job_v4"
-        | "solidcraft_mechanical_job_v5" => true,
+        | "solidcraft_mechanical_job_v5"
+        | "solidcraft_mechanical_job_v6" => true,
         _ => return Err("unknown mechanical job schema"),
     };
     let audit = interchange::audit(model)?;
@@ -337,6 +350,7 @@ fn run_job(
                 | "certified_orthogonal_feature_program"
                 | "certified_polygon_prism"
                 | "certified_perforated_polygon_prism"
+                | crate::counterbores_json::METHOD
                 | crate::interval_bores_json::METHOD
                 | crate::circular_polygon_json::METHOD
                 | crate::affine_image::METHOD
@@ -550,8 +564,8 @@ fn run_job(
             }
             patches.push(LoadPatch::whole(f.side.clone()));
         }
-        let rate_law = |velocity: &crate::affine_job_sensitivity::Velocity, normal| {
-            let oriented = velocity.oriented_area_rate(normal);
+        let rate_law = |velocity: &crate::affine_job_sensitivity::Velocity, x, normal| {
+            let oriented = velocity.oriented_area_rate(x, normal);
             match &law {
                 Traction::Vector(v) => v.map(|value| value * dot(normal, oriented)),
                 Traction::Pressure(_) | Traction::Stress(_) => law.value(oriented),
@@ -607,7 +621,7 @@ fn run_job(
                     &out.patch_depths,
                     order,
                     config.max_panels,
-                    |_, normal| rate_law(velocity, normal),
+                    |x, normal| rate_law(velocity, x, normal),
                 )?;
                 config.max_panels -= count;
                 for (a, b) in rhs.iter_mut().zip(rate) {
@@ -620,8 +634,8 @@ fn run_job(
             (out.load, Some(info))
         } else {
             if let (Some(velocity), Some(rhs)) = (velocity, &mut force_rate) {
-                let rate = integrate_traction(space, &exterior, &patches, order, |_, normal| {
-                    rate_law(velocity, normal)
+                let rate = integrate_traction(space, &exterior, &patches, order, |x, normal| {
+                    rate_law(velocity, x, normal)
                 })?;
                 for (a, b) in rhs.iter_mut().zip(rate.nodal_force_n) {
                     *a += b;
@@ -654,9 +668,15 @@ fn run_job(
         }
         loads.push(record);
     }
-    let body = density
-        .map(|d| d.integrate(space, order, velocity))
-        .transpose()?;
+    let (body, body_integration) = match (density, body_rule) {
+        (Some(d), Some(config)) => {
+            let (load, report) = config.integrate(&d, space, velocity)?;
+            (Some(load), Some(report))
+        }
+        (Some(d), None) => (Some(d.integrate(space, order, velocity)?), None),
+        (None, None) => (None, None),
+        (None, Some(_)) => return Err("body quadrature requires a density"),
+    };
     let surface_force = body.as_ref().map(|_| force.clone());
     if let Some(load) = &body {
         add(&mut applied, load.resultant);
@@ -721,6 +741,11 @@ fn run_job(
                     d_poisson: 0.,
                 },
                 order,
+                relative_solve_tolerance: if body_integration.is_some() {
+                    1e-12
+                } else {
+                    1e-11
+                },
             },
         )?;
         if adaptive_surface {
@@ -728,6 +753,9 @@ fn run_job(
                 fields.insert("surface_derivative_plan".into(), text("freeze_primal"));
                 fields.insert("surface_loads".into(), Json::Array(loads));
             }
+        }
+        if let (Some(report), Json::Object(fields)) = (body_integration, &mut result) {
+            fields.insert("body_quadrature".into(), report);
         }
         return Ok(result);
     }
@@ -906,6 +934,9 @@ fn run_job(
         ("iterations", n(solved.iterations)),
         ("relative_residual", n(solved.relative_residual)),
     ]);
+    if let (Some(report), Json::Object(fields)) = (body_integration, &mut result) {
+        fields.insert("body_quadrature".into(), report);
+    }
     if let (Some(load), Json::Object(fields)) = (body, &mut result) {
         fields.insert(
             "body_load".into(),

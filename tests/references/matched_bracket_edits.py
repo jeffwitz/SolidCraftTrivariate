@@ -25,7 +25,7 @@ def plan_for(names):
                        for d,values in sorted(pending.items())])
 
 
-def events(folder, tiers, cold):
+def events(folder, tiers, cold, incremental=False):
     rows = []
     for i, (rx,ry) in enumerate(SEQUENCE):
         path = folder / f"event-{i}.json"
@@ -56,16 +56,23 @@ def events(folder, tiers, cold):
         row.update(fillet_replay_error=stress_error,tip_replay_error=tip_error,
                    energy_replay_error=energy_error,field_coefficients_relative=error,
                    identical_weights=same_weights,exact_geometry=same,leaves=len(a))
+        residual=m.get("accepted_relative_residual",m.get("cold_relative_residual"))
+        physical=abs(m["volume_mm3"]/ref["volume_mm3"]-1)<1e-8
+        if "reaction_n" in row:
+            physical &= np.linalg.norm(np.array(row["reaction_n"])-[0,1000,0])/1000<1e-8
+        elif incremental:physical=False
+        operator_check=(m.get("independent_cold_comparison")==False if incremental else
+                        m["stiffness_action_relative_error"]<=1e-11)
         row["passed"] = bool(rx!=81 and same_weights and len(a)==2528 and
-                             m["cold_relative_residual"]<=1e-10 and (m["warm_relative_residual"] or 0)<=1e-10 and
-                             m["stiffness_action_relative_error"]<=1e-11 and
+                             residual<=1e-10 and (m["warm_relative_residual"] or 0)<=1e-10 and
+                             operator_check and physical and
                              max(stress_error,tip_error,energy_error,error)<=1e-8 and
                              abs(m["load_area_mm2"]/320-1)<1e-8 and
                              (not i or m["reused_contributions"]>0))
     return rows
 
 
-def run(work,output):
+def run(work,output,incremental=False):
     plans=work/"plans"
     plans.mkdir(parents=True,exist_ok=True)
     tiers=ROOT/"build/j4f"
@@ -75,16 +82,16 @@ def run(work,output):
         case=f"x{rx}-y{ry}"
         _,field=checkpoint(tiers/case/"s2.bin")
         (plans/(case+".json")).write_text(json.dumps(plan_for(field)))
-    out = dict(schema="matched_bracket_edit_verification_v1",cache_cap_mib=384,
+    out = dict(schema="matched_incremental_bracket_edits_v1" if incremental else "matched_bracket_edit_verification_v1",cache_cap_mib=384,
                max_cells=3000,cpu_affinity=[2,3],trials=[],finished=False)
     env=dict(os.environ,OMP_NUM_THREADS="2",OPENBLAS_NUM_THREADS="1")
     for repeat in (1,2):
         folder=work/f"repeat-{repeat}"
         folder.mkdir(exist_ok=False)
         cmd=["/usr/bin/taskset","-c","2,3",str(ROOT/"target/release/examples/bracket_edit_cost"),
-             "--verified-plan",str(plans),str(folder)]
+             "--incremental-plan" if incremental else "--verified-plan",str(plans),str(folder)]
         proc=measure(cmd,env,folder/"run.log",seconds=1800)
-        rows=events(folder,tiers,cold)
+        rows=events(folder,tiers,cold,incremental)
         out["trials"].append(dict(repeat=repeat,process=proc,command=cmd,events=rows,
                                   passed=proc["status"]=="completed" and all(r["passed"] for r in rows)))
         output.write_text(json.dumps(out,indent=2,allow_nan=False)+"\n")
@@ -99,5 +106,6 @@ if __name__=="__main__":
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument("work",type=Path)
     p.add_argument("output",type=Path)
+    p.add_argument("--incremental",action="store_true")
     a=p.parse_args()
-    raise SystemExit(int(not run(a.work.resolve(),a.output)))
+    raise SystemExit(int(not run(a.work.resolve(),a.output,a.incremental)))

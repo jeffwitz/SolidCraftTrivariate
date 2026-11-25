@@ -173,6 +173,12 @@ pub fn import_script(script: &Json) -> Result<Json, &'static str> {
                     .and_then(|feature| feature.field("type").ok())
                     .and_then(|value| value.text().ok());
                 if commands.len() == 2 && second_type == Some("hole") {
+                    let feature = commands[1].field("params")?.field("feature")?;
+                    if feature.field("hole")?.field("type").and_then(Json::text)
+                        == Ok("counterbore")
+                    {
+                        return crate::solidcraft_counterbore::import_counterbore_timeline(script);
+                    }
                     return crate::solidcraft_blind_bore::import_blind_bore_timeline(script);
                 }
                 return crate::solidcraft_box_timeline::import_box_timeline(script);
@@ -225,6 +231,16 @@ pub fn import_script(script: &Json) -> Result<Json, &'static str> {
             .and_then(|command| command.text().ok())
             == Some("solid.hole")
     {
+        let commands = script.field("commands")?.items()?;
+        if commands.len() == 2
+            && commands[1]
+                .field("params")?
+                .field("type")
+                .and_then(Json::text)
+                == Ok("counterbore")
+        {
+            return crate::solidcraft_counterbore::import_counterbore_direct(script);
+        }
         return crate::solidcraft_blind_bore::import_blind_bore_direct(script);
     }
     if first.field("command")?.text()? == "solid.box" {

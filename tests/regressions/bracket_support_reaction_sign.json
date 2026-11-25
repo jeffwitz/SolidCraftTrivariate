@@ -1,0 +1,27 @@
+{
+  "recipe": {
+    "family": "parameterized_bracket_v1",
+    "radii_sixteenths_mm": [
+      50,
+      74
+    ]
+  },
+  "plan": "J4f h2 plus two fillet refinements",
+  "load_n": [
+    0,
+    -1000,
+    0
+  ],
+  "previous_reported_support_reaction_n": [
+    -9.788397647980673e-09,
+    -1000.0000001141046,
+    6.8111170037354896e-09
+  ],
+  "expected_support_reaction_n": [
+    0,
+    1000,
+    0
+  ],
+  "relative_tolerance": 1e-08,
+  "oracle": "tests/references/matched_bracket_edits.py --incremental"
+}

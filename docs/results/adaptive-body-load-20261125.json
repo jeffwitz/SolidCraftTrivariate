@@ -1,0 +1,454 @@
+{
+  "schema": "adaptive_body_quadrature_oracle_v1",
+  "cases": [
+    {
+      "id": "extreme_surface_body",
+      "blocks": 32,
+      "body_quadrature": {
+        "history": [
+          {
+            "order": 2,
+            "points": 256,
+            "relative_discrepancies": null
+          },
+          {
+            "order": 4,
+            "points": 2048,
+            "relative_discrepancies": [
+              7.01057809347558e-06,
+              0.0051739980020896565,
+              7.358315172976047e-06,
+              6.020139568686698e-06
+            ]
+          },
+          {
+            "order": 6,
+            "points": 6912,
+            "relative_discrepancies": [
+              1.3665834251667885e-08,
+              7.730266031292623e-07,
+              1.4343681468132717e-08,
+              1.173515904857089e-08
+            ]
+          },
+          {
+            "order": 8,
+            "points": 16384,
+            "relative_discrepancies": [
+              1.7918641318666635e-11,
+              1.615101258628647e-09,
+              1.8806570711212593e-11,
+              1.5387727202468686e-11
+            ]
+          },
+          {
+            "order": 10,
+            "points": 32000,
+            "relative_discrepancies": [
+              3.85666121097131e-15,
+              2.5927426103701315e-12,
+              1.6766343477562192e-14,
+              1.359004655437963e-14
+            ]
+          }
+        ],
+        "metrics": [
+          "volume",
+          "nodal_force",
+          "resultant",
+          "moment"
+        ],
+        "points": 57600,
+        "selected_order": 10
+      },
+      "independent": {
+        "order": 24,
+        "volume_mm3": 1532.8584073464099,
+        "resultant_n": [
+          39.851176998353075,
+          -6.125150444078464,
+          8.047506638568656
+        ],
+        "moment_n_mm": [
+          -131.86195134730755,
+          -106.77421314669527,
+          801.4127552813972
+        ]
+      },
+      "errors": {
+        "full_nodal": 4.196106637640494e-15,
+        "reference_convergence": 1.8385374467143905e-15,
+        "volume": 2.120525977034049e-14,
+        "resultant": 4.4809339052076796e-15,
+        "moment": 2.0868893683623926e-15,
+        "work": 3.3306690738754696e-16,
+        "applied_work_adjoint": 8.005044824781527e-15,
+        "work_rate_balance": 2.3327200934714917e-13,
+        "explicit_work_rate": 2.115395634361212e-14,
+        "measure_rate": 3.3537753659458175e-18
+      },
+      "fixed_primal_rule": true,
+      "point_accounting": true,
+      "derivative_history": [
+        {
+          "step": 0.125,
+          "orders": [
+            10,
+            10
+          ],
+          "centered": [
+            3.94240124588793e-14,
+            0.0026263618838380147,
+            0.0004999135054864314
+          ]
+        },
+        {
+          "step": 0.0625,
+          "orders": [
+            10,
+            10
+          ],
+          "centered": [
+            1.0551544379824352e-13,
+            0.0006590553889600745,
+            0.00012515706229230395
+          ],
+          "fourth": [
+            1.3931872167939794e-13,
+            3.5105512116604448e-06,
+            2.3824789430315144e-07
+          ]
+        },
+        {
+          "step": 0.03125,
+          "orders": [
+            10,
+            10
+          ],
+          "centered": [
+            1.4933289207409725e-13,
+            0.00016491853765805792,
+            3.130036883822934e-05
+          ],
+          "fourth": [
+            1.8958227480732087e-13,
+            2.2035303818618355e-07,
+            1.4804353537807158e-08
+          ],
+          "sixth": [
+            2.0098913799203533e-13,
+            1.1458982897018293e-09,
+            9.18825298929693e-11
+          ]
+        }
+      ],
+      "passed": true
+    },
+    {
+      "id": "zero_resultant_closed",
+      "blocks": 120,
+      "body_quadrature": {
+        "history": [
+          {
+            "order": 2,
+            "points": 960,
+            "relative_discrepancies": null
+          },
+          {
+            "order": 4,
+            "points": 7680,
+            "relative_discrepancies": [
+              0.0005788045074075309,
+              0.005945957660937232,
+              9.503034457410317e-16,
+              4.968638025630418e-16
+            ]
+          },
+          {
+            "order": 6,
+            "points": 25920,
+            "relative_discrepancies": [
+              1.1366973630149596e-06,
+              1.9654454722079545e-05,
+              1.1780532588722934e-15,
+              1.5239448879376945e-15
+            ]
+          },
+          {
+            "order": 8,
+            "points": 61440,
+            "relative_discrepancies": [
+              1.5931131611137117e-09,
+              7.190875770865868e-08,
+              9.880742806802787e-16,
+              1.701180780027681e-15
+            ]
+          },
+          {
+            "order": 10,
+            "points": 120000,
+            "relative_discrepancies": [
+              1.9999910543167657e-12,
+              1.7654355556589955e-10,
+              4.623325802898389e-16,
+              1.2448080933065116e-15
+            ]
+          }
+        ],
+        "metrics": [
+          "volume",
+          "nodal_force",
+          "resultant",
+          "moment"
+        ],
+        "points": 216000,
+        "selected_order": 10
+      },
+      "independent": {
+        "order": 24,
+        "volume_mm3": 17753.415986824595,
+        "resultant_n": [
+          -3.0198066269804258e-12,
+          0.0,
+          0.0
+        ],
+        "moment_n_mm": [
+          0.0,
+          -7.424727499483197e-12,
+          2.07707982757821e-12
+        ]
+      },
+      "errors": {
+        "full_nodal": 3.4438934816033334e-13,
+        "reference_convergence": 1.7482209910732213e-15,
+        "volume": 4.707345624410664e-14,
+        "resultant": 4.378031327235001e-15,
+        "moment": 7.154025418511481e-16,
+        "work": 7.83710875745998e-15,
+        "applied_work_adjoint": 3.467668860390738e-10,
+        "work_rate_balance": 2.486718033866711e-10,
+        "explicit_work_rate": 2.542827060025843e-09,
+        "measure_rate": 3.042411711734708e-19,
+        "analytic_force_rate": 8.886482710682201e-13
+      },
+      "fixed_primal_rule": true,
+      "point_accounting": true,
+      "derivative_history": [
+        {
+          "step": 0.125,
+          "orders": [
+            10,
+            10
+          ],
+          "centered": [
+            1.813911117076038e-14,
+            0.0029188132441008013,
+            2.303088275645848e-09
+          ]
+        },
+        {
+          "step": 0.0625,
+          "orders": [
+            10,
+            10
+          ],
+          "centered": [
+            3.605624925811977e-14,
+            0.0007350063100694793,
+            3.3812536104349533e-09
+          ],
+          "fourth": [
+            4.844968273098045e-14,
+            7.795783869078378e-06,
+            5.2760342391285535e-09
+          ]
+        },
+        {
+          "step": 0.03125,
+          "orders": [
+            10,
+            10
+          ],
+          "centered": [
+            6.690451368820124e-14,
+            0.00018408597436186152,
+            6.850561784510489e-09
+          ],
+          "fourth": [
+            9.136855909310565e-14,
+            4.921583866746703e-07,
+            1.026116691615897e-08
+          ],
+          "sixth": [
+            9.828458209080138e-14,
+            5.989971715530874e-09,
+            1.129698032651147e-08
+          ]
+        }
+      ],
+      "passed": true
+    },
+    {
+      "id": "two_blind_and_sealed",
+      "blocks": 512,
+      "body_quadrature": {
+        "history": [
+          {
+            "order": 2,
+            "points": 4096,
+            "relative_discrepancies": null
+          },
+          {
+            "order": 4,
+            "points": 32768,
+            "relative_discrepancies": [
+              0.0003371398469893166,
+              0.007246021405965102,
+              0.0003729140247334202,
+              0.0003641256414806751
+            ]
+          },
+          {
+            "order": 6,
+            "points": 110592,
+            "relative_discrepancies": [
+              6.440272462016296e-07,
+              2.7808455103462696e-05,
+              7.15031753886308e-07,
+              6.749609019191659e-07
+            ]
+          },
+          {
+            "order": 8,
+            "points": 262144,
+            "relative_discrepancies": [
+              8.857920000590045e-10,
+              6.533977669304687e-08,
+              9.885599657944988e-10,
+              9.25912986601086e-10
+            ]
+          },
+          {
+            "order": 10,
+            "points": 512000,
+            "relative_discrepancies": [
+              1.0010747368969458e-12,
+              1.1729386935915975e-10,
+              1.1869351961454715e-12,
+              1.1177701683046645e-12
+            ]
+          }
+        ],
+        "metrics": [
+          "volume",
+          "nodal_force",
+          "resultant",
+          "moment"
+        ],
+        "points": 921600,
+        "selected_order": 10
+      },
+      "independent": {
+        "order": 24,
+        "volume_mm3": 17945.053138693635,
+        "resultant_n": [
+          223.38495450422752,
+          -297.588905791247,
+          143.4229804309539
+        ],
+        "moment_n_mm": [
+          1109.638736454992,
+          1026.4682575043178,
+          124.33666075264493
+        ]
+      },
+      "errors": {
+        "full_nodal": 1.8186593893264154e-13,
+        "reference_convergence": 1.7810577318897268e-15,
+        "volume": 3.11972669919669e-14,
+        "resultant": 1.4190620250284613e-14,
+        "moment": 2.8136070897069375e-15,
+        "work": 4.870081118967992e-15,
+        "applied_work_adjoint": 5.1488570309607025e-14,
+        "work_rate_balance": 9.534920427705004e-15,
+        "explicit_work_rate": 3.4172201320851965e-12,
+        "measure_rate": 3.77009274974626e-19,
+        "analytic_force_rate": 2.5123623562712284e-13
+      },
+      "fixed_primal_rule": true,
+      "point_accounting": true,
+      "derivative_history": [
+        {
+          "step": 0.125,
+          "orders": [
+            10,
+            10
+          ],
+          "centered": [
+            2.159028543090638e-14,
+            0.0037302395128176137,
+            0.004132529951045771
+          ]
+        },
+        {
+          "step": 0.0625,
+          "orders": [
+            10,
+            10
+          ],
+          "centered": [
+            4.659644258323737e-14,
+            0.0009370561671347867,
+            0.0010373682208248201
+          ],
+          "fourth": [
+            6.248165800103692e-14,
+            7.508669852224127e-06,
+            5.647644084439617e-06
+          ]
+        },
+        {
+          "step": 0.03125,
+          "orders": [
+            10,
+            10
+          ],
+          "centered": [
+            7.96208357401532e-14,
+            0.00023454730342545874,
+            0.0002596084736629904
+          ],
+          "fourth": [
+            1.088744100311239e-13,
+            4.737116851254067e-07,
+            3.5522460911066466e-07
+          ],
+          "sixth": [
+            1.1729083441541623e-13,
+            5.593095052379289e-09,
+            2.396644203153535e-09
+          ]
+        }
+      ],
+      "passed": true
+    }
+  ],
+  "refusals": [
+    {
+      "id": "point_budget",
+      "diagnostic": "{\"reason\":\"body quadrature point budget exceeded\",\"status\":\"error\"}",
+      "passed": true
+    },
+    {
+      "id": "order_budget",
+      "diagnostic": "{\"reason\":\"body quadrature tolerance not met within order budget\",\"status\":\"error\"}",
+      "passed": true
+    },
+    {
+      "id": "invalid_range",
+      "diagnostic": "{\"reason\":\"invalid body quadrature configuration\",\"status\":\"error\"}",
+      "passed": true
+    }
+  ],
+  "qualified": true
+}

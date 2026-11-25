@@ -1,0 +1,94 @@
+{
+  "lot": "SC9",
+  "host": {
+    "solidcraft_version": "0.48.1",
+    "freecad_version": "26.3.0",
+    "freecad_build": "eef6e751dc82d110117ed8b0284c5748200db891",
+    "reopened_histories": 3,
+    "each_reopened_body_count": 1
+  },
+  "native": {
+    "family": "polygon_counterbores_v1",
+    "audit_method": "certified_polygon_counterbores",
+    "blocks_per_case": 72,
+    "shared_faces_per_case": 160,
+    "exterior_sides_per_case": 112,
+    "continuous_determinant_lower_bound_mm3": [8.999999999999785, 8.999999999999906],
+    "analytic_volume_mm3": "19200 - 272*pi"
+  },
+  "cases": [
+    {
+      "id": "centered_top",
+      "center_mm": [0, 0],
+      "opening": "end",
+      "shoulder_z_mm": 8,
+      "volume_host_mm3": 18345.486798223577,
+      "volume_native_mm3": 18345.486798219143,
+      "area_host_mm2": 5371.3274122871835,
+      "area_native_mm2": 5371.327412284964,
+      "centroid_host_mm": [1.003525416688691e-15, -2.1894747898653686e-15, 5.94520125520757],
+      "centroid_native_mm": [-2.020219441701844e-15, -4.3998644282463473e-16, 5.945201255207555],
+      "host_minus_native_mm3": 0.0,
+      "native_minus_host_mm3": 0.0,
+      "classification_probes_each": 12
+    },
+    {
+      "id": "decentered_top",
+      "center_mm": [4, -3],
+      "opening": "end",
+      "shoulder_z_mm": 8,
+      "volume_host_mm3": 18345.486798223577,
+      "volume_native_mm3": 18345.486798219135,
+      "area_host_mm2": 5371.3274122871835,
+      "area_native_mm2": 5371.327412284967,
+      "centroid_host_mm": [-0.18631573229425957, 0.1397367992206932, 5.94520125520757],
+      "centroid_native_mm": [-0.18631573229518797, 0.13973679922138812, 5.94520125520756],
+      "host_minus_native_mm3": 0.0,
+      "native_minus_host_mm3": 0.0,
+      "classification_probes_each": 12
+    },
+    {
+      "id": "opposite_bottom",
+      "center_mm": [-5, 6],
+      "opening": "start",
+      "shoulder_z_mm": 4,
+      "volume_host_mm3": 18345.486798223577,
+      "volume_native_mm3": 18345.48679821914,
+      "area_host_mm2": 5371.327412287183,
+      "area_native_mm2": 5371.327412284966,
+      "centroid_host_mm": [0.23289466536782455, -0.27947359844138847, 6.054798744792429],
+      "centroid_native_mm": [0.2328946653689867, -0.27947359844277364, 6.054798744792443],
+      "host_minus_native_mm3": 0.0,
+      "native_minus_host_mm3": 0.0,
+      "classification_probes_each": 12
+    }
+  ],
+  "analytic_surface_decomposition_mm2": {
+    "box_outer": 5120.0,
+    "end_openings_removed": "-52*pi",
+    "pilot_wall": "64*pi",
+    "counterbore_wall": "48*pi",
+    "shoulder": "20*pi",
+    "total": "5120 + 80*pi"
+  },
+  "coverage": {
+    "single_native_counterbore_feature": true,
+    "top_and_bottom_openings": true,
+    "decentered_position": true,
+    "direct_and_saved_timeline_match": true,
+    "odd_counterbore_diameter_host_accepts_native_rejects": true,
+    "refusal_preserved_existing_output_sentinel": true,
+    "limits": [
+      "One initial origin-based XY box followed by one SolidCraft counterbore feature.",
+      "Integer-mm box, center and diameters; even pilot and counterbore diameters.",
+      "Through pilot only; integer counterbore depth strictly between zero and box height.",
+      "G23 guard and shape limits apply; arbitrary placements and other SolidCraft hole options are rejected."
+    ]
+  },
+  "commands": [
+    "cargo test --locked --offline --test solidcraft_counterbore",
+    "cargo test --locked --offline --lib solidcraft_counterbore::tests",
+    "cargo clippy --locked --offline --lib --test solidcraft_counterbore -- -D warnings",
+    "FreeCAD -c tests/references/solidcraft_counterbore_oracle.FCMacro (three host/native STEP pairs)"
+  ]
+}

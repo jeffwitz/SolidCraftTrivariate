@@ -109,9 +109,13 @@ pub mod solidcraft_oriented_plane;
 pub mod adaptive_traction;
 pub mod geometry_vtu;
 
+pub mod counterbores;
+pub mod counterbores_audit;
+mod counterbores_json;
 pub mod interval_bores;
 pub mod interval_bores_audit;
 mod interval_bores_json;
 pub mod interval_bores_session;
 pub mod interval_bores_edit;
 pub mod solidcraft_blind_bore;
+pub mod solidcraft_counterbore;

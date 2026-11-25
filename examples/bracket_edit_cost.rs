@@ -69,7 +69,11 @@ fn run_level<W: Write>(out: &mut W, level: u8) -> Result<(), Box<dyn std::error:
     Ok(())
 }
 
-fn run_matched(plans: &Path, folder: &Path) -> Result<(), Box<dyn std::error::Error>> {
+fn run_matched(
+    plans: &Path,
+    folder: &Path,
+    incremental: bool,
+) -> Result<(), Box<dyn std::error::Error>> {
     fs::create_dir_all(folder)?;
     let mut session = BracketMechanicsSession::new(BracketMechanicsConfig {
         max_cells: 3000,
@@ -85,10 +89,48 @@ fn run_matched(plans: &Path, folder: &Path) -> Result<(), Box<dyn std::error::Er
         let prior = session.state().cloned();
         let bytes = session.cache_bytes_estimated();
         let entries = session.cache_entries();
-        let mut row = match session.update_with_plan(radii, &plan) {
+        let updated = if incremental {
+            session.update_incremental_with_plan(radii, &plan)
+        } else {
+            session.update_with_plan(radii, &plan)
+        };
+        let mut row = match updated {
             Ok(state) => {
                 let mut encoded = String::new();
                 metrics(&mut encoded, state)?;
+                let mut actual = json::parse(&encoded)?;
+                if let Json::Object(fields) = &mut actual {
+                    fields.insert(
+                        "independent_cold_comparison".into(),
+                        Json::Bool(state.timing.cold_comparison_performed),
+                    );
+                    fields.insert(
+                        "accepted_solve_s".into(),
+                        Json::Number(state.timing.accepted_solve_s.to_string()),
+                    );
+                    fields.insert(
+                        "accepted_iterations".into(),
+                        Json::Number(state.timing.accepted_iterations.to_string()),
+                    );
+                    fields.insert(
+                        "accepted_relative_residual".into(),
+                        Json::Number(state.timing.accepted_relative_residual.to_string()),
+                    );
+                    if incremental {
+                        for k in [
+                            "cold_assembly_s",
+                            "cold_solve_s",
+                            "cold_solve_iterations",
+                            "cold_relative_residual",
+                            "comparison_s",
+                            "stiffness_action_relative_error",
+                            "warm_cold_displacement_relative_error",
+                            "warm_cold_energy_relative_error",
+                        ] {
+                            fields.remove(k);
+                        }
+                    }
+                }
                 let limits = fillet_limits(&state.adaptive.space, &state.displacement_mm)?;
                 let field = folder.join(format!("event-{index}.bin"));
                 bracket_field::write(
@@ -105,7 +147,16 @@ fn run_matched(plans: &Path, folder: &Path) -> Result<(), Box<dyn std::error::Er
                 )?;
                 object([
                     ("status", Json::String("accepted".into())),
-                    ("metrics", json::parse(&encoded)?),
+                    ("metrics", actual),
+                    (
+                        "reaction_n",
+                        Json::Array(
+                            state
+                                .support_reaction_n
+                                .map(|v| Json::Number(v.to_string()))
+                                .to_vec(),
+                        ),
+                    ),
                     (
                         "fillet_mpa",
                         Json::Object(
@@ -159,8 +210,12 @@ fn run_matched(plans: &Path, folder: &Path) -> Result<(), Box<dyn std::error::Er
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let args = std::env::args().skip(1).collect::<Vec<_>>();
     if let [mode, plans, folder] = args.as_slice() {
-        if mode == "--verified-plan" {
-            return run_matched(Path::new(plans), Path::new(folder));
+        if mode == "--verified-plan" || mode == "--incremental-plan" {
+            return run_matched(
+                Path::new(plans),
+                Path::new(folder),
+                mode == "--incremental-plan",
+            );
         }
     }
     let path = std::env::args()

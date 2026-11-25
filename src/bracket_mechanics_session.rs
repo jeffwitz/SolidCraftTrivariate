@@ -66,6 +66,11 @@ pub struct CachePreflight {
 /// Timings and cache accounting for one committed candidate.
 #[derive(Debug, Clone, Copy, Default, PartialEq)]
 pub struct BracketMechanicsTiming {
+    /// Cold comparison fields are populated only on the verified update path.
+    pub cold_comparison_performed: bool,
+    pub accepted_solve_s: f64,
+    pub accepted_iterations: usize,
+    pub accepted_relative_residual: f64,
     pub generation_s: f64,
     pub audit_and_space_s: f64,
     pub contribution_lookup_s: f64,
@@ -99,6 +104,7 @@ pub struct BracketMechanicsState {
     pub adaptive: AdaptiveSpace,
     pub stiffness: Arc<Stiffness>,
     pub force_n: Vec<f64>,
+    pub support_reaction_n: [f64; 3],
     pub load_area_mm2: f64,
     pub displacement_mm: Vec<f64>,
     pub strain_energy_n_mm: f64,
@@ -344,6 +350,47 @@ fn merge_contributions(
     Ok(merged)
 }
 
+fn support_reactions(
+    adaptive: &AdaptiveSpace,
+    stiffness: &Stiffness,
+    displacement: &[f64],
+    force: &[f64],
+) -> Result<[f64; 3], &'static str> {
+    let residual = stiffness.equilibrium_residual(displacement, force)?;
+    let lift = &adaptive.lift;
+    let support = adaptive
+        .space
+        .boundary_dofs
+        .get("y50")
+        .ok_or("missing y50 support")?;
+    let roots: std::collections::BTreeSet<_> = support
+        .iter()
+        .flat_map(|&id| lift.lines[id].terms.iter().map(|x| x.0))
+        .collect();
+    let mut reactions = [0.; 3];
+    for line in &lift.lines {
+        for &(root, w) in &line.terms {
+            if roots.contains(&root) {
+                for (c, r) in reactions.iter_mut().enumerate() {
+                    // equilibrium_residual returns f - K u; support reactions use K u - f.
+                    *r -=
+                        w.numerator() as f64 / w.denominator() as f64 * residual[3 * line.dof + c];
+                }
+            }
+        }
+    }
+    let mut balance = reactions;
+    for component in force.as_chunks::<3>().0 {
+        for c in 0..3 {
+            balance[c] += component[c];
+        }
+    }
+    if balance.iter().map(|v| v * v).sum::<f64>().sqrt() > 1e-5 {
+        return Err("bracket support reactions do not balance the applied 1000 N load");
+    }
+    Ok(reactions)
+}
+
 fn reduced_residual(
     stiffness: &Stiffness,
     force: &[f64],
@@ -406,7 +453,7 @@ impl BracketMechanicsSession {
         &mut self,
         radii_sixteenths_mm: [u8; 2],
     ) -> Result<&Arc<BracketMechanicsState>, &'static str> {
-        self.update_candidate(radii_sixteenths_mm, None)
+        self.update_candidate(radii_sixteenths_mm, None, true)
     }
 
     /// Use the supplied root-relative refinement steps for this candidate.
@@ -416,13 +463,24 @@ impl BracketMechanicsSession {
         radii_sixteenths_mm: [u8; 2],
         plan: &RefinementPlan,
     ) -> Result<&Arc<BracketMechanicsState>, &'static str> {
-        self.update_candidate(radii_sixteenths_mm, Some(plan))
+        self.update_candidate(radii_sixteenths_mm, Some(plan), true)
+    }
+
+    /// Use the cached element assembly directly, independently rechecking the
+    /// geometry certificate and true free-equation residual before publication.
+    pub fn update_incremental_with_plan(
+        &mut self,
+        radii: [u8; 2],
+        plan: &RefinementPlan,
+    ) -> Result<&Arc<BracketMechanicsState>, &'static str> {
+        self.update_candidate(radii, Some(plan), false)
     }
 
     fn update_candidate(
         &mut self,
         radii_sixteenths_mm: [u8; 2],
         plan: Option<&RefinementPlan>,
+        compare_cold: bool,
     ) -> Result<&Arc<BracketMechanicsState>, &'static str> {
         let tolerance = if plan.is_some() {
             5e-11
@@ -535,20 +593,26 @@ impl BracketMechanicsSession {
         let merged = merge_contributions(&adaptive, &candidate)?;
         timing.merge_s = started.elapsed().as_secs_f64();
 
-        let started = Instant::now();
-        let cold = assemble(
-            &adaptive.space,
-            config.young_mpa,
-            config.poisson,
-            config.quadrature_order,
-        )?;
-        timing.cold_assembly_s = started.elapsed().as_secs_f64();
-        let started = Instant::now();
-        timing.stiffness_action_relative_error = action_error(&merged, &cold)?;
-        if timing.stiffness_action_relative_error > 1e-11 {
-            return Err("incremental stiffness differs from cold assembly");
-        }
-        timing.comparison_s = started.elapsed().as_secs_f64();
+        let cold = if compare_cold {
+            let started = Instant::now();
+            let cold = assemble(
+                &adaptive.space,
+                config.young_mpa,
+                config.poisson,
+                config.quadrature_order,
+            )?;
+            timing.cold_assembly_s = started.elapsed().as_secs_f64();
+            let started = Instant::now();
+            timing.stiffness_action_relative_error = action_error(&merged, &cold)?;
+            if timing.stiffness_action_relative_error > 1e-11 {
+                return Err("incremental stiffness differs from cold assembly");
+            }
+            timing.comparison_s = started.elapsed().as_secs_f64();
+            timing.cold_comparison_performed = true;
+            Some(cold)
+        } else {
+            None
+        };
 
         let started = Instant::now();
         let (force_n, load_area_mm2) = bracket_load(&adaptive.space, config.quadrature_order)?;
@@ -560,23 +624,34 @@ impl BracketMechanicsSession {
         // `y50` is a vector Dirichlet condition: all three displacement
         // components are prescribed on the selected face.
         let lifts = [&clamped_lift, &clamped_lift, &clamped_lift];
-        let started = Instant::now();
-        let cold_solution =
-            solve_constrained(&cold, lifts, &force_n, tolerance, MAX_SOLVE_ITERATIONS)
-                .map_err(|_| "cold bracket solve failed")?;
-        timing.cold_solve_s = started.elapsed().as_secs_f64();
-        timing.cold_solve_iterations = cold_solution.iterations;
-        timing.cold_relative_residual = reduced_residual(&cold, &force_n, &cold_solution, lifts)?;
-        if timing.cold_relative_residual > 1e-10 {
-            return Err("cold bracket solve true residual exceeds tolerance");
-        }
-
-        let previous = self.state.as_deref();
-        let warm_guess = previous
+        let warm_guess = self
+            .state
+            .as_deref()
             .and_then(|state| transfer_guess(state, &adaptive, &unconstrained_lift, &clamped_lift));
         timing.warm_start_used = warm_guess.is_some();
-        let mut warm_solution = None;
-        if let Some(initial) = warm_guess {
+        let zero_start = if compare_cold || warm_guess.is_none() {
+            let started = Instant::now();
+            let matrix = cold.as_ref().unwrap_or(&merged);
+            let solved =
+                solve_constrained(matrix, lifts, &force_n, tolerance, MAX_SOLVE_ITERATIONS)
+                    .map_err(|_| "zero-start bracket solve failed")?;
+            let elapsed = started.elapsed().as_secs_f64();
+            let residual = reduced_residual(matrix, &force_n, &solved, lifts)?;
+            if residual > 1e-10 {
+                return Err("zero-start bracket solve true residual exceeds tolerance");
+            }
+            if compare_cold {
+                timing.cold_solve_s = elapsed;
+                timing.cold_solve_iterations = solved.iterations;
+                timing.cold_relative_residual = residual;
+            }
+            timing.accepted_solve_s = elapsed;
+            timing.accepted_relative_residual = residual;
+            Some(solved)
+        } else {
+            None
+        };
+        let accepted_solution = if let Some(initial) = warm_guess {
             let started = Instant::now();
             let solved = solve_constrained_from(
                 &merged,
@@ -589,29 +664,38 @@ impl BracketMechanicsSession {
             .map_err(|_| "warm bracket solve failed")?;
             timing.warm_solve_s = started.elapsed().as_secs_f64();
             timing.warm_solve_iterations = Some(solved.iterations);
-            timing.warm_relative_residual =
-                Some(reduced_residual(&merged, &force_n, &solved, lifts)?);
-            if timing.warm_relative_residual.unwrap() > 1e-10 {
+            let residual = reduced_residual(&merged, &force_n, &solved, lifts)?;
+            timing.warm_relative_residual = Some(residual);
+            if residual > 1e-10 {
                 return Err("warm bracket solve true residual exceeds tolerance");
             }
-            let displacement_error =
-                relative_error(&solved.displacement_mm, &cold_solution.displacement_mm)?;
-            let energy_error = (solved.strain_energy_n_mm - cold_solution.strain_energy_n_mm).abs()
-                / cold_solution
-                    .strain_energy_n_mm
-                    .abs()
-                    .max(f64::MIN_POSITIVE);
-            timing.warm_cold_displacement_relative_error = Some(displacement_error);
-            timing.warm_cold_energy_relative_error = Some(energy_error);
-            if displacement_error > 1e-8 {
-                return Err("warm and cold bracket displacements disagree");
+            if let Some(reference) = zero_start {
+                let displacement_error =
+                    relative_error(&solved.displacement_mm, &reference.displacement_mm)?;
+                let energy_error = (solved.strain_energy_n_mm - reference.strain_energy_n_mm).abs()
+                    / reference.strain_energy_n_mm.abs().max(f64::MIN_POSITIVE);
+                timing.warm_cold_displacement_relative_error = Some(displacement_error);
+                timing.warm_cold_energy_relative_error = Some(energy_error);
+                if displacement_error > 1e-8 {
+                    return Err("warm and cold bracket displacements disagree");
+                }
+                if energy_error > 1e-8 {
+                    return Err("warm and cold bracket energies disagree");
+                }
             }
-            if energy_error > 1e-8 {
-                return Err("warm and cold bracket energies disagree");
-            }
-            warm_solution = Some(solved);
-        }
-        let accepted_solution = warm_solution.as_ref().unwrap_or(&cold_solution);
+            timing.accepted_solve_s = timing.warm_solve_s;
+            timing.accepted_relative_residual = residual;
+            solved
+        } else {
+            zero_start.ok_or("missing zero-start bracket solution")?
+        };
+        let support_reaction_n = support_reactions(
+            &adaptive,
+            &merged,
+            &accepted_solution.displacement_mm,
+            &force_n,
+        )?;
+        timing.accepted_iterations = accepted_solution.iterations;
         let tip_displacement_mm =
             bracket_tip_displacement(&adaptive.space, &accepted_solution.displacement_mm)?;
 
@@ -640,8 +724,9 @@ impl BracketMechanicsSession {
             adaptive,
             stiffness,
             force_n,
+            support_reaction_n,
             load_area_mm2,
-            displacement_mm: accepted_solution.displacement_mm.clone(),
+            displacement_mm: accepted_solution.displacement_mm,
             strain_energy_n_mm: accepted_solution.strain_energy_n_mm,
             tip_displacement_mm,
             timing,

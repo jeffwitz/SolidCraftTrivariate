@@ -76,7 +76,7 @@ def report_rows(text, quantity, group):
     return np.loadtxt(io.StringIO(lines),ndmin=2)
 
 
-def defect_corrected(source,work,ccx,env,seconds,max_corrections):
+def defect_corrected(source,work,ccx,env,seconds,max_corrections,retained_first=None):
     start=time.monotonic()
     work.mkdir(parents=True,exist_ok=True)
     original=(source/"bracket.inp").read_text()
@@ -93,9 +93,19 @@ def defect_corrected(source,work,ccx,env,seconds,max_corrections):
     for iteration in range(1+max_corrections):
         path=work/f"pass-{iteration+1}"
         path.mkdir(exist_ok=True)
-        (path/"bracket.inp").write_text(deck)
-        run=measure([str(ccx),"-i","bracket"],env,path/"ccx.log",cwd=path,
-                    seconds=max(0,seconds-(time.monotonic()-start)))
+        if iteration==0 and retained_first is not None:
+            first,record=retained_first
+            if record["status"]!="completed" or (first/"bracket.inp").read_text()!=deck:
+                raise ValueError("retained first correction deck or status does not match")
+            path=first
+            run=dict(record,reused=True,displacement_force_sha256=hashlib.sha256((first/"bracket.dat").read_bytes()).hexdigest())
+        else:
+            if iteration==1 and retained_first is not None:
+                earlier=retained_first[0].parent/"pass-2/bracket.inp"
+                if earlier.read_text()!=deck:raise ValueError("regenerated correction load differs from the timed-out input")
+            (path/"bracket.inp").write_text(deck)
+            run=measure([str(ccx),"-i","bracket"],env,path/"ccx.log",cwd=path,
+                        seconds=max(0,seconds-(time.monotonic()-start)))
         log=(path/"ccx.log").read_text(errors="replace")
         run["solver_log"]=[l.strip() for l in log.splitlines() if any(x in l for x in
                            ("Cholesky preconditioning","error condition","# of iterations"))]

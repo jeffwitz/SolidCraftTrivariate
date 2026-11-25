@@ -11,11 +11,85 @@ use crate::{
 pub(crate) struct Velocity {
     linear: [Vector; 3],
     offset: Vector,
+    endpoint: Option<EndpointFlow>,
     pub(crate) exact: Option<crate::prescribed_motion::Motion>,
 }
 
+/// Piecewise-affine vertical motion of one physical cap and its sheared axis.
+struct EndpointFlow {
+    lower: f64,
+    moving: f64,
+    upper: f64,
+    axis: Vector,
+}
+
+impl EndpointFlow {
+    fn amplitude(&self, z: f64) -> f64 {
+        if z < self.moving {
+            ((z - self.lower) / (self.moving - self.lower)).clamp(0., 1.)
+        } else {
+            ((self.upper - z) / (self.upper - self.moving)).clamp(0., 1.)
+        }
+    }
+
+    fn slope(&self, z: f64) -> f64 {
+        if z > self.lower && z < self.moving {
+            1. / (self.moving - self.lower)
+        } else if z >= self.moving && z < self.upper {
+            -1. / (self.upper - self.moving)
+        } else {
+            0.
+        }
+    }
+}
+
 impl Velocity {
-    pub(crate) fn parse(spec: &Json) -> Result<Self, &'static str> {
+    pub(crate) fn parse(model: &Json, spec: &Json) -> Result<Self, &'static str> {
+        if spec.field("schema")?.text()? == "solidcraft_interval_endpoint_velocity_v1" {
+            spec.keys(&["schema", "bore", "endpoint"])?;
+            if model.field("schema")?.text()? != crate::interval_bores_json::FAMILY {
+                return Err("endpoint direction requires a certified interval bore model");
+            }
+            let recipe = crate::interval_bores_json::parse(model)?;
+            let id = spec.field("bore")?.text()?;
+            let end = match spec.field("endpoint")?.text()? {
+                "lower" => 0,
+                "upper" => 1,
+                _ => return Err("unknown interval endpoint"),
+            };
+            let bore = recipe
+                .bores
+                .iter()
+                .find(|b| b.bore.id == id)
+                .ok_or("unknown interval bore")?;
+            let z = bore.z_interval_mm[end];
+            let h = recipe.height_mm;
+            if z <= 0 || z >= h {
+                return Err("external endpoint requires event analysis");
+            }
+            let cuts: Vec<_> = recipe.bores.iter().flat_map(|b| b.z_interval_mm).collect();
+            if cuts.iter().filter(|&&v| v == z).count() != 1 {
+                return Err("coincident endpoint requires event analysis");
+            }
+            let lower = cuts.iter().copied().filter(|&v| v < z).max().unwrap_or(0);
+            let upper = cuts.iter().copied().filter(|&v| v > z).min().unwrap_or(h);
+            let axis = [
+                f64::from(recipe.top_shift_mm[0]) / f64::from(h),
+                f64::from(recipe.top_shift_mm[1]) / f64::from(h),
+                1.,
+            ];
+            return Ok(Self {
+                linear: [[0.; 3]; 3],
+                offset: [0.; 3],
+                exact: None,
+                endpoint: Some(EndpointFlow {
+                    lower: lower.into(),
+                    moving: z.into(),
+                    upper: upper.into(),
+                    axis,
+                }),
+            });
+        }
         if spec.field("schema")?.text()? == "solidcraft_affine_velocity_v2" {
             spec.keys(&["schema", "affine_mm"])?;
             let map = crate::prescribed_motion::Motion::parse(spec.field("affine_mm")?)?;
@@ -24,6 +98,7 @@ impl Velocity {
                 linear: coefficients.map(|r| [r[1], r[2], r[3]]),
                 offset: coefficients.map(|r| r[0]),
                 exact: Some(map),
+                endpoint: None,
             });
         }
         spec.keys(&["schema", "linear", "offset_mm"])?;
@@ -38,21 +113,32 @@ impl Velocity {
             linear: [row(a)?, row(b)?, row(c)?],
             offset: row(spec.field("offset_mm")?)?,
             exact: None,
+            endpoint: None,
         })
     }
 
-    pub(crate) fn divergence(&self) -> f64 {
+    pub(crate) fn divergence(&self, x: Vector) -> f64 {
+        if let Some(cap) = &self.endpoint {
+            return cap.slope(x[2]);
+        }
         self.linear[0][0] + self.linear[1][1] + self.linear[2][2]
     }
 
     pub(crate) fn at(&self, x: Vector) -> Vector {
+        if let Some(cap) = &self.endpoint {
+            return cap.axis.map(|v| v * cap.amplitude(x[2]));
+        }
         let linear = self.linear_velocity(x);
         std::array::from_fn(|i| linear[i] + self.offset[i])
     }
 
     /// The oriented area vector transforms by the cofactor of the affine map.
-    pub(crate) fn oriented_area_rate(&self, n: Vector) -> Vector {
-        let trace = self.divergence();
+    pub(crate) fn oriented_area_rate(&self, x: Vector, n: Vector) -> Vector {
+        let trace = self.divergence(x);
+        if let Some(cap) = &self.endpoint {
+            let dot: f64 = cap.axis.into_iter().zip(n).map(|(a, b)| a * b).sum();
+            return [trace * n[0], trace * n[1], trace * (n[2] - dot)];
+        }
         std::array::from_fn(|i| {
             trace * n[i] - (0..3).map(|k| self.linear[k][i] * n[k]).sum::<f64>()
         })
@@ -73,6 +159,7 @@ pub(crate) struct SensitivityJob<'a> {
     pub support_rates: Option<[Vec<LiftRate>; 3]>,
     pub material: MaterialJet,
     pub order: usize,
+    pub relative_solve_tolerance: f64,
 }
 
 pub(crate) fn solve(velocity: &Velocity, data: SensitivityJob<'_>) -> Result<Json, &'static str> {
@@ -82,12 +169,16 @@ pub(crate) fn solve(velocity: &Velocity, data: SensitivityJob<'_>) -> Result<Jso
     for block in &space.blocks {
         let mut local = Vec::with_capacity(block.controls.len());
         for (p, &i) in block.controls.iter().zip(&block.dofs) {
-            // A global translation cancels identically from all gradients and
-            // integration measures. Omit it in K' and restore it in the velocity field.
-            let [x, y, z] = velocity.linear_velocity(std::array::from_fn(|k| p[k] as f64));
+            let weight = p[3] as f64;
+            let physical = std::array::from_fn(|c| p[c] as f64 / weight);
+            point_velocities[i] = velocity.at(physical);
+            // Drop only the global translation from the stiffness jet.
+            let [x, y, z] = if velocity.endpoint.is_some() {
+                point_velocities[i].map(|v| v * weight)
+            } else {
+                velocity.linear_velocity(std::array::from_fn(|c| p[c] as f64))
+            };
             local.push([x, y, z, 0.]);
-            point_velocities[i] =
-                std::array::from_fn(|k| [x, y, z][k] / p[3] as f64 + velocity.offset[k]);
         }
         jets.push(local);
     }
@@ -111,7 +202,7 @@ pub(crate) fn solve(velocity: &Velocity, data: SensitivityJob<'_>) -> Result<Jso
             objective_partial: 0.,
             fixed_regime: true,
         },
-        1e-11,
+        data.relative_solve_tolerance,
         20000,
     )?;
     let dot = |a: &[f64], b: &[f64]| a.iter().zip(b).map(|(x, y)| x * y).sum::<f64>();
@@ -169,6 +260,21 @@ pub(crate) fn solve(velocity: &Velocity, data: SensitivityJob<'_>) -> Result<Jso
             ]),
         ),
     ]);
+    if let (Some(cap), Json::Object(fields)) = (&velocity.endpoint, &mut report) {
+        fields.insert(
+            "schema".into(),
+            Json::String("solidcraft_interval_endpoint_derivative_v1".into()),
+        );
+        fields.insert(
+            "parameter".into(),
+            Json::String("positive endpoint height change in mm".into()),
+        );
+        fields.insert(
+            "active_planes_mm".into(),
+            numbers(&[cap.lower, cap.moving, cap.upper]),
+        );
+        fields.insert("material_axis_per_mm".into(), numbers(&cap.axis));
+    }
     if let (Some(_), Json::Object(fields)) = (velocity.exact, &mut report) {
         let u = &result.primal.displacement_mm;
         let du = &result.physical_tangent;

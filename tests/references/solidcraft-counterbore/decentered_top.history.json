@@ -1,0 +1,73 @@
+{
+  "about": {
+    "design": "decentered_top",
+    "format": "solidcraft/66",
+    "replay": "solidcraft-cli eval script.json (timeline.add steps need a build that reads this design format)",
+    "version": "0.48.1"
+  },
+  "commands": [
+    {
+      "command": "timeline.add",
+      "params": {
+        "feature": {
+          "body_names": [
+            "Body1"
+          ],
+          "corner": [
+            -20.0,
+            -20.0,
+            0.0
+          ],
+          "height": "12",
+          "id": 1,
+          "length": "40",
+          "name": "Base",
+          "operation": "new_body",
+          "param_names": [
+            "d1",
+            "d2",
+            "d3"
+          ],
+          "suppressed": false,
+          "type": "box",
+          "width": "40"
+        }
+      }
+    },
+    {
+      "command": "timeline.add",
+      "params": {
+        "feature": {
+          "diameter": "8",
+          "direction": [
+            -0.0,
+            0.0,
+            -1.0
+          ],
+          "face_names": [
+            "F1:+z"
+          ],
+          "hole": {
+            "cb_depth": "4",
+            "cb_diameter": "12",
+            "type": "counterbore"
+          },
+          "id": 2,
+          "name": "Counterbore",
+          "param_names": [
+            "d4",
+            "d5",
+            "d6"
+          ],
+          "position": [
+            4.0,
+            -3.0,
+            12.0
+          ],
+          "suppressed": false,
+          "type": "hole"
+        }
+      }
+    }
+  ]
+}

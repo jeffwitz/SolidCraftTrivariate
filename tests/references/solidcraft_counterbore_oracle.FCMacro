@@ -1,0 +1,85 @@
+import FreeCAD as App
+import Part
+import json
+import math
+import os
+
+host = Part.read(os.environ['SC9_HOST_STEP'])
+native = Part.read(os.environ['SC9_NATIVE_STEP'])
+center = json.loads(os.environ['SC9_CENTER'])
+opening = os.environ['SC9_OPENING']
+expected_bounds = [-20, 20, -20, 20, 0, 12]
+shoulder = 8 if opening == 'end' else 4
+pilot_area = 2 * math.pi * 4 * 8
+counter_area = 2 * math.pi * 6 * 4
+shoulder_area = 20 * math.pi
+expected_area = 5120 + 80 * math.pi
+expected_volume = 19200 - 272 * math.pi
+removed_moment_z = math.pi * (192 * 6 + 80 * (10 if opening == 'end' else 2))
+expected_com = [-center[0] * 272 * math.pi / expected_volume,
+                -center[1] * 272 * math.pi / expected_volume,
+                (115200 - removed_moment_z) / expected_volume]
+
+def check(condition, label):
+    if not condition:
+        raise RuntimeError(label)
+
+def bounds(shape):
+    b = shape.BoundBox
+    return [b.XMin, b.XMax, b.YMin, b.YMax, b.ZMin, b.ZMax]
+
+def center_of_mass(shape):
+    c = shape.Solids[0].CenterOfMass
+    return [c.x, c.y, c.z]
+
+check(host.isValid() and native.isValid(), 'invalid STEP')
+check(len(host.Solids) == len(native.Solids) == 1, 'expected one solid')
+check(max(abs(a-b) for a,b in zip(bounds(host), expected_bounds)) < 1e-8, 'host bounds')
+check(max(abs(a-b) for a,b in zip(bounds(native), expected_bounds)) < 1e-8, 'native bounds')
+check(abs(host.Volume-expected_volume) < 1e-7, 'host analytic volume')
+check(abs(native.Volume-expected_volume) < 1e-7, 'native analytic volume')
+check(abs(host.Volume-native.Volume) < 1e-8, 'host/native volume')
+check(abs(host.Area-native.Area) < 1e-7, 'host/native area')
+check(abs(host.Area-expected_area) < 1e-7, 'analytic total area')
+check(math.dist(center_of_mass(host), expected_com) < 1e-8, 'host analytic centroid')
+check(math.dist(center_of_mass(native), expected_com) < 1e-8, 'native analytic centroid')
+host_minus_native = host.cut(native).Volume
+native_minus_host = native.cut(host).Volume
+check(host_minus_native < 1e-8 and native_minus_host < 1e-8, 'symmetric boolean difference')
+
+probes = []
+cx, cy = center
+for z in [0.5, shoulder-0.5, shoulder+0.5, 11.5]:
+    wide_void = (z > shoulder) if opening == 'end' else (z < shoulder)
+    for radius, inside in [(3, False), (5, not wide_void), (7, True)]:
+        probes.append((cx+radius, cy, z, inside))
+for shape in (host, native):
+    for x,y,z,want in probes:
+        check(shape.isInside(App.Vector(x,y,z), 1e-8, False) == want,
+              'point classification %s' % ([x,y,z],))
+
+metrics = {
+    'valid': True,
+    'freecad_version': list(App.Version()),
+    'opening': opening,
+    'center_mm': center,
+    'volume_expected_mm3': expected_volume,
+    'volume_host_mm3': host.Volume,
+    'volume_native_mm3': native.Volume,
+    'area_expected_mm2': expected_area,
+    'area_host_mm2': host.Area,
+    'area_native_mm2': native.Area,
+    'area_host_native_difference_mm2': abs(host.Area-native.Area),
+    'centroid_expected_mm': expected_com,
+    'centroid_host_mm': center_of_mass(host),
+    'centroid_native_mm': center_of_mass(native),
+    'symmetric_difference_mm3': [host_minus_native, native_minus_host],
+    'shoulder_z_mm': shoulder,
+    'shoulder_expected_area_mm2': shoulder_area,
+    'analytic_wall_areas_mm2': {'pilot': pilot_area, 'counterbore': counter_area,
+                                 'shoulder': shoulder_area},
+    'classification_probes': len(probes),
+}
+with open(os.environ['SC9_METRICS'], 'w') as output:
+    json.dump(metrics, output, sort_keys=True)
+print(json.dumps(metrics, sort_keys=True))

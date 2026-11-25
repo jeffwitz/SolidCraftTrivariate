@@ -4,21 +4,21 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#f5f4ef">
-  <meta name="description" content="Galerie interactive des expériences géométriques et isogéométriques de SolidCraft Trivariate.">
-  <title>SolidCraft — expériences trivariées</title>
+  <meta name="description" content="Partitions polygonales qualifiées du planificateur SolidCraft.">
+  <title>Partitions minimales · SolidCraft</title>
   <link rel="stylesheet" href="./style.css">
   <script type="module" src="./app.js"></script>
 </head>
 <body>
   <header class="topbar">
     <a class="wordmark" href="./" aria-label="SolidCraft, accueil"><span class="mark" aria-hidden="true">S</span><span>SolidCraft <span class="wordmark-light">/ Trivariate</span></span></a>
-    <a class="topbar-source" href="https://github.com/jeffwitz/SolidCraftTrivariate/tree/campagne-nurbs-multiboucles" target="_blank" rel="noopener noreferrer">Code source <span aria-hidden="true">↗</span></a>
+    <a class="topbar-source" href="https://github.com/jeffwitz/SolidCraftTrivariate/tree/main" target="_blank" rel="noopener noreferrer">Code source <span aria-hidden="true">↗</span></a>
   </header>
 
   <main>
     <section class="intro" aria-labelledby="page-title">
-      <h1 id="page-title">Esquisses et volumes NURBS</h1>
-      <p class="lede">Explorez les partitions NURBS, les congés et les chanfreins. Comparez les volumes aux solides de référence B-Rep.</p>
+      <h1 id="page-title">Partitions minimales par couches</h1>
+      <p class="lede">Six solides issus d’esquisses polygonales. Chacun atteint le nombre minimal de blocs pour une partition commune aux couches, avec raccords face entière.</p>
     </section>
 
     <section class="workspace" aria-label="Explorateur de modèles">
@@ -36,8 +36,8 @@
         <div class="viewport-toolbar" aria-label="Commandes de visualisation">
           <fieldset class="segmented">
             <legend>Affichage</legend>
-            <button type="button" class="segment is-active" data-mode="surface" aria-pressed="true">Surface</button>
-            <button type="button" class="segment" data-mode="blocks" aria-pressed="false">Blocs</button>
+            <button type="button" class="segment" data-mode="surface" aria-pressed="false">Surface</button>
+            <button type="button" class="segment is-active" data-mode="blocks" aria-pressed="true">Blocs</button>
           </fieldset>
           <div class="clip-control">
             <label for="clip-axis">Coupe</label>
@@ -52,14 +52,18 @@
       </div>
 
       <aside class="side-panel" aria-label="Expériences et mesures">
-        <div class="experiment-head"><p class="eyebrow">Collection</p><label for="experiment-select">Expérience</label><select id="experiment-select" disabled><option>Chargement…</option></select></div>
+        <div class="experiment-head"><label for="experiment-select">Expérience</label><select id="experiment-select" disabled><option>Chargement…</option></select></div>
         <div class="experiment-copy"><p id="experiment-description"></p></div>
-        <div class="metrics-section"><div class="section-rule"><span>Mesures publiées</span><span class="rule-line"></span></div><dl id="metrics-list" class="metrics-list"><div class="metric-empty">En attente des données.</div></dl></div>
-        <nav class="source-links" aria-label="Fichiers de l’expérience"><a id="model-link" href="#" hidden><span>Modèle trivarié (JSON)</span><span aria-hidden="true">↗</span></a><a id="source-link" href="#" hidden><span>Recette source</span><span aria-hidden="true">↗</span></a><a id="step-link" href="#" hidden><span>Modèle STEP</span><span aria-hidden="true">↗</span></a><a id="hex8-link" href="#" hidden><span>Maillage HEX8 (VTK)</span><span aria-hidden="true">↗</span></a><a id="audit-link" href="#" hidden><span>Audit du modèle</span><span aria-hidden="true">↗</span></a><a id="figure-link" href="#" hidden><span>Figure annotée</span><span aria-hidden="true">↗</span></a><a id="fillet-step" href="#" hidden><span>Congés · référence STEP</span><span aria-hidden="true">↗</span></a><a id="chamfer-step" href="#" hidden><span>Chanfreins · référence STEP</span><span aria-hidden="true">↗</span></a><a class="campaign-link" href="https://github.com/jeffwitz/SolidCraftTrivariate/blob/campagne-nurbs-multiboucles/docs/cycle-nurbs-multiboucles.md" target="_blank" rel="noopener noreferrer">Journal de campagne <span aria-hidden="true">↗</span></a></nav>
+        <div class="metrics-section"><div class="section-rule"><span>Partition et qualité</span><span class="rule-line"></span></div><dl id="metrics-list" class="metrics-list"><div class="metric-empty">En attente des données.</div></dl></div>
+        <p class="metric-note">¹ Conditionnement du jacobien évalué en 27 points par bloc.</p><nav class="source-links" aria-label="Fichiers de l’expérience"><a id="model-link" href="#" hidden><span>Modèle trivarié (JSON)</span><span aria-hidden="true">↗</span></a><a id="source-link" href="#" hidden><span>Recette source</span><span aria-hidden="true">↗</span></a><a id="step-link" href="#" hidden><span>Modèle STEP</span><span aria-hidden="true">↗</span></a><a id="hex8-link" href="#" hidden><span>Maillage HEX8 (VTK)</span><span aria-hidden="true">↗</span></a><a id="audit-link" href="#" hidden><span>Audit du modèle</span><span aria-hidden="true">↗</span></a><a id="figure-link" href="#" hidden><span>Figure annotée</span><span aria-hidden="true">↗</span></a><a id="fillet-step" href="#" hidden><span>Congés · référence STEP</span><span aria-hidden="true">↗</span></a><a id="chamfer-step" href="#" hidden><span>Chanfreins · référence STEP</span><span aria-hidden="true">↗</span></a><a class="campaign-link" href="https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/partition-poche-comparaison.md" target="_blank" rel="noopener noreferrer">Preuve et protocole <span aria-hidden="true">↗</span></a></nav>
       </aside>
     </section>
 
-    <footer class="page-footer"><span>SolidCraft Trivariate</span><span>Géométrie exacte · Champs continus</span><a href="https://github.com/jeffwitz/SolidCraftTrivariate/blob/campagne-nurbs-multiboucles/docs/architecture.md" target="_blank" rel="noopener noreferrer">Architecture du projet ↗</a></footer>
+    <details class="proof"><summary>Comment le minimum est-il vérifié ?</summary>
+      <p>Pour une couche connexe percée de <i>h</i> trous, la formule d’Euler donne <b>Q = B/2 + I + h − 1</b> quadrilatères, avec <i>B</i> sommets de frontière et <i>I</i> sommets intérieurs. Les coins des contours et leurs prolongements obligatoires fixent une borne inférieure. Chaque modèle présenté atteint cette borne dans chaque couche.</p>
+      <p>Le contrat impose une coupe de tous les blocs à chaque début ou fin de cavité et des faces entières entre voisins. Le fichier d’audit détaille le comptage par couche. Les partitions traversant plusieurs couches et les raccords partiels sortent de ce calcul.</p>
+    </details>
+    <footer class="page-footer"><span>SolidCraft Trivariate</span><span></span><a href="https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/architecture.md" target="_blank" rel="noopener noreferrer">Architecture du projet ↗</a></footer>
   </main>
 </body>
 </html>

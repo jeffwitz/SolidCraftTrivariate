@@ -1,0 +1,151 @@
+{
+  "case": "rectangle_offset_pocket",
+  "native": {
+    "blocks": 14,
+    "bounded_sketch_faces": 5,
+    "cavities": 1,
+    "determinant_lower_bound_mm3": 71.99999999999996,
+    "exterior_sides": 28,
+    "hausdorff_error_upper_bound_mm": 0,
+    "method": "certified_sketch_layer_partition",
+    "shared_faces": 28,
+    "status": "valid",
+    "volume_exact_mm3": [
+      9504,
+      1
+    ]
+  },
+  "layer_lower_bounds": [
+    {
+      "z_mm": [
+        0.0,
+        3.0
+      ],
+      "boundary_corners": 4,
+      "required_interior_corners": 4,
+      "holes": 0,
+      "minimum": 5
+    },
+    {
+      "z_mm": [
+        3.0,
+        7.0
+      ],
+      "boundary_corners": 8,
+      "required_interior_corners": 0,
+      "holes": 1,
+      "minimum": 4
+    },
+    {
+      "z_mm": [
+        7.0,
+        10.0
+      ],
+      "boundary_corners": 4,
+      "required_interior_corners": 4,
+      "holes": 0,
+      "minimum": 5
+    }
+  ],
+  "oracle": {
+    "id": "rectangle_offset_pocket",
+    "block_count": 14,
+    "max_condition_2_sample_27_per_block": 19.329217228505275,
+    "expected_volume_exact_mm3": [
+      9504,
+      1
+    ],
+    "cli_volume_exact_mm3": [
+      9504,
+      1
+    ],
+    "volume_match": true,
+    "layers": [
+      {
+        "cells": 5,
+        "vertices": 8,
+        "edges": 12,
+        "euler": 1,
+        "boundary_edges": 4,
+        "internal_edges": 8,
+        "area_exact_mm2": [
+          960,
+          1
+        ],
+        "area_sum_mm2": 960.0,
+        "pairwise_overlap_pairs": 0,
+        "z_interval_mm": [
+          0.0,
+          3.0
+        ],
+        "expected_area_exact_mm2": [
+          960,
+          1
+        ],
+        "area_gap_exact_mm2": [
+          0,
+          1
+        ],
+        "contained_in_expected_material": true,
+        "expected_euler_characteristic": 1
+      },
+      {
+        "cells": 4,
+        "vertices": 8,
+        "edges": 12,
+        "euler": 0,
+        "boundary_edges": 8,
+        "internal_edges": 4,
+        "area_exact_mm2": [
+          936,
+          1
+        ],
+        "area_sum_mm2": 936.0,
+        "pairwise_overlap_pairs": 0,
+        "z_interval_mm": [
+          3.0,
+          7.0
+        ],
+        "expected_area_exact_mm2": [
+          936,
+          1
+        ],
+        "area_gap_exact_mm2": [
+          0,
+          1
+        ],
+        "contained_in_expected_material": true,
+        "expected_euler_characteristic": 0
+      },
+      {
+        "cells": 5,
+        "vertices": 8,
+        "edges": 12,
+        "euler": 1,
+        "boundary_edges": 4,
+        "internal_edges": 8,
+        "area_exact_mm2": [
+          960,
+          1
+        ],
+        "area_sum_mm2": 960.0,
+        "pairwise_overlap_pairs": 0,
+        "z_interval_mm": [
+          7.0,
+          10.0
+        ],
+        "expected_area_exact_mm2": [
+          960,
+          1
+        ],
+        "area_gap_exact_mm2": [
+          0,
+          1
+        ],
+        "contained_in_expected_material": true,
+        "expected_euler_characteristic": 1
+      }
+    ],
+    "passed": true
+  }
+}

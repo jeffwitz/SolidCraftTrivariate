@@ -10,7 +10,7 @@ const ui = {
 
 let experiments = [];
 let viewer = null;
-let mode = 'surface';
+let mode = 'blocks';
 let selectionVersion = 0;
 let modelReady = false;
 let viewerError = 'Le moteur de visualisation n’est pas disponible.';

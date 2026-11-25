@@ -1,0 +1,90 @@
+{
+  "case": "c_section_two_holes",
+  "native": {
+    "blocks": 9,
+    "bounded_sketch_faces": 11,
+    "cavities": 0,
+    "determinant_lower_bound_mm3": 13.999999999999993,
+    "exterior_sides": 34,
+    "hausdorff_error_upper_bound_mm": 0,
+    "method": "certified_sketch_layer_partition",
+    "shared_faces": 10,
+    "status": "valid",
+    "volume_exact_mm3": [
+      1568,
+      1
+    ]
+  },
+  "layer_lower_bounds": [
+    {
+      "z_mm": [
+        0.0,
+        7.0
+      ],
+      "boundary_corners": 16,
+      "required_interior_corners": 0,
+      "holes": 2,
+      "minimum": 9
+    }
+  ],
+  "oracle": {
+    "id": "c_section_two_holes",
+    "block_count": 9,
+    "max_condition_2_sample_27_per_block": 121.90145401731486,
+    "expected_volume_exact_mm3": [
+      1568,
+      1
+    ],
+    "cli_volume_exact_mm3": [
+      1568,
+      1
+    ],
+    "volume_match": true,
+    "layers": [
+      {
+        "cells": 9,
+        "vertices": 16,
+        "edges": 26,
+        "euler": -1,
+        "boundary_edges": 16,
+        "internal_edges": 10,
+        "area_exact_mm2": [
+          224,
+          1
+        ],
+        "area_sum_mm2": 224.0,
+        "pairwise_overlap_pairs": 0,
+        "z_interval_mm": [
+          0.0,
+          7.0
+        ],
+        "expected_area_exact_mm2": [
+          224,
+          1
+        ],
+        "area_gap_exact_mm2": [
+          0,
+          1
+        ],
+        "contained_in_expected_material": true,
+        "expected_euler_characteristic": -1
+      }
+    ],
+    "passed": true,
+    "quad_euler_lower_bound": {
+      "conforming_quad_mesh_assumption": true,
+      "connected_components": 1,
+      "holes": 2,
+      "boundary_vertices_min": 16,
+      "interior_vertices_min": 0,
+      "euler_characteristic": -1,
+      "formula": "F = V_boundary/2 + V_interior + holes - 1 >= 9",
+      "observed_quad_count": 9,
+      "observed_vertices": 16,
+      "observed_edges": 26,
+      "observed_euler": -1,
+      "expected_volume_mm3": 1568,
+      "attains_bound": true
+    }
+  }
+}

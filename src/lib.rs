@@ -11,6 +11,7 @@ mod bracket_json;
 pub mod incidence;
 pub mod h_refine;
 pub mod elasticity;
+pub mod constraint_system;
 pub mod face_constraints;
 pub mod face_partition;
 pub mod interchange;

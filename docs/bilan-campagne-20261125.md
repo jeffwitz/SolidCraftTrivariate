@@ -1,6 +1,6 @@
 # Bilan de la campagne Luna du 25 novembre 2026
 
-**Version de travail pendant la campagne.** La fenêtre prévue court du 24 novembre à 23 h 23 au 25 novembre à 09 h 23 UTC. Base L1 `ea5b940`, branche `campagne-20261125-10h`. Le journal conserve les protocoles datés, les seuils, les changements de méthode et la chronologie des échecs. [Journal de campagne](campagne-20261125.md)
+**Campagne close le 25 novembre 2026 à 09 h 23 UTC**, après dix heures depuis le 24 novembre à 23 h 23 UTC. Les trois agents ont terminé. Base L1 `ea5b940`, branche `campagne-20261125-10h`. La révision fonctionnelle publiée est `819eb478431c98b3ae46d516b557c599c3317849`. Le contrôle isolé de cette révision a passé 389 tests Rust et 58 tests Python, les démonstrations de `make check` et Clippy avec les avertissements traités comme erreurs. Le journal conserve les protocoles datés, les seuils, les changements de méthode et la chronologie des échecs. [Journal de campagne](campagne-20261125.md)
 
 ## Ce que permet le démonstrateur
 
@@ -16,7 +16,7 @@ Sur cette bande, la base rationnelle C0 de degré trois compte 112 fonctions sca
 
 Les deux enlèvements transverses à flancs NURBS synchronisés donnent un second cas libre. La construction exacte à bouts plats comporte 26 blocs et 36 interfaces. L’intégration des cartes à l’ordre 16 retrouve le volume de référence 50 835,0245041331 mm³ à 1,81e−13 relatif. Les 702 points intérieurs contrôlés appartiennent à la matière définie par les courbes sources. Pour un témoin désynchronisé et une tolérance latérale de 0,25 mm, le parcours approché certifié donne 82 blocs et une borne de frontière de 0,50 mm. L’écart de volume mesuré sur ce témoin vaut −16,31 mm³. [Cas exact, cas approché et refus](results/nurbs-cross-20261125.json)
 
-Deux profils ovales fermés construits par réflexion de méridiennes cubiques synchronisées donnent 40 blocs, 68 interfaces et 104 faces extérieures. La relecture STEP trouve un solide valide à une coquille fermée. La masse adaptative et l’intégration indépendante des méridiennes donnent 63 390,9804704817 mm³. Le contrôle du paquet Q3 vérifie 1 088 correspondances de coefficients sur les raccords et 2 560 évaluations de champ affine et de gradient. Les conditions de symétrie, de monotonie et de synchronisation délimitent ce résultat. [Recette et construction](nurbs-cross.md) · [Masse STEP](results/nurbs-oval-step-20261125.json) · [Espace Q3](results/nurbs-oval-space-20261125.json)
+Deux profils ovales fermés construits par réflexion de méridiennes cubiques synchronisées donnent 40 blocs, 68 interfaces et 104 faces extérieures. La relecture STEP trouve un solide valide à une coquille fermée. La masse adaptative et l’intégration indépendante des méridiennes donnent 63 390,9804704817 mm³. Le contrôle du paquet Q3 vérifie 1 088 correspondances de coefficients sur les raccords et 2 560 évaluations de champ affine et de gradient. Le balayage indépendant de 16 variantes modifie les largeurs, les poids et les nœuds. Les huit profils à deux travées donnent 40 blocs, les huit profils à trois travées en donnent 56. L’écart relatif maximal de volume à l’ordre 16 est de 4,50e−12. Les conditions de symétrie, de monotonie et de synchronisation délimitent ce résultat. [Recette et construction](nurbs-cross.md) · [Masse STEP](results/nurbs-oval-step-20261125.json) · [Espace Q3](results/nurbs-oval-space-20261125.json) · [Balayage des 16 variantes](results/nurbs-oval-sweep-20261125.json)
 
 ## Construction automatique depuis les esquisses
 
@@ -138,6 +138,8 @@ cargo test --locked --offline
 cargo clippy --locked --offline --all-targets -- -D warnings
 make check
 ```
+
+Sur les trois géométries NURBS exactes, une altération unitaire d’un contrôle homogène est détectée au réaudit. Les six tentatives d’export STEP et H¹ à partir de ces modèles altérés ont préservé les fichiers acceptés précédemment. [Témoins et empreintes](results/nurbs-atomic-export-20261125.json)
 
 Les études longues ont leurs recettes sous `tests/references/`, leurs résultats numériques sous `docs/results/` et leurs données régénérables sous `build/`. Le noyau et les nouveaux constructeurs sont en Rust. Les scripts Python servent aux références de portage, aux oracles, aux relances de solveurs et aux mesures indépendantes. [Architecture](architecture.md) · [Références verrouillées](../references.lock)
 

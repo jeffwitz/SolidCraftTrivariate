@@ -1,0 +1,86 @@
+{
+  "functional_revision": "819eb478431c98b3ae46d516b557c599c3317849",
+  "cases": [
+    {
+      "case": "strip",
+      "audit": {
+        "reason": "nurbs_strip_exact_reconstruction_mismatch",
+        "status": "invalid"
+      },
+      "source": "nurbs_strip.recipe.json",
+      "mutated_control": "blocks[0].controls[1][1] += 1",
+      "atomic_exports": {
+        "export-step": {
+          "exit_code": 1,
+          "reason": {
+            "reason": "nurbs_strip_exact_reconstruction_mismatch",
+            "status": "error"
+          },
+          "previous_target_sha256": "9351cb1f6a96c642434351d7860013d66e5b7ed133c7de77b8f0708ced5d66e3"
+        },
+        "export-analysis": {
+          "exit_code": 1,
+          "reason": {
+            "reason": "nurbs_strip_exact_reconstruction_mismatch",
+            "status": "error"
+          },
+          "previous_target_sha256": "131a5c31eebd63624ce9b4113ef7d510a5979fbd5c93ef60f72403919eed5a9d"
+        }
+      }
+    },
+    {
+      "case": "cross",
+      "audit": {
+        "reason": "nurbs_cross_block_reconstruction_mismatch",
+        "status": "invalid"
+      },
+      "source": "nurbs_cross_bores.recipe.json",
+      "mutated_control": "blocks[0].controls[1][1] += 1",
+      "atomic_exports": {
+        "export-step": {
+          "exit_code": 1,
+          "reason": {
+            "reason": "nurbs_cross_block_reconstruction_mismatch",
+            "status": "error"
+          },
+          "previous_target_sha256": "163623262fa7ff3794eac3351f2e4837e92cb72c3e9c51dc77ca5e92a0eced98"
+        },
+        "export-analysis": {
+          "exit_code": 1,
+          "reason": {
+            "reason": "nurbs_cross_block_reconstruction_mismatch",
+            "status": "error"
+          },
+          "previous_target_sha256": "968728f157eec97aa956e94ceb280b008952a24d1f5cb6dcda530278a70dad2a"
+        }
+      }
+    },
+    {
+      "case": "oval",
+      "audit": {
+        "reason": "nurbs_cross_oval_block_reconstruction_mismatch",
+        "status": "invalid"
+      },
+      "source": "nurbs_cross_oval.recipe.json",
+      "mutated_control": "blocks[0].controls[1][1] += 1",
+      "atomic_exports": {
+        "export-step": {
+          "exit_code": 1,
+          "reason": {
+            "reason": "nurbs_cross_oval_block_reconstruction_mismatch",
+            "status": "error"
+          },
+          "previous_target_sha256": "bf062af23f711d08799dc55b20924793300d409807f0d62a2446bc2cca572795"
+        },
+        "export-analysis": {
+          "exit_code": 1,
+          "reason": {
+            "reason": "nurbs_cross_oval_block_reconstruction_mismatch",
+            "status": "error"
+          },
+          "previous_target_sha256": "cca1ed92624b3ca01857fff1ad1269e3bbdcc482d65713317dfab1a02e33aa53"
+        }
+      }
+    }
+  ]
+}

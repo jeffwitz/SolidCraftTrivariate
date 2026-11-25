@@ -1,0 +1,39 @@
+{
+  "version": "j4_pilot_20261125_v1",
+  "frozen_at_utc": "2026-11-25T00:24:00Z",
+  "length_unit": "mm",
+  "stress_unit": "MPa",
+  "mandatory": [
+    {"id": "kirsch_initial", "outer_square_half_width": 10, "bore_radius": 4, "height": 8},
+    {"id": "kirsch_radius_edit", "outer_square_half_width": 10, "bore_radius": 3.5, "height": 8, "edit_of": "kirsch_initial"}
+  ],
+  "analysis": {
+    "model": "linear isotropic plane strain extended through constant thickness",
+    "young": 210000,
+    "poisson": 0.3,
+    "remote_tension": 100,
+    "external_boundary": "exact Kirsch traction on all four square sides",
+    "bore_boundary": "traction free",
+    "rigid_modes": "remove two translations and in-plane rotation without restraining strain",
+    "qoi": "physical hoop stress at (0,a) on the material side",
+    "reference_hoop_stress": 300,
+    "qoi_relative_tolerance": 0.03,
+    "boundary_resultant_relative_tolerance": 0.000001,
+    "successive_qoi_relative_change": 0.02,
+    "wall_clock_budget_seconds_per_method_case": 1800,
+    "memory_budget_mib_per_run": 6000,
+    "methods": ["native_rational_q2", "curved_tetrahedral_p2", "immersed_quadratic_bspline"]
+  },
+  "exploratory": [
+    {"id": "offset_supported", "operation": "square_minus_disk", "square_half_width": 10, "center": [1,-1], "radius": 3.5, "height": 8},
+    {"id": "near_tangency", "operation": "square_minus_disk", "square_half_width": 10, "center": [5.999,0], "radius": 4, "height": 8},
+    {"id": "blind_deep", "operation": "square_minus_blind_cylinder", "square_half_width": 10, "center": [0,0], "radius": 4, "height": 8, "depth": 7.5},
+    {"id": "breakthrough", "operation": "square_minus_blind_cylinder", "square_half_width": 10, "center": [0,0], "radius": 4, "height": 8, "depth": 8},
+    {"id": "two_disjoint", "operation": "square_minus_disks", "square_half_width": 10, "centers": [[-4,0],[4,0]], "radii": [2,2], "height": 8},
+    {"id": "two_overlapping", "operation": "square_minus_disks", "square_half_width": 10, "centers": [[-1,0],[1,0]], "radii": [2,2], "height": 8}
+  ],
+  "invalid_controls": [
+    {"id": "negative_radius", "operation": "square_minus_disk", "square_half_width": 10, "center": [0,0], "radius": -1, "height": 8},
+    {"id": "zero_height", "operation": "square_minus_disk", "square_half_width": 10, "center": [0,0], "radius": 4, "height": 0}
+  ]
+}

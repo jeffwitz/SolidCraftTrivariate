@@ -27,3 +27,19 @@ Chaque section a ainsi un jacobien de signe constant et sa frontière est une co
 Depuis la racine, exécuter `cargo test --locked --offline --test steinmetz_core -- --nocapture`. Le test reconstruit les incidences, utilise le certificat de Bernstein à arrondi sortant sur chaque cube fermé, évalue les parois et intègre le jacobien des cartes. Dans le pavé 60 × 40 × 30 mm avec r=3 mm, le volume commun aux vides est 16 r³/3 = 144 mm³. La section commune des deux cylindres à altitude locale y est un carré d’aire 4(r²−y²), ce qui donne ce volume par intégration sur [−r,r]. Le volume de matière attendu est 72 000 − 810π + 144 mm³.
 
 Des rayons différents ou des axes gauches changent l’équation des feuilles de séparation. Ils demandent un autre domaine de qualification.
+
+### Rejouer depuis les deux features
+
+```sh
+mkdir -p build/steinmetz-demo
+python3 -c 'import json; print(json.dumps(json.load(open("tests/references/steinmetz_partition_corpus.json"))[0]["recipe"]))' > build/steinmetz-demo/recipe.json
+cargo run --locked --offline -- build build/steinmetz-demo/recipe.json build/steinmetz-demo/model.json
+cargo run --locked --offline -- audit build/steinmetz-demo/model.json
+cargo run --locked --offline -- export-step build/steinmetz-demo/model.json build/steinmetz-demo/percages-secants.step
+cargo run --locked --offline -- export-geometry-vtu build/steinmetz-demo/model.json 4 build/steinmetz-demo/blocs.vtu
+cargo run --locked --offline -- export-analysis build/steinmetz-demo/model.json 4 build/steinmetz-demo/analyse.json
+```
+
+Sur cette recette, l’audit des cartes persistées trouve 68 interfaces, 104 faces extérieures et une borne commune de 14,74559999999808 mm³ pour le jacobien. L’intégration indépendante des cartes donne 69 599,309950592913 mm³. Les aires exposées sur les cylindres de longueur L valent chacune 2πrL − 8r² ; le test les vérifie séparément à 10⁻⁸ mm². Open CASCADE relit un solide fermé valide de volume 69 599,30995051493 mm³, centré au point (30,20,15) mm.
+
+L’espace IGA exporté compte 554 fonctions scalaires et 1 662 composantes de déplacement. Sur le modèle exporté à l’ordre de Gauss 4, l’oracle indépendant vérifie 612 correspondances de coefficients de face et reproduit exactement les valeurs et gradients paramétriques du champ affine sur la grille rationnelle de test. L’écart relatif entre l’énergie élastique assemblée et l’énergie à déformation constante est de 2,06 × 10⁻¹⁵ au plus pour cette quadrature. Ce test porte sur l’assemblage et les interfaces ; il ne quantifie pas une concentration de contrainte sous chargement.

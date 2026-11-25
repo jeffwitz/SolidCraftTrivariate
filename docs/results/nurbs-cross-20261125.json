@@ -1,0 +1,170 @@
+{
+  "oracle": "nurbs_cross_bores_independent_de_boor_simpson_v1",
+  "expected_volume_mm3": 50835.02450413309,
+  "rust_export_block_volume_q12_mm3": 50835.02448995712,
+  "rust_export_block_volume_q16_mm3": 50835.02450412389,
+  "rust_volume_quadrature_delta_mm3": 1.4166769688017666e-05,
+  "volume_error_mm3": -9.204086381942034e-09,
+  "volume_relative_error": 1.810579707932216e-13,
+  "simpson_panels": 8192,
+  "profile_observations_mm": {
+    "x_min": {
+      "y8": 24.0,
+      "y18": 24.53419978567893,
+      "y30": 23.500000000000007,
+      "dx_dy_at18": 0.10875909579155518,
+      "strictly_increasing_y": true,
+      "nonconic_first_span": {
+        "span": [
+          0,
+          1
+        ],
+        "rational_samples": 7,
+        "conic_design_matrix_exact_rank": 6,
+        "columns": [
+          "x^2",
+          "x*y",
+          "y^2",
+          "x",
+          "y",
+          "1"
+        ]
+      }
+    },
+    "x_max": {
+      "y8": 38.0,
+      "y18": 38.99999999999999,
+      "y30": 39.000000000000014,
+      "dx_dy_at18": -7.105427357601002e-11,
+      "strictly_increasing_y": true,
+      "nonconic_first_span": {
+        "span": [
+          0,
+          1
+        ],
+        "rational_samples": 7,
+        "conic_design_matrix_exact_rank": 6,
+        "columns": [
+          "x^2",
+          "x*y",
+          "y^2",
+          "x",
+          "y",
+          "1"
+        ]
+      }
+    },
+    "z_min": {
+      "y8": 10.0,
+      "y18": 14.160588400005146,
+      "y30": 13.500000000000007,
+      "dx_dy_at18": 0.2686619996072892,
+      "strictly_increasing_y": true,
+      "nonconic_first_span": {
+        "span": [
+          0,
+          1
+        ],
+        "rational_samples": 7,
+        "conic_design_matrix_exact_rank": 6,
+        "columns": [
+          "x^2",
+          "x*y",
+          "y^2",
+          "x",
+          "y",
+          "1"
+        ]
+      }
+    },
+    "z_max": {
+      "y8": 22.0,
+      "y18": 25.49323632583256,
+      "y30": 26.000000000000004,
+      "dx_dy_at18": 0.190587431045941,
+      "strictly_increasing_y": true,
+      "nonconic_first_span": {
+        "span": [
+          0,
+          1
+        ],
+        "rational_samples": 7,
+        "conic_design_matrix_exact_rank": 6,
+        "columns": [
+          "x^2",
+          "x*y",
+          "y^2",
+          "x",
+          "y",
+          "1"
+        ]
+      }
+    }
+  },
+  "valid_model_schema": "nurbs_cross_bores_v1",
+  "valid_model_blocks": 26,
+  "independent_block_point_classification": {
+    "strict_interior_points_checked": 702,
+    "source_removed_region_disagreements": []
+  },
+  "desynchronized_ordinate_refusal_exit": 1,
+  "desynchronized_ordinate_refusal_output": "{\"reason\":\"NURBS sketch ordinates require a different reparameterization\",\"status\":\"error\"}",
+  "desynchronized_atomic_output_preserved": true,
+  "invalid_weight_refusal_exit": 1,
+  "invalid_weight_refusal_output": "{\"reason\":\"NURBS weights must be strictly positive\",\"status\":\"error\"}",
+  "invalid_weight_atomic_output_preserved": true,
+  "bounded_family_exit": 0,
+  "bounded_schema": "nurbs_cross_bores_bounded_v1",
+  "bounded_cli_audit": {
+    "blocks": 82,
+    "certificate_scope": "bounded_lateral_profile_fidelity_and_exact_whole_face_incidence",
+    "exterior_sides": 308,
+    "fidelity": "APPROX_CERTIFIED",
+    "hausdorff_error_upper_bound_mm": [
+      1,
+      2
+    ],
+    "lateral_order_status": "strict_order_certified_for_constructed_rational_envelope",
+    "max_depth": 8,
+    "method": "certified_rational_nurbs_graph_approximation",
+    "ordinates_status": "strictly_increasing_on_closed_domain",
+    "shared_faces": 92,
+    "status": "valid",
+    "structural_reconstruction": "exact_integer_coefficients_and_whole_face_incidence",
+    "weights_status": "positive_on_closed_domain"
+  },
+  "bounded_profile_errors_from_rust_blocks_mm": {
+    "x_min": {
+      "model_profile_rows": 17,
+      "max_lateral_error_mm": 0.13799304397092627,
+      "worst_y_mm": 10.455738054607814
+    },
+    "x_max": {
+      "model_profile_rows": 17,
+      "max_lateral_error_mm": 0.10618901796865998,
+      "worst_y_mm": 11.357505063958376
+    },
+    "z_min": {
+      "model_profile_rows": 17,
+      "max_lateral_error_mm": 0.13545791798427942,
+      "worst_y_mm": 12.028353831959782
+    },
+    "z_max": {
+      "model_profile_rows": 17,
+      "max_lateral_error_mm": 0.14668173398984052,
+      "worst_y_mm": 21.384988901221
+    }
+  },
+  "bounded_profile_tolerance_mm": 0.25,
+  "bounded_profile_volume_from_rust_blocks_mm3": 50816.66393728458,
+  "bounded_block_jacobian_volume_q10_mm3": 50816.66396345302,
+  "bounded_volume_crosscheck_error_mm3": 2.6168439944740385e-05,
+  "bounded_independent_source_volume_mm3": 50832.97230152292,
+  "bounded_block_vs_source_volume_error_mm3": -16.3083380698954,
+  "zero_depth_refusal_exit": 1,
+  "zero_depth_refusal_output": "{\"reason\":\"NURBS graph tolerance not certified within subdivision depth\",\"status\":\"error\"}",
+  "zero_depth_atomic_output_preserved": true,
+  "tiny_tolerance_refusal_exit": 1,
+  "tiny_tolerance_refusal_output": "{\"reason\":\"NURBS graph tolerance not certified within subdivision depth\",\"status\":\"error\"}",
+  "tiny_tolerance_atomic_output_preserved": true
+}

@@ -74,7 +74,7 @@ fn affine_and_rejections() {
         MapError::InvalidControl
     );
     assert_eq!(
-        RationalBezierMap::new([3, 1, 1], vec![[1.; 4]; 16]).unwrap_err(),
+        RationalBezierMap::new([4, 1, 1], vec![[1.; 4]; 20]).unwrap_err(),
         MapError::UnsupportedDegrees
     );
 }
@@ -118,22 +118,16 @@ fn biquadratic_rational_chart_matches_separable_quotients_and_product_rule() {
 
 #[test]
 fn every_tensor_degree_combination_has_the_correct_axis_strides() {
-    for p in 1..=2 {
-        for q in 1..=2 {
-            for r in 1..=2 {
+    for p in 1..=3 {
+        for q in 1..=3 {
+            for r in 1..=3 {
                 let degrees = [p, q, r];
                 let mut controls = Vec::new();
                 for i in 0..=p {
                     for j in 0..=q {
                         for k in 0..=r {
                             let coordinates = [i, j, k];
-                            let fun = |a: usize| {
-                                if degrees[a] == 1 {
-                                    coordinates[a] as f64
-                                } else {
-                                    f64::from(coordinates[a] == 2)
-                                }
-                            };
+                            let fun = |a: usize| f64::from(coordinates[a] == degrees[a]);
                             controls.push([fun(0), fun(1), fun(2), 1.]);
                         }
                     }

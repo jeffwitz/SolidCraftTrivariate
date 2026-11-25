@@ -51,7 +51,7 @@ fn publish(target: &Path, contents: &str) -> std::io::Result<()> {
     }
 }
 
-const COMMANDS_AND_EVALUATORS: &str = r#"{"commands":["build","audit","evaluate","capabilities","export-step","certify-map","export-analysis","export-sketch-analysis","export-adaptive","inspect-travel","solve-job","differentiate-job","import-solidcraft","export-field-vtu","export-geometry-vtu","edit-bore-intervals"],"evaluators":{"rational_bezier_tensor":{"degrees":[[1,1,1],[1,1,2],[1,2,1],[1,2,2],[2,1,1],[2,1,2],[2,2,1],[2,2,2]],"domain":[[0,1],[0,1],[0,1]]}}}"#;
+const COMMANDS_AND_EVALUATORS: &str = r#"{"commands":["build","audit","evaluate","capabilities","export-step","certify-map","export-analysis","export-sketch-analysis","export-nurbs-space","export-adaptive","inspect-travel","solve-job","differentiate-job","import-solidcraft","import-solidcraft-sketch","export-field-vtu","export-geometry-vtu","edit-bore-intervals"],"evaluators":{"rational_bezier_tensor":{"degrees":[[1,1,1],[1,1,2],[1,1,3],[1,2,1],[1,2,2],[1,2,3],[1,3,1],[1,3,2],[1,3,3],[2,1,1],[2,1,2],[2,1,3],[2,2,1],[2,2,2],[2,2,3],[2,3,1],[2,3,2],[2,3,3],[3,1,1],[3,1,2],[3,1,3],[3,2,1],[3,2,2],[3,2,3],[3,3,1],[3,3,2],[3,3,3]],"domain":[[0,1],[0,1],[0,1]]}}}"#;
 
 fn capabilities() -> Result<Json, String> {
     let mut result = parse(COMMANDS_AND_EVALUATORS)?;
@@ -82,9 +82,13 @@ fn capabilities() -> Result<Json, String> {
         "polygon_interval_bores_v1",
         "polygon_counterbores_v1",
         "polygon_countersinks_v1",
+        "nurbs_sketch_strip_v1",
         "sketch_layer_partition_v1",
         "sketch_boolean_layers_v1",
         "orthogonal_sketch_features_v1",
+        "nurbs_cross_bores_v1",
+        "nurbs_cross_bores_bounded_v1",
+        "nurbs_cross_oval_v1",
         "rational_sector_prism_v1",
         "affine_image_v1",
     ]
@@ -277,6 +281,11 @@ fn run(args: &[String]) -> Result<Json, String> {
     match args {
         [cmd] if cmd=="capabilities"=>capabilities(),
         [cmd,center] if cmd=="inspect-travel"=>Ok(inspect_travel(center)?),
+        [cmd,path,target] if cmd=="export-nurbs-space"=>{
+            let package=solidcraft_trivariate::nurbs_space::export(&read(path)?)?;
+            publish(Path::new(target),&package.to_string()).map_err(|e|e.to_string())?;
+            Ok(object([("status",Json::String("exported".into())),("scalar_ndof",package.field("scalar_ndof")?.clone())]))
+        }
         [cmd,path] if cmd=="audit"=>Ok(audit(&read(path)?).unwrap_or_else(|reason| diagnostic(if reason.ends_with("_indeterminate_bernstein") {"indeterminate"} else {"invalid"},reason))),
         [cmd,recipe,target] if cmd=="build"=>{
             let model=build(&read(recipe)?)?;
@@ -284,8 +293,13 @@ fn run(args: &[String]) -> Result<Json, String> {
             if report.field("status")?.text()?=="valid" {publish(Path::new(target),&model.to_string()).map_err(|e|e.to_string())?;}
             Ok(report)
         }
-        [cmd,source,target] if cmd=="import-solidcraft"=>{
-            let model=solidcraft_trivariate::solidcraft_bridge::import_script(&read(source)?)?;
+        [cmd,source,target] if cmd=="import-solidcraft" || cmd=="import-solidcraft-sketch"=>{
+            let input=read(source)?;
+            let model=if cmd=="import-solidcraft-sketch" {
+                solidcraft_trivariate::solidcraft_sketch_features::import_sketch_timeline(&input)?
+            } else {
+                solidcraft_trivariate::solidcraft_bridge::import_script(&input)?
+            };
             let report=audit(&model)?;
             publish(Path::new(target),&model.to_string()).map_err(|e|e.to_string())?;
             Ok(report)
@@ -353,7 +367,7 @@ fn run(args: &[String]) -> Result<Json, String> {
             Ok(object([("status",Json::String("evaluated".into())),("position",vector(res.position)),
                 ("jacobian_columns",Json::Array(res.jacobian_columns.into_iter().map(vector).collect()))]))
         }
-        _=>Err("usage: solidcraft-trivariate capabilities | build RECIPE OUTPUT | audit MODEL | evaluate MAP U V W | export-step MODEL OUTPUT | certify-map MAP MAX_LEAVES MAX_DEPTH | export-analysis MODEL GAUSS_ORDER OUTPUT | export-sketch-analysis MODEL GAUSS_ORDER OUTPUT | export-adaptive MODEL PLAN GAUSS_ORDER OUTPUT | import-solidcraft SCRIPT OUTPUT | solve-job MODEL JOB OUTPUT | differentiate-job MODEL JOB DIRECTION OUTPUT | export-field-vtu RESULT SUBDIVISIONS OUTPUT | export-geometry-vtu MODEL SUBDIVISIONS OUTPUT | edit-bore-intervals MODEL EDITS OUTPUT | inspect-travel CENTER_X_UM".into()),
+        _=>Err("usage: solidcraft-trivariate capabilities | build RECIPE OUTPUT | audit MODEL | evaluate MAP U V W | export-step MODEL OUTPUT | certify-map MAP MAX_LEAVES MAX_DEPTH | export-analysis MODEL GAUSS_ORDER OUTPUT | export-sketch-analysis MODEL GAUSS_ORDER OUTPUT | export-nurbs-space MODEL OUTPUT | export-adaptive MODEL PLAN GAUSS_ORDER OUTPUT | import-solidcraft SCRIPT OUTPUT | import-solidcraft-sketch TIMELINE OUTPUT | solve-job MODEL JOB OUTPUT | differentiate-job MODEL JOB DIRECTION OUTPUT | export-field-vtu RESULT SUBDIVISIONS OUTPUT | export-geometry-vtu MODEL SUBDIVISIONS OUTPUT | edit-bore-intervals MODEL EDITS OUTPUT | inspect-travel CENTER_X_UM".into()),
     }
 }
 

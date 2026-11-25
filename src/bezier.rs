@@ -51,7 +51,7 @@ impl RationalBezierMap {
         {
             return Err(MapError::InvalidControl);
         }
-        if degrees.iter().any(|d| !(1..=2).contains(d)) {
+        if degrees.iter().any(|d| !(1..=3).contains(d)) {
             return Err(MapError::UnsupportedDegrees);
         }
         Ok(Self { degrees, controls })
@@ -108,11 +108,23 @@ impl RationalBezierMap {
     }
 }
 
-fn basis(degree: usize, t: f64) -> ([f64; 3], [f64; 3]) {
+fn basis(degree: usize, t: f64) -> ([f64; 4], [f64; 4]) {
     let a = 1. - t;
-    if degree == 1 {
-        ([a, t, 0.], [-1., 1., 0.])
-    } else {
-        ([a * a, 2. * a * t, t * t], [-2. * a, 2. * (a - t), 2. * t])
+    match degree {
+        1 => ([a, t, 0., 0.], [-1., 1., 0., 0.]),
+        2 => (
+            [a * a, 2. * a * t, t * t, 0.],
+            [-2. * a, 2. * (a - t), 2. * t, 0.],
+        ),
+        3 => (
+            [a * a * a, 3. * a * a * t, 3. * a * t * t, t * t * t],
+            [
+                -3. * a * a,
+                3. * a * (a - 2. * t),
+                3. * t * (2. * a - t),
+                3. * t * t,
+            ],
+        ),
+        _ => unreachable!("degree validated in RationalBezierMap::new"),
     }
 }

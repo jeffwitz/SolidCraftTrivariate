@@ -172,6 +172,14 @@ def probe_points(recipe, count=320):
     return points
 
 
+def crossing_axes(recipe):
+    if len(recipe.get("bores", [])) != 2:
+        return False
+    a, b = recipe["bores"]
+    ia, ib = "xyz".index(a["axis"]), "xyz".index(b["axis"])
+    return ia != ib and a["radius_mm"] == b["radius_mm"] and a["center_mm"][3-ia-ib] == b["center_mm"][3-ia-ib]
+
+
 def bernstein(n, t):
     return [math.comb(n, i) * t**i * (1 - t)**(n - i) for i in range(n + 1)]
 
@@ -289,7 +297,7 @@ def brep_boundary_topology(shape):
             "nonmanifold_vertex_indices": bad_links[:8]}
 
 
-def compare_model_and_step(cli, recipe_path, model_path, work, recipe, expected, mass_helper):
+def compare_model_and_step(cli, recipe_path, model_path, work, recipe, expected, mass_helper, regression_point=None):
     started = time.monotonic()
     step = work / f"{recipe_path.stem}.step"
     exp = subprocess.run([str(cli), "export-step", str(model_path), str(step)], text=True, capture_output=True)
@@ -317,6 +325,8 @@ def compare_model_and_step(cli, recipe_path, model_path, work, recipe, expected,
     differences = {"reference_minus_step_mm3": float(reference.cut(native).Volume),
                    "step_minus_reference_mm3": float(native.cut(reference).Volume)}
     probes = probe_points(recipe)
+    if regression_point is not None:
+        probes.append(tuple(regression_point))
     mismatch = []; states = Counter()
     for xyz in probes:
         expected_class = expected_state(recipe, xyz)
@@ -346,9 +356,19 @@ def compare_model_and_step(cli, recipe_path, model_path, work, recipe, expected,
            "native_all_shells_closed": all(s.isClosed() for s in native.Shells),
            "boundary_brep_topology": boundary_topology,
            "step_validation_s": time.monotonic() - started}
+    if regression_point is not None:
+        row["hidden_bore_surface_regression"] = {
+            "point_mm": list(regression_point),
+            "expected": expected_state(recipe, regression_point),
+            "observed_step": "IN" if bool(native.isInside(App.Vector(*regression_point), 1e-8, False)) else "OUT"}
+        row["hidden_bore_surface_regression"]["passed"] = (
+            row["hidden_bore_surface_regression"]["expected"] == "OUT"
+            and row["hidden_bore_surface_regression"]["observed_step"] == "OUT")
     row["qualified"] = (volume_rel < 1e-8 and centroid_err < 1e-7 and not mismatch
                         and max(abs(v) for v in differences.values()) < 1e-7
                         and row["native_single_valid_solid"] and row["native_all_shells_closed"])
+    if regression_point is not None:
+        row["qualified"] &= row["hidden_bore_surface_regression"]["passed"]
     return row
 
 
@@ -433,7 +453,8 @@ def run(cli: Path, work: Path, baseline_cli: Path | None = None):
         row["expected_euler"] = expected_euler
         row["qualified"] &= incidence["exterior_faces"] == diag.get("exterior_sides") and incidence["euler"] == expected_euler
         row["qualified"] &= incidence["determinant_sample_min_mm3"] > 0 and tags_ok
-        row["step"] = compare_model_and_step(cli, recipe_path, model, work, recipe, measure, mass_helper)
+        fixture_point = regression["point_mm"] if item["id"] == regression["case"] else None
+        row["step"] = compare_model_and_step(cli, recipe_path, model, work, recipe, measure, mass_helper, fixture_point)
         row["qualified"] &= row["step"]["qualified"]
         row["qualified"] = bool(row["qualified"])
         rows.append(row); print(item["id"], row["qualified"], flush=True)

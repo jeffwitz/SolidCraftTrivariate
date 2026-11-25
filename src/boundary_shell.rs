@@ -40,12 +40,15 @@ fn vertex(p: [i64; 4]) -> [i128; 4] {
 }
 fn canonical_edge(points: &[[i64; 4]]) -> Vec<[i128; 4]> {
     let mut net: Vec<_> = points.iter().map(|p| p.map(i128::from)).collect();
-    if let [a, b] = net.as_slice() {
-        net = vec![
-            a.map(|x| 2 * x),
-            std::array::from_fn(|i| a[i] + b[i]),
-            b.map(|x| 2 * x),
-        ];
+    while net.len() < 4 {
+        let n = net.len();
+        net = (0..=n)
+            .map(|i| {
+                std::array::from_fn(|c| {
+                    i as i128 * net[i.saturating_sub(1)][c] + (n - i) as i128 * net[i.min(n - 1)][c]
+                })
+            })
+            .collect();
     }
     let scale = net.iter().flatten().copied().fold(0, gcd);
     for p in &mut net {
@@ -104,9 +107,13 @@ pub(crate) fn supports_source_method(method: &str) -> bool {
             | crate::counterbores_json::METHOD
             | crate::countersinks_json::METHOD
             | crate::sketch_layers_json::METHOD
+            | crate::nurbs_sketch_json::METHOD
             | crate::orthogonal_sketch_json::METHOD
             | crate::interval_bores_json::METHOD
             | crate::circular_polygon_json::METHOD
+            | crate::nurbs_cross_json::METHOD
+            | crate::nurbs_cross_json::BOUNDED_METHOD
+            | crate::nurbs_cross_json::OVAL_METHOD
     )
 }
 
@@ -230,6 +237,7 @@ pub fn boundary_shell(model: &Json) -> Result<BoundaryShell, &'static str> {
             | crate::counterbores_json::METHOD
             | crate::countersinks_json::METHOD
             | crate::sketch_layers_json::METHOD
+            | crate::nurbs_sketch_json::METHOD
             | crate::orthogonal_sketch_json::METHOD
             | crate::interval_bores_json::METHOD
             | "certified_coaxial_feature_program"

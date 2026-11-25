@@ -1,0 +1,251 @@
+{
+  "schema": "nurbs_sketch_strip_independent_oracle_v1",
+  "provenance": {
+    "cli": "/home/jeff/Code/SolidCraftTrivariate/build/nurbs/n3-cli",
+    "cli_sha256": "38ab7887c0222febec3fc2e1e90f33f55ed1fb8e5336d0b3f1cd03326db96413",
+    "revision": "948588d735781a1a4de46c41696805e289a2e410",
+    "python": "3.11.14",
+    "numpy": "1.26.4",
+    "seed": 20261125,
+    "occ": "7.8.1",
+    "elapsed_s": 2.674368495005183
+  },
+  "protocol": {
+    "curve_oracle": "independent Cox-de Boor basis and rational quotient derivatives",
+    "volume_oracle": "Gauss-Legendre integration of height*(upper_y-lower_y)*lower_x' over original knot spans",
+    "geometry_oracle": "Bernstein evaluation of each extruded block against direct original B-spline evaluation",
+    "coverage": "three positive degree-3 two-span cases and three malformed or nonconforming cases"
+  },
+  "case_count": 6,
+  "cases": [
+    {
+      "id": "two_spans_variable_weights_constant_gap",
+      "expected_accepted": true,
+      "build_audit": {
+        "blocks": 2,
+        "cavities": 0,
+        "determinant_lower_bound_mm3": 3.777777777777776,
+        "exterior_sides": 10,
+        "hausdorff_error_upper_bound_mm": 0,
+        "injectivity": "strict_ordered_abscissa_positive_strip_gap_positive_height",
+        "method": "exact_monotone_nurbs_strip_extrusion",
+        "shared_faces": 1,
+        "status": "valid"
+      },
+      "build_s": 0.03791882697260007,
+      "qualified": true,
+      "block_count": 2,
+      "span_intervals": [
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          2
+        ]
+      ],
+      "volume_quadrature_mm3": {
+        "q16": 63.99999994296391,
+        "q32": 63.99999999999997,
+        "q64": 63.999999999999986
+      },
+      "volume_quadrature_delta_q32_q64": 1.4210854715202004e-14,
+      "expected_volume_mm3": 64,
+      "absolute_volume_error_mm3": 1.4210854715202004e-14,
+      "max_control_map_error_mm": 1.88411095042053e-15,
+      "max_extrusion_z_error_mm": 8.881784197001252e-16,
+      "classification_sample_count": 24,
+      "classification_states": {
+        "IN": 8,
+        "OUT": 16,
+        "ON": 0
+      },
+      "classification_mismatches": [],
+      "step_occ": {
+        "export": {
+          "format": "STEP AP214 boundary",
+          "status": "exported"
+        },
+        "valid": true,
+        "solid_count": 1,
+        "shell_count": 1,
+        "all_shells_closed": true,
+        "volume_mm3": 63.99787227956875,
+        "adaptive_volume_mm3": 63.99999999999997,
+        "adaptive_volume_error_vs_independent_mm3": 1.4210854715202004e-14,
+        "direct_occ_reference_volume_mm3": 63.999999999999986,
+        "direct_occ_reference_error_vs_independent_mm3": 0.0,
+        "direct_occ_reference_valid_closed": true,
+        "step_minus_direct_occ_reference_mm3": -1.4210854715202004e-14,
+        "volume_error_vs_independent_mm3": 0.0021277204312326603,
+        "volume_comparison": "diagnostic_only_no_predeclared_tolerance",
+        "qualified": true
+      }
+    },
+    {
+      "id": "two_spans_variable_gap",
+      "expected_accepted": true,
+      "build_audit": {
+        "blocks": 2,
+        "cavities": 0,
+        "determinant_lower_bound_mm3": 2.2222222222222205,
+        "exterior_sides": 10,
+        "hausdorff_error_upper_bound_mm": 0,
+        "injectivity": "strict_ordered_abscissa_positive_strip_gap_positive_height",
+        "method": "exact_monotone_nurbs_strip_extrusion",
+        "shared_faces": 1,
+        "status": "valid"
+      },
+      "build_s": 0.005554308008868247,
+      "qualified": true,
+      "block_count": 2,
+      "span_intervals": [
+        [
+          -2,
+          1
+        ],
+        [
+          1,
+          4
+        ]
+      ],
+      "volume_quadrature_mm3": {
+        "q16": 45.96534510603783,
+        "q32": 45.96534510602271,
+        "q64": 45.96534510602272
+      },
+      "volume_quadrature_delta_q32_q64": 7.105427357601002e-15,
+      "expected_volume_mm3": null,
+      "absolute_volume_error_mm3": null,
+      "max_control_map_error_mm": 9.930136612989092e-16,
+      "max_extrusion_z_error_mm": 8.881784197001252e-16,
+      "classification_sample_count": 24,
+      "classification_states": {
+        "IN": 8,
+        "OUT": 16,
+        "ON": 0
+      },
+      "classification_mismatches": [],
+      "step_occ": {
+        "export": {
+          "format": "STEP AP214 boundary",
+          "status": "exported"
+        },
+        "valid": true,
+        "solid_count": 1,
+        "shell_count": 1,
+        "all_shells_closed": true,
+        "volume_mm3": 45.965342841017055,
+        "adaptive_volume_mm3": 45.96534510602271,
+        "adaptive_volume_error_vs_independent_mm3": 7.105427357601002e-15,
+        "direct_occ_reference_volume_mm3": 45.96534510602269,
+        "direct_occ_reference_error_vs_independent_mm3": 2.842170943040401e-14,
+        "direct_occ_reference_valid_closed": true,
+        "step_minus_direct_occ_reference_mm3": 2.1316282072803006e-14,
+        "volume_error_vs_independent_mm3": 2.2650056621387193e-06,
+        "volume_comparison": "diagnostic_only_no_predeclared_tolerance",
+        "qualified": true
+      }
+    },
+    {
+      "id": "two_spans_integer_gauge_scaled",
+      "expected_accepted": true,
+      "build_audit": {
+        "blocks": 2,
+        "cavities": 0,
+        "determinant_lower_bound_mm3": 0.4919825072886295,
+        "exterior_sides": 10,
+        "hausdorff_error_upper_bound_mm": 0,
+        "injectivity": "strict_ordered_abscissa_positive_strip_gap_positive_height",
+        "method": "exact_monotone_nurbs_strip_extrusion",
+        "shared_faces": 1,
+        "status": "valid"
+      },
+      "build_s": 0.005380961985792965,
+      "qualified": true,
+      "block_count": 2,
+      "span_intervals": [
+        [
+          0,
+          2
+        ],
+        [
+          2,
+          5
+        ]
+      ],
+      "volume_quadrature_mm3": {
+        "q16": 11.674437040968908,
+        "q32": 11.674437040946056,
+        "q64": 11.674437040946056
+      },
+      "volume_quadrature_delta_q32_q64": 0.0,
+      "expected_volume_mm3": null,
+      "absolute_volume_error_mm3": null,
+      "max_control_map_error_mm": 8.881784197001252e-16,
+      "max_extrusion_z_error_mm": 4.440892098500626e-16,
+      "classification_sample_count": 24,
+      "classification_states": {
+        "IN": 8,
+        "OUT": 16,
+        "ON": 0
+      },
+      "classification_mismatches": [],
+      "step_occ": {
+        "export": {
+          "format": "STEP AP214 boundary",
+          "status": "exported"
+        },
+        "valid": true,
+        "solid_count": 1,
+        "shell_count": 1,
+        "all_shells_closed": true,
+        "volume_mm3": 11.674447461248462,
+        "adaptive_volume_mm3": 11.674437040946053,
+        "adaptive_volume_error_vs_independent_mm3": 3.552713678800501e-15,
+        "direct_occ_reference_volume_mm3": 11.674437040946003,
+        "direct_occ_reference_error_vs_independent_mm3": 5.3290705182007514e-14,
+        "direct_occ_reference_valid_closed": true,
+        "step_minus_direct_occ_reference_mm3": 4.973799150320701e-14,
+        "volume_error_vs_independent_mm3": 1.0420302405833581e-05,
+        "volume_comparison": "diagnostic_only_no_predeclared_tolerance",
+        "qualified": true
+      }
+    },
+    {
+      "id": "reject_different_abscissa",
+      "expected_accepted": false,
+      "build_audit": {
+        "reason": "paired NURBS spans do not share the same rational x-map",
+        "status": "error"
+      },
+      "build_s": 0.0026681320159696043,
+      "qualified": true,
+      "previous_model_preserved": true
+    },
+    {
+      "id": "reject_nonpositive_weight",
+      "expected_accepted": false,
+      "build_audit": {
+        "reason": "NURBS weights must be strictly positive",
+        "status": "error"
+      },
+      "build_s": 0.0034213149920105934,
+      "qualified": true,
+      "previous_model_preserved": true
+    },
+    {
+      "id": "reject_cubic_x_not_strictly_increasing",
+      "expected_accepted": false,
+      "build_audit": {
+        "reason": "strict sign is not certified by Bernstein subdivision",
+        "status": "error"
+      },
+      "build_s": 0.0033437669626437128,
+      "qualified": true,
+      "previous_model_preserved": true
+    }
+  ],
+  "qualified": true
+}

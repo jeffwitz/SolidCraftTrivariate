@@ -118,7 +118,7 @@ fn elevate_to_quadratic(block: &BracketBlock) -> Result<ElevatedBlock, &'static 
     })
 }
 
-fn face_axes(axis: usize) -> [usize; 2] {
+pub(crate) fn face_axes(axis: usize) -> [usize; 2] {
     match axis {
         0 => [1, 2],
         1 => [0, 2],
@@ -183,27 +183,27 @@ fn same_physical_control(left: [i128; 4], right: [i128; 4]) -> Result<bool, &'st
     Ok(true)
 }
 
-struct UnionFind {
+pub(crate) struct UnionFind {
     parent: Vec<usize>,
     rank: Vec<u8>,
 }
 
 impl UnionFind {
-    fn new(size: usize) -> Self {
+    pub(crate) fn new(size: usize) -> Self {
         Self {
             parent: (0..size).collect(),
             rank: vec![0; size],
         }
     }
 
-    fn find(&mut self, node: usize) -> usize {
+    pub(crate) fn find(&mut self, node: usize) -> usize {
         if self.parent[node] != node {
             self.parent[node] = self.find(self.parent[node]);
         }
         self.parent[node]
     }
 
-    fn join(&mut self, left: usize, right: usize) {
+    pub(crate) fn join(&mut self, left: usize, right: usize) {
         let mut a = self.find(left);
         let mut b = self.find(right);
         if a == b {

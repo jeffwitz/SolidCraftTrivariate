@@ -88,6 +88,7 @@ pub mod orthogonal_program;
 pub mod orthogonal_audit;
 mod orthogonal_json;
 pub mod solidcraft_timeline;
+pub mod solidcraft_sketch_features;
 pub mod field_vtu;
 mod prescribed_motion;
 pub mod solidcraft_boxes;
@@ -144,5 +145,13 @@ pub mod steinmetz_core;
 pub mod steinmetz_frame;
 
 pub mod steinmetz_audit;
+pub mod nurbs_cross;
+mod nurbs_cross_json;
+pub mod nurbs_graph_approx;
 
 mod steinmetz_partition;
+
+pub mod nurbs_curve;
+pub mod nurbs_extrusion;
+mod nurbs_sketch_json;
+pub mod nurbs_space;

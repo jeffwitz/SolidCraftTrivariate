@@ -4,11 +4,11 @@
     "cli": "/home/jeff/Code/SolidCraftTrivariate/build/pa5/pa9-cli",
     "cli_sha256": "ef94e1f6ad0816be95af1232fc060eafbe5cc101c40f71a933a780d0f830c2ab",
     "baseline_cli": "/home/jeff/Code/SolidCraftTrivariate/build/pa5/pa5-cli",
-    "checkout_revision": "ce372ff25800aadb7370bc2f23b7c546eb953db9",
+    "checkout_revision": "948588d735781a1a4de46c41696805e289a2e410",
     "python": "3.11.14",
     "occ": "7.8.1",
     "seed": 2026112526,
-    "elapsed_s": 167.03277737100143
+    "elapsed_s": 154.40213258902077
   },
   "protocol": {
     "reference": "exact box/cylinder volumes plus 16r^3/3 Steinmetz overlap; independent OCC booleans",
@@ -114,7 +114,7 @@
           "twice_rational_part_mm3": 144288
         }
       },
-      "build_audit_s": 0.34464607801055536,
+      "build_audit_s": 0.49644267599796876,
       "qualified": true,
       "volume_formula": {
         "rational_part_mm3": [
@@ -224,10 +224,10 @@
           "reference_minus_step_mm3": 0.0,
           "step_minus_reference_mm3": 0.0
         },
-        "classification_count": 379,
+        "classification_count": 380,
         "classification_states": {
           "IN": 312,
-          "OUT": 37,
+          "OUT": 38,
           "ON": 30
         },
         "classification_mismatches": 0,
@@ -248,7 +248,17 @@
           "nonmanifold_vertex_link_count": 0,
           "nonmanifold_vertex_indices": []
         },
-        "step_validation_s": 18.370147513982374,
+        "step_validation_s": 22.843936093035154,
+        "hidden_bore_surface_regression": {
+          "point_mm": [
+            27.0001,
+            20,
+            12
+          ],
+          "expected": "OUT",
+          "observed_step": "OUT",
+          "passed": true
+        },
         "qualified": true
       }
     },
@@ -321,7 +331,7 @@
           "twice_rational_part_mm3": 144000
         }
       },
-      "build_audit_s": 0.6488744210219011,
+      "build_audit_s": 0.6404552020248957,
       "qualified": true,
       "volume_formula": {
         "rational_part_mm3": [
@@ -486,7 +496,7 @@
           "nonmanifold_vertex_link_count": 0,
           "nonmanifold_vertex_indices": []
         },
-        "step_validation_s": 40.712980232026894,
+        "step_validation_s": 34.213338322006166,
         "qualified": true
       }
     },
@@ -563,7 +573,7 @@
           "twice_rational_part_mm3": 227520
         }
       },
-      "build_audit_s": 0.3037252000067383,
+      "build_audit_s": 0.30356569902505726,
       "qualified": true,
       "volume_formula": {
         "rational_part_mm3": [
@@ -697,7 +707,7 @@
           "nonmanifold_vertex_link_count": 0,
           "nonmanifold_vertex_indices": []
         },
-        "step_validation_s": 18.745846601959784,
+        "step_validation_s": 17.993368738971185,
         "qualified": true
       }
     },
@@ -774,7 +784,7 @@
           "twice_rational_part_mm3": 144288
         }
       },
-      "build_audit_s": 0.35106182302115485,
+      "build_audit_s": 0.35313703498104587,
       "qualified": true,
       "volume_formula": {
         "rational_part_mm3": [
@@ -908,7 +918,7 @@
           "nonmanifold_vertex_link_count": 0,
           "nonmanifold_vertex_indices": []
         },
-        "step_validation_s": 20.291266251995694,
+        "step_validation_s": 18.671881484042387,
         "qualified": true
       }
     },
@@ -984,7 +994,7 @@
           ]
         }
       },
-      "build_audit_s": 0.48833255597855896,
+      "build_audit_s": 0.45856900000944734,
       "qualified": true,
       "volume_formula": {
         "rational_part_mm3": [
@@ -1117,7 +1127,7 @@
           "nonmanifold_vertex_link_count": 0,
           "nonmanifold_vertex_indices": []
         },
-        "step_validation_s": 20.375376841053367,
+        "step_validation_s": 17.01954150601523,
         "qualified": true
       }
     },
@@ -1194,7 +1204,7 @@
           "twice_rational_part_mm3": 144288
         }
       },
-      "build_audit_s": 0.33224988798610866,
+      "build_audit_s": 0.3520931740058586,
       "qualified": true,
       "volume_formula": {
         "rational_part_mm3": [
@@ -1328,7 +1338,7 @@
           "nonmanifold_vertex_link_count": 0,
           "nonmanifold_vertex_indices": []
         },
-        "step_validation_s": 19.764404023007955,
+        "step_validation_s": 17.452485401008744,
         "qualified": true
       }
     },
@@ -1405,7 +1415,7 @@
           "twice_rational_part_mm3": 144288
         }
       },
-      "build_audit_s": 0.35989445401355624,
+      "build_audit_s": 0.2985627669841051,
       "qualified": true,
       "volume_formula": {
         "rational_part_mm3": [
@@ -1539,7 +1549,7 @@
           "nonmanifold_vertex_link_count": 0,
           "nonmanifold_vertex_indices": []
         },
-        "step_validation_s": 22.384523878979962,
+        "step_validation_s": 17.43101098999614,
         "qualified": true
       }
     },
@@ -1598,7 +1608,7 @@
         "reason": "interacting_feature_guards_require_a_transition_partition",
         "status": "error"
       },
-      "build_audit_s": 0.006099049001932144,
+      "build_audit_s": 0.002499337017070502,
       "qualified": true,
       "previous_model_preserved": true
     },
@@ -1647,7 +1657,7 @@
         "reason": "unsupported_bore_axis",
         "status": "error"
       },
-      "build_audit_s": 0.0038564240094274282,
+      "build_audit_s": 0.0034296339727006853,
       "qualified": true,
       "previous_model_preserved": true
     },
@@ -1696,7 +1706,7 @@
         "reason": "bore_guard_needs_additional_trace_subdivision",
         "status": "error"
       },
-      "build_audit_s": 0.0036681509809568524,
+      "build_audit_s": 0.003155025013256818,
       "qualified": true,
       "previous_model_preserved": true
     }

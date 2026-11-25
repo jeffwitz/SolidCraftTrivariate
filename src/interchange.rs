@@ -211,11 +211,15 @@ pub fn build(recipe: &Json) -> Result<Json, &'static str> {
         super::circular_bend_json::FAMILY => super::circular_bend_json::build(recipe),
         super::orthogonal_json::FAMILY => super::orthogonal_json::build(recipe),
         super::rational_sector_json::FAMILY => super::rational_sector_json::build(recipe),
+        super::nurbs_cross_json::FAMILY => super::nurbs_cross_json::build(recipe),
+        super::nurbs_cross_json::BOUNDED_FAMILY => super::nurbs_cross_json::build(recipe),
+        super::nurbs_cross_json::OVAL_FAMILY => super::nurbs_cross_json::build(recipe),
         super::counterbores_json::FAMILY => super::counterbores_json::build(recipe),
         super::countersinks_json::FAMILY => super::countersinks_json::build(recipe),
         super::sketch_layers_json::FAMILY | super::sketch_layers_json::BOOLEAN_FAMILY => {
             super::sketch_layers_json::build(recipe)
         }
+        super::nurbs_sketch_json::FAMILY => super::nurbs_sketch_json::build(recipe),
         super::orthogonal_sketch_json::FAMILY => super::orthogonal_sketch_json::build(recipe),
         super::interval_bores_json::FAMILY => super::interval_bores_json::build(recipe),
         super::circular_polygon_json::FAMILY => super::circular_polygon_json::build(recipe),
@@ -252,11 +256,15 @@ pub fn audit(model: &Json) -> Result<Json, &'static str> {
         super::circular_bend_json::FAMILY => super::circular_bend_json::audit(model),
         super::orthogonal_json::FAMILY => super::orthogonal_json::audit(model),
         super::rational_sector_json::FAMILY => super::rational_sector_json::audit(model),
+        super::nurbs_cross_json::FAMILY => super::nurbs_cross_json::audit(model),
+        super::nurbs_cross_json::BOUNDED_FAMILY => super::nurbs_cross_json::audit(model),
+        super::nurbs_cross_json::OVAL_FAMILY => super::nurbs_cross_json::audit(model),
         super::counterbores_json::FAMILY => super::counterbores_json::audit(model),
         super::countersinks_json::FAMILY => super::countersinks_json::audit(model),
         super::sketch_layers_json::FAMILY | super::sketch_layers_json::BOOLEAN_FAMILY => {
             super::sketch_layers_json::audit(model)
         }
+        super::nurbs_sketch_json::FAMILY => super::nurbs_sketch_json::audit(model),
         super::orthogonal_sketch_json::FAMILY => super::orthogonal_sketch_json::audit(model),
         super::interval_bores_json::FAMILY => super::interval_bores_json::audit(model),
         super::circular_polygon_json::FAMILY => super::circular_polygon_json::audit(model),

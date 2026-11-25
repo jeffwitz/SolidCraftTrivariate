@@ -266,6 +266,21 @@ fn derivative_json(model: &Json, input_blocks: &[BracketBlock]) -> Result<Json, 
 /// Audit and package the exact fixed or R13 bracket for an independent solver.
 pub fn export_analysis(model: &Json, order: usize) -> Result<Json, &'static str> {
     let schema = model.field("schema")?.text()?;
+    if matches!(
+        schema,
+        "nurbs_sketch_strip_v1"
+            | "nurbs_cross_bores_v1"
+            | "nurbs_cross_bores_bounded_v1"
+            | "nurbs_cross_oval_v1"
+    ) {
+        return crate::nurbs_space::analysis_package(model, order);
+    }
+    if matches!(
+        schema,
+        "sketch_layer_partition_v1" | "sketch_boolean_layers_v1" | "orthogonal_sketch_features_v1"
+    ) {
+        return export_sketch_analysis(model, order);
+    }
     if schema != "filleted_bracket_v1" && schema != "parameterized_bracket_v1" {
         return Err("solver export supports only fixed and parameterized brackets");
     }
@@ -642,6 +657,7 @@ pub fn export_sketch_analysis(model: &Json, order: usize) -> Result<Json, &'stat
     if !matches!(
         schema,
         "sketch_layer_partition_v1"
+            | "sketch_boolean_layers_v1"
             | "orthogonal_sketch_features_v1"
             | "filleted_bracket_v1"
             | "parameterized_bracket_v1"

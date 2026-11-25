@@ -1,0 +1,169 @@
+{
+  "companion_patch_test": {
+    "method": "independent NumPy rational-Q3 volume and exterior-face quadrature; no solve",
+    "orders": [
+      {
+        "exterior_faces": 10,
+        "order": 4,
+        "relative_residual_linf": 0.0003574271141492392,
+        "residual_linf": 674.9772192918172,
+        "traction_resultant": [
+          -10368.744673409732,
+          -2073.7489346857183,
+          1555.311701011844
+        ],
+        "traction_term_linf": 1888430.6347383657,
+        "volume_resultant": [
+          -1.280568540096283e-09,
+          -2.7939677238464355e-09,
+          -2.3283064365386963e-10
+        ],
+        "volume_term_linf": 1888433.1730076552
+      },
+      {
+        "exterior_faces": 10,
+        "order": 8,
+        "relative_residual_linf": 2.419442147932298e-06,
+        "residual_linf": 4.569061820442585,
+        "traction_resultant": [
+          -15.696055629174225,
+          -3.1392111249733716,
+          2.354408342973329
+        ],
+        "traction_term_linf": 1888477.4014318332,
+        "volume_resultant": [
+          -2.444721758365631e-09,
+          4.423782229423523e-09,
+          -5.820766091346741e-10
+        ],
+        "volume_term_linf": 1888477.4014321412
+      },
+      {
+        "exterior_faces": 10,
+        "order": 16,
+        "relative_residual_linf": 2.4135740190274636e-12,
+        "residual_linf": 4.557979991659522e-06,
+        "traction_resultant": [
+          -5.183974280953407e-06,
+          -1.0384246706962585e-06,
+          7.80448317527771e-07
+        ],
+        "traction_term_linf": 1888477.401449712,
+        "volume_resultant": [
+          7.334165275096893e-09,
+          -9.313225746154785e-09,
+          1.6298145055770874e-09
+        ],
+        "volume_term_linf": 1888477.4014497097
+      }
+    ],
+    "relative_residual_threshold": 1e-08,
+    "report": "docs/results/nurbs-patch-equilibrium-20261125.json",
+    "status": "verified"
+  },
+  "environment": {
+    "cli": "/home/jeff/Code/SolidCraftTrivariate/build/nurbs/n2-debug-cli",
+    "exact_arithmetic": "fractions.Fraction",
+    "package_quadrature_order": 8,
+    "quadrature_order_independent": 64
+  },
+  "limits": [
+    "This qualifies the two frozen strip/cross recipes only; it is not a global approximation theorem for arbitrary NURBS partitions.",
+    "Patch-test equilibrium residual was not assembled in this oracle."
+  ],
+  "models": {
+    "cross": {
+      "build_audit": {
+        "blocks": 26,
+        "certificate_scope": "recipe_reconstruction_and_exact_whole_face_incidence_only",
+        "continuous_geometry": "exact_rational_bernstein_controls_checked_for_order_and_positive_weights",
+        "exterior_sides": 84,
+        "fidelity": "EXACT_REPRESENTATION",
+        "lateral_order_status": "strict_order_certified_on_closed_domain",
+        "method": "canonical_nurbs_cross_reconstruction_and_exact_incidence",
+        "ordinates_status": "strictly_increasing_on_closed_domain",
+        "shared_faces": 36,
+        "status": "valid",
+        "structural_reconstruction": "exact_integer_coefficients_and_whole_face_incidence",
+        "weights_status": "positive_on_closed_domain"
+      },
+      "export_scalar_ndof": 1120,
+      "files": {
+        "analysis": "build/nurbs/nurbs-space-oracle/cross.analysis.json",
+        "model": "build/nurbs/nurbs-space-oracle/cross.model.json",
+        "recipe": "build/nurbs/nurbs-space-oracle/cross.recipe.json",
+        "space": "build/nurbs/nurbs-space-oracle/cross.space.json"
+      },
+      "independent_volume_mm3": 50835.02450413311,
+      "order16_relative_error": 1.8134422845455471e-13,
+      "package_gauss_order": 8,
+      "package_integrated_volume_by_order_mm3": {
+        "16": 50835.02450412389,
+        "8": 50835.00381456341
+      },
+      "schema": "nurbs_cross_bores_v1",
+      "space": {
+        "affine_value_and_gradient_checks": 1664,
+        "elevated_blocks": 26,
+        "exact_elevated_control_checks": 1664,
+        "exact_trace_dof_nodes": 576,
+        "scalar_ndof": 1120,
+        "shared_interfaces": 36,
+        "source_blocks": 26,
+        "source_trace_map_samples": 576,
+        "source_vs_package_map_samples": 1664,
+        "target_tensor_degree": 3
+      },
+      "volume_relative_error_by_order": {
+        "16": 1.8134422845455471e-13,
+        "8": 4.069943882045764e-07
+      }
+    },
+    "strip": {
+      "build_audit": {
+        "blocks": 2,
+        "cavities": 0,
+        "determinant_lower_bound_mm3": 2.2222222222222205,
+        "exterior_sides": 10,
+        "hausdorff_error_upper_bound_mm": 0,
+        "injectivity": "strict_ordered_abscissa_positive_strip_gap_positive_height",
+        "method": "exact_monotone_nurbs_strip_extrusion",
+        "shared_faces": 1,
+        "status": "valid"
+      },
+      "export_scalar_ndof": 112,
+      "files": {
+        "analysis": "build/nurbs/nurbs-space-oracle/strip.analysis.json",
+        "model": "build/nurbs/nurbs-space-oracle/strip.model.json",
+        "recipe": "build/nurbs/nurbs-space-oracle/strip.recipe.json",
+        "space": "build/nurbs/nurbs-space-oracle/strip.space.json"
+      },
+      "independent_volume_mm3": 45.96534510602271,
+      "order16_relative_error": 3.3327937270246916e-13,
+      "package_gauss_order": 8,
+      "package_integrated_volume_by_order_mm3": {
+        "16": 45.96534510603803,
+        "8": 45.96538384251302
+      },
+      "schema": "nurbs_sketch_strip_v1",
+      "space": {
+        "affine_value_and_gradient_checks": 128,
+        "elevated_blocks": 2,
+        "exact_elevated_control_checks": 128,
+        "exact_trace_dof_nodes": 16,
+        "scalar_ndof": 112,
+        "shared_interfaces": 1,
+        "source_blocks": 2,
+        "source_trace_map_samples": 16,
+        "source_vs_package_map_samples": 128,
+        "target_tensor_degree": 3
+      },
+      "volume_relative_error_by_order": {
+        "16": 3.3327937270246916e-13,
+        "8": 8.427325025222654e-07
+      }
+    }
+  },
+  "protocol": "Exact Fraction tensor Bernstein evaluation/elevation and D4 trace identity; rational affine field/gradient checks; independent Gauss-Legendre integration of source De Boor curves.",
+  "schema": "nurbs_space_oracle_report_v1"
+}

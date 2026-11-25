@@ -81,7 +81,7 @@ fn knots(degree: usize) -> String {
     format!("({},{}),(0.,1.)", degree + 1, degree + 1)
 }
 fn curve_entity(w: &mut Writer, controls: &[[i64; 4]]) -> Result<usize, &'static str> {
-    if controls.len() < 2 || controls.len() > 3 || controls.iter().any(|p| p[3] <= 0) {
+    if controls.len() < 2 || controls.len() > 4 || controls.iter().any(|p| p[3] <= 0) {
         return Err("unsupported_boundary_curve");
     }
     let max_weight = controls.iter().map(|p| p[3]).max().unwrap() as f64;
@@ -112,7 +112,7 @@ fn surface_entity(
     face: &crate::boundary_shell::ShellFace,
 ) -> Result<usize, &'static str> {
     let [du, dv] = face.degrees;
-    if du > 2 || dv > 2 || face.controls.len() != (du + 1) * (dv + 1) {
+    if du > 3 || dv > 3 || face.controls.len() != (du + 1) * (dv + 1) {
         return Err("unsupported_boundary_surface");
     }
     let controls = face.controls.chunks(dv + 1).collect::<Vec<_>>();

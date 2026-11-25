@@ -1,4 +1,4 @@
-//! Exact whole-face incidence for degree-one and degree-two integer Bézier nets.
+//! Exact whole-face incidence for linear through cubic integer Bézier nets.
 
 use super::bracket::BracketBlock;
 use std::collections::{BTreeMap, BTreeSet};
@@ -86,31 +86,33 @@ impl Trace {
         Self { degree, points }
     }
 
-    fn biquadratic(mut self) -> Self {
+    fn elevated(mut self, target: usize) -> Self {
+        // Elevation in each face axis uses small integer factors. Even a
+        // linear-by-linear net elevated to cubic-by-cubic stays far inside
+        // the exact i128 range for i64 input coefficients.
         for axis in 0..2 {
-            if self.degree[axis] == 2 {
-                continue;
-            }
-            let mut degree = self.degree;
-            degree[axis] = 2;
-            let mut points = Vec::new();
-            for i in 0..=degree[0] {
-                for j in 0..=degree[1] {
-                    let (index, a, b) = if axis == 0 {
-                        (i, self.point(0, j), self.point(1, j))
-                    } else {
-                        (j, self.point(i, 0), self.point(i, 1))
-                    };
-                    points.push(std::array::from_fn(|k| match index {
-                        0 => 2 * a[k],
-                        1 => a[k] + b[k],
-                        _ => 2 * b[k],
-                    }));
+            while self.degree[axis] < target {
+                let mut degree = self.degree;
+                degree[axis] += 1;
+                let n = degree[axis];
+                let mut points = Vec::new();
+                for i in 0..=degree[0] {
+                    for j in 0..=degree[1] {
+                        let mut prev = [i, j];
+                        let mut next = prev;
+                        let k = prev[axis];
+                        prev[axis] = k.saturating_sub(1);
+                        next[axis] = k.min(n - 1);
+                        let a = self.point(prev[0], prev[1]);
+                        let b = self.point(next[0], next[1]);
+                        points.push(std::array::from_fn(|c| {
+                            k as i128 * a[c] + (n - k) as i128 * b[c]
+                        }));
+                    }
                 }
+                self = Self { degree, points };
             }
-            self = Self { degree, points };
         }
-        // Two elevations multiply the i64 input bound by at most four.
         let scale = self.points.iter().flatten().copied().fold(0, gcd);
         for p in &mut self.points {
             *p = p.map(|v| v / scale);
@@ -149,7 +151,7 @@ pub fn enumerate_faces(blocks: &[BracketBlock]) -> Result<Incidence, &'static st
         if block.id.is_empty() || !ids.insert(&block.id) {
             return Err("invalid block identity");
         }
-        if block.degrees.iter().any(|d| !(1..=2).contains(d))
+        if block.degrees.iter().any(|d| !(1..=3).contains(d))
             || block.controls.len() != block.degrees.iter().map(|d| d + 1).product::<usize>()
             || block.controls.iter().any(|p| p[3] <= 0)
         {
@@ -177,8 +179,9 @@ pub fn enumerate_faces(blocks: &[BracketBlock]) -> Result<Incidence, &'static st
         match faces.as_slice() {
             [(side, _)] => result.exterior.push(side.clone()),
             [(a, ta), (b, tb)] => {
-                let first = ta.clone().biquadratic();
-                let second = tb.clone().biquadratic();
+                let target = *ta.degree.iter().chain(&tb.degree).max().unwrap();
+                let first = ta.clone().elevated(target);
+                let second = tb.clone().elevated(target);
                 let mut matches = Vec::new();
                 for swap in [false, true] {
                     for flip_first in [false, true] {

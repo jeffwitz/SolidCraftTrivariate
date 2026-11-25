@@ -1,5 +1,5 @@
 /* Native WebGL renderer for rational trivariate model JSON. */
-import { surfaceMesh } from './triangle-surface.js?v=c5e0327c1b90';
+import { surfaceMesh } from './triangle-surface.js?v=509f11476ad1';
 
 const VERTEX_SHADER = `
 attribute vec3 aPosition;

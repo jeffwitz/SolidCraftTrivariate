@@ -9,6 +9,8 @@ use crate::{
 use std::collections::BTreeSet;
 
 pub(crate) const FAMILY: &str = "g2_cross_plate_v1";
+pub(crate) const FACE_POCKET: &str = "s3_face_pocket_v1";
+pub(crate) const FACE_POCKET_METHOD: &str = "face_attached_rectangular_pocket_partition";
 pub(crate) const PRIMITIVE: &str = "primitive_sweep_v1";
 pub(crate) const PRIMITIVE_METHOD: &str = "native_primitive_sweep_template";
 pub(crate) const METHOD: &str = "periodic_cubic_transverse_bore_partition";
@@ -19,6 +21,19 @@ fn candidate(recipe: &Json) -> Result<(Json, f64), &'static str> {
         FAMILY => {
             let (parameters, plan) = crate::sketch_partition_plan::plan(recipe)?;
             (plan, g2_cross_plate::construct_partition(&parameters)?)
+        }
+        FACE_POCKET => {
+            let parent = recipe.field("parent_model")?;
+            if parent.field("schema")?.text()? != FAMILY
+                || parent.field("source_recipe")?.field("family")?.text()? != FAMILY
+            {
+                return Err("face pocket requires a transverse plate parent");
+            }
+            let plan = object([
+                ("parent_sketch_plan", parent.field("sketch_plan")?.clone()),
+                ("operation", recipe.field("operation")?.clone()),
+            ]);
+            (plan, crate::g2_face_pocket::construct(recipe)?)
         }
         PRIMITIVE => (
             crate::primitive_template_json::plan(recipe)?,
@@ -74,13 +89,14 @@ pub(crate) fn audit(model: &Json) -> Result<Json, &'static str> {
         |value: &Json| Ok::<_, &'static str>(Json::Number(value.items()?.len().to_string()));
     let topology = model.field("topology")?;
     let source = model.field("source_recipe")?;
-    let (method, bores) = if source.field("family")?.text()? == FAMILY {
-        (METHOD, 2)
-    } else {
-        (
+    let (method, bores) = match source.field("family")?.text()? {
+        FAMILY => (METHOD, 2),
+        FACE_POCKET => (FACE_POCKET_METHOD, 2),
+        PRIMITIVE => (
             PRIMITIVE_METHOD,
             usize::from(source.field("operation")?.field("kind")?.text()? == "revolve"),
-        )
+        ),
+        _ => return Err("unknown swept sketch family"),
     };
     Ok(object([
         ("status", Json::String("valid".into())),

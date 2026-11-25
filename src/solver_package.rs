@@ -270,6 +270,7 @@ pub fn export_analysis(model: &Json, order: usize) -> Result<Json, &'static str>
         schema,
         "nurbs_multiloop_v1"
             | "g2_cross_plate_v1"
+            | "s3_face_pocket_v1"
             | "primitive_sweep_v1"
             | "nurbs_edge_loops_v1"
             | "nurbs_sketch_strip_v1"

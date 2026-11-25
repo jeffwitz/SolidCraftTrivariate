@@ -219,7 +219,7 @@ pub fn build(recipe: &Json) -> Result<Json, &'static str> {
         super::sketch_layers_json::FAMILY | super::sketch_layers_json::BOOLEAN_FAMILY => {
             super::sketch_layers_json::build(recipe)
         }
-        super::g2_cross_plate_json::FAMILY | super::g2_cross_plate_json::PRIMITIVE => super::g2_cross_plate_json::build(recipe),
+        super::g2_cross_plate_json::FAMILY | super::g2_cross_plate_json::PRIMITIVE | super::g2_cross_plate_json::FACE_POCKET => super::g2_cross_plate_json::build(recipe),
         super::nurbs_multiloop_json::FAMILY | super::nurbs_multiloop_json::EDGE_FAMILY => {
             super::nurbs_multiloop_json::build(recipe)
         }
@@ -276,7 +276,7 @@ pub fn audit(model: &Json) -> Result<Json, &'static str> {
         super::sketch_layers_json::FAMILY | super::sketch_layers_json::BOOLEAN_FAMILY => {
             super::sketch_layers_json::audit(model)
         }
-        super::g2_cross_plate_json::FAMILY | super::g2_cross_plate_json::PRIMITIVE => super::g2_cross_plate_json::audit(model),
+        super::g2_cross_plate_json::FAMILY | super::g2_cross_plate_json::PRIMITIVE | super::g2_cross_plate_json::FACE_POCKET => super::g2_cross_plate_json::audit(model),
         super::nurbs_multiloop_json::FAMILY | super::nurbs_multiloop_json::EDGE_FAMILY => {
             super::nurbs_multiloop_json::audit(model)
         }

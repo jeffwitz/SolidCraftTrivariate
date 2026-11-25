@@ -110,6 +110,7 @@ pub(crate) fn supports_source_method(method: &str) -> bool {
             | crate::nurbs_multiloop_json::METHOD
             | crate::g2_cross_plate_json::METHOD
             | crate::g2_cross_plate_json::PRIMITIVE_METHOD
+            | crate::g2_cross_plate_json::FACE_POCKET_METHOD
             | crate::nurbs_sketch_json::METHOD
             | crate::orthogonal_sketch_json::METHOD
             | crate::interval_bores_json::METHOD
@@ -142,15 +143,7 @@ pub fn boundary_shell(model: &Json) -> Result<BoundaryShell, &'static str> {
     for face in model.field("design_faces")?.items()? {
         let id = face.field("block")?.text()?;
         let side = face.field("side")?.text()?;
-        let (axis, upper) = match side {
-            "u0" => (0, false),
-            "u1" => (0, true),
-            "v0" => (1, false),
-            "v1" => (1, true),
-            "w0" => (2, false),
-            "w1" => (2, true),
-            _ => return Err("unknown_boundary_side"),
-        };
+        let (axis, upper) = crate::bracket_json::decode_side_name(side)?;
         let (degrees, controls) =
             extract(blocks.get(id).ok_or("missing_boundary_block")?, axis, upper);
         let [p, q] = degrees;

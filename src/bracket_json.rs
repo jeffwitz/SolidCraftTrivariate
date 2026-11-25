@@ -14,6 +14,32 @@ fn number(value: impl ToString) -> Json {
 fn side_name(side: &BlockSide) -> String {
     format!("{}{}", ["u", "v", "w"][side.axis], u8::from(side.upper))
 }
+pub(super) fn decode_side_name(name: &str) -> Result<(usize, bool), &'static str> {
+    match name {
+        "u0" => Ok((0, false)),
+        "u1" => Ok((0, true)),
+        "v0" => Ok((1, false)),
+        "v1" => Ok((1, true)),
+        "w0" => Ok((2, false)),
+        "w1" => Ok((2, true)),
+        _ => Err("unknown_boundary_side"),
+    }
+}
+
+pub(super) fn decode_design_faces(model: &Json) -> Result<Vec<(BlockSide, String)>, &'static str> {
+    model
+        .field("design_faces")?
+        .items()?
+        .iter()
+        .map(|face| {
+            let (axis, upper) = decode_side_name(face.field("side")?.text()?)?;
+            let block = face.field("block")?.text()?.to_owned();
+            let feature = face.field("feature")?.text()?.to_owned();
+            Ok((BlockSide { block, axis, upper }, feature))
+        })
+        .collect()
+}
+
 pub(super) fn side_json(side: &BlockSide) -> Json {
     Json::Array(vec![text(&side.block), text(&side_name(side))])
 }

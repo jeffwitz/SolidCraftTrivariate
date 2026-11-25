@@ -441,7 +441,19 @@ async function runBrowserChecks() {
   }
 
   const resources = await evaluate(injectedExpressions.resources);
-  const expected = ["plate_blind_pocket", "rectangle_internal_rectangle", "rectangle_offset_pocket", "c_section_two_holes", "l_bracket_polygon_holes_and_pocket", "c_section_lower_hole_x_plus_1"];
+  const expected = [
+    "plate_blind_pocket",
+    "rectangle_internal_rectangle",
+    "rectangle_offset_pocket",
+    "c_section_two_holes",
+    "l_bracket_polygon_holes_and_pocket",
+    "c_section_lower_hole_x_plus_1",
+    "fieldcraft_x40_y80",
+    "fieldcraft_x50_y74",
+    "fieldcraft_x51_y74",
+    "fieldcraft_x64_y64",
+    "fieldcraft_x80_y40",
+  ];
   if (JSON.stringify(resources.map(item => item.id)) !== JSON.stringify(expected)) {
     throw new Error('Unexpected qualified gallery catalog');
   }
@@ -452,11 +464,12 @@ async function runBrowserChecks() {
   if (resources.some(experiment => experiment.assets.some(asset => !/[?&]v=[^&#]+/.test(asset.path)))) {
     throw new Error('A model, recipe, audit, STEP, or figure URL is missing the current cache version');
   }
+  const legacyCurvedIds = new Set(expected.slice(0, 6));
   if (resources.some(experiment => experiment.curvedBlockCount < 1)) {
     throw new Error(`Expected actual non-linear geometry in every model: ${JSON.stringify(resources.map(({ id, curvedBlockCount }) => ({ id, curvedBlockCount })))}`);
   }
-  if (resources.some(experiment => experiment.profileCount < 1)) {
-    throw new Error(`A source audit has no four-arc profile data: ${JSON.stringify(resources.map(({ id, profileCount }) => ({ id, profileCount })))}`);
+  if (resources.some(experiment => legacyCurvedIds.has(experiment.id) && experiment.profileCount < 1)) {
+    throw new Error(`A curved-profile source audit has no four-arc profile data: ${JSON.stringify(resources.map(({ id, profileCount }) => ({ id, profileCount })))}`);
   }
   const version = await cdp('Browser.getVersion');
   const selectedExperiment = resources[0];
@@ -506,8 +519,11 @@ async function runBrowserChecks() {
       throw new Error(`Experiment ${experiment.id} selected, but title is ${JSON.stringify(state.title)}`);
     }
     const profile = await evaluate(injectedExpressions.profileState);
-    if (profile.hidden || profile.count !== Math.min(2, experiment.profileCount)) {
+    if (experiment.profileCount > 0 && (profile.hidden || profile.count !== Math.min(2, experiment.profileCount))) {
       throw new Error(`Curved profile vignette did not show audited arcs for ${experiment.id}: ${JSON.stringify({ profile, profileCount: experiment.profileCount })}`);
+    }
+    if (experiment.profileCount === 0 && !profile.hidden) {
+      throw new Error(`Unexpected curved-profile vignette without audited arcs for ${experiment.id}: ${JSON.stringify(profile)}`);
     }
     if (experiment.id === 'plate_blind_pocket' && !await evaluate("document.querySelector('.profile-label').textContent.endsWith('20 mm')")) {
       throw new Error('The dimension must measure the profile, including its interior extrema');
@@ -524,13 +540,13 @@ async function runBrowserChecks() {
     modelScreens.push({ id: experiment.id, representation: experiment.representation || 'trivariate', ...modelScreen, visibleLinks, controls, state });
     const cutScreen = await capture(`curved-section-${experiment.id.replace(/[^a-z0-9_-]/gi, '-')}`, await canvasRegion(), true);
     if (cutScreen.paintedPixels < 250) throw new Error(`Curved section ${experiment.id} rendered blank: ${JSON.stringify(cutScreen)}`);
-    curvedSectionHashes.push(cutScreen.hash);
+    if (experiment.profileCount > 0) curvedSectionHashes.push(cutScreen.hash);
     experimentChecks.push(experiment.id);
   }
   if (new Set(modelScreens.map(item => item.hash)).size < 2) {
     throw new Error('Canvas did not change across experiment selections; model rendering may be stale');
   }
-  if (new Set(curvedSectionHashes).size !== resources.length) {
+  if (new Set(curvedSectionHashes).size !== curvedSectionHashes.length) {
     throw new Error(`Curved focal sections are not visually distinct: ${JSON.stringify(curvedSectionHashes)}`);
   }
 

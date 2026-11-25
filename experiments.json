@@ -1,188 +1,188 @@
 [
   {
     "id": "plate_blind_pocket",
-    "title": "Plaque à poche borgne",
-    "description": "Poche ouverte sur le dessus. Les quatre coins de son empreinte se prolongent dans la couche située sous le fond.",
-    "source": "data/plate_blind_pocket/plate_blind_pocket.recipe.json",
-    "model": "data/plate_blind_pocket/plate_blind_pocket.model.json",
-    "audit": "data/plate_blind_pocket/plate_blind_pocket.audit.json",
-    "step": "data/plate_blind_pocket/plate_blind_pocket.step",
+    "title": "Plaque · poche à profil courbe",
+    "description": "La coupe en Z à 85 % révèle le profil courbe près du fond de poche.",
+    "source": "data/plate_blind_pocket/plate_blind_pocket.recipe.json?v=a5e06ad1708b",
+    "model": "data/plate_blind_pocket/plate_blind_pocket.model.json?v=df0b4bd7672c",
+    "audit": "data/plate_blind_pocket/plate_blind_pocket.audit.json?v=86435c03c2bf",
+    "step": "data/plate_blind_pocket/plate_blind_pocket.step?v=52f9f60308e5",
     "metrics": [
       {
-        "label": "Minimum atteint",
-        "value": "9 blocs"
+        "label": "Blocs du graphe",
+        "value": "9"
       },
       {
-        "label": "Blocs par couche",
-        "value": "5 + 4"
-      },
-      {
-        "label": "Volume exact",
-        "value": "46 800 mm³"
-      },
-      {
-        "label": "Interfaces conformes",
+        "label": "Interfaces du graphe",
         "value": "16"
       },
       {
-        "label": "κ₂ maximal mesuré¹",
-        "value": "10,57"
+        "label": "Jonctions prescrites",
+        "value": "4 × G0"
+      },
+      {
+        "label": "Volume exact",
+        "value": "48976 mm³"
       }
-    ]
+    ],
+    "section": {
+      "axis": "z",
+      "fraction": 0.85
+    }
   },
   {
     "id": "rectangle_internal_rectangle",
-    "title": "Cavité rectangulaire centrée",
-    "description": "La cavité fermée est comprise entre deux couches pleines. Une coupe en Z à mi-hauteur révèle sa couronne.",
-    "source": "data/rectangle_internal_rectangle/rectangle_internal_rectangle.recipe.json",
-    "model": "data/rectangle_internal_rectangle/rectangle_internal_rectangle.model.json",
-    "audit": "data/rectangle_internal_rectangle/rectangle_internal_rectangle.audit.json",
-    "step": "data/rectangle_internal_rectangle/rectangle_internal_rectangle.step",
+    "title": "Cavité courbe centrée",
+    "description": "La coupe en Z à mi-hauteur montre le contour courbe de la cavité.",
+    "source": "data/rectangle_internal_rectangle/rectangle_internal_rectangle.recipe.json?v=cc0e7a15df95",
+    "model": "data/rectangle_internal_rectangle/rectangle_internal_rectangle.model.json?v=321b49344a4a",
+    "audit": "data/rectangle_internal_rectangle/rectangle_internal_rectangle.audit.json?v=6c8df8ed3e07",
+    "step": "data/rectangle_internal_rectangle/rectangle_internal_rectangle.step?v=142342c973c9",
     "metrics": [
       {
-        "label": "Minimum atteint",
-        "value": "14 blocs"
+        "label": "Blocs du graphe",
+        "value": "14"
       },
       {
-        "label": "Blocs par couche",
-        "value": "5 + 4 + 5"
-      },
-      {
-        "label": "Volume exact",
-        "value": "9 504 mm³"
-      },
-      {
-        "label": "Interfaces conformes",
+        "label": "Interfaces du graphe",
         "value": "28"
       },
       {
-        "label": "κ₂ maximal mesuré¹",
-        "value": "14,55"
+        "label": "Jonctions prescrites",
+        "value": "4 × G0"
+      },
+      {
+        "label": "Volume exact",
+        "value": "247952/25 mm³"
       }
-    ]
+    ],
+    "section": {
+      "axis": "z",
+      "fraction": 0.5
+    }
   },
   {
     "id": "rectangle_offset_pocket",
-    "title": "Cavité rectangulaire décalée",
-    "description": "La même cavité est déplacée dans le plan. Les blocs suivent ses quatre coins et conservent la répartition par couche.",
-    "source": "data/rectangle_offset_pocket/rectangle_offset_pocket.recipe.json",
-    "model": "data/rectangle_offset_pocket/rectangle_offset_pocket.model.json",
-    "audit": "data/rectangle_offset_pocket/rectangle_offset_pocket.audit.json",
-    "step": "data/rectangle_offset_pocket/rectangle_offset_pocket.step",
+    "title": "Cavité courbe décalée",
+    "description": "La coupe en Z à mi-hauteur montre le contour courbe de la cavité décalée.",
+    "source": "data/rectangle_offset_pocket/rectangle_offset_pocket.recipe.json?v=520a258254c5",
+    "model": "data/rectangle_offset_pocket/rectangle_offset_pocket.model.json?v=4d14b20b8968",
+    "audit": "data/rectangle_offset_pocket/rectangle_offset_pocket.audit.json?v=afdda64437b2",
+    "step": "data/rectangle_offset_pocket/rectangle_offset_pocket.step?v=c646998117ac",
     "metrics": [
       {
-        "label": "Minimum atteint",
-        "value": "14 blocs"
+        "label": "Blocs du graphe",
+        "value": "14"
       },
       {
-        "label": "Blocs par couche",
-        "value": "5 + 4 + 5"
-      },
-      {
-        "label": "Volume exact",
-        "value": "9 504 mm³"
-      },
-      {
-        "label": "Interfaces conformes",
+        "label": "Interfaces du graphe",
         "value": "28"
       },
       {
-        "label": "κ₂ maximal mesuré¹",
-        "value": "19,33"
+        "label": "Jonctions prescrites",
+        "value": "4 × G0"
+      },
+      {
+        "label": "Volume exact",
+        "value": "247952/25 mm³"
       }
-    ]
+    ],
+    "section": {
+      "axis": "z",
+      "fraction": 0.5
+    }
   },
   {
     "id": "c_section_two_holes",
-    "title": "Section en C à deux trous",
-    "description": "Les deux trous traversent la pièce. Le plan relie chaque trou à sa branche du C, puis propage ces séparatrices suivant l’extrusion oblique.",
-    "source": "data/c_section_two_holes/c_section_two_holes.recipe.json",
-    "model": "data/c_section_two_holes/c_section_two_holes.model.json",
-    "audit": "data/c_section_two_holes/c_section_two_holes.audit.json",
-    "step": "data/c_section_two_holes/c_section_two_holes.step",
+    "title": "Section en C · deux trous",
+    "description": "La coupe en Z à mi-hauteur expose le profil courbe des perçages.",
+    "source": "data/c_section_two_holes/c_section_two_holes.recipe.json?v=ccd062882f83",
+    "model": "data/c_section_two_holes/c_section_two_holes.model.json?v=cbd0a898af10",
+    "audit": "data/c_section_two_holes/c_section_two_holes.audit.json?v=d846db8a3a9e",
+    "step": "data/c_section_two_holes/c_section_two_holes.step?v=96118ee8d7f4",
     "metrics": [
       {
-        "label": "Minimum atteint",
-        "value": "9 blocs"
-      },
-      {
-        "label": "Blocs par couche",
+        "label": "Blocs du graphe",
         "value": "9"
       },
       {
-        "label": "Volume exact",
-        "value": "1 568 mm³"
-      },
-      {
-        "label": "Interfaces conformes",
+        "label": "Interfaces du graphe",
         "value": "10"
       },
       {
-        "label": "κ₂ maximal mesuré¹",
-        "value": "121,90"
+        "label": "Jonctions prescrites",
+        "value": "8 × C1"
+      },
+      {
+        "label": "Volume exact",
+        "value": "45878/27 mm³"
       }
-    ]
+    ],
+    "section": {
+      "axis": "z",
+      "fraction": 0.5
+    }
   },
   {
     "id": "l_bracket_polygon_holes_and_pocket",
-    "title": "Prisme en L percé",
-    "description": "Le trou inférieur traverse la pièce. La cavité de la seconde branche impose quatre coins supplémentaires dans les couches qui l’encadrent.",
-    "source": "data/l_bracket_polygon_holes_and_pocket/l_bracket_polygon_holes_and_pocket.recipe.json",
-    "model": "data/l_bracket_polygon_holes_and_pocket/l_bracket_polygon_holes_and_pocket.model.json",
-    "audit": "data/l_bracket_polygon_holes_and_pocket/l_bracket_polygon_holes_and_pocket.audit.json",
-    "step": "data/l_bracket_polygon_holes_and_pocket/l_bracket_polygon_holes_and_pocket.step",
+    "title": "Prisme en L · trou et poche",
+    "description": "La coupe en Z à mi-hauteur révèle les profils courbes dans le prisme.",
+    "source": "data/l_bracket_polygon_holes_and_pocket/l_bracket_polygon_holes_and_pocket.recipe.json?v=66e196234eda",
+    "model": "data/l_bracket_polygon_holes_and_pocket/l_bracket_polygon_holes_and_pocket.model.json?v=ec9be5dc4795",
+    "audit": "data/l_bracket_polygon_holes_and_pocket/l_bracket_polygon_holes_and_pocket.audit.json?v=ce5850f760b2",
+    "step": "data/l_bracket_polygon_holes_and_pocket/l_bracket_polygon_holes_and_pocket.step?v=42a7eb219ed4",
     "metrics": [
       {
-        "label": "Minimum atteint",
-        "value": "26 blocs"
+        "label": "Blocs du graphe",
+        "value": "26"
       },
       {
-        "label": "Blocs par couche",
-        "value": "9 + 8 + 9"
-      },
-      {
-        "label": "Volume exact",
-        "value": "5 084 mm³"
-      },
-      {
-        "label": "Interfaces conformes",
+        "label": "Interfaces du graphe",
         "value": "51"
       },
       {
-        "label": "κ₂ maximal mesuré¹",
-        "value": "62,98"
-      }
-    ]
-  },
-  {
-    "id": "c_section_lower_hole_x_plus_1",
-    "title": "Section en C après édition",
-    "description": "Le trou inférieur est déplacé de 1 mm. Cinq des neuf blocs conservent leurs identifiants, degrés et points de contrôle.",
-    "source": "data/c_section_lower_hole_x_plus_1/c_section_lower_hole_x_plus_1.recipe.json",
-    "model": "data/c_section_lower_hole_x_plus_1/c_section_lower_hole_x_plus_1.model.json",
-    "audit": "data/c_section_lower_hole_x_plus_1/c_section_lower_hole_x_plus_1.audit.json",
-    "step": "data/c_section_lower_hole_x_plus_1/c_section_lower_hole_x_plus_1.step",
-    "metrics": [
-      {
-        "label": "Minimum atteint",
-        "value": "9 blocs"
-      },
-      {
-        "label": "Blocs par couche",
-        "value": "9"
+        "label": "Jonctions prescrites",
+        "value": "4 × C1 · 4 × G0"
       },
       {
         "label": "Volume exact",
-        "value": "1 568 mm³"
+        "value": "49792/9 mm³"
+      }
+    ],
+    "section": {
+      "axis": "z",
+      "fraction": 0.5
+    }
+  },
+  {
+    "id": "c_section_lower_hole_x_plus_1",
+    "title": "Section en C · perçage modifié",
+    "description": "La coupe en Z à mi-hauteur met en évidence le profil courbe après édition.",
+    "source": "data/c_section_lower_hole_x_plus_1/c_section_lower_hole_x_plus_1.recipe.json?v=2f6fef068093",
+    "model": "data/c_section_lower_hole_x_plus_1/c_section_lower_hole_x_plus_1.model.json?v=99761a1b334b",
+    "audit": "data/c_section_lower_hole_x_plus_1/c_section_lower_hole_x_plus_1.audit.json?v=aeb0e934ca95",
+    "step": "data/c_section_lower_hole_x_plus_1/c_section_lower_hole_x_plus_1.step?v=9c769ae9db51",
+    "metrics": [
+      {
+        "label": "Blocs du graphe",
+        "value": "9"
       },
       {
-        "label": "Interfaces conformes",
+        "label": "Interfaces du graphe",
         "value": "10"
       },
       {
-        "label": "κ₂ maximal mesuré¹",
-        "value": "121,90"
+        "label": "Jonctions prescrites",
+        "value": "8 × C1"
+      },
+      {
+        "label": "Volume exact",
+        "value": "45878/27 mm³"
       }
-    ]
+    ],
+    "section": {
+      "axis": "z",
+      "fraction": 0.5
+    }
   }
 ]

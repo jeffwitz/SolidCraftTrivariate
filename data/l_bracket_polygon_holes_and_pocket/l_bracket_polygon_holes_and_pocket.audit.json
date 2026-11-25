@@ -1,151 +1,523 @@
 {
-  "case": "l_bracket_polygon_holes_and_pocket",
-  "native": {
-    "blocks": 26,
-    "bounded_sketch_faces": 10,
-    "cavities": 1,
-    "determinant_lower_bound_mm3": 31.999999999999986,
-    "exterior_sides": 54,
-    "hausdorff_error_upper_bound_mm": 0,
-    "method": "certified_sketch_layer_partition",
-    "shared_faces": 51,
-    "status": "valid",
-    "volume_exact_mm3": [
-      5084,
-      1
-    ]
-  },
+  "schema": "curved_sketch_gallery_audit_v1",
+  "status": "pass",
+  "block_count": 26,
+  "common_faces_checked": 51,
   "layer_lower_bounds": [
     {
       "z_mm": [
-        0.0,
-        4.0
+        0,
+        4
       ],
-      "boundary_corners": 10,
-      "required_interior_corners": 4,
+      "required_boundary_vertices": 10,
+      "required_interior_vertices": 4,
       "holes": 1,
-      "minimum": 9
+      "minimum_blocks": 9
     },
     {
       "z_mm": [
-        4.0,
-        8.0
+        4,
+        8
       ],
-      "boundary_corners": 14,
-      "required_interior_corners": 0,
+      "required_boundary_vertices": 14,
+      "required_interior_vertices": 0,
       "holes": 2,
-      "minimum": 8
+      "minimum_blocks": 8
     },
     {
       "z_mm": [
-        8.0,
-        12.0
+        8,
+        12
       ],
-      "boundary_corners": 10,
-      "required_interior_corners": 4,
+      "required_boundary_vertices": 10,
+      "required_interior_vertices": 4,
       "holes": 1,
-      "minimum": 9
+      "minimum_blocks": 9
     }
   ],
-  "oracle": {
-    "id": "l_bracket_polygon_holes_and_pocket",
-    "block_count": 26,
-    "max_condition_2_sample_27_per_block": 62.984122982862374,
-    "expected_volume_exact_mm3": [
-      5084,
-      1
-    ],
-    "cli_volume_exact_mm3": [
-      5084,
-      1
-    ],
-    "volume_match": true,
-    "layers": [
-      {
-        "cells": 9,
-        "vertices": 14,
-        "edges": 23,
-        "euler": 0,
-        "boundary_edges": 10,
-        "internal_edges": 13,
-        "area_exact_mm2": [
-          432,
-          1
+  "exact_map_volume_mm3": "49792/9",
+  "green_volume_mm3": "49792/9",
+  "g1_oval_arcs": [
+    {
+      "feature": "lower_hole",
+      "expected_continuity": "C1",
+      "four_source_arcs_matched": 4,
+      "junctions": [
+        {
+          "cross_product": "0",
+          "dot_product": "32/9",
+          "g1": true,
+          "c1": true
+        },
+        {
+          "cross_product": "0",
+          "dot_product": "32/9",
+          "g1": true,
+          "c1": true
+        },
+        {
+          "cross_product": "0",
+          "dot_product": "32/9",
+          "g1": true,
+          "c1": true
+        },
+        {
+          "cross_product": "0",
+          "dot_product": "32/9",
+          "g1": true,
+          "c1": true
+        }
+      ],
+      "source_widths_mm": [
+        4,
+        4
+      ],
+      "quadratic_arcs_mm": [
+        [
+          [
+            6.666666666666667,
+            -9.333333333333334
+          ],
+          [
+            8.0,
+            -10.666666666666666
+          ],
+          [
+            9.333333333333334,
+            -9.333333333333334
+          ]
         ],
-        "area_sum_mm2": 432.0,
-        "pairwise_overlap_pairs": 0,
-        "z_interval_mm": [
-          0.0,
-          4.0
+        [
+          [
+            9.333333333333334,
+            -9.333333333333334
+          ],
+          [
+            10.666666666666666,
+            -8.0
+          ],
+          [
+            9.333333333333334,
+            -6.666666666666667
+          ]
         ],
-        "expected_area_exact_mm2": [
-          432,
-          1
+        [
+          [
+            9.333333333333334,
+            -6.666666666666667
+          ],
+          [
+            8.0,
+            -5.333333333333333
+          ],
+          [
+            6.666666666666667,
+            -6.666666666666667
+          ]
         ],
-        "area_gap_exact_mm2": [
-          0,
-          1
+        [
+          [
+            6.666666666666667,
+            -6.666666666666667
+          ],
+          [
+            5.333333333333333,
+            -8.0
+          ],
+          [
+            6.666666666666667,
+            -9.333333333333334
+          ]
+        ]
+      ]
+    },
+    {
+      "feature": "upper_pocket",
+      "expected_continuity": "G0",
+      "four_source_arcs_matched": 4,
+      "junctions": [
+        {
+          "cross_product": "3",
+          "dot_product": "4",
+          "g1": false,
+          "c1": false
+        },
+        {
+          "cross_product": "3",
+          "dot_product": "4",
+          "g1": false,
+          "c1": false
+        },
+        {
+          "cross_product": "3",
+          "dot_product": "4",
+          "g1": false,
+          "c1": false
+        },
+        {
+          "cross_product": "3",
+          "dot_product": "4",
+          "g1": false,
+          "c1": false
+        }
+      ],
+      "source_widths_mm": [
+        5,
+        5
+      ],
+      "quadratic_arcs_mm": [
+        [
+          [
+            -12.5,
+            3.5
+          ],
+          [
+            -10.5,
+            2.5
+          ],
+          [
+            -8.5,
+            3.5
+          ]
         ],
-        "contained_in_expected_material": true,
-        "expected_euler_characteristic": 0
-      },
-      {
-        "cells": 8,
-        "vertices": 14,
-        "edges": 23,
-        "euler": -1,
-        "boundary_edges": 14,
-        "internal_edges": 9,
-        "area_exact_mm2": [
-          407,
-          1
+        [
+          [
+            -8.5,
+            3.5
+          ],
+          [
+            -7.5,
+            5.5
+          ],
+          [
+            -8.5,
+            7.5
+          ]
         ],
-        "area_sum_mm2": 407.0,
-        "pairwise_overlap_pairs": 0,
-        "z_interval_mm": [
-          4.0,
-          8.0
+        [
+          [
+            -8.5,
+            7.5
+          ],
+          [
+            -10.5,
+            8.5
+          ],
+          [
+            -12.5,
+            7.5
+          ]
         ],
-        "expected_area_exact_mm2": [
-          407,
-          1
-        ],
-        "area_gap_exact_mm2": [
-          0,
-          1
-        ],
-        "contained_in_expected_material": true,
-        "expected_euler_characteristic": -1
-      },
-      {
-        "cells": 9,
-        "vertices": 14,
-        "edges": 23,
-        "euler": 0,
-        "boundary_edges": 10,
-        "internal_edges": 13,
-        "area_exact_mm2": [
-          432,
-          1
-        ],
-        "area_sum_mm2": 432.0,
-        "pairwise_overlap_pairs": 0,
-        "z_interval_mm": [
-          8.0,
-          12.0
-        ],
-        "expected_area_exact_mm2": [
-          432,
-          1
-        ],
-        "area_gap_exact_mm2": [
-          0,
-          1
-        ],
-        "contained_in_expected_material": true,
-        "expected_euler_characteristic": 0
-      }
-    ],
-    "passed": true
+        [
+          [
+            -12.5,
+            7.5
+          ],
+          [
+            -13.5,
+            5.5
+          ],
+          [
+            -12.5,
+            3.5
+          ]
+        ]
+      ]
+    }
+  ],
+  "jacobian_certificates": [
+    {
+      "block": "quad_-16d1_-12d1_-16d1_12d1_-13d1_3d1_-13d1_8d1_z0_4",
+      "determinant_degree": [
+        1,
+        2,
+        0
+      ],
+      "bernstein_subdivision_depth": 2,
+      "certified_lower_bound": "26",
+      "subboxes": 3
+    },
+    {
+      "block": "quad_-16d1_-12d1_-13d1_3d1_-8d1_3d1_-4d1_-4d1_z0_4",
+      "determinant_degree": [
+        2,
+        1,
+        0
+      ],
+      "bernstein_subdivision_depth": 0,
+      "certified_lower_bound": "136",
+      "subboxes": 1
+    },
+    {
+      "block": "quad_-16d1_-12d1_-4d1_-4d1_6d1_-10d1_6d1_-6d1_z0_4",
+      "determinant_degree": [
+        1,
+        2,
+        0
+      ],
+      "bernstein_subdivision_depth": 0,
+      "certified_lower_bound": "1216/9",
+      "subboxes": 1
+    },
+    {
+      "block": "quad_-16d1_-12d1_6d1_-10d1_10d1_-10d1_16d1_-12d1_z0_4",
+      "determinant_degree": [
+        2,
+        1,
+        0
+      ],
+      "bernstein_subdivision_depth": 4,
+      "certified_lower_bound": "16",
+      "subboxes": 5
+    },
+    {
+      "block": "quad_-16d1_12d1_-13d1_8d1_-8d1_8d1_-4d1_12d1_z0_4",
+      "determinant_degree": [
+        1,
+        2,
+        0
+      ],
+      "bernstein_subdivision_depth": 0,
+      "certified_lower_bound": "24",
+      "subboxes": 1
+    },
+    {
+      "block": "quad_-13d1_3d1_-13d1_8d1_-8d1_3d1_-8d1_8d1_z0_4",
+      "determinant_degree": [
+        2,
+        2,
+        0
+      ],
+      "bernstein_subdivision_depth": 0,
+      "certified_lower_bound": "48",
+      "subboxes": 1
+    },
+    {
+      "block": "quad_-8d1_3d1_-8d1_8d1_-4d1_-4d1_-4d1_12d1_z0_4",
+      "determinant_degree": [
+        1,
+        2,
+        0
+      ],
+      "bernstein_subdivision_depth": 0,
+      "certified_lower_bound": "8",
+      "subboxes": 1
+    },
+    {
+      "block": "quad_-4d1_-4d1_6d1_-6d1_10d1_-6d1_16d1_-4d1_z0_4",
+      "determinant_degree": [
+        1,
+        2,
+        0
+      ],
+      "bernstein_subdivision_depth": 1,
+      "certified_lower_bound": "32/3",
+      "subboxes": 2
+    },
+    {
+      "block": "quad_10d1_-10d1_10d1_-6d1_16d1_-12d1_16d1_-4d1_z0_4",
+      "determinant_degree": [
+        1,
+        2,
+        0
+      ],
+      "bernstein_subdivision_depth": 0,
+      "certified_lower_bound": "256/9",
+      "subboxes": 1
+    },
+    {
+      "block": "quad_-16d1_-12d1_-16d1_12d1_-13d1_3d1_-13d1_8d1_z4_8",
+      "determinant_degree": [
+        1,
+        2,
+        0
+      ],
+      "bernstein_subdivision_depth": 2,
+      "certified_lower_bound": "26",
+      "subboxes": 3
+    },
+    {
+      "block": "quad_-16d1_-12d1_-13d1_3d1_-8d1_3d1_-4d1_-4d1_z4_8",
+      "determinant_degree": [
+        2,
+        1,
+        0
+      ],
+      "bernstein_subdivision_depth": 0,
+      "certified_lower_bound": "136",
+      "subboxes": 1
+    },
+    {
+      "block": "quad_-16d1_-12d1_-4d1_-4d1_6d1_-10d1_6d1_-6d1_z4_8",
+      "determinant_degree": [
+        1,
+        2,
+        0
+      ],
+      "bernstein_subdivision_depth": 0,
+      "certified_lower_bound": "1216/9",
+      "subboxes": 1
+    },
+    {
+      "block": "quad_-16d1_-12d1_6d1_-10d1_10d1_-10d1_16d1_-12d1_z4_8",
+      "determinant_degree": [
+        2,
+        1,
+        0
+      ],
+      "bernstein_subdivision_depth": 4,
+      "certified_lower_bound": "16",
+      "subboxes": 5
+    },
+    {
+      "block": "quad_-16d1_12d1_-13d1_8d1_-8d1_8d1_-4d1_12d1_z4_8",
+      "determinant_degree": [
+        1,
+        2,
+        0
+      ],
+      "bernstein_subdivision_depth": 0,
+      "certified_lower_bound": "24",
+      "subboxes": 1
+    },
+    {
+      "block": "quad_-8d1_3d1_-8d1_8d1_-4d1_-4d1_-4d1_12d1_z4_8",
+      "determinant_degree": [
+        1,
+        2,
+        0
+      ],
+      "bernstein_subdivision_depth": 0,
+      "certified_lower_bound": "8",
+      "subboxes": 1
+    },
+    {
+      "block": "quad_-4d1_-4d1_6d1_-6d1_10d1_-6d1_16d1_-4d1_z4_8",
+      "determinant_degree": [
+        1,
+        2,
+        0
+      ],
+      "bernstein_subdivision_depth": 1,
+      "certified_lower_bound": "32/3",
+      "subboxes": 2
+    },
+    {
+      "block": "quad_10d1_-10d1_10d1_-6d1_16d1_-12d1_16d1_-4d1_z4_8",
+      "determinant_degree": [
+        1,
+        2,
+        0
+      ],
+      "bernstein_subdivision_depth": 0,
+      "certified_lower_bound": "256/9",
+      "subboxes": 1
+    },
+    {
+      "block": "quad_-16d1_-12d1_-16d1_12d1_-13d1_3d1_-13d1_8d1_z8_12",
+      "determinant_degree": [
+        1,
+        2,
+        0
+      ],
+      "bernstein_subdivision_depth": 2,
+      "certified_lower_bound": "26",
+      "subboxes": 3
+    },
+    {
+      "block": "quad_-16d1_-12d1_-13d1_3d1_-8d1_3d1_-4d1_-4d1_z8_12",
+      "determinant_degree": [
+        2,
+        1,
+        0
+      ],
+      "bernstein_subdivision_depth": 0,
+      "certified_lower_bound": "136",
+      "subboxes": 1
+    },
+    {
+      "block": "quad_-16d1_-12d1_-4d1_-4d1_6d1_-10d1_6d1_-6d1_z8_12",
+      "determinant_degree": [
+        1,
+        2,
+        0
+      ],
+      "bernstein_subdivision_depth": 0,
+      "certified_lower_bound": "1216/9",
+      "subboxes": 1
+    },
+    {
+      "block": "quad_-16d1_-12d1_6d1_-10d1_10d1_-10d1_16d1_-12d1_z8_12",
+      "determinant_degree": [
+        2,
+        1,
+        0
+      ],
+      "bernstein_subdivision_depth": 4,
+      "certified_lower_bound": "16",
+      "subboxes": 5
+    },
+    {
+      "block": "quad_-16d1_12d1_-13d1_8d1_-8d1_8d1_-4d1_12d1_z8_12",
+      "determinant_degree": [
+        1,
+        2,
+        0
+      ],
+      "bernstein_subdivision_depth": 0,
+      "certified_lower_bound": "24",
+      "subboxes": 1
+    },
+    {
+      "block": "quad_-13d1_3d1_-13d1_8d1_-8d1_3d1_-8d1_8d1_z8_12",
+      "determinant_degree": [
+        2,
+        2,
+        0
+      ],
+      "bernstein_subdivision_depth": 0,
+      "certified_lower_bound": "48",
+      "subboxes": 1
+    },
+    {
+      "block": "quad_-8d1_3d1_-8d1_8d1_-4d1_-4d1_-4d1_12d1_z8_12",
+      "determinant_degree": [
+        1,
+        2,
+        0
+      ],
+      "bernstein_subdivision_depth": 0,
+      "certified_lower_bound": "8",
+      "subboxes": 1
+    },
+    {
+      "block": "quad_-4d1_-4d1_6d1_-6d1_10d1_-6d1_16d1_-4d1_z8_12",
+      "determinant_degree": [
+        1,
+        2,
+        0
+      ],
+      "bernstein_subdivision_depth": 1,
+      "certified_lower_bound": "32/3",
+      "subboxes": 2
+    },
+    {
+      "block": "quad_10d1_-10d1_10d1_-6d1_16d1_-12d1_16d1_-4d1_z8_12",
+      "determinant_degree": [
+        1,
+        2,
+        0
+      ],
+      "bernstein_subdivision_depth": 0,
+      "certified_lower_bound": "256/9",
+      "subboxes": 1
+    }
+  ],
+  "step_readback": {
+    "reader": "OCCT 7.8.1",
+    "closed_shells": 2,
+    "valid_solids": 1,
+    "volume_mm3": 5532.444444444441,
+    "relative_volume_error": 6.575716834797842e-16
   }
 }

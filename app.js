@@ -2,10 +2,10 @@ const byId = (id) => document.getElementById(id);
 const ui = {
   canvas: byId('model-canvas'), state: byId('canvas-state'), wrap: byId('canvas-wrap'),
   selector: byId('experiment-select'), description: byId('experiment-description'),
-  viewTitle: byId('view-title'), metrics: byId('metrics-list'), model: byId('model-link'), source: byId('source-link'), step: byId('step-link'), hex8: byId('hex8-link'), audit: byId('audit-link'), figure: byId('figure-link'),
+  viewTitle: byId('view-title'), metrics: byId('metrics-list'), model: byId('model-link'), source: byId('source-link'), step: byId('step-link'), audit: byId('audit-link'), figure: byId('figure-link'),
   axis: byId('clip-axis'), fraction: byId('clip-fraction'), value: byId('clip-value'), reset: byId('reset-view'),
   sectionButton: byId('s3-face-pocket'),
-  fillet: byId('fillet-step'), chamfer: byId('chamfer-step'),
+  profile: byId('profile-card'),
 };
 
 let experiments = [];
@@ -75,9 +75,72 @@ function renderMetrics(metrics) {
 async function readModel(experiment) {
   const url = safeLocalUrl(experiment.model);
   if (!url) throw new Error('Chemin du modèle absent ou hors du site.');
-  const response = await fetch(url);
+  const response = await fetch(url, { cache: 'force-cache' });
   if (!response.ok) throw new Error(`Le modèle n’a pas pu être chargé (${response.status}).`);
   return response.json();
+}
+
+async function readAudit(experiment) {
+  const url = safeLocalUrl(experiment.audit);
+  if (!url) return null;
+  const response = await fetch(url, { cache: 'force-cache' });
+  if (!response.ok) return null;
+  return response.json();
+}
+
+function renderProfile(audit) {
+  const svgNamespace = 'http://www.w3.org/2000/svg';
+  ui.profile.replaceChildren();
+  const profiles = (audit?.g1_oval_arcs || []).filter(item => Array.isArray(item.quadratic_arcs_mm)
+    && item.quadratic_arcs_mm.length === 4
+    && item.quadratic_arcs_mm.every(arc => Array.isArray(arc) && arc.length === 3
+      && arc.every(point => Array.isArray(point) && point.length === 2 && point.every(Number.isFinite))));
+  if (!profiles.length) { ui.profile.hidden = true; return; }
+  ui.profile.hidden = false;
+  const title = document.createElement('figcaption');
+  title.className = 'profile-title';
+  title.textContent = profiles.length > 1 ? 'Profils courbes distincts' : 'Profil courbe';
+  const featureLabel = name => ({
+    pocket: 'Poche', lower_hole: 'Perçage inférieur', upper_hole: 'Perçage supérieur',
+    upper_pocket: 'Poche supérieure',
+  })[name] || String(name || 'Cavité').replaceAll('_', ' ');
+  const list = document.createElement('div');
+  list.className = 'profile-list';
+  for (const profile of profiles.slice(0, 2)) {
+    const points = profile.quadratic_arcs_mm.flat();
+    const minX = Math.min(...points.map(point => point[0]));
+    const maxX = Math.max(...points.map(point => point[0]));
+    const minY = Math.min(...points.map(point => point[1]));
+    const maxY = Math.max(...points.map(point => point[1]));
+    const padding = Math.max(maxX - minX, maxY - minY) * 0.08 || 1;
+    const viewMinX = minX - padding;
+    const viewMinY = minY - padding;
+    const viewWidth = maxX - minX + 2 * padding;
+    const viewHeight = maxY - minY + 2 * padding;
+    const flipY = minY + maxY;
+    const toSvg = ([x, y]) => [x, flipY - y];
+    const pathData = profile.quadratic_arcs_mm.map((arc, index) => {
+      const [start, control, end] = arc.map(toSvg);
+      return `${index === 0 ? `M ${start[0]} ${start[1]}` : ''} Q ${control[0]} ${control[1]} ${end[0]} ${end[1]}`;
+    }).join(' ') + ' Z';
+    const item = document.createElement('div');
+    item.className = 'profile-item';
+    const svg = document.createElementNS(svgNamespace, 'svg');
+    svg.classList.add('profile-art');
+    svg.setAttribute('viewBox', `${viewMinX} ${viewMinY} ${viewWidth} ${viewHeight}`);
+    svg.setAttribute('role', 'img');
+    svg.setAttribute('aria-label', `Profil quadratique : ${featureLabel(profile.feature)}`);
+    const shape = document.createElementNS(svgNamespace, 'path');
+    shape.classList.add('profile-path');
+    shape.setAttribute('d', pathData);
+    svg.append(shape);
+    const label = document.createElement('p');
+    label.className = 'profile-label';
+    label.textContent = `${featureLabel(profile.feature)} · ${Math.max(maxX - minX, maxY - minY).toLocaleString('fr-FR', { maximumFractionDigits: 2 })} mm`;
+    item.append(svg, label);
+    list.append(item);
+  }
+  ui.profile.append(title, list);
 }
 
 async function selectExperiment(id) {
@@ -85,6 +148,18 @@ async function selectExperiment(id) {
   if (!experiment) return;
   const version = ++selectionVersion;
   modelReady = false;
+  renderProfile(null);
+  mode = 'blocks';
+  document.querySelectorAll('[data-mode]').forEach((button) => {
+    const selected = button.dataset.mode === mode;
+    button.classList.toggle('is-active', selected);
+    button.setAttribute('aria-pressed', String(selected));
+  });
+  const preset = experiment.section && ['x', 'y', 'z'].includes(experiment.section.axis)
+    && Number.isFinite(experiment.section.fraction)
+    ? experiment.section : { axis: 'z', fraction: 0.5 };
+  ui.axis.value = preset.axis;
+  ui.fraction.value = String(Math.round(preset.fraction * 100));
   ui.selector.value = experiment.id;
   ui.viewTitle.textContent = experiment.title || experiment.id;
   ui.description.textContent = experiment.description || '';
@@ -104,15 +179,12 @@ async function selectExperiment(id) {
   setLink(ui.model, experiment.model === experiment.source ? null : experiment.model);
   setLink(ui.source, experiment.source);
   setLink(ui.step, experiment.step);
-  setLink(ui.hex8, experiment.hex8);
   setLink(ui.audit, experiment.audit);
   setLink(ui.figure, experiment.figure);
-  setLink(ui.fillet, experiment.filletStep);
-  setLink(ui.chamfer, experiment.chamferStep);
   const section = experiment.section;
   const hasSection = section && ['x', 'y', 'z'].includes(section.axis) && Number.isFinite(section.fraction) && section.fraction >= 0 && section.fraction <= 1;
   ui.sectionButton.hidden = !hasSection;
-  ui.sectionButton.textContent = 'Voir la poche en coupe';
+  ui.sectionButton.textContent = 'Voir la coupe prescrite';
   if (location.hash === '#s3-face-pocket' && hasSection) requestAnimationFrame(() => ui.sectionButton.scrollIntoView({ block: 'center' }));
   if (!viewer) {
     showState(`${viewerError} Les mesures et les liens de source restent accessibles.`, 'error');
@@ -126,6 +198,9 @@ async function selectExperiment(id) {
     viewer.setMode(mode);
     modelReady = true;
     applyClip();
+    const audit = await readAudit(experiment);
+    if (version !== selectionVersion) return;
+    renderProfile(audit);
     hideState();
   } catch (error) {
     if (version !== selectionVersion) return;
@@ -148,6 +223,10 @@ function initControls() {
     url.hash = '';
     history.replaceState(null, '', url);
     selectExperiment(ui.selector.value);
+  });
+  window.addEventListener('popstate', () => {
+    const requested = new URL(location.href).searchParams.get('model');
+    if (experiments.some(item => item.id === requested)) selectExperiment(requested);
   });
   ui.axis.addEventListener('change', applyClip);
   ui.fraction.addEventListener('input', applyClip);
@@ -204,7 +283,7 @@ async function start() {
     }
     ui.selector.disabled = false;
     try {
-      const { createViewer } = await import('./renderer.js');
+      const { createViewer } = await import('./renderer.js?v=4e0a2493f618');
       viewer = createViewer(ui.canvas);
       if (!viewer || typeof viewer.setModel !== 'function') throw new Error('L’API du moteur de visualisation est incomplète.');
       hideState();

@@ -1,151 +1,298 @@
 {
-  "case": "rectangle_internal_rectangle",
-  "native": {
-    "blocks": 14,
-    "bounded_sketch_faces": 5,
-    "cavities": 1,
-    "determinant_lower_bound_mm3": 71.99999999999996,
-    "exterior_sides": 28,
-    "hausdorff_error_upper_bound_mm": 0,
-    "method": "certified_sketch_layer_partition",
-    "shared_faces": 28,
-    "status": "valid",
-    "volume_exact_mm3": [
-      9504,
-      1
-    ]
-  },
+  "schema": "curved_sketch_gallery_audit_v1",
+  "status": "pass",
+  "block_count": 14,
+  "common_faces_checked": 28,
   "layer_lower_bounds": [
     {
       "z_mm": [
-        0.0,
-        3.0
+        0,
+        3
       ],
-      "boundary_corners": 4,
-      "required_interior_corners": 4,
+      "required_boundary_vertices": 4,
+      "required_interior_vertices": 4,
       "holes": 0,
-      "minimum": 5
+      "minimum_blocks": 5
     },
     {
       "z_mm": [
-        3.0,
-        7.0
+        3,
+        7
       ],
-      "boundary_corners": 8,
-      "required_interior_corners": 0,
+      "required_boundary_vertices": 8,
+      "required_interior_vertices": 0,
       "holes": 1,
-      "minimum": 4
+      "minimum_blocks": 4
     },
     {
       "z_mm": [
-        7.0,
-        10.0
+        7,
+        10
       ],
-      "boundary_corners": 4,
-      "required_interior_corners": 4,
+      "required_boundary_vertices": 4,
+      "required_interior_vertices": 4,
       "holes": 0,
-      "minimum": 5
+      "minimum_blocks": 5
     }
   ],
-  "oracle": {
-    "id": "rectangle_internal_rectangle",
-    "block_count": 14,
-    "max_condition_2_sample_27_per_block": 14.54881050086282,
-    "expected_volume_exact_mm3": [
-      9504,
-      1
-    ],
-    "cli_volume_exact_mm3": [
-      9504,
-      1
-    ],
-    "volume_match": true,
-    "layers": [
-      {
-        "cells": 5,
-        "vertices": 8,
-        "edges": 12,
-        "euler": 1,
-        "boundary_edges": 4,
-        "internal_edges": 8,
-        "area_exact_mm2": [
-          960,
-          1
+  "exact_map_volume_mm3": "247952/25",
+  "green_volume_mm3": "247952/25",
+  "g1_oval_arcs": [
+    {
+      "feature": "pocket",
+      "expected_continuity": "G0",
+      "four_source_arcs_matched": 4,
+      "junctions": [
+        {
+          "cross_product": "72/25",
+          "dot_product": "104/25",
+          "g1": false,
+          "c1": false
+        },
+        {
+          "cross_product": "72/25",
+          "dot_product": "104/25",
+          "g1": false,
+          "c1": false
+        },
+        {
+          "cross_product": "72/25",
+          "dot_product": "104/25",
+          "g1": false,
+          "c1": false
+        },
+        {
+          "cross_product": "72/25",
+          "dot_product": "104/25",
+          "g1": false,
+          "c1": false
+        }
+      ],
+      "source_widths_mm": [
+        6,
+        4
+      ],
+      "quadratic_arcs_mm": [
+        [
+          [
+            -2.4,
+            -1.6
+          ],
+          [
+            0.0,
+            -2.4
+          ],
+          [
+            2.4,
+            -1.6
+          ]
         ],
-        "area_sum_mm2": 960.0,
-        "pairwise_overlap_pairs": 0,
-        "z_interval_mm": [
-          0.0,
-          3.0
+        [
+          [
+            2.4,
+            -1.6
+          ],
+          [
+            3.6,
+            0.0
+          ],
+          [
+            2.4,
+            1.6
+          ]
         ],
-        "expected_area_exact_mm2": [
-          960,
-          1
+        [
+          [
+            2.4,
+            1.6
+          ],
+          [
+            0.0,
+            2.4
+          ],
+          [
+            -2.4,
+            1.6
+          ]
         ],
-        "area_gap_exact_mm2": [
-          0,
-          1
-        ],
-        "contained_in_expected_material": true,
-        "expected_euler_characteristic": 1
-      },
-      {
-        "cells": 4,
-        "vertices": 8,
-        "edges": 12,
-        "euler": 0,
-        "boundary_edges": 8,
-        "internal_edges": 4,
-        "area_exact_mm2": [
-          936,
-          1
-        ],
-        "area_sum_mm2": 936.0,
-        "pairwise_overlap_pairs": 0,
-        "z_interval_mm": [
-          3.0,
-          7.0
-        ],
-        "expected_area_exact_mm2": [
-          936,
-          1
-        ],
-        "area_gap_exact_mm2": [
-          0,
-          1
-        ],
-        "contained_in_expected_material": true,
-        "expected_euler_characteristic": 0
-      },
-      {
-        "cells": 5,
-        "vertices": 8,
-        "edges": 12,
-        "euler": 1,
-        "boundary_edges": 4,
-        "internal_edges": 8,
-        "area_exact_mm2": [
-          960,
-          1
-        ],
-        "area_sum_mm2": 960.0,
-        "pairwise_overlap_pairs": 0,
-        "z_interval_mm": [
-          7.0,
-          10.0
-        ],
-        "expected_area_exact_mm2": [
-          960,
-          1
-        ],
-        "area_gap_exact_mm2": [
-          0,
-          1
-        ],
-        "contained_in_expected_material": true,
-        "expected_euler_characteristic": 1
-      }
-    ],
-    "passed": true
+        [
+          [
+            -2.4,
+            1.6
+          ],
+          [
+            -3.6,
+            0.0
+          ],
+          [
+            -2.4,
+            -1.6
+          ]
+        ]
+      ]
+    }
+  ],
+  "jacobian_certificates": [
+    {
+      "block": "quad_-20d1_-12d1_-20d1_12d1_-3d1_-2d1_-3d1_2d1_z0_3",
+      "determinant_degree": [
+        1,
+        2,
+        0
+      ],
+      "bernstein_subdivision_depth": 0,
+      "certified_lower_bound": "2064/25",
+      "subboxes": 1
+    },
+    {
+      "block": "quad_-20d1_-12d1_-3d1_-2d1_3d1_-2d1_20d1_-12d1_z0_3",
+      "determinant_degree": [
+        2,
+        1,
+        0
+      ],
+      "bernstein_subdivision_depth": 0,
+      "certified_lower_bound": "2424/25",
+      "subboxes": 1
+    },
+    {
+      "block": "quad_-20d1_12d1_-3d1_2d1_3d1_2d1_20d1_12d1_z0_3",
+      "determinant_degree": [
+        1,
+        2,
+        0
+      ],
+      "bernstein_subdivision_depth": 0,
+      "certified_lower_bound": "1344/25",
+      "subboxes": 1
+    },
+    {
+      "block": "quad_-3d1_-2d1_-3d1_2d1_3d1_-2d1_3d1_2d1_z0_3",
+      "determinant_degree": [
+        2,
+        2,
+        0
+      ],
+      "bernstein_subdivision_depth": 0,
+      "certified_lower_bound": "864/25",
+      "subboxes": 1
+    },
+    {
+      "block": "quad_3d1_-2d1_3d1_2d1_20d1_-12d1_20d1_12d1_z0_3",
+      "determinant_degree": [
+        1,
+        2,
+        0
+      ],
+      "bernstein_subdivision_depth": 0,
+      "certified_lower_bound": "2064/25",
+      "subboxes": 1
+    },
+    {
+      "block": "quad_-20d1_-12d1_-20d1_12d1_-3d1_-2d1_-3d1_2d1_z3_7",
+      "determinant_degree": [
+        1,
+        2,
+        0
+      ],
+      "bernstein_subdivision_depth": 0,
+      "certified_lower_bound": "2752/25",
+      "subboxes": 1
+    },
+    {
+      "block": "quad_-20d1_-12d1_-3d1_-2d1_3d1_-2d1_20d1_-12d1_z3_7",
+      "determinant_degree": [
+        2,
+        1,
+        0
+      ],
+      "bernstein_subdivision_depth": 0,
+      "certified_lower_bound": "3232/25",
+      "subboxes": 1
+    },
+    {
+      "block": "quad_-20d1_12d1_-3d1_2d1_3d1_2d1_20d1_12d1_z3_7",
+      "determinant_degree": [
+        1,
+        2,
+        0
+      ],
+      "bernstein_subdivision_depth": 0,
+      "certified_lower_bound": "1792/25",
+      "subboxes": 1
+    },
+    {
+      "block": "quad_3d1_-2d1_3d1_2d1_20d1_-12d1_20d1_12d1_z3_7",
+      "determinant_degree": [
+        1,
+        2,
+        0
+      ],
+      "bernstein_subdivision_depth": 0,
+      "certified_lower_bound": "2752/25",
+      "subboxes": 1
+    },
+    {
+      "block": "quad_-20d1_-12d1_-20d1_12d1_-3d1_-2d1_-3d1_2d1_z7_10",
+      "determinant_degree": [
+        1,
+        2,
+        0
+      ],
+      "bernstein_subdivision_depth": 0,
+      "certified_lower_bound": "2064/25",
+      "subboxes": 1
+    },
+    {
+      "block": "quad_-20d1_-12d1_-3d1_-2d1_3d1_-2d1_20d1_-12d1_z7_10",
+      "determinant_degree": [
+        2,
+        1,
+        0
+      ],
+      "bernstein_subdivision_depth": 0,
+      "certified_lower_bound": "2424/25",
+      "subboxes": 1
+    },
+    {
+      "block": "quad_-20d1_12d1_-3d1_2d1_3d1_2d1_20d1_12d1_z7_10",
+      "determinant_degree": [
+        1,
+        2,
+        0
+      ],
+      "bernstein_subdivision_depth": 0,
+      "certified_lower_bound": "1344/25",
+      "subboxes": 1
+    },
+    {
+      "block": "quad_-3d1_-2d1_-3d1_2d1_3d1_-2d1_3d1_2d1_z7_10",
+      "determinant_degree": [
+        2,
+        2,
+        0
+      ],
+      "bernstein_subdivision_depth": 0,
+      "certified_lower_bound": "864/25",
+      "subboxes": 1
+    },
+    {
+      "block": "quad_3d1_-2d1_3d1_2d1_20d1_-12d1_20d1_12d1_z7_10",
+      "determinant_degree": [
+        1,
+        2,
+        0
+      ],
+      "bernstein_subdivision_depth": 0,
+      "certified_lower_bound": "2064/25",
+      "subboxes": 1
+    }
+  ],
+  "step_readback": {
+    "reader": "OCCT 7.8.1",
+    "closed_shells": 2,
+    "valid_solids": 1,
+    "volume_mm3": 9918.079999999998,
+    "relative_volume_error": 1.8340136433118672e-16
   }
 }

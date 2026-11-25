@@ -107,7 +107,19 @@ function renderProfile(audit) {
   const list = document.createElement('div');
   list.className = 'profile-list';
   for (const profile of profiles.slice(0, 2)) {
-    const points = profile.quadratic_arcs_mm.flat();
+    // Dimension the curve itself, including interior extrema of each coordinate.
+    const points = profile.quadratic_arcs_mm.flatMap(([a, b, c]) => {
+      const extrema = [a, c];
+      for (const axis of [0, 1]) {
+        const denominator = a[axis] - 2 * b[axis] + c[axis];
+        if (denominator === 0) continue;
+        const t = (a[axis] - b[axis]) / denominator;
+        if (t > 0 && t < 1) {
+          extrema.push(a.map((value, i) => (1 - t) ** 2 * value + 2 * t * (1 - t) * b[i] + t ** 2 * c[i]));
+        }
+      }
+      return extrema;
+    });
     const minX = Math.min(...points.map(point => point[0]));
     const maxX = Math.max(...points.map(point => point[0]));
     const minY = Math.min(...points.map(point => point[1]));
@@ -283,7 +295,7 @@ async function start() {
     }
     ui.selector.disabled = false;
     try {
-      const { createViewer } = await import('./renderer.js?v=4e0a2493f618');
+      const { createViewer } = await import('./renderer.js?v=c385041a0b19');
       viewer = createViewer(ui.canvas);
       if (!viewer || typeof viewer.setModel !== 'function') throw new Error('L’API du moteur de visualisation est incomplète.');
       hideState();

@@ -509,6 +509,9 @@ async function runBrowserChecks() {
     if (profile.hidden || profile.count !== Math.min(2, experiment.profileCount)) {
       throw new Error(`Curved profile vignette did not show audited arcs for ${experiment.id}: ${JSON.stringify({ profile, profileCount: experiment.profileCount })}`);
     }
+    if (experiment.id === 'plate_blind_pocket' && !await evaluate("document.querySelector('.profile-label').textContent.endsWith('20 mm')")) {
+      throw new Error('The dimension must measure the profile, including its interior extrema');
+    }
     const section = experiment.section || { axis: 'z', fraction: 0.5 };
     const activeClip = await evaluate(injectedExpressions.selectedClip);
     if (activeClip.axis !== section.axis || Math.abs(activeClip.fraction / 100 - section.fraction) > 0.011) {

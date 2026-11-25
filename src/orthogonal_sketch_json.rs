@@ -8,6 +8,7 @@ use crate::{
 };
 pub(crate) const FAMILY: &str = "orthogonal_sketch_features_v1";
 pub(crate) const METHOD: &str = "certified_orthogonal_sketch_features";
+pub(crate) const COMPACT_METHOD: &str = "four_sector_local_sweeps";
 const PARAMETERS: [&str; 4] = ["outer", "height_mm", "fillets", "bores"];
 fn n(x: impl ToString) -> Json {
     Json::Number(x.to_string())
@@ -63,7 +64,14 @@ fn plan(p: &SweepPartition) -> Json {
     let mut out = object([
         (
             "method",
-            Json::String("axis_planes_and_disjoint_local_sweeps".into()),
+            Json::String(
+                if p.compact {
+                    COMPACT_METHOD
+                } else {
+                    "axis_planes_and_disjoint_local_sweeps"
+                }
+                .into(),
+            ),
         ),
         (
             "axis_planes_mm",
@@ -143,7 +151,9 @@ pub(crate) fn audit(model: &Json) -> Result<Json, &'static str> {
         .concat(),
     )?;
     let j = parse(model)?;
-    let p = orthogonal_sketch::build(&j)?;
+    // Replay the construction plan saved in the model, including earlier grid partitions.
+    let compact = model.field("partition_plan")?.field("method")?.text()? == COMPACT_METHOD;
+    let p = orthogonal_sketch::build_with_strategy(&j, compact)?;
     if decode_blocks(model)? != p.blocks
         || model.field("partition_plan")? != &plan(&p)
         || model.field("topology")? != &topology(&p.certificate.incidence)

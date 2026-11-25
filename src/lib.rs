@@ -64,6 +64,7 @@ pub mod solver_package;
 pub mod section_audit;
 pub mod sections;
 pub mod step_boundary;
+mod step_cylinder;
 pub mod stress;
 pub mod trace_sensitivity;
 pub mod triangle_quads;
@@ -139,6 +140,8 @@ mod sketch_quad_separators;
 
 pub mod sketch_bore_chart;
 pub mod sketch_fillet_chart;
+mod compact_orthogonal;
+mod compact_wing;
 pub mod orthogonal_sketch;
 
 mod orthogonal_sketch_json;

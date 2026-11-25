@@ -1,4 +1,6 @@
-# Équerres FieldCraft reconstruites depuis les esquisses
+# Archive des équerres FieldCraft à 48 blocs
+
+[Partition actuelle à 10 blocs et résultats de la comparaison](../fieldcraft-compact.md)
 
 [Télécharger les cinq modèles, leurs recettes, leurs STEP et les contrôles](./fieldcraft-native.zip)
 

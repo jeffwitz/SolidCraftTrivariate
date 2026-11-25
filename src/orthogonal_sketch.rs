@@ -28,12 +28,12 @@ pub struct OrthogonalSketch {
     pub bores: Vec<Bore>,
 }
 type Bounds = [[i32; 2]; 3];
-struct Corner<'a> {
-    f: &'a Fillet,
-    sign: [i32; 2],
-    origin: [i32; 2],
-    size: i32,
-    bounds: Bounds,
+pub(crate) struct Corner<'a> {
+    pub(crate) f: &'a Fillet,
+    pub(crate) sign: [i32; 2],
+    pub(crate) origin: [i32; 2],
+    pub(crate) size: i32,
+    pub(crate) bounds: Bounds,
 }
 struct Tube<'a> {
     b: &'a Bore,
@@ -41,6 +41,7 @@ struct Tube<'a> {
     guard: i32,
 }
 pub struct SweepPartition {
+    pub(crate) compact: bool,
     pub blocks: Vec<BracketBlock>,
     pub certificate: BracketCertificate,
     pub twice_constant: i64,
@@ -81,7 +82,7 @@ fn straight(id: String, c: Bounds) -> BracketBlock {
         controls,
     }
 }
-fn corner<'a>(j: &OrthogonalSketch, f: &'a Fillet) -> Result<Corner<'a>, &'static str> {
+pub(crate) fn corner<'a>(j: &OrthogonalSketch, f: &'a Fillet) -> Result<Corner<'a>, &'static str> {
     if !j.outer.vertices.contains(&f.vertex) || !(1..=1024).contains(&f.radius) {
         return Err("invalid_sketch_fillet");
     }
@@ -136,12 +137,6 @@ fn tube<'a>(
     base: &[BTreeSet<i32>; 3],
     guard: i32,
 ) -> Result<Tube<'a>, &'static str> {
-    if b.axis >= 3
-        || !(1..=1024).contains(&b.radius)
-        || b.center.iter().any(|v| !(-4096..=4096).contains(v))
-    {
-        return Err("invalid_sketch_bore");
-    }
     if !in_base(j, b.center.map(ratio))? {
         return Err("bore_seed_outside_material");
     }
@@ -173,7 +168,10 @@ fn tube<'a>(
     });
     Ok(Tube { b, bounds, guard })
 }
-fn transform_fillet(block: &mut BracketBlock, c: &Corner<'_>) -> Result<(), &'static str> {
+pub(crate) fn transform_fillet(
+    block: &mut BracketBlock,
+    c: &Corner<'_>,
+) -> Result<(), &'static str> {
     for p in &mut block.controls {
         for k in 0..2 {
             p[k] = i64::try_from(
@@ -233,7 +231,7 @@ fn planar_label(j: &OrthogonalSketch, points: &[[i64; 4]]) -> Option<String> {
 /// Five unisolvent evaluations prove the quartic circle identity for each
 /// quadratic homogeneous curve. Identical transverse coefficients on the two
 /// axial ends extend the identity through the entire straight sweep.
-fn certify_circular_side(
+pub(crate) fn certify_circular_side(
     block: &BracketBlock,
     axis: usize,
     center: [i32; 3],
@@ -271,8 +269,67 @@ fn certify_circular_side(
     }
     Ok(())
 }
+/// For a rectangular prism the four outer edges can directly bound the four
+/// annular charts. No interior guard or continuation plane is needed.
+fn compact_plate(j: &OrthogonalSketch) -> Result<Option<SweepPartition>, &'static str> {
+    let [bore] = j.bores.as_slice() else {
+        return Ok(None);
+    };
+    if !j.fillets.is_empty() || j.outer.vertices.len() != 4 {
+        return Ok(None);
+    }
+    // Validation has already proved a simple orthogonal quadrilateral.
+    let bounds: Bounds = std::array::from_fn(|k| {
+        if k == 2 {
+            return [0, j.height];
+        }
+        j.outer
+            .vertices
+            .iter()
+            .fold([i32::MAX, i32::MIN], |range, p| {
+                [range[0].min(p[k]), range[1].max(p[k])]
+            })
+    });
+    if bore.axis >= 3
+        || !(1..=1024).contains(&bore.radius)
+        || bore.center.iter().any(|v| !(-4096..=4096).contains(v))
+        || bounds.iter().enumerate().any(|(k, &[lo, hi])| {
+            let margin = if k == bore.axis { 0 } else { bore.radius };
+            bore.center[k] - margin <= lo || bore.center[k] + margin >= hi
+        })
+    {
+        return Ok(None);
+    }
+    let blocks = crate::compact_wing::build(bore.axis, bounds, bore.center, bore.radius, &bore.id)?;
+    let mut physical = BTreeMap::new();
+    for b in &blocks {
+        certify_circular_side(b, bore.axis, bore.center, bore.radius)?;
+        physical.insert((b.id.clone(), 1, true), format!("bore/{}/wall", bore.id));
+    }
+    let thickness = bounds[bore.axis][1] - bounds[bore.axis][0];
+    let twice_constant = i128::from(area2(&j.outer)) * i128::from(j.height);
+    let four_pi = -4 * i128::from(bore.radius).pow(2) * i128::from(thickness);
+    finish_partition(
+        j,
+        blocks,
+        physical,
+        twice_constant,
+        four_pi,
+        bounds.map(|pair| pair.to_vec()),
+        vec![(bore.id.clone(), bounds)],
+    )
+    .map(Some)
+}
+
 /// Build and certify the local-chart partition. Interacting guard regions are explicitly refused.
 pub fn build(j: &OrthogonalSketch) -> Result<SweepPartition, &'static str> {
+    build_with_strategy(j, true)
+}
+
+pub(crate) fn build_with_strategy(
+    j: &OrthogonalSketch,
+    prefer_compact: bool,
+) -> Result<SweepPartition, &'static str> {
     validate(&SketchLayers {
         outer: j.outer.clone(),
         height: j.height,
@@ -302,6 +359,25 @@ pub fn build(j: &OrthogonalSketch) -> Result<SweepPartition, &'static str> {
     }
     if let Some(p) = crate::steinmetz_partition::try_build(j)? {
         return Ok(p);
+    }
+    // Validate every bore before selecting a common guard using its neighbours.
+    if j.bores.iter().any(|b| {
+        b.axis >= 3
+            || !(1..=1024).contains(&b.radius)
+            || b.center.iter().any(|v| !(-4096..=4096).contains(v))
+    }) {
+        return Err("invalid_sketch_bore");
+    }
+    if prefer_compact {
+        let compact = if j.fillets.is_empty() {
+            compact_plate(j)
+        } else {
+            crate::compact_orthogonal::try_build(j)
+        };
+        if let Ok(Some(mut candidate)) = compact {
+            candidate.compact = true;
+            return Ok(candidate);
+        }
     }
     let mut levels: [BTreeSet<i32>; 3] = std::array::from_fn(|k| {
         if k == 2 {
@@ -448,6 +524,18 @@ pub fn build(j: &OrthogonalSketch) -> Result<SweepPartition, &'static str> {
             }
         }
     }
+    finish_partition(j, blocks, physical, twice_constant, four_pi, planes, guards)
+}
+
+pub(crate) fn finish_partition(
+    j: &OrthogonalSketch,
+    mut blocks: Vec<BracketBlock>,
+    mut physical: BTreeMap<(String, usize, bool), String>,
+    twice_constant: i128,
+    four_pi: i128,
+    planes: [Vec<i32>; 3],
+    guards: Vec<(String, Bounds)>,
+) -> Result<SweepPartition, &'static str> {
     blocks.sort_by(|a, b| a.id.cmp(&b.id));
     if blocks.is_empty() || blocks.len() > 10000 {
         return Err("orthogonal_sketch_block_budget");
@@ -478,6 +566,7 @@ pub fn build(j: &OrthogonalSketch) -> Result<SweepPartition, &'static str> {
         );
     }
     Ok(SweepPartition {
+        compact: false,
         blocks,
         certificate: BracketCertificate {
             incidence,

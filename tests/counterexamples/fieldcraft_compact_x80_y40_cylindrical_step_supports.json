@@ -1,0 +1,370 @@
+{
+  "schema": "fieldcraft_compact_step_counterexamples_v1",
+  "status": "archived_before_exact_cylinder_surface_export",
+  "case": "x80-y40",
+  "reported_cause": "The failing STEP encoded eight circular supports through B-spline surfaces, which caused these inside points to classify as outside. A follow-up STEP encoding those supports as exact CYLINDRICAL_SURFACE restored all eight points; the trivariate V-Rep was unchanged.",
+  "classification_method": "FreeCAD/OCCT Shape.isInside(point, 1e-7, True); analytic material expectation from the source L profile minus its two cylinders",
+  "grid": "fine grid from fieldcraft_kernel_replay.py: 12x12x8; all eight mismatches occur at z=17.5 mm",
+  "step_files": {
+    "historical_host_step": {
+      "path": "/home/jeff/Code/SolidCraftTrivariate/build/solidcraft-bridge/x80-y40/host.step",
+      "sha256": "48c9e97c522a0f2263ef9c165ff49479aa6fc80e92de2107c71630891bd6ca79"
+    },
+    "compact_step_with_bspline_cylinder_supports": {
+      "path": "build/fieldcraft-compact/x80-y40.step",
+      "sha256": "c186a169f3d7c7f6413a3943d0b3d4f59cc0fe850034fb729eddb3e4de6137a3"
+    },
+    "compact_model": {
+      "path": "build/fieldcraft-compact/x80-y40.model.json",
+      "sha256": "55b1f8bf67ea661fbb9e7744b0385b39334c3d9130c364fdcb5c4012e5d84715"
+    },
+    "compact_recipe": {
+      "path": "build/fieldcraft-compact/x80-y40.recipe.json",
+      "sha256": "56b129e5557f9980045f34b7abf1d7ff84f962f11864e5fe14d4daf75e07f6ea"
+    },
+    "source_history": {
+      "path": "build/fieldcraft-replay/inputs/x80-y40.script.json",
+      "sha256": "89d24566cd6ae4dd2e8298ec5c17109be9c30b50ea810c35cf32bdf02a572e3a"
+    }
+  },
+  "host_shape": "valid single solid; x-axis bore radius 2.5 mm and y-axis bore radius 5 mm; analytic volume 34080 - 610*pi mm^3",
+  "compact_step_shape": "valid single solid; adaptive volume agrees with host within integration tolerance; bounding box equal; 0 mismatches on coarse 8x8x6 grid; all 16 radial probes pass",
+  "counterexamples": [
+    {
+      "xyz_mm_rational": [
+        "5/2",
+        "425/12",
+        "35/2"
+      ],
+      "xyz_mm": [
+        2.5,
+        35.416666666666664,
+        17.5
+      ],
+      "host_step_inside": true,
+      "compact_step_inside": false,
+      "analytic_material": true,
+      "axis_x_bore": {
+        "axis": "x",
+        "centerline_yz_mm": [
+          "32",
+          "20"
+        ],
+        "radius_mm": "5/2",
+        "radial_distance_squared_mm2": "2581/144",
+        "radial_distance_mm": 4.233628598627,
+        "material_clearance_mm": 1.733628598627
+      },
+      "axis_y_bore": {
+        "axis": "y",
+        "centerline_xz_mm": [
+          "40",
+          "20"
+        ],
+        "radius_mm": "5",
+        "radial_distance_mm": 37.583240945932,
+        "material_clearance_mm": 32.583240945932
+      },
+      "wing_flank_clearance_mm": {
+        "x_equals_0": 2.5,
+        "x_equals_8": 5.5,
+        "y_equals_50": 14.583333333333336
+      },
+      "source_profile_region": "0 < x < 8, 8 < y < 50, 0 < z < 40; all are far from the inside fillet"
+    },
+    {
+      "xyz_mm_rational": [
+        "5/2",
+        "475/12",
+        "35/2"
+      ],
+      "xyz_mm": [
+        2.5,
+        39.583333333333336,
+        17.5
+      ],
+      "host_step_inside": true,
+      "compact_step_inside": false,
+      "analytic_material": true,
+      "axis_x_bore": {
+        "axis": "x",
+        "centerline_yz_mm": [
+          "32",
+          "20"
+        ],
+        "radius_mm": "5/2",
+        "radial_distance_squared_mm2": "9181/144",
+        "radial_distance_mm": 7.984794577473,
+        "material_clearance_mm": 5.484794577473
+      },
+      "axis_y_bore": {
+        "axis": "y",
+        "centerline_xz_mm": [
+          "40",
+          "20"
+        ],
+        "radius_mm": "5",
+        "radial_distance_mm": 37.583240945932,
+        "material_clearance_mm": 32.583240945932
+      },
+      "wing_flank_clearance_mm": {
+        "x_equals_0": 2.5,
+        "x_equals_8": 5.5,
+        "y_equals_50": 10.416666666666664
+      },
+      "source_profile_region": "0 < x < 8, 8 < y < 50, 0 < z < 40; all are far from the inside fillet"
+    },
+    {
+      "xyz_mm_rational": [
+        "5/2",
+        "175/4",
+        "35/2"
+      ],
+      "xyz_mm": [
+        2.5,
+        43.75,
+        17.5
+      ],
+      "host_step_inside": true,
+      "compact_step_inside": false,
+      "analytic_material": true,
+      "axis_x_bore": {
+        "axis": "x",
+        "centerline_yz_mm": [
+          "32",
+          "20"
+        ],
+        "radius_mm": "5/2",
+        "radial_distance_squared_mm2": "2309/16",
+        "radial_distance_mm": 12.013013776734,
+        "material_clearance_mm": 9.513013776734
+      },
+      "axis_y_bore": {
+        "axis": "y",
+        "centerline_xz_mm": [
+          "40",
+          "20"
+        ],
+        "radius_mm": "5",
+        "radial_distance_mm": 37.583240945932,
+        "material_clearance_mm": 32.583240945932
+      },
+      "wing_flank_clearance_mm": {
+        "x_equals_0": 2.5,
+        "x_equals_8": 5.5,
+        "y_equals_50": 6.25
+      },
+      "source_profile_region": "0 < x < 8, 8 < y < 50, 0 < z < 40; all are far from the inside fillet"
+    },
+    {
+      "xyz_mm_rational": [
+        "5/2",
+        "575/12",
+        "35/2"
+      ],
+      "xyz_mm": [
+        2.5,
+        47.916666666666664,
+        17.5
+      ],
+      "host_step_inside": true,
+      "compact_step_inside": false,
+      "analytic_material": true,
+      "axis_x_bore": {
+        "axis": "x",
+        "centerline_yz_mm": [
+          "32",
+          "20"
+        ],
+        "radius_mm": "5/2",
+        "radial_distance_squared_mm2": "37381/144",
+        "radial_distance_mm": 16.11180554059,
+        "material_clearance_mm": 13.61180554059
+      },
+      "axis_y_bore": {
+        "axis": "y",
+        "centerline_xz_mm": [
+          "40",
+          "20"
+        ],
+        "radius_mm": "5",
+        "radial_distance_mm": 37.583240945932,
+        "material_clearance_mm": 32.583240945932
+      },
+      "wing_flank_clearance_mm": {
+        "x_equals_0": 2.5,
+        "x_equals_8": 5.5,
+        "y_equals_50": 2.0833333333333357
+      },
+      "source_profile_region": "0 < x < 8, 8 < y < 50, 0 < z < 40; all are far from the inside fillet"
+    },
+    {
+      "xyz_mm_rational": [
+        "15/2",
+        "425/12",
+        "35/2"
+      ],
+      "xyz_mm": [
+        7.5,
+        35.416666666666664,
+        17.5
+      ],
+      "host_step_inside": true,
+      "compact_step_inside": false,
+      "analytic_material": true,
+      "axis_x_bore": {
+        "axis": "x",
+        "centerline_yz_mm": [
+          "32",
+          "20"
+        ],
+        "radius_mm": "5/2",
+        "radial_distance_squared_mm2": "2581/144",
+        "radial_distance_mm": 4.233628598627,
+        "material_clearance_mm": 1.733628598627
+      },
+      "axis_y_bore": {
+        "axis": "y",
+        "centerline_xz_mm": [
+          "40",
+          "20"
+        ],
+        "radius_mm": "5",
+        "radial_distance_mm": 32.596012026013,
+        "material_clearance_mm": 27.596012026013
+      },
+      "wing_flank_clearance_mm": {
+        "x_equals_0": 7.5,
+        "x_equals_8": 0.5,
+        "y_equals_50": 14.583333333333336
+      },
+      "source_profile_region": "0 < x < 8, 8 < y < 50, 0 < z < 40; all are far from the inside fillet"
+    },
+    {
+      "xyz_mm_rational": [
+        "15/2",
+        "475/12",
+        "35/2"
+      ],
+      "xyz_mm": [
+        7.5,
+        39.583333333333336,
+        17.5
+      ],
+      "host_step_inside": true,
+      "compact_step_inside": false,
+      "analytic_material": true,
+      "axis_x_bore": {
+        "axis": "x",
+        "centerline_yz_mm": [
+          "32",
+          "20"
+        ],
+        "radius_mm": "5/2",
+        "radial_distance_squared_mm2": "9181/144",
+        "radial_distance_mm": 7.984794577473,
+        "material_clearance_mm": 5.484794577473
+      },
+      "axis_y_bore": {
+        "axis": "y",
+        "centerline_xz_mm": [
+          "40",
+          "20"
+        ],
+        "radius_mm": "5",
+        "radial_distance_mm": 32.596012026013,
+        "material_clearance_mm": 27.596012026013
+      },
+      "wing_flank_clearance_mm": {
+        "x_equals_0": 7.5,
+        "x_equals_8": 0.5,
+        "y_equals_50": 10.416666666666664
+      },
+      "source_profile_region": "0 < x < 8, 8 < y < 50, 0 < z < 40; all are far from the inside fillet"
+    },
+    {
+      "xyz_mm_rational": [
+        "15/2",
+        "175/4",
+        "35/2"
+      ],
+      "xyz_mm": [
+        7.5,
+        43.75,
+        17.5
+      ],
+      "host_step_inside": true,
+      "compact_step_inside": false,
+      "analytic_material": true,
+      "axis_x_bore": {
+        "axis": "x",
+        "centerline_yz_mm": [
+          "32",
+          "20"
+        ],
+        "radius_mm": "5/2",
+        "radial_distance_squared_mm2": "2309/16",
+        "radial_distance_mm": 12.013013776734,
+        "material_clearance_mm": 9.513013776734
+      },
+      "axis_y_bore": {
+        "axis": "y",
+        "centerline_xz_mm": [
+          "40",
+          "20"
+        ],
+        "radius_mm": "5",
+        "radial_distance_mm": 32.596012026013,
+        "material_clearance_mm": 27.596012026013
+      },
+      "wing_flank_clearance_mm": {
+        "x_equals_0": 7.5,
+        "x_equals_8": 0.5,
+        "y_equals_50": 6.25
+      },
+      "source_profile_region": "0 < x < 8, 8 < y < 50, 0 < z < 40; all are far from the inside fillet"
+    },
+    {
+      "xyz_mm_rational": [
+        "15/2",
+        "575/12",
+        "35/2"
+      ],
+      "xyz_mm": [
+        7.5,
+        47.916666666666664,
+        17.5
+      ],
+      "host_step_inside": true,
+      "compact_step_inside": false,
+      "analytic_material": true,
+      "axis_x_bore": {
+        "axis": "x",
+        "centerline_yz_mm": [
+          "32",
+          "20"
+        ],
+        "radius_mm": "5/2",
+        "radial_distance_squared_mm2": "37381/144",
+        "radial_distance_mm": 16.11180554059,
+        "material_clearance_mm": 13.61180554059
+      },
+      "axis_y_bore": {
+        "axis": "y",
+        "centerline_xz_mm": [
+          "40",
+          "20"
+        ],
+        "radius_mm": "5",
+        "radial_distance_mm": 32.596012026013,
+        "material_clearance_mm": 27.596012026013
+      },
+      "wing_flank_clearance_mm": {
+        "x_equals_0": 7.5,
+        "x_equals_8": 0.5,
+        "y_equals_50": 2.0833333333333357
+      },
+      "source_profile_region": "0 < x < 8, 8 < y < 50, 0 < z < 40; all are far from the inside fillet"
+    }
+  ]
+}

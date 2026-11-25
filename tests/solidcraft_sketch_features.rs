@@ -5,7 +5,10 @@ use solidcraft_trivariate::{
 };
 
 fn original() -> Json {
-    parse(include_str!("references/solidcraft_sketch_bracket.timeline.json")).unwrap()
+    parse(include_str!(
+        "references/solidcraft_sketch_bracket.timeline.json"
+    ))
+    .unwrap()
 }
 
 fn object_mut(value: &mut Json) -> &mut std::collections::BTreeMap<String, Json> {
@@ -35,13 +38,13 @@ fn feature_mut(script: &mut Json, command: usize) -> &mut Json {
 }
 
 #[test]
-fn genuine_solidcraft_l_history_becomes_audited_48_block_sketch_model() {
+fn genuine_solidcraft_l_history_uses_only_local_wing_and_elbow_charts() {
     let model = import_sketch_timeline(&original()).unwrap();
     assert_eq!(
         model.field("schema").unwrap().text().unwrap(),
         "orthogonal_sketch_features_v1"
     );
-    assert_eq!(model.field("blocks").unwrap().items().unwrap().len(), 48);
+    assert_eq!(model.field("blocks").unwrap().items().unwrap().len(), 10);
     assert_eq!(
         interchange::audit(&model)
             .unwrap()
@@ -51,6 +54,8 @@ fn genuine_solidcraft_l_history_becomes_audited_48_block_sketch_model() {
             .unwrap(),
         "valid"
     );
+    let step = solidcraft_trivariate::step_boundary::export_step(&model).unwrap();
+    assert_eq!(step.matches("= CYLINDRICAL_SURFACE(").count(), 8);
     let report = interchange::audit(&model).unwrap();
     assert_eq!(
         report
@@ -66,7 +71,7 @@ fn genuine_solidcraft_l_history_becomes_audited_48_block_sketch_model() {
             .unwrap()
             .number::<usize>()
             .unwrap(),
-        74
+        11
     );
 }
 
@@ -88,7 +93,7 @@ fn moved_hole_in_timeline_changes_geometry_and_keeps_the_history_admissible() {
     assert_ne!(original_model, moved_model);
     assert_eq!(
         moved_model.field("blocks").unwrap().items().unwrap().len(),
-        48
+        10
     );
     assert_eq!(
         interchange::audit(&moved_model)
@@ -137,7 +142,7 @@ fn altered_or_unresolved_host_references_are_refused() {
 }
 
 #[test]
-fn perpendicular_bores_share_a_guard_on_their_common_axial_layer() {
+fn historical_bore_pairs_all_use_four_charts_per_wing() {
     // Radius pairs are in sixteenths of a millimeter: [x-axis bore, y-axis bore].
     // The 16x integer lattice preserves the source diameters exactly; the caller
     // can map the certified result back by an exact affine image.
@@ -151,6 +156,50 @@ fn perpendicular_bores_share_a_guard_on_their_common_axial_layer() {
         .unwrap();
         let report = interchange::audit(&recipe).unwrap();
         assert_eq!(report.field("status").unwrap().text().unwrap(), "valid");
-        assert_eq!(report.field("through_bores").unwrap().number::<usize>().unwrap(), 2);
+        assert_eq!(
+            report.field("blocks").unwrap().number::<usize>().unwrap(),
+            10
+        );
+        assert_eq!(
+            report
+                .field("through_bores")
+                .unwrap()
+                .number::<usize>()
+                .unwrap(),
+            2
+        );
+    }
+}
+
+#[test]
+fn rectangular_stock_with_a_bore_uses_four_charts_on_each_extrusion_axis() {
+    for axis in ["x", "y", "z"] {
+        let mut recipe = parse(include_str!("references/four_sector_plate.recipe.json")).unwrap();
+        let bore = &mut array_mut(object_mut(&mut recipe).get_mut("bores").unwrap())[0];
+        set(bore, "axis", Json::String(axis.into()));
+        let model = interchange::build(&recipe).unwrap();
+        let report = interchange::audit(&model).unwrap();
+        assert_eq!(
+            model
+                .field("partition_plan")
+                .unwrap()
+                .field("method")
+                .unwrap()
+                .text()
+                .unwrap(),
+            "four_sector_local_sweeps"
+        );
+        assert_eq!(
+            report.field("blocks").unwrap().number::<usize>().unwrap(),
+            4
+        );
+        assert_eq!(
+            report
+                .field("shared_faces")
+                .unwrap()
+                .number::<usize>()
+                .unwrap(),
+            4
+        );
     }
 }

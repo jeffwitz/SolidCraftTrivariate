@@ -110,7 +110,24 @@ fn curve_entity(w: &mut Writer, controls: &[[i64; 4]]) -> Result<usize, &'static
 fn surface_entity(
     w: &mut Writer,
     face: &crate::boundary_shell::ShellFace,
+    compact: bool,
 ) -> Result<usize, &'static str> {
+    if compact && face.feature.starts_with("bore/") && face.feature.ends_with("/wall") {
+        if let Ok(Some(c)) = crate::step_cylinder::cylinder_surface(face) {
+            let real =
+                |v: crate::constraint_system::Ratio| v.numerator() as f64 / v.denominator() as f64;
+            let origin = cartesian(w, c.center.map(real));
+            let axis = w.entity(format!("DIRECTION('',{})", coord(c.axis.map(f64::from))));
+            let reference = w.entity(format!("DIRECTION('',{})", coord(c.reference.map(real))));
+            let placement = w.entity(format!(
+                "AXIS2_PLACEMENT_3D('',#{origin},#{axis},#{reference})"
+            ));
+            return Ok(w.entity(format!(
+                "CYLINDRICAL_SURFACE('',#{placement},{})",
+                number(real(c.radius))
+            )));
+        }
+    }
     let [du, dv] = face.degrees;
     if du > 3 || dv > 3 || face.controls.len() != (du + 1) * (dv + 1) {
         return Err("unsupported_boundary_surface");
@@ -150,10 +167,16 @@ fn surface_entity(
 /// Serialize the audited boundary of `model` as a STEP AP214 manifold solid.
 pub fn export_step(model: &Json) -> Result<String, &'static str> {
     let shell = boundary_shell(model)?;
-    write_shell(shell)
+    let source = model.field("source_model").unwrap_or(model);
+    let compact = source
+        .field("partition_plan")
+        .and_then(|p| p.field("method"))
+        .and_then(Json::text)
+        == Ok(crate::orthogonal_sketch_json::COMPACT_METHOD);
+    write_shell(shell, compact)
 }
 
-fn write_shell(shell: BoundaryShell) -> Result<String, &'static str> {
+fn write_shell(shell: BoundaryShell, compact: bool) -> Result<String, &'static str> {
     let mut w = Writer {
         next: 11,
         data: String::new(),
@@ -213,7 +236,7 @@ fn write_shell(shell: BoundaryShell) -> Result<String, &'static str> {
             "FACE_BOUND('',#{loop_id},.{}.)",
             if same_sense { "T" } else { "F" }
         ));
-        let surface = surface_entity(&mut w, face)?;
+        let surface = surface_entity(&mut w, face, compact)?;
         let label = step_text(&format!("{}:{}:{}", face.feature, face.block, face.side));
         face_refs.push(w.entity(format!(
             "ADVANCED_FACE('{label}',(#{bound}),#{surface},.{}.)",

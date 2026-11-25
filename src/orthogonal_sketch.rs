@@ -134,6 +134,7 @@ fn tube<'a>(
     j: &OrthogonalSketch,
     b: &'a Bore,
     base: &[BTreeSet<i32>; 3],
+    guard: i32,
 ) -> Result<Tube<'a>, &'static str> {
     if b.axis >= 3
         || !(1..=1024).contains(&b.radius)
@@ -163,7 +164,6 @@ fn tube<'a>(
         .into_iter()
         .find(|w| w[0] < b.center[b.axis] && b.center[b.axis] < w[1])
         .ok_or("ambiguous_bore_axis_interval")?;
-    let guard = b.radius + 1;
     let bounds = std::array::from_fn(|k| {
         if k == b.axis {
             run
@@ -313,7 +313,26 @@ pub fn build(j: &OrthogonalSketch) -> Result<SweepPartition, &'static str> {
     let tubes = j
         .bores
         .iter()
-        .map(|b| tube(j, b, &levels))
+        .map(|b| {
+            // Perpendicular bores at a shared axial level use one common
+            // guard so their transverse subdivisions agree exactly.
+            let guard = j
+                .bores
+                .iter()
+                .filter(|other| {
+                    b.axis < 2
+                        && other.axis < 2
+                        && other.center[2] == b.center[2]
+                        && other.axis != b.axis
+                })
+                .map(|other| other.radius)
+                .chain(std::iter::once(b.radius))
+                .max()
+                .ok_or("empty_sketch_bore_set")?
+                .checked_add(1)
+                .ok_or("invalid_sketch_bore")?;
+            tube(j, b, &levels, guard)
+        })
         .collect::<Result<Vec<_>, _>>()?;
     let corners = j
         .fillets

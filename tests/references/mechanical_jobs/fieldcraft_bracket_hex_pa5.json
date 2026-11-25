@@ -1,0 +1,47 @@
+{
+  "schema": "solidcraft_mechanical_job_v1",
+  "material": {
+    "young_mpa": 210000.0,
+    "poisson": 0.3
+  },
+  "formulation": "displacement",
+  "order": 8,
+  "plan": {
+    "schema": "adaptive_refinement_plan_v1",
+    "max_depth": 0,
+    "max_cells": 1024,
+    "steps": []
+  },
+  "supports": [
+    {
+      "select": {
+        "feature": "outer/outline",
+        "plane": {
+          "axis": 1,
+          "coordinate_mm": 0
+        }
+      },
+      "components": [
+        0,
+        1,
+        2
+      ]
+    }
+  ],
+  "loads": [
+    {
+      "select": {
+        "feature": "outer/outline",
+        "plane": {
+          "axis": 1,
+          "coordinate_mm": 50
+        }
+      },
+      "vector_mpa": [
+        6.25,
+        0,
+        0
+      ]
+    }
+  ]
+}

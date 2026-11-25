@@ -135,3 +135,22 @@ fn altered_or_unresolved_host_references_are_refused() {
     set(feature_mut(&mut bad, 1), "suppressed", Json::Bool(true));
     assert!(import_sketch_timeline(&bad).is_err());
 }
+
+#[test]
+fn perpendicular_bores_share_a_guard_on_their_common_axial_layer() {
+    // Radius pairs are in sixteenths of a millimeter: [x-axis bore, y-axis bore].
+    // The 16x integer lattice preserves the source diameters exactly; the caller
+    // can map the certified result back by an exact affine image.
+    for [rx, ry] in [[80, 40], [74, 50], [74, 51], [64, 64], [40, 80]] {
+        let recipe = interchange::build(
+            &parse(&format!(
+                r#"{{"family":"orthogonal_sketch_features_v1","outer":{{"id":"profile","vertices":[[0,0],[960,0],[960,128],[128,128],[128,800],[0,800]]}},"height_mm":640,"fillets":[{{"id":"inside_round","vertex":[128,128],"radius_mm":96}}],"bores":[{{"id":"north","axis":"x","center_mm":[64,512,320],"radius_mm":{rx}}},{{"id":"east","axis":"y","center_mm":[640,64,320],"radius_mm":{ry}}}]}}"#
+            ))
+            .unwrap(),
+        )
+        .unwrap();
+        let report = interchange::audit(&recipe).unwrap();
+        assert_eq!(report.field("status").unwrap().text().unwrap(), "valid");
+        assert_eq!(report.field("through_bores").unwrap().number::<usize>().unwrap(), 2);
+    }
+}

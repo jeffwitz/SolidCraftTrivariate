@@ -88,7 +88,7 @@ python3 -c 'import json; print(json.dumps(json.load(open("tests/references/mecha
 "$cli" export-field-vtu build/demo/result.json 4 build/demo/bracket-field.vtu
 ```
 
-Le modèle FieldCraft importé fournit 36 blocs et 55 interfaces. Le résultat conserve déplacements en mm, réactions, bilan travail-énergie et contraintes par bloc aux interfaces. Le solveur traite l’élasticité linéaire isotrope en petites déformations. Les comparaisons et limites de chaque expérience sont consignées dans le [journal de campagne](docs/campagne-20261125.md).
+Le gabarit historique de l’équerre FieldCraft fournit 36 blocs et 55 interfaces. Le constructeur depuis les esquisses reproduit l’équerre et ses quatre variantes à deux perçages avec 48 blocs et 74 interfaces. [Télécharger les modèles, STEP et contrôles](docs/results/fieldcraft-replay/README.md). Le résultat conserve déplacements en mm, réactions, bilan travail-énergie et contraintes par bloc aux interfaces. Le solveur traite l’élasticité linéaire isotrope en petites déformations. Les comparaisons et limites de chaque expérience sont consignées dans le [journal de campagne](docs/campagne-20261125.md).
 
 ### Éditer la profondeur d’un perçage
 

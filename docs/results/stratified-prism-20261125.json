@@ -1,0 +1,512 @@
+{
+  "schema": "stratified_equivalent_prism_v1",
+  "seeds": {
+    "training": 62503231,
+    "validation": 183214505,
+    "confirmation": 371663271
+  },
+  "starting_meshes": "M8c L r6",
+  "strata": 2397,
+  "volume_mm3": 272.0,
+  "rounds": [
+    {
+      "round": 0,
+      "cells": [
+        2397,
+        4520
+      ],
+      "validation": {
+        "levels": [
+          {
+            "points_per_stratum_scramble": 8,
+            "physical_points": 153408,
+            "energy_distance": 0.06043453494622797,
+            "l2_distance": 0.0005840440534614448,
+            "half_width_95": [
+              0.002740318219944842,
+              4.274904822002728e-07
+            ],
+            "energy_recovery": [
+              -0.00014506062038921463,
+              1.2604434803220599e-05
+            ]
+          },
+          {
+            "points_per_stratum_scramble": 32,
+            "physical_points": 613632,
+            "energy_distance": 0.06099224742997794,
+            "l2_distance": 0.0005839530103498283,
+            "half_width_95": [
+              0.0009853007045801563,
+              9.36284274254271e-08
+            ],
+            "energy_recovery": [
+              2.4424218658669616e-06,
+              -4.1761081567170955e-05
+            ]
+          },
+          {
+            "points_per_stratum_scramble": 128,
+            "physical_points": 2454528,
+            "energy_distance": 0.060750933432603044,
+            "l2_distance": 0.000583963905110213,
+            "half_width_95": [
+              0.0002960300870223184,
+              1.165469237333187e-08
+            ],
+            "energy_recovery": [
+              2.3687798218485767e-06,
+              -2.651421741051152e-05
+            ]
+          }
+        ],
+        "work_n_mm": [
+          0.06341617905761407,
+          0.06339107119434179
+        ],
+        "checks": {
+          "stable": true,
+          "energy": false,
+          "work": true,
+          "integrated_energy": true
+        },
+        "qualified": false,
+        "elapsed_s": 64.68538301403169
+      },
+      "training": {
+        "levels": [
+          {
+            "points_per_stratum_scramble": 32,
+            "physical_points": 613632,
+            "energy_distance": 0.06033113764807485,
+            "l2_distance": 0.0005839111973235292,
+            "half_width_95": [
+              0.000672699653430613,
+              7.537248540620797e-08
+            ],
+            "energy_recovery": [
+              6.030598590545111e-05,
+              -3.9943973985767656e-05
+            ]
+          }
+        ],
+        "work_n_mm": [
+          0.06341617905761407,
+          0.06339107119434179
+        ],
+        "checks": {
+          "stable": true,
+          "energy": false,
+          "work": true,
+          "integrated_energy": true
+        },
+        "qualified": false,
+        "elapsed_s": 25.7979074549512
+      },
+      "marking": [
+        {
+          "leaves": 55,
+          "mass_fraction": 0.5032653424344469
+        },
+        {
+          "leaves": 62,
+          "mass_fraction": 0.5031909088977637
+        }
+      ],
+      "solves": [
+        {
+          "status": "completed",
+          "exit_code": 0,
+          "elapsed_s": 11.021900801046286,
+          "tree_peak_rss_kib": 351380,
+          "compact": {
+            "status": "completed",
+            "exit_code": 0,
+            "elapsed_s": 0.7552608879632317,
+            "tree_peak_rss_kib": 123256
+          },
+          "physical": {
+            "strain_energy_n_mm": 0.031747862674238715,
+            "external_work_n_mm": 0.06349572534848005,
+            "relative_residual": 9.969792470374983e-11,
+            "relative_force_balance": 4.60670749470202e-12,
+            "relative_moment_balance": 2.2227139817755206e-12,
+            "applied_resultant_n": [
+              23.99999999999966,
+              -11.99999999999983,
+              5.999999999999915
+            ],
+            "applied_moment_n_mm": [
+              32.99999999999998,
+              -24,
+              -180.00000000000045
+            ],
+            "volume_mm3": 271.9999999999364,
+            "scalar_dofs": 31304,
+            "iterations": 544,
+            "cells": 2782,
+            "load_area_mm2": 11.99999999999983
+          },
+          "relative_to_h2_geometry_and_loading": {
+            "volume_mm3": 3.9330630255921977e-13,
+            "load_area_mm2": 0.0,
+            "applied_resultant_n": 0.0,
+            "applied_moment_n_mm": 0.0
+          }
+        },
+        {
+          "status": "completed",
+          "exit_code": 0,
+          "elapsed_s": 33.32976475200849,
+          "tree_peak_rss_kib": 648000,
+          "compact": {
+            "status": "completed",
+            "exit_code": 0,
+            "elapsed_s": 1.2100427050027065,
+            "tree_peak_rss_kib": 216340
+          },
+          "physical": {
+            "strain_energy_n_mm": 0.0317387284249077,
+            "external_work_n_mm": 0.06347745684982493,
+            "relative_residual": 9.606988617243328e-11,
+            "relative_force_balance": 2.432139012650676e-12,
+            "relative_moment_balance": 1.462871610423568e-12,
+            "applied_resultant_n": [
+              24.00000000000038,
+              -12.00000000000019,
+              6.000000000000095
+            ],
+            "applied_moment_n_mm": [
+              32.99999999999996,
+              -23.99999999999999,
+              -180.00000000000006
+            ],
+            "volume_mm3": 272.000000000019,
+            "scalar_dofs": 56484,
+            "iterations": 1036,
+            "cells": 4961,
+            "load_area_mm2": 12.00000000000019
+          },
+          "relative_to_h2_geometry_and_loading": {
+            "volume_mm3": 1.6718652606118557e-14,
+            "load_area_mm2": 0.0,
+            "applied_resultant_n": 0.0,
+            "applied_moment_n_mm": 0.0
+          }
+        }
+      ]
+    },
+    {
+      "round": 1,
+      "cells": [
+        2782,
+        4961
+      ],
+      "validation": {
+        "levels": [
+          {
+            "points_per_stratum_scramble": 8,
+            "physical_points": 153408,
+            "energy_distance": 0.05258525980859001,
+            "l2_distance": 0.00046493555762511094,
+            "half_width_95": [
+              0.004069107345526093,
+              4.553946357951345e-07
+            ],
+            "energy_recovery": [
+              -0.00014947272523424537,
+              -3.104864584280165e-05
+            ]
+          },
+          {
+            "points_per_stratum_scramble": 32,
+            "physical_points": 613632,
+            "energy_distance": 0.05196011429313922,
+            "l2_distance": 0.00046486692096012487,
+            "half_width_95": [
+              0.0014465136103834412,
+              9.379342389046408e-08
+            ],
+            "energy_recovery": [
+              4.253779362106691e-05,
+              -7.64826332254609e-05
+            ]
+          },
+          {
+            "points_per_stratum_scramble": 128,
+            "physical_points": 2454528,
+            "energy_distance": 0.05156246537994076,
+            "l2_distance": 0.0004648926220278245,
+            "half_width_95": [
+              0.0003516584551049704,
+              2.0613658672785093e-08
+            ],
+            "energy_recovery": [
+              1.1779832940206347e-05,
+              -7.926521032020073e-05
+            ]
+          }
+        ],
+        "work_n_mm": [
+          0.06349572534848005,
+          0.06347745684982493
+        ],
+        "checks": {
+          "stable": true,
+          "energy": false,
+          "work": true,
+          "integrated_energy": true
+        },
+        "qualified": false,
+        "elapsed_s": 86.3373563659843
+      },
+      "training": {
+        "levels": [
+          {
+            "points_per_stratum_scramble": 32,
+            "physical_points": 613632,
+            "energy_distance": 0.051078928362919544,
+            "l2_distance": 0.00046481824788926557,
+            "half_width_95": [
+              0.0007019002503577413,
+              7.348370620796341e-08
+            ],
+            "energy_recovery": [
+              0.00012102455275964097,
+              1.1094514218434881e-05
+            ]
+          }
+        ],
+        "work_n_mm": [
+          0.06349572534848005,
+          0.06347745684982493
+        ],
+        "checks": {
+          "stable": true,
+          "energy": false,
+          "work": true,
+          "integrated_energy": true
+        },
+        "qualified": false,
+        "elapsed_s": 52.085525480040815
+      },
+      "marking": [
+        {
+          "leaves": 161,
+          "mass_fraction": 0.5002166538869134
+        },
+        {
+          "leaves": 226,
+          "mass_fraction": 0.5007780283661365
+        }
+      ],
+      "solves": [
+        {
+          "status": "completed",
+          "exit_code": 0,
+          "elapsed_s": 17.23730381001951,
+          "tree_peak_rss_kib": 519588,
+          "compact": {
+            "status": "completed",
+            "exit_code": 0,
+            "elapsed_s": 1.0604605200351216,
+            "tree_peak_rss_kib": 164944
+          },
+          "physical": {
+            "strain_energy_n_mm": 0.03177563524257162,
+            "external_work_n_mm": 0.06355127048514364,
+            "relative_residual": 8.867898094232575e-11,
+            "relative_force_balance": 3.248680961896362e-12,
+            "relative_moment_balance": 6.161360903373518e-13,
+            "applied_resultant_n": [
+              23.99999999999966,
+              -11.99999999999983,
+              5.999999999999915
+            ],
+            "applied_moment_n_mm": [
+              32.99999999999998,
+              -24,
+              -180.00000000000045
+            ],
+            "volume_mm3": 272.0000000000884,
+            "scalar_dofs": 44530,
+            "iterations": 581,
+            "cells": 3916,
+            "load_area_mm2": 11.99999999999983
+          },
+          "relative_to_h2_geometry_and_loading": {
+            "volume_mm3": 9.521272659191314e-13,
+            "load_area_mm2": 0.0,
+            "applied_resultant_n": 0.0,
+            "applied_moment_n_mm": 0.0
+          }
+        },
+        {
+          "status": "completed",
+          "exit_code": 0,
+          "elapsed_s": 54.384449344011955,
+          "tree_peak_rss_kib": 808140,
+          "compact": {
+            "status": "completed",
+            "exit_code": 0,
+            "elapsed_s": 2.131970688002184,
+            "tree_peak_rss_kib": 270960
+          },
+          "physical": {
+            "strain_energy_n_mm": 0.03176833666887853,
+            "external_work_n_mm": 0.06353667333778651,
+            "relative_residual": 9.279919227428273e-11,
+            "relative_force_balance": 2.7513200435988738e-12,
+            "relative_moment_balance": 1.5810652126777955e-12,
+            "applied_resultant_n": [
+              24.000000000000348,
+              -12.000000000000174,
+              6.000000000000087
+            ],
+            "applied_moment_n_mm": [
+              32.999999999999936,
+              -23.999999999999996,
+              -179.99999999999997
+            ],
+            "volume_mm3": 272.00000000000904,
+            "scalar_dofs": 72881,
+            "iterations": 1100,
+            "cells": 6550,
+            "load_area_mm2": 12.000000000000174
+          },
+          "relative_to_h2_geometry_and_loading": {
+            "volume_mm3": 5.32907051820029e-14,
+            "load_area_mm2": 1.3322676295501667e-15,
+            "applied_resultant_n": 1.3322676295501667e-15,
+            "applied_moment_n_mm": 4.77745238794906e-16
+          }
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "cells": [
+        3916,
+        6550
+      ],
+      "validation": {
+        "levels": [
+          {
+            "points_per_stratum_scramble": 8,
+            "physical_points": 153408,
+            "energy_distance": 0.04400990017856783,
+            "l2_distance": 0.00035878923991801464,
+            "half_width_95": [
+              0.006189781268789642,
+              4.21647803393459e-07
+            ],
+            "energy_recovery": [
+              -0.00014105536393782536,
+              0.00013120807112487753
+            ]
+          },
+          {
+            "points_per_stratum_scramble": 32,
+            "physical_points": 613632,
+            "energy_distance": 0.042350192787672096,
+            "l2_distance": 0.0003587579860108757,
+            "half_width_95": [
+              0.0020266038798758875,
+              8.039174407501777e-08
+            ],
+            "energy_recovery": [
+              0.00010686042234553383,
+              -3.5027174928425886e-05
+            ]
+          },
+          {
+            "points_per_stratum_scramble": 128,
+            "physical_points": 2454528,
+            "energy_distance": 0.04186883325093867,
+            "l2_distance": 0.0003587844895173476,
+            "half_width_95": [
+              0.0006809390826384956,
+              1.3252133314211864e-08
+            ],
+            "energy_recovery": [
+              3.236514586624217e-05,
+              -3.0891812965117005e-05
+            ]
+          }
+        ],
+        "work_n_mm": [
+          0.06355127048514364,
+          0.06353667333778651
+        ],
+        "checks": {
+          "stable": true,
+          "energy": true,
+          "work": true,
+          "integrated_energy": true
+        },
+        "qualified": true,
+        "elapsed_s": 66.41843372705625
+      },
+      "confirmation": {
+        "levels": [
+          {
+            "points_per_stratum_scramble": 16,
+            "physical_points": 306816,
+            "energy_distance": 0.04173071045022172,
+            "l2_distance": 0.00035875505733653487,
+            "half_width_95": [
+              0.001707226179818261,
+              1.7917923236309548e-07
+            ],
+            "energy_recovery": [
+              -7.01465080862329e-05,
+              0.00023882959966181616
+            ]
+          },
+          {
+            "points_per_stratum_scramble": 64,
+            "physical_points": 1227264,
+            "energy_distance": 0.04178576690154902,
+            "l2_distance": 0.0003587848629904328,
+            "half_width_95": [
+              0.0006854394591904022,
+              4.250657930643551e-08
+            ],
+            "energy_recovery": [
+              -1.6625546232940103e-05,
+              0.00010442121473186461
+            ]
+          },
+          {
+            "points_per_stratum_scramble": 256,
+            "physical_points": 4909056,
+            "energy_distance": 0.04176957191186266,
+            "l2_distance": 0.00035878743472512255,
+            "half_width_95": [
+              0.000287220422382881,
+              8.86644180431834e-09
+            ],
+            "energy_recovery": [
+              1.6324682307500282e-05,
+              2.7396965787351846e-05
+            ]
+          }
+        ],
+        "work_n_mm": [
+          0.06355127048514364,
+          0.06353667333778651
+        ],
+        "checks": {
+          "stable": true,
+          "energy": true,
+          "work": true,
+          "integrated_energy": true
+        },
+        "qualified": true,
+        "elapsed_s": 135.31633581902133
+      }
+    }
+  ],
+  "qualified": true,
+  "stop": "independently_confirmed"
+}

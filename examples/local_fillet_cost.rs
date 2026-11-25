@@ -180,6 +180,7 @@ fn evaluate_state(
     build: &AdaptiveSpace,
     partition: &AdaptivePartition,
     q: usize,
+    tolerance: f64,
     checkpoint: Option<(&Path, [u8; 2])>,
 ) -> Result<Json, Box<dyn std::error::Error>> {
     let space = &build.space;
@@ -195,7 +196,7 @@ fn evaluate_state(
     let free = &build.lift;
     let constraint_s = t.elapsed().as_secs_f64();
     let t = Instant::now();
-    let solved = solve_constrained(&stiffness, [&mounted; 3], &force, 1e-11, 20000)?;
+    let solved = solve_constrained(&stiffness, [&mounted; 3], &force, tolerance, 20000)?;
     let solve_s = t.elapsed().as_secs_f64();
     if let Some((path, radii)) = checkpoint {
         if let Some(parent) = path.parent() {
@@ -378,7 +379,7 @@ fn run_radius(rx: u8, ry: u8, out: &Path) -> Result<(), Box<dyn std::error::Erro
             let constraints_s = t.elapsed().as_secs_f64();
             let mut qresults = Vec::new();
             for q in [6_usize, 8] {
-                qresults.push(evaluate_state(&build, &partition, q, None)?);
+                qresults.push(evaluate_state(&build, &partition, q, 1e-11, None)?);
             }
             states.push(object([
                 ("step", n(step)),
@@ -448,6 +449,7 @@ fn run_tier(
     local_steps: usize,
     out: &Path,
     checkpoint: Option<&Path>,
+    field_order: Option<usize>,
 ) -> Result<(), Box<dyn std::error::Error>> {
     if local_steps > 4 {
         return Err("invalid local tier".into());
@@ -485,7 +487,15 @@ fn run_tier(
     let t = Instant::now();
     let build = build_adaptive_space(&parent, &partition)?;
     let constraints_s = t.elapsed().as_secs_f64();
-    let result = evaluate_state(&build, &partition, 8, checkpoint.map(|p| (p, [rx, ry])))?;
+    let q = field_order.unwrap_or(8);
+    let tolerance = if field_order.is_some() { 5e-11 } else { 1e-11 };
+    let result = evaluate_state(
+        &build,
+        &partition,
+        q,
+        tolerance,
+        checkpoint.map(|p| (p, [rx, ry])),
+    )?;
     let report = object([
         ("radii_ticks", Json::Array(vec![n(rx), n(ry)])),
         ("path", s(path)),
@@ -520,7 +530,7 @@ fn run_tier(
                     .collect(),
             ),
         ),
-        ("q8", result),
+        (if q == 6 { "q6" } else { "q8" }, result),
         ("total_wall_s", n(total.elapsed().as_secs_f64())),
     ]);
     if let Some(parent) = out.parent() {
@@ -574,8 +584,8 @@ fn run_path(rx: u8, ry: u8, path: &str, out: &Path) -> Result<(), Box<dyn std::e
         let build = build_adaptive_space(&root_space, &partition)?;
         let constraints_s = t.elapsed().as_secs_f64();
         let qresults = vec![
-            evaluate_state(&build, &partition, 6, None)?,
-            evaluate_state(&build, &partition, 8, None)?,
+            evaluate_state(&build, &partition, 6, 1e-11, None)?,
+            evaluate_state(&build, &partition, 8, 1e-11, None)?,
         ];
         states.push(object([
             ("step", n(step)),
@@ -653,6 +663,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 step.parse()?,
                 Path::new(out),
                 None,
+                None,
             );
         }
     }
@@ -665,6 +676,24 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 step.parse()?,
                 Path::new(out),
                 Some(Path::new(checkpoint)),
+                None,
+            );
+        }
+    }
+    if let [flag, rx, ry, step, order, out, checkpoint] = a.as_slice() {
+        if flag == "--field-tier" {
+            let q = order.parse::<usize>()?;
+            if ![6, 8].contains(&q) {
+                return Err("field tier requires order 6 or 8".into());
+            }
+            return run_tier(
+                rx.parse()?,
+                ry.parse()?,
+                "from_h2",
+                step.parse()?,
+                Path::new(out),
+                (q == 8).then(|| Path::new(checkpoint)),
+                Some(q),
             );
         }
     }

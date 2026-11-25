@@ -1,0 +1,1747 @@
+{
+  "schema": "bracket_h2_field_tiers_v1",
+  "physical_residual_limit": 1e-10,
+  "internal_pcg_target": 5e-11,
+  "execution_order": "depth, radius, then q8 and q6",
+  "states": [
+    {
+      "radii_ticks": [
+        40,
+        80
+      ],
+      "step": 0,
+      "orders": [
+        {
+          "order": 8,
+          "status": "completed",
+          "exit_code": 0,
+          "elapsed_s": 19.50479896098841,
+          "tree_peak_rss_kib": 190524
+        },
+        {
+          "order": 6,
+          "status": "completed",
+          "exit_code": 0,
+          "elapsed_s": 23.022324635006953,
+          "tree_peak_rss_kib": 200832
+        }
+      ],
+      "leaves": 2304,
+      "partition_cumulative_s": 0.14723756799999999,
+      "constraints_s": 0.303706169,
+      "geometry_build_and_audit_s": 0.015168935,
+      "status": "completed",
+      "q6_q8": [
+        {
+          "assembly_s": 6.079027011,
+          "blocks": 2304,
+          "constraint_s": 0.00210112,
+          "fillet_limits_mpa": {
+            "elbow_east_z10_30/010/011": 124.59181641351763,
+            "elbow_east_z10_30/011/010": 124.59181641351637,
+            "elbow_north_z10_30/110/111": 124.40024836585403,
+            "elbow_north_z10_30/111/110": 124.40024836585276
+          },
+          "force_s": 0.007033317,
+          "iterations": 942,
+          "loaded_area_mm2": 319.99999999999943,
+          "masters": 21951,
+          "q": 6,
+          "reaction_n": [
+            -1.7847089139877426e-08,
+            999.9999999266374,
+            -6.81034606486719e-09
+          ],
+          "recovery_s": 0.028260315,
+          "relative_residual": 4.275027587952415e-11,
+          "scalar_dofs": 21951,
+          "solve_s": 16.370258615,
+          "strain_energy_n_mm": 260.4071617401535,
+          "tip_mm": [
+            -0.17713248285642846,
+            -0.5215367685679699,
+            5.024506299554158e-13
+          ],
+          "true_projected_residual": 5.5308434581473114e-11,
+          "volume_mm3": 32163.628481302552
+        },
+        {
+          "assembly_s": 7.800303366,
+          "blocks": 2304,
+          "constraint_s": 0.00178129,
+          "fillet_limits_mpa": {
+            "elbow_east_z10_30/010/011": 124.59181642980099,
+            "elbow_east_z10_30/011/010": 124.59181642980067,
+            "elbow_north_z10_30/110/111": 124.40024838227227,
+            "elbow_north_z10_30/111/110": 124.40024838227197
+          },
+          "force_s": 0.010004382,
+          "iterations": 944,
+          "loaded_area_mm2": 319.99999999999557,
+          "masters": 21951,
+          "q": 8,
+          "reaction_n": [
+            8.201530121709766e-09,
+            1000.0000001087293,
+            -6.2244112086773384e-09
+          ],
+          "recovery_s": 0.023188033,
+          "relative_residual": 4.0240177826376806e-11,
+          "scalar_dofs": 21951,
+          "solve_s": 11.27764671,
+          "strain_energy_n_mm": 260.4071617717941,
+          "tip_mm": [
+            -0.1771324828849949,
+            -0.5215367686282744,
+            1.0985166301038798e-12
+          ],
+          "true_projected_residual": 5.3419182840549306e-11,
+          "volume_mm3": 32163.628481340893
+        }
+      ],
+      "checks": {
+        "tip_relative_to_finest_tetra": 0.00026342190650563424,
+        "fillet_relative_to_finest_tetra": 0.05686813530510215,
+        "volume_relative": 9.534595335480844e-13,
+        "reaction_relative": 1.0921569554795383e-10,
+        "quadrature_relative": 1.3198930837177159e-10,
+        "true_residual": 5.3419182840549306e-11,
+        "mesh_stability": false
+      },
+      "qualified": false
+    },
+    {
+      "radii_ticks": [
+        80,
+        40
+      ],
+      "step": 0,
+      "orders": [
+        {
+          "order": 8,
+          "status": "completed",
+          "exit_code": 0,
+          "elapsed_s": 19.818215225997847,
+          "tree_peak_rss_kib": 217236
+        },
+        {
+          "order": 6,
+          "status": "completed",
+          "exit_code": 0,
+          "elapsed_s": 14.200159694009926,
+          "tree_peak_rss_kib": 193924
+        }
+      ],
+      "leaves": 2304,
+      "partition_cumulative_s": 0.067031522,
+      "constraints_s": 0.248794816,
+      "geometry_build_and_audit_s": 0.007669649,
+      "status": "completed",
+      "q6_q8": [
+        {
+          "assembly_s": 3.444618914,
+          "blocks": 2304,
+          "constraint_s": 0.001775549,
+          "fillet_limits_mpa": {
+            "elbow_east_z10_30/010/011": 125.43863453189509,
+            "elbow_east_z10_30/011/010": 125.43863453189364,
+            "elbow_north_z10_30/110/111": 125.20935177140197,
+            "elbow_north_z10_30/111/110": 125.20935177140055
+          },
+          "force_s": 0.005891594,
+          "iterations": 937,
+          "loaded_area_mm2": 319.99999999999943,
+          "masters": 21951,
+          "q": 6,
+          "reaction_n": [
+            -2.108035879189174e-08,
+            999.9999999216208,
+            -6.2096638941966376e-09
+          ],
+          "recovery_s": 0.012870531,
+          "relative_residual": 4.978880692661616e-11,
+          "scalar_dofs": 21951,
+          "solve_s": 10.349323784,
+          "strain_energy_n_mm": 247.64114212394554,
+          "tip_mm": [
+            -0.16228821031762267,
+            -0.4961402338364709,
+            4.4546198043559185e-13
+          ],
+          "true_projected_residual": 6.111477210154145e-11,
+          "volume_mm3": 32163.628481302552
+        },
+        {
+          "assembly_s": 9.075941636,
+          "blocks": 2304,
+          "constraint_s": 0.00181541,
+          "fillet_limits_mpa": {
+            "elbow_east_z10_30/010/011": 125.43863454143843,
+            "elbow_east_z10_30/011/010": 125.43863454143795,
+            "elbow_north_z10_30/110/111": 125.20935178111324,
+            "elbow_north_z10_30/111/110": 125.20935178111277
+          },
+          "force_s": 0.009867891,
+          "iterations": 938,
+          "loaded_area_mm2": 319.99999999999557,
+          "masters": 21951,
+          "q": 8,
+          "reaction_n": [
+            2.7616309239419934e-10,
+            1000.0000001286493,
+            -5.4996185383515694e-09
+          ],
+          "recovery_s": 0.013849175,
+          "relative_residual": 4.548684591887277e-11,
+          "scalar_dofs": 21951,
+          "solve_s": 10.083299764,
+          "strain_energy_n_mm": 247.64114211342917,
+          "tip_mm": [
+            -0.16228821029581864,
+            -0.4961402338141316,
+            9.606007792292812e-13
+          ],
+          "true_projected_residual": 5.6567160662903487e-11,
+          "volume_mm3": 32163.628481340893
+        }
+      ],
+      "checks": {
+        "tip_relative_to_finest_tetra": 0.0003664203854835124,
+        "fillet_relative_to_finest_tetra": 0.054179870458319734,
+        "volume_relative": 9.534595335480844e-13,
+        "reaction_relative": 1.2876707000074654e-10,
+        "quadrature_relative": 7.757161579746708e-11,
+        "true_residual": 5.6567160662903487e-11,
+        "mesh_stability": false
+      },
+      "qualified": false
+    },
+    {
+      "radii_ticks": [
+        50,
+        74
+      ],
+      "step": 0,
+      "orders": [
+        {
+          "order": 8,
+          "status": "completed",
+          "exit_code": 0,
+          "elapsed_s": 18.147246478998568,
+          "tree_peak_rss_kib": 253216
+        },
+        {
+          "order": 6,
+          "status": "completed",
+          "exit_code": 0,
+          "elapsed_s": 14.21099981100997,
+          "tree_peak_rss_kib": 193824
+        }
+      ],
+      "leaves": 2304,
+      "partition_cumulative_s": 0.06936834500000001,
+      "constraints_s": 0.254414512,
+      "geometry_build_and_audit_s": 0.007958794,
+      "status": "completed",
+      "q6_q8": [
+        {
+          "assembly_s": 3.585438687,
+          "blocks": 2304,
+          "constraint_s": 0.001886247,
+          "fillet_limits_mpa": {
+            "elbow_east_z10_30/010/011": 124.817527066356,
+            "elbow_east_z10_30/011/010": 124.8175270663541,
+            "elbow_north_z10_30/110/111": 124.61829882666889,
+            "elbow_north_z10_30/111/110": 124.61829882666699
+          },
+          "force_s": 0.006815096,
+          "iterations": 942,
+          "loaded_area_mm2": 319.99999999999943,
+          "masters": 21951,
+          "q": 6,
+          "reaction_n": [
+            -1.855711317944042e-08,
+            999.9999999423931,
+            -6.167134358747717e-09
+          ],
+          "recovery_s": 0.013586938,
+          "relative_residual": 3.7195542005960434e-11,
+          "scalar_dofs": 21951,
+          "solve_s": 10.180036359,
+          "strain_energy_n_mm": 257.87509340026185,
+          "tip_mm": [
+            -0.17421956017198892,
+            -0.5165005459018879,
+            4.411576597157445e-13
+          ],
+          "true_projected_residual": 5.1337636362949016e-11,
+          "volume_mm3": 32165.984675786367
+        },
+        {
+          "assembly_s": 7.424556927,
+          "blocks": 2304,
+          "constraint_s": 0.00191243,
+          "fillet_limits_mpa": {
+            "elbow_east_z10_30/010/011": 124.81752708656146,
+            "elbow_east_z10_30/011/010": 124.81752708656131,
+            "elbow_north_z10_30/110/111": 124.61829884717456,
+            "elbow_north_z10_30/111/110": 124.6182988471744
+          },
+          "force_s": 0.009884493,
+          "iterations": 942,
+          "loaded_area_mm2": 319.99999999999557,
+          "masters": 21951,
+          "q": 8,
+          "reaction_n": [
+            7.763636844515531e-09,
+            1000.0000001213482,
+            -6.497941740235547e-09
+          ],
+          "recovery_s": 0.013875645,
+          "relative_residual": 4.073851783540685e-11,
+          "scalar_dofs": 21951,
+          "solve_s": 10.319471308,
+          "strain_energy_n_mm": 257.87509343842504,
+          "tip_mm": [
+            -0.174219560200326,
+            -0.5165005459773856,
+            1.1089763476554677e-12
+          ],
+          "true_projected_residual": 5.46068878135544e-11,
+          "volume_mm3": 32165.98467583146
+        }
+      ],
+      "checks": {
+        "tip_relative_to_finest_tetra": 0.0002654558081023328,
+        "fillet_relative_to_finest_tetra": 0.05322204889353599,
+        "volume_relative": 9.65005853004186e-13,
+        "reaction_relative": 1.2176978862579247e-10,
+        "quadrature_relative": 1.6456302986966875e-10,
+        "true_residual": 5.46068878135544e-11,
+        "mesh_stability": false
+      },
+      "qualified": false
+    },
+    {
+      "radii_ticks": [
+        51,
+        74
+      ],
+      "step": 0,
+      "orders": [
+        {
+          "order": 8,
+          "status": "completed",
+          "exit_code": 0,
+          "elapsed_s": 18.892885809997097,
+          "tree_peak_rss_kib": 266908
+        },
+        {
+          "order": 6,
+          "status": "completed",
+          "exit_code": 0,
+          "elapsed_s": 14.35341113700997,
+          "tree_peak_rss_kib": 190812
+        }
+      ],
+      "leaves": 2304,
+      "partition_cumulative_s": 0.08352638,
+      "constraints_s": 0.271131491,
+      "geometry_build_and_audit_s": 0.014439252,
+      "status": "completed",
+      "q6_q8": [
+        {
+          "assembly_s": 3.544953134,
+          "blocks": 2304,
+          "constraint_s": 0.001962621,
+          "fillet_limits_mpa": {
+            "elbow_east_z10_30/010/011": 124.81915704611357,
+            "elbow_east_z10_30/011/010": 124.81915704611126,
+            "elbow_north_z10_30/110/111": 124.61987629157318,
+            "elbow_north_z10_30/111/110": 124.61987629157086
+          },
+          "force_s": 0.006574886,
+          "iterations": 943,
+          "loaded_area_mm2": 319.99999999999943,
+          "masters": 21951,
+          "q": 6,
+          "reaction_n": [
+            -2.364468087989735e-08,
+            999.999999932117,
+            -6.071317670830467e-09
+          ],
+          "recovery_s": 0.014406792,
+          "relative_residual": 3.6772690408857464e-11,
+          "scalar_dofs": 21951,
+          "solve_s": 10.265396022000001,
+          "strain_energy_n_mm": 257.91748235047464,
+          "tip_mm": [
+            -0.17421914210457526,
+            -0.5165883485987688,
+            4.674836341238467e-13
+          ],
+          "true_projected_residual": 5.06585535913106e-11,
+          "volume_mm3": 32156.06902397182
+        },
+        {
+          "assembly_s": 7.700767553,
+          "blocks": 2304,
+          "constraint_s": 0.002247996,
+          "fillet_limits_mpa": {
+            "elbow_east_z10_30/010/011": 124.81915706737796,
+            "elbow_east_z10_30/011/010": 124.81915706737753,
+            "elbow_north_z10_30/110/111": 124.6198763130771,
+            "elbow_north_z10_30/111/110": 124.61987631307667
+          },
+          "force_s": 0.012035197,
+          "iterations": 941,
+          "loaded_area_mm2": 319.99999999999557,
+          "masters": 21951,
+          "q": 8,
+          "reaction_n": [
+            4.9965720450018125e-09,
+            1000.0000001210882,
+            -6.346031256043716e-09
+          ],
+          "recovery_s": 0.014992337,
+          "relative_residual": 4.975673473736363e-11,
+          "scalar_dofs": 21951,
+          "solve_s": 10.689604892,
+          "strain_energy_n_mm": 257.91748239054374,
+          "tip_mm": [
+            -0.17421914213415074,
+            -0.5165883486781158,
+            1.0839962234734657e-12
+          ],
+          "true_projected_residual": 6.22552513875654e-11,
+          "volume_mm3": 32156.069024019474
+        }
+      ],
+      "checks": {
+        "tip_relative_to_finest_tetra": 0.00026540442016176335,
+        "fillet_relative_to_finest_tetra": 0.06154577271944128,
+        "volume_relative": 9.936496070395151e-13,
+        "reaction_relative": 1.2135727447016556e-10,
+        "quadrature_relative": 1.7257473228227127e-10,
+        "true_residual": 6.22552513875654e-11,
+        "mesh_stability": false
+      },
+      "qualified": false
+    },
+    {
+      "radii_ticks": [
+        40,
+        80
+      ],
+      "step": 1,
+      "orders": [
+        {
+          "order": 8,
+          "status": "completed",
+          "exit_code": 0,
+          "elapsed_s": 19.935924561985303,
+          "tree_peak_rss_kib": 211712
+        },
+        {
+          "order": 6,
+          "status": "completed",
+          "exit_code": 0,
+          "elapsed_s": 15.412506955035497,
+          "tree_peak_rss_kib": 210620
+        }
+      ],
+      "leaves": 2416,
+      "partition_cumulative_s": 0.14936295,
+      "constraints_s": 0.276146041,
+      "geometry_build_and_audit_s": 0.007680833,
+      "status": "completed",
+      "q6_q8": [
+        {
+          "assembly_s": 3.780772647,
+          "blocks": 2416,
+          "constraint_s": 0.002034344,
+          "fillet_limits_mpa": {
+            "elbow_east_z10_30/010/011/011": 130.7725960236396,
+            "elbow_east_z10_30/011/010/010": 130.77259602365277,
+            "elbow_north_z10_30/110/111/111": 130.73799799288102,
+            "elbow_north_z10_30/111/110/110": 130.73799799289645
+          },
+          "force_s": 0.005895114,
+          "iterations": 976,
+          "loaded_area_mm2": 319.99999999999943,
+          "masters": 22707,
+          "q": 6,
+          "reaction_n": [
+            -2.0796653288357447e-08,
+            999.9999999242835,
+            -6.819039555239215e-09
+          ],
+          "recovery_s": 0.014941587,
+          "relative_residual": 4.337968819910719e-11,
+          "scalar_dofs": 23271,
+          "solve_s": 11.143186751,
+          "strain_energy_n_mm": 260.41862834857113,
+          "tip_mm": [
+            -0.17713376646884738,
+            -0.5215597753122179,
+            5.154205066756455e-13
+          ],
+          "true_projected_residual": 5.635686045208175e-11,
+          "volume_mm3": 32163.628481303425
+        },
+        {
+          "assembly_s": 8.309777219,
+          "blocks": 2416,
+          "constraint_s": 0.002086125,
+          "fillet_limits_mpa": {
+            "elbow_east_z10_30/010/011/011": 130.7725960387644,
+            "elbow_east_z10_30/011/010/010": 130.77259603877536,
+            "elbow_north_z10_30/110/111/111": 130.73799800762723,
+            "elbow_north_z10_30/111/110/110": 130.73799800763678
+          },
+          "force_s": 0.01076307,
+          "iterations": 977,
+          "loaded_area_mm2": 319.99999999999557,
+          "masters": 22707,
+          "q": 8,
+          "reaction_n": [
+            8.125750738940951e-09,
+            1000.0000000968349,
+            -6.380648898129948e-09
+          ],
+          "recovery_s": 0.014355102,
+          "relative_residual": 4.3433725056787174e-11,
+          "scalar_dofs": 23271,
+          "solve_s": 11.090901381,
+          "strain_energy_n_mm": 260.4186283806798,
+          "tip_mm": [
+            -0.17713376649727147,
+            -0.5215597753723712,
+            1.1220959300876528e-12
+          ],
+          "true_projected_residual": 5.646461870549098e-11,
+          "volume_mm3": 32163.628481339874
+        }
+      ],
+      "checks": {
+        "tip_relative_to_finest_tetra": 0.00021932015759740242,
+        "fillet_relative_to_finest_tetra": 0.008818925598037652,
+        "volume_relative": 9.2192919964873e-13,
+        "reaction_relative": 9.738451122677063e-11,
+        "quadrature_relative": 1.157409723617775e-10,
+        "true_residual": 5.646461870549098e-11,
+        "mesh_stability": false,
+        "tip_change_from_prior": 4.4113369336074015e-05,
+        "fillet_change_from_prior": 0.05094643867502113
+      },
+      "qualified": false
+    },
+    {
+      "radii_ticks": [
+        80,
+        40
+      ],
+      "step": 1,
+      "orders": [
+        {
+          "order": 8,
+          "status": "completed",
+          "exit_code": 0,
+          "elapsed_s": 20.542697606026195,
+          "tree_peak_rss_kib": 190432
+        },
+        {
+          "order": 6,
+          "status": "completed",
+          "exit_code": 0,
+          "elapsed_s": 15.410796942946035,
+          "tree_peak_rss_kib": 233280
+        }
+      ],
+      "leaves": 2416,
+      "partition_cumulative_s": 0.14503654500000002,
+      "constraints_s": 0.278337432,
+      "geometry_build_and_audit_s": 0.006527098,
+      "status": "completed",
+      "q6_q8": [
+        {
+          "assembly_s": 3.911860973,
+          "blocks": 2416,
+          "constraint_s": 0.002398503,
+          "fillet_limits_mpa": {
+            "elbow_east_z10_30/010/011/011": 131.63615691459,
+            "elbow_east_z10_30/011/010/010": 131.63615691460387,
+            "elbow_north_z10_30/110/111/111": 131.59503395946325,
+            "elbow_north_z10_30/111/110/110": 131.5950339594705
+          },
+          "force_s": 0.007120547,
+          "iterations": 974,
+          "loaded_area_mm2": 319.99999999999943,
+          "masters": 22707,
+          "q": 6,
+          "reaction_n": [
+            -2.1501376679111672e-08,
+            999.9999999218367,
+            -6.353758408295107e-09
+          ],
+          "recovery_s": 0.015514359,
+          "relative_residual": 4.242620571262503e-11,
+          "scalar_dofs": 23271,
+          "solve_s": 10.954559462,
+          "strain_energy_n_mm": 247.65276679787792,
+          "tip_mm": [
+            -0.16228955679581034,
+            -0.4961635737880054,
+            4.618687095455744e-13
+          ],
+          "true_projected_residual": 5.558634628563039e-11,
+          "volume_mm3": 32163.628481303425
+        },
+        {
+          "assembly_s": 8.328400357,
+          "blocks": 2416,
+          "constraint_s": 0.002338795,
+          "fillet_limits_mpa": {
+            "elbow_east_z10_30/010/011/011": 131.63615692248473,
+            "elbow_east_z10_30/011/010/010": 131.63615692249587,
+            "elbow_north_z10_30/110/111/111": 131.5950339669173,
+            "elbow_north_z10_30/111/110/110": 131.59503396692466
+          },
+          "force_s": 0.010975949,
+          "iterations": 974,
+          "loaded_area_mm2": 319.99999999999557,
+          "masters": 22707,
+          "q": 8,
+          "reaction_n": [
+            1.9768080505855323e-09,
+            1000.0000001218078,
+            -5.579387618581677e-09
+          ],
+          "recovery_s": 0.014940344,
+          "relative_residual": 4.369460807942308e-11,
+          "scalar_dofs": 23271,
+          "solve_s": 11.659837425,
+          "strain_energy_n_mm": 247.652766787656,
+          "tip_mm": [
+            -0.1622895567739785,
+            -0.4961635737654581,
+            9.909862739341138e-13
+          ],
+          "true_projected_residual": 5.457161604466992e-11,
+          "volume_mm3": 32163.628481339874
+        }
+      ],
+      "checks": {
+        "tip_relative_to_finest_tetra": 0.0003193945699934142,
+        "fillet_relative_to_finest_tetra": 0.00594300423168137,
+        "volume_relative": 9.2192919964873e-13,
+        "reaction_relative": 1.219515669775186e-10,
+        "quadrature_relative": 6.005851371782e-11,
+        "true_residual": 5.457161604466992e-11,
+        "mesh_stability": false,
+        "tip_change_from_prior": 4.7043053023720915e-05,
+        "fillet_change_from_prior": 0.05100004188964369
+      },
+      "qualified": false
+    },
+    {
+      "radii_ticks": [
+        50,
+        74
+      ],
+      "step": 1,
+      "orders": [
+        {
+          "order": 8,
+          "status": "completed",
+          "exit_code": 0,
+          "elapsed_s": 20.3890531900106,
+          "tree_peak_rss_kib": 231128
+        },
+        {
+          "order": 6,
+          "status": "completed",
+          "exit_code": 0,
+          "elapsed_s": 17.219497800979298,
+          "tree_peak_rss_kib": 262396
+        }
+      ],
+      "leaves": 2416,
+      "partition_cumulative_s": 0.157724339,
+      "constraints_s": 0.304070571,
+      "geometry_build_and_audit_s": 0.008986056,
+      "status": "completed",
+      "q6_q8": [
+        {
+          "assembly_s": 3.955214458,
+          "blocks": 2416,
+          "constraint_s": 0.00230193,
+          "fillet_limits_mpa": {
+            "elbow_east_z10_30/010/011/011": 131.00379741080337,
+            "elbow_east_z10_30/011/010/010": 131.0037974108088,
+            "elbow_north_z10_30/110/111/111": 130.9678622063303,
+            "elbow_north_z10_30/111/110/110": 130.96786220634246
+          },
+          "force_s": 0.007189277,
+          "iterations": 976,
+          "loaded_area_mm2": 319.99999999999943,
+          "masters": 22707,
+          "q": 6,
+          "reaction_n": [
+            -1.786757053423571e-08,
+            999.99999992013,
+            -6.3914313841451076e-09
+          ],
+          "recovery_s": 0.017571783,
+          "relative_residual": 4.5025367127585145e-11,
+          "scalar_dofs": 23271,
+          "solve_s": 12.711616287,
+          "strain_energy_n_mm": 257.8865984291445,
+          "tip_mm": [
+            -0.17422085664348172,
+            -0.516523633187802,
+            4.466885483423748e-13
+          ],
+          "true_projected_residual": 5.866681246310194e-11,
+          "volume_mm3": 32165.98467578724
+        },
+        {
+          "assembly_s": 8.274292384,
+          "blocks": 2416,
+          "constraint_s": 0.002628431,
+          "fillet_limits_mpa": {
+            "elbow_east_z10_30/010/011/011": 131.00379742971566,
+            "elbow_east_z10_30/011/010/010": 131.00379742972038,
+            "elbow_north_z10_30/110/111/111": 130.96786222537912,
+            "elbow_north_z10_30/111/110/110": 130.9678622253837
+          },
+          "force_s": 0.011954716,
+          "iterations": 977,
+          "loaded_area_mm2": 319.99999999999557,
+          "masters": 22707,
+          "q": 8,
+          "reaction_n": [
+            6.971593080606908e-09,
+            1000.0000001077518,
+            -7.009859359641268e-09
+          ],
+          "recovery_s": 0.014737046,
+          "relative_residual": 4.275076449783647e-11,
+          "scalar_dofs": 23271,
+          "solve_s": 11.506010374,
+          "strain_energy_n_mm": 257.8865984669907,
+          "tip_mm": [
+            -0.1742208566716867,
+            -0.5165236332630451,
+            1.1294517520455458e-12
+          ],
+          "true_projected_residual": 5.75632097804283e-11,
+          "volume_mm3": 32165.98467583044
+        }
+      ],
+      "checks": {
+        "tip_relative_to_finest_tetra": 0.00022076823287098257,
+        "fillet_relative_to_finest_tetra": 0.004981728962594967,
+        "volume_relative": 9.334755191048316e-13,
+        "reaction_relative": 1.0820441380484001e-10,
+        "quadrature_relative": 1.456720299941594e-10,
+        "true_residual": 5.75632097804283e-11,
+        "mesh_stability": false,
+        "tip_change_from_prior": 4.4699440957529646e-05,
+        "fillet_change_from_prior": 0.05095209481230434
+      },
+      "qualified": false
+    },
+    {
+      "radii_ticks": [
+        51,
+        74
+      ],
+      "step": 1,
+      "orders": [
+        {
+          "order": 8,
+          "status": "completed",
+          "exit_code": 0,
+          "elapsed_s": 23.26393771194853,
+          "tree_peak_rss_kib": 242412
+        },
+        {
+          "order": 6,
+          "status": "completed",
+          "exit_code": 0,
+          "elapsed_s": 16.628282580000814,
+          "tree_peak_rss_kib": 231568
+        }
+      ],
+      "leaves": 2416,
+      "partition_cumulative_s": 0.22936185199999998,
+      "constraints_s": 0.404300461,
+      "geometry_build_and_audit_s": 0.014061762,
+      "status": "completed",
+      "q6_q8": [
+        {
+          "assembly_s": 4.144984575,
+          "blocks": 2416,
+          "constraint_s": 0.00234218,
+          "fillet_limits_mpa": {
+            "elbow_east_z10_30/010/011/011": 131.0054610675751,
+            "elbow_east_z10_30/011/010/010": 131.00546106758264,
+            "elbow_north_z10_30/110/111/111": 130.9695175286112,
+            "elbow_north_z10_30/111/110/110": 130.969517528618
+          },
+          "force_s": 0.007131155,
+          "iterations": 978,
+          "loaded_area_mm2": 319.99999999999943,
+          "masters": 22707,
+          "q": 6,
+          "reaction_n": [
+            -2.6002609843089886e-08,
+            999.9999999338575,
+            -6.263345397883313e-09
+          ],
+          "recovery_s": 0.014692329,
+          "relative_residual": 4.236682356600013e-11,
+          "scalar_dofs": 23271,
+          "solve_s": 11.652336463,
+          "strain_energy_n_mm": 257.92898758978606,
+          "tip_mm": [
+            -0.1742204388467134,
+            -0.5166114366834268,
+            4.737012998111706e-13
+          ],
+          "true_projected_residual": 5.499697022252171e-11,
+          "volume_mm3": 32156.069023972694
+        },
+        {
+          "assembly_s": 8.949246332,
+          "blocks": 2416,
+          "constraint_s": 0.002355404,
+          "fillet_limits_mpa": {
+            "elbow_east_z10_30/010/011/011": 131.00546108768597,
+            "elbow_east_z10_30/011/010/010": 131.0054610876974,
+            "elbow_north_z10_30/110/111/111": 130.96951754853393,
+            "elbow_north_z10_30/111/110/110": 130.96951754854368
+          },
+          "force_s": 0.011491746,
+          "iterations": 977,
+          "loaded_area_mm2": 319.99999999999557,
+          "masters": 22707,
+          "q": 8,
+          "reaction_n": [
+            1.9613288770869985e-10,
+            1000.0000001209273,
+            -6.505889160735023e-09
+          ],
+          "recovery_s": 0.016101353,
+          "relative_residual": 4.234774156303036e-11,
+          "scalar_dofs": 23271,
+          "solve_s": 13.718572078,
+          "strain_energy_n_mm": 257.92898762980116,
+          "tip_mm": [
+            -0.17422043887597874,
+            -0.5166114367622985,
+            1.1135981131444544e-12
+          ],
+          "true_projected_residual": 5.5219885839635674e-11,
+          "volume_mm3": 32156.069024018456
+        }
+      ],
+      "checks": {
+        "tip_relative_to_finest_tetra": 0.0002207228926704996,
+        "fillet_relative_to_finest_tetra": 0.013729582915499527,
+        "volume_relative": 9.618972285352356e-13,
+        "reaction_relative": 1.2110236580595362e-10,
+        "quadrature_relative": 1.535988003453781e-10,
+        "true_residual": 5.5219885839635674e-11,
+        "mesh_stability": false,
+        "tip_change_from_prior": 4.469338931434308e-05,
+        "fillet_change_from_prior": 0.05095207460738527
+      },
+      "qualified": false
+    },
+    {
+      "radii_ticks": [
+        40,
+        80
+      ],
+      "step": 2,
+      "orders": [
+        {
+          "order": 8,
+          "status": "completed",
+          "exit_code": 0,
+          "elapsed_s": 23.453640306950547,
+          "tree_peak_rss_kib": 234624
+        },
+        {
+          "order": 6,
+          "status": "completed",
+          "exit_code": 0,
+          "elapsed_s": 15.71099986997433,
+          "tree_peak_rss_kib": 218592
+        }
+      ],
+      "leaves": 2528,
+      "partition_cumulative_s": 0.208213488,
+      "constraints_s": 0.28004889,
+      "geometry_build_and_audit_s": 0.006455042,
+      "status": "completed",
+      "q6_q8": [
+        {
+          "assembly_s": 3.725534106,
+          "blocks": 2528,
+          "constraint_s": 0.004034183,
+          "fillet_limits_mpa": {
+            "elbow_east_z10_30/010/011/011/011": 132.59685783815794,
+            "elbow_east_z10_30/011/010/010/010": 132.59685783815996,
+            "elbow_north_z10_30/110/111/111/111": 132.59139559547808,
+            "elbow_north_z10_30/111/110/110/110": 132.59139559548802
+          },
+          "force_s": 0.006032242,
+          "iterations": 1001,
+          "loaded_area_mm2": 319.99999999999943,
+          "masters": 23463,
+          "q": 6,
+          "reaction_n": [
+            -2.692118350466899e-08,
+            999.9999999293441,
+            -6.900663152009656e-09
+          ],
+          "recovery_s": 0.016049616,
+          "relative_residual": 4.5657320229505233e-11,
+          "scalar_dofs": 24591,
+          "solve_s": 11.325504588,
+          "strain_energy_n_mm": 260.41881294214073,
+          "tip_mm": [
+            -0.17713378248309525,
+            -0.5215601462825465,
+            5.255834180386342e-13
+          ],
+          "true_projected_residual": 5.779034742230997e-11,
+          "volume_mm3": 32163.62848130226
+        },
+        {
+          "assembly_s": 9.985369391,
+          "blocks": 2528,
+          "constraint_s": 0.002152439,
+          "fillet_limits_mpa": {
+            "elbow_east_z10_30/010/011/011/011": 132.59685785271367,
+            "elbow_east_z10_30/011/010/010/010": 132.59685785272802,
+            "elbow_north_z10_30/110/111/111/111": 132.59139561083467,
+            "elbow_north_z10_30/111/110/110/110": 132.59139561084953
+          },
+          "force_s": 0.009862005,
+          "iterations": 1002,
+          "loaded_area_mm2": 319.99999999999557,
+          "masters": 23463,
+          "q": 8,
+          "reaction_n": [
+            1.0716386000808598e-08,
+            1000.0000000957283,
+            -6.37006891679448e-09
+          ],
+          "recovery_s": 0.014428648,
+          "relative_residual": 4.6959801043289774e-11,
+          "scalar_dofs": 24591,
+          "solve_s": 12.682909348999999,
+          "strain_energy_n_mm": 260.41881297348573,
+          "tip_mm": [
+            -0.1771337825118579,
+            -0.521560146343123,
+            1.1362897707197473e-12
+          ],
+          "true_projected_residual": 6.018285998745007e-11,
+          "volume_mm3": 32163.628481339205
+        }
+      ],
+      "checks": {
+        "tip_relative_to_finest_tetra": 0.0002186090418098141,
+        "fillet_relative_to_finest_tetra": 0.0052738915362906535,
+        "volume_relative": 9.01057006785777e-13,
+        "reaction_relative": 9.653665334340948e-11,
+        "quadrature_relative": 1.161446494535312e-10,
+        "true_residual": 6.018285998745007e-11,
+        "mesh_stability": true,
+        "tip_change_from_prior": 7.112717836932347e-07,
+        "fillet_change_from_prior": 0.014176426375399842
+      },
+      "qualified": true
+    },
+    {
+      "radii_ticks": [
+        80,
+        40
+      ],
+      "step": 2,
+      "orders": [
+        {
+          "order": 8,
+          "status": "completed",
+          "exit_code": 0,
+          "elapsed_s": 20.25419333804166,
+          "tree_peak_rss_kib": 280096
+        },
+        {
+          "order": 6,
+          "status": "completed",
+          "exit_code": 0,
+          "elapsed_s": 15.253637047018856,
+          "tree_peak_rss_kib": 279692
+        }
+      ],
+      "leaves": 2528,
+      "partition_cumulative_s": 0.21239489899999997,
+      "constraints_s": 0.287065721,
+      "geometry_build_and_audit_s": 0.006085358,
+      "status": "completed",
+      "q6_q8": [
+        {
+          "assembly_s": 3.579721619,
+          "blocks": 2528,
+          "constraint_s": 0.00213114,
+          "fillet_limits_mpa": {
+            "elbow_east_z10_30/010/011/011/011": 133.4611726512053,
+            "elbow_east_z10_30/011/010/010/010": 133.46117265121725,
+            "elbow_north_z10_30/110/111/111/111": 133.45470977107297,
+            "elbow_north_z10_30/111/110/110/110": 133.4547097710797
+          },
+          "force_s": 0.005917545,
+          "iterations": 1001,
+          "loaded_area_mm2": 319.99999999999943,
+          "masters": 23463,
+          "q": 6,
+          "reaction_n": [
+            -2.0442985970703376e-08,
+            999.9999999243959,
+            -6.487198334070854e-09
+          ],
+          "recovery_s": 0.015032326,
+          "relative_residual": 3.6382856725506314e-11,
+          "scalar_dofs": 24591,
+          "solve_s": 11.095630775,
+          "strain_energy_n_mm": 247.65295355085283,
+          "tip_mm": [
+            -0.16228957336700983,
+            -0.49616394948977954,
+            4.68077365850345e-13
+          ],
+          "true_projected_residual": 4.9535230871765115e-11,
+          "volume_mm3": 32163.62848130226
+        },
+        {
+          "assembly_s": 8.45661204,
+          "blocks": 2528,
+          "constraint_s": 0.002383223,
+          "fillet_limits_mpa": {
+            "elbow_east_z10_30/010/011/011/011": 133.46117265827777,
+            "elbow_east_z10_30/011/010/010/010": 133.46117265830577,
+            "elbow_north_z10_30/110/111/111/111": 133.45470977868402,
+            "elbow_north_z10_30/111/110/110/110": 133.45470977868902
+          },
+          "force_s": 0.011004751,
+          "iterations": 1000,
+          "loaded_area_mm2": 319.99999999999557,
+          "masters": 23463,
+          "q": 8,
+          "reaction_n": [
+            1.3977725643599115e-09,
+            1000.0000001304569,
+            -5.471903818943247e-09
+          ],
+          "recovery_s": 0.01495716,
+          "relative_residual": 4.8764104580524717e-11,
+          "scalar_dofs": 24591,
+          "solve_s": 11.090143298,
+          "strain_energy_n_mm": 247.65295354016465,
+          "tip_mm": [
+            -0.16228957334516145,
+            -0.4961639494673118,
+            9.969410717091785e-13
+          ],
+          "true_projected_residual": 5.921627457618059e-11,
+          "volume_mm3": 32163.628481339205
+        }
+      ],
+      "checks": {
+        "tip_relative_to_finest_tetra": 0.0003186375981469869,
+        "fillet_relative_to_finest_tetra": 0.008153638820327602,
+        "volume_relative": 9.01057006785777e-13,
+        "reaction_relative": 1.30579084974848e-10,
+        "quadrature_relative": 5.7068461067899534e-11,
+        "true_residual": 5.921627457618059e-11,
+        "mesh_stability": true,
+        "tip_change_from_prior": 7.572136964117959e-07,
+        "fillet_change_from_prior": 0.014131808440729143
+      },
+      "qualified": true
+    },
+    {
+      "radii_ticks": [
+        50,
+        74
+      ],
+      "step": 2,
+      "orders": [
+        {
+          "order": 8,
+          "status": "completed",
+          "exit_code": 0,
+          "elapsed_s": 21.30441509798402,
+          "tree_peak_rss_kib": 212192
+        },
+        {
+          "order": 6,
+          "status": "completed",
+          "exit_code": 0,
+          "elapsed_s": 16.91842653398635,
+          "tree_peak_rss_kib": 241504
+        }
+      ],
+      "leaves": 2528,
+      "partition_cumulative_s": 0.22524763399999997,
+      "constraints_s": 0.308555117,
+      "geometry_build_and_audit_s": 0.007515304,
+      "status": "completed",
+      "q6_q8": [
+        {
+          "assembly_s": 3.79310396,
+          "blocks": 2528,
+          "constraint_s": 0.002441934,
+          "fillet_limits_mpa": {
+            "elbow_east_z10_30/010/011/011/011": 132.8290863709647,
+            "elbow_east_z10_30/011/010/010/010": 132.82908637100167,
+            "elbow_north_z10_30/110/111/111/111": 132.8234180849122,
+            "elbow_north_z10_30/111/110/110/110": 132.82341808492473
+          },
+          "force_s": 0.006839051,
+          "iterations": 999,
+          "loaded_area_mm2": 319.99999999999943,
+          "masters": 23463,
+          "q": 6,
+          "reaction_n": [
+            -1.3020686751019639e-08,
+            999.9999999258598,
+            -6.24682883199057e-09
+          ],
+          "recovery_s": 0.016188852,
+          "relative_residual": 4.501626224851588e-11,
+          "scalar_dofs": 24591,
+          "solve_s": 12.414584149,
+          "strain_energy_n_mm": 257.8867836317825,
+          "tip_mm": [
+            -0.17422087278992263,
+            -0.5165240054658491,
+            4.597506157207398e-13
+          ],
+          "true_projected_residual": 5.675529791977919e-11,
+          "volume_mm3": 32165.984675786076
+        },
+        {
+          "assembly_s": 8.544810687,
+          "blocks": 2528,
+          "constraint_s": 0.002928551,
+          "fillet_limits_mpa": {
+            "elbow_east_z10_30/010/011/011/011": 132.8290863892354,
+            "elbow_east_z10_30/011/010/010/010": 132.82908638925912,
+            "elbow_north_z10_30/110/111/111/111": 132.82341810443506,
+            "elbow_north_z10_30/111/110/110/110": 132.823418104443
+          },
+          "force_s": 0.010113339,
+          "iterations": 999,
+          "loaded_area_mm2": 319.99999999999557,
+          "masters": 23463,
+          "q": 8,
+          "reaction_n": [
+            9.788371002628082e-09,
+            1000.0000001141037,
+            -6.8110281858935195e-09
+          ],
+          "recovery_s": 0.015482713,
+          "relative_residual": 4.227574081700108e-11,
+          "scalar_dofs": 24591,
+          "solve_s": 12.090888887,
+          "strain_energy_n_mm": 257.8867836699382,
+          "tip_mm": [
+            -0.17422087281820808,
+            -0.5165240055414045,
+            1.1482695013779482e-12
+          ],
+          "true_projected_residual": 5.4779689262318927e-11,
+          "volume_mm3": 32165.98467582977
+        }
+      ],
+      "checks": {
+        "tip_relative_to_finest_tetra": 0.0002200476536984297,
+        "fillet_relative_to_finest_tetra": 0.009158778625212527,
+        "volume_relative": 9.126033262418787e-13,
+        "reaction_relative": 1.1472516248958555e-10,
+        "quadrature_relative": 1.470433774741764e-10,
+        "true_residual": 5.4779689262318927e-11,
+        "mesh_stability": true,
+        "tip_change_from_prior": 7.207382886065261e-07,
+        "fillet_change_from_prior": 0.014168024487341002
+      },
+      "qualified": true
+    },
+    {
+      "radii_ticks": [
+        51,
+        74
+      ],
+      "step": 2,
+      "orders": [
+        {
+          "order": 8,
+          "status": "completed",
+          "exit_code": 0,
+          "elapsed_s": 20.84569453902077,
+          "tree_peak_rss_kib": 278908
+        },
+        {
+          "order": 6,
+          "status": "completed",
+          "exit_code": 0,
+          "elapsed_s": 17.373771507991478,
+          "tree_peak_rss_kib": 279280
+        }
+      ],
+      "leaves": 2528,
+      "partition_cumulative_s": 0.229233253,
+      "constraints_s": 0.322079045,
+      "geometry_build_and_audit_s": 0.008060707,
+      "status": "completed",
+      "q6_q8": [
+        {
+          "assembly_s": 4.013133404,
+          "blocks": 2528,
+          "constraint_s": 0.002110963,
+          "fillet_limits_mpa": {
+            "elbow_east_z10_30/010/011/011/011": 132.83079301883495,
+            "elbow_east_z10_30/011/010/010/010": 132.83079301886625,
+            "elbow_north_z10_30/110/111/111/111": 132.82512353336764,
+            "elbow_north_z10_30/111/110/110/110": 132.82512353338205
+          },
+          "force_s": 0.00604286,
+          "iterations": 1000,
+          "loaded_area_mm2": 319.99999999999943,
+          "masters": 23463,
+          "q": 6,
+          "reaction_n": [
+            -2.49017091391579e-08,
+            999.9999999348244,
+            -6.6307919155406125e-09
+          ],
+          "recovery_s": 0.017338299,
+          "relative_residual": 4.369693036662256e-11,
+          "scalar_dofs": 24591,
+          "solve_s": 12.586003041,
+          "strain_energy_n_mm": 257.92917280150954,
+          "tip_mm": [
+            -0.17422045499764874,
+            -0.5166118089887154,
+            4.748991853070258e-13
+          ],
+          "true_projected_residual": 5.6270112638290065e-11,
+          "volume_mm3": 32156.06902397153
+        },
+        {
+          "assembly_s": 8.403813491,
+          "blocks": 2528,
+          "constraint_s": 0.002191076,
+          "fillet_limits_mpa": {
+            "elbow_east_z10_30/010/011/011/011": 132.83079303831246,
+            "elbow_east_z10_30/011/010/010/010": 132.83079303834617,
+            "elbow_north_z10_30/110/111/111/111": 132.8251235539506,
+            "elbow_north_z10_30/111/110/110/110": 132.8251235539705
+          },
+          "force_s": 0.010279904,
+          "iterations": 999,
+          "loaded_area_mm2": 319.99999999999557,
+          "masters": 23463,
+          "q": 8,
+          "reaction_n": [
+            2.0211583517948384e-09,
+            1000.0000001230736,
+            -6.359719861848134e-09
+          ],
+          "recovery_s": 0.015286839,
+          "relative_residual": 4.5216196063206216e-11,
+          "scalar_dofs": 24591,
+          "solve_s": 11.747819498,
+          "strain_energy_n_mm": 257.9291728422778,
+          "tip_mm": [
+            -0.1742204550270539,
+            -0.516611809067999,
+            1.1202520377899789e-12
+          ],
+          "true_projected_residual": 5.710565843109831e-11,
+          "volume_mm3": 32156.069024017786
+        }
+      ],
+      "checks": {
+        "tip_relative_to_finest_tetra": 0.00022000238302322117,
+        "fillet_relative_to_finest_tetra": 0.0002868156175865888,
+        "volume_relative": 9.410250356722827e-13,
+        "reaction_relative": 1.232543986033627e-10,
+        "quadrature_relative": 1.5511270046175696e-10,
+        "true_residual": 5.710565843109831e-11,
+        "mesh_stability": true,
+        "tip_change_from_prior": 7.20668715370465e-07,
+        "fillet_change_from_prior": 0.014168228150866824
+      },
+      "qualified": true
+    },
+    {
+      "radii_ticks": [
+        40,
+        80
+      ],
+      "step": 3,
+      "orders": [
+        {
+          "order": 8,
+          "status": "completed",
+          "exit_code": 0,
+          "elapsed_s": 38.405841937987134,
+          "tree_peak_rss_kib": 280212
+        },
+        {
+          "order": 6,
+          "status": "completed",
+          "exit_code": 0,
+          "elapsed_s": 43.94520902802469,
+          "tree_peak_rss_kib": 303788
+        }
+      ],
+      "leaves": 2640,
+      "partition_cumulative_s": 0.783842617,
+      "constraints_s": 0.923591623,
+      "geometry_build_and_audit_s": 0.018553812,
+      "status": "completed",
+      "q6_q8": [
+        {
+          "assembly_s": 9.875940467,
+          "blocks": 2640,
+          "constraint_s": 0.008600372,
+          "fillet_limits_mpa": {
+            "elbow_east_z10_30/010/011/011/011/011": 133.05466243055974,
+            "elbow_east_z10_30/011/010/010/010/010": 133.0546624305676,
+            "elbow_north_z10_30/110/111/111/111/111": 133.05361628947307,
+            "elbow_north_z10_30/111/110/110/110/110": 133.0536162894809
+          },
+          "force_s": 0.029212564,
+          "iterations": 1025,
+          "loaded_area_mm2": 319.99999999999943,
+          "masters": 24219,
+          "q": 6,
+          "reaction_n": [
+            -2.1863339583205743e-08,
+            999.9999999232156,
+            -7.057010975586309e-09
+          ],
+          "recovery_s": 0.031299094,
+          "relative_residual": 4.28403055283412e-11,
+          "scalar_dofs": 25911,
+          "solve_s": 32.065005673,
+          "strain_energy_n_mm": 260.41881492580103,
+          "tip_mm": [
+            -0.1771337826009092,
+            -0.5215601502728945,
+            5.301206418428075e-13
+          ],
+          "true_projected_residual": 5.7177376406900173e-11,
+          "volume_mm3": 32163.628481301854
+        },
+        {
+          "assembly_s": 10.884334967000001,
+          "blocks": 2640,
+          "constraint_s": 0.00273501,
+          "fillet_limits_mpa": {
+            "elbow_east_z10_30/010/011/011/011/011": 133.0546624461469,
+            "elbow_east_z10_30/011/010/010/010/010": 133.05466244615965,
+            "elbow_north_z10_30/110/111/111/111/111": 133.0536163049341,
+            "elbow_north_z10_30/111/110/110/110/110": 133.05361630494687
+          },
+          "force_s": 0.012874551,
+          "iterations": 1025,
+          "loaded_area_mm2": 319.99999999999557,
+          "masters": 24219,
+          "q": 8,
+          "reaction_n": [
+            7.027857407138072e-09,
+            1000.0000001047729,
+            -6.379291761504646e-09
+          ],
+          "recovery_s": 0.018188799,
+          "relative_residual": 4.275778357136968e-11,
+          "scalar_dofs": 25911,
+          "solve_s": 26.326604052,
+          "strain_energy_n_mm": 260.41881495734907,
+          "tip_mm": [
+            -0.1771337826295074,
+            -0.5215601503330731,
+            1.1421132904010348e-12
+          ],
+          "true_projected_residual": 5.5681277892155025e-11,
+          "volume_mm3": 32163.628481339496
+        }
+      ],
+      "checks": {
+        "tip_relative_to_finest_tetra": 0.00021860139345342144,
+        "fillet_relative_to_finest_tetra": 0.008744705344815085,
+        "volume_relative": 9.101608355877033e-13,
+        "reaction_relative": 1.0520191328081086e-10,
+        "quadrature_relative": 1.1724432535942242e-10,
+        "true_residual": 5.5681277892155025e-11,
+        "mesh_stability": true,
+        "tip_change_from_prior": 7.650028832628664e-09,
+        "fillet_change_from_prior": 0.003486053465104666
+      },
+      "qualified": true
+    },
+    {
+      "radii_ticks": [
+        80,
+        40
+      ],
+      "step": 3,
+      "orders": [
+        {
+          "order": 8,
+          "status": "completed",
+          "exit_code": 0,
+          "elapsed_s": 29.95923664199654,
+          "tree_peak_rss_kib": 263072
+        },
+        {
+          "order": 6,
+          "status": "completed",
+          "exit_code": 0,
+          "elapsed_s": 19.984489566006232,
+          "tree_peak_rss_kib": 257904
+        }
+      ],
+      "leaves": 2640,
+      "partition_cumulative_s": 0.39291649500000003,
+      "constraints_s": 0.437197082,
+      "geometry_build_and_audit_s": 0.011060027,
+      "status": "completed",
+      "q6_q8": [
+        {
+          "assembly_s": 4.762255915,
+          "blocks": 2640,
+          "constraint_s": 0.002578993,
+          "fillet_limits_mpa": {
+            "elbow_east_z10_30/010/011/011/011/011": 133.91776548750775,
+            "elbow_east_z10_30/011/010/010/010/010": 133.91776548750627,
+            "elbow_north_z10_30/110/111/111/111/111": 133.91653068048512,
+            "elbow_north_z10_30/111/110/110/110/110": 133.91653068048365
+          },
+          "force_s": 0.007875676,
+          "iterations": 1018,
+          "loaded_area_mm2": 319.99999999999943,
+          "masters": 24219,
+          "q": 6,
+          "reaction_n": [
+            -2.3370851920390123e-08,
+            999.999999935862,
+            -6.338567004604556e-09
+          ],
+          "recovery_s": 0.01662732,
+          "relative_residual": 3.857312682706403e-11,
+          "scalar_dofs": 25911,
+          "solve_s": 14.189779364,
+          "strain_energy_n_mm": 247.65295554643365,
+          "tip_mm": [
+            -0.16228957348376755,
+            -0.49616395351050785,
+            4.704985852702343e-13
+          ],
+          "true_projected_residual": 5.101294643572011e-11,
+          "volume_mm3": 32163.628481301854
+        },
+        {
+          "assembly_s": 11.333702837,
+          "blocks": 2640,
+          "constraint_s": 0.002696079,
+          "fillet_limits_mpa": {
+            "elbow_east_z10_30/010/011/011/011/011": 133.9177654961494,
+            "elbow_east_z10_30/011/010/010/010/010": 133.91776549616273,
+            "elbow_north_z10_30/110/111/111/111/111": 133.91653068888925,
+            "elbow_north_z10_30/111/110/110/110/110": 133.91653068890258
+          },
+          "force_s": 0.012921491,
+          "iterations": 1018,
+          "loaded_area_mm2": 319.99999999999557,
+          "masters": 24219,
+          "q": 8,
+          "reaction_n": [
+            -9.948823986860589e-10,
+            1000.000000134241,
+            -5.757520682436734e-09
+          ],
+          "recovery_s": 0.018213363,
+          "relative_residual": 3.6988251982090976e-11,
+          "scalar_dofs": 25911,
+          "solve_s": 17.065406542,
+          "strain_energy_n_mm": 247.6529555364342,
+          "tip_mm": [
+            -0.1622895734619202,
+            -0.4961639534881333,
+            1.0081566342796234e-12
+          ],
+          "true_projected_residual": 4.890419557818039e-11,
+          "volume_mm3": 32163.628481339496
+        }
+      ],
+      "checks": {
+        "tip_relative_to_finest_tetra": 0.0003186294969128589,
+        "fillet_relative_to_finest_tetra": 0.011602699860150167,
+        "volume_relative": 9.101608355877033e-13,
+        "reaction_relative": 1.343680581294436e-10,
+        "quadrature_relative": 6.464007107354064e-11,
+        "true_residual": 4.890419557818039e-11,
+        "mesh_stability": true,
+        "tip_change_from_prior": 8.103816284688037e-09,
+        "fillet_change_from_prior": 0.0034605066466701917
+      },
+      "qualified": true
+    },
+    {
+      "radii_ticks": [
+        50,
+        74
+      ],
+      "step": 3,
+      "orders": [
+        {
+          "order": 8,
+          "status": "completed",
+          "exit_code": 0,
+          "elapsed_s": 26.658583284006454,
+          "tree_peak_rss_kib": 310588
+        },
+        {
+          "order": 6,
+          "status": "completed",
+          "exit_code": 0,
+          "elapsed_s": 19.744549894996453,
+          "tree_peak_rss_kib": 288472
+        }
+      ],
+      "leaves": 2640,
+      "partition_cumulative_s": 0.45599135199999996,
+      "constraints_s": 0.372746293,
+      "geometry_build_and_audit_s": 0.013775904,
+      "status": "completed",
+      "q6_q8": [
+        {
+          "assembly_s": 4.357507057,
+          "blocks": 2640,
+          "constraint_s": 0.002543823,
+          "fillet_limits_mpa": {
+            "elbow_east_z10_30/010/011/011/011/011": 133.28692425774204,
+            "elbow_east_z10_30/011/010/010/010/010": 133.28692425775023,
+            "elbow_north_z10_30/110/111/111/111/111": 133.28583923743255,
+            "elbow_north_z10_30/111/110/110/110/110": 133.28583923744077
+          },
+          "force_s": 0.006751218,
+          "iterations": 1026,
+          "loaded_area_mm2": 319.99999999999943,
+          "masters": 24219,
+          "q": 6,
+          "reaction_n": [
+            -2.3744801680436467e-08,
+            999.9999999285618,
+            -6.339170965929952e-09
+          ],
+          "recovery_s": 0.017883323,
+          "relative_residual": 3.565448440647766e-11,
+          "scalar_dofs": 25911,
+          "solve_s": 14.398853556,
+          "strain_energy_n_mm": 257.88678561954623,
+          "tip_mm": [
+            -0.1742208729076695,
+            -0.5165240094670335,
+            4.682144267424028e-13
+          ],
+          "true_projected_residual": 4.962789855558938e-11,
+          "volume_mm3": 32165.98467578567
+        },
+        {
+          "assembly_s": 9.998118805,
+          "blocks": 2640,
+          "constraint_s": 0.003266927,
+          "fillet_limits_mpa": {
+            "elbow_east_z10_30/010/011/011/011/011": 133.28692427807565,
+            "elbow_east_z10_30/011/010/010/010/010": 133.2869242780955,
+            "elbow_north_z10_30/110/111/111/111/111": 133.28583925746196,
+            "elbow_north_z10_30/111/110/110/110/110": 133.28583925748185
+          },
+          "force_s": 0.02030011,
+          "iterations": 1025,
+          "loaded_area_mm2": 319.99999999999557,
+          "masters": 24219,
+          "q": 8,
+          "reaction_n": [
+            4.776341100409809e-09,
+            1000.0000001117903,
+            -6.7737033759840415e-09
+          ],
+          "recovery_s": 0.032529019,
+          "relative_residual": 3.656361739623582e-11,
+          "scalar_dofs": 25911,
+          "solve_s": 15.670568603,
+          "strain_energy_n_mm": 257.886785657502,
+          "tip_mm": [
+            -0.17422087293597507,
+            -0.5165240095422979,
+            1.156566237891563e-12
+          ],
+          "true_projected_residual": 5.204435566592649e-11,
+          "volume_mm3": 32165.984675830063
+        }
+      ],
+      "checks": {
+        "tip_relative_to_finest_tetra": 0.00022003990959951203,
+        "fillet_relative_to_finest_tetra": 0.012637166810105294,
+        "volume_relative": 9.21707155043805e-13,
+        "reaction_relative": 1.1209714881485025e-10,
+        "quadrature_relative": 1.5270418263213514e-10,
+        "true_residual": 5.204435566592649e-11,
+        "mesh_stability": true,
+        "tip_change_from_prior": 7.745803332070977e-09,
+        "fillet_change_from_prior": 0.003481473068877028
+      },
+      "qualified": true
+    },
+    {
+      "radii_ticks": [
+        51,
+        74
+      ],
+      "step": 3,
+      "orders": [
+        {
+          "order": 8,
+          "status": "completed",
+          "exit_code": 0,
+          "elapsed_s": 22.660498753015418,
+          "tree_peak_rss_kib": 262796
+        },
+        {
+          "order": 6,
+          "status": "completed",
+          "exit_code": 0,
+          "elapsed_s": 17.672489812015556,
+          "tree_peak_rss_kib": 275864
+        }
+      ],
+      "leaves": 2640,
+      "partition_cumulative_s": 0.311870133,
+      "constraints_s": 0.360300951,
+      "geometry_build_and_audit_s": 0.008217667,
+      "status": "completed",
+      "q6_q8": [
+        {
+          "assembly_s": 4.075567743,
+          "blocks": 2640,
+          "constraint_s": 0.002581894,
+          "fillet_limits_mpa": {
+            "elbow_east_z10_30/010/011/011/011/011": 133.28864969004334,
+            "elbow_east_z10_30/011/010/010/010/010": 133.28864969005446,
+            "elbow_north_z10_30/110/111/111/111/111": 133.287564447289,
+            "elbow_north_z10_30/111/110/110/110/110": 133.2875644473001
+          },
+          "force_s": 0.007169775,
+          "iterations": 1025,
+          "loaded_area_mm2": 319.99999999999943,
+          "masters": 24219,
+          "q": 6,
+          "reaction_n": [
+            -3.055384389938354e-08,
+            999.9999999335917,
+            -6.628877002867739e-09
+          ],
+          "recovery_s": 0.019697567,
+          "relative_residual": 4.458855489615376e-11,
+          "scalar_dofs": 25911,
+          "solve_s": 12.852376671,
+          "strain_energy_n_mm": 257.9291747899557,
+          "tip_mm": [
+            -0.1742204551156919,
+            -0.5166118129906918,
+            4.846680217144596e-13
+          ],
+          "true_projected_residual": 5.680900413523301e-11,
+          "volume_mm3": 32156.069023971122
+        },
+        {
+          "assembly_s": 9.20241233,
+          "blocks": 2640,
+          "constraint_s": 0.002304357,
+          "fillet_limits_mpa": {
+            "elbow_east_z10_30/010/011/011/011/011": 133.28864971153934,
+            "elbow_east_z10_30/011/010/010/010/010": 133.28864971156045,
+            "elbow_north_z10_30/110/111/111/111/111": 133.28756446779792,
+            "elbow_north_z10_30/111/110/110/110/110": 133.28756446781904
+          },
+          "force_s": 0.010337352,
+          "iterations": 1025,
+          "loaded_area_mm2": 319.99999999999557,
+          "masters": 24219,
+          "q": 8,
+          "reaction_n": [
+            -4.210432891227356e-09,
+            1000.000000125546,
+            -6.29454177669686e-09
+          ],
+          "recovery_s": 0.016119352,
+          "relative_residual": 4.2416286992986817e-11,
+          "scalar_dofs": 25911,
+          "solve_s": 12.638559403,
+          "strain_energy_n_mm": 257.92917483003083,
+          "tip_mm": [
+            -0.17422045514493428,
+            -0.5166118130692883,
+            1.1369276101959844e-12
+          ],
+          "true_projected_residual": 5.6236017634576963e-11,
+          "volume_mm3": 32156.069024018077
+        }
+      ],
+      "checks": {
+        "tip_relative_to_finest_tetra": 0.0002199946394739749,
+        "fillet_relative_to_finest_tetra": 0.003734720905079314,
+        "volume_relative": 9.50128864474209e-13,
+        "reaction_relative": 1.2577415755499692e-10,
+        "quadrature_relative": 1.6143242298483074e-10,
+        "true_residual": 5.6236017634576963e-11,
+        "mesh_stability": true,
+        "tip_change_from_prior": 7.745253327584578e-09,
+        "fillet_change_from_prior": 0.0034815771406424556
+      },
+      "qualified": true
+    }
+  ],
+  "mandatory_radii": [
+    [
+      40,
+      80
+    ],
+    [
+      80,
+      40
+    ],
+    [
+      50,
+      74
+    ],
+    [
+      51,
+      74
+    ]
+  ],
+  "finished": true
+}

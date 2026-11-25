@@ -126,14 +126,14 @@ def timed(cmd,env,folder,timeout):
                               "campaign_processes_before":interference_before,
                               "campaign_processes_after":active_campaign_processes()},**usage)
 
-def tetra_trial(radii,folder,env,remaining):
+def tetra_trial(radii,folder,env,remaining,runner=timed):
     folder.mkdir(parents=True,exist_ok=False)
     ccx=FREECAD/"bin/ccx";py=FREECAD/"bin/python"
     env=dict(env,LD_LIBRARY_PATH=str(FREECAD/"lib"),PYTHONPATH=str(FREECAD/"lib"))
     hx=folder/"mesh"
     args=[py,ROOT/"tests/references/calculix_bracket.py","--ccx",ccx,"--size","1.5","--store-displacements",
           "--radius-x",str(radii[0]/16),"--radius-y",str(radii[1]/16),hx]
-    run=timed(args,env,folder,remaining)
+    run=runner(args,env,folder,remaining)
     if run["status"]!="completed":return run
     remaining=max(0.,remaining-run["wall_s"])
     if remaining<=0:
@@ -141,7 +141,7 @@ def tetra_trial(radii,folder,env,remaining):
         return run
     probe=folder/"probe";probe.mkdir()
     probe_env=dict(env,OPENBLAS_NUM_THREADS="1")
-    extra=timed([sys.executable,ROOT/"tests/references/fillet_probe.py",hx,probe,"--ccx",ccx],
+    extra=runner([sys.executable,ROOT/"tests/references/fillet_probe.py",hx,probe,"--ccx",ccx],
                 probe_env,folder,remaining)
     run["physical_audit_s"]=extra["wall_s"];run["status"] = extra["status"]
     run["diagnostic"] += extra["diagnostic"]

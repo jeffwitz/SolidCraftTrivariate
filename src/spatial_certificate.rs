@@ -289,11 +289,25 @@ pub fn certify_spatial(
         max_depth_reached: depth,
         reason: Some(reason),
     };
-    let supported = matches!(degrees, [1, 1, 1] | [2, 1, 1] | [2, 2, 1]);
+    let supported = matches!(
+        degrees,
+        [1, 1, 1]
+            | [2, 1, 1]
+            | [2, 2, 1]
+            | [1, 2, 1]
+            | [1, 1, 2]
+            | [1, 2, 2]
+            | [2, 2, 2]
+            | [3, 1, 1]
+            | [1, 3, 1]
+    );
+    if !supported {
+        return invalid("unsupported degree family or control count");
+    }
     let count = (degrees[0] + 1)
         .checked_mul(degrees[1] + 1)
         .and_then(|x| x.checked_mul(degrees[2] + 1));
-    if !supported || count != Some(controls.len()) {
+    if count != Some(controls.len()) {
         return invalid("unsupported degree family or control count");
     }
     if controls.iter().any(|c| c[3] <= 0) {
@@ -532,10 +546,10 @@ mod tests {
             for j in 0..=degrees[1] {
                 for k in 0..=degrees[2] {
                     controls.push([
-                        2 * (i as i64) / degrees[0] as i64,
-                        2 * (j as i64) / degrees[1] as i64,
-                        2 * (k as i64) / degrees[2] as i64,
-                        2,
+                        6 * (i as i64) / degrees[0] as i64,
+                        6 * (j as i64) / degrees[1] as i64,
+                        6 * (k as i64) / degrees[2] as i64,
+                        6,
                     ]);
                 }
             }
@@ -701,8 +715,18 @@ mod tests {
     }
 
     #[test]
-    fn supports_all_three_degree_families() {
-        for degrees in [[1, 1, 1], [2, 1, 1], [2, 2, 1]] {
+    fn certifies_identity_on_supported_degree_families() {
+        for degrees in [
+            [1, 1, 1],
+            [2, 1, 1],
+            [2, 2, 1],
+            [1, 2, 1],
+            [1, 1, 2],
+            [1, 2, 2],
+            [2, 2, 2],
+            [3, 1, 1],
+            [1, 3, 1],
+        ] {
             let controls = affine_controls_degree(degrees);
             let cert = certify_spatial(degrees, &controls, CertificateBudget::default());
             assert_eq!(

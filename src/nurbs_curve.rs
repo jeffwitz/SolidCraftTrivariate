@@ -73,7 +73,9 @@ fn gcd_u128(mut a: u128, mut b: u128) -> u128 {
     a
 }
 
-fn normalize(controls: &[HPoint]) -> Result<Vec<[i64; 3]>, &'static str> {
+pub(crate) fn normalize<const N: usize>(
+    controls: &[[Ratio; N]],
+) -> Result<Vec<[i64; N]>, &'static str> {
     let mut common = 1i128;
     for p in controls {
         for x in p {
@@ -88,8 +90,8 @@ fn normalize(controls: &[HPoint]) -> Result<Vec<[i64; 3]>, &'static str> {
     let mut integers = Vec::with_capacity(controls.len());
     let mut divisor = 0u128;
     for p in controls {
-        let mut point = [0i128; 3];
-        for k in 0..3 {
+        let mut point = [0i128; N];
+        for k in 0..N {
             point[k] = p[k]
                 .numerator()
                 .checked_mul(common / p[k].denominator())
@@ -105,12 +107,12 @@ fn normalize(controls: &[HPoint]) -> Result<Vec<[i64; 3]>, &'static str> {
     integers
         .into_iter()
         .map(|p| {
-            let point = [
-                i64::try_from(p[0] / divisor).map_err(|_| "NURBS coefficient exceeds i64")?,
-                i64::try_from(p[1] / divisor).map_err(|_| "NURBS coefficient exceeds i64")?,
-                i64::try_from(p[2] / divisor).map_err(|_| "NURBS coefficient exceeds i64")?,
-            ];
-            if point[2] <= 0 {
+            let mut point = [0; N];
+            for (dst, value) in point.iter_mut().zip(p) {
+                *dst =
+                    i64::try_from(value / divisor).map_err(|_| "NURBS coefficient exceeds i64")?;
+            }
+            if point[N - 1] <= 0 {
                 return Err("NURBS span has nonpositive homogeneous weight");
             }
             Ok(point)
@@ -200,6 +202,64 @@ pub fn extract_bezier(
             interval,
             controls: normalize(bezier)?,
         });
+    }
+    Ok(spans)
+}
+
+/// Extract each nonzero span on the active parameter interval [U[p], U[n+1]].
+/// Open, clamped and periodically extended input use the same local blossom.
+/// Each extracted net retains its original interval and an exact integral gauge.
+pub fn extract_active_bezier(
+    degree: usize,
+    knots: &[i64],
+    controls: &[[i64; 3]],
+) -> Result<Vec<BezierSpan>, &'static str> {
+    if !(1..=3).contains(&degree)
+        || controls.len() <= degree
+        || controls.len().checked_add(degree + 1) != Some(knots.len())
+    {
+        return Err("unsupported sketch degree or knot/control count");
+    }
+    if controls.iter().any(|p| p[2] <= 0)
+        || knots.windows(2).any(|p| p[1] < p[0])
+        || knots.windows(degree + 2).any(|p| p[0] == p[degree + 1])
+    {
+        return Err("invalid sketch knot sequence or nonpositive weight");
+    }
+    let mut spans = Vec::new();
+    for k in degree..controls.len() {
+        let (lo, hi) = (knots[k], knots[k + 1]);
+        if lo == hi {
+            continue;
+        }
+        let initial: Vec<HPoint> = controls[k - degree..=k]
+            .iter()
+            .map(|p| p.map(|c| Ratio::new(i128::from(c), 1).expect("integer rational")))
+            .collect();
+        let mut net = Vec::with_capacity(degree + 1);
+        for upper_count in 0..=degree {
+            let mut row = initial.clone();
+            // B_j is the blossom at p-j lower and j upper knot arguments.
+            for r in 1..=degree {
+                let t = if r <= degree - upper_count { lo } else { hi };
+                for j in (r..=degree).rev() {
+                    let i = k - degree + j;
+                    let alpha = Ratio::new(
+                        knot_difference(t, knots[i]),
+                        knot_difference(knots[i + degree + 1 - r], knots[i]),
+                    )?;
+                    row[j] = blend_checked(row[j], row[j - 1], alpha)?;
+                }
+            }
+            net.push(row[degree]);
+        }
+        spans.push(BezierSpan {
+            interval: [lo, hi],
+            controls: normalize(&net)?,
+        });
+    }
+    if spans.is_empty() {
+        return Err("empty active sketch parameter interval");
     }
     Ok(spans)
 }

@@ -158,4 +158,11 @@ pub mod nurbs_space;
 
 pub mod nurbs_multiloop;
 pub mod nurbs_edge_loops;
+pub mod g2_cross_plate;
+pub mod sketch_junction;
+mod sketch_partition_plan;
+mod sketch_rational_event;
+pub mod primitive_template;
+mod primitive_template_json;
+mod g2_cross_plate_json;
 mod nurbs_multiloop_json;

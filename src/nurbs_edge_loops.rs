@@ -304,14 +304,14 @@ fn canonical_flanks(edges: &[Edge], component: &[usize]) -> Result<(Curve, Curve
             }
             verticals.push(edge);
         } else {
-            let curve = if edge.start[0] < edge.end[0] {
+            let curve = if edge.start[0].cmp_value(&edge.end[0]).is_lt() {
                 edge.curve.clone()
             } else {
                 reverse(&edge.curve)?
             };
             let start = endpoint(&curve, false)?;
             let end = endpoint(&curve, true)?;
-            if start[0] >= end[0] {
+            if start[0].cmp_value(&end[0]).is_ge() {
                 return Err("profile flank must be strictly oriented in increasing x");
             }
             flanks.push((start, end, curve));
@@ -325,9 +325,9 @@ fn canonical_flanks(edges: &[Edge], component: &[usize]) -> Result<(Curve, Curve
     if a0[0] != b0[0] || a1[0] != b1[0] {
         return Err("profile flanks must share the same x projection");
     }
-    let lower_upper = if a0[1] < b0[1] && a1[1] < b1[1] {
+    let lower_upper = if a0[1].cmp_value(&b0[1]).is_lt() && a1[1].cmp_value(&b1[1]).is_lt() {
         (ca, cb)
-    } else if b0[1] < a0[1] && b1[1] < a1[1] {
+    } else if b0[1].cmp_value(&a0[1]).is_lt() && b1[1].cmp_value(&a1[1]).is_lt() {
         (cb, ca)
     } else {
         return Err("profile flanks must remain consistently ordered at both ends");
@@ -406,7 +406,7 @@ pub fn normalize(recipe: &Json) -> Result<Json, Error> {
             ]),
         ));
     }
-    loops.sort_by(|a, b| a.0.cmp(&b.0));
+    loops.sort_by(|a, b| a.0.cmp_value(&b.0));
     let normalized = object([
         ("family", Json::String("nurbs_multiloop_v1".into())),
         ("bounds_xy_mm", recipe.field("bounds_xy_mm")?.clone()),

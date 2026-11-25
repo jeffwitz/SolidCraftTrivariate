@@ -108,6 +108,8 @@ pub(crate) fn supports_source_method(method: &str) -> bool {
             | crate::countersinks_json::METHOD
             | crate::sketch_layers_json::METHOD
             | crate::nurbs_multiloop_json::METHOD
+            | crate::g2_cross_plate_json::METHOD
+            | crate::g2_cross_plate_json::PRIMITIVE_METHOD
             | crate::nurbs_sketch_json::METHOD
             | crate::orthogonal_sketch_json::METHOD
             | crate::interval_bores_json::METHOD

@@ -49,6 +49,27 @@ fn from_magnitudes(
 }
 
 impl Ratio {
+    /// Compare rational values independently of the structural order used for map keys.
+    pub fn cmp_value(&self, other: &Self) -> std::cmp::Ordering {
+        use std::cmp::Ordering;
+        let sign = self.numerator.signum().cmp(&other.numerator.signum());
+        if sign != Ordering::Equal {
+            return sign;
+        }
+        let (mut a, mut b) = (self.numerator.unsigned_abs(), self.denominator as u128);
+        let (mut c, mut d) = (other.numerator.unsigned_abs(), other.denominator as u128);
+        let mut reverse = self.numerator < 0;
+        loop {
+            let order = (a / b).cmp(&(c / d));
+            let (r, s) = (a % b, c % d);
+            if order != Ordering::Equal || r == 0 || s == 0 {
+                let result = order.then_with(|| r.cmp(&s));
+                return if reverse { result.reverse() } else { result };
+            }
+            (a, b, c, d) = (b, r, d, s);
+            reverse = !reverse;
+        }
+    }
     /// Construct a reduced rational with positive denominator.
     pub fn new(numerator: i128, denominator: i128) -> Result<Self, &'static str> {
         if denominator == 0 {

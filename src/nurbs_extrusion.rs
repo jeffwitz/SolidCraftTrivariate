@@ -157,7 +157,7 @@ fn strict_sign(values: &[Ratio]) -> Result<(i8, Ratio), &'static str> {
                 })
                 .collect::<Result<Vec<_>, _>>()?
                 .into_iter()
-                .min()
+                .min_by(Ratio::cmp_value)
                 .ok_or("empty polynomial")?;
             return Ok((sign, lower));
         }
@@ -170,7 +170,12 @@ fn strict_sign(values: &[Ratio]) -> Result<(i8, Ratio), &'static str> {
         if left_sign != right_sign {
             return Err("polynomial changes sign");
         }
-        Ok((left_sign, left_bound.min(right_bound)))
+        let bound = if left_bound.cmp_value(&right_bound).is_le() {
+            left_bound
+        } else {
+            right_bound
+        };
+        Ok((left_sign, bound))
     }
     recurse(values, 20)
 }

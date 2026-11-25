@@ -62,6 +62,8 @@ pub fn export(model: &Json) -> Result<Json, &'static str> {
     if !matches!(
         model.field("schema")?.text()?,
         "nurbs_multiloop_v1"
+            | "g2_cross_plate_v1"
+            | "primitive_sweep_v1"
             | "nurbs_edge_loops_v1"
             | "nurbs_sketch_strip_v1"
             | "nurbs_cross_bores_v1"

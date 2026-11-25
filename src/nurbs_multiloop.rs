@@ -253,7 +253,7 @@ pub fn construct(recipe: &Json) -> Result<Construction, Error> {
     if loops.is_empty() {
         return Err("NURBS multiloop count outside supported range");
     }
-    loops.sort_by(|a, b| a.x[0].cmp(&b.x[0]));
+    loops.sort_by(|a, b| a.x[0].cmp_value(&b.x[0]));
     for pair in loops.windows(2) {
         if !less(pair[0].x[1], pair[1].x[0])? {
             return Err("interior loop x-projections must be strictly disjoint");

@@ -51,7 +51,7 @@ fn publish(target: &Path, contents: &str) -> std::io::Result<()> {
     }
 }
 
-const COMMANDS_AND_EVALUATORS: &str = r#"{"commands":["build","audit","evaluate","capabilities","export-step","certify-map","export-analysis","export-sketch-analysis","export-nurbs-space","export-adaptive","inspect-travel","solve-job","differentiate-job","import-solidcraft","import-solidcraft-sketch","export-field-vtu","export-geometry-vtu","edit-bore-intervals"],"evaluators":{"rational_bezier_tensor":{"degrees":[[1,1,1],[1,1,2],[1,1,3],[1,2,1],[1,2,2],[1,2,3],[1,3,1],[1,3,2],[1,3,3],[2,1,1],[2,1,2],[2,1,3],[2,2,1],[2,2,2],[2,2,3],[2,3,1],[2,3,2],[2,3,3],[3,1,1],[3,1,2],[3,1,3],[3,2,1],[3,2,2],[3,2,3],[3,3,1],[3,3,2],[3,3,3]],"domain":[[0,1],[0,1],[0,1]]}}}"#;
+const COMMANDS_AND_EVALUATORS: &str = r#"{"commands":["build","audit","plan-sketch","evaluate","capabilities","export-step","certify-map","export-analysis","export-sketch-analysis","export-nurbs-space","export-adaptive","inspect-travel","solve-job","differentiate-job","import-solidcraft","import-solidcraft-sketch","export-field-vtu","export-geometry-vtu","edit-bore-intervals"],"evaluators":{"rational_bezier_tensor":{"degrees":[[1,1,1],[1,1,2],[1,1,3],[1,2,1],[1,2,2],[1,2,3],[1,3,1],[1,3,2],[1,3,3],[2,1,1],[2,1,2],[2,1,3],[2,2,1],[2,2,2],[2,2,3],[2,3,1],[2,3,2],[2,3,3],[3,1,1],[3,1,2],[3,1,3],[3,2,1],[3,2,2],[3,2,3],[3,3,1],[3,3,2],[3,3,3]],"domain":[[0,1],[0,1],[0,1]]}}}"#;
 
 fn capabilities() -> Result<Json, String> {
     let mut result = parse(COMMANDS_AND_EVALUATORS)?;
@@ -84,6 +84,8 @@ fn capabilities() -> Result<Json, String> {
         "polygon_countersinks_v1",
         "nurbs_multiloop_v1",
         "nurbs_edge_loops_v1",
+        "g2_cross_plate_v1",
+        "primitive_sweep_v1",
         "nurbs_sketch_strip_v1",
         "sketch_layer_partition_v1",
         "sketch_boolean_layers_v1",
@@ -282,6 +284,7 @@ fn inspect_travel(center: &str) -> Result<Json, &'static str> {
 fn run(args: &[String]) -> Result<Json, String> {
     match args {
         [cmd] if cmd=="capabilities"=>capabilities(),
+        [cmd,path] if cmd=="plan-sketch"=>Ok(solidcraft_trivariate::interchange::plan_sketch(&read(path)?)?),
         [cmd,center] if cmd=="inspect-travel"=>Ok(inspect_travel(center)?),
         [cmd,path,target] if cmd=="export-nurbs-space"=>{
             let package=solidcraft_trivariate::nurbs_space::export(&read(path)?)?;
@@ -369,7 +372,7 @@ fn run(args: &[String]) -> Result<Json, String> {
             Ok(object([("status",Json::String("evaluated".into())),("position",vector(res.position)),
                 ("jacobian_columns",Json::Array(res.jacobian_columns.into_iter().map(vector).collect()))]))
         }
-        _=>Err("usage: solidcraft-trivariate capabilities | build RECIPE OUTPUT | audit MODEL | evaluate MAP U V W | export-step MODEL OUTPUT | certify-map MAP MAX_LEAVES MAX_DEPTH | export-analysis MODEL GAUSS_ORDER OUTPUT | export-sketch-analysis MODEL GAUSS_ORDER OUTPUT | export-nurbs-space MODEL OUTPUT | export-adaptive MODEL PLAN GAUSS_ORDER OUTPUT | import-solidcraft SCRIPT OUTPUT | import-solidcraft-sketch TIMELINE OUTPUT | solve-job MODEL JOB OUTPUT | differentiate-job MODEL JOB DIRECTION OUTPUT | export-field-vtu RESULT SUBDIVISIONS OUTPUT | export-geometry-vtu MODEL SUBDIVISIONS OUTPUT | edit-bore-intervals MODEL EDITS OUTPUT | inspect-travel CENTER_X_UM".into()),
+        _=>Err("usage: solidcraft-trivariate capabilities | plan-sketch RECIPE | build RECIPE OUTPUT | audit MODEL | evaluate MAP U V W | export-step MODEL OUTPUT | certify-map MAP MAX_LEAVES MAX_DEPTH | export-analysis MODEL GAUSS_ORDER OUTPUT | export-sketch-analysis MODEL GAUSS_ORDER OUTPUT | export-nurbs-space MODEL OUTPUT | export-adaptive MODEL PLAN GAUSS_ORDER OUTPUT | import-solidcraft SCRIPT OUTPUT | import-solidcraft-sketch TIMELINE OUTPUT | solve-job MODEL JOB OUTPUT | differentiate-job MODEL JOB DIRECTION OUTPUT | export-field-vtu RESULT SUBDIVISIONS OUTPUT | export-geometry-vtu MODEL SUBDIVISIONS OUTPUT | edit-bore-intervals MODEL EDITS OUTPUT | inspect-travel CENTER_X_UM".into()),
     }
 }
 

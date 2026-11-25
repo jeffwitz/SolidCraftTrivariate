@@ -219,6 +219,7 @@ pub fn build(recipe: &Json) -> Result<Json, &'static str> {
         super::sketch_layers_json::FAMILY | super::sketch_layers_json::BOOLEAN_FAMILY => {
             super::sketch_layers_json::build(recipe)
         }
+        super::g2_cross_plate_json::FAMILY | super::g2_cross_plate_json::PRIMITIVE => super::g2_cross_plate_json::build(recipe),
         super::nurbs_multiloop_json::FAMILY | super::nurbs_multiloop_json::EDGE_FAMILY => {
             super::nurbs_multiloop_json::build(recipe)
         }
@@ -251,6 +252,14 @@ pub fn build(recipe: &Json) -> Result<Json, &'static str> {
     }
 }
 
+/// Report planar junctions and transverse cuts before creating any volume blocks.
+pub fn plan_sketch(recipe: &Json) -> Result<Json, &'static str> {
+    if recipe.field("family")?.text()? == "primitive_sweep_v1" {
+        return crate::primitive_template_json::plan(recipe);
+    }
+    crate::sketch_partition_plan::plan(recipe).map(|(_, report)| report)
+}
+
 pub fn audit(model: &Json) -> Result<Json, &'static str> {
     match model.field("schema")?.text()? {
         super::affine_image::FAMILY => super::affine_image::audit(model),
@@ -267,6 +276,7 @@ pub fn audit(model: &Json) -> Result<Json, &'static str> {
         super::sketch_layers_json::FAMILY | super::sketch_layers_json::BOOLEAN_FAMILY => {
             super::sketch_layers_json::audit(model)
         }
+        super::g2_cross_plate_json::FAMILY | super::g2_cross_plate_json::PRIMITIVE => super::g2_cross_plate_json::audit(model),
         super::nurbs_multiloop_json::FAMILY | super::nurbs_multiloop_json::EDGE_FAMILY => {
             super::nurbs_multiloop_json::audit(model)
         }

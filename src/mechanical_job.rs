@@ -252,7 +252,8 @@ fn run_job(
     job: &Json,
     velocity: Option<&crate::affine_job_sensitivity::Velocity>,
 ) -> Result<Json, &'static str> {
-    job.keys(&[
+    let version = job.field("schema")?.text()?;
+    let mut fields = vec![
         "schema",
         "material",
         "formulation",
@@ -260,11 +261,26 @@ fn run_job(
         "plan",
         "supports",
         "loads",
-    ])?;
-    let eliminate_supports = job.field("schema")?.text()? == "solidcraft_mechanical_job_v3";
-    let version_two = match job.field("schema")?.text()? {
+    ];
+    let supports_body = version == "solidcraft_mechanical_job_v4";
+    if supports_body {
+        fields.push("body_load");
+    }
+    job.keys(&fields)?;
+    let density = if supports_body {
+        Some(crate::volume_load::Density::parse(job.field("body_load")?)?)
+    } else {
+        None
+    };
+    let eliminate_supports = matches!(
+        version,
+        "solidcraft_mechanical_job_v3" | "solidcraft_mechanical_job_v4"
+    );
+    let version_two = match version {
         "solidcraft_mechanical_job_v1" => false,
-        "solidcraft_mechanical_job_v2" | "solidcraft_mechanical_job_v3" => true,
+        "solidcraft_mechanical_job_v2"
+        | "solidcraft_mechanical_job_v3"
+        | "solidcraft_mechanical_job_v4" => true,
         _ => return Err("unknown mechanical job schema"),
     };
     let audit = interchange::audit(model)?;
@@ -278,6 +294,7 @@ fn run_job(
                 | "certified_orthogonal_feature_program"
                 | "certified_polygon_prism"
                 | "certified_perforated_polygon_prism"
+            | crate::circular_polygon_json::METHOD
                 | crate::affine_image::METHOD
                 | "certified_parameterized_bracket"
         )
@@ -501,6 +518,23 @@ fn run_job(
             ("moment_n_mm", numbers(load.moment_n_mm)),
         ]));
     }
+    let body = density
+        .map(|d| d.integrate(space, order, velocity))
+        .transpose()?;
+    let surface_force = body.as_ref().map(|_| force.clone());
+    if let Some(load) = &body {
+        add(&mut applied, load.resultant);
+        add(&mut moment, load.moment);
+        scale += load.scale;
+        for (total, f) in force.iter_mut().zip(&load.force) {
+            *total += f;
+        }
+        if let (Some(total), Some(rate)) = (&mut force_rate, &load.force_rate) {
+            for (f, df) in total.iter_mut().zip(rate) {
+                *f += df;
+            }
+        }
+    }
     let moving = fixed
         .iter()
         .any(|prescribed| prescribed.values().any(|&v| v != Ratio::zero()));
@@ -518,6 +552,7 @@ fn run_job(
                 space,
                 force: &force,
                 force_rate: &rate,
+                includes_body_load: supports_body,
                 lifts: [&lifts[0], &lifts[1], &lifts[2]],
                 material: MaterialJet {
                     young_mpa: young,
@@ -632,17 +667,32 @@ fn run_job(
     {
         return Err("mechanical force or moment imbalance");
     }
-    let traction_work = force
+    let applied_work = force
         .iter()
         .zip(&solved.displacement_mm)
         .map(|(a, b)| a * b)
         .sum::<f64>();
-    let work = traction_work + support_work;
+    let body_work = body.as_ref().map_or(0., |load| {
+        load.force
+            .iter()
+            .zip(&solved.displacement_mm)
+            .map(|(f, u)| f * u)
+            .sum::<f64>()
+    });
+    let traction_work = surface_force.as_ref().map_or(applied_work, |surface| {
+        surface
+            .iter()
+            .zip(&solved.displacement_mm)
+            .map(|(f, u)| f * u)
+            .sum::<f64>()
+    });
+    let work = applied_work + support_work;
     let twice_energy = 2. * solved.strain_energy_n_mm;
     let work_scale = work
         .abs()
         .max(twice_energy.abs())
         .max(traction_work.abs())
+        .max(body_work.abs())
         .max(support_work.abs());
     let work_error = if work_scale == 0. {
         0.
@@ -652,7 +702,7 @@ fn run_job(
     if !work_error.is_finite() || work_error > 1e-8 {
         return Err("mechanical work-energy imbalance");
     }
-    Ok(object([
+    let mut result = object([
         ("relative_work_energy_error", n(work_error)),
         ("mean_stress_q1_mpa_by_block", Json::Object(mean_stress)),
         ("schema", text("solidcraft_mechanical_result_v1")),
@@ -688,5 +738,17 @@ fn run_job(
         ("equilibrium_normalization_n", n(scale)),
         ("iterations", n(solved.iterations)),
         ("relative_residual", n(solved.relative_residual)),
-    ]))
+    ]);
+    if let (Some(load), Json::Object(fields)) = (body, &mut result) {
+        fields.insert(
+            "body_load".into(),
+            object([
+                ("volume_mm3", n(load.volume)),
+                ("resultant_n", numbers(load.resultant)),
+                ("moment_n_mm", numbers(load.moment)),
+                ("work_n_mm", n(body_work)),
+            ]),
+        );
+    }
+    Ok(result)
 }

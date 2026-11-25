@@ -1,0 +1,150 @@
+{
+  "schema": "affine_volume_force_oracle_v1",
+  "bar": [
+    {
+      "case": "quadratic",
+      "h": 0,
+      "cells": 6,
+      "errors": {
+        "coefficient": 4.532703173212151e-11,
+        "energy": 4.440892098500626e-16,
+        "body_work": 2.6795695292255084e-13,
+        "surface_work": 2.6778579353958776e-13,
+        "force": 2.0132044179869505e-15,
+        "moment": 5.762750305676169e-16,
+        "equilibrium": 1.351924599229502e-13
+      },
+      "exact_strain_energy": 1.28,
+      "discrete_strain_energy": 1.2800000000000005,
+      "strain_energy_deficit": -4.440892098500626e-16,
+      "passed": true
+    },
+    {
+      "case": "quadratic",
+      "h": 1,
+      "cells": 48,
+      "errors": {
+        "coefficient": 7.342997737636026e-11,
+        "energy": 0.0,
+        "body_work": 3.0906989930320116e-13,
+        "surface_work": 3.0953017926549364e-13,
+        "force": 2.1316282072803005e-15,
+        "moment": 7.395108145407043e-15,
+        "equilibrium": 5.3317348321534686e-14
+      },
+      "exact_strain_energy": 1.28,
+      "discrete_strain_energy": 1.28,
+      "strain_energy_deficit": 0.0,
+      "passed": true
+    },
+    {
+      "case": "cubic",
+      "h": 0,
+      "cells": 6,
+      "errors": {
+        "coefficient": 6.823158247553462e-11,
+        "energy": 8.881784197001252e-16,
+        "body_work": 1.907828465695532e-12,
+        "surface_work": 1.9072521340035564e-12,
+        "force": 1.138690281666827e-16,
+        "moment": 8.361429953289619e-16,
+        "equilibrium": 3.8368136323148107e-13
+      },
+      "exact_strain_energy": 0.6914048000000002,
+      "discrete_strain_energy": 0.6471680000000007,
+      "strain_energy_deficit": 0.04423679999999941,
+      "passed": true
+    },
+    {
+      "case": "cubic",
+      "h": 1,
+      "cells": 48,
+      "errors": {
+        "coefficient": 8.900428602217388e-11,
+        "energy": 1.887379141862766e-15,
+        "body_work": 6.707756297904823e-13,
+        "surface_work": 6.715739075957572e-13,
+        "force": 6.035058492834183e-15,
+        "moment": 5.633928367411984e-16,
+        "equilibrium": 4.947491193728298e-13
+      },
+      "exact_strain_energy": 0.6914048000000002,
+      "discrete_strain_energy": 0.6886399999999988,
+      "strain_energy_deficit": 0.002764800000001344,
+      "passed": true
+    },
+    {
+      "case": "cubic",
+      "h": 2,
+      "cells": 384,
+      "errors": {
+        "coefficient": 4.9310118270946906e-11,
+        "energy": 1.1102230246251565e-15,
+        "body_work": 9.784626748941982e-14,
+        "surface_work": 9.681144774731365e-14,
+        "force": 1.6966485196835725e-14,
+        "moment": 7.985264005878863e-15,
+        "equilibrium": 2.9277643466767654e-13
+      },
+      "exact_strain_energy": 0.6914048000000002,
+      "discrete_strain_energy": 0.691232000000001,
+      "strain_energy_deficit": 0.00017279999999919582,
+      "passed": true
+    }
+  ],
+  "energy_deficit_ratios": [
+    15.999999999992008,
+    16.000000000082238
+  ],
+  "centered_derivative": [
+    {
+      "step": 0.125,
+      "compliance": 1.113802040750691,
+      "force": 1.57932342859678e-15
+    },
+    {
+      "step": 0.0625,
+      "compliance": 0.27402501350307634,
+      "force": 4.1878664238575004e-15,
+      "fourth_order_compliance": 0.005900662246128583,
+      "fourth_order_force": 5.820798602561333e-15
+    },
+    {
+      "step": 0.03125,
+      "compliance": 0.06823062532036944,
+      "force": 5.85656777888409e-15,
+      "fourth_order_compliance": 0.00036750407386619067,
+      "fourth_order_force": 8.366992199494916e-15,
+      "sixth_order_compliance": 1.3731376179441637e-06,
+      "sixth_order_force": 9.126222217112457e-15
+    }
+  ],
+  "tangent_adjoint": 8.180345290043078e-12,
+  "refusals": [
+    {
+      "case": "old_version",
+      "refused": true,
+      "preserved": true,
+      "diagnostic": "{\"reason\":\"unexpected object fields\",\"status\":\"error\"}"
+    },
+    {
+      "case": "missing_gradient",
+      "refused": true,
+      "preserved": true,
+      "diagnostic": "{\"reason\":\"unexpected object fields\",\"status\":\"error\"}"
+    },
+    {
+      "case": "two_densities",
+      "refused": true,
+      "preserved": true,
+      "diagnostic": "{\"reason\":\"unexpected object fields\",\"status\":\"error\"}"
+    },
+    {
+      "case": "short_vector",
+      "refused": true,
+      "preserved": true,
+      "diagnostic": "{\"reason\":\"expected mechanical vector of length three\",\"status\":\"error\"}"
+    }
+  ],
+  "passed": true
+}

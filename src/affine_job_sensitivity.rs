@@ -29,9 +29,18 @@ impl Velocity {
         })
     }
 
+    pub(crate) fn divergence(&self) -> f64 {
+        self.linear[0][0] + self.linear[1][1] + self.linear[2][2]
+    }
+
+    pub(crate) fn at(&self, x: Vector) -> Vector {
+        let linear = self.linear_velocity(x);
+        std::array::from_fn(|i| linear[i] + self.offset[i])
+    }
+
     /// The oriented area vector transforms by the cofactor of the affine map.
     pub(crate) fn oriented_area_rate(&self, n: Vector) -> Vector {
-        let trace = self.linear[0][0] + self.linear[1][1] + self.linear[2][2];
+        let trace = self.divergence();
         std::array::from_fn(|i| {
             trace * n[i] - (0..3).map(|k| self.linear[k][i] * n[k]).sum::<f64>()
         })
@@ -47,6 +56,7 @@ pub(crate) struct SensitivityJob<'a> {
     pub space: &'a AnalysisSpace,
     pub force: &'a [f64],
     pub force_rate: &'a [f64],
+    pub includes_body_load: bool,
     pub lifts: [&'a Lift; 3],
     pub material: MaterialJet,
     pub order: usize,
@@ -113,7 +123,14 @@ pub(crate) fn solve(velocity: &Velocity, data: SensitivityJob<'_>) -> Result<Jso
             "compliance_rate_adjoint_n_mm",
             num(result.objective_adjoint + explicit),
         ),
-        ("traction_work_explicit_rate_n_mm", num(explicit)),
+        (
+            if data.includes_body_load {
+                "applied_load_explicit_work_rate_n_mm"
+            } else {
+                "traction_work_explicit_rate_n_mm"
+            },
+            num(explicit),
+        ),
         (
             "physical_displacement_rate_mm_xyz",
             numbers(&result.physical_tangent),

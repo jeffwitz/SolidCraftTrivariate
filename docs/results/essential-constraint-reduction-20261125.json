@@ -1,0 +1,46 @@
+{
+  "command": "python3 tests/references/essential_constraint_reduction.py",
+  "environment": {
+    "numpy": "2.4.4",
+    "python": "3.12.3"
+  },
+  "limits": [
+    "synthetic exact elimination is an oracle check, not a proof of all integer-capacity cases",
+    "the FE solve qualification uses the complete frozen fixture plan and its 2968-cell final partition"
+  ],
+  "protocol": "M8c independent exact-support reduction oracle v1",
+  "result": {
+    "blocks": 2968,
+    "fixture": "adaptive_dependent_support",
+    "free_roots_per_component": 26666,
+    "free_space_virtual_work_relative": 6.60109296675369e-12,
+    "global_force_balance_relative": 4.840198192012835e-13,
+    "load_area_mm2": 95.9999999999997,
+    "old_refusal": "{\"reason\":\"prescribed dependent DOF requires elimination or basis adaptation\",\"status\":\"error\"}",
+    "old_schema_refused": true,
+    "prescribed_support_faces": 35,
+    "relative_force_balance_rust": 3.0761758475452066e-12,
+    "relative_residual_rust": 7.255155137812023e-11,
+    "scalar_dofs": 28962,
+    "schema": "solidcraft_mechanical_job_v3",
+    "scipy_reduced_solution_relative_error": 1.2261833828311567e-11,
+    "solve_wall_s": 36.870091293996666,
+    "support_max_displacement_mm": 0.0,
+    "synthetic_exact_checks": {
+      "contradiction_rejected": true,
+      "free_columns": 2,
+      "nonzero_affine_rhs": true,
+      "rank": 2,
+      "signed_coefficients": true
+    },
+    "volume_mm3": 2639.9999999999595
+  },
+  "scope": [
+    "frozen v2 refusal",
+    "same geometry and supports in v3",
+    "independent SciPy stiffness/load solve",
+    "exact affine lift support satisfaction",
+    "free-space virtual work",
+    "synthetic signed rational constraints"
+  ]
+}

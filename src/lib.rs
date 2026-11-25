@@ -100,3 +100,8 @@ mod polygon_json;
 mod affine_image;
 pub mod solidcraft_polygon;
 mod affine_job_sensitivity;
+pub mod circular_polygon;
+mod volume_load;
+pub mod circular_polygon_audit;
+mod circular_polygon_json;
+pub mod solidcraft_circular_polygon;

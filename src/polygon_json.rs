@@ -13,7 +13,7 @@ pub(crate) const PERFORATED: &str = "polygonal_perforated_prism_v1";
 fn n(v: impl ToString) -> Json {
     Json::Number(v.to_string())
 }
-fn pair(v: &Json) -> Result<[i32; 2], &'static str> {
+pub(super) fn pair(v: &Json) -> Result<[i32; 2], &'static str> {
     let [a, b] = v.items()? else {
         return Err("expected two polygon coordinates");
     };
@@ -34,7 +34,7 @@ fn vertices(j: &Json, max: usize) -> Result<Vec<Vertex>, &'static str> {
     }
     Ok(vertices)
 }
-fn profile(j: &Json) -> Result<LoopProfile, &'static str> {
+pub(super) fn profile(j: &Json) -> Result<LoopProfile, &'static str> {
     j.keys(&["id", "vertices"])?;
     Ok(LoopProfile {
         id: j.field("id")?.text()?.into(),

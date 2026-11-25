@@ -1,0 +1,1785 @@
+{
+  "schema": "paired_adaptive_physical_energy_discrepancy_v1",
+  "cases": [
+    {
+      "case": "L",
+      "rounds": [
+        {
+          "round": 0,
+          "leaves": [
+            192,
+            768
+          ],
+          "field": {
+            "levels": [
+              {
+                "n_per_box_scramble": 128,
+                "energy_distance": 0.14130939363156317,
+                "l2_distance": 0.005437989591060758,
+                "empirical_half_width_95": [
+                  0.023461199927780552,
+                  9.40718020902289e-06
+                ],
+                "relative_energy_recovery": [
+                  -0.019020114590181714,
+                  -0.02876518438613429
+                ]
+              },
+              {
+                "n_per_box_scramble": 512,
+                "energy_distance": 0.14963150945356307,
+                "l2_distance": 0.005455582407586737,
+                "empirical_half_width_95": [
+                  0.01304593125724505,
+                  2.286657909860599e-06
+                ],
+                "relative_energy_recovery": [
+                  -0.0025953265463204422,
+                  -0.00995615696359986
+                ]
+              },
+              {
+                "n_per_box_scramble": 2048,
+                "energy_distance": 0.15791252978021314,
+                "l2_distance": 0.00545631754984848,
+                "empirical_half_width_95": [
+                  0.002517574410819059,
+                  2.19864450546879e-06
+                ],
+                "relative_energy_recovery": [
+                  0.0006322072053766004,
+                  0.0006053956379430403
+                ]
+              }
+            ],
+            "checks": {
+              "energy": false,
+              "work": true,
+              "recovery": true,
+              "energy_distance_stable": false,
+              "l2_distance_stable": true
+            },
+            "qualified": false,
+            "work_n_mm": [
+              0.0619410254890967,
+              0.062238308952499814
+            ]
+          },
+          "marking": [
+            {
+              "selected": 5,
+              "captured_indicator_fraction": 0.5596188852624467,
+              "integrated_difference_n_mm": 0.0007984355376578626,
+              "largest_leaf_fraction": 0.213844688208959
+            },
+            {
+              "selected": 6,
+              "captured_indicator_fraction": 0.5277998098287541,
+              "integrated_difference_n_mm": 0.0007984355376578626,
+              "largest_leaf_fraction": 0.15587058021738434
+            }
+          ],
+          "next_solves": [
+            {
+              "status": "completed",
+              "exit_code": 0,
+              "elapsed_s": 0.6061746729537845,
+              "tree_peak_rss_kib": 19464,
+              "compact": {
+                "status": "completed",
+                "exit_code": 0,
+                "elapsed_s": 0.30364376096986234,
+                "tree_peak_rss_kib": 32040
+              },
+              "physical": {
+                "strain_energy_n_mm": 0.03117194009798287,
+                "external_work_n_mm": 0.06234388019596552,
+                "relative_residual": 8.606078307849373e-11,
+                "relative_force_balance": 2.848115524436634e-12,
+                "relative_moment_balance": 1.6222617790252725e-12,
+                "applied_resultant_n": [
+                  23.99999999999993,
+                  -11.999999999999964,
+                  5.999999999999982
+                ],
+                "applied_moment_n_mm": [
+                  32.999999999999986,
+                  -24.00000000000001,
+                  -179.99999999999955
+                ],
+                "volume_mm3": 272.0000000000114,
+                "scalar_dofs": 2485,
+                "iterations": 272,
+                "cells": 227,
+                "load_area_mm2": 11.999999999999964
+              },
+              "relative_to_h2_geometry_and_loading": {
+                "volume_mm3": 1.2538989454589491e-15,
+                "load_area_mm2": 0.0,
+                "applied_resultant_n": 0.0,
+                "applied_moment_n_mm": 0.0
+              }
+            },
+            {
+              "status": "completed",
+              "exit_code": 0,
+              "elapsed_s": 3.473748034972232,
+              "tree_peak_rss_kib": 74276,
+              "compact": {
+                "status": "completed",
+                "exit_code": 0,
+                "elapsed_s": 0.4548949860036373,
+                "tree_peak_rss_kib": 35172
+              },
+              "physical": {
+                "strain_energy_n_mm": 0.03128434684883156,
+                "external_work_n_mm": 0.06256869369767017,
+                "relative_residual": 9.573269372591172e-11,
+                "relative_force_balance": 2.349859734403053e-12,
+                "relative_moment_balance": 1.2165339671739898e-12,
+                "applied_resultant_n": [
+                  23.999999999999925,
+                  -11.999999999999963,
+                  5.999999999999981
+                ],
+                "applied_moment_n_mm": [
+                  32.99999999999999,
+                  -24.000000000000014,
+                  -180.0000000000005
+                ],
+                "volume_mm3": 271.99999999999926,
+                "scalar_dofs": 7944,
+                "iterations": 674,
+                "cells": 810,
+                "load_area_mm2": 11.999999999999963
+              },
+              "relative_to_h2_geometry_and_loading": {
+                "volume_mm3": 5.851528412141983e-15,
+                "load_area_mm2": 0.0,
+                "applied_resultant_n": 0.0,
+                "applied_moment_n_mm": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "round": 1,
+          "leaves": [
+            227,
+            810
+          ],
+          "field": {
+            "levels": [
+              {
+                "n_per_box_scramble": 128,
+                "energy_distance": 0.11503937559112079,
+                "l2_distance": 0.004717508893507505,
+                "empirical_half_width_95": [
+                  0.00995995612899436,
+                  8.74407654799089e-06
+                ],
+                "relative_energy_recovery": [
+                  -0.024341086133983336,
+                  -0.025350143307529716
+                ]
+              },
+              {
+                "n_per_box_scramble": 512,
+                "energy_distance": 0.1354853066625092,
+                "l2_distance": 0.004724071552974784,
+                "empirical_half_width_95": [
+                  0.015319482793655078,
+                  3.929295111141007e-06
+                ],
+                "relative_energy_recovery": [
+                  -0.003441064068016586,
+                  -0.008765350848842113
+                ]
+              },
+              {
+                "n_per_box_scramble": 2048,
+                "energy_distance": 0.14257382905200516,
+                "l2_distance": 0.004727404385512706,
+                "empirical_half_width_95": [
+                  0.0042326676438553,
+                  1.6569009032205303e-06
+                ],
+                "relative_energy_recovery": [
+                  0.000818375220029921,
+                  0.0001216116325399863
+                ]
+              }
+            ],
+            "checks": {
+              "energy": false,
+              "work": true,
+              "recovery": true,
+              "energy_distance_stable": true,
+              "l2_distance_stable": true
+            },
+            "qualified": false,
+            "work_n_mm": [
+              0.06234388019596552,
+              0.06256869369767017
+            ]
+          },
+          "marking": [
+            {
+              "selected": 8,
+              "captured_indicator_fraction": 0.5327328296666898,
+              "integrated_difference_n_mm": 0.0006309219045636206,
+              "largest_leaf_fraction": 0.13957745704674296
+            },
+            {
+              "selected": 10,
+              "captured_indicator_fraction": 0.5030354889909964,
+              "integrated_difference_n_mm": 0.0006309219045636207,
+              "largest_leaf_fraction": 0.1295053179787881
+            }
+          ],
+          "next_solves": [
+            {
+              "status": "completed",
+              "exit_code": 0,
+              "elapsed_s": 0.7563196039991453,
+              "tree_peak_rss_kib": 26376,
+              "compact": {
+                "status": "completed",
+                "exit_code": 0,
+                "elapsed_s": 0.30417008203221485,
+                "tree_peak_rss_kib": 32284
+              },
+              "physical": {
+                "strain_energy_n_mm": 0.031365047384683806,
+                "external_work_n_mm": 0.06273009476936736,
+                "relative_residual": 9.042198646206905e-11,
+                "relative_force_balance": 6.462451083028153e-12,
+                "relative_moment_balance": 4.073468944508344e-12,
+                "applied_resultant_n": [
+                  23.99999999999993,
+                  -11.999999999999964,
+                  5.999999999999982
+                ],
+                "applied_moment_n_mm": [
+                  32.999999999999986,
+                  -24.00000000000001,
+                  -179.99999999999955
+                ],
+                "volume_mm3": 271.99999999999625,
+                "scalar_dofs": 3267,
+                "iterations": 282,
+                "cells": 283,
+                "load_area_mm2": 11.999999999999964
+              },
+              "relative_to_h2_geometry_and_loading": {
+                "volume_mm3": 5.454460412746429e-14,
+                "load_area_mm2": 0.0,
+                "applied_resultant_n": 0.0,
+                "applied_moment_n_mm": 0.0
+              }
+            },
+            {
+              "status": "completed",
+              "exit_code": 0,
+              "elapsed_s": 3.775950269016903,
+              "tree_peak_rss_kib": 108000,
+              "compact": {
+                "status": "completed",
+                "exit_code": 0,
+                "elapsed_s": 0.45476713503012434,
+                "tree_peak_rss_kib": 38468
+              },
+              "physical": {
+                "strain_energy_n_mm": 0.031432931207563145,
+                "external_work_n_mm": 0.06286586241512714,
+                "relative_residual": 9.573566368579649e-11,
+                "relative_force_balance": 2.31491574277923e-12,
+                "relative_moment_balance": 1.1679149131525516e-12,
+                "applied_resultant_n": [
+                  23.999999999999925,
+                  -11.999999999999963,
+                  5.999999999999981
+                ],
+                "applied_moment_n_mm": [
+                  32.99999999999999,
+                  -24.000000000000014,
+                  -180.0000000000005
+                ],
+                "volume_mm3": 271.9999999999995,
+                "scalar_dofs": 8900,
+                "iterations": 682,
+                "cells": 887,
+                "load_area_mm2": 11.999999999999963
+              },
+              "relative_to_h2_geometry_and_loading": {
+                "volume_mm3": 5.015595781835986e-15,
+                "load_area_mm2": 0.0,
+                "applied_resultant_n": 0.0,
+                "applied_moment_n_mm": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "round": 2,
+          "leaves": [
+            283,
+            887
+          ],
+          "field": {
+            "levels": [
+              {
+                "n_per_box_scramble": 128,
+                "energy_distance": 0.10039751872665627,
+                "l2_distance": 0.0036385677748774184,
+                "empirical_half_width_95": [
+                  0.00979418223155313,
+                  1.090217284127925e-05
+                ],
+                "relative_energy_recovery": [
+                  -0.025945529835380787,
+                  -0.02718584557656467
+                ]
+              },
+              {
+                "n_per_box_scramble": 512,
+                "energy_distance": 0.11876326714405366,
+                "l2_distance": 0.003636830696595781,
+                "empirical_half_width_95": [
+                  0.010699714337336413,
+                  3.2727053817291513e-06
+                ],
+                "relative_energy_recovery": [
+                  -0.0017460819216567058,
+                  -0.006597500523652378
+                ]
+              },
+              {
+                "n_per_box_scramble": 2048,
+                "energy_distance": 0.12204595196408817,
+                "l2_distance": 0.0036348909134201503,
+                "empirical_half_width_95": [
+                  0.007903192607321353,
+                  1.653485107880096e-06
+                ],
+                "relative_energy_recovery": [
+                  0.0010133114052319758,
+                  0.0002545313619546352
+                ]
+              }
+            ],
+            "checks": {
+              "energy": false,
+              "work": true,
+              "recovery": true,
+              "energy_distance_stable": false,
+              "l2_distance_stable": true
+            },
+            "qualified": false,
+            "work_n_mm": [
+              0.06273009476936736,
+              0.06286586241512714
+            ]
+          },
+          "marking": [
+            {
+              "selected": 12,
+              "captured_indicator_fraction": 0.5078057505413972,
+              "integrated_difference_n_mm": 0.0004330184679814992,
+              "largest_leaf_fraction": 0.06808445247129646
+            },
+            {
+              "selected": 24,
+              "captured_indicator_fraction": 0.5041942434664187,
+              "integrated_difference_n_mm": 0.0004330184679814992,
+              "largest_leaf_fraction": 0.06808445247129646
+            }
+          ],
+          "next_solves": [
+            {
+              "status": "completed",
+              "exit_code": 0,
+              "elapsed_s": 1.0585713289910927,
+              "tree_peak_rss_kib": 34192,
+              "compact": {
+                "status": "completed",
+                "exit_code": 0,
+                "elapsed_s": 0.3035264600184746,
+                "tree_peak_rss_kib": 31636
+              },
+              "physical": {
+                "strain_energy_n_mm": 0.03149135412477948,
+                "external_work_n_mm": 0.06298270824956004,
+                "relative_residual": 8.286479751504451e-11,
+                "relative_force_balance": 3.647731378359914e-12,
+                "relative_moment_balance": 2.0717576247765856e-12,
+                "applied_resultant_n": [
+                  23.99999999999993,
+                  -11.999999999999964,
+                  5.999999999999982
+                ],
+                "applied_moment_n_mm": [
+                  32.999999999999986,
+                  -24.00000000000001,
+                  -179.99999999999955
+                ],
+                "volume_mm3": 271.99999999995543,
+                "scalar_dofs": 4458,
+                "iterations": 298,
+                "cells": 381,
+                "load_area_mm2": 11.999999999999964
+              },
+              "relative_to_h2_geometry_and_loading": {
+                "volume_mm3": 2.0459451126738522e-13,
+                "load_area_mm2": 0.0,
+                "applied_resultant_n": 0.0,
+                "applied_moment_n_mm": 0.0
+              }
+            },
+            {
+              "status": "completed",
+              "exit_code": 0,
+              "elapsed_s": 5.285815444018226,
+              "tree_peak_rss_kib": 107384,
+              "compact": {
+                "status": "completed",
+                "exit_code": 0,
+                "elapsed_s": 0.4546585730277002,
+                "tree_peak_rss_kib": 66960
+              },
+              "physical": {
+                "strain_energy_n_mm": 0.03152482330378228,
+                "external_work_n_mm": 0.06304964660758165,
+                "relative_residual": 8.899700600883427e-11,
+                "relative_force_balance": 2.9309299071544534e-12,
+                "relative_moment_balance": 4.758124981912141e-13,
+                "applied_resultant_n": [
+                  23.999999999999925,
+                  -11.999999999999963,
+                  5.999999999999981
+                ],
+                "applied_moment_n_mm": [
+                  32.99999999999999,
+                  -24.000000000000014,
+                  -180.0000000000005
+                ],
+                "volume_mm3": 272.000000000008,
+                "scalar_dofs": 12082,
+                "iterations": 706,
+                "cells": 1139,
+                "load_area_mm2": 11.999999999999963
+              },
+              "relative_to_h2_geometry_and_loading": {
+                "volume_mm3": 2.6331877854638923e-14,
+                "load_area_mm2": 0.0,
+                "applied_resultant_n": 0.0,
+                "applied_moment_n_mm": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "round": 3,
+          "leaves": [
+            381,
+            1139
+          ],
+          "field": {
+            "levels": [
+              {
+                "n_per_box_scramble": 128,
+                "energy_distance": 0.08365059139796854,
+                "l2_distance": 0.0016214527043077224,
+                "empirical_half_width_95": [
+                  0.006307366715558016,
+                  9.377507275107027e-06
+                ],
+                "relative_energy_recovery": [
+                  -0.031102590342300895,
+                  -0.027145757602819454
+                ]
+              },
+              {
+                "n_per_box_scramble": 512,
+                "energy_distance": 0.09654112714021165,
+                "l2_distance": 0.001629619470827915,
+                "empirical_half_width_95": [
+                  0.008115372143466639,
+                  3.4168826215706302e-06
+                ],
+                "relative_energy_recovery": [
+                  -0.005214253675784319,
+                  -0.008120683068328582
+                ]
+              },
+              {
+                "n_per_box_scramble": 2048,
+                "energy_distance": 0.10654008460607486,
+                "l2_distance": 0.0016310462371523064,
+                "empirical_half_width_95": [
+                  0.006649226558935718,
+                  2.099099272885383e-06
+                ],
+                "relative_energy_recovery": [
+                  0.0014502392159496669,
+                  -0.0003876076141756668
+                ]
+              }
+            ],
+            "checks": {
+              "energy": false,
+              "work": true,
+              "recovery": true,
+              "energy_distance_stable": false,
+              "l2_distance_stable": true
+            },
+            "qualified": false,
+            "work_n_mm": [
+              0.06298270824956004,
+              0.06304964660758165
+            ]
+          },
+          "marking": [
+            {
+              "selected": 18,
+              "captured_indicator_fraction": 0.5012684358835745,
+              "integrated_difference_n_mm": 0.0003629388921235918,
+              "largest_leaf_fraction": 0.24279856034513253
+            },
+            {
+              "selected": 22,
+              "captured_indicator_fraction": 0.5013370208787616,
+              "integrated_difference_n_mm": 0.00036293889212359184,
+              "largest_leaf_fraction": 0.2427985603451325
+            }
+          ],
+          "next_solves": [
+            {
+              "status": "completed",
+              "exit_code": 0,
+              "elapsed_s": 1.6623020899714902,
+              "tree_peak_rss_kib": 46628,
+              "compact": {
+                "status": "completed",
+                "exit_code": 0,
+                "elapsed_s": 0.304138514038641,
+                "tree_peak_rss_kib": 31896
+              },
+              "physical": {
+                "strain_energy_n_mm": 0.031590322743572236,
+                "external_work_n_mm": 0.0631806454871439,
+                "relative_residual": 7.926769200222636e-11,
+                "relative_force_balance": 1.6998224731512898e-12,
+                "relative_moment_balance": 1.3979531379572183e-12,
+                "applied_resultant_n": [
+                  23.99999999999993,
+                  -11.999999999999964,
+                  5.999999999999982
+                ],
+                "applied_moment_n_mm": [
+                  32.999999999999986,
+                  -24.00000000000001,
+                  -179.99999999999955
+                ],
+                "volume_mm3": 271.9999999999186,
+                "scalar_dofs": 7129,
+                "iterations": 326,
+                "cells": 584,
+                "load_area_mm2": 11.999999999999964
+              },
+              "relative_to_h2_geometry_and_loading": {
+                "volume_mm3": 3.4001559737695175e-13,
+                "load_area_mm2": 0.0,
+                "applied_resultant_n": 0.0,
+                "applied_moment_n_mm": 0.0
+              }
+            },
+            {
+              "status": "completed",
+              "exit_code": 0,
+              "elapsed_s": 7.098709803016391,
+              "tree_peak_rss_kib": 169036,
+              "compact": {
+                "status": "completed",
+                "exit_code": 0,
+                "elapsed_s": 0.4549994639819488,
+                "tree_peak_rss_kib": 78720
+              },
+              "physical": {
+                "strain_energy_n_mm": 0.03159897344903096,
+                "external_work_n_mm": 0.06319794689804906,
+                "relative_residual": 9.264502474672348e-11,
+                "relative_force_balance": 1.7066949518067845e-12,
+                "relative_moment_balance": 1.5594919679254029e-12,
+                "applied_resultant_n": [
+                  23.999999999999925,
+                  -11.999999999999963,
+                  5.999999999999981
+                ],
+                "applied_moment_n_mm": [
+                  32.99999999999999,
+                  -24.000000000000014,
+                  -180.0000000000005
+                ],
+                "volume_mm3": 272.00000000001495,
+                "scalar_dofs": 15946,
+                "iterations": 725,
+                "cells": 1454,
+                "load_area_mm2": 11.999999999999963
+              },
+              "relative_to_h2_geometry_and_loading": {
+                "volume_mm3": 5.182782307897185e-14,
+                "load_area_mm2": 0.0,
+                "applied_resultant_n": 0.0,
+                "applied_moment_n_mm": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "round": 4,
+          "leaves": [
+            584,
+            1454
+          ],
+          "field": {
+            "levels": [
+              {
+                "n_per_box_scramble": 128,
+                "energy_distance": 0.069924857928376,
+                "l2_distance": 0.0007668452601833939,
+                "empirical_half_width_95": [
+                  0.004282854237102869,
+                  9.968847965754048e-06
+                ],
+                "relative_energy_recovery": [
+                  -0.03065361400442923,
+                  -0.02860699569859526
+                ]
+              },
+              {
+                "n_per_box_scramble": 512,
+                "energy_distance": 0.07834643997613708,
+                "l2_distance": 0.00076864102998637,
+                "empirical_half_width_95": [
+                  0.004380236187160047,
+                  3.573609881394209e-06
+                ],
+                "relative_energy_recovery": [
+                  -0.00427059795761775,
+                  -0.008715463647991806
+                ]
+              },
+              {
+                "n_per_box_scramble": 2048,
+                "energy_distance": 0.09568725582774454,
+                "l2_distance": 0.0007689323536348588,
+                "empirical_half_width_95": [
+                  0.010760499853378971,
+                  1.3067768351360414e-06
+                ],
+                "relative_energy_recovery": [
+                  0.003639989128484178,
+                  -0.0001318091704828328
+                ]
+              }
+            ],
+            "checks": {
+              "energy": false,
+              "work": true,
+              "recovery": true,
+              "energy_distance_stable": false,
+              "l2_distance_stable": true
+            },
+            "qualified": false,
+            "work_n_mm": [
+              0.0631806454871439,
+              0.06319794689804906
+            ]
+          },
+          "marking": [
+            {
+              "selected": 59,
+              "captured_indicator_fraction": 0.5023870025443302,
+              "integrated_difference_n_mm": 0.0002053397243999142,
+              "largest_leaf_fraction": 0.1099514093040151
+            },
+            {
+              "selected": 97,
+              "captured_indicator_fraction": 0.5010494089429264,
+              "integrated_difference_n_mm": 0.0002053397243999142,
+              "largest_leaf_fraction": 0.1099514093040151
+            }
+          ],
+          "next_solves": [
+            {
+              "status": "completed",
+              "exit_code": 0,
+              "elapsed_s": 3.9280893600080162,
+              "tree_peak_rss_kib": 157300,
+              "compact": {
+                "status": "completed",
+                "exit_code": 0,
+                "elapsed_s": 0.45477001497056335,
+                "tree_peak_rss_kib": 68216
+              },
+              "physical": {
+                "strain_energy_n_mm": 0.031663241986032674,
+                "external_work_n_mm": 0.0633264839720665,
+                "relative_residual": 8.907543623142428e-11,
+                "relative_force_balance": 5.003357093394526e-12,
+                "relative_moment_balance": 2.5479309592487543e-12,
+                "applied_resultant_n": [
+                  23.99999999999993,
+                  -11.999999999999964,
+                  5.999999999999982
+                ],
+                "applied_moment_n_mm": [
+                  32.999999999999986,
+                  -24.00000000000001,
+                  -179.99999999999955
+                ],
+                "volume_mm3": 271.9999999997885,
+                "scalar_dofs": 14226,
+                "iterations": 389,
+                "cells": 1186,
+                "load_area_mm2": 11.999999999999964
+              },
+              "relative_to_h2_geometry_and_loading": {
+                "volume_mm3": 8.183780450695409e-13,
+                "load_area_mm2": 0.0,
+                "applied_resultant_n": 0.0,
+                "applied_moment_n_mm": 0.0
+              }
+            },
+            {
+              "status": "completed",
+              "exit_code": 0,
+              "elapsed_s": 12.839567570015788,
+              "tree_peak_rss_kib": 307100,
+              "compact": {
+                "status": "completed",
+                "exit_code": 0,
+                "elapsed_s": 0.7603987290058285,
+                "tree_peak_rss_kib": 110212
+              },
+              "physical": {
+                "strain_energy_n_mm": 0.03166667213531813,
+                "external_work_n_mm": 0.06333334427064201,
+                "relative_residual": 9.225940795295265e-11,
+                "relative_force_balance": 7.493367866069459e-12,
+                "relative_moment_balance": 2.3391666527301485e-12,
+                "applied_resultant_n": [
+                  23.999999999999925,
+                  -11.999999999999963,
+                  5.999999999999981
+                ],
+                "applied_moment_n_mm": [
+                  32.99999999999999,
+                  -24.000000000000014,
+                  -180.0000000000005
+                ],
+                "volume_mm3": 272.00000000001825,
+                "scalar_dofs": 26806,
+                "iterations": 815,
+                "cells": 2378,
+                "load_area_mm2": 11.999999999999963
+              },
+              "relative_to_h2_geometry_and_loading": {
+                "volume_mm3": 6.394884621840881e-14,
+                "load_area_mm2": 0.0,
+                "applied_resultant_n": 0.0,
+                "applied_moment_n_mm": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "round": 5,
+          "leaves": [
+            1186,
+            2378
+          ],
+          "field": {
+            "levels": [
+              {
+                "n_per_box_scramble": 128,
+                "energy_distance": 0.048353197776590764,
+                "l2_distance": 0.000424608241354737,
+                "empirical_half_width_95": [
+                  0.002230082363093027,
+                  6.683425911164036e-06
+                ],
+                "relative_energy_recovery": [
+                  -0.029529667180252073,
+                  -0.027974165237041437
+                ]
+              },
+              {
+                "n_per_box_scramble": 512,
+                "energy_distance": 0.05845645413799774,
+                "l2_distance": 0.0004228732742494315,
+                "empirical_half_width_95": [
+                  0.004624660076094926,
+                  2.292795652641344e-06
+                ],
+                "relative_energy_recovery": [
+                  -0.006076245994006579,
+                  -0.008978852253106018
+                ]
+              },
+              {
+                "n_per_box_scramble": 2048,
+                "energy_distance": 0.07917005310575664,
+                "l2_distance": 0.00042266986874596625,
+                "empirical_half_width_95": [
+                  0.01756099326376509,
+                  1.8850498140275333e-06
+                ],
+                "relative_energy_recovery": [
+                  0.006625126884958643,
+                  -0.00039089272309156264
+                ]
+              }
+            ],
+            "checks": {
+              "energy": false,
+              "work": true,
+              "recovery": true,
+              "energy_distance_stable": false,
+              "l2_distance_stable": true
+            },
+            "qualified": false,
+            "work_n_mm": [
+              0.0633264839720665,
+              0.06333334427064201
+            ]
+          },
+          "marking": [
+            {
+              "selected": 138,
+              "captured_indicator_fraction": 0.5011253955487744,
+              "integrated_difference_n_mm": 0.00010307534337631357,
+              "largest_leaf_fraction": 0.1954954807566335
+            },
+            {
+              "selected": 256,
+              "captured_indicator_fraction": 0.46550324435870133,
+              "integrated_difference_n_mm": 0.00010307534337631357,
+              "largest_leaf_fraction": 0.1954954807566335
+            }
+          ],
+          "next_solves": [
+            {
+              "status": "completed",
+              "exit_code": 0,
+              "elapsed_s": 9.212566499016248,
+              "tree_peak_rss_kib": 310552,
+              "compact": {
+                "status": "completed",
+                "exit_code": 0,
+                "elapsed_s": 0.7567715279874392,
+                "tree_peak_rss_kib": 105900
+              },
+              "physical": {
+                "strain_energy_n_mm": 0.031708089528808624,
+                "external_work_n_mm": 0.06341617905761407,
+                "relative_residual": 9.854554942433823e-11,
+                "relative_force_balance": 3.659560680618458e-12,
+                "relative_moment_balance": 1.7907484739307783e-12,
+                "applied_resultant_n": [
+                  23.99999999999966,
+                  -11.99999999999983,
+                  5.999999999999915
+                ],
+                "applied_moment_n_mm": [
+                  32.99999999999998,
+                  -24,
+                  -180.00000000000045
+                ],
+                "volume_mm3": 271.9999999998294,
+                "scalar_dofs": 27112,
+                "iterations": 524,
+                "cells": 2397,
+                "load_area_mm2": 11.99999999999983
+              },
+              "relative_to_h2_geometry_and_loading": {
+                "volume_mm3": 6.679101716144669e-13,
+                "load_area_mm2": 1.1250259982868286e-14,
+                "applied_resultant_n": 1.1250259982868286e-14,
+                "applied_moment_n_mm": 4.928208197470345e-15
+              }
+            },
+            {
+              "status": "completed",
+              "exit_code": 0,
+              "elapsed_s": 29.30044172500493,
+              "tree_peak_rss_kib": 572960,
+              "compact": {
+                "status": "completed",
+                "exit_code": 0,
+                "elapsed_s": 1.2100674450048245,
+                "tree_peak_rss_kib": 200228
+              },
+              "physical": {
+                "strain_energy_n_mm": 0.03169553559716304,
+                "external_work_n_mm": 0.06339107119434179,
+                "relative_residual": 9.977257339179252e-11,
+                "relative_force_balance": 2.8776026935247216e-12,
+                "relative_moment_balance": 2.140275507202705e-12,
+                "applied_resultant_n": [
+                  24.00000000000038,
+                  -12.00000000000019,
+                  6.000000000000095
+                ],
+                "applied_moment_n_mm": [
+                  32.99999999999996,
+                  -23.99999999999999,
+                  -180.00000000000006
+                ],
+                "volume_mm3": 272.00000000002353,
+                "scalar_dofs": 51744,
+                "iterations": 1018,
+                "cells": 4520,
+                "load_area_mm2": 12.00000000000019
+              },
+              "relative_to_h2_geometry_and_loading": {
+                "volume_mm3": 8.338427987302326e-14,
+                "load_area_mm2": 1.8947806286936064e-14,
+                "applied_resultant_n": 1.8947806286936064e-14,
+                "applied_moment_n_mm": 2.4750378472083673e-15
+              }
+            }
+          ]
+        },
+        {
+          "round": 6,
+          "leaves": [
+            2397,
+            4520
+          ],
+          "field": {
+            "levels": [
+              {
+                "n_per_box_scramble": 128,
+                "energy_distance": 0.03481315014191935,
+                "l2_distance": 0.0005853309490978465,
+                "empirical_half_width_95": [
+                  0.0028661525786495144,
+                  4.920058190638833e-06
+                ],
+                "relative_energy_recovery": [
+                  -0.029768723455118384,
+                  -0.029720502548911343
+                ]
+              },
+              {
+                "n_per_box_scramble": 512,
+                "energy_distance": 0.041450608205003694,
+                "l2_distance": 0.0005834499340831188,
+                "empirical_half_width_95": [
+                  0.0050443464923950534,
+                  2.2747718526419868e-06
+                ],
+                "relative_energy_recovery": [
+                  -0.007880848836453902,
+                  -0.009004912825890998
+                ]
+              },
+              {
+                "n_per_box_scramble": 2048,
+                "energy_distance": 0.06572575794998624,
+                "l2_distance": 0.0005842795115792629,
+                "empirical_half_width_95": [
+                  0.0203803707031475,
+                  1.2516455505242019e-06
+                ],
+                "relative_energy_recovery": [
+                  0.005937294046380437,
+                  -0.00021615015720077846
+                ]
+              }
+            ],
+            "checks": {
+              "energy": false,
+              "work": true,
+              "recovery": true,
+              "energy_distance_stable": false,
+              "l2_distance_stable": true
+            },
+            "qualified": false,
+            "work_n_mm": [
+              0.06341617905761407,
+              0.06339107119434179
+            ]
+          }
+        }
+      ],
+      "qualified": false,
+      "training_seed": 503430912,
+      "validation_seed": 20261125,
+      "confirmation_seed": 9031175,
+      "stop": "six_round_budget"
+    },
+    {
+      "case": "two_holes",
+      "rounds": [
+        {
+          "round": 0,
+          "leaves": [
+            1344,
+            2688
+          ],
+          "field": {
+            "levels": [
+              {
+                "n_per_box_scramble": 128,
+                "energy_distance": 0.08088135287231257,
+                "l2_distance": 0.0008334082463792409,
+                "empirical_half_width_95": [
+                  0.003634103092800254,
+                  5.905291807881409e-07
+                ],
+                "relative_energy_recovery": [
+                  -0.0003554724698316969,
+                  -2.420857389451303e-05
+                ]
+              },
+              {
+                "n_per_box_scramble": 512,
+                "energy_distance": 0.08287108464813318,
+                "l2_distance": 0.0008332362105601852,
+                "empirical_half_width_95": [
+                  0.0017276329241496752,
+                  2.0705392774498035e-07
+                ],
+                "relative_energy_recovery": [
+                  -0.0002587840367886951,
+                  -0.0010552110823015548
+                ]
+              },
+              {
+                "n_per_box_scramble": 2048,
+                "energy_distance": 0.08313167898163583,
+                "l2_distance": 0.0008332946600686383,
+                "empirical_half_width_95": [
+                  0.0009953943613172653,
+                  3.3079075125562896e-08
+                ],
+                "relative_energy_recovery": [
+                  -2.197946878013113e-05,
+                  -0.0002044712339646093
+                ]
+              }
+            ],
+            "checks": {
+              "energy": false,
+              "work": true,
+              "recovery": true,
+              "energy_distance_stable": true,
+              "l2_distance_stable": true
+            },
+            "qualified": false,
+            "work_n_mm": [
+              3.500616028925966,
+              3.4973469604856486
+            ]
+          },
+          "marking": [
+            {
+              "selected": 34,
+              "captured_indicator_fraction": 0.5047919703364985,
+              "integrated_difference_n_mm": 0.01230346130834523,
+              "largest_leaf_fraction": 0.02907338209074989
+            },
+            {
+              "selected": 40,
+              "captured_indicator_fraction": 0.506337656822803,
+              "integrated_difference_n_mm": 0.012303461308345233,
+              "largest_leaf_fraction": 0.03556681565095591
+            }
+          ],
+          "next_solves": [
+            {
+              "status": "completed",
+              "exit_code": 0,
+              "elapsed_s": 8.754254830011632,
+              "tree_peak_rss_kib": 140416,
+              "compact": {
+                "status": "completed",
+                "exit_code": 0,
+                "elapsed_s": 0.45343598898034543,
+                "tree_peak_rss_kib": 75252
+              },
+              "physical": {
+                "strain_energy_n_mm": 1.7530615127925304,
+                "external_work_n_mm": 3.5061230255846363,
+                "relative_residual": 9.306507350521809e-11,
+                "relative_force_balance": 2.0786523471482003e-12,
+                "relative_moment_balance": 2.0123921665087112e-12,
+                "applied_resultant_n": [
+                  191.99999999999875,
+                  -95.99999999999937,
+                  47.99999999999969
+                ],
+                "applied_moment_n_mm": [
+                  191.9999999999999,
+                  -384.0000000000021,
+                  -1535.9999999999984
+                ],
+                "volume_mm3": 2639.999999999851,
+                "scalar_dofs": 16668,
+                "iterations": 925,
+                "cells": 1582,
+                "load_area_mm2": 95.99999999999937
+              },
+              "relative_to_h2_geometry_and_loading": {
+                "volume_mm3": 8.45761171535172e-14,
+                "load_area_mm2": 0.0,
+                "applied_resultant_n": 0.0,
+                "applied_moment_n_mm": 0.0
+              }
+            },
+            {
+              "status": "completed",
+              "exit_code": 0,
+              "elapsed_s": 28.850269276998006,
+              "tree_peak_rss_kib": 360620,
+              "compact": {
+                "status": "completed",
+                "exit_code": 0,
+                "elapsed_s": 0.7549671250162646,
+                "tree_peak_rss_kib": 118152
+              },
+              "physical": {
+                "strain_energy_n_mm": 1.7520227392575958,
+                "external_work_n_mm": 3.5040454785237074,
+                "relative_residual": 7.255155137812023e-11,
+                "relative_force_balance": 3.0761758475452066e-12,
+                "relative_moment_balance": 1.4276621758750384e-12,
+                "applied_resultant_n": [
+                  191.9999999999994,
+                  -95.9999999999997,
+                  47.99999999999985
+                ],
+                "applied_moment_n_mm": [
+                  192.00000000000006,
+                  -384.00000000000034,
+                  -1535.999999999999
+                ],
+                "volume_mm3": 2639.9999999999595,
+                "scalar_dofs": 28962,
+                "iterations": 1796,
+                "cells": 2968,
+                "load_area_mm2": 95.9999999999997
+              },
+              "relative_to_h2_geometry_and_loading": {
+                "volume_mm3": 4.823077963947444e-15,
+                "load_area_mm2": 0.0,
+                "applied_resultant_n": 0.0,
+                "applied_moment_n_mm": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "round": 1,
+          "leaves": [
+            1582,
+            2968
+          ],
+          "field": {
+            "levels": [
+              {
+                "n_per_box_scramble": 128,
+                "energy_distance": 0.07260411708354944,
+                "l2_distance": 0.000438381535313655,
+                "empirical_half_width_95": [
+                  0.006954395640220375,
+                  6.498404826074917e-07
+                ],
+                "relative_energy_recovery": [
+                  -0.0007588701552150301,
+                  0.00014114650826946296
+                ]
+              },
+              {
+                "n_per_box_scramble": 512,
+                "energy_distance": 0.07282751088570605,
+                "l2_distance": 0.0004383236567280487,
+                "empirical_half_width_95": [
+                  0.0031030734357509484,
+                  1.9115163893668932e-07
+                ],
+                "relative_energy_recovery": [
+                  -0.00030906486664294963,
+                  -0.00041140018054730554
+                ]
+              },
+              {
+                "n_per_box_scramble": 2048,
+                "energy_distance": 0.07335524091916881,
+                "l2_distance": 0.00043846454174315745,
+                "empirical_half_width_95": [
+                  0.0012610731171668315,
+                  4.5156308403804227e-08
+                ],
+                "relative_energy_recovery": [
+                  -0.0002408577066769224,
+                  -0.0003960264054629903
+                ]
+              }
+            ],
+            "checks": {
+              "energy": false,
+              "work": true,
+              "recovery": true,
+              "energy_distance_stable": true,
+              "l2_distance_stable": true
+            },
+            "qualified": false,
+            "work_n_mm": [
+              3.5061230255846363,
+              3.5040454785237074
+            ]
+          },
+          "marking": [
+            {
+              "selected": 73,
+              "captured_indicator_fraction": 0.5003197290791936,
+              "integrated_difference_n_mm": 0.009443796612079197,
+              "largest_leaf_fraction": 0.023203539264805607
+            },
+            {
+              "selected": 91,
+              "captured_indicator_fraction": 0.50252199520126,
+              "integrated_difference_n_mm": 0.009443796612079197,
+              "largest_leaf_fraction": 0.022785124010392527
+            }
+          ],
+          "next_solves": [
+            {
+              "status": "completed",
+              "exit_code": 0,
+              "elapsed_s": 12.826560063986108,
+              "tree_peak_rss_kib": 230092,
+              "compact": {
+                "status": "completed",
+                "exit_code": 0,
+                "elapsed_s": 0.6052243789890781,
+                "tree_peak_rss_kib": 98612
+              },
+              "physical": {
+                "strain_energy_n_mm": 1.755690630743505,
+                "external_work_n_mm": 3.5113812614886597,
+                "relative_residual": 7.246716103837746e-11,
+                "relative_force_balance": 1.0150445384315024e-12,
+                "relative_moment_balance": 3.34908138135463e-13,
+                "applied_resultant_n": [
+                  191.99999999999875,
+                  -95.99999999999937,
+                  47.99999999999969
+                ],
+                "applied_moment_n_mm": [
+                  191.9999999999999,
+                  -384.0000000000021,
+                  -1535.9999999999984
+                ],
+                "volume_mm3": 2639.9999999999386,
+                "scalar_dofs": 23608,
+                "iterations": 976,
+                "cells": 2121,
+                "load_area_mm2": 95.99999999999937
+              },
+              "relative_to_h2_geometry_and_loading": {
+                "volume_mm3": 1.1782090454787322e-13,
+                "load_area_mm2": 0.0,
+                "applied_resultant_n": 0.0,
+                "applied_moment_n_mm": 0.0
+              }
+            },
+            {
+              "status": "completed",
+              "exit_code": 0,
+              "elapsed_s": 37.601201730023604,
+              "tree_peak_rss_kib": 444492,
+              "compact": {
+                "status": "completed",
+                "exit_code": 0,
+                "elapsed_s": 0.9064033530303277,
+                "tree_peak_rss_kib": 147104
+              },
+              "physical": {
+                "strain_energy_n_mm": 1.7545385307338561,
+                "external_work_n_mm": 3.509077061467696,
+                "relative_residual": 9.76154269224776e-11,
+                "relative_force_balance": 2.619725251764879e-12,
+                "relative_moment_balance": 2.49090196285294e-12,
+                "applied_resultant_n": [
+                  191.9999999999994,
+                  -95.9999999999997,
+                  47.99999999999985
+                ],
+                "applied_moment_n_mm": [
+                  192.00000000000006,
+                  -384.00000000000034,
+                  -1535.999999999999
+                ],
+                "volume_mm3": 2640.0000000000095,
+                "scalar_dofs": 37928,
+                "iterations": 1846,
+                "cells": 3654,
+                "load_area_mm2": 95.9999999999997
+              },
+              "relative_to_h2_geometry_and_loading": {
+                "volume_mm3": 2.377088425088383e-14,
+                "load_area_mm2": 0.0,
+                "applied_resultant_n": 0.0,
+                "applied_moment_n_mm": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "round": 2,
+          "leaves": [
+            2121,
+            3654
+          ],
+          "field": {
+            "levels": [
+              {
+                "n_per_box_scramble": 128,
+                "energy_distance": 0.06186157609875782,
+                "l2_distance": 0.0004020460732882921,
+                "empirical_half_width_95": [
+                  0.005801803216072307,
+                  4.069635673977111e-07
+                ],
+                "relative_energy_recovery": [
+                  -0.00041382572053516586,
+                  0.00023974075630173175
+                ]
+              },
+              {
+                "n_per_box_scramble": 512,
+                "energy_distance": 0.06154945338239808,
+                "l2_distance": 0.00040200895842792977,
+                "empirical_half_width_95": [
+                  0.002100420743008659,
+                  1.393203387964004e-07
+                ],
+                "relative_energy_recovery": [
+                  -0.000582280654237155,
+                  -0.00048512547154777597
+                ]
+              },
+              {
+                "n_per_box_scramble": 2048,
+                "energy_distance": 0.06287210851999042,
+                "l2_distance": 0.0004020158814178888,
+                "empirical_half_width_95": [
+                  0.0009331405967543602,
+                  4.493403616257689e-08
+                ],
+                "relative_energy_recovery": [
+                  -0.000189017630297883,
+                  -0.0002748030880472818
+                ]
+              }
+            ],
+            "checks": {
+              "energy": false,
+              "work": true,
+              "recovery": true,
+              "energy_distance_stable": true,
+              "l2_distance_stable": true
+            },
+            "qualified": false,
+            "work_n_mm": [
+              3.5113812614886597,
+              3.509077061467696
+            ]
+          },
+          "marking": [
+            {
+              "selected": 138,
+              "captured_indicator_fraction": 0.5001600817986338,
+              "integrated_difference_n_mm": 0.006921892492966538,
+              "largest_leaf_fraction": 0.04850427544660977
+            },
+            {
+              "selected": 173,
+              "captured_indicator_fraction": 0.5004221894324719,
+              "integrated_difference_n_mm": 0.006921892492966538,
+              "largest_leaf_fraction": 0.04850427544660977
+            }
+          ],
+          "next_solves": [
+            {
+              "status": "completed",
+              "exit_code": 0,
+              "elapsed_s": 20.840519918012433,
+              "tree_peak_rss_kib": 360048,
+              "compact": {
+                "status": "completed",
+                "exit_code": 0,
+                "elapsed_s": 0.9077744969981723,
+                "tree_peak_rss_kib": 138628
+              },
+              "physical": {
+                "strain_energy_n_mm": 1.7573106457241654,
+                "external_work_n_mm": 3.514621291449108,
+                "relative_residual": 9.93290154121997e-11,
+                "relative_force_balance": 1.7938345612855683e-12,
+                "relative_moment_balance": 1.336865374070168e-12,
+                "applied_resultant_n": [
+                  192.00000000000057,
+                  -96.00000000000028,
+                  48.00000000000014
+                ],
+                "applied_moment_n_mm": [
+                  191.99999999999997,
+                  -384.00000000000153,
+                  -1536.000000000002
+                ],
+                "volume_mm3": 2639.9999999999936,
+                "scalar_dofs": 36914,
+                "iterations": 1048,
+                "cells": 3178,
+                "load_area_mm2": 96.00000000000028
+              },
+              "relative_to_h2_geometry_and_loading": {
+                "volume_mm3": 1.3866349146350578e-13,
+                "load_area_mm2": 9.473903143468063e-15,
+                "applied_resultant_n": 9.473903143468063e-15,
+                "applied_moment_n_mm": 2.3093436531717477e-15
+              }
+            },
+            {
+              "status": "completed",
+              "exit_code": 0,
+              "elapsed_s": 56.474123709020205,
+              "tree_peak_rss_kib": 612176,
+              "compact": {
+                "status": "completed",
+                "exit_code": 0,
+                "elapsed_s": 1.2102433649706654,
+                "tree_peak_rss_kib": 207804
+              },
+              "physical": {
+                "strain_energy_n_mm": 1.7565680407660655,
+                "external_work_n_mm": 3.5131360815311083,
+                "relative_residual": 9.861847040084473e-11,
+                "relative_force_balance": 2.9211134137699438e-12,
+                "relative_moment_balance": 1.9762511678226096e-12,
+                "applied_resultant_n": [
+                  192.00000000000122,
+                  -96.00000000000061,
+                  48.000000000000306
+                ],
+                "applied_moment_n_mm": [
+                  191.99999999999997,
+                  -384.0000000000001,
+                  -1535.9999999999986
+                ],
+                "volume_mm3": 2640.000000000106,
+                "scalar_dofs": 56309,
+                "iterations": 1949,
+                "cells": 5117,
+                "load_area_mm2": 96.00000000000061
+              },
+              "relative_to_h2_geometry_and_loading": {
+                "volume_mm3": 6.028847454934306e-14,
+                "load_area_mm2": 9.473903143468032e-15,
+                "applied_resultant_n": 9.473903143468032e-15,
+                "applied_moment_n_mm": 3.232379695375687e-16
+              }
+            }
+          ]
+        },
+        {
+          "round": 3,
+          "leaves": [
+            3178,
+            5117
+          ],
+          "field": {
+            "levels": [
+              {
+                "n_per_box_scramble": 128,
+                "energy_distance": 0.05430549389966501,
+                "l2_distance": 0.0002603317659925104,
+                "empirical_half_width_95": [
+                  0.011925140360079571,
+                  3.16636785773975e-07
+                ],
+                "relative_energy_recovery": [
+                  -0.0003248003438655056,
+                  0.000912899664469613
+                ]
+              },
+              {
+                "n_per_box_scramble": 512,
+                "energy_distance": 0.05199904412587936,
+                "l2_distance": 0.00026038596846098125,
+                "empirical_half_width_95": [
+                  0.0032027631353803536,
+                  1.0786998464025405e-07
+                ],
+                "relative_energy_recovery": [
+                  -0.0009238552677807155,
+                  -0.0005236349503214832
+                ]
+              },
+              {
+                "n_per_box_scramble": 2048,
+                "energy_distance": 0.05339152292639415,
+                "l2_distance": 0.00026036195616301505,
+                "empirical_half_width_95": [
+                  0.0015229705583934647,
+                  3.114050281570815e-08
+                ],
+                "relative_energy_recovery": [
+                  -0.00022018254554012628,
+                  -0.0002357043677093662
+                ]
+              }
+            ],
+            "checks": {
+              "energy": false,
+              "work": true,
+              "recovery": true,
+              "energy_distance_stable": true,
+              "l2_distance_stable": true
+            },
+            "qualified": false,
+            "work_n_mm": [
+              3.514621291449108,
+              3.5131360815311083
+            ]
+          },
+          "marking": [
+            {
+              "selected": 172,
+              "captured_indicator_fraction": 0.5007396717584333,
+              "integrated_difference_n_mm": 0.004953441399042481,
+              "largest_leaf_fraction": 0.12957046009473044
+            },
+            {
+              "selected": 229,
+              "captured_indicator_fraction": 0.5005046594213526,
+              "integrated_difference_n_mm": 0.004953441399042481,
+              "largest_leaf_fraction": 0.12957046009473044
+            }
+          ],
+          "next_solves": [
+            {
+              "status": "completed",
+              "exit_code": 0,
+              "elapsed_s": 34.28385410300689,
+              "tree_peak_rss_kib": 634860,
+              "compact": {
+                "status": "completed",
+                "exit_code": 0,
+                "elapsed_s": 1.2136458089808002,
+                "tree_peak_rss_kib": 200016
+              },
+              "physical": {
+                "strain_energy_n_mm": 1.7583532202390895,
+                "external_work_n_mm": 3.516706440479001,
+                "relative_residual": 9.748906837840607e-11,
+                "relative_force_balance": 2.305440819661096e-12,
+                "relative_moment_balance": 5.530606155049496e-13,
+                "applied_resultant_n": [
+                  192.00000000000057,
+                  -96.00000000000028,
+                  48.00000000000014
+                ],
+                "applied_moment_n_mm": [
+                  191.99999999999997,
+                  -384.00000000000153,
+                  -1536.000000000002
+                ],
+                "volume_mm3": 2640.000000000939,
+                "scalar_dofs": 56954,
+                "iterations": 1140,
+                "cells": 4788,
+                "load_area_mm2": 96.00000000000028
+              },
+              "relative_to_h2_geometry_and_loading": {
+                "volume_mm3": 4.967770302866468e-13,
+                "load_area_mm2": 9.473903143468063e-15,
+                "applied_resultant_n": 9.473903143468063e-15,
+                "applied_moment_n_mm": 2.3093436531717477e-15
+              }
+            },
+            {
+              "status": "completed",
+              "exit_code": 0,
+              "elapsed_s": 99.15321527799824,
+              "tree_peak_rss_kib": 982736,
+              "compact": {
+                "status": "completed",
+                "exit_code": 0,
+                "elapsed_s": 1.8168909450178035,
+                "tree_peak_rss_kib": 317984
+              },
+              "physical": {
+                "strain_energy_n_mm": 1.7577382826752355,
+                "external_work_n_mm": 3.51547656535324,
+                "relative_residual": 9.907382152403168e-11,
+                "relative_force_balance": 8.374981773391557e-12,
+                "relative_moment_balance": 1.7184044120021497e-12,
+                "applied_resultant_n": [
+                  192.00000000000122,
+                  -96.00000000000061,
+                  48.000000000000306
+                ],
+                "applied_moment_n_mm": [
+                  191.99999999999997,
+                  -384.0000000000001,
+                  -1535.9999999999986
+                ],
+                "volume_mm3": 2639.9999999998977,
+                "scalar_dofs": 88417,
+                "iterations": 2083,
+                "cells": 7686,
+                "load_area_mm2": 96.00000000000061
+              },
+              "relative_to_h2_geometry_and_loading": {
+                "volume_mm3": 1.8603300718083e-14,
+                "load_area_mm2": 9.473903143468032e-15,
+                "applied_resultant_n": 9.473903143468032e-15,
+                "applied_moment_n_mm": 3.232379695375687e-16
+              }
+            }
+          ]
+        },
+        {
+          "round": 4,
+          "leaves": [
+            4788,
+            7686
+          ],
+          "field": {
+            "levels": [
+              {
+                "n_per_box_scramble": 128,
+                "energy_distance": 0.0465339259415596,
+                "l2_distance": 0.00023365245603763007,
+                "empirical_half_width_95": [
+                  0.01278624724018577,
+                  2.992293146441357e-07
+                ],
+                "relative_energy_recovery": [
+                  -0.0008813158120315467,
+                  0.0010911137172120444
+                ]
+              },
+              {
+                "n_per_box_scramble": 512,
+                "energy_distance": 0.04388547023862595,
+                "l2_distance": 0.00023357817118092544,
+                "empirical_half_width_95": [
+                  0.0038576478700356703,
+                  5.760495589956442e-08
+                ],
+                "relative_energy_recovery": [
+                  -0.0011063998148963528,
+                  -0.0006765175158323089
+                ]
+              },
+              {
+                "n_per_box_scramble": 2048,
+                "energy_distance": 0.044719132952429894,
+                "l2_distance": 0.00023356332291228833,
+                "empirical_half_width_95": [
+                  0.001507307847544889,
+                  1.1280334685454978e-08
+                ],
+                "relative_energy_recovery": [
+                  -0.0001417449586493813,
+                  -0.0003203818546384518
+                ]
+              }
+            ],
+            "checks": {
+              "energy": true,
+              "work": true,
+              "recovery": true,
+              "energy_distance_stable": true,
+              "l2_distance_stable": true
+            },
+            "qualified": true,
+            "work_n_mm": [
+              3.516706440479001,
+              3.51547656535324
+            ]
+          },
+          "confirmation": {
+            "levels": [
+              {
+                "n_per_box_scramble": 512,
+                "energy_distance": 0.04462405881559541,
+                "l2_distance": 0.0002335631665501329,
+                "empirical_half_width_95": [
+                  0.003657042082984405,
+                  9.212936539039214e-08
+                ],
+                "relative_energy_recovery": [
+                  -1.7166145012903478e-05,
+                  0.00037724189409926723
+                ]
+              },
+              {
+                "n_per_box_scramble": 2048,
+                "energy_distance": 0.04622233739473618,
+                "l2_distance": 0.00023356926423076288,
+                "empirical_half_width_95": [
+                  0.002462876539397735,
+                  2.7341628438327323e-08
+                ],
+                "relative_energy_recovery": [
+                  4.52014288252478e-05,
+                  0.0005800128392918769
+                ]
+              },
+              {
+                "n_per_box_scramble": 8192,
+                "energy_distance": 0.046422570193266954,
+                "l2_distance": 0.00023356026638457196,
+                "empirical_half_width_95": [
+                  0.0010098044694214208,
+                  6.249560985668707e-09
+                ],
+                "relative_energy_recovery": [
+                  -7.228506687462222e-05,
+                  0.00012904221592391352
+                ]
+              }
+            ],
+            "checks": {
+              "energy": true,
+              "work": true,
+              "recovery": true,
+              "energy_distance_stable": true,
+              "l2_distance_stable": true
+            },
+            "qualified": true,
+            "work_n_mm": [
+              3.516706440479001,
+              3.51547656535324
+            ]
+          }
+        }
+      ],
+      "qualified": true,
+      "training_seed": 503430912,
+      "validation_seed": 20261125,
+      "confirmation_seed": 9031175,
+      "stop": "confirmed"
+    }
+  ],
+  "elapsed_s": 493.09343536401866
+}

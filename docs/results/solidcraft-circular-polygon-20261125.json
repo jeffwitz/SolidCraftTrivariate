@@ -1,0 +1,112 @@
+{
+  "lot": "SC6",
+  "starting_revision": "e6b9979d59990426cafe58d8ece628f16f424a35",
+  "host": {
+    "solidcraft_cli": "0.48.1",
+    "history_format": "solidcraft/66",
+    "freecad": "26.3.0devR48429",
+    "oracle": "FreeCAD Part STEP re-open, analytic volume, mass properties, boolean symmetric difference and point classification"
+  },
+  "commands": [
+    "rtk cargo check --locked --offline",
+    "rtk cargo test --locked --offline --test solidcraft_circular_polygon -- --nocapture",
+    "rtk cargo clippy --locked --offline --test solidcraft_circular_polygon -- -D warnings",
+    "rtk cargo test --locked --offline --test solidcraft_polygon -- --nocapture",
+    "rtk python3 tests/references/solidcraft_timeline.py"
+  ],
+  "acceptance": {
+    "volume_difference_mm3": 1e-8,
+    "surface_area_difference_mm2": 1e-8,
+    "centroid_difference_mm": 1e-9,
+    "symmetric_difference_volume_mm3": 1e-8
+  },
+  "cases": [
+    {
+      "name": "one-hole square",
+      "outer_area_mm2": 9216,
+      "radii_mm": [6],
+      "height_mm": 8,
+      "analytic_volume_mm3": 72823.22131576615,
+      "host_volume_mm3": 72823.22131576613,
+      "host_native_volume_difference_mm3": 2.939486876130104e-9,
+      "host_native_area_difference_mm2": 2.219167072325945e-9,
+      "centroid_difference_mm": 1.3143669092478865e-15,
+      "host_minus_native_volume_mm3": 0,
+      "native_minus_host_volume_mm3": 0,
+      "point_classifications": 3,
+      "result": "pass"
+    },
+    {
+      "name": "two-hole square",
+      "outer_area_mm2": 9216,
+      "radii_mm": [4, 4],
+      "height_mm": 8,
+      "analytic_volume_mm3": 72923.75228068102,
+      "host_volume_mm3": 72923.752280681,
+      "host_native_volume_difference_mm3": 2.6193447411060333e-9,
+      "host_native_area_difference_mm2": 1.979060471057892e-9,
+      "centroid_difference_mm": 9.586417485632896e-15,
+      "host_minus_native_volume_mm3": 0,
+      "native_minus_host_volume_mm3": 0,
+      "point_classifications": 4,
+      "result": "pass"
+    },
+    {
+      "name": "four-hole square",
+      "outer_area_mm2": 9216,
+      "radii_mm": [3, 3, 3, 3],
+      "height_mm": 8,
+      "analytic_volume_mm3": 72823.22131576615,
+      "host_volume_mm3": 72823.22131576613,
+      "host_native_volume_difference_mm3": 2.8230715543031693e-9,
+      "host_native_area_difference_mm2": 2.2228050511330366e-9,
+      "centroid_difference_mm": 1.4517553661796854e-14,
+      "host_minus_native_volume_mm3": 0,
+      "native_minus_host_volume_mm3": 0,
+      "point_classifications": 6,
+      "result": "pass"
+    },
+    {
+      "name": "one-hole concave L polygon",
+      "outer_area_mm2": 5760,
+      "radii_mm": [4],
+      "height_mm": 8,
+      "analytic_volume_mm3": 45677.87614034051,
+      "host_volume_mm3": 45677.8761403405,
+      "host_native_volume_difference_mm3": 1.3169483281672e-9,
+      "host_native_area_difference_mm2": 9.89530235528946e-10,
+      "centroid_difference_mm": 2.8437803107771396e-13,
+      "host_minus_native_volume_mm3": 0,
+      "native_minus_host_volume_mm3": 0,
+      "point_classifications": 3,
+      "result": "pass"
+    }
+  ],
+  "refusals": [
+    {
+      "mutation": "change real host circle radius from 6.0 mm to 6.5 mm",
+      "reason": "SC6 supports only exact integral millimetre radii",
+      "atomic_output_preserved": true
+    }
+  ],
+  "coverage": {
+    "valid_host_cases": 4,
+    "valid_host_cases_refused_by_g20": 0,
+    "malformed_mutations_rejected": 1,
+    "g20_audit_corpus": "all admitted frozen recipes pass the independent exact-circle/Jacobian/trace audit; constructor refusals remain expected",
+    "legacy_sc2_sc5_replay": {
+      "sc2_cases": 5,
+      "sc2_invalid_cases": 7,
+      "sc2_byte_parity": "pass",
+      "sc2_elapsed_s": 0.25609353597974405,
+      "sc5_host_step_cases": 3,
+      "sc5_refusal_mutation": "pass",
+      "sc5_result": "pass"
+    }
+  },
+  "limits": [
+    "Only the frozen two-feature XY sketch plus positive extrusion subset is imported.",
+    "All four accepted host geometries are independent bounded differential examples, not a universal proof for arbitrary polygons.",
+    "Exact circular boundary certification remains the named G20 template audit; these STEP comparisons are differential evidence, not a replacement for that certificate."
+  ]
+}

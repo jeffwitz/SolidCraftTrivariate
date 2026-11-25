@@ -174,6 +174,12 @@ pub fn import_script(script: &Json) -> Result<Json, &'static str> {
                     .and_then(|feature| feature.field("type").ok())
                     .and_then(|value| value.text().ok());
                 if commands.len() == 2 && second_type == Some("extrude") {
+                    let sketch = first.field("params")?.field("feature")?.field("sketch")?;
+                    if sketch.field("curves")?.items()?.iter().any(|curve| {
+                        curve.field("type").and_then(Json::text) == Ok("circle")
+                    }) {
+                        return crate::solidcraft_circular_polygon::import_circular_polygon_timeline(script);
+                    }
                     return crate::solidcraft_polygon::import_polygon_timeline(script);
                 }
             }

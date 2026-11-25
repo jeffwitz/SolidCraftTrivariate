@@ -165,18 +165,8 @@ fn plan(p: &Partition) -> Json {
             ])
         })
         .collect();
-    object([
-        (
-            "method",
-            Json::String(
-                if p.rectangular_grid {
-                    "orthogonal_feature_footprint"
-                } else {
-                    "triangulated_feature_footprint"
-                }
-                .into(),
-            ),
-        ),
+    let mut result = object([
+        ("method", Json::String(p.method.into())),
         ("vertices_mm", Json::Array(vertices)),
         ("edges", Json::Array(edges)),
         ("bounded_faces", Json::Array(faces)),
@@ -185,7 +175,33 @@ fn plan(p: &Partition) -> Json {
             Json::Array(p.generated_levels.iter().map(n).collect()),
         ),
         ("layers", Json::Array(layers)),
-    ])
+    ]);
+    if let Some((baseline_valid, baseline_blocks, guided_valid, guided_blocks)) =
+        p.candidate_comparison
+    {
+        if let Json::Object(fields) = &mut result {
+            fields.insert(
+                "candidate_comparison".into(),
+                object([
+                    (
+                        "baseline",
+                        object([
+                            ("valid_certificate", Json::Bool(baseline_valid)),
+                            ("blocks", n(baseline_blocks)),
+                        ]),
+                    ),
+                    (
+                        "guided",
+                        object([
+                            ("valid_certificate", Json::Bool(guided_valid)),
+                            ("blocks", n(guided_blocks)),
+                        ]),
+                    ),
+                ]),
+            );
+        }
+    }
+    result
 }
 pub(crate) fn build(recipe: &Json) -> Result<Json, &'static str> {
     let p = partition(&parse(recipe, false)?)?;
@@ -211,14 +227,22 @@ pub(crate) fn build(recipe: &Json) -> Result<Json, &'static str> {
 }
 pub(crate) fn audit(model: &Json) -> Result<Json, &'static str> {
     let job = parse(model, true)?;
-    let p = partition(&job)?;
-    if decode_blocks(model)? != p.blocks
-        || model.field("topology")? != &topology(&p.certificate.incidence)
-        || model.field("design_faces")? != &design(&p.certificate)
-        || model.field("partition_plan")? != &plan(&p)
-    {
-        return Err("sketch_partition_replay_mismatch");
-    }
+    let replay = |p: &Partition| -> Result<bool, &'static str> {
+        Ok(decode_blocks(model)? == p.blocks
+            && model.field("topology")? == &topology(&p.certificate.incidence)
+            && model.field("design_faces")? == &design(&p.certificate)
+            && model.field("partition_plan")? == &plan(p))
+    };
+    let p = match partition(&job) {
+        Ok(p) if replay(&p)? => p,
+        _ => {
+            let legacy = crate::sketch_layers::partition_legacy(&job)?;
+            if !replay(&legacy)? {
+                return Err("sketch_partition_replay_mismatch");
+            }
+            legacy
+        }
+    };
     Ok(object([
         ("status", Json::String("valid".into())),
         ("method", Json::String(METHOD.into())),
@@ -234,4 +258,33 @@ pub(crate) fn audit(model: &Json) -> Result<Json, &'static str> {
         ("cavities", n(p.cavities)),
         ("hausdorff_error_upper_bound_mm", n(0)),
     ]))
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn audit_replays_a_model_from_the_pre_guided_partition() {
+        let recipe = crate::json::parse(
+            r#"{"family":"sketch_layer_partition_v1","height_mm":20,"outer":{"id":"body","vertices":[[0,0],[60,0],[60,40],[0,40]]},"cuts":[{"id":"pocket","vertices":[[20,15],[40,15],[40,25],[20,25]],"z_interval_mm":[14,20]}],"construction":[]}"#,
+        )
+        .unwrap();
+        let job = parse(&recipe, false).unwrap();
+        let old = crate::sketch_layers::partition_legacy(&job).unwrap();
+        let mut model = encode(FAMILY, old.blocks.clone(), &old.certificate);
+        if let Json::Object(fields) = &mut model {
+            for key in ["outer", "cuts", "construction", "height_mm"] {
+                fields.insert(key.into(), recipe.field(key).unwrap().clone());
+            }
+            fields.insert("partition_plan".into(), plan(&old));
+        }
+        assert_eq!(old.blocks.len(), 17);
+        let report = audit(&model).unwrap();
+        assert_eq!(report.field("status").unwrap().text().unwrap(), "valid");
+        assert_eq!(
+            report.field("blocks").unwrap().number::<usize>().unwrap(),
+            17
+        );
+    }
 }

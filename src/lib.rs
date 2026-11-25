@@ -133,6 +133,7 @@ pub mod sketch_layers;
 mod sketch_layers_json;
 pub mod sketch_arrangement;
 pub mod sketch_quads;
+mod sketch_quad_separators;
 
 pub mod sketch_bore_chart;
 pub mod sketch_fillet_chart;

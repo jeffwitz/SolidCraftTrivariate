@@ -4,6 +4,22 @@
 
 La crate `solidcraft-trivariate` expose `RationalBezierMap::new` et `evaluate` depuis `src/lib.rs`. Toutes les nouvelles fonctionnalités de production passent par cette crate. Les modèles et les tests Python acquis pendant les premiers lots fournissent des références pour qualifier les portages.
 
+## Planificateur
+
+Le chemin polygonal `sketch_layer_partition_v1` prend un contour de stock, des contours de coupe, les intervalles axiaux matière/vide et les guides explicites de l’esquisse. Dans la stratégie automatique, le constructeur compare des propositions de séparatrices. Il construit les cartes de chaque proposition admise et vérifie l’aire matérielle exacte de chaque couche, la positivité du jacobien sur le fermé et les incidences des faces entières. Il sélectionne ensuite le plus petit nombre de blocs. À égalité, la partition historique conserve la priorité. Le plan sérialisé permet de retrouver la méthode, les segments avec leur provenance et les effectifs des couches. [Construction](../src/sketch_layers.rs) · [Lecture et rejeu du plan](../src/sketch_layers_json.rs)
+
+Une esquisse déjà quadrangulée peut garder ses faces convexes si toutes leurs arêtes coïncident entre voisines. Le plan de la poche relie les quatre coins de l’empreinte à ceux du stock. Sur certains contours simples à nombre pair de sommets, un deuxième procédé détache des quadrilatères convexes le long de diagonales visibles. Il rattache ensuite chaque trou quadrangulaire aux quatre coins de sa cellule d’accueil. Les séparatrices s’arrêtent sur les sommets correspondants. Le procédé est déterministe et peut échouer à trouver une décomposition existante. La grille orthogonale et la triangulation suivie de quadrangulation restent disponibles pour les autres configurations. [Arrangement](../src/sketch_arrangement.rs) · [Conformité des quadrilatères](../src/sketch_quads.rs) · [Diagonales locales](../src/sketch_quad_separators.rs)
+
+Les identifiants de la poche décrivent la paroi et la couche par rapport au fond. Dans les autres partitions guidées, une cellule est identifiée par ses coins rationnels canoniques et son intervalle axial. Ces clés protègent les cellules inchangées contre une renumérotation globale. Une modification de coordonnées peut changer les clés géométriques des cellules incidentes. L’optimisation de la correspondance entre deux plans de topologies différentes et la sélection générale du nombre de cellules incidentes à chaque coin restent ouvertes.
+
+Les opérations à axes croisés et les contours NURBS suivent des chemins dédiés. `import-solidcraft-sketch` lit l’historique de features de l’équerre et construit le modèle depuis ses esquisses. `plan-sketch` explicite les événements d’intersection des profils NURBS pris en charge. Les gabarits spécialisés et les modèles mécaniques fournissent des références de forme, de coût et de conditionnement. La comparaison de la poche et du C utilise des raccords face entière et une partition commune aux couches. Le cas à cinq volumes proposé avec jonctions en T requiert un autre contrat de raccord pour cette famille. [Comparaison et bornes](partition-poche-comparaison.md) · [Chemins de démonstration](../README.md)
+
+### Objectif de sélection et d’édition
+
+Le contrat cible prend comme entrée les contours, le constructeur 3D (extrusion, révolution…) et les traitements prévus. Parmi les candidats qui satisfont la fidélité de forme, la couverture, les raccords et la régularité sur le domaine fermé, il privilégie le plus petit nombre de volumes logiques. Pour une édition, il essaie d’abord la connectivité existante. À nombre de volumes égal, il privilégie la stabilité des identités, puis compare les travées, les points de contrôle et le coût d’analyse. Une extraction de Bézier pour certifier ou intégrer une travée ne crée aucune nouvelle identité de volume de conception.
+
+Chaque gabarit doit annoncer sa classe de topologies, ses hypothèses de régularité et ses règles de placement des nœuds. Pour la révolution d’un profil, le planificateur examine où les coins paramétriques des cartes aboutissent sur le contour après édition. Deux faces extérieures d’une même cellule tensorielle qui se rejoignent sur une peau devenue lisse imposent un déterminant nul sur leur arête commune. Cette obstruction écarte ce candidat précis. Dans ce cas le plan doit documenter la raison du refus avant d’envisager un changement de topologie. Le rapport distingue un candidat admissible, le meilleur candidat testé et un minimum démontré. Cette règle guide le développement du planificateur.
+
 ## Modèle historique des références Python
 
 La recette versionnée est l’intention de construction. `trivariate.build.build(recipe)` produit un modèle candidat en mémoire. `trivariate.audit.audit(model)` prend uniquement ce modèle et reconstruit les coefficients attendus à partir des dimensions déclarées. Le CLI sérialise en JSON après validation, dans un fichier temporaire du même répertoire que la destination. Le renommage est atomique. En cas de deux publications concurrentes valides, la dernière remplace la précédente.
@@ -23,12 +39,6 @@ Pour les largeurs entières positives a,b, les cartes sont (au,v,w) et (a+bu,v,w
 | Adaptateurs | SolidCraft fournit l’intention des features. FieldCraft fournit le corpus et la comparaison EF. Le rendu échantillonne les cartes. |
 
 Le premier raccord courbe porte sur des faces entières. Les côtés ont une orientation explicite, les degrés, nœuds, multiplicités, poids et coefficients homogènes doivent coïncider après réorientation et normalisation commune. Les raccords emboîtés et la frontière partielle relèvent d’une qualification ultérieure.
-
-## Minimiser les volumes dès l’esquisse
-
-Le planificateur prend comme entrée les contours, le constructeur 3D (extrusion, révolution…) et les traitements prévus. Parmi les candidats qui satisfont la fidélité de forme, la couverture, les raccords et la régularité sur le domaine fermé, il privilégie le plus petit nombre de volumes logiques. Pour une édition, il essaie d’abord la connectivité existante. À nombre de volumes égal, il privilégie la stabilité des identités, puis compare les travées, les points de contrôle et le coût d’analyse. Une extraction de Bézier pour certifier ou intégrer une travée ne crée aucune nouvelle identité de volume de conception.
-
-Chaque gabarit doit annoncer sa classe de topologies, ses hypothèses de régularité et ses règles de placement des nœuds. Pour la révolution d’un profil, le planificateur examine où les coins paramétriques des cartes aboutissent sur le contour après édition. Deux faces extérieures d’une même cellule tensorielle qui se rejoignent sur une peau devenue lisse imposent un déterminant nul sur leur arête commune. Cette obstruction écarte ce candidat précis. Le constructeur essaie alors un autre gabarit préparé et enregistre le coût du changement. Le rapport distingue un candidat admissible, le meilleur candidat testé et un minimum démontré. Cette règle guide le développement du planificateur.
 
 ## Références locales
 

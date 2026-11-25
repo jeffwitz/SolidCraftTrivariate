@@ -16,6 +16,7 @@ pub struct SketchLoop {
     pub id: String,
     pub vertices: Vec<[i32; 2]>,
 }
+#[derive(Clone)]
 pub struct SketchLayers {
     pub outer: SketchLoop,
     pub cuts: Vec<(SketchLoop, [i32; 2])>,
@@ -35,13 +36,15 @@ pub struct Partition {
     pub rectangular_grid: bool,
     pub layer_counts: Vec<([i32; 2], usize)>,
     pub generated_levels: Vec<i32>,
+    pub method: &'static str,
+    pub candidate_comparison: Option<(bool, usize, bool, usize)>,
     pub graph: crate::sketch_arrangement::Arrangement,
 }
 
 pub(crate) fn ratio(i: i32) -> Ratio {
     Ratio::new(i128::from(i), 1).expect("integer")
 }
-fn orient(a: [i32; 2], b: [i32; 2], p: [i32; 2]) -> i64 {
+pub(crate) fn orient(a: [i32; 2], b: [i32; 2], p: [i32; 2]) -> i64 {
     i64::from(b[0] - a[0]) * i64::from(p[1] - a[1])
         - i64::from(b[1] - a[1]) * i64::from(p[0] - a[0])
 }
@@ -51,16 +54,18 @@ pub(crate) fn edges(l: &SketchLoop) -> impl Iterator<Item = ([i32; 2], [i32; 2])
         .copied()
         .zip(l.vertices.iter().copied().cycle().skip(1))
 }
-fn hits(a: [i32; 2], b: [i32; 2], c: [i32; 2], d: [i32; 2]) -> bool {
+pub(crate) fn hits(a: [i32; 2], b: [i32; 2], c: [i32; 2], d: [i32; 2]) -> bool {
     (0..2).all(|k| a[k].min(b[k]) <= c[k].max(d[k]) && c[k].min(d[k]) <= a[k].max(b[k]))
         && orient(a, b, c).signum() * orient(a, b, d).signum() <= 0
         && orient(c, d, a).signum() * orient(c, d, b).signum() <= 0
 }
 pub(crate) fn area2(l: &SketchLoop) -> i64 {
+    signed_area2(l).abs()
+}
+pub(crate) fn signed_area2(l: &SketchLoop) -> i64 {
     edges(l)
         .map(|(a, b)| i64::from(a[0]) * i64::from(b[1]) - i64::from(a[1]) * i64::from(b[0]))
         .sum::<i64>()
-        .abs()
 }
 fn cross(a: Point, b: Point, p: Point) -> Result<Ratio, &'static str> {
     b[0].checked_sub(a[0])?
@@ -269,27 +274,11 @@ fn make_block(
 fn graph(
     job: &SketchLayers,
 ) -> Result<(crate::sketch_arrangement::Arrangement, Vec<i32>, bool), &'static str> {
-    let mut lines = Vec::new();
+    let mut lines = crate::sketch_quads::footprint_segments(job);
     let mut levels = BTreeSet::new();
-    for l in std::iter::once(&job.outer).chain(job.cuts.iter().map(|(l, _)| l)) {
-        for (i, (a, b)) in edges(l).enumerate() {
-            lines.push(Segment {
-                id: format!("boundary/{}/{i}", l.id),
-                a: a.map(|x| 2 * x),
-                b: b.map(|x| 2 * x),
-                role: Role::Boundary,
-            });
-        }
-        let ys = l.vertices.iter().map(|p| p[1]);
+    for contour in std::iter::once(&job.outer).chain(job.cuts.iter().map(|(l, _)| l)) {
+        let ys = contour.vertices.iter().map(|p| p[1]);
         levels.insert(ys.clone().min().unwrap() + ys.max().unwrap());
-    }
-    for g in &job.guides {
-        lines.push(Segment {
-            id: format!("guide/{}", g.id),
-            a: g.a.map(|x| 2 * x),
-            b: g.b.map(|x| 2 * x),
-            role: Role::Construction,
-        });
     }
     let mut bounds = [[i32::MAX, i32::MIN]; 2];
     for s in &lines {
@@ -438,9 +427,134 @@ fn connected_voids(
     Ok(cavities)
 }
 
+/// Build the four corner-to-corner separators for a rectangular blind pocket.
+/// The resulting planar graph has four annular quads and one pocket-footprint
+/// quad, so it can be propagated unchanged below the pocket and omitted above it.
+fn rectangular_blind_pocket_guides(job: &SketchLayers) -> Option<SketchLayers> {
+    if job.force_triangulation || !job.guides.is_empty() || job.cuts.len() != 1 {
+        return None;
+    }
+    if job.operations.as_ref().is_some_and(|ops| ops != &[false]) {
+        return None;
+    }
+    let (pocket, z) = &job.cuts[0];
+    if z[0] <= 0 || z[1] != job.height {
+        return None;
+    }
+
+    fn rectangle(loop_: &SketchLoop) -> Option<[[i32; 2]; 4]> {
+        if loop_.vertices.len() != 4 {
+            return None;
+        }
+        let xmin = loop_.vertices.iter().map(|p| p[0]).min()?;
+        let xmax = loop_.vertices.iter().map(|p| p[0]).max()?;
+        let ymin = loop_.vertices.iter().map(|p| p[1]).min()?;
+        let ymax = loop_.vertices.iter().map(|p| p[1]).max()?;
+        if xmin == xmax || ymin == ymax {
+            return None;
+        }
+        let expected = [[xmin, ymin], [xmax, ymin], [xmax, ymax], [xmin, ymax]];
+        let actual: BTreeSet<_> = loop_.vertices.iter().copied().collect();
+        (actual.len() == 4 && expected.into_iter().all(|p| actual.contains(&p))).then_some(expected)
+    }
+
+    let outer = rectangle(&job.outer)?;
+    let inner = rectangle(pocket)?;
+    if !(outer[0][0] < inner[0][0]
+        && inner[1][0] < outer[1][0]
+        && outer[0][1] < inner[0][1]
+        && inner[2][1] < outer[2][1])
+    {
+        return None;
+    }
+
+    let mut candidate = job.clone();
+    for i in 0..4 {
+        candidate.guides.push(Segment {
+            id: format!("pocket-corner-{i}"),
+            a: outer[i],
+            b: inner[i],
+            role: Role::Construction,
+        });
+    }
+    Some(candidate)
+}
+
 pub fn partition(job: &SketchLayers) -> Result<Partition, &'static str> {
     validate(job)?;
-    let (graph, levels, rectangular_grid) = graph(job)?;
+    let Some((candidate_job, candidate_method)) = (!job.force_triangulation)
+        .then(|| guided_candidate_job(job))
+        .flatten()
+    else {
+        return partition_from_graph(job, None);
+    };
+    let Some(candidate_graph) = crate::sketch_quads::guided_quad_arrangement(&candidate_job)
+        .ok()
+        .flatten()
+    else {
+        return partition_from_graph(job, None);
+    };
+    let baseline = partition_from_graph(job, None);
+    let guided = partition_from_graph(job, Some((candidate_graph, candidate_method)));
+    match (baseline, guided) {
+        (Ok(base), Ok(mut candidate)) if candidate.blocks.len() < base.blocks.len() => {
+            candidate.candidate_comparison =
+                Some((true, base.blocks.len(), true, candidate.blocks.len()));
+            Ok(candidate)
+        }
+        (Ok(mut base), Ok(candidate)) => {
+            base.candidate_comparison =
+                Some((true, base.blocks.len(), true, candidate.blocks.len()));
+            Ok(base)
+        }
+        (Ok(mut base), Err(_)) => {
+            base.candidate_comparison = Some((true, base.blocks.len(), false, 0));
+            Ok(base)
+        }
+        (Err(_), Ok(mut candidate)) => {
+            candidate.candidate_comparison = Some((false, 0, true, candidate.blocks.len()));
+            Ok(candidate)
+        }
+        (Err(error), Err(_)) => Err(error),
+    }
+}
+
+/// Replay the pre-planner partition for stored models created before guided
+/// quadrilateral footprints were introduced.
+pub(crate) fn partition_legacy(job: &SketchLayers) -> Result<Partition, &'static str> {
+    validate(job)?;
+    partition_from_graph(job, None)
+}
+
+fn guided_candidate_job(job: &SketchLayers) -> Option<(SketchLayers, &'static str)> {
+    if !job.guides.is_empty() {
+        return Some((job.clone(), "guided_user_quad_footprint"));
+    }
+    if let Some(candidate) = rectangular_blind_pocket_guides(job) {
+        return Some((candidate, "guided_rectangular_blind_pocket"));
+    }
+    if let Some(guides) = crate::sketch_quad_separators::local_quad_guides(job) {
+        let mut candidate = job.clone();
+        candidate.guides = guides;
+        return Some((candidate, "guided_quad_footprint"));
+    }
+    job.cuts
+        .is_empty()
+        .then(|| (job.clone(), "guided_quad_footprint"))
+}
+
+fn partition_from_graph(
+    job: &SketchLayers,
+    guided: Option<(crate::sketch_arrangement::Arrangement, &'static str)>,
+) -> Result<Partition, &'static str> {
+    let guided_method = guided.as_ref().map(|(_, method)| *method);
+    let (graph, levels, rectangular_grid) = if let Some((graph, _)) = guided {
+        // Every face in this candidate has already been checked as a strict
+        // convex quadrilateral, so keep its four source sides intact.
+        (graph, Vec::new(), true)
+    } else {
+        graph(job)?
+    };
     let mut quads = Vec::new();
     let half = Ratio::new(1, 2)?;
     for face in &graph.faces {
@@ -525,7 +639,11 @@ pub fn partition(job: &SketchLayers) -> Result<Partition, &'static str> {
                 .checked_add(cross(q[0], q[2], q[3])?)?
                 .checked_mul(half)?;
             layer_area = layer_area.checked_add(a)?;
-            let id = format!("face{i}_z{}_{}", layer[0], layer[1]);
+            let id = if let Some(method) = guided_method {
+                crate::sketch_quads::guided_cell_id(q, layer, job, method)
+            } else {
+                format!("face{i}_z{}_{}", layer[0], layer[1])
+            };
             locations.insert(id.clone(), (i, layer));
             blocks.push(make_block(q, layer, job, id)?);
             if blocks.len() > 10000 {
@@ -609,6 +727,12 @@ pub fn partition(job: &SketchLayers) -> Result<Partition, &'static str> {
         cavities,
         layer_counts: count,
         generated_levels: levels,
+        method: guided_method.unwrap_or(if rectangular_grid {
+            "orthogonal_feature_footprint"
+        } else {
+            "triangulated_feature_footprint"
+        }),
+        candidate_comparison: None,
         rectangular_grid,
         graph,
     })

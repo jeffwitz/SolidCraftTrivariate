@@ -5,7 +5,11 @@
 //! Consequently every input boundary edge is split at its exact midpoint in
 //! every adjacent face, independent of that face's triangulation.
 
-use crate::constraint_system::Ratio;
+use crate::{
+    constraint_system::Ratio,
+    sketch_arrangement::{arrange, Arrangement, Role, Segment},
+    sketch_layers::{edges, SketchLayers},
+};
 use std::cmp::Ordering;
 
 /// Provenance of a quadrilateral edge lying on an input face edge.
@@ -371,4 +375,114 @@ pub fn quadrangulate(face: &[[Ratio; 2]]) -> Result<Vec<[[Ratio; 2]; 4]>, &'stat
 /// Sort exact rational points lexicographically without using `Ratio::Ord`.
 pub fn compare_points_exact(a: [Ratio; 2], b: [Ratio; 2]) -> Ordering {
     cmp_point(a, b)
+}
+
+/// Encode sketch segments on the doubled coordinate grid used by the layer planner.
+pub(crate) fn footprint_segments(job: &SketchLayers) -> Vec<Segment> {
+    let mut segments = Vec::new();
+    for contour in std::iter::once(&job.outer).chain(job.cuts.iter().map(|(ring, _)| ring)) {
+        for (index, (a, b)) in edges(contour).enumerate() {
+            segments.push(Segment {
+                id: format!("boundary/{}/{index}", contour.id),
+                a: a.map(|x| 2 * x),
+                b: b.map(|x| 2 * x),
+                role: Role::Boundary,
+            });
+        }
+    }
+    segments.extend(job.guides.iter().map(|g| Segment {
+        id: format!("guide/{}", g.id),
+        a: g.a.map(|x| 2 * x),
+        b: g.b.map(|x| 2 * x),
+        role: Role::Construction,
+    }));
+    segments
+}
+
+/// Keep complete quadrilateral faces when the sketch itself supplies a conforming
+/// subdivision of the stock. Dropped bridge edges and unconnected inner loops
+/// must not turn into a spurious face or an unmatched half of a material interface.
+pub(crate) fn guided_quad_arrangement(
+    job: &SketchLayers,
+) -> Result<Option<Arrangement>, &'static str> {
+    let graph = arrange(&footprint_segments(job))?;
+    let outer = format!("boundary/{}/", job.outer.id);
+    let mut uses = vec![[0_usize; 2]; graph.edges.len()];
+    for face in &graph.faces {
+        if face.vertices.len() != 4 {
+            return Ok(None);
+        }
+        for i in 0..4 {
+            let point = |j: usize| graph.vertices[face.vertices[j % 4]];
+            if cross(point(i), point(i + 1), point(i + 2))?.numerator() <= 0 {
+                return Ok(None);
+            }
+        }
+        for side in &face.edges {
+            uses[side.edge][usize::from(side.forward)] += 1;
+        }
+    }
+    for (edge, directions) in graph.edges.iter().zip(uses) {
+        let stock_boundary = edge
+            .provenance
+            .iter()
+            .any(|source| source.segment_id.starts_with(&outer));
+        let conforming = if stock_boundary {
+            directions == [1, 0] || directions == [0, 1]
+        } else {
+            directions == [1, 1]
+        };
+        if !conforming {
+            return Ok(None);
+        }
+    }
+    Ok(Some(graph))
+}
+
+/// Name a guided cell without reference to its rank in the full footprint.
+/// In the rectangular pocket template, the wall and the depth event persist
+/// when the pocket is moved or resized. Other plans keep unchanged cells by
+/// their exact local coordinates, independent of the rest of the graph.
+pub(crate) fn guided_cell_id(
+    quad: &[[Ratio; 2]; 4],
+    layer: [i32; 2],
+    job: &SketchLayers,
+    method: &str,
+) -> String {
+    if method == "guided_rectangular_blind_pocket" {
+        let corners = &job.outer.vertices;
+        let mut side = "footprint";
+        for (axis, low_name, high_name) in [(0, "west", "east"), (1, "south", "north")] {
+            let values = corners.iter().map(|p| p[axis]);
+            for (limit, name) in [
+                (values.clone().min().unwrap(), low_name),
+                (values.max().unwrap(), high_name),
+            ] {
+                let value = crate::sketch_layers::ratio(limit);
+                if quad.iter().filter(|p| p[axis] == value).count() == 2 {
+                    side = name;
+                }
+            }
+        }
+        let floor = job.cuts[0].1[0];
+        let slab = if layer[1] == floor { "below" } else { "beside" };
+        return format!("pocket_{}_{side}_{slab}", job.cuts[0].0.id);
+    }
+    use std::fmt::Write;
+    let mut corners = *quad;
+    corners.sort_by(|a, b| cmp_point(*a, *b));
+    let mut id = String::from("quad");
+    for p in corners {
+        for coordinate in p {
+            write!(
+                id,
+                "_{}d{}",
+                coordinate.numerator(),
+                coordinate.denominator()
+            )
+            .unwrap();
+        }
+    }
+    write!(id, "_z{}_{}", layer[0], layer[1]).unwrap();
+    id
 }

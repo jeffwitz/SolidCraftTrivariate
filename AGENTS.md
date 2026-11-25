@@ -1,8 +1,8 @@
 # Instructions pour le développement
 
-Sur cette machine, suivre @/home/jeff/.codex/RTK.md et préfixer les commandes shell par `rtk`. Pour découvrir le code, privilégier le graphe MCP codebase-memory après indexation du projet. Utiliser search_graph, trace_path et get_code_snippet, puis query_graph. Réserver la recherche texte aux documents, aux littéraux et aux résultats insuffisants.
+Depuis la racine du dépôt, lire [les contrats d’architecture](docs/architecture.md) et [la feuille de route de Luna](docs/LUNA.md). Le [cahier des charges](CdC_noyau_trivarie_sans_trim_corrige.md) définit les garanties scientifiques. Les notes de discussion historiques conservent le contexte des choix initiaux.
 
-Lire docs/architecture.md et docs/LUNA.md. Le CdC corrigé définit les garanties scientifiques. Les deux notes d’adaptation précisent la progression du démonstrateur.
+Lorsque l’outil de graphe est disponible, privilégier son index du dépôt, la recherche de symboles et le suivi des appels. En cas de résultat insuffisant, utiliser la recherche de texte et les fichiers sources. Les commandes du projet s’exécutent depuis un clone standard. Sur les postes équipés de RTK, appliquer aussi les conventions RTK locales.
 
 Le noyau, les constructeurs et les audits de production sont développés en Rust. Python sert aux oracles indépendants et aux références historiques. Chaque lot géométrique livre du Rust accessible depuis la crate et testé avec Cargo.
 

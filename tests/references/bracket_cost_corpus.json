@@ -1,0 +1,81 @@
+{
+  "schema": "bracket-cost-corpus-v2",
+  "frozen_at_utc": "2026-11-25T03:08:51.713607+00:00",
+  "base_revision": "8d197a8",
+  "mandatory_radii_sixteenths_mm": [
+    [
+      40,
+      80
+    ],
+    [
+      80,
+      40
+    ],
+    [
+      50,
+      74
+    ],
+    [
+      51,
+      74
+    ]
+  ],
+  "qoi": {
+    "tip_relative_to_finest_tetra": 0.01,
+    "fillet_von_mises_relative_to_finest_tetra": 0.05,
+    "successive_tip_relative_change": 0.005,
+    "successive_fillet_relative_change": 0.03,
+    "volume_relative": 1e-08,
+    "reaction_relative": 1e-05,
+    "quadrature_qoi_relative": 0.01
+  },
+  "tetra_sizes_mm": [
+    2,
+    1.5,
+    1.25
+  ],
+  "native_levels": [
+    0,
+    1,
+    2,
+    3
+  ],
+  "native_orders": [
+    6,
+    8
+  ],
+  "immersed_sizes_mm": [
+    5,
+    2.5,
+    1.25,
+    1
+  ],
+  "immersed_orders": [
+    6,
+    8
+  ],
+  "cost": {
+    "max_wall_s_per_trial": 1800,
+    "max_tree_rss_kib": 6291456,
+    "report": [
+      "earliest individually qualified level wall time",
+      "cumulative search time through first qualified level",
+      "postprocessing time",
+      "peak simultaneous resident set"
+    ]
+  },
+  "reference": "OCC/Netgen C3D10 with independently rebuilt bracket. Each chain uses its own geometry and the same physical load and clamp.",
+  "edit_pairs": [
+    [
+      [
+        50,
+        74
+      ],
+      [
+        51,
+        74
+      ]
+    ]
+  ],
+  "run_policy": "Run each entire ladder. Record any refusal in the original denominator. A failed finest tetra stability check leaves the case reference indeterminate."
+}

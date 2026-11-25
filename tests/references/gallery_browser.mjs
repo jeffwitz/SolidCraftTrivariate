@@ -42,7 +42,7 @@ const injectedExpressions = {
     const rect = document.querySelector('#model-canvas').getBoundingClientRect();
     return { x: rect.x, y: rect.y, width: rect.width, height: rect.height, scale: 1 };
   })()`,
-  resources: `fetch('./experiments.json').then(response => response.json()).then(async experiments =>
+  resources: `fetch(document.getElementById('catalog-url').href).then(response => response.json()).then(async experiments =>
     Promise.all(experiments.map(async experiment => {
       const assetExtensions = ['.json', '.step', '.vtk', '.vtu', '.stl', '.obj', '.glb', '.gltf', '.png', '.jpg', '.jpeg'];
       const assets = Object.entries(experiment)
@@ -240,6 +240,15 @@ const siteServer = createServer(async (req, res) => {
       return;
     }
     const pathname = decodeURIComponent(new URL(req.url, `http://${HOST}`).pathname);
+    if (pathname === '/prior-visit.html') {
+      res.writeHead(200, { 'Content-Type': 'text/html' }).end('<title>Old gallery</title>');
+      return;
+    }
+    if (req.url === '/experiments.json') {
+      res.writeHead(200, { 'Content-Type': 'application/json', 'Cache-Control': 'public, max-age=3600' })
+        .end(JSON.stringify([{ id: 'g2-cross-plate', title: 'Plaque G2 à perçages croisés', model: 'retired.json' }]));
+      return;
+    }
     const relativePath = pathname === '/' ? 'index.html' : pathname.slice(1);
     const filePath = path.resolve(SITE_ROOT, relativePath);
     if (!filePath.startsWith(`${SITE_ROOT}${path.sep}`)) throw new Error('Path escapes site root');
@@ -386,8 +395,15 @@ async function runBrowserChecks() {
   await command('Emulation.setDeviceMetricsOverride', {
     width: 1400, height: 960, deviceScaleFactor: 1, mobile: false,
   });
-  await command('Page.navigate', { url: serverUrl });
-  await waitForGallery();
+  await command('Page.navigate', { url: serverUrl + 'prior-visit.html' });
+  for (let i = 0; i < 100 && !(await evaluate("document.title === 'Old gallery'")); i++) await pause(50);
+  const oldId = await evaluate("fetch('./experiments.json').then(r => r.json()).then(rows => rows[0].id)");
+  if (oldId !== 'g2-cross-plate') throw new Error('Historical catalog was not primed');
+  await command('Page.navigate', { url: serverUrl + '?model=g2-cross-plate' });
+  await waitForGallery('plate_blind_pocket');
+  if (await evaluate("new URL(location.href).searchParams.get('model')") !== 'plate_blind_pocket') {
+    throw new Error('Retired model permalink was not corrected');
+  }
 
   const resources = await evaluate(injectedExpressions.resources);
   const expected = ["plate_blind_pocket", "rectangle_internal_rectangle", "rectangle_offset_pocket", "c_section_two_holes", "l_bracket_polygon_holes_and_pocket", "c_section_lower_hole_x_plus_1"];

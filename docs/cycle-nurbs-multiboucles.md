@@ -19,3 +19,7 @@ Les métadonnées de session et le modèle effectif du premier tour identifient 
 | Construction Rust | `01a21208-822a-7f02-8a5d-a90895f7a829` |
 | Oracle géométrique et STEP | `01a21208-b7a7-79d3-93c9-bdc4262b1012` |
 | Oracle IGA | `01a21208-e10c-78d1-a96e-9423ec00f071` |
+
+## Premier essai prospectif
+
+Le profil initial de la deuxième boucle présente trois pôles successifs à x = 70 mm. Au nœud intérieur t = 2, sa dérivée en x est nulle. Cette entrée échoue donc au critère de régularité du lot. La recette originale est conservée dans `tests/counterexamples/nurbs_multiloop_stationary.json`. Le prospect de remplacement utilise les abscisses 55, 62, 67, 70, 74 et 80 mm. L’intégrale indépendante donne 112940,85164966024 mm³ de matière pour la recette mixte de remplacement. Les seuils restent ceux du préenregistrement.

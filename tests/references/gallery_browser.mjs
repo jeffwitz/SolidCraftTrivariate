@@ -19,7 +19,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const REPO_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
-const SITE_ROOT = path.join(REPO_ROOT, 'docs/site');
+const SITE_ROOT = path.resolve(process.env.GALLERY_SITE_ROOT || path.join(REPO_ROOT, 'docs/site'));
 const OUTPUT_DIR = path.resolve(process.argv[2] || path.join(REPO_ROOT, 'build/gallery-qa'));
 const CHROME_BIN = process.env.CHROME_BIN || '/usr/bin/google-chrome';
 const HOST = '127.0.0.1';
@@ -50,6 +50,37 @@ const injectedExpressions = {
           && assetExtensions.some(extension => value.split('?')[0].split('#')[0].toLowerCase().endsWith(extension))
           && !value.startsWith('http://') && !value.startsWith('https://'))
         .map(([key, value]) => ({ key, path: value }));
+    const modelResponse = await fetch(experiment.model);
+    const model = await modelResponse.json();
+    const auditResponse = experiment.audit ? await fetch(experiment.audit) : null;
+    const audit = auditResponse?.ok ? await auditResponse.json() : null;
+    const curvedBlocks = (model.blocks || []).filter(block => {
+      const degrees = block.degrees || model.degrees;
+      if (!Array.isArray(degrees) || !Array.isArray(block.controls || block.xyzw)) return false;
+      const dimensions = block.shape || degrees.map(degree => degree + 1);
+      const controls = block.controls || block.xyzw;
+      for (let axis = 0; axis < 3; axis++) {
+        if ((degrees[axis] || 1) < 2) continue;
+        const shape = dimensions;
+        const at = (i, j, k) => controls[(i * shape[1] + j) * shape[2] + k];
+        const other = [0, 1, 2].filter(index => index !== axis);
+        for (let a = 0; a < shape[other[0]]; a++) for (let b = 0; b < shape[other[1]]; b++) {
+          const indices = [0, 0, 0]; indices[other[0]] = a; indices[other[1]] = b;
+          const row = Array.from({ length: shape[axis] }, (_, index) => {
+            indices[axis] = index; const h = at(...indices); return h.slice(0, 3).map(value => value / h[3]);
+          });
+          const first = row[0], last = row.at(-1);
+          const chord = last.map((value, component) => value - first[component]);
+          const length = Math.hypot(...chord) || 1;
+          if (row.slice(1, -1).some(point => Math.hypot(...[
+            (point[1] - first[1]) * chord[2] - (point[2] - first[2]) * chord[1],
+            (point[2] - first[2]) * chord[0] - (point[0] - first[0]) * chord[2],
+            (point[0] - first[0]) * chord[1] - (point[1] - first[1]) * chord[0],
+          ]) / length > 1e-7)) return true;
+        }
+      }
+      return false;
+    });
     return {
       id: experiment.id,
       title: experiment.title || experiment.id,
@@ -63,14 +94,14 @@ const injectedExpressions = {
         step: Boolean(experiment.step),
         audit: Boolean(experiment.audit),
         figure: Boolean(experiment.figure),
-        hex8: Boolean(experiment.hex8),
       },
-      chamferStep: Boolean(experiment.chamferStep),
-      filletStep: Boolean(experiment.filletStep),
       assets: await Promise.all(assets.map(async asset => {
         const response = await fetch(asset.path, { method: 'HEAD' });
         return { ...asset, status: response.status };
       })),
+      curvedBlockCount: curvedBlocks.length,
+      profileCount: (audit?.g1_oval_arcs || []).filter(item => Array.isArray(item.quadratic_arcs_mm)
+        && item.quadratic_arcs_mm.length === 4).length,
     };})))`,
   selectExperiment: id => `(() => {
     const select = document.querySelector('#experiment-select');
@@ -91,6 +122,11 @@ const injectedExpressions = {
     axis: document.querySelector('#clip-axis').value,
     fraction: Number(document.querySelector('#clip-fraction').value),
   }))()`,
+  profileState: `(() => ({
+    hidden: document.querySelector('#profile-card').hidden,
+    count: document.querySelectorAll('#profile-card .profile-path').length,
+    labels: [...document.querySelectorAll('#profile-card .profile-label')].map(item => item.textContent),
+  }))()`,
   surfaceMode: "document.querySelector('[data-mode=surface]').click()",
   selectedId: "document.querySelector('#experiment-select').value",
   selectedState: `(() => ({
@@ -105,8 +141,7 @@ const injectedExpressions = {
   }))()`,
   visibleVariantLinks: `(() => Object.fromEntries([
     ['model', '#model-link'], ['source', '#source-link'], ['step', '#step-link'], ['audit', '#audit-link'],
-    ['figure', '#figure-link'], ['hex8', '#hex8-link'],
-    ['chamfer', '#chamfer-step'], ['fillet', '#fillet-step'],
+    ['figure', '#figure-link'],
   ].map(([name, selector]) => [name, !document.querySelector(selector).hidden])))()`,
   modeControls: `(() => ({
     surface: !document.querySelector('[data-mode=surface]').disabled,
@@ -134,8 +169,8 @@ function validateInjectedExpressions() {
     ['blocksMode', injectedExpressions.blocksMode],
     ['zCut25', injectedExpressions.zCut(25)],
     ['zCut50', injectedExpressions.zCut(50)],
-    ['s3SectionButton', injectedExpressions.s3SectionButton],
     ['selectedClip', injectedExpressions.selectedClip],
+    ['profileState', injectedExpressions.profileState],
     ['surfaceMode', injectedExpressions.surfaceMode],
     ['selectedId', injectedExpressions.selectedId],
     ['selectedState', injectedExpressions.selectedState],
@@ -244,7 +279,7 @@ const siteServer = createServer(async (req, res) => {
       res.writeHead(200, { 'Content-Type': 'text/html' }).end('<title>Old gallery</title>');
       return;
     }
-    if (req.url === '/experiments.json') {
+    if (new URL(req.url, `http://${HOST}`).pathname === '/experiments.json' && !new URL(req.url, `http://${HOST}`).search) {
       res.writeHead(200, { 'Content-Type': 'application/json', 'Cache-Control': 'public, max-age=3600' })
         .end(JSON.stringify([{ id: 'g2-cross-plate', title: 'Plaque G2 à perçages croisés', model: 'retired.json' }]));
       return;
@@ -399,7 +434,7 @@ async function runBrowserChecks() {
   for (let i = 0; i < 100 && !(await evaluate("document.title === 'Old gallery'")); i++) await pause(50);
   const oldId = await evaluate("fetch('./experiments.json').then(r => r.json()).then(rows => rows[0].id)");
   if (oldId !== 'g2-cross-plate') throw new Error('Historical catalog was not primed');
-  await command('Page.navigate', { url: serverUrl + '?model=g2-cross-plate' });
+  await command('Page.navigate', { url: serverUrl + '?model=retired-curved-catalog-id' });
   await waitForGallery('plate_blind_pocket');
   if (await evaluate("new URL(location.href).searchParams.get('model')") !== 'plate_blind_pocket') {
     throw new Error('Retired model permalink was not corrected');
@@ -413,6 +448,15 @@ async function runBrowserChecks() {
   if (resources.some(experiment => experiment.assets.length === 0
     || experiment.assets.some(asset => asset.status !== 200))) {
     throw new Error(`Gallery resource requests failed: ${JSON.stringify(resources)}`);
+  }
+  if (resources.some(experiment => experiment.assets.some(asset => !/[?&]v=[^&#]+/.test(asset.path)))) {
+    throw new Error('A model, recipe, audit, STEP, or figure URL is missing the current cache version');
+  }
+  if (resources.some(experiment => experiment.curvedBlockCount < 1)) {
+    throw new Error(`Expected actual non-linear geometry in every model: ${JSON.stringify(resources.map(({ id, curvedBlockCount }) => ({ id, curvedBlockCount })))}`);
+  }
+  if (resources.some(experiment => experiment.profileCount < 1)) {
+    throw new Error(`A source audit has no four-arc profile data: ${JSON.stringify(resources.map(({ id, profileCount }) => ({ id, profileCount })))}`);
   }
   const version = await cdp('Browser.getVersion');
   const selectedExperiment = resources[0];
@@ -439,18 +483,19 @@ async function runBrowserChecks() {
   await evaluate("document.querySelector('#reset-view').click()");
   const experimentChecks = [];
   const modelScreens = [];
+  const curvedSectionHashes = [];
   for (const experiment of resources) {
-    const state = await selectExperiment(experiment.id);
+    await command('Page.navigate', { url: `${serverUrl}?model=${encodeURIComponent(experiment.id)}` });
+    await waitForGallery(experiment.id);
+    const state = await evaluate(injectedExpressions.selectedState);
+    if (state.id !== experiment.id || !state.stateHidden) {
+      throw new Error(`Direct model URL ${experiment.id} did not render: ${JSON.stringify(state)}`);
+    }
     const visibleLinks = await evaluate(injectedExpressions.visibleVariantLinks);
     const controls = await evaluate(injectedExpressions.modeControls);
     const isBoundary = experiment.representation === 'boundary';
     if (isBoundary && (controls.blocks || controls.clip)) {
       throw new Error(`Boundary experiment ${experiment.id} exposes unsupported block/cut controls: ${JSON.stringify(controls)}`);
-    }
-    for (const [key, present] of [['chamferStep', experiment.chamferStep], ['filletStep', experiment.filletStep]]) {
-      if (present && !visibleLinks[key === 'chamferStep' ? 'chamfer' : 'fillet']) {
-        throw new Error(`Experiment ${experiment.id} hides its ${key} download link`);
-      }
     }
     for (const key of Object.keys(experiment.links)) {
       if (visibleLinks[key] !== experiment.links[key]) {
@@ -460,15 +505,30 @@ async function runBrowserChecks() {
     if (state.title !== experiment.title) {
       throw new Error(`Experiment ${experiment.id} selected, but title is ${JSON.stringify(state.title)}`);
     }
+    const profile = await evaluate(injectedExpressions.profileState);
+    if (profile.hidden || profile.count !== Math.min(2, experiment.profileCount)) {
+      throw new Error(`Curved profile vignette did not show audited arcs for ${experiment.id}: ${JSON.stringify({ profile, profileCount: experiment.profileCount })}`);
+    }
+    const section = experiment.section || { axis: 'z', fraction: 0.5 };
+    const activeClip = await evaluate(injectedExpressions.selectedClip);
+    if (activeClip.axis !== section.axis || Math.abs(activeClip.fraction / 100 - section.fraction) > 0.011) {
+      throw new Error(`Experiment ${experiment.id} did not apply its prescribed curved section: ${JSON.stringify({ activeClip, section })}`);
+    }
     const modelScreen = await capture(`model-${experiment.id.replace(/[^a-z0-9_-]/gi, '-')}`, await canvasRegion(), true);
     if (modelScreen.paintedPixels < 250) {
       throw new Error(`Experiment ${experiment.id} canvas appears blank: ${JSON.stringify(modelScreen)}`);
     }
     modelScreens.push({ id: experiment.id, representation: experiment.representation || 'trivariate', ...modelScreen, visibleLinks, controls, state });
+    const cutScreen = await capture(`curved-section-${experiment.id.replace(/[^a-z0-9_-]/gi, '-')}`, await canvasRegion(), true);
+    if (cutScreen.paintedPixels < 250) throw new Error(`Curved section ${experiment.id} rendered blank: ${JSON.stringify(cutScreen)}`);
+    curvedSectionHashes.push(cutScreen.hash);
     experimentChecks.push(experiment.id);
   }
   if (new Set(modelScreens.map(item => item.hash)).size < 2) {
     throw new Error('Canvas did not change across experiment selections; model rendering may be stale');
+  }
+  if (new Set(curvedSectionHashes).size !== resources.length) {
+    throw new Error(`Curved focal sections are not visually distinct: ${JSON.stringify(curvedSectionHashes)}`);
   }
 
   // Re-select the first entry after traversing the full catalog to verify recovery from
@@ -479,6 +539,8 @@ async function runBrowserChecks() {
   await command('Emulation.setDeviceMetricsOverride', {
     width: 390, height: 844, deviceScaleFactor: 1, mobile: true,
   });
+  await command('Page.navigate', { url: `${serverUrl}?model=${encodeURIComponent(selectedExperiment.id)}` });
+  await waitForGallery(selectedExperiment.id);
   await pause(500);
   const mobileMetrics = await evaluate(injectedExpressions.mobileMetrics);
   if (mobileMetrics.documentWidth > mobileMetrics.viewportWidth + 1

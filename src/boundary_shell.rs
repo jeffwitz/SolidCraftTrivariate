@@ -106,7 +106,7 @@ pub(crate) fn supports_source_method(method: &str) -> bool {
             | crate::rational_sector_json::METHOD
             | crate::counterbores_json::METHOD
             | crate::countersinks_json::METHOD
-            | crate::sketch_layers_json::METHOD
+            | crate::sketch_layers_json::METHOD | crate::curved_sketch_audit::METHOD
             | crate::nurbs_multiloop_json::METHOD
             | crate::g2_cross_plate_json::METHOD
             | crate::g2_cross_plate_json::PRIMITIVE_METHOD
@@ -232,7 +232,7 @@ pub fn boundary_shell(model: &Json) -> Result<BoundaryShell, &'static str> {
         crate::affine_image::METHOD
             | crate::counterbores_json::METHOD
             | crate::countersinks_json::METHOD
-            | crate::sketch_layers_json::METHOD
+            | crate::sketch_layers_json::METHOD | crate::curved_sketch_audit::METHOD
             | crate::nurbs_multiloop_json::METHOD
             | crate::nurbs_sketch_json::METHOD
             | crate::orthogonal_sketch_json::METHOD
@@ -288,7 +288,7 @@ pub fn boundary_shell(model: &Json) -> Result<BoundaryShell, &'static str> {
                 }
                 if matches!(
                     method,
-                    crate::interval_bores_json::METHOD | crate::sketch_layers_json::METHOD
+                    crate::interval_bores_json::METHOD | crate::sketch_layers_json::METHOD | crate::curved_sketch_audit::METHOD
                 ) {
                     return faces[f].feature == "start";
                 }

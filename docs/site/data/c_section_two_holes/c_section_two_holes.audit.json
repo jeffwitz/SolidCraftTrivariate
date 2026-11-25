@@ -1,90 +1,316 @@
 {
-  "case": "c_section_two_holes",
-  "native": {
-    "blocks": 9,
-    "bounded_sketch_faces": 11,
-    "cavities": 0,
-    "determinant_lower_bound_mm3": 13.999999999999993,
-    "exterior_sides": 34,
-    "hausdorff_error_upper_bound_mm": 0,
-    "method": "certified_sketch_layer_partition",
-    "shared_faces": 10,
-    "status": "valid",
-    "volume_exact_mm3": [
-      1568,
-      1
-    ]
-  },
+  "schema": "curved_sketch_gallery_audit_v1",
+  "status": "pass",
+  "block_count": 9,
+  "common_faces_checked": 10,
   "layer_lower_bounds": [
     {
       "z_mm": [
-        0.0,
-        7.0
+        0,
+        7
       ],
-      "boundary_corners": 16,
-      "required_interior_corners": 0,
+      "required_boundary_vertices": 16,
+      "required_interior_vertices": 0,
       "holes": 2,
-      "minimum": 9
+      "minimum_blocks": 9
     }
   ],
-  "oracle": {
-    "id": "c_section_two_holes",
-    "block_count": 9,
-    "max_condition_2_sample_27_per_block": 121.90145401731486,
-    "expected_volume_exact_mm3": [
-      1568,
-      1
-    ],
-    "cli_volume_exact_mm3": [
-      1568,
-      1
-    ],
-    "volume_match": true,
-    "layers": [
-      {
-        "cells": 9,
-        "vertices": 16,
-        "edges": 26,
-        "euler": -1,
-        "boundary_edges": 16,
-        "internal_edges": 10,
-        "area_exact_mm2": [
-          224,
-          1
+  "exact_map_volume_mm3": "45878/27",
+  "green_volume_mm3": "45878/27",
+  "g1_oval_arcs": [
+    {
+      "feature": "lower_hole",
+      "expected_continuity": "C1",
+      "four_source_arcs_matched": 4,
+      "junctions": [
+        {
+          "cross_product": "0",
+          "dot_product": "8/9",
+          "g1": true,
+          "c1": true
+        },
+        {
+          "cross_product": "0",
+          "dot_product": "8/9",
+          "g1": true,
+          "c1": true
+        },
+        {
+          "cross_product": "0",
+          "dot_product": "8/9",
+          "g1": true,
+          "c1": true
+        },
+        {
+          "cross_product": "0",
+          "dot_product": "8/9",
+          "g1": true,
+          "c1": true
+        }
+      ],
+      "source_widths_mm": [
+        2,
+        2
+      ],
+      "quadratic_arcs_mm": [
+        [
+          [
+            12.333333333333334,
+            1.3333333333333333
+          ],
+          [
+            13.0,
+            0.6666666666666666
+          ],
+          [
+            13.666666666666666,
+            1.3333333333333333
+          ]
         ],
-        "area_sum_mm2": 224.0,
-        "pairwise_overlap_pairs": 0,
-        "z_interval_mm": [
-          0.0,
-          7.0
+        [
+          [
+            13.666666666666666,
+            1.3333333333333333
+          ],
+          [
+            14.333333333333334,
+            2.0
+          ],
+          [
+            13.666666666666666,
+            2.6666666666666665
+          ]
         ],
-        "expected_area_exact_mm2": [
-          224,
-          1
+        [
+          [
+            13.666666666666666,
+            2.6666666666666665
+          ],
+          [
+            13.0,
+            3.3333333333333335
+          ],
+          [
+            12.333333333333334,
+            2.6666666666666665
+          ]
         ],
-        "area_gap_exact_mm2": [
-          0,
-          1
+        [
+          [
+            12.333333333333334,
+            2.6666666666666665
+          ],
+          [
+            11.666666666666666,
+            2.0
+          ],
+          [
+            12.333333333333334,
+            1.3333333333333333
+          ]
+        ]
+      ]
+    },
+    {
+      "feature": "upper_hole",
+      "expected_continuity": "C1",
+      "four_source_arcs_matched": 4,
+      "junctions": [
+        {
+          "cross_product": "0",
+          "dot_product": "8/9",
+          "g1": true,
+          "c1": true
+        },
+        {
+          "cross_product": "0",
+          "dot_product": "8/9",
+          "g1": true,
+          "c1": true
+        },
+        {
+          "cross_product": "0",
+          "dot_product": "8/9",
+          "g1": true,
+          "c1": true
+        },
+        {
+          "cross_product": "0",
+          "dot_product": "8/9",
+          "g1": true,
+          "c1": true
+        }
+      ],
+      "source_widths_mm": [
+        2,
+        2
+      ],
+      "quadratic_arcs_mm": [
+        [
+          [
+            15.333333333333334,
+            17.333333333333332
+          ],
+          [
+            16.0,
+            16.666666666666668
+          ],
+          [
+            16.666666666666668,
+            17.333333333333332
+          ]
         ],
-        "contained_in_expected_material": true,
-        "expected_euler_characteristic": -1
-      }
-    ],
-    "passed": true,
-    "quad_euler_lower_bound": {
-      "conforming_quad_mesh_assumption": true,
-      "connected_components": 1,
-      "holes": 2,
-      "boundary_vertices_min": 16,
-      "interior_vertices_min": 0,
-      "euler_characteristic": -1,
-      "formula": "F = V_boundary/2 + V_interior + holes - 1 >= 9",
-      "observed_quad_count": 9,
-      "observed_vertices": 16,
-      "observed_edges": 26,
-      "observed_euler": -1,
-      "expected_volume_mm3": 1568,
-      "attains_bound": true
+        [
+          [
+            16.666666666666668,
+            17.333333333333332
+          ],
+          [
+            17.333333333333332,
+            18.0
+          ],
+          [
+            16.666666666666668,
+            18.666666666666668
+          ]
+        ],
+        [
+          [
+            16.666666666666668,
+            18.666666666666668
+          ],
+          [
+            16.0,
+            19.333333333333332
+          ],
+          [
+            15.333333333333334,
+            18.666666666666668
+          ]
+        ],
+        [
+          [
+            15.333333333333334,
+            18.666666666666668
+          ],
+          [
+            14.666666666666666,
+            18.0
+          ],
+          [
+            15.333333333333334,
+            17.333333333333332
+          ]
+        ]
+      ]
     }
+  ],
+  "jacobian_certificates": [
+    {
+      "block": "quad_0d1_0d1_0d1_20d1_6d1_4d1_6d1_16d1_z0_7",
+      "determinant_degree": [
+        1,
+        0,
+        0
+      ],
+      "bernstein_subdivision_depth": 0,
+      "certified_lower_bound": "504",
+      "subboxes": 1
+    },
+    {
+      "block": "quad_0d1_0d1_6d1_4d1_12d1_1d1_12d1_3d1_z0_7",
+      "determinant_degree": [
+        1,
+        2,
+        0
+      ],
+      "bernstein_subdivision_depth": 0,
+      "certified_lower_bound": "616/9",
+      "subboxes": 1
+    },
+    {
+      "block": "quad_0d1_0d1_12d1_1d1_14d1_1d1_20d1_0d1_z0_7",
+      "determinant_degree": [
+        2,
+        1,
+        0
+      ],
+      "bernstein_subdivision_depth": 1,
+      "certified_lower_bound": "7",
+      "subboxes": 2
+    },
+    {
+      "block": "quad_0d1_20d1_6d1_16d1_15d1_17d1_15d1_19d1_z0_7",
+      "determinant_degree": [
+        2,
+        1,
+        0
+      ],
+      "bernstein_subdivision_depth": 0,
+      "certified_lower_bound": "868/9",
+      "subboxes": 1
+    },
+    {
+      "block": "quad_0d1_20d1_15d1_19d1_17d1_19d1_20d1_20d1_z0_7",
+      "determinant_degree": [
+        1,
+        2,
+        0
+      ],
+      "bernstein_subdivision_depth": 10,
+      "certified_lower_bound": "7/24",
+      "subboxes": 11
+    },
+    {
+      "block": "quad_6d1_4d1_12d1_3d1_14d1_3d1_20d1_4d1_z0_7",
+      "determinant_degree": [
+        1,
+        2,
+        0
+      ],
+      "bernstein_subdivision_depth": 1,
+      "certified_lower_bound": "28/3",
+      "subboxes": 2
+    },
+    {
+      "block": "quad_6d1_16d1_15d1_17d1_17d1_17d1_20d1_16d1_z0_7",
+      "determinant_degree": [
+        2,
+        1,
+        0
+      ],
+      "bernstein_subdivision_depth": 4,
+      "certified_lower_bound": "7/3",
+      "subboxes": 5
+    },
+    {
+      "block": "quad_14d1_1d1_14d1_3d1_20d1_0d1_20d1_4d1_z0_7",
+      "determinant_degree": [
+        1,
+        2,
+        0
+      ],
+      "bernstein_subdivision_depth": 0,
+      "certified_lower_bound": "364/9",
+      "subboxes": 1
+    },
+    {
+      "block": "quad_17d1_17d1_17d1_19d1_20d1_16d1_20d1_20d1_z0_7",
+      "determinant_degree": [
+        1,
+        2,
+        0
+      ],
+      "bernstein_subdivision_depth": 0,
+      "certified_lower_bound": "112/9",
+      "subboxes": 1
+    }
+  ],
+  "step_readback": {
+    "reader": "OCCT 7.8.1",
+    "closed_shells": 1,
+    "valid_solids": 1,
+    "volume_mm3": 1699.1851851851848,
+    "relative_volume_error": 2.676267159408547e-16
   }
 }

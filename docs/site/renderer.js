@@ -1,5 +1,5 @@
 /* Native WebGL renderer for rational trivariate model JSON. */
-import { surfaceMesh } from './triangle-surface.js';
+import { surfaceMesh } from './triangle-surface.js?v=c5e0327c1b90';
 
 const VERTEX_SHADER = `
 attribute vec3 aPosition;
@@ -41,7 +41,7 @@ const SECTION_COLOR = [0.20, 0.48, 0.46];
 const DEFAULT_CAMERA = { yaw: 0.72, pitch: 0.5, distance: 2 };
 const CAMERA_FILL = 0.64;
 const GRID = 12;
-const CAP_GRID = 6;
+const CAP_GRID = 12;
 const FACE_SIDES = [
   ['u0', 0, 0], ['u1', 0, 1],
   ['v0', 1, 0], ['v1', 1, 1],
@@ -291,7 +291,7 @@ function boundsOf(model) {
   return [low, high];
 }
 
-function makeEvaluator(block) {
+function makeHomogeneousEvaluator(block) {
   const degree = block.degrees;
   const dimensions = block.shape || degree.map(value => value + 1);
   const controls = block.controls;
@@ -313,6 +313,14 @@ function makeEvaluator(block) {
       }
     }
     if (!(h[3] > 0) || !Number.isFinite(h[3])) throw new TypeError(`Block ${block.id} evaluates with an invalid weight`);
+    return h;
+  };
+}
+
+function makeEvaluator(block) {
+  const evaluateHomogeneous = makeHomogeneousEvaluator(block);
+  return (...parameters) => {
+    const h = evaluateHomogeneous(...parameters);
     return [h[0] / h[3], h[1] / h[3], h[2] / h[3]];
   };
 }
@@ -518,8 +526,8 @@ function coplanarBlockFace(evaluate, axis, plane, tolerance) {
   return null;
 }
 
-function zExtrusionLevels(block) {
-  const [degreeU, degreeV, degreeW] = block.degrees;
+function zSliceLevels(block) {
+  const degreeW = block.degrees[2];
   if (degreeW !== 1) return null;
   const close = (a, b) => Math.abs(a - b) <= 1e-12 * Math.max(1, Math.abs(a), Math.abs(b));
   const dimensions = block.shape || block.degrees.map(value => value + 1);
@@ -531,10 +539,6 @@ function zExtrusionLevels(block) {
     for (let j = 0; j < dimensions[1]; j++) {
       const first = block.controls[(i * countV + j) * 2];
       const last = block.controls[(i * countV + j) * 2 + 1];
-      if (!close(first[3], last[3])) return null;
-      const firstXY = [first[0] / first[3], first[1] / first[3]];
-      const lastXY = [last[0] / last[3], last[1] / last[3]];
-      if (!close(firstXY[0], lastXY[0]) || !close(firstXY[1], lastXY[1])) return null;
       const firstZ = first[2] / first[3];
       const lastZ = last[2] / last[3];
       if (z0 === null) {
@@ -553,8 +557,7 @@ function buildCapMeshes(model, axis, fraction, bounds, mode) {
   const axisIndex = { x: 0, y: 1, z: 2 }[axis];
   const plane = bounds[0][axisIndex] + (bounds[1][axisIndex] - bounds[0][axisIndex]) * fraction;
   const tolerance = Math.max(1, bounds[1][axisIndex] - bounds[0][axisIndex]) * 1e-9;
-  const zExtrusions = axis === 'z' ? model.blocks.map(zExtrusionLevels) : null;
-  const directZCap = zExtrusions !== null && zExtrusions.every(Boolean);
+  const zSlices = axis === 'z' ? model.blocks.map(zSliceLevels) : null;
   const interfaces = new Map();
   const duplicateSides = new Map();
   for (const item of model.topology?.interfaces || []) {
@@ -580,14 +583,21 @@ function buildCapMeshes(model, axis, fraction, bounds, mode) {
       // The retained side needs one cap where its shared interface is hidden.
     }
     const color = mode === 'blocks' ? blockColor(block.id) : SECTION_COLOR;
-    if (directZCap) {
-      const { z0, z1 } = zExtrusions[blockIndex];
+    if (zSlices?.[blockIndex]) {
+      const { z0, z1 } = zSlices[blockIndex];
       const w = (plane - z0) / (z1 - z0);
       if (w < -1e-12 || w > 1 + 1e-12) continue;
-      const capParameter = clamp(w, 0, 1);
       const axisU = parameterStations(block, 0, GRID);
       const axisV = parameterStations(block, 1, GRID);
-      const points = axisU.map(u => axisV.map(v => evaluate(u, v, capParameter)));
+      const evaluateHomogeneous = makeHomogeneousEvaluator(block);
+      const points = axisU.map(u => axisV.map(v => {
+        const first = evaluateHomogeneous(u, v, 0);
+        const last = evaluateHomogeneous(u, v, 1);
+        const denominator = (last[2] - first[2]) - plane * (last[3] - first[3]);
+        if (Math.abs(denominator) < 1e-14) throw new TypeError(`Block ${block.id} has a degenerate z-section map`);
+        const parameterW = clamp((plane * first[3] - first[2]) / denominator, 0, 1);
+        return evaluate(u, v, parameterW);
+      }));
       for (let i = 0; i < axisU.length - 1; i++) {
         for (let j = 0; j < axisV.length - 1; j++) {
           const p00 = points[i][j];

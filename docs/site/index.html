@@ -4,11 +4,11 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#f5f4ef">
-  <meta name="description" content="Partitions polygonales qualifiées du planificateur SolidCraft.">
-  <title>Partitions minimales · SolidCraft</title>
-  <link rel="stylesheet" href="./style.css">
-  <link id="catalog-url" rel="alternate" type="application/json" href="./experiments.json?v=79651be2a731">
-  <script type="module" src="./app.js?v=7dd46f666408"></script>
+  <meta name="description" content="Six configurations trivariées avec géométrie courbe, explorables en coupe.">
+  <title>Géométries courbes · SolidCraft</title>
+  <link rel="stylesheet" href="./style.css?v=5e63da9c6524">
+  <link id="catalog-url" rel="alternate" type="application/json" href="./experiments.json?v=447ac23e90e9">
+  <script type="module" src="./app.js?v=00180030c41d"></script>
 </head>
 <body>
   <header class="topbar">
@@ -18,8 +18,8 @@
 
   <main>
     <section class="intro" aria-labelledby="page-title">
-      <h1 id="page-title">Partitions minimales par couches</h1>
-      <p class="lede">Six solides issus d’esquisses polygonales. Chacun atteint le nombre minimal de blocs pour une partition commune aux couches, avec raccords face entière.</p>
+      <h1 id="page-title">Esquisses et volumes courbes</h1>
+      <p class="lede">Six configurations construites avec leurs courbes rationnelles. Les profils associent quatre arcs quadratiques non rectilignes; la continuité aux jonctions dépend du cas. Explorez les blocs et le profil vectoriel issu des contrôles audités.</p>
     </section>
 
     <section class="workspace" aria-label="Explorateur de modèles">
@@ -55,14 +55,15 @@
       <aside class="side-panel" aria-label="Expériences et mesures">
         <div class="experiment-head"><label for="experiment-select">Expérience</label><select id="experiment-select" disabled><option>Chargement…</option></select></div>
         <div class="experiment-copy"><p id="experiment-description"></p></div>
-        <div class="metrics-section"><div class="section-rule"><span>Partition et qualité</span><span class="rule-line"></span></div><dl id="metrics-list" class="metrics-list"><div class="metric-empty">En attente des données.</div></dl></div>
-        <p class="metric-note">¹ Conditionnement du jacobien évalué en 27 points par bloc.</p><nav class="source-links" aria-label="Fichiers de l’expérience"><a id="model-link" href="#" hidden><span>Modèle trivarié (JSON)</span><span aria-hidden="true">↗</span></a><a id="source-link" href="#" hidden><span>Recette source</span><span aria-hidden="true">↗</span></a><a id="step-link" href="#" hidden><span>Modèle STEP</span><span aria-hidden="true">↗</span></a><a id="hex8-link" href="#" hidden><span>Maillage HEX8 (VTK)</span><span aria-hidden="true">↗</span></a><a id="audit-link" href="#" hidden><span>Audit du modèle</span><span aria-hidden="true">↗</span></a><a id="figure-link" href="#" hidden><span>Figure annotée</span><span aria-hidden="true">↗</span></a><a id="fillet-step" href="#" hidden><span>Congés · référence STEP</span><span aria-hidden="true">↗</span></a><a id="chamfer-step" href="#" hidden><span>Chanfreins · référence STEP</span><span aria-hidden="true">↗</span></a><a class="campaign-link" href="https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/partition-poche-comparaison.md" target="_blank" rel="noopener noreferrer">Preuve et protocole <span aria-hidden="true">↗</span></a></nav>
+        <figure class="profile-card" id="profile-card" hidden aria-label="Profil réel des trous"></figure>
+        <div class="metrics-section"><div class="section-rule"><span>Repères du modèle</span><span class="rule-line"></span></div><dl id="metrics-list" class="metrics-list"><div class="metric-empty">En attente des données.</div></dl></div>
+        <nav class="source-links" aria-label="Fichiers de l’expérience"><a id="model-link" href="#" hidden><span>Modèle trivarié (JSON)</span><span aria-hidden="true">↗</span></a><a id="source-link" href="#" hidden><span>Recette source</span><span aria-hidden="true">↗</span></a><a id="step-link" href="#" hidden><span>Modèle STEP</span><span aria-hidden="true">↗</span></a><a id="audit-link" href="#" hidden><span>Audit du modèle</span><span aria-hidden="true">↗</span></a><a id="figure-link" href="#" hidden><span>Figure annotée</span><span aria-hidden="true">↗</span></a><a class="campaign-link" href="https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/galerie-esquisses-courbes.md" target="_blank" rel="noopener noreferrer">Protocole et résultats <span aria-hidden="true">↗</span></a></nav>
       </aside>
     </section>
 
-    <details class="proof"><summary>Comment le minimum est-il vérifié ?</summary>
-      <p>Pour une couche connexe percée de <i>h</i> trous, la formule d’Euler donne <b>Q = B/2 + I + h − 1</b> quadrilatères, avec <i>B</i> sommets de frontière et <i>I</i> sommets intérieurs. Les coins des contours et leurs prolongements obligatoires fixent une borne inférieure. Chaque modèle présenté atteint cette borne dans chaque couche.</p>
-      <p>Le contrat impose une coupe de tous les blocs à chaque début ou fin de cavité et des faces entières entre voisins. Le fichier d’audit détaille le comptage par couche. Les partitions traversant plusieurs couches et les raccords partiels sortent de ce calcul.</p>
+    <details class="proof"><summary>Comment lire les repères ?</summary>
+      <p>Les nombres de blocs et d’interfaces décrivent le graphe fourni pour chaque configuration. La borne par couche est rapportée dans l’audit; toute revendication de minimalité se limite aux quatre jonctions d’arc prescrites et à la classe de partitions alignées sur les couches.</p>
+      <p>Les coupes sont un aperçu visuel du modèle trivarié; elles ne constituent pas un certificat géométrique. La recette et l’audit associés documentent les données et leur domaine.</p>
     </details>
     <footer class="page-footer"><span>SolidCraft Trivariate</span><span></span><a href="https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/architecture.md" target="_blank" rel="noopener noreferrer">Architecture du projet ↗</a></footer>
   </main>

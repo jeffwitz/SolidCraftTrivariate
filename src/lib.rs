@@ -22,6 +22,8 @@ pub mod bracket_parameters;
 pub mod bracket_parameters_audit;
 pub mod bracket_solve;
 mod bracket_json;
+mod curved_sketch;
+mod curved_sketch_audit;
 pub mod incidence;
 pub mod h_refine;
 pub mod host_composition;

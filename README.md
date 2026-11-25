@@ -2,7 +2,7 @@
 
 Noyau volumique natif en Rust pour construire et auditer des cartes trivariées rationnelles, puis les exporter en STEP et préparer leur espace d’analyse IGA. Le parcours géométrique commence par une esquisse ou une recette, détermine ses lignes de partition, puis construit et audite les volumes dans la même crate. Python fournit des oracles indépendants et des références historiques.
 
-[Ouvrir la galerie interactive](https://jeffwitz.github.io/SolidCraftTrivariate/) pour examiner les coupes, blocs et cartes, et télécharger recettes, modèles et STEP.
+La galerie présente les six configurations à profils courbes. Chaque fiche montre la coupe du solide et les arcs de son esquisse, avec la recette, le modèle, l’audit et le STEP à télécharger. [Galerie interactive](https://jeffwitz.github.io/SolidCraftTrivariate/) · [Construction et vérifications](docs/galerie-esquisses-courbes.md)
 
 Le planificateur polygonal compare les séparatrices locales à la partition historique sur la même recette. La poche borgne du corpus passe de 17 à 9 volumes et le C à deux trous de 35 à 9. Ces deux résultats atteignent la borne topologique dans la classe de partitions conformes étudiée. Le conditionnement des cartes entre aussi en jeu pour le calcul. [Algorithme](docs/architecture.md#planificateur) · [Corpus, preuves et mesures](docs/partition-poche-comparaison.md) · [Construction depuis les esquisses](docs/partition-esquisses.md)
 

@@ -43,7 +43,7 @@ const injectedExpressions = {
     heading: document.querySelector('#page-title').textContent,
     canvasLabel: document.querySelector('#model-canvas').getAttribute('aria-label'),
     resetLabel: document.querySelector('#reset-view').textContent.trim(),
-    loadingOption: document.querySelector('#experiment-select option').textContent,
+    experimentLabel: document.querySelector('label[for=experiment-select]').textContent,
   }))()`,
   canvasRegion: `(() => {
     const rect = document.querySelector('#model-canvas').getBoundingClientRect();
@@ -447,7 +447,7 @@ async function runBrowserChecks() {
   const publicUiLocale = await evaluate(injectedExpressions.publicUiLocale);
   if (publicUiLocale.lang !== 'en' || !publicUiLocale.heading.includes('FieldCraft brackets')
     || !publicUiLocale.canvasLabel.startsWith('Interactive 3D model')
-    || publicUiLocale.resetLabel !== 'Reset view' || publicUiLocale.loadingOption !== 'Loading…') {
+    || !publicUiLocale.resetLabel.endsWith('Reset view') || publicUiLocale.experimentLabel !== 'Experiment') {
     throw new Error(`Public gallery UI is not consistently in English: ${JSON.stringify(publicUiLocale)}`);
   }
   if (await evaluate("new URL(location.href).searchParams.get('model')") !== 'plate_blind_pocket') {

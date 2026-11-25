@@ -55,31 +55,7 @@ pub fn solve_constrained(
     if n == 0 || stiffness.size() != force_n.len() || force_n.iter().any(|x| !x.is_finite()) {
         return Err("invalid stiffness or force dimensions");
     }
-    if stiffness.offsets[0] != 0
-        || stiffness.offsets[n] != stiffness.columns.len()
-        || stiffness.columns.len() != stiffness.values.len()
-    {
-        return Err("invalid CSR storage");
-    }
-    for row in 0..n {
-        if stiffness.offsets[row + 1] > stiffness.columns.len()
-            || stiffness.offsets[row] > stiffness.offsets[row + 1]
-            || stiffness.columns[stiffness.offsets[row]..stiffness.offsets[row + 1]]
-                .iter()
-                .any(|&j| j >= n)
-        {
-            return Err("invalid CSR row");
-        }
-    }
-    if stiffness
-        .values
-        .iter()
-        .flatten()
-        .flatten()
-        .any(|x| !x.is_finite())
-    {
-        return Err("nonfinite stiffness coefficient");
-    }
+    stiffness.validate()?;
 
     let mut component_maps: Vec<Vec<Vec<Term>>> = Vec::with_capacity(3);
     let mut component_offsets: Vec<Vec<f64>> = Vec::with_capacity(3);

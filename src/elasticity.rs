@@ -136,7 +136,19 @@ pub struct Stiffness {
 
 impl Stiffness {
     pub fn size(&self) -> usize {
-        3 * (self.offsets.len() - 1)
+        3 * self.offsets.len().saturating_sub(1)
+    }
+    /// Validate block CSR before using a matrix provided by a caller.
+    pub fn validate(&self) -> Result<(), &'static str> {
+        let rows = self.offsets.len().checked_sub(1).ok_or("missing CSR offsets")?;
+        if self.offsets.first() != Some(&0) || self.offsets.last() != Some(&self.columns.len())
+            || self.columns.len() != self.values.len()
+            || self.offsets.windows(2).any(|pair| pair[0] > pair[1])
+            || self.columns.iter().any(|&col| col >= rows)
+            || self.values.iter().flatten().flatten().any(|value| !value.is_finite()) {
+            return Err("invalid block CSR matrix");
+        }
+        Ok(())
     }
     pub fn apply(&self, x: &[f64]) -> Result<Vec<f64>, &'static str> {
         if x.len() != self.size() {

@@ -240,6 +240,14 @@ pub fn section_analysis_space(
     from_certified_faces(blocks, &certificate.incidence, &certificate.design_faces)
 }
 
+/// Build a whole-face Q2 space after independently checking the movable bore.
+pub fn bore_analysis_space(
+    center_half_mm: [i32;2], radius_half_mm: i32, blocks: &[BracketBlock],
+) -> Result<AnalysisSpace, &'static str> {
+    let certificate = crate::movable_bore_audit::audit_bore(center_half_mm, radius_half_mm, blocks)?;
+    from_certified_faces(blocks, &certificate.incidence, &certificate.design_faces)
+}
+
 // Callers must establish model-wide validity before numbering the space.
 pub(crate) fn from_certified_faces(
     blocks: &[BracketBlock],

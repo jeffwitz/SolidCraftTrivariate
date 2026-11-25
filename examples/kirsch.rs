@@ -1,11 +1,11 @@
 //! Plane-strain restriction of the three-dimensional Q2 space on a square plate.
-use solidcraft_trivariate::analysis_space::{section_analysis_space, AnalysisSpace};
+use solidcraft_trivariate::analysis_space::{bore_analysis_space, AnalysisSpace};
 use solidcraft_trivariate::constrained_elasticity::solve_constrained;
 use solidcraft_trivariate::constraint_system::{resolve, Ratio};
 use solidcraft_trivariate::elasticity::{assemble, basis_geometry, gauss};
 use solidcraft_trivariate::face_constraints::Row;
 use solidcraft_trivariate::h_refine::refine_cross_section;
-use solidcraft_trivariate::sections::section_blocks;
+use solidcraft_trivariate::movable_bore::build_movable_bore;
 use solidcraft_trivariate::stress::cauchy_stress;
 use std::collections::{BTreeMap, BTreeSet};
 use std::time::Instant;
@@ -31,19 +31,72 @@ fn traction(x: f64, y: f64, radius: f64, normal: [f64; 2]) -> [f64; 2] {
     [cx * fr - sy * ft, sy * fr + cx * ft]
 }
 
-fn run(level: usize, order: usize, radius: f64) -> Result<(), &'static str> {
-    let start = Instant::now();
-    if radius != 4. {
-        return Err("fixed pierced-square template has radius 4 mm");
+fn quadrant(space: AnalysisSpace) -> Result<AnalysisSpace, &'static str> {
+    let original_count = space.blocks.len();
+    let mut blocks = Vec::new();
+    for block in space.blocks {
+        if block.controls.iter().all(|p| p[0] >= 0 && p[1] >= 0) {
+            blocks.push(block);
+        } else if !(block.controls.iter().all(|p| p[0] <= 0)
+            || block.controls.iter().all(|p| p[1] <= 0))
+        {
+            return Err("a cell straddles a symmetry plane");
+        }
     }
-    let family = "pierced_square_v1";
-    let blocks = section_blocks(family)?;
-    let mut space = section_analysis_space(family, &blocks)?;
-    for _ in 0..level {
+    if 4 * blocks.len() != original_count {
+        return Err("incorrect symmetry partition");
+    }
+    let used: BTreeSet<_> = blocks.iter().flat_map(|b| b.dofs.iter().copied()).collect();
+    let compact: BTreeMap<_, _> = used
+        .into_iter()
+        .enumerate()
+        .map(|(new, old)| (old, new))
+        .collect();
+    for b in &mut blocks {
+        for id in &mut b.dofs {
+            *id = compact[id];
+        }
+    }
+    let boundary_dofs = space
+        .boundary_dofs
+        .into_iter()
+        .filter_map(|(tag, nodes)| {
+            let retained: Vec<_> = nodes
+                .into_iter()
+                .filter_map(|i| compact.get(&i).copied())
+                .collect();
+            (!retained.is_empty()).then_some((tag, retained))
+        })
+        .collect();
+    Ok(AnalysisSpace {
+        ndof: compact.len(),
+        blocks,
+        boundary_dofs,
+    })
+}
+
+fn run(level: usize, order: usize, radius: f64, quarter: bool) -> Result<(), &'static str> {
+    let start = Instant::now();
+    let ticks = 2. * radius;
+    if !(4.0..=10.0).contains(&ticks) || ticks.fract() != 0. {
+        return Err("invalid half-millimeter bore radius");
+    }
+    let radius_ticks = ticks as i32;
+    let candidate =
+        build_movable_bore(0, 0, radius_ticks).map_err(|_| "bore construction failed")?;
+    let blocks: Vec<_> = candidate.blocks.into_iter().map(|b| b.block).collect();
+    let mut space = bore_analysis_space([0, 0], radius_ticks, &blocks)?;
+    if quarter && level == 0 {
+        return Err("quarter symmetry requires the first angular split");
+    }
+    for step in 0..level {
         space = refine_cross_section(&space)?;
+        if quarter && step == 0 {
+            space = quadrant(space)?;
+        }
     }
     let geometry = start.elapsed().as_secs_f64();
-    run_space(&space, level, order, radius, geometry, start)
+    run_space(&space, level, order, radius, geometry, start, quarter)
 }
 
 fn run_space(
@@ -53,8 +106,10 @@ fn run_space(
     radius: f64,
     geometry: f64,
     start: Instant,
+    quarter: bool,
 ) -> Result<(), &'static str> {
     let mut columns = BTreeMap::new();
+    let mut symmetry = [BTreeSet::new(), BTreeSet::new()];
     let mut gauges: BTreeMap<(i128, i128), usize> = BTreeMap::new();
     let mut force = vec![0.; 3 * space.ndof];
     let mut force_scale = 0.;
@@ -75,6 +130,13 @@ fn run_space(
                 }
             }
             let p = controls[0];
+            if quarter {
+                for axis in 0..2 {
+                    if p[axis] == 0 {
+                        symmetry[axis].insert(ids[0]);
+                    }
+                }
+            }
             for xy in [(0, -10), (0, 10), (10, 0)] {
                 if p[0] == xy.0 * p[3] && p[1] == xy.1 * p[3] {
                     gauges.insert(xy, ids[0]);
@@ -115,7 +177,11 @@ fn run_space(
             }
         }
     }
-    if (area / 640. - 1.).abs() > 1e-10 || gauges.len() != 3 || probes.is_empty() {
+    let expected_area = if quarter { 160. } else { 640. };
+    if (area / expected_area - 1.).abs() > 1e-10
+        || (!quarter && gauges.len() != 3)
+        || probes.is_empty()
+    {
         return Err("invalid exterior, gauges or probe");
     }
     let eq: Vec<_> = columns
@@ -131,12 +197,15 @@ fn run_space(
         })
         .collect();
     let zero = Ratio::zero();
-    let lx = resolve(
-        space.ndof,
-        &eq,
-        &[(gauges[&(0, -10)], zero), (gauges[&(0, 10)], zero)],
-    )?;
-    let ly = resolve(space.ndof, &eq, &[(gauges[&(10, 0)], zero)])?;
+    if !quarter {
+        symmetry[0].extend([gauges[&(0, -10)], gauges[&(0, 10)]]);
+        symmetry[1].insert(gauges[&(10, 0)]);
+    }
+    let fixed = symmetry
+        .each_ref()
+        .map(|nodes| nodes.iter().map(|&i| (i, zero)).collect::<Vec<_>>());
+    let lx = resolve(space.ndof, &eq, &fixed[0])?;
+    let ly = resolve(space.ndof, &eq, &fixed[1])?;
     let roots: BTreeSet<_> = space
         .blocks
         .iter()
@@ -153,25 +222,21 @@ fn run_space(
     // Evaluate gauge reactions after summing all members of each z column.
     let mut reactions = [0.; 2];
     let mut max_reaction: f64 = 0.;
-    for (dir, idx) in [
-        (0, gauges[&(0, -10)]),
-        (0, gauges[&(0, 10)]),
-        (1, gauges[&(10, 0)]),
-    ] {
-        let mut column = BTreeSet::new();
-        for b in &space.blocks {
-            for ids in b.dofs.as_chunks::<3>().0.iter() {
-                if ids[0] == idx {
-                    column.extend(ids.iter().copied());
-                }
+    let mut root_of: Vec<_> = (0..space.ndof).collect();
+    for &(id, ref row) in &eq {
+        root_of[id] = row.terms[0].0;
+    }
+    for (dir, prescribed) in symmetry.iter().enumerate() {
+        let mut by_root = BTreeMap::<usize, f64>::new();
+        for (i, &root) in root_of.iter().enumerate() {
+            if prescribed.contains(&root) {
+                *by_root.entry(root).or_default() += internal[3 * i + dir] - force[3 * i + dir];
             }
         }
-        let reaction: f64 = column
-            .iter()
-            .map(|i| internal[3 * i + dir] - force[3 * i + dir])
-            .sum();
-        max_reaction = max_reaction.max(reaction.abs());
-        reactions[dir] += reaction;
+        for value in by_root.values() {
+            max_reaction = max_reaction.max(value.abs());
+            reactions[dir] += value;
+        }
     }
     let mut resultant = reactions;
     for v in force.as_chunks::<3>().0.iter() {
@@ -179,7 +244,7 @@ fn run_space(
         resultant[1] += v[1];
     }
     let balance = resultant[0].hypot(resultant[1]) / force_scale;
-    if balance > 1e-6 || max_reaction / force_scale > 1e-6 {
+    if balance > 1e-6 || (!quarter && max_reaction / force_scale > 1e-6) {
         return Err("non-negligible artificial gauge reaction");
     }
     let stresses = probes
@@ -188,7 +253,7 @@ fn run_space(
         .collect::<Result<Vec<_>, _>>()?;
     let min = stresses.iter().copied().fold(f64::INFINITY, f64::min);
     let max = stresses.iter().copied().fold(f64::NEG_INFINITY, f64::max);
-    println!("{{\"radius_mm\":{radius},\"level\":{level},\"quadrature\":{order},\"blocks\":{},\"full_scalar_dofs\":{},\"reduced_dofs\":{},\"hoop_min_mpa\":{min},\"hoop_max_mpa\":{max},\"force_balance_relative\":{balance},\"residual\":{},\"iterations\":{},\"geometry_refinement_s\":{geometry},\"constraints_load_s\":{},\"assembly_s\":{},\"solve_s\":{},\"total_s\":{}}}",space.blocks.len(),space.ndof,solution.reduced_values.len(),solution.relative_residual,solution.iterations,boundary_done-geometry,assembly_done-boundary_done,solve_done-assembly_done,start.elapsed().as_secs_f64());
+    println!("{{\"quarter_symmetry\":{quarter},\"radius_mm\":{radius},\"level\":{level},\"quadrature\":{order},\"blocks\":{},\"full_scalar_dofs\":{},\"reduced_dofs\":{},\"hoop_min_mpa\":{min},\"hoop_max_mpa\":{max},\"force_balance_relative\":{balance},\"residual\":{},\"iterations\":{},\"geometry_refinement_s\":{geometry},\"constraints_load_s\":{},\"assembly_s\":{},\"solve_s\":{},\"total_s\":{}}}",space.blocks.len(),space.ndof,solution.reduced_values.len(),solution.relative_residual,solution.iterations,boundary_done-geometry,assembly_done-boundary_done,solve_done-assembly_done,start.elapsed().as_secs_f64());
     Ok(())
 }
 
@@ -209,5 +274,10 @@ fn main() -> Result<(), &'static str> {
         .ok_or("missing radius")?
         .parse()
         .map_err(|_| "invalid radius")?;
-    run(level, order, radius)
+    let quarter = match args.next().as_deref() {
+        Some("quarter") => true,
+        Some("full") | None => false,
+        _ => return Err("symmetry must be full or quarter"),
+    };
+    run(level, order, radius, quarter)
 }

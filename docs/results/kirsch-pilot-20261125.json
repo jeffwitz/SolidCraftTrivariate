@@ -1,0 +1,2787 @@
+{
+  "corpus": "j4_pilot_20261125_v1",
+  "quarter_symmetry": true,
+  "methods": {
+    "native": {
+      "kirsch_initial": {
+        "status": "qualified",
+        "first_passing_level": "l4",
+        "first_level_with_no_later_failure": "l4",
+        "refinements": [
+          {
+            "level": "l1",
+            "passes": false,
+            "hoop_range_mpa": [
+              307.7155737629949,
+              307.7155737629949
+            ],
+            "qoi_error_relative": 0.025718579209982995,
+            "successive_change_relative": null,
+            "quadrature_change_relative": 0.00019051894457220442,
+            "process_peak_rss_kib": 3776,
+            "cumulative_s": 0.040960584999993443,
+            "configuration_s": 0.03237773897126317
+          },
+          {
+            "level": "l2",
+            "passes": false,
+            "hoop_range_mpa": [
+              311.0148672114948,
+              311.0148672114948
+            ],
+            "qoi_error_relative": 0.03671622403831587,
+            "successive_change_relative": 0.010608153488226421,
+            "quadrature_change_relative": 2.1546401154637353e-06,
+            "process_peak_rss_kib": 5344,
+            "cumulative_s": 0.1382177810301073,
+            "configuration_s": 0.06466108001768589
+          },
+          {
+            "level": "l3",
+            "passes": false,
+            "hoop_range_mpa": [
+              304.6799650363985,
+              304.6799650363985
+            ],
+            "qoi_error_relative": 0.01559988345466179,
+            "successive_change_relative": 0.020791987994154663,
+            "quadrature_change_relative": 3.9977845555464834e-08,
+            "process_peak_rss_kib": 11820,
+            "cumulative_s": 0.5184646650450304,
+            "configuration_s": 0.2653047969797626
+          },
+          {
+            "level": "l4",
+            "passes": true,
+            "hoop_range_mpa": [
+              301.49481093046995,
+              301.49481093046995
+            ],
+            "qoi_error_relative": 0.004982703101566566,
+            "successive_change_relative": 0.010564540384952522,
+            "quadrature_change_relative": 1.9756650241712728e-10,
+            "process_peak_rss_kib": 36964,
+            "cumulative_s": 2.2039399360655807,
+            "configuration_s": 1.1194283440127037
+          },
+          {
+            "level": "l5",
+            "passes": true,
+            "hoop_range_mpa": [
+              300.424940022727,
+              300.424940022727
+            ],
+            "qoi_error_relative": 0.0014164667424234612,
+            "successive_change_relative": 0.003561192049042277,
+            "quadrature_change_relative": 1.0373923942097463e-12,
+            "process_peak_rss_kib": 136952,
+            "cumulative_s": 11.66040137206437,
+            "configuration_s": 5.781047157011926
+          }
+        ],
+        "trials": [
+          {
+            "method": "native",
+            "case": "kirsch_initial",
+            "configuration": "l1-q4",
+            "status": "measured",
+            "elapsed_s": 0.008582846028730273,
+            "process_peak_rss_kib": 3668,
+            "metrics": {
+              "quarter_symmetry": true,
+              "radius_mm": 4,
+              "level": 1,
+              "quadrature": 4,
+              "blocks": 4,
+              "full_scalar_dofs": 75,
+              "reduced_dofs": 40,
+              "hoop_min_mpa": 307.77272944636655,
+              "hoop_max_mpa": 307.77272944636655,
+              "force_balance_relative": 5.0114934602030516e-12,
+              "residual": 5.088293769060096e-11,
+              "iterations": 40,
+              "geometry_refinement_s": 0.001514955,
+              "constraints_load_s": 0.0003874960000000002,
+              "assembly_s": 0.0023135509999999996,
+              "solve_s": 0.0008170570000000004,
+              "total_s": 0.005062144
+            }
+          },
+          {
+            "method": "native",
+            "case": "kirsch_initial",
+            "configuration": "l1-q8",
+            "status": "measured",
+            "elapsed_s": 0.03237773897126317,
+            "process_peak_rss_kib": 3776,
+            "metrics": {
+              "quarter_symmetry": true,
+              "radius_mm": 4,
+              "level": 1,
+              "quadrature": 8,
+              "blocks": 4,
+              "full_scalar_dofs": 75,
+              "reduced_dofs": 40,
+              "hoop_min_mpa": 307.7155737629949,
+              "hoop_max_mpa": 307.7155737629949,
+              "force_balance_relative": 5.006672407448035e-12,
+              "residual": 5.0224783383238934e-11,
+              "iterations": 40,
+              "geometry_refinement_s": 0.001489249,
+              "constraints_load_s": 0.0006540950000000002,
+              "assembly_s": 0.012402674,
+              "solve_s": 0.0008265829999999988,
+              "total_s": 0.015399846
+            }
+          },
+          {
+            "method": "native",
+            "case": "kirsch_initial",
+            "configuration": "l2-q4",
+            "status": "measured",
+            "elapsed_s": 0.032596116012427956,
+            "process_peak_rss_kib": 5312,
+            "metrics": {
+              "quarter_symmetry": true,
+              "radius_mm": 4,
+              "level": 2,
+              "quadrature": 4,
+              "blocks": 16,
+              "full_scalar_dofs": 243,
+              "reduced_dofs": 144,
+              "hoop_min_mpa": 311.0155136035294,
+              "hoop_max_mpa": 311.0155136035294,
+              "force_balance_relative": 2.1379413733190976e-12,
+              "residual": 4.2170991927614264e-11,
+              "iterations": 84,
+              "geometry_refinement_s": 0.002578604,
+              "constraints_load_s": 0.001188306,
+              "assembly_s": 0.009006916,
+              "solve_s": 0.005652089000000001,
+              "total_s": 0.018509572
+            }
+          },
+          {
+            "method": "native",
+            "case": "kirsch_initial",
+            "configuration": "l2-q8",
+            "status": "measured",
+            "elapsed_s": 0.06466108001768589,
+            "process_peak_rss_kib": 5344,
+            "metrics": {
+              "quarter_symmetry": true,
+              "radius_mm": 4,
+              "level": 2,
+              "quadrature": 8,
+              "blocks": 16,
+              "full_scalar_dofs": 243,
+              "reduced_dofs": 144,
+              "hoop_min_mpa": 311.0148672114948,
+              "hoop_max_mpa": 311.0148672114948,
+              "force_balance_relative": 2.1582393543844296e-12,
+              "residual": 4.394921333795654e-11,
+              "iterations": 84,
+              "geometry_refinement_s": 0.002529023,
+              "constraints_load_s": 0.00177903,
+              "assembly_s": 0.04891032,
+              "solve_s": 0.005373803000000003,
+              "total_s": 0.058667834
+            }
+          },
+          {
+            "method": "native",
+            "case": "kirsch_initial",
+            "configuration": "l3-q4",
+            "status": "measured",
+            "elapsed_s": 0.11494208703516051,
+            "process_peak_rss_kib": 11692,
+            "metrics": {
+              "quarter_symmetry": true,
+              "radius_mm": 4,
+              "level": 3,
+              "quadrature": 4,
+              "blocks": 64,
+              "full_scalar_dofs": 867,
+              "reduced_dofs": 544,
+              "hoop_min_mpa": 304.6799770297522,
+              "hoop_max_mpa": 304.6799770297522,
+              "force_balance_relative": 3.72993812504661e-12,
+              "residual": 7.442894527370385e-11,
+              "iterations": 149,
+              "geometry_refinement_s": 0.006496733,
+              "constraints_load_s": 0.003520207,
+              "assembly_s": 0.034960971,
+              "solve_s": 0.041172439,
+              "total_s": 0.086472868
+            }
+          },
+          {
+            "method": "native",
+            "case": "kirsch_initial",
+            "configuration": "l3-q8",
+            "status": "measured",
+            "elapsed_s": 0.2653047969797626,
+            "process_peak_rss_kib": 11820,
+            "metrics": {
+              "quarter_symmetry": true,
+              "radius_mm": 4,
+              "level": 3,
+              "quadrature": 8,
+              "blocks": 64,
+              "full_scalar_dofs": 867,
+              "reduced_dofs": 544,
+              "hoop_min_mpa": 304.6799650363985,
+              "hoop_max_mpa": 304.6799650363985,
+              "force_balance_relative": 4.0277905267792215e-12,
+              "residual": 9.686872618763752e-11,
+              "iterations": 149,
+              "geometry_refinement_s": 0.007108503,
+              "constraints_load_s": 0.004945188,
+              "assembly_s": 0.17999732699999998,
+              "solve_s": 0.043605912999999996,
+              "total_s": 0.235979065
+            }
+          },
+          {
+            "method": "native",
+            "case": "kirsch_initial",
+            "configuration": "l4-q4",
+            "status": "measured",
+            "elapsed_s": 0.5660469270078465,
+            "process_peak_rss_kib": 36792,
+            "metrics": {
+              "quarter_symmetry": true,
+              "radius_mm": 4,
+              "level": 4,
+              "quadrature": 4,
+              "blocks": 256,
+              "full_scalar_dofs": 3267,
+              "reduced_dofs": 2112,
+              "hoop_min_mpa": 301.4948109897399,
+              "hoop_max_mpa": 301.4948109897399,
+              "force_balance_relative": 3.2693556080328273e-12,
+              "residual": 9.034585742651444e-11,
+              "iterations": 286,
+              "geometry_refinement_s": 0.025813732,
+              "constraints_load_s": 0.012994198999999998,
+              "assembly_s": 0.138606584,
+              "solve_s": 0.36283314299999997,
+              "total_s": 0.541481672
+            }
+          },
+          {
+            "method": "native",
+            "case": "kirsch_initial",
+            "configuration": "l4-q8",
+            "status": "measured",
+            "elapsed_s": 1.1194283440127037,
+            "process_peak_rss_kib": 36964,
+            "metrics": {
+              "quarter_symmetry": true,
+              "radius_mm": 4,
+              "level": 4,
+              "quadrature": 8,
+              "blocks": 256,
+              "full_scalar_dofs": 3267,
+              "reduced_dofs": 2112,
+              "hoop_min_mpa": 301.49481093046995,
+              "hoop_max_mpa": 301.49481093046995,
+              "force_balance_relative": 3.3515424539765677e-12,
+              "residual": 9.238000860050512e-11,
+              "iterations": 286,
+              "geometry_refinement_s": 0.028079944,
+              "constraints_load_s": 0.017986622000000004,
+              "assembly_s": 0.6944657409999999,
+              "solve_s": 0.35709038000000015,
+              "total_s": 1.098863297
+            }
+          },
+          {
+            "method": "native",
+            "case": "kirsch_initial",
+            "configuration": "l5-q4",
+            "status": "measured",
+            "elapsed_s": 3.675414278986864,
+            "process_peak_rss_kib": 136952,
+            "metrics": {
+              "quarter_symmetry": true,
+              "radius_mm": 4,
+              "level": 5,
+              "quadrature": 4,
+              "blocks": 1024,
+              "full_scalar_dofs": 12675,
+              "reduced_dofs": 8320,
+              "hoop_min_mpa": 300.4249400224158,
+              "hoop_max_mpa": 300.4249400224158,
+              "force_balance_relative": 4.516540794803351e-12,
+              "residual": 9.984560056369876e-11,
+              "iterations": 579,
+              "geometry_refinement_s": 0.118953728,
+              "constraints_load_s": 0.05227092300000001,
+              "assembly_s": 0.487944134,
+              "solve_s": 2.978152917,
+              "total_s": 3.642428457
+            }
+          },
+          {
+            "method": "native",
+            "case": "kirsch_initial",
+            "configuration": "l5-q8",
+            "status": "measured",
+            "elapsed_s": 5.781047157011926,
+            "process_peak_rss_kib": 136924,
+            "metrics": {
+              "quarter_symmetry": true,
+              "radius_mm": 4,
+              "level": 5,
+              "quadrature": 8,
+              "blocks": 1024,
+              "full_scalar_dofs": 12675,
+              "reduced_dofs": 8320,
+              "hoop_min_mpa": 300.424940022727,
+              "hoop_max_mpa": 300.424940022727,
+              "force_balance_relative": 5.015933882436278e-12,
+              "residual": 9.5796792198749e-11,
+              "iterations": 579,
+              "geometry_refinement_s": 0.113622179,
+              "constraints_load_s": 0.05754335000000001,
+              "assembly_s": 2.584682105,
+              "solve_s": 2.9865239829999997,
+              "total_s": 5.747589945
+            }
+          }
+        ]
+      },
+      "kirsch_radius_edit": {
+        "status": "qualified",
+        "first_passing_level": "l4",
+        "first_level_with_no_later_failure": "l4",
+        "refinements": [
+          {
+            "level": "l1",
+            "passes": false,
+            "hoop_range_mpa": [
+              307.0667241684425,
+              307.0667241684425
+            ],
+            "qoi_error_relative": 0.023555747228141577,
+            "successive_change_relative": null,
+            "quadrature_change_relative": 0.0002944143932247319,
+            "process_peak_rss_kib": 3800,
+            "cumulative_s": 0.06513279303908348,
+            "configuration_s": 0.03259668004466221
+          },
+          {
+            "level": "l2",
+            "passes": false,
+            "hoop_range_mpa": [
+              313.7210964366026,
+              313.7210964366026
+            ],
+            "qoi_error_relative": 0.04573698812200866,
+            "successive_change_relative": 0.021211108668635015,
+            "quadrature_change_relative": 6.897693880129433e-06,
+            "process_peak_rss_kib": 5448,
+            "cumulative_s": 0.212327596032992,
+            "configuration_s": 0.11474389198701829
+          },
+          {
+            "level": "l3",
+            "passes": false,
+            "hoop_range_mpa": [
+              306.4499276790899,
+              306.4499276790899
+            ],
+            "qoi_error_relative": 0.02149975893029965,
+            "successive_change_relative": 0.02372710221399346,
+            "quadrature_change_relative": 7.278284499534494e-08,
+            "process_peak_rss_kib": 11708,
+            "cumulative_s": 0.5922355000511743,
+            "configuration_s": 0.26525496400427073
+          },
+          {
+            "level": "l4",
+            "passes": true,
+            "hoop_range_mpa": [
+              302.1505679556176,
+              302.1505679556176
+            ],
+            "qoi_error_relative": 0.007168559852058554,
+            "successive_change_relative": 0.014229196233395289,
+            "quadrature_change_relative": 5.261976336138711e-11,
+            "process_peak_rss_kib": 36968,
+            "cumulative_s": 2.2265709061175585,
+            "configuration_s": 1.067914050014224
+          },
+          {
+            "level": "l5",
+            "passes": true,
+            "hoop_range_mpa": [
+              300.62670503049117,
+              300.62670503049117
+            ],
+            "qoi_error_relative": 0.002089016768303864,
+            "successive_change_relative": 0.005068953953947187,
+            "quadrature_change_relative": 5.517032756567157e-12,
+            "process_peak_rss_kib": 136964,
+            "cumulative_s": 11.734194731106982,
+            "configuration_s": 5.782296249992214
+          }
+        ],
+        "trials": [
+          {
+            "method": "native",
+            "case": "kirsch_radius_edit",
+            "configuration": "l1-q4",
+            "status": "measured",
+            "elapsed_s": 0.032536112994421273,
+            "process_peak_rss_kib": 3644,
+            "metrics": {
+              "quarter_symmetry": true,
+              "radius_mm": 3.5,
+              "level": 1,
+              "quadrature": 4,
+              "blocks": 4,
+              "full_scalar_dofs": 75,
+              "reduced_dofs": 40,
+              "hoop_min_mpa": 307.1550484864099,
+              "hoop_max_mpa": 307.1550484864099,
+              "force_balance_relative": 1.7569992889527306e-12,
+              "residual": 1.5621946669113864e-11,
+              "iterations": 40,
+              "geometry_refinement_s": 0.010490607,
+              "constraints_load_s": 0.0003558089999999986,
+              "assembly_s": 0.0021412770000000005,
+              "solve_s": 0.0008815809999999993,
+              "total_s": 0.013897988
+            }
+          },
+          {
+            "method": "native",
+            "case": "kirsch_radius_edit",
+            "configuration": "l1-q8",
+            "status": "measured",
+            "elapsed_s": 0.03259668004466221,
+            "process_peak_rss_kib": 3800,
+            "metrics": {
+              "quarter_symmetry": true,
+              "radius_mm": 3.5,
+              "level": 1,
+              "quadrature": 8,
+              "blocks": 4,
+              "full_scalar_dofs": 75,
+              "reduced_dofs": 40,
+              "hoop_min_mpa": 307.0667241684425,
+              "hoop_max_mpa": 307.0667241684425,
+              "force_balance_relative": 1.497308374114629e-12,
+              "residual": 1.3588306647329367e-11,
+              "iterations": 40,
+              "geometry_refinement_s": 0.00160704,
+              "constraints_load_s": 0.0006897620000000002,
+              "assembly_s": 0.012968167999999999,
+              "solve_s": 0.0008577979999999999,
+              "total_s": 0.016150195
+            }
+          },
+          {
+            "method": "native",
+            "case": "kirsch_radius_edit",
+            "configuration": "l2-q4",
+            "status": "measured",
+            "elapsed_s": 0.03245091100689024,
+            "process_peak_rss_kib": 5332,
+            "metrics": {
+              "quarter_symmetry": true,
+              "radius_mm": 3.5,
+              "level": 2,
+              "quadrature": 4,
+              "blocks": 16,
+              "full_scalar_dofs": 243,
+              "reduced_dofs": 144,
+              "hoop_min_mpa": 313.7231657447666,
+              "hoop_max_mpa": 313.7231657447666,
+              "force_balance_relative": 9.226673576411832e-12,
+              "residual": 7.830798578938734e-11,
+              "iterations": 80,
+              "geometry_refinement_s": 0.002529119,
+              "constraints_load_s": 0.0012233960000000003,
+              "assembly_s": 0.009572544,
+              "solve_s": 0.00597549,
+              "total_s": 0.019386443
+            }
+          },
+          {
+            "method": "native",
+            "case": "kirsch_radius_edit",
+            "configuration": "l2-q8",
+            "status": "measured",
+            "elapsed_s": 0.11474389198701829,
+            "process_peak_rss_kib": 5448,
+            "metrics": {
+              "quarter_symmetry": true,
+              "radius_mm": 3.5,
+              "level": 2,
+              "quadrature": 8,
+              "blocks": 16,
+              "full_scalar_dofs": 243,
+              "reduced_dofs": 144,
+              "hoop_min_mpa": 313.7210964366026,
+              "hoop_max_mpa": 313.7210964366026,
+              "force_balance_relative": 5.2465528433674786e-12,
+              "residual": 5.448138453027221e-11,
+              "iterations": 80,
+              "geometry_refinement_s": 0.002523363,
+              "constraints_load_s": 0.001801403,
+              "assembly_s": 0.051238156,
+              "solve_s": 0.00540566,
+              "total_s": 0.061047589
+            }
+          },
+          {
+            "method": "native",
+            "case": "kirsch_radius_edit",
+            "configuration": "l3-q4",
+            "status": "measured",
+            "elapsed_s": 0.11465294001391158,
+            "process_peak_rss_kib": 11708,
+            "metrics": {
+              "quarter_symmetry": true,
+              "radius_mm": 3.5,
+              "level": 3,
+              "quadrature": 4,
+              "blocks": 64,
+              "full_scalar_dofs": 867,
+              "reduced_dofs": 544,
+              "hoop_min_mpa": 306.4499495139434,
+              "hoop_max_mpa": 306.4499495139434,
+              "force_balance_relative": 9.005423677083376e-12,
+              "residual": 7.628191922515322e-11,
+              "iterations": 145,
+              "geometry_refinement_s": 0.006984138,
+              "constraints_load_s": 0.0037760300000000005,
+              "assembly_s": 0.03632415,
+              "solve_s": 0.042559044000000004,
+              "total_s": 0.089965487
+            }
+          },
+          {
+            "method": "native",
+            "case": "kirsch_radius_edit",
+            "configuration": "l3-q8",
+            "status": "measured",
+            "elapsed_s": 0.26525496400427073,
+            "process_peak_rss_kib": 11624,
+            "metrics": {
+              "quarter_symmetry": true,
+              "radius_mm": 3.5,
+              "level": 3,
+              "quadrature": 8,
+              "blocks": 64,
+              "full_scalar_dofs": 867,
+              "reduced_dofs": 544,
+              "hoop_min_mpa": 306.4499276790899,
+              "hoop_max_mpa": 306.4499276790899,
+              "force_balance_relative": 7.431474937779266e-12,
+              "residual": 9.360900008973806e-11,
+              "iterations": 144,
+              "geometry_refinement_s": 0.008418094,
+              "constraints_load_s": 0.005893774000000001,
+              "assembly_s": 0.185989175,
+              "solve_s": 0.04093686399999999,
+              "total_s": 0.241557083
+            }
+          },
+          {
+            "method": "native",
+            "case": "kirsch_radius_edit",
+            "configuration": "l4-q4",
+            "status": "measured",
+            "elapsed_s": 0.5664213560521603,
+            "process_peak_rss_kib": 36956,
+            "metrics": {
+              "quarter_symmetry": true,
+              "radius_mm": 3.5,
+              "level": 4,
+              "quadrature": 4,
+              "blocks": 256,
+              "full_scalar_dofs": 3267,
+              "reduced_dofs": 2112,
+              "hoop_min_mpa": 302.1505679714035,
+              "hoop_max_mpa": 302.1505679714035,
+              "force_balance_relative": 6.8425374207069296e-12,
+              "residual": 8.091482643457888e-11,
+              "iterations": 282,
+              "geometry_refinement_s": 0.026238079,
+              "constraints_load_s": 0.014429012000000001,
+              "assembly_s": 0.128534074,
+              "solve_s": 0.35436944200000003,
+              "total_s": 0.524791129
+            }
+          },
+          {
+            "method": "native",
+            "case": "kirsch_radius_edit",
+            "configuration": "l4-q8",
+            "status": "measured",
+            "elapsed_s": 1.067914050014224,
+            "process_peak_rss_kib": 36968,
+            "metrics": {
+              "quarter_symmetry": true,
+              "radius_mm": 3.5,
+              "level": 4,
+              "quadrature": 8,
+              "blocks": 256,
+              "full_scalar_dofs": 3267,
+              "reduced_dofs": 2112,
+              "hoop_min_mpa": 302.1505679556176,
+              "hoop_max_mpa": 302.1505679556176,
+              "force_balance_relative": 6.823340267525831e-12,
+              "residual": 8.055466051864368e-11,
+              "iterations": 282,
+              "geometry_refinement_s": 0.025915723,
+              "constraints_load_s": 0.015180751999999999,
+              "assembly_s": 0.6549756529999999,
+              "solve_s": 0.3533034340000001,
+              "total_s": 1.050590014
+            }
+          },
+          {
+            "method": "native",
+            "case": "kirsch_radius_edit",
+            "configuration": "l5-q4",
+            "status": "measured",
+            "elapsed_s": 3.725327574997209,
+            "process_peak_rss_kib": 136964,
+            "metrics": {
+              "quarter_symmetry": true,
+              "radius_mm": 3.5,
+              "level": 5,
+              "quadrature": 4,
+              "blocks": 1024,
+              "full_scalar_dofs": 12675,
+              "reduced_dofs": 8320,
+              "hoop_min_mpa": 300.62670502883606,
+              "hoop_max_mpa": 300.62670502883606,
+              "force_balance_relative": 7.802507717810076e-12,
+              "residual": 9.961761863514465e-11,
+              "iterations": 573,
+              "geometry_refinement_s": 0.11184916,
+              "constraints_load_s": 0.053147531,
+              "assembly_s": 0.4927149009999999,
+              "solve_s": 3.004771569,
+              "total_s": 3.667609471
+            }
+          },
+          {
+            "method": "native",
+            "case": "kirsch_radius_edit",
+            "configuration": "l5-q8",
+            "status": "measured",
+            "elapsed_s": 5.782296249992214,
+            "process_peak_rss_kib": 136860,
+            "metrics": {
+              "quarter_symmetry": true,
+              "radius_mm": 3.5,
+              "level": 5,
+              "quadrature": 8,
+              "blocks": 1024,
+              "full_scalar_dofs": 12675,
+              "reduced_dofs": 8320,
+              "hoop_min_mpa": 300.62670503049117,
+              "hoop_max_mpa": 300.62670503049117,
+              "force_balance_relative": 7.241556798622551e-12,
+              "residual": 9.675385745663712e-11,
+              "iterations": 573,
+              "geometry_refinement_s": 0.123364897,
+              "constraints_load_s": 0.05617981,
+              "assembly_s": 2.5980594590000003,
+              "solve_s": 2.9618350109999994,
+              "total_s": 5.744677089
+            }
+          }
+        ]
+      }
+    },
+    "tetra": {
+      "kirsch_initial": {
+        "status": "qualified",
+        "first_passing_level": "h0.7",
+        "first_level_with_no_later_failure": "h0.7",
+        "refinements": [
+          {
+            "level": "h2",
+            "passes": false,
+            "hoop_range_mpa": [
+              196.31510644146022,
+              303.8329071384169
+            ],
+            "qoi_error_relative": 0.3456163118617993,
+            "successive_change_relative": null,
+            "quadrature_change_relative": null,
+            "process_peak_rss_kib": 200964,
+            "cumulative_s": 2.070681511948351,
+            "configuration_s": 2.070681511948351
+          },
+          {
+            "level": "h1",
+            "passes": false,
+            "hoop_range_mpa": [
+              296.88888391737163,
+              302.9138923879785
+            ],
+            "qoi_error_relative": 0.010370386942094578,
+            "successive_change_relative": 0.33875898669181065,
+            "quadrature_change_relative": null,
+            "process_peak_rss_kib": 209436,
+            "cumulative_s": 5.547669236955699,
+            "configuration_s": 3.4769877250073478
+          },
+          {
+            "level": "h0.7",
+            "passes": true,
+            "hoop_range_mpa": [
+              300.70019980817665,
+              300.70019980817665
+            ],
+            "qoi_error_relative": 0.0023339993605888676,
+            "successive_change_relative": 0.012674803319839304,
+            "quadrature_change_relative": null,
+            "process_peak_rss_kib": 232016,
+            "cumulative_s": 13.484652267943602,
+            "configuration_s": 7.9369830309879035
+          },
+          {
+            "level": "h0.5",
+            "passes": true,
+            "hoop_range_mpa": [
+              299.3164220622765,
+              300.09295806203426
+            ],
+            "qoi_error_relative": 0.0022785931257449654,
+            "successive_change_relative": 0.004623126711077133,
+            "quadrature_change_relative": null,
+            "process_peak_rss_kib": 489180,
+            "cumulative_s": 40.03102775797015,
+            "configuration_s": 26.54637549002655
+          },
+          {
+            "level": "h0.4",
+            "passes": true,
+            "hoop_range_mpa": [
+              300.1049133159373,
+              300.9512818548872
+            ],
+            "qoi_error_relative": 0.0031709395162906606,
+            "successive_change_relative": 0.0028520356768801667,
+            "quadrature_change_relative": null,
+            "process_peak_rss_kib": 668448,
+            "cumulative_s": 78.41028092196211,
+            "configuration_s": 38.37925316399196
+          }
+        ],
+        "trials": [
+          {
+            "method": "tetra",
+            "case": "kirsch_initial",
+            "configuration": "h2-q6",
+            "status": "measured",
+            "elapsed_s": 2.070681511948351,
+            "process_peak_rss_kib": 200964,
+            "metrics": {
+              "method": "curved_tetrahedral_p2",
+              "radius_mm": 4.0,
+              "size_mm": 2.0,
+              "quadrature": 6,
+              "nodes": 952,
+              "tet10": 493,
+              "loaded_area_mm2": 160.00000000000003,
+              "occ_quarter_volume_mm3": 699.4690350851265,
+              "hoop_min_mpa": 196.31510644146022,
+              "hoop_max_mpa": 303.8329071384169,
+              "probes": [
+                {
+                  "element": 389,
+                  "barycentric": [
+                    0.0,
+                    -0.0,
+                    -0.0,
+                    1.0
+                  ],
+                  "point_error_mm": 0.0,
+                  "hoop_mpa": 196.31510644146022
+                },
+                {
+                  "element": 416,
+                  "barycentric": [
+                    0.0,
+                    0.0,
+                    -0.0,
+                    1.0
+                  ],
+                  "point_error_mm": 0.0,
+                  "hoop_mpa": 303.8329071384169
+                },
+                {
+                  "element": 526,
+                  "barycentric": [
+                    0.0,
+                    0.0,
+                    1.0,
+                    0.0
+                  ],
+                  "point_error_mm": 0.0,
+                  "hoop_mpa": 301.6839090243416
+                },
+                {
+                  "element": 648,
+                  "barycentric": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                  ],
+                  "point_error_mm": 0.0,
+                  "hoop_mpa": 293.44580367741787
+                },
+                {
+                  "element": 650,
+                  "barycentric": [
+                    0.0,
+                    0.0,
+                    -0.0,
+                    1.0
+                  ],
+                  "point_error_mm": 0.0,
+                  "hoop_mpa": 255.33290823610469
+                },
+                {
+                  "element": 797,
+                  "barycentric": [
+                    0.0,
+                    -0.0,
+                    -0.0,
+                    1.0
+                  ],
+                  "point_error_mm": 0.0,
+                  "hoop_mpa": 265.2688259969182
+                }
+              ],
+              "reaction_n": [
+                -7257.600173762173,
+                537.5999950058202
+              ],
+              "resultant_n": [
+                7257.600000000014,
+                -537.5999999999397
+              ],
+              "force_balance_relative": 2.3886540356213482e-08,
+              "mesh_s": 0.2831893700058572,
+              "load_deck_s": 0.028378245944622904,
+              "solve_s": 0.11512903904076666,
+              "total_s": 0.44382739096181467,
+              "solver_peak_rss_kib": 197560,
+              "mesh_process_peak_rss_kib": 198672
+            }
+          },
+          {
+            "method": "tetra",
+            "case": "kirsch_initial",
+            "configuration": "h1-q6",
+            "status": "measured",
+            "elapsed_s": 3.4769877250073478,
+            "process_peak_rss_kib": 209436,
+            "metrics": {
+              "method": "curved_tetrahedral_p2",
+              "radius_mm": 4.0,
+              "size_mm": 1.0,
+              "quadrature": 6,
+              "nodes": 5928,
+              "tet10": 3587,
+              "loaded_area_mm2": 160.00000000000006,
+              "occ_quarter_volume_mm3": 699.4690350851265,
+              "hoop_min_mpa": 296.88888391737163,
+              "hoop_max_mpa": 302.9138923879785,
+              "probes": [
+                {
+                  "element": 2124,
+                  "barycentric": [
+                    0.0,
+                    0.0,
+                    1.0,
+                    -0.0
+                  ],
+                  "point_error_mm": 0.0,
+                  "hoop_mpa": 296.88888391737163
+                },
+                {
+                  "element": 3608,
+                  "barycentric": [
+                    1.0,
+                    -0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "point_error_mm": 0.0,
+                  "hoop_mpa": 302.9138923879785
+                },
+                {
+                  "element": 4063,
+                  "barycentric": [
+                    0.0,
+                    0.0,
+                    -0.0,
+                    1.0
+                  ],
+                  "point_error_mm": 0.0,
+                  "hoop_mpa": 297.59407013430035
+                },
+                {
+                  "element": 4077,
+                  "barycentric": [
+                    1.1102230246251565e-16,
+                    1.0,
+                    -2.1876230919568353e-19,
+                    -1.0757099436994819e-16
+                  ],
+                  "point_error_mm": 1.2571819066384344e-18,
+                  "hoop_mpa": 299.64365469961757
+                }
+              ],
+              "reaction_n": [
+                -7257.600038103826,
+                537.6000000274263
+              ],
+              "resultant_n": [
+                7257.600000000005,
+                -537.6000000000014
+              ],
+              "force_balance_relative": 5.235852295331934e-09,
+              "mesh_s": 0.543031711014919,
+              "load_deck_s": 0.11929932999191806,
+              "solve_s": 1.0678039329941384,
+              "total_s": 1.8347980710095726,
+              "solver_peak_rss_kib": 202920,
+              "mesh_process_peak_rss_kib": 209436
+            }
+          },
+          {
+            "method": "tetra",
+            "case": "kirsch_initial",
+            "configuration": "h0.7-q6",
+            "status": "measured",
+            "elapsed_s": 7.9369830309879035,
+            "process_peak_rss_kib": 232016,
+            "metrics": {
+              "method": "curved_tetrahedral_p2",
+              "radius_mm": 4.0,
+              "size_mm": 0.7,
+              "quadrature": 6,
+              "nodes": 16389,
+              "tet10": 10563,
+              "loaded_area_mm2": 160.00000000000026,
+              "occ_quarter_volume_mm3": 699.4690350851265,
+              "hoop_min_mpa": 300.70019980817665,
+              "hoop_max_mpa": 300.70019980817665,
+              "probes": [
+                {
+                  "element": 6441,
+                  "barycentric": [
+                    0.4945054945054942,
+                    0.5054945054945058,
+                    0.0,
+                    0.0
+                  ],
+                  "point_error_mm": 4.440892098500626e-16,
+                  "hoop_mpa": 300.70019980817665
+                }
+              ],
+              "reaction_n": [
+                -7257.599952375896,
+                537.59999281771
+              ],
+              "resultant_n": [
+                7257.600000000002,
+                -537.5999999999996
+              ],
+              "force_balance_relative": 6.618035907606164e-09,
+              "mesh_s": 1.0901787569746375,
+              "load_deck_s": 0.2507834210409783,
+              "solve_s": 4.727529163996223,
+              "total_s": 6.3372706130030565,
+              "solver_peak_rss_kib": 213140,
+              "mesh_process_peak_rss_kib": 232016
+            }
+          },
+          {
+            "method": "tetra",
+            "case": "kirsch_initial",
+            "configuration": "h0.5-q6",
+            "status": "measured",
+            "elapsed_s": 26.54637549002655,
+            "process_peak_rss_kib": 489180,
+            "metrics": {
+              "method": "curved_tetrahedral_p2",
+              "radius_mm": 4.0,
+              "size_mm": 0.5,
+              "quadrature": 6,
+              "nodes": 40299,
+              "tet10": 26809,
+              "loaded_area_mm2": 159.99999999999997,
+              "occ_quarter_volume_mm3": 699.4690350851265,
+              "hoop_min_mpa": 299.3164220622765,
+              "hoop_max_mpa": 300.09295806203426,
+              "probes": [
+                {
+                  "element": 15878,
+                  "barycentric": [
+                    0.0,
+                    0.0,
+                    1.0,
+                    0.0
+                  ],
+                  "point_error_mm": 0.0,
+                  "hoop_mpa": 299.3164220622765
+                },
+                {
+                  "element": 23211,
+                  "barycentric": [
+                    0.0,
+                    -0.0,
+                    1.0,
+                    0.0
+                  ],
+                  "point_error_mm": 0.0,
+                  "hoop_mpa": 300.09295806203426
+                },
+                {
+                  "element": 24263,
+                  "barycentric": [
+                    0.0,
+                    1.0,
+                    -0.0,
+                    0.0
+                  ],
+                  "point_error_mm": 0.0,
+                  "hoop_mpa": 299.4405717821016
+                },
+                {
+                  "element": 24661,
+                  "barycentric": [
+                    0.0,
+                    -0.0,
+                    1.0,
+                    -0.0
+                  ],
+                  "point_error_mm": 0.0,
+                  "hoop_mpa": 299.60372823329755
+                }
+              ],
+              "reaction_n": [
+                -7257.599943517439,
+                537.6000013179548
+              ],
+              "resultant_n": [
+                7257.600000000009,
+                -537.600000000003
+              ],
+              "force_balance_relative": 7.763389772544545e-09,
+              "mesh_s": 2.5625660049845465,
+              "load_deck_s": 0.5393020909978077,
+              "solve_s": 21.078641820990015,
+              "total_s": 24.881103396008257,
+              "solver_peak_rss_kib": 489180,
+              "mesh_process_peak_rss_kib": 281944
+            }
+          },
+          {
+            "method": "tetra",
+            "case": "kirsch_initial",
+            "configuration": "h0.4-q6",
+            "status": "measured",
+            "elapsed_s": 38.37925316399196,
+            "process_peak_rss_kib": 668448,
+            "metrics": {
+              "method": "curved_tetrahedral_p2",
+              "radius_mm": 4.0,
+              "size_mm": 0.4,
+              "quadrature": 6,
+              "nodes": 53441,
+              "tet10": 34807,
+              "loaded_area_mm2": 160.00000000000003,
+              "occ_quarter_volume_mm3": 699.4690350851265,
+              "hoop_min_mpa": 300.1049133159373,
+              "hoop_max_mpa": 300.9512818548872,
+              "probes": [
+                {
+                  "element": 26196,
+                  "barycentric": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                  ],
+                  "point_error_mm": 0.0,
+                  "hoop_mpa": 300.1106850322971
+                },
+                {
+                  "element": 27265,
+                  "barycentric": [
+                    0.0,
+                    1.0,
+                    6.634025928651549e-17,
+                    5.056013096360809e-18
+                  ],
+                  "point_error_mm": 1.2562814966353707e-15,
+                  "hoop_mpa": 300.5761363507298
+                },
+                {
+                  "element": 36436,
+                  "barycentric": [
+                    1.1102230246251565e-16,
+                    1.0,
+                    -6.938893903907222e-17,
+                    0.0
+                  ],
+                  "point_error_mm": 1.2566551083068855e-15,
+                  "hoop_mpa": 300.9512818548872
+                },
+                {
+                  "element": 38941,
+                  "barycentric": [
+                    0.0,
+                    0.0,
+                    1.0,
+                    0.0
+                  ],
+                  "point_error_mm": 0.0,
+                  "hoop_mpa": 300.1049133159373
+                }
+              ],
+              "reaction_n": [
+                -7257.599983449533,
+                537.6000065773742
+              ],
+              "resultant_n": [
+                7257.60000000001,
+                -537.6000000000014
+              ],
+              "force_balance_relative": 2.447212774773925e-09,
+              "mesh_s": 3.34034602396423,
+              "load_deck_s": 0.8053126780432649,
+              "solve_s": 31.664347640995402,
+              "total_s": 36.71963174600387,
+              "solver_peak_rss_kib": 668448,
+              "mesh_process_peak_rss_kib": 310896
+            }
+          }
+        ],
+        "final_quadrature_trial": {
+          "method": "tetra",
+          "case": "kirsch_initial",
+          "configuration": "h0.4-q12",
+          "status": "measured",
+          "elapsed_s": 38.533698394021485,
+          "process_peak_rss_kib": 668656,
+          "metrics": {
+            "method": "curved_tetrahedral_p2",
+            "radius_mm": 4.0,
+            "size_mm": 0.4,
+            "quadrature": 12,
+            "nodes": 53441,
+            "tet10": 34807,
+            "loaded_area_mm2": 160.00000000000003,
+            "occ_quarter_volume_mm3": 699.4690350851265,
+            "hoop_min_mpa": 300.1049133159373,
+            "hoop_max_mpa": 300.9512818548872,
+            "probes": [
+              {
+                "element": 26196,
+                "barycentric": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  1.0
+                ],
+                "point_error_mm": 0.0,
+                "hoop_mpa": 300.1106850322971
+              },
+              {
+                "element": 27265,
+                "barycentric": [
+                  0.0,
+                  1.0,
+                  6.634025928651549e-17,
+                  5.056013096360809e-18
+                ],
+                "point_error_mm": 1.2562814966353707e-15,
+                "hoop_mpa": 300.5761363507298
+              },
+              {
+                "element": 36436,
+                "barycentric": [
+                  1.1102230246251565e-16,
+                  1.0,
+                  -6.938893903907222e-17,
+                  0.0
+                ],
+                "point_error_mm": 1.2566551083068855e-15,
+                "hoop_mpa": 300.9512818548872
+              },
+              {
+                "element": 38941,
+                "barycentric": [
+                  0.0,
+                  0.0,
+                  1.0,
+                  0.0
+                ],
+                "point_error_mm": 0.0,
+                "hoop_mpa": 300.1049133159373
+              }
+            ],
+            "reaction_n": [
+              -7257.599983449533,
+              537.6000065773742
+            ],
+            "resultant_n": [
+              7257.600000000011,
+              -537.6000000000014
+            ],
+            "force_balance_relative": 2.4472128909124904e-09,
+            "mesh_s": 3.270713374018669,
+            "load_deck_s": 0.8303376570111141,
+            "solve_s": 31.85533322696574,
+            "total_s": 36.86437978199683,
+            "solver_peak_rss_kib": 668656,
+            "mesh_process_peak_rss_kib": 309488
+          }
+        },
+        "final_quadrature_relative_change": 0.0
+      },
+      "kirsch_radius_edit": {
+        "status": "qualified",
+        "first_passing_level": "h1",
+        "first_level_with_no_later_failure": "h0.4",
+        "refinements": [
+          {
+            "level": "h2",
+            "passes": false,
+            "hoop_range_mpa": [
+              290.48815495884844,
+              302.14971646650764
+            ],
+            "qoi_error_relative": 0.03170615013717182,
+            "successive_change_relative": null,
+            "quadrature_change_relative": null,
+            "process_peak_rss_kib": 200988,
+            "cumulative_s": 2.0701308809802867,
+            "configuration_s": 2.0701308809802867
+          },
+          {
+            "level": "h1",
+            "passes": true,
+            "hoop_range_mpa": [
+              295.3027279529117,
+              299.7250656651578
+            ],
+            "qoi_error_relative": 0.015657573490294285,
+            "successive_change_relative": 0.016303855461948152,
+            "quadrature_change_relative": null,
+            "process_peak_rss_kib": 210960,
+            "cumulative_s": 5.845276685024146,
+            "configuration_s": 3.7751458040438592
+          },
+          {
+            "level": "h0.7",
+            "passes": false,
+            "hoop_range_mpa": [
+              286.3023991292884,
+              299.3474164053641
+            ],
+            "qoi_error_relative": 0.045658669569038635,
+            "successive_change_relative": 0.03143644220584732,
+            "quadrature_change_relative": null,
+            "process_peak_rss_kib": 238024,
+            "cumulative_s": 16.270016819995362,
+            "configuration_s": 10.424740134971216
+          },
+          {
+            "level": "h0.5",
+            "passes": false,
+            "hoop_range_mpa": [
+              299.57286436889035,
+              301.13283471926076
+            ],
+            "qoi_error_relative": 0.003776115730869112,
+            "successive_change_relative": 0.04429795491510492,
+            "quadrature_change_relative": null,
+            "process_peak_rss_kib": 497424,
+            "cumulative_s": 43.72586065297946,
+            "configuration_s": 27.4558438329841
+          },
+          {
+            "level": "h0.4",
+            "passes": true,
+            "hoop_range_mpa": [
+              299.59425717256033,
+              299.93504392979287
+            ],
+            "qoi_error_relative": 0.0013524760914656042,
+            "successive_change_relative": 0.0039935006385858,
+            "quadrature_change_relative": null,
+            "process_peak_rss_kib": 750760,
+            "cumulative_s": 89.72523439099314,
+            "configuration_s": 45.999373738013674
+          }
+        ],
+        "trials": [
+          {
+            "method": "tetra",
+            "case": "kirsch_radius_edit",
+            "configuration": "h2-q6",
+            "status": "measured",
+            "elapsed_s": 2.0701308809802867,
+            "process_peak_rss_kib": 200988,
+            "metrics": {
+              "method": "curved_tetrahedral_p2",
+              "radius_mm": 3.5,
+              "size_mm": 2.0,
+              "quadrature": 6,
+              "nodes": 1056,
+              "tet10": 552,
+              "loaded_area_mm2": 160.00000000000003,
+              "occ_quarter_volume_mm3": 723.0309799870502,
+              "hoop_min_mpa": 290.48815495884844,
+              "hoop_max_mpa": 302.14971646650764,
+              "probes": [
+                {
+                  "element": 413,
+                  "barycentric": [
+                    0.0,
+                    1.0,
+                    0.0,
+                    0.0
+                  ],
+                  "point_error_mm": 0.0,
+                  "hoop_mpa": 291.4710564289443
+                },
+                {
+                  "element": 576,
+                  "barycentric": [
+                    1.0,
+                    0.0,
+                    0.0,
+                    -0.0
+                  ],
+                  "point_error_mm": 0.0,
+                  "hoop_mpa": 290.48815495884844
+                },
+                {
+                  "element": 728,
+                  "barycentric": [
+                    1.0,
+                    0.0,
+                    0.0,
+                    0.0
+                  ],
+                  "point_error_mm": 0.0,
+                  "hoop_mpa": 302.14971646650764
+                },
+                {
+                  "element": 732,
+                  "barycentric": [
+                    1.0,
+                    0.0,
+                    -0.0,
+                    0.0
+                  ],
+                  "point_error_mm": 0.0,
+                  "hoop_mpa": 298.18193451597426
+                }
+              ],
+              "reaction_n": [
+                -7449.974979769123,
+                429.9750026901308
+              ],
+              "resultant_n": [
+                7449.97500000002,
+                -429.9749999999395
+              ],
+              "force_balance_relative": 2.734917948826037e-09,
+              "mesh_s": 0.2550803869962692,
+              "load_deck_s": 0.029564153985120356,
+              "solve_s": 0.11511374497786164,
+              "total_s": 0.4190262950141914,
+              "solver_peak_rss_kib": 197452,
+              "mesh_process_peak_rss_kib": 198660
+            }
+          },
+          {
+            "method": "tetra",
+            "case": "kirsch_radius_edit",
+            "configuration": "h1-q6",
+            "status": "measured",
+            "elapsed_s": 3.7751458040438592,
+            "process_peak_rss_kib": 210960,
+            "metrics": {
+              "method": "curved_tetrahedral_p2",
+              "radius_mm": 3.5,
+              "size_mm": 1.0,
+              "quadrature": 6,
+              "nodes": 6557,
+              "tet10": 4039,
+              "loaded_area_mm2": 159.99999999999994,
+              "occ_quarter_volume_mm3": 723.0309799870502,
+              "hoop_min_mpa": 295.3027279529117,
+              "hoop_max_mpa": 299.7250656651578,
+              "probes": [
+                {
+                  "element": 2086,
+                  "barycentric": [
+                    0.0,
+                    -0.0,
+                    1.0,
+                    -0.0
+                  ],
+                  "point_error_mm": 0.0,
+                  "hoop_mpa": 297.8000346795777
+                },
+                {
+                  "element": 3884,
+                  "barycentric": [
+                    0.0,
+                    -0.0,
+                    0.0,
+                    1.0
+                  ],
+                  "point_error_mm": 0.0,
+                  "hoop_mpa": 295.5979658296124
+                },
+                {
+                  "element": 4685,
+                  "barycentric": [
+                    0.0,
+                    -0.0,
+                    0.0,
+                    1.0
+                  ],
+                  "point_error_mm": 0.0,
+                  "hoop_mpa": 299.7250656651578
+                },
+                {
+                  "element": 4984,
+                  "barycentric": [
+                    1.0,
+                    0.0,
+                    -0.0,
+                    0.0
+                  ],
+                  "point_error_mm": 0.0,
+                  "hoop_mpa": 295.3027279529117
+                }
+              ],
+              "reaction_n": [
+                -7449.974965421148,
+                429.97502680696414
+              ],
+              "resultant_n": [
+                7449.975,
+                -429.97500000000036
+              ],
+              "force_balance_relative": 5.8631261182529295e-09,
+              "mesh_s": 0.5749237240524963,
+              "load_deck_s": 0.1581615469767712,
+              "solve_s": 1.3185303189675324,
+              "total_s": 2.1681272870046087,
+              "solver_peak_rss_kib": 203608,
+              "mesh_process_peak_rss_kib": 210960
+            }
+          },
+          {
+            "method": "tetra",
+            "case": "kirsch_radius_edit",
+            "configuration": "h0.7-q6",
+            "status": "measured",
+            "elapsed_s": 10.424740134971216,
+            "process_peak_rss_kib": 238024,
+            "metrics": {
+              "method": "curved_tetrahedral_p2",
+              "radius_mm": 3.5,
+              "size_mm": 0.7,
+              "quadrature": 6,
+              "nodes": 19127,
+              "tet10": 12587,
+              "loaded_area_mm2": 160.00000000000026,
+              "occ_quarter_volume_mm3": 723.0309799870502,
+              "hoop_min_mpa": 286.3023991292884,
+              "hoop_max_mpa": 299.3474164053641,
+              "probes": [
+                {
+                  "element": 7609,
+                  "barycentric": [
+                    0.5054945054945058,
+                    0.0,
+                    0.4945054945054942,
+                    -0.0
+                  ],
+                  "point_error_mm": 4.440892098500626e-16,
+                  "hoop_mpa": 299.3474164053641
+                },
+                {
+                  "element": 7610,
+                  "barycentric": [
+                    0.5054945054945058,
+                    0.4945054945054942,
+                    0.0,
+                    0.0
+                  ],
+                  "point_error_mm": 4.440892098500626e-16,
+                  "hoop_mpa": 286.3023991292884
+                }
+              ],
+              "reaction_n": [
+                -7449.974972566721,
+                429.9749981775806
+              ],
+              "resultant_n": [
+                7449.974999999996,
+                -429.9750000000022
+              ],
+              "force_balance_relative": 3.684316286934712e-09,
+              "mesh_s": 1.3125553099671379,
+              "load_deck_s": 0.29736745601985604,
+              "solve_s": 6.765538286999799,
+              "total_s": 8.690948089002632,
+              "solver_peak_rss_kib": 217240,
+              "mesh_process_peak_rss_kib": 238024
+            }
+          },
+          {
+            "method": "tetra",
+            "case": "kirsch_radius_edit",
+            "configuration": "h0.5-q6",
+            "status": "measured",
+            "elapsed_s": 27.4558438329841,
+            "process_peak_rss_kib": 497424,
+            "metrics": {
+              "method": "curved_tetrahedral_p2",
+              "radius_mm": 3.5,
+              "size_mm": 0.5,
+              "quadrature": 6,
+              "nodes": 40976,
+              "tet10": 27316,
+              "loaded_area_mm2": 160.00000000000014,
+              "occ_quarter_volume_mm3": 723.0309799870502,
+              "hoop_min_mpa": 299.57286436889035,
+              "hoop_max_mpa": 301.13283471926076,
+              "probes": [
+                {
+                  "element": 23069,
+                  "barycentric": [
+                    0.0,
+                    -5.434850661049772e-17,
+                    1.0,
+                    5.611982746126345e-17
+                  ],
+                  "point_error_mm": 4.440892098500626e-16,
+                  "hoop_mpa": 299.57286436889035
+                },
+                {
+                  "element": 28769,
+                  "barycentric": [
+                    0.0,
+                    -0.0,
+                    0.0,
+                    1.0
+                  ],
+                  "point_error_mm": 0.0,
+                  "hoop_mpa": 301.13283471926076
+                },
+                {
+                  "element": 30586,
+                  "barycentric": [
+                    0.0,
+                    4.932232223226723e-17,
+                    7.790174297698224e-18,
+                    0.9999999999999999
+                  ],
+                  "point_error_mm": 6.283804691372491e-16,
+                  "hoop_mpa": 300.12409403654954
+                },
+                {
+                  "element": 30594,
+                  "barycentric": [
+                    0.0,
+                    -0.0,
+                    1.0,
+                    -0.0
+                  ],
+                  "point_error_mm": 0.0,
+                  "hoop_mpa": 299.75011604158664
+                }
+              ],
+              "reaction_n": [
+                -7449.975054882721,
+                429.97500766143213
+              ],
+              "resultant_n": [
+                7449.9749999999985,
+                -429.97500000000076
+              ],
+              "force_balance_relative": 7.425908532835387e-09,
+              "mesh_s": 2.707129800983239,
+              "load_deck_s": 0.5605423270026222,
+              "solve_s": 21.825289877015166,
+              "total_s": 25.833577006997075,
+              "solver_peak_rss_kib": 497424,
+              "mesh_process_peak_rss_kib": 283416
+            }
+          },
+          {
+            "method": "tetra",
+            "case": "kirsch_radius_edit",
+            "configuration": "h0.4-q6",
+            "status": "measured",
+            "elapsed_s": 45.999373738013674,
+            "process_peak_rss_kib": 750760,
+            "metrics": {
+              "method": "curved_tetrahedral_p2",
+              "radius_mm": 3.5,
+              "size_mm": 0.4,
+              "quadrature": 6,
+              "nodes": 56696,
+              "tet10": 37135,
+              "loaded_area_mm2": 159.99999999999991,
+              "occ_quarter_volume_mm3": 723.0309799870502,
+              "hoop_min_mpa": 299.59425717256033,
+              "hoop_max_mpa": 299.93504392979287,
+              "probes": [
+                {
+                  "element": 8561,
+                  "barycentric": [
+                    0.0,
+                    -0.0,
+                    1.0,
+                    -0.0
+                  ],
+                  "point_error_mm": 0.0,
+                  "hoop_mpa": 299.68640474303453
+                },
+                {
+                  "element": 10738,
+                  "barycentric": [
+                    0.0,
+                    -0.0,
+                    0.0,
+                    1.0
+                  ],
+                  "point_error_mm": 0.0,
+                  "hoop_mpa": 299.59425717256033
+                },
+                {
+                  "element": 11622,
+                  "barycentric": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                  ],
+                  "point_error_mm": 0.0,
+                  "hoop_mpa": 299.7787970633597
+                },
+                {
+                  "element": 36631,
+                  "barycentric": [
+                    0.0,
+                    -0.0,
+                    0.0,
+                    1.0
+                  ],
+                  "point_error_mm": 0.0,
+                  "hoop_mpa": 299.93504392979287
+                }
+              ],
+              "reaction_n": [
+                -7449.9750214883825,
+                429.97500329168184
+              ],
+              "resultant_n": [
+                7449.974999999999,
+                -429.97500000000116
+              ],
+              "force_balance_relative": 2.9131536026501013e-09,
+              "mesh_s": 3.34374946198659,
+              "load_deck_s": 0.8235714859911241,
+              "solve_s": 39.22071174503071,
+              "total_s": 44.36227878200589,
+              "solver_peak_rss_kib": 750760,
+              "mesh_process_peak_rss_kib": 316652
+            }
+          }
+        ],
+        "final_quadrature_trial": {
+          "method": "tetra",
+          "case": "kirsch_radius_edit",
+          "configuration": "h0.4-q12",
+          "status": "measured",
+          "elapsed_s": 47.17278806696413,
+          "process_peak_rss_kib": 750664,
+          "metrics": {
+            "method": "curved_tetrahedral_p2",
+            "radius_mm": 3.5,
+            "size_mm": 0.4,
+            "quadrature": 12,
+            "nodes": 56696,
+            "tet10": 37135,
+            "loaded_area_mm2": 159.99999999999991,
+            "occ_quarter_volume_mm3": 723.0309799870502,
+            "hoop_min_mpa": 299.59425717256033,
+            "hoop_max_mpa": 299.93504392979287,
+            "probes": [
+              {
+                "element": 8561,
+                "barycentric": [
+                  0.0,
+                  -0.0,
+                  1.0,
+                  -0.0
+                ],
+                "point_error_mm": 0.0,
+                "hoop_mpa": 299.68640474303453
+              },
+              {
+                "element": 10738,
+                "barycentric": [
+                  0.0,
+                  -0.0,
+                  0.0,
+                  1.0
+                ],
+                "point_error_mm": 0.0,
+                "hoop_mpa": 299.59425717256033
+              },
+              {
+                "element": 11622,
+                "barycentric": [
+                  0.0,
+                  0.0,
+                  0.0,
+                  1.0
+                ],
+                "point_error_mm": 0.0,
+                "hoop_mpa": 299.7787970633597
+              },
+              {
+                "element": 36631,
+                "barycentric": [
+                  0.0,
+                  -0.0,
+                  0.0,
+                  1.0
+                ],
+                "point_error_mm": 0.0,
+                "hoop_mpa": 299.93504392979287
+              }
+            ],
+            "reaction_n": [
+              -7449.9750214883825,
+              429.97500329168184
+            ],
+            "resultant_n": [
+              7449.9749999999985,
+              -429.97500000000144
+            ],
+            "force_balance_relative": 2.9131537173552414e-09,
+            "mesh_s": 3.595611247001216,
+            "load_deck_s": 0.8644932670285925,
+            "solve_s": 40.03994221199537,
+            "total_s": 45.473130306985695,
+            "solver_peak_rss_kib": 750664,
+            "mesh_process_peak_rss_kib": 313540
+          }
+        },
+        "final_quadrature_relative_change": 0.0
+      }
+    },
+    "immersed": {
+      "kirsch_initial": {
+        "status": "qualified",
+        "first_passing_level": "n32",
+        "first_level_with_no_later_failure": "n32",
+        "refinements": [
+          {
+            "level": "n4",
+            "passes": false,
+            "hoop_range_mpa": [
+              285.99907240564943,
+              285.99907240564943
+            ],
+            "qoi_error_relative": 0.04666975864783529,
+            "successive_change_relative": null,
+            "quadrature_change_relative": 3.952720764270149e-07,
+            "process_peak_rss_kib": 80044,
+            "cumulative_s": 1.53330382501008,
+            "configuration_s": 0.7664424680406228
+          },
+          {
+            "level": "n8",
+            "passes": false,
+            "hoop_range_mpa": [
+              332.8370334849702,
+              332.8370334849702
+            ],
+            "qoi_error_relative": 0.10945677828323408,
+            "successive_change_relative": 0.14072340625351665,
+            "quadrature_change_relative": 2.2778221856848783e-08,
+            "process_peak_rss_kib": 82320,
+            "cumulative_s": 3.0671184510574676,
+            "configuration_s": 0.7670920560485683
+          },
+          {
+            "level": "n16",
+            "passes": false,
+            "hoop_range_mpa": [
+              306.78736015988926,
+              306.78736015988926
+            ],
+            "qoi_error_relative": 0.02262453386629759,
+            "successive_change_relative": 0.08491116880273221,
+            "quadrature_change_relative": 5.7510192164045294e-11,
+            "process_peak_rss_kib": 90500,
+            "cumulative_s": 4.8519736980088055,
+            "configuration_s": 0.9177355139981955
+          },
+          {
+            "level": "n32",
+            "passes": true,
+            "hoop_range_mpa": [
+              301.2283450921554,
+              301.2283450921554
+            ],
+            "qoi_error_relative": 0.004094483640517899,
+            "successive_change_relative": 0.018454488624014404,
+            "quadrature_change_relative": 1.1729828959990603e-11,
+            "process_peak_rss_kib": 128088,
+            "cumulative_s": 7.588703650981188,
+            "configuration_s": 1.4679965269751847
+          },
+          {
+            "level": "n64",
+            "passes": true,
+            "hoop_range_mpa": [
+              300.34127593832255,
+              300.34127593832255
+            ],
+            "qoi_error_relative": 0.0011375864610752018,
+            "successive_change_relative": 0.002953537275425995,
+            "quadrature_change_relative": 2.7972646421403625e-12,
+            "process_peak_rss_kib": 288664,
+            "cumulative_s": 14.837928195949644,
+            "configuration_s": 4.126158458995633
+          }
+        ],
+        "trials": [
+          {
+            "method": "immersed",
+            "case": "kirsch_initial",
+            "configuration": "n4-q6",
+            "status": "measured",
+            "elapsed_s": 0.7668613569694571,
+            "process_peak_rss_kib": 79752,
+            "metrics": {
+              "method": "immersed_quadratic_bspline",
+              "n": 4,
+              "quadrature": 6,
+              "radius_mm": 4.0,
+              "background_splines": 36,
+              "active_vector_dofs": 70,
+              "free_vector_dofs": 60,
+              "active_cells": 15,
+              "cut_cells": 3,
+              "min_material_fraction": 0.511331837318817,
+              "nnz": 1786,
+              "material_area_mm2": 87.43362938137729,
+              "area_relative_error": 4.8763215687586126e-11,
+              "hoop_mpa": 285.9989538240265,
+              "hoop_relative_error": 0.046670153919911694,
+              "force_balance_relative": 8.002226690522318e-16,
+              "free_residual_relative": 1.841769686969173e-15,
+              "resultant_n": [
+                7257.599999999951,
+                -537.599999999939
+              ],
+              "reaction_n": [
+                -7257.599999999947,
+                537.5999999999353
+              ],
+              "quadrature_geometry_s": 0.002036296995356679,
+              "assembly_including_quadrature_s": 0.01113589497981593,
+              "preconditioning_s": 0.0014465910498984158,
+              "solve_s": 0.0006295549683272839,
+              "total_s": 0.013574632001109421,
+              "peak_rss_kib": 78824
+            }
+          },
+          {
+            "method": "immersed",
+            "case": "kirsch_initial",
+            "configuration": "n4-q12",
+            "status": "measured",
+            "elapsed_s": 0.7664424680406228,
+            "process_peak_rss_kib": 80044,
+            "metrics": {
+              "method": "immersed_quadratic_bspline",
+              "n": 4,
+              "quadrature": 12,
+              "radius_mm": 4.0,
+              "background_splines": 36,
+              "active_vector_dofs": 70,
+              "free_vector_dofs": 60,
+              "active_cells": 15,
+              "cut_cells": 3,
+              "min_material_fraction": 0.5113318380007595,
+              "nnz": 1786,
+              "material_area_mm2": 87.43362938564081,
+              "area_relative_error": 1.1102230246251565e-16,
+              "hoop_mpa": 285.99907240564943,
+              "hoop_relative_error": 0.04666975864783529,
+              "force_balance_relative": 5.101036802301735e-15,
+              "free_residual_relative": 2.639125650515465e-15,
+              "resultant_n": [
+                7257.5999999999985,
+                -537.6
+              ],
+              "reaction_n": [
+                -7257.599999999962,
+                537.5999999999926
+              ],
+              "quadrature_geometry_s": 0.004044228000566363,
+              "assembly_including_quadrature_s": 0.01584322500275448,
+              "preconditioning_s": 0.0014675419661216438,
+              "solve_s": 0.0006401550490409136,
+              "total_s": 0.018316116998903453,
+              "peak_rss_kib": 79460
+            }
+          },
+          {
+            "method": "immersed",
+            "case": "kirsch_initial",
+            "configuration": "n8-q6",
+            "status": "measured",
+            "elapsed_s": 0.7667225699988194,
+            "process_peak_rss_kib": 82320,
+            "metrics": {
+              "method": "immersed_quadratic_bspline",
+              "n": 8,
+              "quadrature": 6,
+              "radius_mm": 4.0,
+              "background_splines": 100,
+              "active_vector_dofs": 188,
+              "free_vector_dofs": 174,
+              "active_cells": 58,
+              "cut_cells": 7,
+              "min_material_fraction": 0.19475459103617854,
+              "nnz": 6506,
+              "material_area_mm2": 87.43362937818212,
+              "area_relative_error": 8.530709472154285e-11,
+              "hoop_mpa": 332.83702665150366,
+              "hoop_relative_error": 0.1094567555050121,
+              "force_balance_relative": 1.1500983706210253e-14,
+              "free_residual_relative": 6.947986906228613e-15,
+              "resultant_n": [
+                7257.6,
+                -537.5999999999998
+              ],
+              "reaction_n": [
+                -7257.599999999921,
+                537.5999999999725
+              ],
+              "quadrature_geometry_s": 0.006795163149945438,
+              "assembly_including_quadrature_s": 0.0337409219937399,
+              "preconditioning_s": 0.0017640810110606253,
+              "solve_s": 0.0015994340064935386,
+              "total_s": 0.03752255497965962,
+              "peak_rss_kib": 81524
+            }
+          },
+          {
+            "method": "immersed",
+            "case": "kirsch_initial",
+            "configuration": "n8-q12",
+            "status": "measured",
+            "elapsed_s": 0.7670920560485683,
+            "process_peak_rss_kib": 82156,
+            "metrics": {
+              "method": "immersed_quadratic_bspline",
+              "n": 8,
+              "quadrature": 12,
+              "radius_mm": 4.0,
+              "background_splines": 100,
+              "active_vector_dofs": 188,
+              "free_vector_dofs": 174,
+              "active_cells": 58,
+              "cut_cells": 7,
+              "min_material_fraction": 0.1947545958079753,
+              "nnz": 6506,
+              "material_area_mm2": 87.43362938564081,
+              "area_relative_error": 1.1102230246251565e-16,
+              "hoop_mpa": 332.8370334849702,
+              "hoop_relative_error": 0.10945677828323408,
+              "force_balance_relative": 1.928064932510132e-14,
+              "free_residual_relative": 6.3354855370782934e-15,
+              "resultant_n": [
+                7257.599999999999,
+                -537.5999999999999
+              ],
+              "reaction_n": [
+                -7257.599999999859,
+                537.5999999999915
+              ],
+              "quadrature_geometry_s": 0.013638898904900998,
+              "assembly_including_quadrature_s": 0.04765377001604065,
+              "preconditioning_s": 0.0017104630242101848,
+              "solve_s": 0.001688868971541524,
+              "total_s": 0.05148380302125588,
+              "peak_rss_kib": 81480
+            }
+          },
+          {
+            "method": "immersed",
+            "case": "kirsch_initial",
+            "configuration": "n16-q6",
+            "status": "measured",
+            "elapsed_s": 0.8671197329531424,
+            "process_peak_rss_kib": 90500,
+            "metrics": {
+              "method": "immersed_quadratic_bspline",
+              "n": 16,
+              "quadrature": 6,
+              "radius_mm": 4.0,
+              "background_splines": 324,
+              "active_vector_dofs": 596,
+              "free_vector_dofs": 572,
+              "active_cells": 230,
+              "cut_cells": 13,
+              "min_material_fraction": 1.0006839680113796e-05,
+              "nnz": 24436,
+              "material_area_mm2": 87.43362938279067,
+              "area_relative_error": 3.2597924359833996e-11,
+              "hoop_mpa": 306.7873601771423,
+              "hoop_relative_error": 0.02262453392380781,
+              "force_balance_relative": 4.1555157590077786e-14,
+              "free_residual_relative": 2.102585192521773e-14,
+              "resultant_n": [
+                7257.6,
+                -537.6000000000001
+              ],
+              "reaction_n": [
+                -7257.599999999706,
+                537.5999999999322
+              ],
+              "quadrature_geometry_s": 0.02419852849561721,
+              "assembly_including_quadrature_s": 0.12266781600192189,
+              "preconditioning_s": 0.0025649929884821177,
+              "solve_s": 0.008043206995353103,
+              "total_s": 0.13377429597312585,
+              "peak_rss_kib": 90500
+            }
+          },
+          {
+            "method": "immersed",
+            "case": "kirsch_initial",
+            "configuration": "n16-q12",
+            "status": "measured",
+            "elapsed_s": 0.9177355139981955,
+            "process_peak_rss_kib": 90372,
+            "metrics": {
+              "method": "immersed_quadratic_bspline",
+              "n": 16,
+              "quadrature": 12,
+              "radius_mm": 4.0,
+              "background_splines": 324,
+              "active_vector_dofs": 596,
+              "free_vector_dofs": 572,
+              "active_cells": 230,
+              "cut_cells": 13,
+              "min_material_fraction": 1.000683968011376e-05,
+              "nnz": 24436,
+              "material_area_mm2": 87.43362938564081,
+              "area_relative_error": 1.1102230246251565e-16,
+              "hoop_mpa": 306.78736015988926,
+              "hoop_relative_error": 0.02262453386629759,
+              "force_balance_relative": 3.899442432081261e-14,
+              "free_residual_relative": 2.229980176130605e-14,
+              "resultant_n": [
+                7257.599999999999,
+                -537.5999999999999
+              ],
+              "reaction_n": [
+                -7257.599999999721,
+                537.5999999999444
+              ],
+              "quadrature_geometry_s": 0.05180157849099487,
+              "assembly_including_quadrature_s": 0.18527522002113983,
+              "preconditioning_s": 0.0025697819655761123,
+              "solve_s": 0.007844806008506566,
+              "total_s": 0.19618504703976214,
+              "peak_rss_kib": 90372
+            }
+          },
+          {
+            "method": "immersed",
+            "case": "kirsch_initial",
+            "configuration": "n32-q6",
+            "status": "measured",
+            "elapsed_s": 1.2687334259971976,
+            "process_peak_rss_kib": 127792,
+            "metrics": {
+              "method": "immersed_quadratic_bspline",
+              "n": 32,
+              "quadrature": 6,
+              "radius_mm": 4.0,
+              "background_splines": 1156,
+              "active_vector_dofs": 2082,
+              "free_vector_dofs": 2038,
+              "active_cells": 909,
+              "cut_cells": 25,
+              "min_material_fraction": 4.0027358720455184e-05,
+              "nnz": 93796,
+              "material_area_mm2": 87.4336293853304,
+              "area_relative_error": 3.550382210448788e-12,
+              "hoop_mpa": 301.22834509567434,
+              "hoop_relative_error": 0.004094483652247849,
+              "force_balance_relative": 4.524711208567775e-14,
+              "free_residual_relative": 6.374745287473408e-14,
+              "resultant_n": [
+                7257.599999999999,
+                -537.5999999999999
+              ],
+              "reaction_n": [
+                -7257.599999999703,
+                537.5999999998567
+              ],
+              "quadrature_geometry_s": 0.09435502294218168,
+              "assembly_including_quadrature_s": 0.4738410839927383,
+              "preconditioning_s": 0.005825756001286209,
+              "solve_s": 0.06092453800374642,
+              "total_s": 0.5413011659984477,
+              "peak_rss_kib": 127792
+            }
+          },
+          {
+            "method": "immersed",
+            "case": "kirsch_initial",
+            "configuration": "n32-q12",
+            "status": "measured",
+            "elapsed_s": 1.4679965269751847,
+            "process_peak_rss_kib": 128088,
+            "metrics": {
+              "method": "immersed_quadratic_bspline",
+              "n": 32,
+              "quadrature": 12,
+              "radius_mm": 4.0,
+              "background_splines": 1156,
+              "active_vector_dofs": 2082,
+              "free_vector_dofs": 2038,
+              "active_cells": 909,
+              "cut_cells": 25,
+              "min_material_fraction": 4.002735872045504e-05,
+              "nnz": 93796,
+              "material_area_mm2": 87.43362938564083,
+              "area_relative_error": 0.0,
+              "hoop_mpa": 301.2283450921554,
+              "hoop_relative_error": 0.004094483640517899,
+              "force_balance_relative": 1.298200077192736e-13,
+              "free_residual_relative": 7.794387259524392e-14,
+              "resultant_n": [
+                7257.599999999999,
+                -537.5999999999999
+              ],
+              "reaction_n": [
+                -7257.5999999990645,
+                537.5999999998642
+              ],
+              "quadrature_geometry_s": 0.1825116346590221,
+              "assembly_including_quadrature_s": 0.6941542709828354,
+              "preconditioning_s": 0.005870109016541392,
+              "solve_s": 0.056706501985900104,
+              "total_s": 0.7574462129850872,
+              "peak_rss_kib": 128088
+            }
+          },
+          {
+            "method": "immersed",
+            "case": "kirsch_initial",
+            "configuration": "n64-q6",
+            "status": "measured",
+            "elapsed_s": 3.123066085972823,
+            "process_peak_rss_kib": 288272,
+            "metrics": {
+              "method": "immersed_quadratic_bspline",
+              "n": 64,
+              "quadrature": 6,
+              "radius_mm": 4.0,
+              "background_splines": 4356,
+              "active_vector_dofs": 7732,
+              "free_vector_dofs": 7650,
+              "active_cells": 3606,
+              "cut_cells": 51,
+              "min_material_fraction": 0.00016010943488182073,
+              "nnz": 366526,
+              "material_area_mm2": 87.43362938560338,
+              "area_relative_error": 4.283240429003854e-13,
+              "hoop_mpa": 300.34127593916173,
+              "hoop_relative_error": 0.0011375864638725197,
+              "force_balance_relative": 2.0096093069229184e-13,
+              "free_residual_relative": 2.208533725829289e-13,
+              "resultant_n": [
+                7257.6,
+                -537.5999999999999
+              ],
+              "reaction_n": [
+                -7257.600000001398,
+                537.5999999995701
+              ],
+              "quadrature_geometry_s": 0.3537126799346879,
+              "assembly_including_quadrature_s": 1.865192626020871,
+              "preconditioning_s": 0.018908555968664587,
+              "solve_s": 0.45969150500604883,
+              "total_s": 2.3450864930055104,
+              "peak_rss_kib": 288272
+            }
+          },
+          {
+            "method": "immersed",
+            "case": "kirsch_initial",
+            "configuration": "n64-q12",
+            "status": "measured",
+            "elapsed_s": 4.126158458995633,
+            "process_peak_rss_kib": 288664,
+            "metrics": {
+              "method": "immersed_quadratic_bspline",
+              "n": 64,
+              "quadrature": 12,
+              "radius_mm": 4.0,
+              "background_splines": 4356,
+              "active_vector_dofs": 7732,
+              "free_vector_dofs": 7650,
+              "active_cells": 3606,
+              "cut_cells": 51,
+              "min_material_fraction": 0.00016010943488182017,
+              "nnz": 366526,
+              "material_area_mm2": 87.43362938564083,
+              "area_relative_error": 0.0,
+              "hoop_mpa": 300.34127593832255,
+              "hoop_relative_error": 0.0011375864610752018,
+              "force_balance_relative": 4.690170938586813e-13,
+              "free_residual_relative": 2.2307317094124637e-13,
+              "resultant_n": [
+                7257.6,
+                -537.5999999999999
+              ],
+              "reaction_n": [
+                -7257.599999996627,
+                537.5999999994792
+              ],
+              "quadrature_geometry_s": 0.7110685444786213,
+              "assembly_including_quadrature_s": 2.874380169028882,
+              "preconditioning_s": 0.018755333963781595,
+              "solve_s": 0.4558368920115754,
+              "total_s": 3.3502731019980274,
+              "peak_rss_kib": 288664
+            }
+          }
+        ]
+      },
+      "kirsch_radius_edit": {
+        "status": "qualified",
+        "first_passing_level": "n32",
+        "first_level_with_no_later_failure": "n32",
+        "refinements": [
+          {
+            "level": "n4",
+            "passes": false,
+            "hoop_range_mpa": [
+              291.555512851107,
+              291.555512851107
+            ],
+            "qoi_error_relative": 0.02814829049631007,
+            "successive_change_relative": null,
+            "quadrature_change_relative": 1.3489238843552205e-07,
+            "process_peak_rss_kib": 80044,
+            "cumulative_s": 1.433278301905375,
+            "configuration_s": 0.7168619159492664
+          },
+          {
+            "level": "n8",
+            "passes": false,
+            "hoop_range_mpa": [
+              319.17085422334424,
+              319.17085422334424
+            ],
+            "qoi_error_relative": 0.06390284741114738,
+            "successive_change_relative": 0.08652212759036274,
+            "quadrature_change_relative": 3.7036284084024372e-09,
+            "process_peak_rss_kib": 82160,
+            "cumulative_s": 2.967005798884202,
+            "configuration_s": 0.7668057309929281
+          },
+          {
+            "level": "n16",
+            "passes": false,
+            "hoop_range_mpa": [
+              307.8757134519843,
+              307.8757134519843
+            ],
+            "qoi_error_relative": 0.026252378173281077,
+            "successive_change_relative": 0.0366873393315627,
+            "quadrature_change_relative": 9.220286756317364e-11,
+            "process_peak_rss_kib": 90832,
+            "cumulative_s": 4.751432724820916,
+            "configuration_s": 0.9172572709503584
+          },
+          {
+            "level": "n32",
+            "passes": true,
+            "hoop_range_mpa": [
+              302.56340760616143,
+              302.56340760616143
+            ],
+            "qoi_error_relative": 0.008544692020538092,
+            "successive_change_relative": 0.017557661343957944,
+            "quadrature_change_relative": 1.3621198983552555e-11,
+            "process_peak_rss_kib": 129636,
+            "cumulative_s": 7.5381712157977745,
+            "configuration_s": 1.518224413972348
+          },
+          {
+            "level": "n64",
+            "passes": true,
+            "hoop_range_mpa": [
+              300.5347025217816,
+              300.5347025217816
+            ],
+            "qoi_error_relative": 0.001782341739271942,
+            "successive_change_relative": 0.006750318906126385,
+            "quadrature_change_relative": 2.6883147559904806e-12,
+            "process_peak_rss_kib": 295820,
+            "cumulative_s": 14.987411581852939,
+            "configuration_s": 4.276660329021979
+          }
+        ],
+        "trials": [
+          {
+            "method": "immersed",
+            "case": "kirsch_radius_edit",
+            "configuration": "n4-q6",
+            "status": "measured",
+            "elapsed_s": 0.7164163859561086,
+            "process_peak_rss_kib": 80044,
+            "metrics": {
+              "method": "immersed_quadratic_bspline",
+              "n": 4,
+              "quadrature": 6,
+              "radius_mm": 3.5,
+              "background_splines": 36,
+              "active_vector_dofs": 72,
+              "free_vector_dofs": 60,
+              "active_cells": 16,
+              "cut_cells": 3,
+              "min_material_fraction": 0.0002027143160382358,
+              "nnz": 1794,
+              "material_area_mm2": 90.37887246348467,
+              "area_relative_error": 3.8611447372716157e-10,
+              "hoop_mpa": 291.55547238339045,
+              "hoop_relative_error": 0.02814842538869844,
+              "force_balance_relative": 1.4751895977101146e-15,
+              "free_residual_relative": 2.332584171060919e-15,
+              "resultant_n": [
+                7449.974999999939,
+                -429.97499999992976
+              ],
+              "reaction_n": [
+                -7449.9749999999385,
+                429.97499999994074
+              ],
+              "quadrature_geometry_s": 0.002158609975595027,
+              "assembly_including_quadrature_s": 0.01185961498413235,
+              "preconditioning_s": 0.0014652510290034115,
+              "solve_s": 0.000650717003736645,
+              "total_s": 0.01434461900498718,
+              "peak_rss_kib": 79104
+            }
+          },
+          {
+            "method": "immersed",
+            "case": "kirsch_radius_edit",
+            "configuration": "n4-q12",
+            "status": "measured",
+            "elapsed_s": 0.7168619159492664,
+            "process_peak_rss_kib": 79712,
+            "metrics": {
+              "method": "immersed_quadratic_bspline",
+              "n": 4,
+              "quadrature": 12,
+              "radius_mm": 3.5,
+              "background_splines": 36,
+              "active_vector_dofs": 72,
+              "free_vector_dofs": 60,
+              "active_cells": 16,
+              "cut_cells": 3,
+              "min_material_fraction": 0.0002027143160382356,
+              "nnz": 1794,
+              "material_area_mm2": 90.37887249838124,
+              "area_relative_error": 1.1102230246251565e-16,
+              "hoop_mpa": 291.555512851107,
+              "hoop_relative_error": 0.02814829049631007,
+              "force_balance_relative": 4.709265142518093e-15,
+              "free_residual_relative": 2.3058205487582217e-15,
+              "resultant_n": [
+                7449.975,
+                -429.975
+              ],
+              "reaction_n": [
+                -7449.974999999966,
+                429.97499999999366
+              ],
+              "quadrature_geometry_s": 0.004215758002828807,
+              "assembly_including_quadrature_s": 0.015981903998181224,
+              "preconditioning_s": 0.0014407539856620133,
+              "solve_s": 0.0006018489948473871,
+              "total_s": 0.018376000982243568,
+              "peak_rss_kib": 79372
+            }
+          },
+          {
+            "method": "immersed",
+            "case": "kirsch_radius_edit",
+            "configuration": "n8-q6",
+            "status": "measured",
+            "elapsed_s": 0.7669217659858987,
+            "process_peak_rss_kib": 82072,
+            "metrics": {
+              "method": "immersed_quadratic_bspline",
+              "n": 8,
+              "quadrature": 6,
+              "radius_mm": 3.5,
+              "background_splines": 100,
+              "active_vector_dofs": 194,
+              "free_vector_dofs": 178,
+              "active_cells": 61,
+              "cut_cells": 5,
+              "min_material_fraction": 0.0008108572641529432,
+              "nnz": 6696,
+              "material_area_mm2": 90.37887245099644,
+              "area_relative_error": 5.242908329705642e-10,
+              "hoop_mpa": 319.1708531122557,
+              "hoop_relative_error": 0.06390284370751909,
+              "force_balance_relative": 1.1511812309905575e-14,
+              "free_residual_relative": 6.640501265297217e-15,
+              "resultant_n": [
+                7449.975000000001,
+                -429.975
+              ],
+              "reaction_n": [
+                -7449.974999999916,
+                429.9749999999916
+              ],
+              "quadrature_geometry_s": 0.007011677662376314,
+              "assembly_including_quadrature_s": 0.03467253496637568,
+              "preconditioning_s": 0.001710446027573198,
+              "solve_s": 0.0017539620166644454,
+              "total_s": 0.038542052963748574,
+              "peak_rss_kib": 81400
+            }
+          },
+          {
+            "method": "immersed",
+            "case": "kirsch_radius_edit",
+            "configuration": "n8-q12",
+            "status": "measured",
+            "elapsed_s": 0.7668057309929281,
+            "process_peak_rss_kib": 82160,
+            "metrics": {
+              "method": "immersed_quadratic_bspline",
+              "n": 8,
+              "quadrature": 12,
+              "radius_mm": 3.5,
+              "background_splines": 100,
+              "active_vector_dofs": 194,
+              "free_vector_dofs": 178,
+              "active_cells": 61,
+              "cut_cells": 5,
+              "min_material_fraction": 0.0008108572641529424,
+              "nnz": 6696,
+              "material_area_mm2": 90.3788724983812,
+              "area_relative_error": 6.661338147750939e-16,
+              "hoop_mpa": 319.17085422334424,
+              "hoop_relative_error": 0.06390284741114738,
+              "force_balance_relative": 1.7455722496140456e-14,
+              "free_residual_relative": 6.174130838534635e-15,
+              "resultant_n": [
+                7449.975,
+                -429.97499999999974
+              ],
+              "reaction_n": [
+                -7449.97499999987,
+                429.97499999999246
+              ],
+              "quadrature_geometry_s": 0.013932183850556612,
+              "assembly_including_quadrature_s": 0.04860979795921594,
+              "preconditioning_s": 0.001710251031909138,
+              "solve_s": 0.0017128379549831152,
+              "total_s": 0.052424139983486384,
+              "peak_rss_kib": 81500
+            }
+          },
+          {
+            "method": "immersed",
+            "case": "kirsch_radius_edit",
+            "configuration": "n16-q6",
+            "status": "measured",
+            "elapsed_s": 0.8671696549863555,
+            "process_peak_rss_kib": 90444,
+            "metrics": {
+              "method": "immersed_quadratic_bspline",
+              "n": 16,
+              "quadrature": 6,
+              "radius_mm": 3.5,
+              "background_splines": 324,
+              "active_vector_dofs": 610,
+              "free_vector_dofs": 584,
+              "active_cells": 237,
+              "cut_cells": 11,
+              "min_material_fraction": 0.003243429056611773,
+              "nnz": 25026,
+              "material_area_mm2": 90.37887249492023,
+              "area_relative_error": 3.829458972148814e-11,
+              "hoop_mpa": 307.8757134796452,
+              "hoop_relative_error": 0.02625237826548399,
+              "force_balance_relative": 4.373816147249031e-14,
+              "free_residual_relative": 1.925670892242141e-14,
+              "resultant_n": [
+                7449.974999999999,
+                -429.975
+              ],
+              "reaction_n": [
+                -7449.974999999694,
+                429.97499999988537
+              ],
+              "quadrature_geometry_s": 0.02539553656242788,
+              "assembly_including_quadrature_s": 0.12957546702818945,
+              "preconditioning_s": 0.0026273109833709896,
+              "solve_s": 0.008375324017833918,
+              "total_s": 0.14107895299093798,
+              "peak_rss_kib": 90444
+            }
+          },
+          {
+            "method": "immersed",
+            "case": "kirsch_radius_edit",
+            "configuration": "n16-q12",
+            "status": "measured",
+            "elapsed_s": 0.9172572709503584,
+            "process_peak_rss_kib": 90832,
+            "metrics": {
+              "method": "immersed_quadratic_bspline",
+              "n": 16,
+              "quadrature": 12,
+              "radius_mm": 3.5,
+              "background_splines": 324,
+              "active_vector_dofs": 610,
+              "free_vector_dofs": 584,
+              "active_cells": 237,
+              "cut_cells": 11,
+              "min_material_fraction": 0.0032434290566117695,
+              "nnz": 25026,
+              "material_area_mm2": 90.37887249838124,
+              "area_relative_error": 1.1102230246251565e-16,
+              "hoop_mpa": 307.8757134519843,
+              "hoop_relative_error": 0.026252378173281077,
+              "force_balance_relative": 3.722446814715625e-14,
+              "free_residual_relative": 2.006205058523572e-14,
+              "resultant_n": [
+                7449.975,
+                -429.9750000000001
+              ],
+              "reaction_n": [
+                -7449.9749999997275,
+                429.97499999994795
+              ],
+              "quadrature_geometry_s": 0.05041538615478203,
+              "assembly_including_quadrature_s": 0.1804802300175652,
+              "preconditioning_s": 0.002601107000373304,
+              "solve_s": 0.008085609006229788,
+              "total_s": 0.1916353779961355,
+              "peak_rss_kib": 90832
+            }
+          },
+          {
+            "method": "immersed",
+            "case": "kirsch_radius_edit",
+            "configuration": "n32-q6",
+            "status": "measured",
+            "elapsed_s": 1.268514077004511,
+            "process_peak_rss_kib": 129316,
+            "metrics": {
+              "method": "immersed_quadratic_bspline",
+              "n": 32,
+              "quadrature": 6,
+              "radius_mm": 3.5,
+              "background_splines": 1156,
+              "active_vector_dofs": 2134,
+              "free_vector_dofs": 2088,
+              "active_cells": 935,
+              "cut_cells": 23,
+              "min_material_fraction": 0.012973716226447092,
+              "nnz": 96286,
+              "material_area_mm2": 90.37887249802345,
+              "area_relative_error": 3.958944283510846e-12,
+              "hoop_mpa": 302.5634076102478,
+              "hoop_relative_error": 0.008544692034159418,
+              "force_balance_relative": 3.573258993519432e-14,
+              "free_residual_relative": 6.037580882614456e-14,
+              "resultant_n": [
+                7449.975,
+                -429.97500000000025
+              ],
+              "reaction_n": [
+                -7449.974999999865,
+                429.9749999997706
+              ],
+              "quadrature_geometry_s": 0.09199338546022773,
+              "assembly_including_quadrature_s": 0.4884399369475432,
+              "preconditioning_s": 0.005934574001003057,
+              "solve_s": 0.06482403603149578,
+              "total_s": 0.5599346529925242,
+              "peak_rss_kib": 129316
+            }
+          },
+          {
+            "method": "immersed",
+            "case": "kirsch_radius_edit",
+            "configuration": "n32-q12",
+            "status": "measured",
+            "elapsed_s": 1.518224413972348,
+            "process_peak_rss_kib": 129636,
+            "metrics": {
+              "method": "immersed_quadratic_bspline",
+              "n": 32,
+              "quadrature": 12,
+              "radius_mm": 3.5,
+              "background_splines": 1156,
+              "active_vector_dofs": 2134,
+              "free_vector_dofs": 2088,
+              "active_cells": 935,
+              "cut_cells": 23,
+              "min_material_fraction": 0.012973716226447078,
+              "nnz": 96286,
+              "material_area_mm2": 90.37887249838126,
+              "area_relative_error": 0.0,
+              "hoop_mpa": 302.56340760616143,
+              "hoop_relative_error": 0.008544692020538092,
+              "force_balance_relative": 1.1207963042627444e-13,
+              "free_residual_relative": 6.960519575311292e-14,
+              "resultant_n": [
+                7449.975,
+                -429.97499999999985
+              ],
+              "reaction_n": [
+                -7449.974999999176,
+                429.9749999998565
+              ],
+              "quadrature_geometry_s": 0.19205424381652847,
+              "assembly_including_quadrature_s": 0.7136495599988848,
+              "preconditioning_s": 0.006032871024217457,
+              "solve_s": 0.0601512219873257,
+              "total_s": 0.7805608390481211,
+              "peak_rss_kib": 129636
+            }
+          },
+          {
+            "method": "immersed",
+            "case": "kirsch_radius_edit",
+            "configuration": "n64-q6",
+            "status": "measured",
+            "elapsed_s": 3.1725800370331854,
+            "process_peak_rss_kib": 295820,
+            "metrics": {
+              "method": "immersed_quadratic_bspline",
+              "n": 64,
+              "quadrature": 6,
+              "radius_mm": 3.5,
+              "background_splines": 4356,
+              "active_vector_dofs": 7966,
+              "free_vector_dofs": 7878,
+              "active_cells": 3723,
+              "cut_cells": 45,
+              "min_material_fraction": 0.005785692100759728,
+              "nnz": 377896,
+              "material_area_mm2": 90.3788724983383,
+              "area_relative_error": 4.752864768420295e-13,
+              "hoop_mpa": 300.5347025225881,
+              "hoop_relative_error": 0.001782341741960236,
+              "force_balance_relative": 1.5081940645919997e-13,
+              "free_residual_relative": 2.0264112548802076e-13,
+              "resultant_n": [
+                7449.974999999999,
+                -429.97499999999997
+              ],
+              "reaction_n": [
+                -7449.975000001006,
+                429.97499999949696
+              ],
+              "quadrature_geometry_s": 0.3566671617445536,
+              "assembly_including_quadrature_s": 1.9209659090265632,
+              "preconditioning_s": 0.019442032964434475,
+              "solve_s": 0.4661830710247159,
+              "total_s": 2.4079065910191275,
+              "peak_rss_kib": 295820
+            }
+          },
+          {
+            "method": "immersed",
+            "case": "kirsch_radius_edit",
+            "configuration": "n64-q12",
+            "status": "measured",
+            "elapsed_s": 4.276660329021979,
+            "process_peak_rss_kib": 295772,
+            "metrics": {
+              "method": "immersed_quadratic_bspline",
+              "n": 64,
+              "quadrature": 12,
+              "radius_mm": 3.5,
+              "background_splines": 4356,
+              "active_vector_dofs": 7966,
+              "free_vector_dofs": 7878,
+              "active_cells": 3723,
+              "cut_cells": 45,
+              "min_material_fraction": 0.005785692100759704,
+              "nnz": 377896,
+              "material_area_mm2": 90.37887249838126,
+              "area_relative_error": 0.0,
+              "hoop_mpa": 300.5347025217816,
+              "hoop_relative_error": 0.001782341739271942,
+              "force_balance_relative": 4.5158570193115885e-13,
+              "free_residual_relative": 2.0364440629041616e-13,
+              "resultant_n": [
+                7449.974999999998,
+                -429.97499999999997
+              ],
+              "reaction_n": [
+                -7449.974999996664,
+                429.97499999950463
+              ],
+              "quadrature_geometry_s": 0.7533859059331007,
+              "assembly_including_quadrature_s": 3.036257261992432,
+              "preconditioning_s": 0.019252712023444474,
+              "solve_s": 0.46035369200399145,
+              "total_s": 3.517169628990814,
+              "peak_rss_kib": 295772
+            }
+          }
+        ]
+      }
+    }
+  }
+}

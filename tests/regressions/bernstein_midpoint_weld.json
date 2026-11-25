@@ -1,0 +1,11 @@
+{
+  "schema": "bernstein_midpoint_weld_regression_v1",
+  "description": "A Q2 Bernstein midpoint coefficient is not a nodal value.",
+  "coarse_q2_coefficients": [0, 1, 0],
+  "parameter": 0.5,
+  "bernstein_basis": [0.25, 0.5, 0.25],
+  "physical_trace_value": 0.5,
+  "middle_bernstein_coefficient": 1,
+  "assertion": "physical_trace_value != middle_bernstein_coefficient",
+  "failure_mode": "Welding a coarse Bernstein control DOF to a coincident fine endpoint DOF changes the coarse trace."
+}

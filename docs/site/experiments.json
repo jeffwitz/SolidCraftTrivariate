@@ -1,537 +1,187 @@
 [
   {
-    "id": "s3-face-pocket",
-    "title": "Poche latérale sur la plaque G2",
-    "description": "Poche rectangulaire soustraite depuis la face z = 4 mm, sur 2 mm suivant −Z. La figure compare les cartes S2 et S3 en coupe XY à z = 3 mm et en coupe XZ au milieu de l’esquisse ; le contour pointillé indique l’outil complet, y compris sa partie située dans le vide préexistant.",
-    "model": "data/models/s3-face-pocket.model.json",
-    "step": "data/steps/s3-face-pocket.step",
-    "source": "data/sources/s3-face-pocket.recipe.json",
-    "audit": "data/audits/s3-face-pocket-audit.json",
-    "figure": "data/figures/s3-face-pocket-sections.png",
-    "hex8": "data/meshes/s3-face-pocket-n4.vtk",
-    "section": {
-      "axis": "z",
-      "fraction": 0.25
-    },
+    "id": "plate_blind_pocket",
+    "title": "Plaque à poche borgne",
+    "description": "Poche ouverte sur le dessus. Les quatre coins de son empreinte se prolongent dans la couche située sous le fond.",
+    "source": "data/plate_blind_pocket/plate_blind_pocket.recipe.json",
+    "model": "data/plate_blind_pocket/plate_blind_pocket.model.json",
+    "audit": "data/plate_blind_pocket/plate_blind_pocket.audit.json",
+    "step": "data/plate_blind_pocket/plate_blind_pocket.step",
     "metrics": [
       {
-        "label": "Blocs trivariés",
-        "value": "93"
+        "label": "Minimum atteint",
+        "value": "9 blocs"
       },
       {
-        "label": "Interfaces partagées",
-        "value": "191"
+        "label": "Blocs par couche",
+        "value": "5 + 4"
       },
       {
-        "label": "Faces de conception",
-        "value": "176"
+        "label": "Volume exact",
+        "value": "46 800 mm³"
       },
       {
-        "label": "Volume retiré",
-        "value": "62,8538 mm³"
-      },
-      {
-        "label": "Vérification HEX8 à n = 4",
-        "value": "5 952 / 5 952 éléments avec jacobien certifié positif"
-      },
-      {
-        "label": "Coupe XY",
-        "value": "z = 3 mm ; empreinte de l’outil en pointillé"
-      },
-      {
-        "label": "Coupe XZ",
-        "value": "y = 23,5771 mm ; milieu de l’esquisse"
-      }
-    ],
-    "chamferStep": "data/steps/edges-S3-chamfer.step",
-    "filletStep": "data/steps/edges-S3-fillet.step",
-    "group": "Pièces de départ"
-  },
-  {
-    "id": "g2-cross-plate",
-    "title": "Plaque G2 à perçages croisés",
-    "description": "Plaque de 100 × 50 × 12 mm avec un profil cubique périodique G2 et un perçage transversal rectangulaire. Le modèle trivarié conserve ses faces de conception ; le fichier STEP a été relu comme un solide par le parseur SolidCore.",
-    "model": "data/models/g2-cross-plate.model.json",
-    "step": "data/steps/g2-cross-trivariate.step",
-    "source": "data/sources/g2-cross-plate.recipe.json",
-    "audit": "data/audits/g2-cross-step-reader.json",
-    "metrics": [
-      {
-        "label": "Blocs trivariés",
-        "value": "32"
-      },
-      {
-        "label": "Interfaces partagées",
-        "value": "46"
-      },
-      {
-        "label": "Faces de conception",
-        "value": "100"
-      },
-      {
-        "label": "Volume",
-        "value": "≈ 53 200 mm³ (quadrature d’ordre 32)"
-      },
-      {
-        "label": "Écart maximal de volume par couche",
-        "value": "3,91 × 10⁻¹² relatif à la référence indépendante"
-      },
-      {
-        "label": "Relecture STEP",
-        "value": "1 solide fermé ; 50 boucles de faces réorientées selon same_sense"
-      },
-      {
-        "label": "Continuité des parois",
-        "value": "64 contrôles exacts des jets aux extrémités ; écart de courbure nul"
-      }
-    ],
-    "group": "Pièces de départ"
-  },
-  {
-    "id": "filleted-bracket",
-    "title": "Équerre à congé et deux perçages traversants",
-    "description": "Équerre de 60 × 50 × 40 mm, avec un congé intérieur de rayon 6 mm et deux perçages traversants. Le modèle natif et l’export STEP AP214 ont été comparés à une frontière OpenCascade indépendante et au volume analytique.",
-    "model": "data/models/filleted-bracket.model.json",
-    "step": "data/steps/filleted-bracket.step",
-    "source": "data/sources/filleted-bracket.recipe.json",
-    "audit": "data/audits/step-boundary-20261125.json",
-    "metrics": [
-      {
-        "label": "Blocs trivariés",
-        "value": "36"
-      },
-      {
-        "label": "Interfaces partagées",
-        "value": "55"
-      },
-      {
-        "label": "Faces de conception exposées",
-        "value": "106"
-      },
-      {
-        "label": "Audit STEP",
-        "value": "1 solide fermé et valide ; 106 faces et 212 arêtes"
-      },
-      {
-        "label": "Volume",
-        "value": "≈ 32 144,779 mm³"
-      },
-      {
-        "label": "Écart au volume analytique",
-        "value": "4,54 × 10⁻¹² relatif"
-      },
-      {
-        "label": "Échantillons de frontière",
-        "value": "2 650 ; distance maximale ≈ 1,6 × 10⁻¹⁴ mm"
-      }
-    ],
-    "chamferStep": "data/steps/edges-bracket-chamfer.step",
-    "filletStep": "data/steps/edges-bracket-fillet.step",
-    "group": "Pièces de départ"
-  },
-  {
-    "id": "full-annulus",
-    "title": "Anneau circulaire complet",
-    "description": "Anneau de rayon intérieur 2 mm, de rayon extérieur 4 mm et de hauteur axiale 8 mm, construit avec quatre blocs trivariés rationnels et exporté en STEP. L’audit indépendant vérifie le solide OCC fermé, la topologie de frontière, les distances sur des points échantillonnés et le volume analytique.",
-    "model": "data/models/full-annulus.model.json",
-    "step": "data/steps/full-annulus.step",
-    "source": "data/sources/full-annulus.recipe.json",
-    "audit": "data/audits/step-boundary-20261125.json",
-    "metrics": [
-      {
-        "label": "Blocs trivariés",
-        "value": "4"
-      },
-      {
-        "label": "Interfaces partagées",
-        "value": "4"
-      },
-      {
-        "label": "Faces de conception exposées",
+        "label": "Interfaces conformes",
         "value": "16"
       },
       {
-        "label": "Audit STEP",
-        "value": "1 solide fermé et valide ; 16 faces et 32 arêtes"
-      },
-      {
-        "label": "Volume",
-        "value": "≈ 301,593 mm³"
-      },
-      {
-        "label": "Écart au volume analytique",
-        "value": "9,30 × 10⁻¹² relatif"
-      },
-      {
-        "label": "Échantillons de frontière",
-        "value": "400 ; distance maximale ≈ 1,0 × 10⁻¹⁵ mm"
+        "label": "κ₂ maximal mesuré¹",
+        "value": "10,57"
       }
-    ],
-    "chamferStep": "data/steps/edges-annulus-chamfer.step",
-    "filletStep": "data/steps/edges-annulus-fillet.step",
-    "group": "Pièces de départ"
+    ]
   },
   {
-    "id": "annulus-fillet",
-    "title": "Anneau à quatre congés · 96 volumes",
-    "description": "Les quatre lèvres de l’anneau sont traitées simultanément à 0,25 mm. Le modèle affiché est construit en Rust par révolution du profil partitionné.",
-    "model": "data/models/annulus-fillet.model.json",
-    "step": "data/steps/annulus-fillet-native.step",
-    "source": "data/sources/annulus-fillet.recipe.json",
-    "figure": "data/figures/edge-treatment-sections.png",
+    "id": "rectangle_internal_rectangle",
+    "title": "Cavité rectangulaire centrée",
+    "description": "La cavité fermée est comprise entre deux couches pleines. Une coupe en Z à mi-hauteur révèle sa couronne.",
+    "source": "data/rectangle_internal_rectangle/rectangle_internal_rectangle.recipe.json",
+    "model": "data/rectangle_internal_rectangle/rectangle_internal_rectangle.model.json",
+    "audit": "data/rectangle_internal_rectangle/rectangle_internal_rectangle.audit.json",
+    "step": "data/rectangle_internal_rectangle/rectangle_internal_rectangle.step",
     "metrics": [
       {
-        "label": "Blocs trivariés",
-        "value": "96"
+        "label": "Minimum atteint",
+        "value": "14 blocs"
+      },
+      {
+        "label": "Blocs par couche",
+        "value": "5 + 4 + 5"
+      },
+      {
+        "label": "Volume exact",
+        "value": "9 504 mm³"
       },
       {
         "label": "Interfaces conformes",
-        "value": "256"
+        "value": "28"
       },
       {
-        "label": "Arêtes circulaires traitées",
-        "value": "4 sur 4"
+        "label": "κ₂ maximal mesuré¹",
+        "value": "14,55"
       }
-    ],
-    "group": "Anneau · partition à 96 volumes"
+    ]
   },
   {
-    "id": "annulus-chamfer",
-    "title": "Anneau à quatre chanfreins · 96 volumes",
-    "description": "Les quatre lèvres de l’anneau sont traitées simultanément à 0,25 mm. Le modèle affiché est construit en Rust par révolution du profil partitionné.",
-    "model": "data/models/annulus-chamfer.model.json",
-    "step": "data/steps/annulus-chamfer-native.step",
-    "source": "data/sources/annulus-chamfer.recipe.json",
-    "figure": "data/figures/edge-treatment-sections.png",
+    "id": "rectangle_offset_pocket",
+    "title": "Cavité rectangulaire décalée",
+    "description": "La même cavité est déplacée dans le plan. Les blocs suivent ses quatre coins et conservent la répartition par couche.",
+    "source": "data/rectangle_offset_pocket/rectangle_offset_pocket.recipe.json",
+    "model": "data/rectangle_offset_pocket/rectangle_offset_pocket.model.json",
+    "audit": "data/rectangle_offset_pocket/rectangle_offset_pocket.audit.json",
+    "step": "data/rectangle_offset_pocket/rectangle_offset_pocket.step",
     "metrics": [
       {
-        "label": "Blocs trivariés",
-        "value": "96"
+        "label": "Minimum atteint",
+        "value": "14 blocs"
+      },
+      {
+        "label": "Blocs par couche",
+        "value": "5 + 4 + 5"
+      },
+      {
+        "label": "Volume exact",
+        "value": "9 504 mm³"
       },
       {
         "label": "Interfaces conformes",
-        "value": "256"
+        "value": "28"
       },
       {
-        "label": "Arêtes circulaires traitées",
-        "value": "4 sur 4"
+        "label": "κ₂ maximal mesuré¹",
+        "value": "19,33"
       }
-    ],
-    "group": "Anneau · partition à 96 volumes"
+    ]
   },
   {
-    "id": "annulus-ten-fillet",
-    "title": "Anneau à quatre congés · 10 volumes",
-    "group": "Anneau · topologie fixe",
-    "description": "La section méridienne comporte un cœur et quatre bandes tournés sur deux demi-tours. Les trois états conservent les mêmes volumes, nœuds et poids.",
-    "model": "data/models/annulus-ten-fillet.json",
-    "source": "data/models/annulus-ten-fillet.json",
-    "sourceLabel": "Réseau NURBS (JSON)",
-    "step": "data/steps/edges-annulus-fillet.step",
-    "stepLabel": "Géométrie de référence (STEP)",
-    "audit": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/cfe4fc36edbcc7e4ae4e58357686eeac1ffc9373/docs/annulus-four-block-topology.md",
+    "id": "c_section_two_holes",
+    "title": "Section en C à deux trous",
+    "description": "Les deux trous traversent la pièce. Le plan relie chaque trou à sa branche du C, puis propage ces séparatrices suivant l’extrusion oblique.",
+    "source": "data/c_section_two_holes/c_section_two_holes.recipe.json",
+    "model": "data/c_section_two_holes/c_section_two_holes.model.json",
+    "audit": "data/c_section_two_holes/c_section_two_holes.audit.json",
+    "step": "data/c_section_two_holes/c_section_two_holes.step",
     "metrics": [
       {
-        "label": "Volumes logiques",
+        "label": "Minimum atteint",
+        "value": "9 blocs"
+      },
+      {
+        "label": "Blocs par couche",
+        "value": "9"
+      },
+      {
+        "label": "Volume exact",
+        "value": "1 568 mm³"
+      },
+      {
+        "label": "Interfaces conformes",
         "value": "10"
       },
       {
-        "label": "Cellules de Bézier",
-        "value": "128"
-      },
-      {
-        "label": "Volume",
-        "value": "300,581607 mm³"
+        "label": "κ₂ maximal mesuré¹",
+        "value": "121,90"
       }
     ]
   },
   {
-    "id": "annulus-ten-chamfer",
-    "title": "Anneau à quatre chanfreins · 10 volumes",
-    "group": "Anneau · topologie fixe",
-    "description": "La section méridienne comporte un cœur et quatre bandes tournés sur deux demi-tours. Les trois états conservent les mêmes volumes, nœuds et poids.",
-    "model": "data/models/annulus-ten-chamfer.json",
-    "source": "data/models/annulus-ten-chamfer.json",
-    "sourceLabel": "Réseau NURBS (JSON)",
-    "step": "data/steps/edges-annulus-chamfer.step",
-    "stepLabel": "Géométrie de référence (STEP)",
-    "audit": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/cfe4fc36edbcc7e4ae4e58357686eeac1ffc9373/docs/annulus-four-block-topology.md",
+    "id": "l_bracket_polygon_holes_and_pocket",
+    "title": "Prisme en L percé",
+    "description": "Le trou inférieur traverse la pièce. La cavité de la seconde branche impose quatre coins supplémentaires dans les couches qui l’encadrent.",
+    "source": "data/l_bracket_polygon_holes_and_pocket/l_bracket_polygon_holes_and_pocket.recipe.json",
+    "model": "data/l_bracket_polygon_holes_and_pocket/l_bracket_polygon_holes_and_pocket.model.json",
+    "audit": "data/l_bracket_polygon_holes_and_pocket/l_bracket_polygon_holes_and_pocket.audit.json",
+    "step": "data/l_bracket_polygon_holes_and_pocket/l_bracket_polygon_holes_and_pocket.step",
     "metrics": [
       {
-        "label": "Volumes logiques",
+        "label": "Minimum atteint",
+        "value": "26 blocs"
+      },
+      {
+        "label": "Blocs par couche",
+        "value": "9 + 8 + 9"
+      },
+      {
+        "label": "Volume exact",
+        "value": "5 084 mm³"
+      },
+      {
+        "label": "Interfaces conformes",
+        "value": "51"
+      },
+      {
+        "label": "κ₂ maximal mesuré¹",
+        "value": "62,98"
+      }
+    ]
+  },
+  {
+    "id": "c_section_lower_hole_x_plus_1",
+    "title": "Section en C après édition",
+    "description": "Le trou inférieur est déplacé de 1 mm. Cinq des neuf blocs conservent leurs identifiants, degrés et points de contrôle.",
+    "source": "data/c_section_lower_hole_x_plus_1/c_section_lower_hole_x_plus_1.recipe.json",
+    "model": "data/c_section_lower_hole_x_plus_1/c_section_lower_hole_x_plus_1.model.json",
+    "audit": "data/c_section_lower_hole_x_plus_1/c_section_lower_hole_x_plus_1.audit.json",
+    "step": "data/c_section_lower_hole_x_plus_1/c_section_lower_hole_x_plus_1.step",
+    "metrics": [
+      {
+        "label": "Minimum atteint",
+        "value": "9 blocs"
+      },
+      {
+        "label": "Blocs par couche",
+        "value": "9"
+      },
+      {
+        "label": "Volume exact",
+        "value": "1 568 mm³"
+      },
+      {
+        "label": "Interfaces conformes",
         "value": "10"
       },
       {
-        "label": "Cellules de Bézier",
-        "value": "128"
-      },
-      {
-        "label": "Volume",
-        "value": "299,236700 mm³"
-      }
-    ]
-  },
-  {
-    "id": "annulus-ten-sharp",
-    "title": "Anneau vif · 10 volumes",
-    "group": "Anneau · topologie fixe",
-    "description": "La section méridienne comporte un cœur et quatre bandes tournés sur deux demi-tours. Les trois états conservent les mêmes volumes, nœuds et poids.",
-    "model": "data/models/annulus-ten-sharp.json",
-    "source": "data/models/annulus-ten-sharp.json",
-    "sourceLabel": "Réseau NURBS (JSON)",
-    "step": "data/steps/full-annulus.step",
-    "stepLabel": "Géométrie de référence (STEP)",
-    "audit": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/cfe4fc36edbcc7e4ae4e58357686eeac1ffc9373/docs/annulus-four-block-topology.md",
-    "metrics": [
-      {
-        "label": "Volumes logiques",
-        "value": "10"
-      },
-      {
-        "label": "Cellules de Bézier",
-        "value": "128"
-      },
-      {
-        "label": "Volume",
-        "value": "301,592895 mm³"
-      }
-    ]
-  },
-  {
-    "id": "annulus-four-chamfer",
-    "title": "Anneau à quatre chanfreins · 4 volumes",
-    "group": "Anneau · topologie fixe",
-    "description": "Les quatre secteurs et leurs raccords proviennent de la pièce vive. Les états vif, chanfreiné et arrondi partagent les mêmes nœuds, les mêmes poids et 63 pôles par secteur.",
-    "model": "data/models/annulus-four-chamfer.json",
-    "source": "data/models/annulus-four-chamfer.json",
-    "sourceLabel": "Réseau NURBS (JSON)",
-    "step": "data/steps/edges-annulus-chamfer.step",
-    "stepLabel": "Géométrie de référence (STEP)",
-    "audit": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/campagne-nurbs-multiboucles/docs/annulus-original-edge-states.md",
-    "metrics": [
-      {
-        "label": "Volumes logiques",
-        "value": "4"
-      },
-      {
-        "label": "Cellules de Bézier",
-        "value": "12"
-      },
-      {
-        "label": "Volume",
-        "value": "299,236700 mm³"
-      }
-    ]
-  },
-  {
-    "id": "annulus-four-sharp",
-    "title": "Anneau vif · 4 volumes",
-    "group": "Anneau · topologie fixe",
-    "description": "Les quatre secteurs et leurs raccords proviennent de la pièce vive. Les états vif, chanfreiné et arrondi partagent les mêmes nœuds, les mêmes poids et 63 pôles par secteur.",
-    "model": "data/models/annulus-four-sharp.json",
-    "source": "data/models/annulus-four-sharp.json",
-    "sourceLabel": "Réseau NURBS (JSON)",
-    "step": "data/steps/full-annulus.step",
-    "stepLabel": "Géométrie de référence (STEP)",
-    "audit": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/campagne-nurbs-multiboucles/docs/annulus-original-edge-states.md",
-    "metrics": [
-      {
-        "label": "Volumes logiques",
-        "value": "4"
-      },
-      {
-        "label": "Cellules de Bézier",
-        "value": "12"
-      },
-      {
-        "label": "Volume",
-        "value": "301,592895 mm³"
-      }
-    ]
-  },
-  {
-    "id": "annulus-four-fillet-singular",
-    "title": "Anneau à quatre congés · 4 volumes (exploratoire)",
-    "group": "Anneau · topologie originale à quatre volumes",
-    "description": "Les quatre congés de rayon 0,25 mm sont construits sur les quatre secteurs de la pièce vive. Le jacobien est nul sur quatre cercles de contact, deux sur chaque face d’extrémité. Cette carte expérimentale conserve la géométrie. Son aptitude à l’analyse isogéométrique (IGA) n’est pas qualifiée.",
-    "model": "data/models/annulus-four-fillet-singular.json",
-    "source": "data/models/annulus-four-fillet-singular.json",
-    "sourceLabel": "Réseau NURBS (JSON)",
-    "step": "data/steps/edges-annulus-fillet.step",
-    "stepLabel": "Référence B-Rep (STEP)",
-    "audit": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/campagne-nurbs-multiboucles/docs/annulus-original-edge-states.md",
-    "metrics": [
-      {
-        "label": "Volumes logiques",
-        "value": "4"
-      },
-      {
-        "label": "Arêtes circulaires traitées",
-        "value": "4 sur 4, rayon 0,25 mm"
-      },
-      {
-        "label": "Jacobian",
-        "value": "Nul sur 2 cercles en haut et 2 en bas"
-      },
-      {
-        "label": "IGA",
-        "value": "Non qualifiée"
-      }
-    ]
-  },
-  {
-    "id": "edges-annulus-fillet",
-    "title": "Anneau · congés B-Rep",
-    "group": "Références B-Rep",
-    "representation": "boundary",
-    "description": "Référence de comparaison. Les 4 arêtes physiques sont traitées simultanément à 0,25 mm. La vue montre la surface triangulée du solide STEP.",
-    "model": "data/surfaces/edges-annulus-fillet.json",
-    "source": "data/sources/full-annulus.recipe.json",
-    "sourceLabel": "Recette de la pièce initiale",
-    "step": "data/steps/edges-annulus-fillet.step",
-    "audit": "data/audits/edge-treatment-reference.json",
-    "metrics": [
-      {
-        "label": "Arêtes traitées",
-        "value": "4"
-      },
-      {
-        "label": "Faces B-Rep",
-        "value": "8"
-      },
-      {
-        "label": "Volume du STEP relu",
-        "value": "300,581607 mm³"
-      }
-    ]
-  },
-  {
-    "id": "edges-annulus-chamfer",
-    "title": "Anneau · chanfreins B-Rep",
-    "group": "Références B-Rep",
-    "representation": "boundary",
-    "description": "Référence de comparaison. Les 4 arêtes physiques sont traitées simultanément à 0,25 mm. La vue montre la surface triangulée du solide STEP.",
-    "model": "data/surfaces/edges-annulus-chamfer.json",
-    "source": "data/sources/full-annulus.recipe.json",
-    "sourceLabel": "Recette de la pièce initiale",
-    "step": "data/steps/edges-annulus-chamfer.step",
-    "audit": "data/audits/edge-treatment-reference.json",
-    "metrics": [
-      {
-        "label": "Arêtes traitées",
-        "value": "4"
-      },
-      {
-        "label": "Faces B-Rep",
-        "value": "8"
-      },
-      {
-        "label": "Volume du STEP relu",
-        "value": "299,236700 mm³"
-      }
-    ]
-  },
-  {
-    "id": "edges-bracket-fillet",
-    "title": "Équerre · congés B-Rep",
-    "group": "Références B-Rep",
-    "representation": "boundary",
-    "description": "Référence de comparaison. Les 23 arêtes physiques sont traitées simultanément à 0,25 mm. La vue montre la surface triangulée du solide STEP.",
-    "model": "data/surfaces/edges-bracket-fillet.json",
-    "source": "data/sources/filleted-bracket.recipe.json",
-    "sourceLabel": "Recette de la pièce initiale",
-    "step": "data/steps/edges-bracket-fillet.step",
-    "audit": "data/audits/edge-treatment-reference.json",
-    "metrics": [
-      {
-        "label": "Arêtes traitées",
-        "value": "23"
-      },
-      {
-        "label": "Faces B-Rep",
-        "value": "44"
-      },
-      {
-        "label": "Volume du STEP relu",
-        "value": "32134,920530 mm³"
-      }
-    ]
-  },
-  {
-    "id": "edges-bracket-chamfer",
-    "title": "Équerre · chanfreins B-Rep",
-    "group": "Références B-Rep",
-    "representation": "boundary",
-    "description": "Référence de comparaison. Les 23 arêtes physiques sont traitées simultanément à 0,25 mm. La vue montre la surface triangulée du solide STEP.",
-    "model": "data/surfaces/edges-bracket-chamfer.json",
-    "source": "data/sources/filleted-bracket.recipe.json",
-    "sourceLabel": "Recette de la pièce initiale",
-    "step": "data/steps/edges-bracket-chamfer.step",
-    "audit": "data/audits/edge-treatment-reference.json",
-    "metrics": [
-      {
-        "label": "Arêtes traitées",
-        "value": "23"
-      },
-      {
-        "label": "Faces B-Rep",
-        "value": "44"
-      },
-      {
-        "label": "Volume du STEP relu",
-        "value": "32121,828820 mm³"
-      }
-    ]
-  },
-  {
-    "id": "edges-S3-fillet",
-    "title": "Plaque à poche S3 · congés B-Rep",
-    "group": "Références B-Rep",
-    "representation": "boundary",
-    "description": "Référence de comparaison. Les 50 arêtes physiques sont traitées simultanément à 0,25 mm. La vue montre la surface triangulée du solide STEP.",
-    "model": "data/surfaces/edges-S3-fillet.json",
-    "source": "data/sources/s3-face-pocket.recipe.json",
-    "sourceLabel": "Recette de la pièce initiale",
-    "step": "data/steps/edges-S3-fillet.step",
-    "audit": "data/audits/edge-treatment-reference.json",
-    "metrics": [
-      {
-        "label": "Arêtes traitées",
-        "value": "50"
-      },
-      {
-        "label": "Faces B-Rep",
-        "value": "101"
-      },
-      {
-        "label": "Volume du STEP relu",
-        "value": "53130,253665 mm³"
-      }
-    ]
-  },
-  {
-    "id": "edges-S3-chamfer",
-    "title": "Plaque à poche S3 · chanfreins B-Rep",
-    "group": "Références B-Rep",
-    "representation": "boundary",
-    "description": "Référence de comparaison. Les 50 arêtes physiques sont traitées simultanément à 0,25 mm. La vue montre la surface triangulée du solide STEP.",
-    "model": "data/surfaces/edges-S3-chamfer.json",
-    "source": "data/sources/s3-face-pocket.recipe.json",
-    "sourceLabel": "Recette de la pièce initiale",
-    "step": "data/steps/edges-S3-chamfer.step",
-    "audit": "data/audits/edge-treatment-reference.json",
-    "metrics": [
-      {
-        "label": "Arêtes traitées",
-        "value": "50"
-      },
-      {
-        "label": "Faces B-Rep",
-        "value": "101"
-      },
-      {
-        "label": "Volume du STEP relu",
-        "value": "53120,452836 mm³"
+        "label": "κ₂ maximal mesuré¹",
+        "value": "121,90"
       }
     ]
   }

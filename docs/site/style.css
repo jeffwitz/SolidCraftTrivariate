@@ -133,3 +133,8 @@ select { max-width: 100%; padding: 7px 25px 7px 9px; border: 1px solid var(--lin
   .clip-control { grid-template-columns: auto minmax(76px, .85fr) minmax(52px, 1fr) auto; gap: 5px; }
 }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; } }
+
+.metric-note { margin: 9px 0; color: var(--muted); font-size: 12px; line-height: 1.5; }
+.proof { margin: 20px 0; padding: 16px 20px; border: 1px solid var(--line); border-radius: 8px; }
+.proof summary { cursor: pointer; font-weight: 600; }
+.proof p { max-width: 78ch; line-height: 1.55; font-size: 14px; }

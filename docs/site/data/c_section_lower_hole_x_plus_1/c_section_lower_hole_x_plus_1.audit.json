@@ -1,0 +1,103 @@
+{
+  "case": "c_section_lower_hole_x_plus_1",
+  "native": {
+    "blocks": 9,
+    "bounded_sketch_faces": 11,
+    "cavities": 0,
+    "determinant_lower_bound_mm3": 13.999999999999993,
+    "exterior_sides": 34,
+    "hausdorff_error_upper_bound_mm": 0,
+    "method": "certified_sketch_layer_partition",
+    "shared_faces": 10,
+    "status": "valid",
+    "volume_exact_mm3": [
+      1568,
+      1
+    ]
+  },
+  "layer_lower_bounds": [
+    {
+      "z_mm": [
+        0.0,
+        7.0
+      ],
+      "boundary_corners": 16,
+      "required_interior_corners": 0,
+      "holes": 2,
+      "minimum": 9
+    }
+  ],
+  "oracle": {
+    "id": "c_section_lower_hole_x_plus_1",
+    "block_count": 9,
+    "max_condition_2_sample_27_per_block": 121.90145401731486,
+    "expected_volume_exact_mm3": [
+      1568,
+      1
+    ],
+    "cli_volume_exact_mm3": [
+      1568,
+      1
+    ],
+    "layers": [
+      {
+        "cells": 9,
+        "vertices": 16,
+        "edges": 26,
+        "euler": -1,
+        "boundary_edges": 16,
+        "internal_edges": 10,
+        "area_exact_mm2": [
+          224,
+          1
+        ],
+        "area_sum_mm2": 224.0,
+        "pairwise_overlap_pairs": 0,
+        "z_interval_mm": [
+          0.0,
+          7.0
+        ],
+        "expected_area_exact_mm2": [
+          224,
+          1
+        ],
+        "area_gap_exact_mm2": [
+          0,
+          1
+        ],
+        "contained_in_expected_material": true,
+        "expected_euler_characteristic": -1
+      }
+    ],
+    "preservation_vs_original": {
+      "translation_mm": [
+        1,
+        0
+      ],
+      "common_block_ids": 5,
+      "unchanged_id_and_degree_and_control_blocks": 5,
+      "unchanged_block_ids": [
+        "quad_0d1_0d1_0d1_20d1_6d1_4d1_6d1_16d1_z0_7",
+        "quad_0d1_20d1_15d1_19d1_17d1_19d1_20d1_20d1_z0_7",
+        "quad_0d1_20d1_6d1_16d1_15d1_17d1_15d1_19d1_z0_7",
+        "quad_17d1_17d1_17d1_19d1_20d1_16d1_20d1_20d1_z0_7",
+        "quad_6d1_16d1_15d1_17d1_17d1_17d1_20d1_16d1_z0_7"
+      ],
+      "expected_unchanged_block_ids": [
+        "quad_0d1_0d1_0d1_20d1_6d1_4d1_6d1_16d1_z0_7",
+        "quad_0d1_20d1_15d1_19d1_17d1_19d1_20d1_20d1_z0_7",
+        "quad_0d1_20d1_6d1_16d1_15d1_17d1_15d1_19d1_z0_7",
+        "quad_17d1_17d1_17d1_19d1_20d1_16d1_20d1_20d1_z0_7",
+        "quad_6d1_16d1_15d1_17d1_17d1_17d1_20d1_16d1_z0_7"
+      ],
+      "changed_control_ids": [],
+      "baseline_interface_count": 10,
+      "translated_interface_count": 10,
+      "exact_shared_interfaces_between_unchanged_blocks": 5,
+      "locality_qualified": true
+    },
+    "baseline_blocks": 9,
+    "volume_match": true,
+    "passed": true
+  }
+}

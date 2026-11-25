@@ -390,47 +390,27 @@ async function runBrowserChecks() {
   await waitForGallery();
 
   const resources = await evaluate(injectedExpressions.resources);
-  if (resources.length !== 18) {
-    throw new Error(`Expected 18 gallery entries after the four-volume fillet addition; found ${resources.length}`);
+  const expected = ["plate_blind_pocket", "rectangle_internal_rectangle", "rectangle_offset_pocket", "c_section_two_holes", "l_bracket_polygon_holes_and_pocket", "c_section_lower_hole_x_plus_1"];
+  if (JSON.stringify(resources.map(item => item.id)) !== JSON.stringify(expected)) {
+    throw new Error('Unexpected qualified gallery catalog');
   }
   if (resources.some(experiment => experiment.assets.length === 0
     || experiment.assets.some(asset => asset.status !== 200))) {
     throw new Error(`Gallery resource requests failed: ${JSON.stringify(resources)}`);
   }
-  const singularAnnulus = resources.find(experiment => experiment.id === 'annulus-four-fillet-singular');
-  if (!singularAnnulus
-    || !/jacobien (?:est )?nul/i.test(singularAnnulus.description)
-    || !/pas qualifi/i.test(singularAnnulus.description)
-    || !singularAnnulus.metrics.some(metric => metric.label === 'IGA' && /non qualifi/i.test(metric.value))) {
-    throw new Error('Four-volume annulus fillet must disclose its singular Jacobian and unqualified IGA status');
-  }
-
   const version = await cdp('Browser.getVersion');
-  const s3Experiment = resources.find(experiment => (
-    /(?:^|[-_])s3(?:[-_]|$)|face[-_]?pocket/i.test(`${experiment.id} ${experiment.title}`)
-    || (experiment.section?.axis === 'z' && experiment.section.fraction === 0.25)
-  ));
-  const selectedExperiment = s3Experiment || resources[0];
-  if (!selectedExperiment) throw new Error('No usable gallery experiments were found');
+  const selectedExperiment = resources[0];
 
   await selectExperiment(selectedExperiment.id);
   const desktopHash = await capture('desktop');
+  await evaluate(injectedExpressions.surfaceMode);
+  await pause(500);
   const surfaceHash = await capture('surface', await canvasRegion());
   await evaluate(injectedExpressions.blocksMode);
   await pause(700);
   const blocksHash = await capture('blocks', await canvasRegion());
-  const cutPercent = s3Experiment ? 25 : 50;
-  if (s3Experiment) {
-    const buttonAvailable = await evaluate("!document.querySelector('#s3-face-pocket').hidden");
-    if (!buttonAvailable) throw new Error(`S3 experiment ${s3Experiment.id} has no section button`);
-    await evaluate(injectedExpressions.s3SectionButton);
-    const section = await evaluate(injectedExpressions.selectedClip);
-    if (section.axis !== 'z' || section.fraction !== 25) {
-      throw new Error(`S3 section button should select z at 25%; found ${JSON.stringify(section)}`);
-    }
-  } else {
-    await evaluate(injectedExpressions.zCut(cutPercent));
-  }
+  const cutPercent = 80;
+  await evaluate(injectedExpressions.zCut(cutPercent));
   await pause(1200);
   const blocksCutHash = await capture('blocks-cut', await canvasRegion());
   await evaluate(injectedExpressions.surfaceMode);
@@ -477,8 +457,8 @@ async function runBrowserChecks() {
 
   // Re-select the first entry after traversing the full catalog to verify recovery from
   // repeated model replacement and to leave a known model active for the mobile pass.
-  await command('Page.navigate', { url: serverUrl + '?model=annulus-ten-fillet' });
-  await waitForGallery('annulus-ten-fillet');
+  await command('Page.navigate', { url: serverUrl + '?model=c_section_lower_hole_x_plus_1' });
+  await waitForGallery('c_section_lower_hole_x_plus_1');
   await selectExperiment(selectedExperiment.id);
   await command('Emulation.setDeviceMetricsOverride', {
     width: 390, height: 844, deviceScaleFactor: 1, mobile: true,
@@ -498,7 +478,7 @@ async function runBrowserChecks() {
     chrome: { product: version.product, userAgent: version.userAgent },
     experiments: experimentChecks,
     modelScreens,
-    selectedS3Experiment: s3Experiment?.id || null,
+    selectedExperiment: selectedExperiment.id,
     cutPercent,
     screenshotHashes: { desktop: desktopHash, surface: surfaceHash, blocks: blocksHash, blocksCut: blocksCutHash, cut: cutHash, mobile: mobileHash },
     mobile: mobileMetrics,

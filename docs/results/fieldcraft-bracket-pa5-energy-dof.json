@@ -1,0 +1,555 @@
+{
+  "schema": "fieldcraft_bracket_pa5_energy_dof_v1",
+  "protocol": {
+    "case": "FieldCraft filleted-bracket-fillet-stress PA5 load transfer",
+    "geometry": "same original bracket, 60 x 50 x 40 mm L outline, R6 inside fillet, two diameter-8 mm through-bores",
+    "geometries": {
+      "10-block": "rebuilt from docs/site/data/fieldcraft_x64_y64/fieldcraft_x64_y64.recipe.json",
+      "48-block-timeline": "extracted from docs/results/fieldcraft-replay/fieldcraft-native.zip at fieldcraft-native/mechanical/bracket-sketch.model.json; this is the timeline-native PA5 model used in the prior 144.124 N mm result",
+      "48-block-x64-y64": "extracted from docs/results/fieldcraft-replay/fieldcraft-native.zip at fieldcraft-native/variants/x64-y64/x64-y64.model.json; this archive variant has a distinct 48-block Q2 parameterization"
+    },
+    "supports": "all displacement components fixed on y=0 design face selected by outer/outline provenance",
+    "traction": "+6.25 MPa in x on y=50 face; 320 mm^2 loaded area; target resultant +2000 N",
+    "material": {
+      "young_mpa": 210000.0,
+      "poisson": 0.3
+    },
+    "formulation": "native Rust Q2 displacement elasticity solve via solve-job; full octree refinement of every block at each level",
+    "quadrature_orders": [
+      8,
+      16,
+      24,
+      32
+    ],
+    "levels": {
+      "10-block": [
+        0,
+        1,
+        2
+      ],
+      "48-block-timeline": [
+        0,
+        1
+      ],
+      "48-block-x64-y64": [
+        0,
+        1
+      ]
+    },
+    "unit_convention": "N, mm, MPa; strain energy N mm",
+    "timing_note": "wall_seconds is end-to-end solve-job time; includes model audit, refinement, assembly, and solve",
+    "quadrature_qualification": "h0 q8, q16, q24, q32 are compared for both spaces; q16/q32 energy agreement is checked explicitly. q32 provides the volume cross-check. All refined runs use q16.",
+    "archive_variant_note": "The timeline-native and affine-image 48-block archives share physical dimensions and q32 volume, but use distinct Q2 spaces and have distinct energies; they are shown as separate curves.",
+    "sampled_geometry_condition_number_max": {
+      "10-block": 13.33,
+      "48-block-timeline": 64.0,
+      "48-block-x64-y64": 2048.0
+    },
+    "condition_number_method": "Independent export-geometry-vtu sampling on {0, 1/4, 1/2, 3/4, 1}^3 in every block; see docs/results/fieldcraft-compact.md.",
+    "cli_binary": "solidcraft-trivariate",
+    "cli_sha256": "4590d99dc802673cf4198b30603bc0a4ffa98ec5d0c9e96ec307b676bcd8b594",
+    "input_sha256": {
+      "ten_block_recipe": "5dc34f4b0a41efe68a4bb7886695b7a2c36d7edc41686956591a486412ff6971",
+      "mechanical_job_fixture": "880fc30e248a832fdc7084dbec4353e262e2e4d5e839fc9e5625de37de72b295",
+      "historical_archive_zip": "e3a18fd8dfdebdbff97112871e6bca3abe6d71c16a60846ecf23405b689bf534"
+    },
+    "source_revision": "8eb6ea032f5834eaf01c206e9e3d8495cca6d2f6"
+  },
+  "records": [
+    {
+      "family": "10-block",
+      "base_blocks": 10,
+      "blocks": 10,
+      "level": 0,
+      "quadrature_order": 8,
+      "scalar_dofs": 171,
+      "vector_dofs": 513,
+      "volume_mm3": 32144.77892537697,
+      "strain_energy_n_mm": 135.4447538596927,
+      "external_work_n_mm": 270.88950771940074,
+      "relative_work_energy_error": 5.665676467733852e-14,
+      "relative_residual": 9.419745191760176e-11,
+      "iterations": 206,
+      "loaded_area_mm2": 320.0,
+      "applied_force_n": [
+        2000,
+        0,
+        0
+      ],
+      "support_reaction_n": [
+        -1999.9999999796787,
+        1.4304738726877986e-08,
+        -2.6345862380594554e-08
+      ],
+      "relative_force_balance": 1.8108596299664514e-11,
+      "relative_moment_balance": 5.501728535370804e-12,
+      "wall_seconds": 0.0900576880085282,
+      "source_result": "build/fieldcraft-bracket-pa5/10-block-q8-h0.result.json",
+      "h0_q8_to_q16_energy_relative_difference": 1.8232602427836753e-08
+    },
+    {
+      "family": "10-block",
+      "base_blocks": 10,
+      "blocks": 10,
+      "level": 0,
+      "quadrature_order": 16,
+      "scalar_dofs": 171,
+      "vector_dofs": 513,
+      "volume_mm3": 32144.77892538882,
+      "strain_energy_n_mm": 135.44475139018235,
+      "external_work_n_mm": 270.8895027803722,
+      "relative_work_energy_error": 2.769886323616644e-14,
+      "relative_residual": 7.538789819988163e-11,
+      "iterations": 206,
+      "loaded_area_mm2": 320.0000000000002,
+      "applied_force_n": [
+        2000.000000000001,
+        0,
+        0
+      ],
+      "support_reaction_n": [
+        -1999.9999999764768,
+        3.6301550210282585e-08,
+        -3.719274221936075e-08
+      ],
+      "relative_force_balance": 2.8524046798350122e-11,
+      "relative_moment_balance": 1.0542297791261384e-11,
+      "wall_seconds": 0.2527812320040539,
+      "source_result": "build/fieldcraft-bracket-pa5/10-block-q16-h0.result.json",
+      "h0_q16_to_q32_energy_relative_difference": 1.0719647391965736e-11,
+      "h0_q16_to_q32_volume_relative_difference": 3.808064974464287e-14
+    },
+    {
+      "family": "10-block",
+      "base_blocks": 10,
+      "blocks": 10,
+      "level": 0,
+      "quadrature_order": 24,
+      "scalar_dofs": 171,
+      "vector_dofs": 513,
+      "volume_mm3": 32144.77892538942,
+      "strain_energy_n_mm": 135.44475139082965,
+      "external_work_n_mm": 270.88950278166925,
+      "relative_work_energy_error": 3.672197777504483e-14,
+      "relative_residual": 9.081549291672174e-11,
+      "iterations": 206,
+      "loaded_area_mm2": 320.0000000000003,
+      "applied_force_n": [
+        2000.0000000000002,
+        0,
+        0
+      ],
+      "support_reaction_n": [
+        -1999.999999995259,
+        4.1810377382489605e-09,
+        -2.489120198845285e-08
+      ],
+      "relative_force_balance": 1.2840677078861481e-11,
+      "relative_moment_balance": 4.155757904994041e-12,
+      "wall_seconds": 0.700527906010393,
+      "source_result": "build/fieldcraft-bracket-pa5/10-block-q24-h0.result.json",
+      "h0_q24_to_q32_energy_relative_difference": 5.940581360164288e-12,
+      "h0_q24_to_q32_volume_relative_difference": 5.67323965583455e-14
+    },
+    {
+      "family": "10-block",
+      "base_blocks": 10,
+      "blocks": 10,
+      "level": 0,
+      "quadrature_order": 32,
+      "scalar_dofs": 171,
+      "vector_dofs": 513,
+      "volume_mm3": 32144.778925387596,
+      "strain_energy_n_mm": 135.44475139163427,
+      "external_work_n_mm": 270.8895027832591,
+      "relative_work_energy_error": 3.483341891783687e-14,
+      "relative_residual": 9.806361138595617e-11,
+      "iterations": 205,
+      "loaded_area_mm2": 320.00000000000057,
+      "applied_force_n": [
+        1999.9999999999973,
+        0,
+        0
+      ],
+      "support_reaction_n": [
+        -2000.000000015316,
+        -2.2707626001761128e-08,
+        -1.9149937191542676e-08
+      ],
+      "relative_force_balance": 1.6710898159351125e-11,
+      "relative_moment_balance": 2.508718471998918e-12,
+      "wall_seconds": 1.552045556018129,
+      "source_result": "build/fieldcraft-bracket-pa5/10-block-q32-h0.result.json"
+    },
+    {
+      "family": "10-block",
+      "base_blocks": 10,
+      "blocks": 80,
+      "level": 1,
+      "quadrature_order": 16,
+      "scalar_dofs": 975,
+      "vector_dofs": 2925,
+      "volume_mm3": 32144.77892538989,
+      "strain_energy_n_mm": 149.14118735253948,
+      "external_work_n_mm": 298.28237470506036,
+      "relative_work_energy_error": 6.231611232766453e-14,
+      "relative_residual": 8.48433258275988e-11,
+      "iterations": 364,
+      "loaded_area_mm2": 320.0000000000012,
+      "applied_force_n": [
+        1999.9999999999916,
+        0,
+        0
+      ],
+      "support_reaction_n": [
+        -1999.9999999910888,
+        2.3444179930720566e-09,
+        -7.781498112535701e-08
+      ],
+      "relative_force_balance": 3.917884544196151e-11,
+      "relative_moment_balance": 4.486037107225071e-12,
+      "wall_seconds": 1.7492927260464057,
+      "source_result": "build/fieldcraft-bracket-pa5/10-block-q16-h1.result.json"
+    },
+    {
+      "family": "10-block",
+      "base_blocks": 10,
+      "blocks": 640,
+      "level": 2,
+      "quadrature_order": 16,
+      "scalar_dofs": 6399,
+      "vector_dofs": 19197,
+      "volume_mm3": 32144.77892538779,
+      "strain_energy_n_mm": 151.5042774965778,
+      "external_work_n_mm": 303.0085549931976,
+      "relative_work_energy_error": 1.3863399513284423e-13,
+      "relative_residual": 8.854056483280879e-11,
+      "iterations": 643,
+      "loaded_area_mm2": 319.99999999999864,
+      "applied_force_n": [
+        1999.9999999999875,
+        0,
+        0
+      ],
+      "support_reaction_n": [
+        -2000.0000000493967,
+        -2.015561273438493e-08,
+        5.3665760724186384e-09
+      ],
+      "relative_force_balance": 2.681566153434293e-11,
+      "relative_moment_balance": 1.4779014034047616e-11,
+      "wall_seconds": 14.962888444017153,
+      "source_result": "build/fieldcraft-bracket-pa5/10-block-q16-h2.result.json"
+    },
+    {
+      "family": "48-block-timeline",
+      "base_blocks": 48,
+      "blocks": 48,
+      "level": 0,
+      "quadrature_order": 8,
+      "scalar_dofs": 705,
+      "vector_dofs": 2115,
+      "volume_mm3": 32143.45112086758,
+      "strain_energy_n_mm": 144.12847810102411,
+      "external_work_n_mm": 288.25695620203885,
+      "relative_work_energy_error": 3.253751179367611e-14,
+      "relative_residual": 9.788957530543652e-11,
+      "iterations": 298,
+      "loaded_area_mm2": 320.00000000000017,
+      "applied_force_n": [
+        1999.9999999999995,
+        0,
+        0
+      ],
+      "support_reaction_n": [
+        -2000.0000000217697,
+        -2.981607849505963e-09,
+        9.916156784584018e-11
+      ],
+      "relative_force_balance": 1.0986786838144261e-11,
+      "relative_moment_balance": 5.808353403179239e-12,
+      "wall_seconds": 0.3724004200194031,
+      "source_result": "build/fieldcraft-bracket-pa5/48-block-timeline-q8-h0.result.json",
+      "h0_q8_to_q16_energy_relative_difference": 3.3523059948192824e-05
+    },
+    {
+      "family": "48-block-timeline",
+      "base_blocks": 48,
+      "blocks": 48,
+      "level": 0,
+      "quadrature_order": 16,
+      "scalar_dofs": 705,
+      "vector_dofs": 2115,
+      "volume_mm3": 32144.778344505317,
+      "strain_energy_n_mm": 144.1236464734125,
+      "external_work_n_mm": 288.2472929468144,
+      "relative_work_energy_error": 3.6679879280117797e-14,
+      "relative_residual": 9.934924144489255e-11,
+      "iterations": 299,
+      "loaded_area_mm2": 319.9999999999997,
+      "applied_force_n": [
+        2000.0000000000025,
+        0,
+        0
+      ],
+      "support_reaction_n": [
+        -2000.000000007032,
+        -1.2516707670329197e-09,
+        -1.587938669445066e-10
+      ],
+      "relative_force_balance": 3.5709084362370035e-12,
+      "relative_moment_balance": 5.350374380317791e-12,
+      "wall_seconds": 1.1675051310448907,
+      "source_result": "build/fieldcraft-bracket-pa5/48-block-timeline-q16-h0.result.json",
+      "h0_q16_to_q32_energy_relative_difference": 1.4688783411820339e-08,
+      "h0_q16_to_q32_volume_relative_difference": 1.8070909435508042e-08
+    },
+    {
+      "family": "48-block-timeline",
+      "base_blocks": 48,
+      "blocks": 48,
+      "level": 0,
+      "quadrature_order": 24,
+      "scalar_dofs": 705,
+      "vector_dofs": 2115,
+      "volume_mm3": 32144.778925158196,
+      "strain_energy_n_mm": 144.12364435599298,
+      "external_work_n_mm": 288.2472887119798,
+      "relative_work_energy_error": 2.1297994733617032e-14,
+      "relative_residual": 8.11878006423677e-11,
+      "iterations": 300,
+      "loaded_area_mm2": 319.9999999999979,
+      "applied_force_n": [
+        2000.0000000000098,
+        0,
+        0
+      ],
+      "support_reaction_n": [
+        -2000.0000000113919,
+        -9.08138986233098e-09,
+        -5.761169319384862e-12
+      ],
+      "relative_force_balance": 7.280519359024021e-12,
+      "relative_moment_balance": 5.775092490116752e-12,
+      "wall_seconds": 3.252610374998767,
+      "source_result": "build/fieldcraft-bracket-pa5/48-block-timeline-q24-h0.result.json",
+      "h0_q24_to_q32_energy_relative_difference": 2.9036772986046344e-12,
+      "h0_q24_to_q32_volume_relative_difference": 7.23288096082797e-12
+    },
+    {
+      "family": "48-block-timeline",
+      "base_blocks": 48,
+      "blocks": 48,
+      "level": 0,
+      "quadrature_order": 32,
+      "scalar_dofs": 705,
+      "vector_dofs": 2115,
+      "volume_mm3": 32144.778925390696,
+      "strain_energy_n_mm": 144.12364435641146,
+      "external_work_n_mm": 288.24728871283236,
+      "relative_work_energy_error": 3.273580672009302e-14,
+      "relative_residual": 8.545941034822832e-11,
+      "iterations": 300,
+      "loaded_area_mm2": 320.000000000001,
+      "applied_force_n": [
+        2000.0000000000084,
+        0,
+        0
+      ],
+      "support_reaction_n": [
+        -2000.000000035113,
+        -7.335877683090075e-09,
+        2.0312640458541864e-11
+      ],
+      "relative_force_balance": 1.7931493426972743e-11,
+      "relative_moment_balance": 1.3966384595323891e-11,
+      "wall_seconds": 7.316356474009808,
+      "source_result": "build/fieldcraft-bracket-pa5/48-block-timeline-q32-h0.result.json"
+    },
+    {
+      "family": "48-block-timeline",
+      "base_blocks": 48,
+      "blocks": 384,
+      "level": 1,
+      "quadrature_order": 16,
+      "scalar_dofs": 4275,
+      "vector_dofs": 12825,
+      "volume_mm3": 32144.778924482674,
+      "strain_energy_n_mm": 150.56674065956315,
+      "external_work_n_mm": 301.1334813190898,
+      "relative_work_energy_error": 1.2118703887982742e-13,
+      "relative_residual": 9.691406589487814e-11,
+      "iterations": 655,
+      "loaded_area_mm2": 319.9999999999974,
+      "applied_force_n": [
+        1999.9999999999552,
+        0,
+        0
+      ],
+      "support_reaction_n": [
+        -2000.0000000211653,
+        3.1061233585205628e-09,
+        -6.011546815898328e-10
+      ],
+      "relative_force_balance": 1.0722379288953615e-11,
+      "relative_moment_balance": 3.846014441977638e-12,
+      "wall_seconds": 8.730808023014106,
+      "source_result": "build/fieldcraft-bracket-pa5/48-block-timeline-q16-h1.result.json"
+    },
+    {
+      "family": "48-block-x64-y64",
+      "base_blocks": 48,
+      "blocks": 48,
+      "level": 0,
+      "quadrature_order": 8,
+      "scalar_dofs": 705,
+      "vector_dofs": 2115,
+      "volume_mm3": 32144.665829096797,
+      "strain_energy_n_mm": 143.72544999887583,
+      "external_work_n_mm": 287.450899997736,
+      "relative_work_energy_error": 5.4579003251357794e-14,
+      "relative_residual": 8.849382044875895e-11,
+      "iterations": 735,
+      "loaded_area_mm2": 320.00000000000057,
+      "applied_force_n": [
+        2000.0000000000014,
+        0,
+        0
+      ],
+      "support_reaction_n": [
+        -1999.999999991457,
+        -1.6244641187768138e-09,
+        -3.517630631222346e-11
+      ],
+      "relative_force_balance": 4.348798111076525e-12,
+      "relative_moment_balance": 1.3357302958071586e-12,
+      "wall_seconds": 0.5454740090062842,
+      "source_result": "build/fieldcraft-bracket-pa5/48-block-x64-y64-q8-h0.result.json",
+      "h0_q8_to_q16_energy_relative_difference": 5.92187413672729e-06
+    },
+    {
+      "family": "48-block-x64-y64",
+      "base_blocks": 48,
+      "blocks": 48,
+      "level": 0,
+      "quadrature_order": 16,
+      "scalar_dofs": 705,
+      "vector_dofs": 2115,
+      "volume_mm3": 32144.778908839307,
+      "strain_energy_n_mm": 143.7245988748507,
+      "external_work_n_mm": 287.4491977497283,
+      "relative_work_energy_error": 9.353630948231654e-14,
+      "relative_residual": 9.293569466234537e-11,
+      "iterations": 734,
+      "loaded_area_mm2": 320.00000000000057,
+      "applied_force_n": [
+        1999.9999999999943,
+        0,
+        0
+      ],
+      "support_reaction_n": [
+        -2000.0000000208752,
+        -2.942854848697607e-10,
+        -1.3026690837136812e-10
+      ],
+      "relative_force_balance": 1.0441670720504494e-11,
+      "relative_moment_balance": 5.651033999448756e-12,
+      "wall_seconds": 1.397912348038517,
+      "source_result": "build/fieldcraft-bracket-pa5/48-block-x64-y64-q16-h0.result.json",
+      "h0_q16_to_q32_energy_relative_difference": 8.714924337738239e-09,
+      "h0_q16_to_q32_volume_relative_difference": 5.150679882603981e-10
+    },
+    {
+      "family": "48-block-x64-y64",
+      "base_blocks": 48,
+      "blocks": 48,
+      "level": 0,
+      "quadrature_order": 24,
+      "scalar_dofs": 705,
+      "vector_dofs": 2115,
+      "volume_mm3": 32144.778925382736,
+      "strain_energy_n_mm": 143.72459761833827,
+      "external_work_n_mm": 287.44919523663356,
+      "relative_work_energy_error": 1.494998955324531e-13,
+      "relative_residual": 7.473786387257997e-11,
+      "iterations": 736,
+      "loaded_area_mm2": 320.00000000000074,
+      "applied_force_n": [
+        2000.0000000000018,
+        0,
+        0
+      ],
+      "support_reaction_n": [
+        -2000.000000061226,
+        -4.643474937893188e-09,
+        2.504361162891655e-10
+      ],
+      "relative_force_balance": 3.070028748441683e-11,
+      "relative_moment_balance": 1.8814385348689113e-11,
+      "wall_seconds": 3.8419226449914277,
+      "source_result": "build/fieldcraft-bracket-pa5/48-block-x64-y64-q24-h0.result.json",
+      "h0_q24_to_q32_energy_relative_difference": 2.7576607664059338e-11,
+      "h0_q24_to_q32_volume_relative_difference": 4.141131881851834e-13
+    },
+    {
+      "family": "48-block-x64-y64",
+      "base_blocks": 48,
+      "blocks": 48,
+      "level": 0,
+      "quadrature_order": 32,
+      "scalar_dofs": 705,
+      "vector_dofs": 2115,
+      "volume_mm3": 32144.77892539605,
+      "strain_energy_n_mm": 143.7245976223017,
+      "external_work_n_mm": 287.44919524465587,
+      "relative_work_energy_error": 1.8252434335003146e-13,
+      "relative_residual": 9.854276318476343e-11,
+      "iterations": 733,
+      "loaded_area_mm2": 320.0000000000013,
+      "applied_force_n": [
+        1999.999999999992,
+        0,
+        0
+      ],
+      "support_reaction_n": [
+        -2000.0000002208699,
+        -1.133889782067854e-08,
+        -2.4590907088395397e-10
+      ],
+      "relative_force_balance": 1.1058441336019707e-10,
+      "relative_moment_balance": 6.039580794637399e-11,
+      "wall_seconds": 8.383132368035149,
+      "source_result": "build/fieldcraft-bracket-pa5/48-block-x64-y64-q32-h0.result.json"
+    },
+    {
+      "family": "48-block-x64-y64",
+      "base_blocks": 48,
+      "blocks": 384,
+      "level": 1,
+      "quadrature_order": 16,
+      "scalar_dofs": 4275,
+      "vector_dofs": 12825,
+      "volume_mm3": 32144.77892533079,
+      "strain_energy_n_mm": 150.45880822719886,
+      "external_work_n_mm": 300.91761645435133,
+      "relative_work_energy_error": 1.5414261995342037e-13,
+      "relative_residual": 8.962256329158459e-11,
+      "iterations": 1650,
+      "loaded_area_mm2": 320.0000000000006,
+      "applied_force_n": [
+        1999.9999999999893,
+        0,
+        0
+      ],
+      "support_reaction_n": [
+        -2000.0000000682096,
+        -1.1631243523879675e-08,
+        -5.809823733216035e-10
+      ],
+      "relative_force_balance": 3.460358028033097e-11,
+      "relative_moment_balance": 1.8793370672983475e-11,
+      "wall_seconds": 11.20529097202234,
+      "source_result": "build/fieldcraft-bracket-pa5/48-block-x64-y64-q16-h1.result.json"
+    }
+  ]
+}

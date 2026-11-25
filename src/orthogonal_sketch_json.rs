@@ -104,6 +104,9 @@ fn plan(p: &SweepPartition) -> Json {
             ),
         ),
     ]);
+    if let (Some(reason), Json::Object(fields)) = (p.fallback_reason.as_ref(), &mut out) {
+        fields.insert("fallback_reason".into(), Json::String(reason.clone()));
+    }
     if let (Some((center, axes, r, g)), Json::Object(f)) = (p.junction, &mut out) {
         f.insert(
             "method".into(),
@@ -151,11 +154,21 @@ pub(crate) fn audit(model: &Json) -> Result<Json, &'static str> {
         .concat(),
     )?;
     let j = parse(model)?;
-    // Replay the construction plan saved in the model, including earlier grid partitions.
+    // Models written before fallback reasons were recorded retain their historical replay path.
     let compact = model.field("partition_plan")?.field("method")?.text()? == COMPACT_METHOD;
-    let p = orthogonal_sketch::build_with_strategy(&j, compact)?;
+    let has_fallback_reason = model
+        .field("partition_plan")?
+        .field("fallback_reason")
+        .is_ok();
+    let p = orthogonal_sketch::build_with_strategy(&j, compact || has_fallback_reason)?;
+    let mut expected_plan = plan(&p);
+    if !has_fallback_reason {
+        if let Json::Object(fields) = &mut expected_plan {
+            fields.remove("fallback_reason");
+        }
+    }
     if decode_blocks(model)? != p.blocks
-        || model.field("partition_plan")? != &plan(&p)
+        || model.field("partition_plan")? != &expected_plan
         || model.field("topology")? != &topology(&p.certificate.incidence)
         || model.field("design_faces")? != &design(&p.certificate)
     {

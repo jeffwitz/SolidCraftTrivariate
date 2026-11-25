@@ -1,17 +1,63 @@
-# FieldCraft `bracket-hex` job on PA5
+# FieldCraft bracket: strain energy versus Q2 degrees of freedom
 
-## Provenance and loading
+## Question and comparison
 
-This replays the original FieldCraft `filleted-bracket-fillet-stress` static load case against the reconstructed 48-block PA5 model in `build/solidcraft_sketch_bracket.json`. Source revision is pinned in `references.lock` (`tangency-labs/fieldcraft` `35e834652d8548384c2da8ef1b28d588c9af2ffd`). Source files: `upstream/fieldcraft/tests/oracle/filleted-bracket-fillet-stress/{recipe.json,design.json,README.md}`.
+This replay compares the ten-block partition with the archived 48-block PA5 bracket under one common static linear-elastic job. It also retains the separate archived `x64-y64` 48-block model because that model has the same physical dimensions but a different element parameterization and Q2 space.
 
-The SolidCraft sketch profile is ordered `(0,0) -> (60,0) -> (60,8) -> (8,8) -> (8,50) -> (0,50)`, then extruded along +z through 40 mm. Thus historical face `F2:side:l1` is the y=0 foot face, and `F2:side:l5` is the y=50 end face of the upright leg. This run selects these by exact model planes and `outer/sketch_1` provenance: fix all three displacement components on y=0, and apply +x traction on y=50.
+The geometry is the 60 × 50 × 40 mm L bracket, 8 mm wall, R6 inside fillet, and two Ø8 mm through-bores. The 10-block model is rebuilt from the versioned `fieldcraft_x64_y64` recipe. The two archived models are extracted from `fieldcraft-native.zip`:
 
-The original recipe applies a 2000 N +x force to F2:side:l5. The current native job API accepts a uniform traction vector, so the source resultant is represented by 6.25 MPa +x on the exact 320 mm2 face (x=0..8, z=0..40), giving +2000 N. Steel is E=210000 MPa, nu=0.3. Quadrature order 8; no adaptive refinement. Job input: `tests/references/mechanical_jobs/fieldcraft_bracket_hex_pa5.json`.
+| Curve | Archived input | Meaning |
+|---|---|---|
+| 10 blocks | `docs/site/data/fieldcraft_x64_y64/fieldcraft_x64_y64.recipe.json` | Current partition, rebuilt and audited by the native CLI. |
+| 48 blocks, timeline grid | `fieldcraft-native/mechanical/bracket-sketch.model.json` | The historical PA5 model behind the previously reported 144.124 N·mm result. |
+| 48 blocks, x64-y64 archive grid | `fieldcraft-native/variants/x64-y64/x64-y64.model.json` | A separate archive variant with another 48-block parameterization. |
 
-## Run and result
+All three models describe the same bracket: bore centers (40, 4, 20) mm along Y and (4, 32, 20) mm along X, each with radius 4 mm. Their q32 volume integrals agree at 32144.7789254 mm³. The two 48-block models must remain separate in an energy plot: they have the same block and degree counts but different Q2 approximation spaces.
 
-Command: `rtk cargo run --quiet -- solve-job build/solidcraft_sketch_bracket.json tests/references/mechanical_jobs/fieldcraft_bracket_hex_pa5.json build/fieldcraft_bracket_hex_pa5.result.json`. The result has 48 geometric blocks, 705 scalar Q2 DOFs (2115 interleaved displacement coefficients), 1749 reduced unknowns, six independent rigid constraints, 298 iterations, and relative residual 9.79e-11.
+The common job fixes all displacement components on the y=0 foot face and applies uniform +x traction of 6.25 MPa on the y=50 upright face. The selected load area is 320 mm², so the resultant is +2000 N. The material is steel with E=210000 MPa and ν=0.3. This matches the transferred FieldCraft PA5 loading convention. The model-specific face provenance tags differ (`outer/profile` and `outer/outline`); the script maps both to the same exact y=0 and y=50 faces.
 
-Selected support patches: 24; loaded patches: 4. The loaded area is 320.00000000000017 mm2; applied resultant is [1999.9999999999995, 0, 0] N. Applied moment about the origin is [0, 40000.000000000015, -99999.99999999996] N mm. Support reaction is [-2000.00000002177, -2.98e-9, 9.92e-11] N; relative force balance 1.10e-11 and relative moment balance 5.81e-12. Strain energy is 144.1284781 N mm; work-energy relative error 3.25e-14.
+## Method
 
-An independent SciPy assembly of the serialized Q2 blocks and boundary load confirms 320 mm2, +2000 N and the same moment; its load RHS differs from Rust by at most 1.42e-13 N. The independent sparse solve differs from the Rust displacement coefficients by 5.33e-13 relative. This is a qualification of the transferred job and equilibrium on PA5; it does not reproduce FieldCraft’s tet10 stress peak, mesh, or solver. The result JSON is regenerable under `build/`.
+All geometry audits, Q2 space construction, uniform refinement, quadrature, stiffness assembly and solves are performed by the Rust `solve-job` command. The Python script only builds inputs, invokes the Rust CLI, validates common load and geometry quantities, collects result JSON and renders the plot.
+
+Each h step subdivides every current block into eight dyadic children. The table reports global scalar Q2 degrees of freedom; vector coefficients are three times this count. Quadrature orders 8, 16, 24 and 32 were compared on each unrefined model. Refined runs use q16. The q16-to-q32 energy discrepancy at h0 is at most 1.47 × 10⁻⁸ relative, and the maximum q24-to-q32 relative energy difference is 2.76e-11. q8 underintegrates volume on the curved historical spaces and is not used for the plotted curves.
+
+Every q16 run reports a relative PCG residual below 1.0 × 10⁻¹⁰. Relative work/energy imbalance is at most 1.55 × 10⁻¹³; force balance is at most 3.92 × 10⁻¹¹; moment balance is at most 1.88 × 10⁻¹¹. All runs retain six independent rigid constraints and integrate the loaded face to 320 mm² and +2000 N.
+
+## q16 results
+
+| Partition | h | Blocks | Scalar Q2 DOFs | Strain energy (N·mm) | PCG iterations | One-run wall time (s) |
+|---|---:|---:|---:|---:|---:|---:|
+| 10 blocks | 0 | 10 | 171 | 135.444751390 | 206 | 0.253 |
+| 10 blocks | 1 | 80 | 975 | 149.141187353 | 364 | 1.749 |
+| 10 blocks | 2 | 640 | 6,399 | 151.504277497 | 643 | 14.963 |
+| 48 blocks, timeline grid | 0 | 48 | 705 | 144.123646473 | 299 | 1.168 |
+| 48 blocks, timeline grid | 1 | 384 | 4,275 | 150.566740660 | 655 | 8.731 |
+| 48 blocks, x64-y64 archive grid | 0 | 48 | 705 | 143.724598875 | 734 | 1.398 |
+| 48 blocks, x64-y64 archive grid | 1 | 384 | 4,275 | 150.458808227 | 1,650 | 11.205 |
+
+![q16 strain energy plotted against global scalar Q2 degrees of freedom for all three partitions](fieldcraft-bracket-pa5-energy-dof.png)
+
+The h0 10-block energy is 6.022% below the timeline-native 48-block value at 4.12 times fewer scalar degrees of freedom. This is a coarse-space comparison, not a claim that the ten-block field is already converged. At h1 the ten-block run has 975 DOFs and energy 149.141 N·mm; the two 48-block h1 runs use 4,275 DOFs and give 150.567 and 150.459 N·mm. The 10-block h2 result continues to 6,399 DOFs and 151.504 N·mm. The curves overlap in DOF range, but the measured energy changes with refinement and with the parameterization; this dataset alone does not establish a converged energy or a universal accuracy-per-DOF advantage.
+
+The previously reported 144.124 N·mm is reproduced by the timeline-native archive: q16 gives 144.123646473 N·mm and q32 gives 144.123644356 N·mm. The other archived 48-block model yields 143.724598875 N·mm at q16 and 143.724597622 N·mm at q32. Both have 705 scalar DOFs and the same volume, supports and load. The 0.277% energy separation comes from their distinct parameterized analysis spaces, not from different stated geometry or boundary conditions. The earlier `fieldcraft-compact.md` value refers to the timeline-native model.
+
+This parameterization distinction also appears in geometric conditioning. An independent `export-geometry-vtu MODEL 4` sample on the 125-point tensor grid in every block reports maximum Jacobian condition numbers κ of 13.33 for the ten-block model, 64 for the timeline grid, and 2,048 for the x64-y64 archive grid. The sample is a conditioning diagnostic, not a continuous bound; details and reproduction are in [`fieldcraft-compact.md`](fieldcraft-compact.md). The high κ and 1,650 PCG iterations on the x64-y64 h1 run give a concrete cost difference between the two 48-block analysis parameterizations.
+
+Wall times are single end-to-end CLI observations from one machine run. They include process startup, model audit, refinement, integration, assembly and PCG solve. They are useful for scale context, not statistically repeated timing claims; no peak-memory measurement is included.
+
+## Reproduction
+
+From a checkout containing this script and report (the kernel base revision is recorded in the result JSON), build the native release CLI and replay both archived 48-block representations plus the current ten-block recipe:
+
+```sh
+cargo build --locked --offline --release
+python3 scripts/fieldcraft_bracket_pa5.py \
+  --cli target/release/solidcraft-trivariate \
+  --max-level 2 --max-level-48 1 \
+  --orders 8 16 24 32
+```
+
+The script extracts the archived ZIP with Python's standard-library `zipfile`, audits all models, generates each q/level job and writes regenerable job and solve outputs under `build/fieldcraft-bracket-pa5/`. It records the source revision and CLI SHA-256 in `fieldcraft-bracket-pa5-energy-dof.json`.
+
+The numerical result is [`fieldcraft-bracket-pa5-energy-dof.json`](fieldcraft-bracket-pa5-energy-dof.json). The standalone plot is [`fieldcraft-bracket-pa5-energy-dof.png`](fieldcraft-bracket-pa5-energy-dof.png) with a vector version at [`fieldcraft-bracket-pa5-energy-dof.svg`](fieldcraft-bracket-pa5-energy-dof.svg). The job fixture is [`fieldcraft_bracket_hex_pa5.json`](../../tests/references/mechanical_jobs/fieldcraft_bracket_hex_pa5.json); archive provenance and geometry checks are recorded in [`fieldcraft-replay/README.md`](fieldcraft-replay/README.md) and [`fieldcraft-compact.md`](fieldcraft-compact.md).

@@ -1,0 +1,54 @@
+import json
+import math
+import os
+import subprocess
+import Part
+
+cases = [
+    ("unequal_fillet_l", "build/unequal-fillet-l.step", 30912.0 - 48.0 * math.pi),
+    ("slender_plate_host", "build/slender-plate-host.step", 14400.0 - 108.0 * math.pi),
+    ("unequal_fillet_cross_bores", "build/unequal-fillet-cross-bores.step", 30912.0 - 176.0 * math.pi),
+    ("fieldcraft_three_bores", "build/fieldcraft-three-bores.step", 34080.0 - 648.0 * math.pi),
+]
+occ_volume = os.environ.get("OCC_VOLUME_BIN")
+if not occ_volume:
+    raise RuntimeError("Set OCC_VOLUME_BIN to the adaptive OCCT occ-volume executable")
+results = []
+for name, path, expected_volume in cases:
+    shape = Part.read(os.path.abspath(path))
+    brep_path = os.path.abspath(os.path.join("build", "orthogonal-step-brep", name + ".brep"))
+    os.makedirs(os.path.dirname(brep_path), exist_ok=True)
+    shape.exportBrep(brep_path)
+    adaptive = json.loads(subprocess.run([occ_volume, brep_path], check=True,
+                                         capture_output=True, text=True).stdout)
+    adaptive_volume = float(adaptive[-1]["volume_mm3"])
+    solids = list(shape.Solids)
+    result = {
+        "case": name,
+        "step": path,
+        "brep": os.path.relpath(brep_path),
+        "is_valid": bool(shape.isValid()),
+        "solid_count": len(solids),
+        "closed_solid_count": sum(bool(solid.isClosed()) for solid in solids),
+        "shell_count": len(shape.Shells),
+        "face_count": len(shape.Faces),
+        "default_shape_volume_mm3": float(shape.Volume),
+        "adaptive_occt_volume_mm3": adaptive_volume,
+        "adaptive_volume_relative_error_estimate": float(adaptive[-1]["estimated_error"]),
+        "adaptive_surface_mm2": float(adaptive[-1]["surface_mm2"]),
+        "adaptive_surface_relative_error_estimate": float(adaptive[-1]["surface_estimated_error"]),
+        "expected_volume_mm3": float(expected_volume),
+        "relative_volume_error": abs(adaptive_volume - expected_volume) / expected_volume,
+        "volume_matches": abs(adaptive_volume - expected_volume) / expected_volume <= 2.0e-9,
+    }
+    print(json.dumps(result, sort_keys=True))
+    results.append(result)
+os.makedirs("build", exist_ok=True)
+with open("build/orthogonal-step-freecad-audit.json", "w") as output:
+    json.dump({"reader": "FreeCAD Part/OCCT", "cases": results}, output, indent=2, sort_keys=True)
+print(json.dumps(results, indent=2, sort_keys=True))
+for result in results:
+    if not (result["is_valid"] and result["solid_count"] == 1 and
+            result["closed_solid_count"] == 1 and result["shell_count"] == 1 and
+            result["volume_matches"]):
+        raise RuntimeError("STEP readback failed: " + result["case"])

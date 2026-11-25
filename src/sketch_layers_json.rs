@@ -236,7 +236,10 @@ pub(crate) fn audit(model: &Json) -> Result<Json, &'static str> {
     let p = match partition(&job) {
         Ok(p) if replay(&p)? => p,
         _ => {
-            let legacy = crate::sketch_layers::partition_legacy(&job)?;
+            let legacy = match crate::sketch_layers::partition_classic(&job) {
+                Ok(old) if replay(&old)? => old,
+                _ => crate::sketch_layers::partition_legacy(&job)?,
+            };
             if !replay(&legacy)? {
                 return Err("sketch_partition_replay_mismatch");
             }

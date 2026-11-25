@@ -32,23 +32,24 @@ fn translated(local: [i128; 2], weight: i128, origin: [i32; 2]) -> Result<HPoint
 
 fn arc_controls(
     origin: [i32; 2],
-    size: i32,
+    size: [i32; 2],
     radius: i32,
 ) -> Result<[[HPoint; 3]; 2], &'static str> {
-    let l = i128::from(size);
+    let lx = i128::from(size[0]);
+    let ly = i128::from(size[1]);
     let r = i128::from(radius);
     // De Casteljau restriction at t=1/2, multiplied by four to clear the
     // denominators. The second chart reverses its half so both charts have
     // positive orientation while their shared arc endpoint remains exact.
     let left_forward = [
-        point(4 * l, 4 * (l - r), 4),
-        point(4 * l - 2 * r, 4 * l - 4 * r, 4),
-        point(5 * l - 4 * r, 5 * l - 3 * r, 5),
+        point(4 * lx, 4 * (ly - r), 4),
+        point(4 * lx - 2 * r, 4 * ly - 4 * r, 4),
+        point(5 * lx - 4 * r, 5 * ly - 3 * r, 5),
     ];
     let right_forward = [
-        point(5 * l - 4 * r, 5 * l - 3 * r, 5),
-        point(6 * l - 6 * r, 6 * l - 2 * r, 6),
-        point(8 * l - 8 * r, 8 * l, 8),
+        point(5 * lx - 4 * r, 5 * ly - 3 * r, 5),
+        point(6 * lx - 6 * r, 6 * ly - 2 * r, 6),
+        point(8 * lx - 8 * r, 8 * ly, 8),
     ];
     let east = left_forward.into_iter().rev().collect::<Vec<_>>();
     let north = right_forward.into_iter().rev().collect::<Vec<_>>();
@@ -66,15 +67,20 @@ fn arc_controls(
     Ok([east, north])
 }
 
-fn outer_controls(size: i32, origin: [i32; 2], north: bool) -> Result<[HPoint; 3], &'static str> {
-    let l = i128::from(size);
+fn outer_controls(
+    size: [i32; 2],
+    origin: [i32; 2],
+    north: bool,
+) -> Result<[HPoint; 3], &'static str> {
+    let lx = i128::from(size[0]);
+    let ly = i128::from(size[1]);
     let local = if north {
         // The north chart runs from (0,L) to (0,0). Collinear positive
         // controls define the same physical segment with a free parameter map.
-        [point(0, 8 * l, 8), point(0, 4 * l, 8), point(0, 0, 5)]
+        [point(0, 8 * ly, 8), point(0, 4 * ly, 8), point(0, 0, 5)]
     } else {
         // The east chart runs from (0,0) to (L,0).
-        [point(0, 0, 5), point(2 * l, 0, 4), point(4 * l, 0, 4)]
+        [point(0, 0, 5), point(2 * lx, 0, 4), point(4 * lx, 0, 4)]
     };
     Ok([
         translated([local[0][0], local[0][1]], local[0][2], origin)?,
@@ -144,7 +150,20 @@ pub fn fillet_charts(
     z: [i32; 2],
     id: &str,
 ) -> Result<Vec<BracketBlock>, &'static str> {
-    if size <= 0 || radius <= 0 || radius >= size || z[0] >= z[1] {
+    fillet_charts_rect(origin, [size, size], radius, z, id)
+}
+
+/// Build two certified charts for a rectangular corner patch with a circular fillet.
+/// The patch dimensions may differ; the circular corner remains centered at
+/// `(origin.x + size[0] - radius, origin.y + size[1] - radius)`.
+pub fn fillet_charts_rect(
+    origin: [i32; 2],
+    size: [i32; 2],
+    radius: i32,
+    z: [i32; 2],
+    id: &str,
+) -> Result<Vec<BracketBlock>, &'static str> {
+    if size.iter().any(|&extent| extent <= radius) || radius <= 0 || z[0] >= z[1] {
         return Err("invalid fillet chart dimensions");
     }
     if id.is_empty()

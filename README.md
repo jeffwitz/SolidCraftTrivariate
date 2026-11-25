@@ -52,7 +52,7 @@ cli=target/release/solidcraft-trivariate
 "$cli" export-step build/demo/bracket.json build/demo/bracket.step
 ```
 
-The recorded case has 48 blocks, 74 shared interfaces, 140 exterior faces, two bores, and a certified determinant lower bound of `0.00854492187498991 mm³`. Details of the canonical input and atomic rejection are in [the timeline import test](tests/solidcraft_sketch_features.rs). For other SolidCraft script formats, see `import-solidcraft` and its documented subsets in the [campaign results](docs/campagne-20261125.md).
+The timeline above builds the compact bracket with 10 blocks, 11 shared interfaces, 38 exterior faces and two bores. Its certified determinant lower bound is 67.7333333333291 mm³. Across the five FieldCraft brackets, the worst sampled Jacobian condition number falls from 2,048 on the archived 48-block grid to 13.33 on the compact partition (125 points per block, including its corners). This measures geometric distortion. The [mechanical refinement study](docs/results/fieldcraft-bracket-pa5-mechanics.md) reports energy versus degrees of freedom for each analysis space. Details of the canonical input and atomic rejection are in [the timeline import test](tests/solidcraft_sketch_features.rs). For other SolidCraft script formats, see `import-solidcraft` and its documented subsets in the [campaign results](docs/campagne-20261125.md).
 
 ## Construction families and scope
 

@@ -95,35 +95,116 @@ pub(crate) fn local_quad_guides(job: &SketchLayers) -> Option<Vec<Segment>> {
         occupied[index] = true;
         // With fixed winding there are four cyclic pairings. Among admissible
         // pairings choose the one with the least total squared guide length.
-        let shift = (0..4)
-            .filter(|shift| {
-                (0..4).all(|i| {
-                    let j = (i + 1) % 4;
-                    convex(&[
-                        outer[i],
-                        outer[j],
-                        inner[(j + shift) % 4],
-                        inner[(i + shift) % 4],
-                    ])
-                })
-            })
-            .min_by_key(|shift| {
-                (0..4)
-                    .map(|i| {
-                        (0..2)
-                            .map(|axis| {
-                                i64::from(outer[i][axis] - inner[(i + shift) % 4][axis]).pow(2)
-                            })
-                            .sum::<i64>()
-                    })
-                    .sum::<i64>()
-            })?;
-        for (i, &p) in outer.iter().enumerate() {
-            let j = (i + shift) % 4;
-            guides.push(segment(format!("local-hole-{}-{j}", hole.id), p, inner[j]));
-        }
+        join_rings(outer, &inner, &hole.id, &mut guides)?;
     }
     Some(guides)
+}
+
+fn lower_midpoint(a: i32, b: i32) -> i32 {
+    (i64::from(a) + i64::from(b)).div_euclid(2) as i32
+}
+
+/// Split rectangular stock into disjoint strips, one per convex four-sided
+/// cut. For a six-sided cut, add two opposite boundary vertices and a
+/// diagonal of the cut so its footprint also conforms below a pocket floor.
+pub(crate) fn rectangular_hosts(job: &SketchLayers, axis: usize) -> Option<Vec<Segment>> {
+    if !job.guides.is_empty() || job.operations.is_some() || job.force_triangulation {
+        return None;
+    }
+    let outer = oriented_loop(&job.outer);
+    if outer.len() != 4 || !edges(&job.outer).all(|(a, b)| a[0] == b[0] || a[1] == b[1]) {
+        return None;
+    }
+    let lo = outer[0];
+    let hi = outer[2];
+    let mut guides = Vec::new();
+    if let [(hole, _)] = job.cuts.as_slice() {
+        let inner = oriented_loop(hole);
+        if inner.len() != 6
+            || !(0..6).all(|i| turn(inner[i], inner[(i + 1) % 6], inner[(i + 2) % 6]) > 0)
+        {
+            return None;
+        }
+        let mut perimeter = Vec::new();
+        for i in 0..4 {
+            let a = outer[i];
+            let b = outer[(i + 1) % 4];
+            perimeter.push(a);
+            if a[axis] != b[axis] {
+                let mid = std::array::from_fn(|d| lower_midpoint(a[d], b[d]));
+                if mid == a || mid == b {
+                    return None;
+                }
+                perimeter.push(mid);
+            }
+        }
+        join_rings(&perimeter, &inner, &hole.id, &mut guides)?;
+        guides.push(segment(format!("cap-{}", hole.id), inner[0], inner[3]));
+        return Some(guides);
+    }
+    if job.cuts.len() < 2 {
+        return None;
+    }
+    let mut holes = Vec::new();
+    for (hole, _) in &job.cuts {
+        let inner: Quad = oriented_loop(hole).try_into().ok()?;
+        if !convex(&inner) {
+            return None;
+        }
+        let min = inner.iter().map(|p| p[axis]).min()?;
+        let max = inner.iter().map(|p| p[axis]).max()?;
+        holes.push((min, max, &hole.id, inner));
+    }
+    holes.sort_by_key(|h| (h.0, h.1));
+    let mut left = lo[axis];
+    for (i, (_, end, id, inner)) in holes.iter().enumerate() {
+        let mut right = hi[axis];
+        if let Some(next) = holes.get(i + 1) {
+            right = lower_midpoint(*end, next.0);
+            if right <= *end || right >= next.0 {
+                return None;
+            }
+            let mut a = lo;
+            let mut b = hi;
+            a[axis] = right;
+            b[axis] = right;
+            guides.push(segment(format!("strip-{axis}-{right}"), a, b));
+        }
+        let host: Quad = std::array::from_fn(|j| {
+            let mut p = outer[j];
+            p[axis] = if p[axis] == lo[axis] { left } else { right };
+            p
+        });
+        join_rings(&host, inner, id, &mut guides)?;
+        left = right;
+    }
+    Some(guides)
+}
+
+fn join_rings(outer: &[Point], inner: &[Point], id: &str, guides: &mut Vec<Segment>) -> Option<()> {
+    let n = inner.len();
+    let shift = (0..n)
+        .filter(|s| {
+            (0..n).all(|i| {
+                let j = (i + 1) % n;
+                convex(&[outer[i], outer[j], inner[(j + s) % n], inner[(i + s) % n]])
+            })
+        })
+        .min_by_key(|s| {
+            (0..n)
+                .map(|i| {
+                    let j = (i + s) % n;
+                    (0..2)
+                        .map(|a| i64::from(outer[i][a] - inner[j][a]).pow(2))
+                        .sum::<i64>()
+                })
+                .sum::<i64>()
+        })?;
+    for (i, &point) in outer.iter().enumerate() {
+        let j = (i + shift) % n;
+        guides.push(segment(format!("local-hole-{id}-{j}"), point, inner[j]));
+    }
+    Some(())
 }
 
 #[cfg(test)]

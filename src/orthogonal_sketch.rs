@@ -33,6 +33,8 @@ pub(crate) struct Corner<'a> {
     pub(crate) sign: [i32; 2],
     pub(crate) origin: [i32; 2],
     pub(crate) size: i32,
+    /// Width of the local fillet patch along each sketch axis.
+    pub(crate) size_xy: [i32; 2],
     pub(crate) bounds: Bounds,
 }
 struct Tube<'a> {
@@ -42,6 +44,7 @@ struct Tube<'a> {
 }
 pub struct SweepPartition {
     pub(crate) compact: bool,
+    pub(crate) fallback_reason: Option<String>,
     pub blocks: Vec<BracketBlock>,
     pub certificate: BracketCertificate,
     pub twice_constant: i64,
@@ -110,16 +113,23 @@ pub(crate) fn corner<'a>(j: &OrthogonalSketch, f: &'a Fillet) -> Result<Corner<'
             .min()
             .unwrap_or(0)
     });
-    if thickness[0] <= 0 || thickness[0] != thickness[1] {
-        return Err("fillet_corner_frame_requires_equal_clearance");
+    if thickness[0] <= 0 || thickness[1] <= 0 {
+        return Err("fillet_corner_frame_requires_positive_clearance");
     }
+    let size_xy = [
+        thickness[0]
+            .checked_add(f.radius)
+            .ok_or("fillet_corner_frame_overflow")?,
+        thickness[1]
+            .checked_add(f.radius)
+            .ok_or("fillet_corner_frame_overflow")?,
+    ];
     let origin = std::array::from_fn(|k| f.vertex[k] - thickness[k] * sign[k]);
-    let size = thickness[0] + f.radius;
     let bounds = std::array::from_fn(|k| {
         if k == 2 {
             [0, j.height]
         } else {
-            let h = origin[k] + sign[k] * size;
+            let h = origin[k] + sign[k] * size_xy[k];
             [origin[k].min(h), origin[k].max(h)]
         }
     });
@@ -127,7 +137,9 @@ pub(crate) fn corner<'a>(j: &OrthogonalSketch, f: &'a Fillet) -> Result<Corner<'
         f,
         origin,
         sign,
-        size,
+        // Keep the historical scalar for the equal-width compact template.
+        size: size_xy[0],
+        size_xy,
         bounds,
     })
 }
@@ -368,15 +380,53 @@ pub(crate) fn build_with_strategy(
     }) {
         return Err("invalid_sketch_bore");
     }
+    let mut fallback_reason: Option<String> = None;
     if prefer_compact {
-        let compact = if j.fillets.is_empty() {
-            compact_plate(j)
+        let unequal_fillet = if j.fillets.len() == 1 {
+            corner(j, &j.fillets[0])
+                .ok()
+                .is_some_and(|c| c.size_xy[0] != c.size_xy[1])
         } else {
-            crate::compact_orthogonal::try_build(j)
+            false
         };
-        if let Ok(Some(mut candidate)) = compact {
-            candidate.compact = true;
-            return Ok(candidate);
+        if unequal_fillet {
+            fallback_reason = Some("compact_bracket_unequal_leg_thickness".into());
+        } else if j.fillets.is_empty() {
+            let plate_failure = match compact_plate(j) {
+                Ok(Some(mut candidate)) => {
+                    candidate.compact = true;
+                    return Ok(candidate);
+                }
+                Ok(None) => "compact_plate_outside_supported_class".to_owned(),
+                Err(error) => format!("compact_plate_error:{error}"),
+            };
+            match crate::compact_hosts::try_plate(j) {
+                Ok(Some(mut candidate)) => {
+                    candidate.compact = true;
+                    candidate.fallback_reason =
+                        Some(format!("{plate_failure};compact_local_host_selected"));
+                    return Ok(candidate);
+                }
+                Ok(None) => {
+                    fallback_reason = Some("compact_local_host_outside_supported_class".into());
+                }
+                Err(error) => {
+                    fallback_reason = Some(format!("compact_local_host_error:{error}"));
+                }
+            }
+        } else {
+            match crate::compact_orthogonal::try_build(j) {
+                Ok(Some(mut candidate)) => {
+                    candidate.compact = true;
+                    return Ok(candidate);
+                }
+                Ok(None) => {
+                    fallback_reason = Some("compact_bracket_outside_supported_class".into());
+                }
+                Err(error) => {
+                    fallback_reason = Some(format!("compact_bracket_error:{error}"));
+                }
+            }
         }
     }
     let mut levels: [BTreeSet<i32>; 3] = std::array::from_fn(|k| {
@@ -505,9 +555,9 @@ pub(crate) fn build_with_strategy(
         four_pi -= vol;
         for w in planes[2].windows(2) {
             let id = format!("fillet_{}_{}_{}", c.f.id, w[0], w[1]);
-            for mut block in crate::sketch_fillet_chart::fillet_charts(
+            for mut block in crate::sketch_fillet_chart::fillet_charts_rect(
                 [0, 0],
-                c.size,
+                c.size_xy,
                 c.f.radius,
                 [w[0], w[1]],
                 &id,
@@ -524,7 +574,10 @@ pub(crate) fn build_with_strategy(
             }
         }
     }
-    finish_partition(j, blocks, physical, twice_constant, four_pi, planes, guards)
+    let mut partition =
+        finish_partition(j, blocks, physical, twice_constant, four_pi, planes, guards)?;
+    partition.fallback_reason = fallback_reason;
+    Ok(partition)
 }
 
 pub(crate) fn finish_partition(
@@ -567,6 +620,7 @@ pub(crate) fn finish_partition(
     }
     Ok(SweepPartition {
         compact: false,
+        fallback_reason: None,
         blocks,
         certificate: BracketCertificate {
             incidence,

@@ -165,8 +165,8 @@ setback, or positive Jacobians. Full data and STEP hashes are in
 Relevant commands from the frozen experiment were:
 
 ```sh
-rtk python3 tests/references/edge_offset_obstruction.py
-rtk python3 tests/references/edge_treatments_brep.py S3
+python3 tests/references/edge_offset_obstruction.py
+python3 tests/references/edge_treatments_brep.py S3
 ```
 
 The first derives the obstruction from the versioned rational source curve. The

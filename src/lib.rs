@@ -141,6 +141,7 @@ mod sketch_quad_separators;
 pub mod sketch_bore_chart;
 pub mod sketch_fillet_chart;
 mod compact_orthogonal;
+mod compact_hosts;
 mod compact_wing;
 pub mod orthogonal_sketch;
 

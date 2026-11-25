@@ -92,8 +92,9 @@ The coordinator assigns construction to Luna and independent verification to ano
 The displacement-at-point change from 2 to 1.5 mm is 0.044%; final resultant error is about `7.2e-8` relative. The reference meets EF1 displacement stabilization. Stress comparison and the immersed method remain open.
 
 ```sh
-ref_env=/home/jeff/Code/FreeCAD/.pixi/envs/default
-rtk env OMP_NUM_THREADS=2 OPENBLAS_NUM_THREADS=1 LD_LIBRARY_PATH="$ref_env/lib" PYTHONPATH="$ref_env/lib" "$ref_env/bin/python" tests/references/calculix_bracket.py --ccx "$ref_env/bin/ccx" --size 1.5 build/ef1-h1.5
+: "${FREECAD_ENV:?Set FREECAD_ENV to the FreeCAD environment containing Python and CalculiX}"
+ref_env="$FREECAD_ENV"
+env OMP_NUM_THREADS=2 OPENBLAS_NUM_THREADS=1 LD_LIBRARY_PATH="$ref_env/lib" PYTHONPATH="$ref_env/lib" "$ref_env/bin/python" tests/references/calculix_bracket.py --ccx "$ref_env/bin/ccx" --size 1.5 build/ef1-h1.5
 ```
 
 - **V1**, baseline `00e135f`, diagnostic view for J1. Export a sampled hexahedral mesh from the 36 audited maps (`examples/bracket_vtk.rs`), with stable block index, center determinant, normalized Jacobian, edges, and section view accessible in ParaView. Require 36n³ cells and 36(n+1)³ points, correct VTK orientation, finite positive values, and boundary-point radial fidelity to `1e-12 mm`. Rendering is not part of the proof. Keep all VTK files under `build/`.

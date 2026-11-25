@@ -140,7 +140,7 @@ fn elbow_faces(
 /// this template's declared class and the caller may use its established
 /// partitioner. A construction or certification error discards this candidate.
 pub(crate) fn try_build(j: &OrthogonalSketch) -> Result<Option<SweepPartition>, &'static str> {
-    if j.fillets.len() != 1 || j.bores.len() != 2 || j.height <= 0 {
+    if j.fillets.len() != 1 || !(2..=8).contains(&j.bores.len()) || j.height <= 0 {
         return Ok(None);
     }
     if edges(&j.outer).any(|(a, b)| a[0] != b[0] && a[1] != b[1]) {
@@ -154,6 +154,12 @@ pub(crate) fn try_build(j: &OrthogonalSketch) -> Result<Option<SweepPartition>, 
         return Ok(None);
     };
     let arms = make_arm_bounds(j, &c, ends)?;
+    if j.bores.len() > 2 && j.bores.iter().any(|b| b.axis != j.bores[0].axis) {
+        return try_multi_arm_hosts(j, &c, arms);
+    }
+    if j.bores.iter().all(|b| b.axis == j.bores[0].axis) {
+        return try_multi_arm_hosts(j, &c, arms);
+    }
     let mut east_bore = None;
     let mut north_bore = None;
     for bore in &j.bores {
@@ -247,5 +253,97 @@ pub(crate) fn try_build(j: &OrthogonalSketch) -> Result<Option<SweepPartition>, 
     // The per-block Bernstein bounds returned by finish_partition certify
     // regularity; exact shared traces and the prescribed physical labels
     // certify conformity and provenance for this assembled candidate.
+    Ok(Some(partition))
+}
+
+fn try_multi_arm_hosts(
+    j: &OrthogonalSketch,
+    c: &orthogonal_sketch::Corner<'_>,
+    arms: [Bounds; 2],
+) -> Result<Option<SweepPartition>, &'static str> {
+    if j.bores.iter().any(|b| {
+        b.axis > 1
+            || !(1..=1024).contains(&b.radius)
+            || b.center.iter().any(|v| !(-4096..=4096).contains(v))
+    }) {
+        return Ok(None);
+    }
+    let mut blocks = Vec::new();
+    let mut physical = BTreeMap::new();
+    elbow_faces(j, c, &mut physical, &mut blocks)?;
+    let mut guards = vec![(c.f.id.clone(), c.bounds)];
+    for (arm_index, arm_bounds) in arms.iter().copied().enumerate() {
+        let axis = if arm_index == 0 { 1 } else { 0 };
+        let bores = j
+            .bores
+            .iter()
+            .filter(|b| b.axis == axis)
+            .collect::<Vec<_>>();
+        if bores.is_empty() {
+            blocks.push(crate::compact_hosts::plain_box(
+                format!("wing_free_{arm_index}"),
+                arm_bounds,
+            ));
+        } else {
+            let Some(crate::compact_hosts::HoledBox {
+                blocks: mut hosted,
+                physical: mut labels,
+                guards: mut host_guards,
+            }) = crate::compact_hosts::holed_box(
+                axis,
+                arm_bounds,
+                &bores,
+                &format!("wing_{arm_index}"),
+                true,
+            )?
+            else {
+                return Ok(None);
+            };
+            blocks.append(&mut hosted);
+            physical.append(&mut labels);
+            guards.append(&mut host_guards);
+        }
+    }
+    let mut planes: [BTreeSet<i32>; 3] = std::array::from_fn(|_| BTreeSet::new());
+    for b in [c.bounds, arms[0], arms[1]] {
+        for k in 0..3 {
+            planes[k].extend(b[k]);
+        }
+    }
+    for (_, host) in guards.iter().skip(1) {
+        for k in 0..3 {
+            planes[k].extend(host[k]);
+        }
+    }
+    let mut twice_constant = i128::from(area2(&j.outer)) * i128::from(j.height);
+    let r_f = i128::from(c.f.radius);
+    let h = i128::from(j.height);
+    twice_constant = twice_constant
+        .checked_add(2 * r_f * r_f * h)
+        .ok_or("compact_orthogonal_volume_overflow")?;
+    let mut four_pi = -r_f * r_f * h;
+    for bore in &j.bores {
+        let arm_index = if bore.axis == 1 { 0 } else { 1 };
+        let r = i128::from(bore.radius);
+        four_pi = four_pi
+            .checked_sub(
+                4 * r
+                    * r
+                    * i128::from(arms[arm_index][bore.axis][1] - arms[arm_index][bore.axis][0]),
+            )
+            .ok_or("compact_orthogonal_volume_overflow")?;
+    }
+    if twice_constant < 0 || four_pi >= 0 {
+        return Err("compact_orthogonal_volume_sign");
+    }
+    let partition = orthogonal_sketch::finish_partition(
+        j,
+        blocks,
+        physical,
+        twice_constant,
+        four_pi,
+        planes.map(|p| p.into_iter().collect()),
+        guards,
+    )?;
     Ok(Some(partition))
 }

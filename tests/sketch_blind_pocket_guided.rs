@@ -189,3 +189,54 @@ fn shifted_and_resized_rectangular_blind_pockets_keep_the_nine_block_topology() 
         );
     }
 }
+
+#[test]
+fn rectangular_stock_compares_local_hosts_for_multiple_cuts_and_a_hexagon() {
+    let rectangle_a = "[[8,12],[16,12],[16,22],[8,22]]";
+    let rectangle_b = "[[40,12],[50,12],[50,22],[40,22]]";
+    let hexagon = "[[16,20],[23,10],[37,10],[44,20],[37,30],[23,30]]";
+    for (loops, floor, count, volume, method) in [
+        (
+            vec![rectangle_a, rectangle_b],
+            0,
+            8,
+            22200,
+            "rectangular_hosts_x",
+        ),
+        (
+            vec![rectangle_a, rectangle_b],
+            4,
+            18,
+            22920,
+            "rectangular_hosts_x",
+        ),
+        (vec![hexagon], 0, 6, 19800, "rectangular_hosts_y"),
+    ] {
+        let cuts = loops
+            .iter()
+            .enumerate()
+            .map(|(i, vertices)| {
+                format!(r#"{{"id":"cut{i}","vertices":{vertices},"z_interval_mm":[{floor},10]}}"#)
+            })
+            .collect::<Vec<_>>()
+            .join(",");
+        let recipe = format!(
+            r#"{{"family":"sketch_layer_partition_v1","height_mm":10,"outer":{{"id":"stock","vertices":[[0,0],[60,0],[60,40],[0,40]]}},"construction":[],"cuts":[{cuts}]}}"#
+        );
+        let (model, audit) = build_and_audit(&recipe);
+        assert_eq!(model.field("blocks").unwrap().items().unwrap().len(), count);
+        assert_eq!(
+            model
+                .field("partition_plan")
+                .unwrap()
+                .field("method")
+                .unwrap()
+                .text()
+                .unwrap(),
+            method
+        );
+        let exact = audit.field("volume_exact_mm3").unwrap().items().unwrap();
+        assert_eq!(exact[0].number::<i64>().unwrap(), volume);
+        assert_eq!(exact[1].number::<i64>().unwrap(), 1);
+    }
+}

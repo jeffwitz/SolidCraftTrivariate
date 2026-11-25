@@ -267,6 +267,7 @@ pub(crate) fn try_build(j: &OrthogonalSketch) -> Result<Option<SweepPartition>, 
     let planes = std::array::from_fn(|k| vec![bounds[k][0], center[k], bounds[k][1]]);
     Ok(Some(SweepPartition {
         compact: false,
+        fallback_reason: None,
         blocks,
         certificate: BracketCertificate {
             incidence,

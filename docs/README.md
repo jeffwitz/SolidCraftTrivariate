@@ -15,7 +15,7 @@ Start with the [project README](../README.md) to build the Rust CLI and run a sk
 
 ## Experiments and reproduction
 
-- The [FieldCraft replay guide](results/fieldcraft-replay/README.md) links the downloadable bundles. The [STEP comparison](results/fieldcraft-kernel-replay.md) and [PA5 mechanical job](results/fieldcraft-bracket-pa5-mechanics.md) document different checks on the bracket.
+- The [FieldCraft replay guide](results/fieldcraft-replay/README.md) links the downloadable bundles. The [STEP comparison](results/fieldcraft-kernel-replay.md) and [PA5 energy-versus-DOF study](results/fieldcraft-bracket-pa5-mechanics.md) document different checks on the bracket.
 - The [local fillet cost report](results/local-fillet-cost-20261125.md) records the cost of refinement. The [directional quadrature protocol](lot-m12-oracle.md) and [cylinder qualification protocol](lot-p6b-oracle.md) define independent numerical checks.
 - The SolidCraft import protocols cover [polygon extrusions](sc5-protocol.md), [circular bores](lot-sc6.md), [oriented sketch planes](lot-sc7.md), [blind bores](lot-sc8.md) and [counterbores](lot-sc9.md). The corresponding kernel protocols cover [interval bores](lot-g21.md) and [counterbores](lot-g23.md).
 

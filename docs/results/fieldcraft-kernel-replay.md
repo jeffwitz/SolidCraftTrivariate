@@ -4,7 +4,7 @@
 
 Five reconstructed FieldCraft bracket variants were compared with their matching SolidCraft host STEP outputs. The upstream recipe and solver expectations are pinned to FieldCraft revision `35e834652d8548384c2da8ef1b28d588c9af2ffd` in `references.lock`. The original part is a 60 × 50 × 40 mm L bracket with 8 mm legs, an inside R6 fillet, and two orthogonal through bores. Variant labels identify the paired host script and replay recipe; radii below are stated explicitly to avoid relying on those labels.
 
-The replay candidates are all admitted 48-block models with 74 shared interfaces and 140 exterior sides. The corresponding host B-Rep has 11 faces. Both representations import as one valid solid with one shell. The different face and edge counts reflect the trivariate block boundary partition; they are not expected to match the merged host B-Rep topology.
+This report describes the archived grid. The current constructor selects the [compact partition](fieldcraft-compact.md). The archived candidates are all admitted 48-block models with 74 shared interfaces and 140 exterior sides. The corresponding host B-Rep has 11 faces. Both representations import as one valid solid with one shell. The different face and edge counts reflect the trivariate block boundary partition; they are not expected to match the merged host B-Rep topology.
 
 ## Independent checks
 
@@ -36,21 +36,24 @@ The default `FreeCAD.Shape.Volume` value for the imported candidate STEP is not 
 
 ## Reproduction
 
-Run from the repository root after building the release CLI and with the FreeCAD Python environment and `occ-volume` binary available. For each case `C` in `x40-y80 x50-y74 x51-y74 x64-y64 x80-y40`:
+Run from the repository root after building the release CLI and with the FreeCAD Python environment and `occ-volume` binary available. The independent host export for each case must already be present under `build/solidcraft-bridge/<case>/host.step`. The supported case IDs are `x40-y80 x50-y74 x51-y74 x64-y64 x80-y40`:
 
 ```sh
-FC_ENV=/home/jeff/Code/FreeCAD/.pixi/envs/default
-FC_BUILD=/home/jeff/Code/FreeCAD/build/release
+: "${FC_ENV:?Set FC_ENV to the FreeCAD Python environment}"
+: "${FC_BUILD:?Set FC_BUILD to the FreeCAD build containing lib and Mod/Part}"
+case_id=x64-y64
+host="build/solidcraft-bridge/$case_id"
+archive=build/fieldcraft-archive/fieldcraft-native
+unzip -oq docs/results/fieldcraft-replay/fieldcraft-native.zip -d build/fieldcraft-archive
+variant="$archive/variants/$case_id"
 LD_LIBRARY_PATH="$FC_BUILD/lib:$FC_ENV/lib" \
 PYTHONPATH="$FC_BUILD/lib:$FC_BUILD/Mod/Part" \
   "$FC_ENV/bin/python" tests/references/fieldcraft_kernel_replay.py \
-  /home/jeff/Code/SolidCraftTrivariate/build/solidcraft-bridge/C/host.step \
-  build/fieldcraft-replay/C.step \
-  --output build/fieldcraft-oracle/C.json \
-  --occ-volume /home/jeff/Code/SolidCraftTrivariate/build/solidcraft-bridge/occ-volume \
-  --fast \
-  --source-script /home/jeff/Code/SolidCraftTrivariate/build/solidcraft-bridge/C/script.json \
-  --candidate-recipe build/fieldcraft-replay/C.recipe.json
+  "$host/host.step" "$variant/$case_id.step" \
+  --output "build/fieldcraft-oracle/$case_id.json" \
+  --occ-volume build/solidcraft-bridge/occ-volume --fast \
+  --source-script "$archive/replay/inputs/$case_id.script.json" \
+  --candidate-recipe "$variant/$case_id.recipe.json"
 ```
 
-`C` is substituted with the case name in each path. BREP intermediates are written under `build/fieldcraft-oracle/C/` so concurrent runs cannot overwrite one another. Full run records and hashes are regenerated in `build/fieldcraft-oracle/`; that directory is build output, not a committed reference.
+Set `case_id` to the case being checked. BREP intermediates are written under `build/fieldcraft-oracle/C/` so concurrent runs cannot overwrite one another. Full run records and hashes are regenerated in `build/fieldcraft-oracle/`; that directory is build output, not a committed reference.

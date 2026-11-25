@@ -58,7 +58,7 @@ with a hole and blind pocket.
 Run from the repository root:
 
 ```sh
-rtk python3 tests/references/pocket_partition_comparison.py \
+python3 tests/references/pocket_partition_comparison.py \
   --cli target/release/solidcraft-trivariate \
   --work build/pocket-partition-comparison-final \
   --output build/pocket-partition-comparison-final/report.json
@@ -121,3 +121,21 @@ nonconforming T-junctions, extra feature boundaries, cross-event blocks, or a
 different topology require a new count. The L-shaped case
 is a polygonal prism proxy, not a qualification of a curved mechanical
 bracket.
+
+
+## Additional rectangular-stock cases
+
+The automatic planner also tests local strip hosts for multiple four-sided contours on rectangular stock. It places a full separator in an integer gap between consecutive contour projections and connects each host's corners to one contour. For a convex hexagonal cut, it tries splitting opposite stock edges and pairs six perimeter vertices with the six contour vertices. A diagonal inside the contour makes its footprint usable under a pocket floor. Both axis proposals are tested when admissible. Selection minimizes block count first, then worst sampled Jacobian condition number among certified candidates of the same size.
+
+The examples below use a 60 × 40 × 10 mm stock. The paired rectangles occupy [8,16] and [40,50] in X, both with Y in [12,22]. The pocket floor is z=4. The hexagon and the exact expected material volumes are specified in the [CLI regression](../tests/sketch_blind_pocket_guided.rs). The near-wall control uses [1,16] × [6,31] with floor z=4. The historical column uses revision `8eb6ea0`. Each reported κ is the worst spectral Jacobian condition number on 27 points per block, including corners. Counts are best among the tested proposals.
+
+| Sketch | Historical blocks | Selected blocks | Historical κ | Selected κ |
+| --- | ---: | ---: | ---: | ---: |
+| Two through-holes | 13 | 8 | 2.40 | 6.05 |
+| Two blind pockets | 28 | 18 | 6.00 | 11.04 |
+| Hexagonal through-hole | 36 | 6 | 15.89 | 6.90 |
+| Pocket 1 mm from the edge | 9 | 9 | 42.03 | 42.03 |
+
+The first two cases trade distortion for a lower block count. The near-wall example retains the existing partition. The condition-number samples rank peers and do not certify a global distortion bound.
+
+The independent rational section audit found zero area gap and zero overlapping cell pairs in all six layers of these four examples. Their material volumes in table order are 22,200, 22,920, 19,800 and 21,750 mm³.

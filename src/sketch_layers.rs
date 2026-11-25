@@ -480,8 +480,78 @@ fn rectangular_blind_pocket_guides(job: &SketchLayers) -> Option<SketchLayers> {
     Some(candidate)
 }
 
+fn sample_condition(p: &Partition) -> f64 {
+    let mut worst: f64 = 1.0;
+    for block in &p.blocks {
+        let controls = block.controls.iter().map(|v| v.map(|c| c as f64)).collect();
+        let Ok(map) = crate::RationalBezierMap::new(block.degrees, controls) else {
+            return f64::INFINITY;
+        };
+        for u in [0., 0.5, 1.] {
+            for v in [0., 0.5, 1.] {
+                for w in [0., 0.5, 1.] {
+                    let Ok(sample) = map.evaluate([u, v, w]) else {
+                        return f64::INFINITY;
+                    };
+                    let Ok(q) = crate::quality::at_jacobian(sample.jacobian_columns) else {
+                        return f64::INFINITY;
+                    };
+                    worst = worst.max(q.condition_number);
+                }
+            }
+        }
+    }
+    worst
+}
+
+// Block count is primary. Treat roundoff-scale differences as ties so that
+// symmetric candidates retain their deterministic proposal order.
+fn prefer(candidate: &Partition, current: &Partition, quality_ties: bool) -> bool {
+    match candidate.blocks.len().cmp(&current.blocks.len()) {
+        std::cmp::Ordering::Less => true,
+        std::cmp::Ordering::Greater => false,
+        std::cmp::Ordering::Equal if quality_ties => {
+            sample_condition(candidate) < sample_condition(current) * (1.0 - 1e-12)
+        }
+        _ => false,
+    }
+}
+
 pub fn partition(job: &SketchLayers) -> Result<Partition, &'static str> {
     validate(job)?;
+    let mut best = partition_initial_candidates(job, true);
+    for (axis, method) in [(0, "rectangular_hosts_x"), (1, "rectangular_hosts_y")] {
+        let Some(guides) = crate::sketch_quad_separators::rectangular_hosts(job, axis) else {
+            continue;
+        };
+        let mut proposed = job.clone();
+        proposed.guides = guides;
+        let Ok(Some(graph)) = crate::sketch_quads::guided_quad_arrangement(&proposed) else {
+            continue;
+        };
+        let Ok(candidate) = partition_from_graph(job, Some((graph, method))) else {
+            continue;
+        };
+        let replace = match &best {
+            Ok(old) => prefer(&candidate, old, true),
+            Err(_) => true,
+        };
+        if replace {
+            best = Ok(candidate);
+        }
+    }
+    best
+}
+
+pub(crate) fn partition_classic(job: &SketchLayers) -> Result<Partition, &'static str> {
+    validate(job)?;
+    partition_initial_candidates(job, false)
+}
+
+fn partition_initial_candidates(
+    job: &SketchLayers,
+    quality_ties: bool,
+) -> Result<Partition, &'static str> {
     let Some((candidate_job, candidate_method)) = (!job.force_triangulation)
         .then(|| guided_candidate_job(job))
         .flatten()
@@ -497,7 +567,7 @@ pub fn partition(job: &SketchLayers) -> Result<Partition, &'static str> {
     let baseline = partition_from_graph(job, None);
     let guided = partition_from_graph(job, Some((candidate_graph, candidate_method)));
     match (baseline, guided) {
-        (Ok(base), Ok(mut candidate)) if candidate.blocks.len() < base.blocks.len() => {
+        (Ok(base), Ok(mut candidate)) if prefer(&candidate, &base, quality_ties) => {
             candidate.candidate_comparison =
                 Some((true, base.blocks.len(), true, candidate.blocks.len()));
             Ok(candidate)

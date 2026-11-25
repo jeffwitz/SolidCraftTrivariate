@@ -36,8 +36,7 @@ Des rayons différents ou des axes gauches changent l’équation des feuilles d
 
 ```sh
 mkdir -p build/steinmetz-demo
-python3 -c 'import json; print(json.dumps(json.load(open("tests/references/steinmetz_partition_corpus.json"))[0]["recipe"]))' > build/steinmetz-demo/recipe.json
-cargo run --locked --offline -- build build/steinmetz-demo/recipe.json build/steinmetz-demo/model.json
+cargo run --locked --offline -- build tests/references/steinmetz_box.recipe.json build/steinmetz-demo/model.json
 cargo run --locked --offline -- audit build/steinmetz-demo/model.json
 cargo run --locked --offline -- export-step build/steinmetz-demo/model.json build/steinmetz-demo/percages-secants.step
 cargo run --locked --offline -- export-geometry-vtu build/steinmetz-demo/model.json 4 build/steinmetz-demo/blocs.vtu

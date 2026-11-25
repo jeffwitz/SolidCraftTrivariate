@@ -82,18 +82,18 @@ def product_with_axis(rule,t,axis):
     return (*coords,(wa[:,None]*wc).ravel())
 
 
-def material(bounds,nodes,weights):
+def material(bounds,nodes,weights,radius_x=4.,radius_y=4.):
     (x0,x1),(y0,y1),(z0,z1)=bounds
     parts=[]
     for xl,xh in splits(x0,x1,[8.,14.]):
         if xh<=8.:
-            rule=disk_cut_rule((y0,y1),(z0,z1),(32.,20.),4.,nodes,weights)
+            rule=disk_cut_rule((y0,y1),(z0,z1),(32.,20.),radius_y,nodes,weights)
             part=product_with_axis(rule,interval(xl,xh,nodes,weights),0)
         elif xl>=14.:
             if y0>=8.:
                 continue
             upper=min(y1,8.)
-            rule=disk_cut_rule((xl,xh),(z0,z1),(40.,20.),4.,nodes,weights)
+            rule=disk_cut_rule((xl,xh),(z0,z1),(40.,20.),radius_x,nodes,weights)
             part=product_with_axis(rule,interval(y0,upper,nodes,weights),1)
         else:
             if y0>=14.:
@@ -160,22 +160,22 @@ def local_stiffness(gradient,weights,mu,lam):
     return matrix.reshape(81,81)
 
 
-def full_cell(bounds):
+def full_cell(bounds,radius_x=4.,radius_y=4.):
     """Identify canonical full cells; remaining cells use exact analytic clipping."""
     (xl,xh),(yl,yh),(zl,zh)=bounds
     def outside_disk(l,h,center):
         return max(l-center,0.,center-h)
     dz=outside_disk(zl,zh,20.)
     if xh<=8.:
-        return outside_disk(yl,yh,32.)**2+dz**2>=16.
+        return outside_disk(yl,yh,32.)**2+dz**2>=radius_y**2
     if xl>=14.:
-        return yh<=8. and outside_disk(xl,xh,40.)**2+dz**2>=16.
+        return yh<=8. and outside_disk(xl,xh,40.)**2+dz**2>=radius_x**2
     if xl>=8. and xh<=14. and yh<=14.:
         return (14.-xh)**2+(14.-yh)**2>=36.
     return False
 
 
-def run(h,order,geometry_only=False,solver="lu"):
+def run(h,order,geometry_only=False,solver="lu",radius_x=4.,radius_y=4.):
     start=time.perf_counter()
     young,nu=210000.,.3
     mu=young/(2*(1+nu));lam=young*nu/((1+nu)*(1-2*nu))
@@ -207,7 +207,7 @@ def run(h,order,geometry_only=False,solver="lu"):
             empty+=1
             continue
         begin=time.perf_counter()
-        full=full_cell(bounds)
+        full=full_cell(bounds,radius_x,radius_y)
         if full:
             vol=h**3
             key=tuple(-1 if c==0 else 1 if c==count-1 else 0 for c,count in zip(cell,ncell))
@@ -218,7 +218,7 @@ def run(h,order,geometry_only=False,solver="lu"):
                 x,y,z,w=tensor_three(bounds,nodes,weights)
             qpoints+=order**3
         else:
-            x,y,z,w=material(bounds,nodes,weights)
+            x,y,z,w=material(bounds,nodes,weights,radius_x,radius_y)
             vol=float(w.sum())
             if vol<=0:
                 empty+=1
@@ -255,7 +255,8 @@ def run(h,order,geometry_only=False,solver="lu"):
             area+=float(force_weights.sum())
         assemble_s+=time.perf_counter()-begin
     result={"h_mm":h,"gauss_order":order,"volume_mm3":volume,
-            "volume_target_mm3":34080.-616.*math.pi,"active_cells":active,"cut_cells":cut,
+            "radius_x_mm":radius_x,"radius_y_mm":radius_y,
+            "volume_target_mm3":34080.-math.pi*(360+8*(radius_x**2+radius_y**2)),"active_cells":active,"cut_cells":cut,
             "empty_cells":empty,"minimum_volume_fraction":min_fraction,"quadrature_points":qpoints,
             "quadrature_s":integrate_s}
     if geometry_only:
@@ -327,7 +328,9 @@ if __name__=="__main__":
     parser.add_argument("--order",type=int,required=True)
     parser.add_argument("--geometry-only",action="store_true")
     parser.add_argument("--solver",choices=("lu","multigrid"),default="lu")
+    parser.add_argument("--radius-x",type=float,default=4.)
+    parser.add_argument("--radius-y",type=float,default=4.)
     args=parser.parse_args()
     if not 2<=args.order<=16 or not 1<=args.h<=5:
         parser.error("expected order 2..16, h in [1,5] mm")
-    print(json.dumps(run(args.h,args.order,args.geometry_only,args.solver),indent=2))
+    print(json.dumps(run(args.h,args.order,args.geometry_only,args.solver,args.radius_x,args.radius_y),indent=2))

@@ -49,12 +49,12 @@ fn publish(target: &Path, contents: &str) -> std::io::Result<()> {
     }
 }
 
-const COMMANDS_AND_EVALUATORS: &str = r#"{"commands":["build","audit","evaluate","capabilities","export-step"],"evaluators":{"rational_bezier_tensor":{"degrees":[[1,1,1],[2,1,1],[2,2,1]],"domain":[[0,1],[0,1],[0,1]]}}}"#;
+const COMMANDS_AND_EVALUATORS: &str = r#"{"commands":["build","audit","evaluate","capabilities","export-step","certify-map"],"evaluators":{"rational_bezier_tensor":{"degrees":[[1,1,1],[2,1,1],[2,2,1]],"domain":[[0,1],[0,1],[0,1]]}}}"#;
 
 fn capabilities() -> Result<Json,String> {
     let mut result = parse(COMMANDS_AND_EVALUATORS)?;
     let Json::Object(fields) = &mut result else {return Err("invalid capabilities".into())};
-    let families = ["affine_pair_v1", "annular_pair_v1", "filleted_bracket_v1", "movable_bore_v1", "pocket_depth_v1", "exact_bore_v1", "row_bores_v1", "overlap_bore_v1", "axial_boolean_v1"]
+    let families = ["affine_pair_v1", "annular_pair_v1", "filleted_bracket_v1", "movable_bore_v1", "pocket_depth_v1", "exact_bore_v1", "row_bores_v1", "overlap_bore_v1", "axial_boolean_v1", "crescent_pocket_v1"]
         .into_iter().chain(SECTION_FAMILIES).map(|s| Json::String(s.to_owned())).collect();
     fields.insert("families".into(), Json::Array(families));
     Ok(result)
@@ -65,6 +65,53 @@ fn diagnostic(status: &str, reason: &str) -> Json {
         ("status", Json::String(status.into())),
         ("reason", Json::String(reason.into())),
     ])
+}
+
+fn map_data<T: std::str::FromStr>(map: &Json) -> Result<([usize; 3], Vec<[T; 4]>), &'static str> {
+    map.keys(&["degrees", "controls"])?;
+    let degrees = map.field("degrees")?.items()?.iter().map(Json::number).collect::<Result<Vec<_>, _>>()?
+        .try_into().map_err(|_| "expected three degrees")?;
+    let mut controls = Vec::new();
+    for point in map.field("controls")?.items()? {
+        controls.push(point.items()?.iter().map(Json::number).collect::<Result<Vec<_>, _>>()?
+            .try_into().map_err(|_| "expected four homogeneous coordinates")?);
+    }
+    Ok((degrees, controls))
+}
+
+fn certify_map(map: &Json, leaves: &str, depth: &str) -> Result<Json, &'static str> {
+    use solidcraft_trivariate::spatial_certificate::{certify_spatial, CertificateBudget, CertificateStatus};
+    let (degrees, controls) = map_data::<i64>(map)?;
+    let budget = CertificateBudget {
+        max_leaves: leaves.parse().map_err(|_| "invalid leaf budget")?,
+        max_depth: depth.parse().map_err(|_| "invalid depth budget")?,
+    };
+    let result = certify_spatial(degrees, &controls, budget);
+    let numeric = |x: f64| Json::Number(x.to_string());
+    let integer = |x: usize| Json::Number(x.to_string());
+    let witness = result.witness.map(|w| object([
+        ("axes", Json::Array(w.domain.axes.map(|interval| object([
+            ("numerator", integer(interval.numerator as usize)),
+            ("depth", integer(interval.depth.into())),
+        ])).into())),
+        ("upper_corner", Json::Array(w.upper_corner.map(Json::Bool).into())),
+        ("determinant_upper_bound_mm3", numeric(w.determinant_upper_bound_mm3)),
+    ]));
+    let status = match result.status {
+        CertificateStatus::Valid => "valid",
+        CertificateStatus::Invalid => "invalid",
+        CertificateStatus::Indeterminate => "indeterminate",
+    };
+    Ok(object([
+        ("status", Json::String(status.into())),
+        ("quantity", Json::String("local Jacobian determinant on the closed unit cube".into())),
+        ("method", Json::String("outward_interval_tensor_Bernstein".into())),
+        ("determinant_lower_bound_mm3", result.determinant_lower_bound_mm3.map_or(Json::Null, numeric)),
+        ("witness", witness.unwrap_or(Json::Null)),
+        ("leaves_used", integer(result.leaves_used)),
+        ("max_depth_reached", integer(result.max_depth_reached.into())),
+        ("reason", result.reason.map_or(Json::Null, |s| Json::String(s.into()))),
+    ]))
 }
 
 fn run(args: &[String]) -> Result<Json, String> {
@@ -83,15 +130,9 @@ fn run(args: &[String]) -> Result<Json, String> {
             publish(Path::new(target), &step).map_err(|e|e.to_string())?;
             Ok(object([("status",Json::String("exported".into())),("format",Json::String("STEP AP214 boundary".into()))]))
         }
+        [cmd,path,leaves,depth] if cmd=="certify-map"=>Ok(certify_map(&read(path)?,leaves,depth)?),
         [cmd,path,u,v,w] if cmd=="evaluate"=>{
-            let m=read(path)?;m.keys(&["degrees","controls"])?;
-            let degrees=m.field("degrees")?.items()?.iter().map(Json::number::<usize>).collect::<Result<Vec<_>,_>>()?
-                .try_into().map_err(|_|"expected three degrees")?;
-            let mut controls=vec![];
-            for p in m.field("controls")?.items()? {
-                controls.push(p.items()?.iter().map(Json::number::<f64>).collect::<Result<Vec<_>,_>>()?
-                    .try_into().map_err(|_|"expected four homogeneous coordinates")?);
-            }
+            let (degrees,controls)=map_data::<f64>(&read(path)?)?;
             let map=match RationalBezierMap::new(degrees,controls) {
                 Ok(map)=>map,
                 Err(solidcraft_trivariate::MapError::UnsupportedDegrees)=>return Ok(diagnostic("unsupported","unsupported degree family")),
@@ -103,7 +144,7 @@ fn run(args: &[String]) -> Result<Json, String> {
             Ok(object([("status",Json::String("evaluated".into())),("position",vector(res.position)),
                 ("jacobian_columns",Json::Array(res.jacobian_columns.into_iter().map(vector).collect()))]))
         }
-        _=>Err("usage: solidcraft-trivariate capabilities | build RECIPE OUTPUT | audit MODEL | evaluate MAP U V W | export-step MODEL OUTPUT".into()),
+        _=>Err("usage: solidcraft-trivariate capabilities | build RECIPE OUTPUT | audit MODEL | evaluate MAP U V W | export-step MODEL OUTPUT | certify-map MAP MAX_LEAVES MAX_DEPTH".into()),
     }
 }
 

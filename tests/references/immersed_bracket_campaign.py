@@ -12,14 +12,14 @@ WALL_LIMIT=1800.
 RSS_LIMIT=6*1024*1024
 
 
-def run(directory,h,order,solver):
+def run(directory,h,order,solver,radius_x=4.,radius_y=4.):
     out=directory/f"h{h}-q{order}.json"
     err=out.with_suffix(".log")
     started=time.monotonic()
     peak=0
     status="completed"
     with out.open("w") as stdout,err.open("w") as stderr:
-        task=subprocess.Popen([sys.executable,str(HERE/"immersed_bracket.py"),"--h",str(h),"--order",str(order),"--solver",solver],
+        task=subprocess.Popen([sys.executable,str(HERE/"immersed_bracket.py"),"--h",str(h),"--order",str(order),"--solver",solver,"--radius-x",str(radius_x),"--radius-y",str(radius_y)],
                               stdout=stdout,stderr=stderr,env=dict(os.environ,OPENBLAS_NUM_THREADS="1",OMP_NUM_THREADS="1"))
         while task.poll() is None:
             try:
@@ -50,13 +50,15 @@ if __name__=="__main__":
     p.add_argument("--h",type=float,nargs="+",default=[5.,2.5,1.25,1.])
     p.add_argument("--order",type=int,nargs="+",default=[4,6,8])
     p.add_argument("--solver",choices=("lu","multigrid"),default="lu")
+    p.add_argument("--radius-x",type=float,default=4.)
+    p.add_argument("--radius-y",type=float,default=4.)
     args=p.parse_args()
     args.directory.mkdir(parents=True,exist_ok=True)
     report={"solver":args.solver,"resource_budget":{"wall_s":WALL_LIMIT,"rss_kib":RSS_LIMIT},"runs":[]}
     target=args.directory/"result.json"
     for h in args.h:
         for q in args.order:
-            case=run(args.directory,h,q,args.solver)
+            case=run(args.directory,h,q,args.solver,args.radius_x,args.radius_y)
             report["runs"].append(case)
             temp=target.with_suffix(".tmp")
             temp.write_text(json.dumps(report,indent=2)+"\n")

@@ -17,7 +17,7 @@ import time
 V = App.Vector
 
 
-def shape():
+def shape(radius_x=4., radius_y=4.):
     outline = [(0, 0), (60, 0), (60, 8), (14, 8)]
     edges = [Part.makeLine(V(*a, 0), V(*b, 0)) for a, b in zip(outline, outline[1:])]
     mid = 14 - 6 / math.sqrt(2)
@@ -25,10 +25,10 @@ def shape():
     end = [(8,14), (8,50), (0,50), (0,0)]
     edges.extend(Part.makeLine(V(*a,0), V(*b,0)) for a,b in zip(end,end[1:]))
     body = Part.Face(Part.Wire(edges)).extrude(V(0,0,40))
-    body = body.cut(Part.makeCylinder(4,10,V(40,-1,20),V(0,1,0)))
-    body = body.cut(Part.makeCylinder(4,10,V(-1,32,20),V(1,0,0)))
+    body = body.cut(Part.makeCylinder(radius_x,10,V(40,-1,20),V(0,1,0)))
+    body = body.cut(Part.makeCylinder(radius_y,10,V(-1,32,20),V(1,0,0)))
     assert body.isValid() and len(body.Solids)==1
-    assert abs(body.Volume - (34080-616*math.pi)) < 1e-7
+    assert abs(body.Volume - (34080-math.pi*(360+8*(radius_x**2+radius_y**2)))) < 1e-7
     return body
 
 
@@ -90,7 +90,7 @@ def run(args):
     begin = time.monotonic()
     doc=App.newDocument("Reference")
     feature=doc.addObject("PartDesign::Feature","ReferenceShape")
-    feature.Shape=shape()
+    feature.Shape=shape(args.radius_x,args.radius_y)
     mesh_obj=doc.addObject("Fem::FemMeshShapeNetgenObject","Tet10")
     mesh_obj.Shape=feature
     mesh_obj.MaxSize=args.size
@@ -122,7 +122,7 @@ def run(args):
     react=node_report(output,"forces","CLAMP")
     reaction=[sum(v[k] for v in react.values()) for k in range(3)]
     assert math.dist(reaction,[0,1000,0])<0.01, reaction
-    report=dict(size_mm=args.size,occ_volume_mm3=feature.Shape.Volume,nodes=len(nodes),
+    report=dict(radius_x_mm=args.radius_x,radius_y_mm=args.radius_y,size_mm=args.size,occ_volume_mm3=feature.Shape.Volume,nodes=len(nodes),
                 tet10=mesh.VolumeCount,loaded_area_mm2=area,reaction_n=reaction,
                 mean_tip_y_mm=sum(w*disp[i][1] for i,w in weights.items())/area,
                 point_tip_y_mm=sum(w*disp[i][1] for i,w in probe.items()),
@@ -140,4 +140,6 @@ if __name__=="__main__":
     parser.add_argument("--size",type=float,required=True)
     parser.add_argument("--ccx",required=True)
     parser.add_argument("directory",type=Path)
+    parser.add_argument("--radius-x",type=float,default=4.)
+    parser.add_argument("--radius-y",type=float,default=4.)
     run(parser.parse_args())

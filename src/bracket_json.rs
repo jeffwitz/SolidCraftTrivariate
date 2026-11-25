@@ -81,12 +81,13 @@ fn certify(
     ))
 }
 
-pub(crate) const PARAMETRIC_FAMILIES: [&str; 5] = [
+pub(crate) const PARAMETRIC_FAMILIES: [&str; 6] = [
     "movable_bore_v1",
     "pocket_depth_v1",
     "exact_bore_v1",
     "row_bores_v1",
     "overlap_bore_v1",
+    "crescent_pocket_v1",
 ];
 
 fn parameters(family: &str) -> &'static [&'static str] {
@@ -94,7 +95,7 @@ fn parameters(family: &str) -> &'static [&'static str] {
         "movable_bore_v1" => &["center_half_mm", "radius_half_mm"],
         "row_bores_v1" => &["half_widths_half_mm", "centers_half_mm", "radii_half_mm"],
         "exact_bore_v1" => &["center_um", "radius_um"],
-        "pocket_depth_v1" => &["depth_half_mm"],
+        "pocket_depth_v1" | "crescent_pocket_v1" => &["depth_half_mm"],
         _ => &[],
     }
 }
@@ -145,6 +146,14 @@ fn audit_template(
     blocks: &[BracketBlock],
 ) -> Result<(BracketCertificate, Option<f64>), &'static str> {
     match family {
+        "crescent_pocket_v1" => {
+            let ticks = input.field("depth_half_mm")?.number::<i32>()?;
+            let cert = crate::crescent_audit::audit_crescent_pocket(ticks, blocks)?;
+            let pi = std::f64::consts::PI;
+            let ideal =
+                8. * (400. - 4. * pi) - f64::from(ticks) / 2. * (4. * pi / 3. + 2. * 3_f64.sqrt());
+            Ok((cert, Some(ideal)))
+        }
         "overlap_bore_v1" => {
             let cert = crate::overlap_bore_audit::audit_overlap(blocks)?;
             let ideal = 8. * (400. - 16. * std::f64::consts::PI / 3. - 2. * 3_f64.sqrt());
@@ -201,6 +210,9 @@ pub(crate) fn build(recipe: &Json) -> Result<Json, &'static str> {
     recipe.keys(&keys)?;
     let blocks = match family {
         "filleted_bracket_v1" => bracket_blocks()?,
+        "crescent_pocket_v1" => crate::crescent_pocket::crescent_pocket_blocks(
+            recipe.field("depth_half_mm")?.number()?,
+        )?,
         "overlap_bore_v1" => crate::overlap_bore::overlap_blocks()?,
         "row_bores_v1" => {
             use crate::row_bores::{build_row_bores, RowBoresError::*};

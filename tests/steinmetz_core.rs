@@ -27,6 +27,7 @@ fn exact_circular_walls_positive_closed_cubes_and_union_volume() {
     );
     let quadrature = gauss(20).unwrap();
     let mut volume = 0.0;
+    let mut exposed_wall = [0.0; 2];
     let mut lower_bound = f64::INFINITY;
     for block in blocks {
         let certificate =
@@ -46,6 +47,14 @@ fn exact_circular_walls_positive_closed_cubes_and_union_volume() {
             }
         }
         if block.degrees == [2, 1, 1] {
+            let axis = usize::from(block.id.contains("_axis2_"));
+            for &(u, wu) in &quadrature {
+                let [a, _, b] = map.evaluate([u, 0., 0.5]).unwrap().jacobian_columns;
+                let surface_measure = (a[1] * b[2] - a[2] * b[1])
+                    .hypot(a[2] * b[0] - a[0] * b[2])
+                    .hypot(a[0] * b[1] - a[1] * b[0]);
+                exposed_wall[axis] += wu * surface_measure;
+            }
             for u in [0.0, 0.125, 0.5, 0.875, 1.0] {
                 for s in [0.0, 0.5, 1.0] {
                     let [x, y, z] = map.evaluate([u, 0.0, s]).unwrap().position;
@@ -61,6 +70,11 @@ fn exact_circular_walls_positive_closed_cubes_and_union_volume() {
         volume - expected
     );
     assert!((volume - expected).abs() < 1e-7);
+    for (area, length) in exposed_wall.into_iter().zip([60., 30.]) {
+        // The other bore removes a strip of axial length 2r |cos(theta)|
+        // from this cylinder, i.e. a total area of 8 r^2.
+        assert!((area - (6. * std::f64::consts::PI * length - 72.)).abs() < 1e-8);
+    }
 }
 
 #[test]

@@ -92,7 +92,7 @@ fn reachable(start: usize, adjacent: &BTreeMap<usize, Vec<usize>>) -> usize {
 /// exact trace identity before identifying two curves with common endpoints.
 pub fn boundary_shell(model: &Json) -> Result<BoundaryShell, &'static str> {
     let report = audit(model)?;
-    if report.field("method")?.text()? != "certified_fixed_extrusion_partition" {
+    if !matches!(report.field("method")?.text()?, "certified_fixed_extrusion_partition" | "certified_ruled_similarity_sweep") {
         return Err("unsupported_boundary_model_family");
     }
     let blocks: BTreeMap<_, _> = decode_blocks(model)?

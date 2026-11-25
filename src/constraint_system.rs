@@ -101,7 +101,7 @@ impl Ratio {
         )
     }
 
-    fn checked_add(self, other: Self) -> Result<Self, &'static str> {
+    pub(crate) fn checked_add(self, other: Self) -> Result<Self, &'static str> {
         let common = gcd_u128(self.denominator as u128, other.denominator as u128) as i128;
         let left_factor = other.denominator / common;
         let right_factor = self.denominator / common;
@@ -127,7 +127,7 @@ impl Ratio {
         self.checked_add(other.checked_neg()?)
     }
 
-    fn checked_mul(self, other: Self) -> Result<Self, &'static str> {
+    pub(crate) fn checked_mul(self, other: Self) -> Result<Self, &'static str> {
         let left_cancel = gcd_u128(self.numerator.unsigned_abs(), other.denominator as u128);
         let right_cancel = gcd_u128(other.numerator.unsigned_abs(), self.denominator as u128);
         let a = self.numerator / left_cancel as i128;

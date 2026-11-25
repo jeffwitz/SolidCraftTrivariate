@@ -48,7 +48,8 @@ def face_rule(side, uv):
     return uvw,axes
 
 
-def assemble(package):
+def assemble_operators(package):
+    """Reassemble the full unconstrained operators from the exported block data."""
     space = package["analysis_space"]
     rows=[];cols=[];entries=[]
     ndof=space["scalar_ndof"]
@@ -108,6 +109,13 @@ def assemble(package):
                         shape=(3*ndof,3*ndof)).tocsr()
     rhs_error=np.max(np.abs(force-np.asarray(package["load"]["nodal_rhs_n"])))
     assert affine_error < 1e-10 and rhs_error < 1e-8 and abs(area-320)<1e-9
+    return k, force, coordinates, tip_shapes, volume, area, affine_error, rhs_error
+
+
+def assemble(package):
+    k,force,coordinates,tip_shapes,volume,area,affine_error,rhs_error=assemble_operators(package)
+    ndof=len(coordinates)
+    order=package["quadrature_order"]
     fixed=np.asarray(package["reduction"]["fixed_vector_dofs"])
     free=np.asarray(package["reduction"]["free_vector_dofs"])
     assert np.array_equal(np.sort(np.r_[fixed,free]),np.arange(3*ndof))

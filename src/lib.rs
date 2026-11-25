@@ -3,6 +3,8 @@
 pub mod analysis_space;
 pub mod adaptive_partition;
 pub mod adaptive_space;
+pub mod adaptive_transfer;
+pub mod adaptive_package;
 pub mod adaptive_estimator;
 pub mod affine_overlap;
 pub mod annular;
@@ -51,6 +53,8 @@ pub mod row_bores;
 pub mod row_bores_audit;
 pub mod row_session;
 pub mod ruled_sweep;
+pub mod ruled_sweep_audit;
+mod ruled_json;
 pub mod sketch_intersections;
 pub mod spatial_certificate;
 pub mod solver_package;

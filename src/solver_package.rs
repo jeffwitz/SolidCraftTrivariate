@@ -41,7 +41,7 @@ fn f64_array(values: impl IntoIterator<Item = f64>) -> Json {
     arr(values, number)
 }
 
-fn analysis_block_json(block: &analysis_space::AnalysisBlock) -> Json {
+pub(super) fn analysis_block_json(block: &analysis_space::AnalysisBlock) -> Json {
     object([
         ("id", text(&block.id)),
         ("degrees", numeric_array([2, 2, 2])),
@@ -81,7 +81,7 @@ fn gauss_json(order: usize) -> Result<Json, &'static str> {
     ]))
 }
 
-fn integrate_volume(space: &AnalysisSpace, order: usize) -> Result<f64, &'static str> {
+pub(super) fn integrate_volume(space: &AnalysisSpace, order: usize) -> Result<f64, &'static str> {
     let points = gauss(order)?;
     let mut volume = 0.0;
     for block in &space.blocks {

@@ -35,16 +35,16 @@ GRID = (0.0, 0.21132486540518713, 0.5, 0.7886751345948129, 1.0)
 
 
 def basis(degree, x):
-    return tuple(math.comb(degree, i) * x**i * (1.0 - x) ** (degree - i)
+    return tuple(math.comb(degree, i) * x**i * (1 - x) ** (degree - i)
                  for i in range(degree + 1))
 
 
 def dbasis(degree, x):
     if degree == 1:
-        return (-1.0, 1.0)
+        return (-1, 1)
     low = basis(degree - 1, x)
-    return tuple(degree * ((low[i - 1] if i else 0.0)
-                           - (low[i] if i < degree else 0.0))
+    return tuple(degree * ((low[i - 1] if i else 0)
+                           - (low[i] if i < degree else 0))
                  for i in range(degree + 1))
 
 
@@ -52,8 +52,8 @@ def evaluate(block, xyz):
     degrees, controls = block["degrees"], block["controls"]
     b = [basis(d, x) for d, x in zip(degrees, xyz)]
     d = [dbasis(degree, x) for degree, x in zip(degrees, xyz)]
-    h = [0.0] * 4
-    dh = [[0.0] * 4 for _ in range(3)]
+    h = [0] * 4
+    dh = [[0] * 4 for _ in range(3)]
     ix = 0
     for ijk in itertools.product(*(range(n + 1) for n in degrees)):
         p = controls[ix]

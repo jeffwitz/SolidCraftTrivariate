@@ -11,7 +11,7 @@ import time
 from refine_tetra_fields import session_rss
 
 
-def run(binary,work,ticks,rounds):
+def run(binary,work,ticks,rounds,warm=False):
     work.mkdir(parents=True,exist_ok=True)
     log=work/"run.log"
     started=time.monotonic()
@@ -19,7 +19,7 @@ def run(binary,work,ticks,rounds):
     last_round=None
     result="completed"
     with log.open("w") as output:
-        task=subprocess.Popen([str(binary),str(ticks),str(work),str(rounds)],stdout=output,
+        task=subprocess.Popen([str(binary),str(ticks),str(work),str(rounds),*(["--warm"] if warm else [])],stdout=output,
                               stderr=subprocess.STDOUT,start_new_session=True)
         while task.poll() is None:
             matches=re.findall(r"adaptive round (\d+):",log.read_text())
@@ -44,9 +44,10 @@ def run(binary,work,ticks,rounds):
 if __name__=="__main__":
     p=argparse.ArgumentParser(description=__doc__);p.add_argument("binary",type=Path);p.add_argument("directory",type=Path)
     p.add_argument("--rounds",type=int,default=6)
+    p.add_argument("--warm",action="store_true")
     args=p.parse_args()
     for ticks in (64,56):
         work=args.directory/f"x{ticks}"
-        metrics=run(args.binary.resolve(),work,ticks,args.rounds)
+        metrics=run(args.binary.resolve(),work,ticks,args.rounds,args.warm)
         (work/"resources.json").write_text(json.dumps(metrics,indent=2)+"\n")
         print(metrics,flush=True)

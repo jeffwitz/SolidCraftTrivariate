@@ -233,10 +233,16 @@ pub fn build_analysis_space(blocks: &[BracketBlock]) -> Result<AnalysisSpace, &'
 
 /// Build the conforming Q2 space of the bracket with independently checked bore radii.
 pub fn parameterized_bracket_space(
-    rx: u8, ry: u8, blocks: &[BracketBlock],
+    rx: u8,
+    ry: u8,
+    blocks: &[BracketBlock],
 ) -> Result<AnalysisSpace, &'static str> {
-    let report = crate::bracket_parameters_audit::audit_bracket_parameters(rx,ry,blocks)?;
-    from_certified_faces(blocks, &report.certificate.incidence, &report.certificate.design_faces)
+    let report = crate::bracket_parameters_audit::audit_bracket_parameters(rx, ry, blocks)?;
+    from_certified_faces(
+        blocks,
+        &report.certificate.incidence,
+        &report.certificate.design_faces,
+    )
 }
 
 /// Build the conforming space of one audited fixed section template.
@@ -248,17 +254,101 @@ pub fn section_analysis_space(
     from_certified_faces(blocks, &certificate.incidence, &certificate.design_faces)
 }
 
+/// Build a Q2 space only after the independent ruled-sweep audit succeeds.
+/// The source section's z-cap labels become semantic bottom/top selections in
+/// the swept physical domain; all lateral source groups retain their identity.
+pub fn ruled_sweep_analysis_space(
+    recipe: crate::ruled_sweep::SweepRecipe,
+    blocks: &[BracketBlock],
+) -> Result<AnalysisSpace, &'static str> {
+    let report = crate::ruled_sweep_audit::audit_ruled_sweep(recipe, blocks)?;
+    let design_faces = report
+        .certificate
+        .design_faces
+        .iter()
+        .map(|(side, tag)| {
+            let label = if side.axis == 2 {
+                match tag.as_str() {
+                    "z0" => "bottom",
+                    "z8" => "top",
+                    _ => return Err("ruled sweep has an unknown source cap"),
+                }
+            } else {
+                tag.as_str()
+            };
+            Ok((side.clone(), label.to_owned()))
+        })
+        .collect::<Result<Vec<_>, &'static str>>()?;
+    from_certified_faces(blocks, &report.certificate.incidence, &design_faces)
+}
+
+/// Build an H1 analysis space from an independently re-audited axial boolean.
+///
+/// Only exterior faces become boundary groups. Coplanar internal caps remain
+/// interfaces in the incidence and therefore cannot receive natural loads.
+/// Operand provenance is collapsed to one physical group per exterior side;
+/// the two operands of a union do not create duplicate boundary selections.
+pub fn axial_boolean_analysis_space(
+    operation: crate::axial_boolean::AxialBooleanOperation,
+    a: crate::axial_boolean::AxialOperand,
+    b: crate::axial_boolean::AxialOperand,
+    model: &crate::axial_boolean::AxialBooleanModel,
+) -> Result<AnalysisSpace, &'static str> {
+    crate::axial_boolean_audit::audit_axial_boolean(operation, a, b, model)?;
+    let mut design_faces = Vec::with_capacity(model.faces.len());
+    for face in &model.faces {
+        let group = if face.side.axis == 2 {
+            let mut cap_labels = BTreeSet::new();
+            for provenance in &face.provenance {
+                match provenance.source_face.as_str() {
+                    "z0" => {
+                        cap_labels.insert("bottom");
+                    }
+                    "z8" => {
+                        cap_labels.insert("top");
+                    }
+                    _ => return Err("axial boolean has an unknown cap provenance"),
+                }
+            }
+            if cap_labels.len() != 1 {
+                return Err("axial boolean cap provenance is ambiguous");
+            }
+            cap_labels.into_iter().next().unwrap().to_owned()
+        } else {
+            let mut side_labels = BTreeSet::new();
+            for provenance in &face.provenance {
+                if provenance.orientation_reversed {
+                    return Err("subtractive cap orientation is not a physical union boundary");
+                }
+                side_labels.insert(provenance.source_face.as_str());
+            }
+            if side_labels.len() != 1 {
+                return Err("axial boolean side provenance is ambiguous");
+            }
+            side_labels.into_iter().next().unwrap().to_owned()
+        };
+        design_faces.push((face.side.clone(), group));
+    }
+    from_certified_faces(&model.blocks, &model.incidence, &design_faces)
+}
+
 /// Build a whole-face Q2 space after independently checking the movable bore.
 pub fn bore_analysis_space(
-    center_half_mm: [i32;2], radius_half_mm: i32, blocks: &[BracketBlock],
+    center_half_mm: [i32; 2],
+    radius_half_mm: i32,
+    blocks: &[BracketBlock],
 ) -> Result<AnalysisSpace, &'static str> {
-    let certificate = crate::movable_bore_audit::audit_bore(center_half_mm, radius_half_mm, blocks)?;
+    let certificate =
+        crate::movable_bore_audit::audit_bore(center_half_mm, radius_half_mm, blocks)?;
     from_certified_faces(blocks, &certificate.incidence, &certificate.design_faces)
 }
 
 /// Build a conforming Q2 space on the certified row of pierced cells.
 pub fn row_analysis_space(
-    half_widths: [i32; 2], centers: &[[i32; 2]], radii: &[i32], blocks: &[BracketBlock],
+    half_widths: [i32; 2],
+    centers: &[[i32; 2]],
+    radii: &[i32],
+    blocks: &[BracketBlock],
 ) -> Result<AnalysisSpace, &'static str> {
     let certificate = crate::row_bores_audit::audit_row(half_widths, centers, radii, blocks)?;
     from_certified_faces(blocks, &certificate.incidence, &certificate.design_faces)
@@ -446,6 +536,74 @@ mod tests {
             assert!(dofs.iter().all(|dof| *dof < space.ndof));
         }
         assert_ne!(space.boundary_dofs["hole_x"], space.boundary_dofs["hole_y"]);
+    }
+
+    #[test]
+    fn audited_axial_union_has_only_physical_boundary_groups() {
+        use crate::axial_boolean::{
+            build_axial_boolean, AxialAxis, AxialBooleanOperation as Op, AxialOperand,
+            AxialSectionFamily,
+        };
+        let section = AxialSectionFamily::PiercedSquareV1;
+        let operands = [
+            AxialOperand {
+                section,
+                axis: AxialAxis::Z,
+                interval_mm: [0, 5],
+            },
+            AxialOperand {
+                section,
+                axis: AxialAxis::Z,
+                interval_mm: [3, 8],
+            },
+        ];
+        let model = build_axial_boolean(Op::Union, operands[0], operands[1]).unwrap();
+        let split =
+            axial_boolean_analysis_space(Op::Union, operands[0], operands[1], &model).unwrap();
+        let source_blocks = crate::sections::section_blocks("pierced_square_v1").unwrap();
+        let source = section_analysis_space("pierced_square_v1", &source_blocks).unwrap();
+        assert_eq!(model.blocks.len(), 12);
+        assert_eq!(split.blocks.len(), 12);
+        let expected_groups: BTreeSet<String> =
+            ["bottom", "top", "x-10", "x10", "y-10", "y10", "circle_r4"]
+                .into_iter()
+                .map(str::to_owned)
+                .collect();
+        assert_eq!(
+            split.boundary_dofs.keys().cloned().collect::<BTreeSet<_>>(),
+            expected_groups
+        );
+        assert!(!split.boundary_dofs.contains_key("z3"));
+        assert!(!split.boundary_dofs.contains_key("z5"));
+        assert!(split.boundary_dofs["circle_r4"].len() > source.boundary_dofs["circle_r4"].len());
+        let mut invalid = model.clone();
+        invalid.faces.pop();
+        assert!(
+            axial_boolean_analysis_space(Op::Union, operands[0], operands[1], &invalid).is_err()
+        );
+    }
+
+    #[test]
+    fn ruled_sweep_space_is_audit_first_and_preserves_semantic_caps() {
+        let recipe = crate::ruled_sweep::SweepRecipe {
+            section: crate::ruled_sweep::SweepSection::PiercedSquare,
+            top_multiplier_eighths: [0, 8],
+            top_translation_eighths_mm: [4, -8],
+            height_mm: 12,
+        };
+        let blocks = crate::ruled_sweep::build_ruled_sweep(recipe).unwrap();
+        let space = ruled_sweep_analysis_space(recipe, &blocks).unwrap();
+        assert_eq!(space.blocks.len(), 4);
+        for feature in ["bottom", "top", "x-10", "x10", "y-10", "y10", "circle_r4"] {
+            assert!(!space.boundary_dofs[feature].is_empty());
+        }
+        assert_eq!(
+            space.boundary_dofs["bottom"].len(),
+            space.boundary_dofs["top"].len()
+        );
+        let mut altered = blocks.clone();
+        altered[0].controls[0][0] += 1;
+        assert!(ruled_sweep_analysis_space(recipe, &altered).is_err());
     }
 
     #[test]

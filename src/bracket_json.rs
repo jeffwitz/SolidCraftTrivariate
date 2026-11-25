@@ -47,7 +47,7 @@ pub(super) fn topology(incidence: &crate::incidence::Incidence) -> Json {
     ])
 }
 
-fn design(cert: &BracketCertificate) -> Json {
+pub(super) fn design(cert: &BracketCertificate) -> Json {
     Json::Array(
         cert.design_faces
             .iter()
@@ -345,7 +345,7 @@ pub(super) fn encode_blocks(blocks: Vec<BracketBlock>) -> Json {
     Json::Array(blocks)
 }
 
-fn encode(family: &str, blocks: Vec<BracketBlock>, cert: &BracketCertificate) -> Json {
+pub(super) fn encode(family: &str, blocks: Vec<BracketBlock>, cert: &BracketCertificate) -> Json {
     object([
         ("schema", text(family)),
         ("blocks", encode_blocks(blocks)),

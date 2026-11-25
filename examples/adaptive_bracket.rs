@@ -4,14 +4,15 @@ mod bracket_field;
 use solidcraft_trivariate::{
     adaptive_estimator::estimate_residual,
     adaptive_partition::{AdaptivePartition, LeafKey},
-    adaptive_space::build_adaptive_space,
+    adaptive_space::{build_adaptive_space, AdaptiveSpace},
+    adaptive_transfer::build_transfer,
     analysis_space::parameterized_bracket_space,
     bracket_parameters::build_bracket_parameters,
     bracket_parameters_audit::audit_bracket_parameters,
     bracket_solve::{bracket_load, bracket_tip_displacement},
-    constrained_elasticity::solve_constrained,
+    constrained_elasticity::{solve_constrained, solve_constrained_from},
     constraint_system::{resolve, Ratio},
-    elasticity::assemble,
+    elasticity::{assemble, Stiffness},
     json::{object, Json},
 };
 use std::{collections::BTreeMap, path::Path, time::Instant};
@@ -31,7 +32,20 @@ fn save_json(path: &Path, data: Json) -> std::io::Result<()> {
     std::fs::write(&tmp, format!("{data}\n"))?;
     std::fs::rename(tmp, path)
 }
-fn run(rx: u8, dir: &Path, rounds: usize) -> Result<(), Box<dyn std::error::Error>> {
+struct Previous {
+    build: AdaptiveSpace,
+    partition: AdaptivePartition,
+    displacement: Vec<f64>,
+    energies: [f64; 2],
+    works: [f64; 2],
+}
+fn dot(a: &[f64], b: &[f64]) -> f64 {
+    a.iter().zip(b).map(|(x, y)| x * y).sum()
+}
+fn energy(k: &Stiffness, u: &[f64]) -> Result<f64, &'static str> {
+    Ok(0.5 * dot(u, &k.apply(u)?))
+}
+fn run(rx: u8, dir: &Path, rounds: usize, warm: bool) -> Result<(), Box<dyn std::error::Error>> {
     if !(1..=6).contains(&rounds) {
         return Err("expected 1..6 adaptive rounds".into());
     }
@@ -48,6 +62,7 @@ fn run(rx: u8, dir: &Path, rounds: usize) -> Result<(), Box<dyn std::error::Erro
     let mut partition = AdaptivePartition::new(&ids, &report.certificate.incidence, 5, 4000)?;
     let mut history = Vec::new();
     let mut reason = String::from("round_limit");
+    let mut previous: Option<Previous> = None;
     for round in 0..rounds {
         eprintln!(
             "radius {rx} adaptive round {round}: {} leaves",
@@ -66,8 +81,77 @@ fn run(rx: u8, dir: &Path, rounds: usize) -> Result<(), Box<dyn std::error::Erro
             .collect::<Vec<_>>();
         let lift = resolve(build.space.ndof, &build.constraints, &prescribed)?;
         let start = Instant::now();
-        let solved = solve_constrained(&stiffness, [&lift; 3], &force, 1e-10, 20000)?;
-        let solve_s = start.elapsed().as_secs_f64();
+        let mut warm_metrics = Json::Null;
+        let checks = if warm {
+            Some((
+                assemble(&build.space, 210000., 0.3, 6)?,
+                bracket_load(&build.space, 6)?.0,
+            ))
+        } else {
+            None
+        };
+        let verification_assembly_s = start.elapsed().as_secs_f64();
+        let start = Instant::now();
+        let (solved, solve_s) = if let Some(old) = previous.take() {
+            let transfer = build_transfer(&old.build, &old.partition, &build, &partition)?;
+            let initial = transfer.transfer_full_field(&old.displacement)?;
+            let mut initial_reduced = Vec::with_capacity(3 * lift.free_roots.len());
+            for component in 0..3 {
+                initial_reduced.extend(
+                    lift.free_roots
+                        .iter()
+                        .map(|&id| initial[3 * id + component]),
+                );
+            }
+            let transfer_s = start.elapsed().as_secs_f64();
+            let start = Instant::now();
+            let hot = solve_constrained_from(
+                &stiffness,
+                [&lift; 3],
+                &force,
+                1e-10,
+                20000,
+                &initial_reduced,
+            )?;
+            let hot_s = start.elapsed().as_secs_f64();
+            let start = Instant::now();
+            let cold = solve_constrained(&stiffness, [&lift; 3], &force, 1e-10, 20000)?;
+            let cold_s = start.elapsed().as_secs_f64();
+            let (k6, f6) = checks.as_ref().ok_or("missing verification operators")?;
+            let inherited = [energy(k6, &initial)?, energy(&stiffness, &initial)?];
+            let loads = [dot(f6, &initial), dot(&force, &initial)];
+            let error = cold
+                .displacement_mm
+                .iter()
+                .zip(&hot.displacement_mm)
+                .map(|(a, b)| (a - b) * (a - b))
+                .sum::<f64>()
+                .sqrt()
+                / dot(&cold.displacement_mm, &cold.displacement_mm).sqrt();
+            warm_metrics = object([
+                ("transfer_s", n(transfer_s)),
+                ("warm_s", n(hot_s)),
+                ("cold_s", n(cold_s)),
+                ("warm_iterations", n(hot.iterations)),
+                ("cold_iterations", n(cold.iterations)),
+                ("cold_true_residual", n(cold.relative_residual)),
+                ("cold_warm_displacement_relative", n(error)),
+                (
+                    "inherited_energy_q6_q8",
+                    Json::Array(inherited.map(n).into()),
+                ),
+                (
+                    "previous_energy_q6_q8",
+                    Json::Array(old.energies.map(n).into()),
+                ),
+                ("inherited_work_q6_q8", Json::Array(loads.map(n).into())),
+                ("previous_work_q6_q8", Json::Array(old.works.map(n).into())),
+            ]);
+            (hot, hot_s)
+        } else {
+            let cold = solve_constrained(&stiffness, [&lift; 3], &force, 1e-10, 20000)?;
+            (cold, start.elapsed().as_secs_f64())
+        };
         let tip = bracket_tip_displacement(&build.space, &solved.displacement_mm)?[1];
         let start = Instant::now();
         let residual = estimate_residual(
@@ -138,6 +222,8 @@ fn run(rx: u8, dir: &Path, rounds: usize) -> Result<(), Box<dyn std::error::Erro
             ("energy_n_mm", n(solved.strain_energy_n_mm)),
             ("true_residual_relative", n(solved.relative_residual)),
             ("cg_iterations", n(solved.iterations)),
+            ("warm_comparison", warm_metrics),
+            ("verification_assembly_s", n(verification_assembly_s)),
             ("eta", n(residual.indicator)),
             (
                 "eta_upper_bound",
@@ -157,6 +243,16 @@ fn run(rx: u8, dir: &Path, rounds: usize) -> Result<(), Box<dyn std::error::Erro
             ("indicator_s", n(indicator_s)),
         ]);
         history.push(record);
+        if let Some((k6, f6)) = checks {
+            let u = solved.displacement_mm;
+            previous = Some(Previous {
+                energies: [energy(&k6, &u)?, energy(&stiffness, &u)?],
+                works: [dot(&f6, &u), dot(&force, &u)],
+                build,
+                partition: partition.clone(),
+                displacement: u,
+            });
+        }
         if round + 1 < rounds {
             match partition.refine(&marked) {
                 Ok(update) => {
@@ -184,8 +280,12 @@ fn run(rx: u8, dir: &Path, rounds: usize) -> Result<(), Box<dyn std::error::Erro
 }
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let args = std::env::args().skip(1).collect::<Vec<_>>();
-    let [ticks, dir, rounds] = args.as_slice() else {
-        return Err("usage: adaptive_bracket RADIUS_X_TICKS DIRECTORY ROUNDS".into());
+    let (args, warm) = match args.last().map(String::as_str) {
+        Some("--warm") => (&args[..args.len() - 1], true),
+        _ => (args.as_slice(), false),
     };
-    run(ticks.parse()?, Path::new(dir), rounds.parse()?)
+    let [ticks, dir, rounds] = args else {
+        return Err("usage: adaptive_bracket RADIUS_X_TICKS DIRECTORY ROUNDS [--warm]".into());
+    };
+    run(ticks.parse()?, Path::new(dir), rounds.parse()?, warm)
 }

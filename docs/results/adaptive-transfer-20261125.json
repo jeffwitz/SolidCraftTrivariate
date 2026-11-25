@@ -1,0 +1,4682 @@
+{
+  "schema": "adaptive-transfer-campaign-v1",
+  "geometry_input_revision": "8d197a8",
+  "q": 8,
+  "commands": [
+    "cargo build --release --example adaptive_bracket --locked --offline",
+    "python3 tests/references/run_adaptive_campaign.py target/release/examples/adaptive_bracket build/adaptive-warm --warm"
+  ],
+  "checks": {
+    "largest_cold_warm_relative_displacement": 8.39748373371732e-13,
+    "max_transfer_relative_energy_q6_q8": [
+      1.6487139551379926e-06,
+      3.5453662228235316e-08
+    ],
+    "max_transfer_relative_work_q6_q8": [
+      0.0,
+      0.0
+    ]
+  },
+  "timing": {
+    "cold_s_sum": 12.710491463,
+    "warm_s_sum": 13.850464359,
+    "transfer_s_sum": 1.440317023,
+    "comparison_order": "warm then cold on the same assembled stiffness; Includes initial transfer in a separate timer."
+  },
+  "cases": [
+    {
+      "radius_ticks": 64,
+      "rounds": [
+        {
+          "assembly_s": 0.101958078,
+          "cg_iterations": 266,
+          "energy_n_mm": 245.52603000924023,
+          "eta": 60.68431563025498,
+          "eta_upper_bound": false,
+          "free_vector_dofs": 1530,
+          "full_scalar_dofs": 531,
+          "independent_scalar_dofs": 531,
+          "indicator_s": 0.024950378,
+          "induced_refinements": [],
+          "interface_indicator_squared": 1538.7932620606605,
+          "leaves": 36,
+          "loaded_area_mm2": 320.00000000000017,
+          "marked": [
+            {
+              "ijk": [
+                0,
+                0,
+                0
+              ],
+              "level": 0,
+              "root": "elbow_north_z10_30"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                0
+              ],
+              "level": 0,
+              "root": "hole_y_sector_north_z10_30"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                0
+              ],
+              "level": 0,
+              "root": "hole_y_sector_south_z10_30"
+            }
+          ],
+          "marked_fraction_squared": 0.5067618513494838,
+          "natural_indicator_squared": 2143.7684049657237,
+          "prepare_s": 0.002427256,
+          "round": 0,
+          "solve_s": 0.047256339,
+          "stiffness_scalar_entries": 197559,
+          "tip_y_mm": -0.4918199024653595,
+          "true_residual_relative": 9.798275418088359e-11,
+          "verification_assembly_s": 0.040826872,
+          "volume_indicator_squared": 0.024496486024246252,
+          "volume_mm3": 32144.778925811883,
+          "warm_comparison": null
+        },
+        {
+          "assembly_s": 0.148089883,
+          "cg_iterations": 284,
+          "energy_n_mm": 246.92563416402794,
+          "eta": 51.99492543699088,
+          "eta_upper_bound": false,
+          "free_vector_dofs": 1980,
+          "full_scalar_dofs": 867,
+          "independent_scalar_dofs": 681,
+          "indicator_s": 0.028417729,
+          "induced_refinements": [],
+          "interface_indicator_squared": 1337.0379718055588,
+          "leaves": 57,
+          "loaded_area_mm2": 320.00000000000017,
+          "marked": [
+            {
+              "ijk": [
+                0,
+                0,
+                0
+              ],
+              "level": 0,
+              "root": "connector_y_14_16_z0_10"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                0
+              ],
+              "level": 0,
+              "root": "connector_y_14_16_z10_30"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                0
+              ],
+              "level": 0,
+              "root": "connector_y_14_16_z30_40"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                0
+              ],
+              "level": 0,
+              "root": "elbow_east_z10_30"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                0
+              ],
+              "level": 0,
+              "root": "elbow_north_z0_10"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                0
+              ],
+              "level": 0,
+              "root": "elbow_north_z30_40"
+            }
+          ],
+          "marked_fraction_squared": 0.5130432172198108,
+          "natural_indicator_squared": 1366.4175364882092,
+          "prepare_s": 0.005952433,
+          "round": 1,
+          "solve_s": 0.087424508,
+          "stiffness_scalar_entries": 316953,
+          "tip_y_mm": -0.4946221703309309,
+          "true_residual_relative": 7.825088859531973e-11,
+          "verification_assembly_s": 0.067671527,
+          "volume_indicator_squared": 0.016762904472508174,
+          "volume_mm3": 32144.778925706665,
+          "warm_comparison": {
+            "cold_iterations": 280,
+            "cold_s": 0.08606417,
+            "cold_true_residual": 6.580532386507077e-11,
+            "cold_warm_displacement_relative": 6.042565033739678e-13,
+            "inherited_energy_q6_q8": [
+              245.52555694010212,
+              245.52603101381507
+            ],
+            "inherited_work_q6_q8": [
+              491.05206001846943,
+              491.0520600184694
+            ],
+            "previous_energy_q6_q8": [
+              245.52546807325777,
+              245.52603000924023
+            ],
+            "previous_work_q6_q8": [
+              491.05206001846943,
+              491.0520600184694
+            ],
+            "transfer_s": 0.018440121,
+            "warm_iterations": 284,
+            "warm_s": 0.087424508,
+            "energy_transfer_relative_q6_q8": [
+              3.6194552466284335e-07,
+              4.091520677818039e-09
+            ],
+            "work_transfer_relative_q6_q8": [
+              0.0,
+              0.0
+            ]
+          }
+        },
+        {
+          "assembly_s": 0.251200374,
+          "cg_iterations": 400,
+          "energy_n_mm": 249.70640280502505,
+          "eta": 44.65314746153711,
+          "eta_upper_bound": false,
+          "free_vector_dofs": 3192,
+          "full_scalar_dofs": 1349,
+          "independent_scalar_dofs": 1085,
+          "indicator_s": 0.048679725,
+          "induced_refinements": [
+            {
+              "ijk": [
+                0,
+                0,
+                0
+              ],
+              "level": 0,
+              "root": "arm_y_22_42_z0_10"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                0
+              ],
+              "level": 0,
+              "root": "arm_y_22_42_z30_40"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                0
+              ],
+              "level": 0,
+              "root": "hole_y_sector_east_z10_30"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                0
+              ],
+              "level": 0,
+              "root": "hole_y_sector_west_z10_30"
+            }
+          ],
+          "interface_indicator_squared": 864.5533829662153,
+          "leaves": 99,
+          "loaded_area_mm2": 320.00000000000017,
+          "marked": [
+            {
+              "ijk": [
+                0,
+                0,
+                0
+              ],
+              "level": 1,
+              "root": "connector_y_14_16_z10_30"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                1
+              ],
+              "level": 1,
+              "root": "connector_y_14_16_z10_30"
+            },
+            {
+              "ijk": [
+                1,
+                0,
+                0
+              ],
+              "level": 1,
+              "root": "connector_y_14_16_z10_30"
+            },
+            {
+              "ijk": [
+                1,
+                0,
+                1
+              ],
+              "level": 1,
+              "root": "connector_y_14_16_z10_30"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                0
+              ],
+              "level": 0,
+              "root": "elbow_east_z0_10"
+            },
+            {
+              "ijk": [
+                0,
+                1,
+                0
+              ],
+              "level": 1,
+              "root": "elbow_east_z10_30"
+            },
+            {
+              "ijk": [
+                0,
+                1,
+                1
+              ],
+              "level": 1,
+              "root": "elbow_east_z10_30"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                0
+              ],
+              "level": 0,
+              "root": "elbow_east_z30_40"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                0
+              ],
+              "level": 1,
+              "root": "elbow_north_z10_30"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                1
+              ],
+              "level": 1,
+              "root": "elbow_north_z10_30"
+            },
+            {
+              "ijk": [
+                0,
+                1,
+                0
+              ],
+              "level": 1,
+              "root": "elbow_north_z10_30"
+            },
+            {
+              "ijk": [
+                0,
+                1,
+                1
+              ],
+              "level": 1,
+              "root": "elbow_north_z10_30"
+            },
+            {
+              "ijk": [
+                1,
+                1,
+                0
+              ],
+              "level": 1,
+              "root": "elbow_north_z10_30"
+            },
+            {
+              "ijk": [
+                1,
+                1,
+                1
+              ],
+              "level": 1,
+              "root": "elbow_north_z10_30"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                0
+              ],
+              "level": 0,
+              "root": "hole_x_sector_west_z10_30"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                1
+              ],
+              "level": 1,
+              "root": "hole_y_sector_north_z10_30"
+            },
+            {
+              "ijk": [
+                1,
+                0,
+                1
+              ],
+              "level": 1,
+              "root": "hole_y_sector_north_z10_30"
+            },
+            {
+              "ijk": [
+                1,
+                0,
+                1
+              ],
+              "level": 1,
+              "root": "hole_y_sector_south_z10_30"
+            }
+          ],
+          "marked_fraction_squared": 0.5112595342946287,
+          "natural_indicator_squared": 1129.3414949749026,
+          "prepare_s": 0.010455059,
+          "round": 2,
+          "solve_s": 0.207960511,
+          "stiffness_scalar_entries": 530703,
+          "tip_y_mm": -0.500186002145461,
+          "true_residual_relative": 9.913050628701556e-11,
+          "verification_assembly_s": 0.11305722,
+          "volume_indicator_squared": 0.008700280661140185,
+          "volume_mm3": 32144.778925708943,
+          "warm_comparison": {
+            "cold_iterations": 336,
+            "cold_s": 0.174144177,
+            "cold_true_residual": 8.311907758612099e-11,
+            "cold_warm_displacement_relative": 3.395239905913392e-13,
+            "inherited_energy_q6_q8": [
+              246.92519680316624,
+              246.92563424150615
+            ],
+            "inherited_work_q6_q8": [
+              493.85126832791934,
+              493.85126832791906
+            ],
+            "previous_energy_q6_q8": [
+              246.92517475796532,
+              246.92563416402794
+            ],
+            "previous_work_q6_q8": [
+              493.85126832791934,
+              493.85126832791906
+            ],
+            "transfer_s": 0.026659598,
+            "warm_iterations": 400,
+            "warm_s": 0.207960511,
+            "energy_transfer_relative_q6_q8": [
+              8.927887140686153e-08,
+              3.1377145326416667e-10
+            ],
+            "work_transfer_relative_q6_q8": [
+              0.0,
+              0.0
+            ]
+          }
+        },
+        {
+          "assembly_s": 0.646941147,
+          "cg_iterations": 592,
+          "energy_n_mm": 252.15907145660094,
+          "eta": 37.36945942830137,
+          "eta_upper_bound": false,
+          "free_vector_dofs": 6858,
+          "full_scalar_dofs": 3195,
+          "independent_scalar_dofs": 2307,
+          "indicator_s": 0.127310177,
+          "induced_refinements": [
+            {
+              "ijk": [
+                0,
+                0,
+                0
+              ],
+              "level": 0,
+              "root": "connector_x_14_16_z10_30"
+            }
+          ],
+          "interface_indicator_squared": 581.1658125390509,
+          "leaves": 253,
+          "loaded_area_mm2": 320.00000000000017,
+          "marked": [
+            {
+              "ijk": [
+                0,
+                0,
+                0
+              ],
+              "level": 0,
+              "root": "arm_x_16_30_z10_30"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                0
+              ],
+              "level": 0,
+              "root": "arm_y_42_50_z10_30"
+            },
+            {
+              "ijk": [
+                1,
+                0,
+                1
+              ],
+              "level": 1,
+              "root": "connector_y_14_16_z0_10"
+            },
+            {
+              "ijk": [
+                1,
+                0,
+                0
+              ],
+              "level": 1,
+              "root": "connector_y_14_16_z30_40"
+            },
+            {
+              "ijk": [
+                0,
+                1,
+                1
+              ],
+              "level": 1,
+              "root": "elbow_east_z0_10"
+            },
+            {
+              "ijk": [
+                1,
+                1,
+                0
+              ],
+              "level": 1,
+              "root": "elbow_east_z10_30"
+            },
+            {
+              "ijk": [
+                1,
+                1,
+                1
+              ],
+              "level": 1,
+              "root": "elbow_east_z10_30"
+            },
+            {
+              "ijk": [
+                0,
+                1,
+                0
+              ],
+              "level": 1,
+              "root": "elbow_east_z30_40"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                0
+              ],
+              "level": 1,
+              "root": "elbow_north_z0_10"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                1
+              ],
+              "level": 1,
+              "root": "elbow_north_z0_10"
+            },
+            {
+              "ijk": [
+                0,
+                1,
+                0
+              ],
+              "level": 1,
+              "root": "elbow_north_z0_10"
+            },
+            {
+              "ijk": [
+                0,
+                1,
+                1
+              ],
+              "level": 1,
+              "root": "elbow_north_z0_10"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                0
+              ],
+              "level": 1,
+              "root": "elbow_north_z30_40"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                1
+              ],
+              "level": 1,
+              "root": "elbow_north_z30_40"
+            },
+            {
+              "ijk": [
+                0,
+                1,
+                0
+              ],
+              "level": 1,
+              "root": "elbow_north_z30_40"
+            },
+            {
+              "ijk": [
+                0,
+                1,
+                1
+              ],
+              "level": 1,
+              "root": "elbow_north_z30_40"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                0
+              ],
+              "level": 1,
+              "root": "hole_y_sector_north_z10_30"
+            },
+            {
+              "ijk": [
+                0,
+                1,
+                0
+              ],
+              "level": 1,
+              "root": "hole_y_sector_north_z10_30"
+            },
+            {
+              "ijk": [
+                0,
+                1,
+                1
+              ],
+              "level": 1,
+              "root": "hole_y_sector_north_z10_30"
+            },
+            {
+              "ijk": [
+                1,
+                0,
+                0
+              ],
+              "level": 1,
+              "root": "hole_y_sector_north_z10_30"
+            },
+            {
+              "ijk": [
+                1,
+                1,
+                0
+              ],
+              "level": 1,
+              "root": "hole_y_sector_north_z10_30"
+            },
+            {
+              "ijk": [
+                1,
+                1,
+                1
+              ],
+              "level": 1,
+              "root": "hole_y_sector_north_z10_30"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                0
+              ],
+              "level": 1,
+              "root": "hole_y_sector_south_z10_30"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                1
+              ],
+              "level": 1,
+              "root": "hole_y_sector_south_z10_30"
+            },
+            {
+              "ijk": [
+                0,
+                1,
+                0
+              ],
+              "level": 1,
+              "root": "hole_y_sector_south_z10_30"
+            },
+            {
+              "ijk": [
+                0,
+                1,
+                1
+              ],
+              "level": 1,
+              "root": "hole_y_sector_south_z10_30"
+            },
+            {
+              "ijk": [
+                1,
+                0,
+                0
+              ],
+              "level": 1,
+              "root": "hole_y_sector_south_z10_30"
+            },
+            {
+              "ijk": [
+                1,
+                1,
+                0
+              ],
+              "level": 1,
+              "root": "hole_y_sector_south_z10_30"
+            },
+            {
+              "ijk": [
+                1,
+                1,
+                1
+              ],
+              "level": 1,
+              "root": "hole_y_sector_south_z10_30"
+            }
+          ],
+          "marked_fraction_squared": 0.5080274972678819,
+          "natural_indicator_squared": 815.3067840885373,
+          "prepare_s": 0.035915179,
+          "round": 3,
+          "solve_s": 0.84194185,
+          "stiffness_scalar_entries": 1328319,
+          "tip_y_mm": -0.5050923278343894,
+          "true_residual_relative": 9.704675919140671e-11,
+          "verification_assembly_s": 0.300338935,
+          "volume_indicator_squared": 0.0039013358743329885,
+          "volume_mm3": 32144.77892555264,
+          "warm_comparison": {
+            "cold_iterations": 591,
+            "cold_s": 0.842035977,
+            "cold_true_residual": 9.632613075492787e-11,
+            "cold_warm_displacement_relative": 1.236902758453083e-13,
+            "inherited_energy_q6_q8": [
+              249.70637788414302,
+              249.7064116580315
+            ],
+            "inherited_work_q6_q8": [
+              499.4128056096488,
+              499.41280560964856
+            ],
+            "previous_energy_q6_q8": [
+              249.7059661904319,
+              249.70640280502505
+            ],
+            "previous_work_q6_q8": [
+              499.4128056096488,
+              499.41280560964856
+            ],
+            "transfer_s": 0.134620199,
+            "warm_iterations": 592,
+            "warm_s": 0.84194185,
+            "energy_transfer_relative_q6_q8": [
+              1.6487139551379926e-06,
+              3.5453662228235316e-08
+            ],
+            "work_transfer_relative_q6_q8": [
+              0.0,
+              0.0
+            ]
+          }
+        },
+        {
+          "assembly_s": 1.179578647,
+          "cg_iterations": 660,
+          "energy_n_mm": 252.68410715624458,
+          "eta": 31.87311446967392,
+          "eta_upper_bound": false,
+          "free_vector_dofs": 11916,
+          "full_scalar_dofs": 5554,
+          "independent_scalar_dofs": 4005,
+          "indicator_s": 0.227746464,
+          "induced_refinements": [
+            {
+              "ijk": [
+                0,
+                0,
+                0
+              ],
+              "level": 0,
+              "root": "arm_y_16_22_z0_10"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                0
+              ],
+              "level": 0,
+              "root": "arm_y_16_22_z10_30"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                0
+              ],
+              "level": 0,
+              "root": "arm_y_16_22_z30_40"
+            },
+            {
+              "ijk": [
+                1,
+                0,
+                1
+              ],
+              "level": 1,
+              "root": "arm_y_22_42_z0_10"
+            },
+            {
+              "ijk": [
+                1,
+                1,
+                1
+              ],
+              "level": 1,
+              "root": "arm_y_22_42_z0_10"
+            },
+            {
+              "ijk": [
+                1,
+                0,
+                0
+              ],
+              "level": 1,
+              "root": "arm_y_22_42_z30_40"
+            },
+            {
+              "ijk": [
+                1,
+                1,
+                0
+              ],
+              "level": 1,
+              "root": "arm_y_22_42_z30_40"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                1
+              ],
+              "level": 1,
+              "root": "hole_y_sector_west_z10_30"
+            },
+            {
+              "ijk": [
+                1,
+                0,
+                1
+              ],
+              "level": 1,
+              "root": "hole_y_sector_west_z10_30"
+            }
+          ],
+          "interface_indicator_squared": 456.3822643034069,
+          "leaves": 463,
+          "loaded_area_mm2": 320.00000000000017,
+          "marked": [
+            {
+              "ijk": [
+                0,
+                0,
+                0
+              ],
+              "level": 0,
+              "root": "arm_y_42_50_z0_10"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                0
+              ],
+              "level": 0,
+              "root": "arm_y_42_50_z30_40"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                0
+              ],
+              "level": 1,
+              "root": "connector_y_14_16_z0_10"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                1
+              ],
+              "level": 1,
+              "root": "connector_y_14_16_z0_10"
+            },
+            {
+              "ijk": [
+                1,
+                0,
+                0
+              ],
+              "level": 1,
+              "root": "connector_y_14_16_z0_10"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                0
+              ],
+              "level": 2,
+              "root": "connector_y_14_16_z10_30"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                1
+              ],
+              "level": 2,
+              "root": "connector_y_14_16_z10_30"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                2
+              ],
+              "level": 2,
+              "root": "connector_y_14_16_z10_30"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                3
+              ],
+              "level": 2,
+              "root": "connector_y_14_16_z10_30"
+            },
+            {
+              "ijk": [
+                3,
+                0,
+                0
+              ],
+              "level": 2,
+              "root": "connector_y_14_16_z10_30"
+            },
+            {
+              "ijk": [
+                3,
+                0,
+                1
+              ],
+              "level": 2,
+              "root": "connector_y_14_16_z10_30"
+            },
+            {
+              "ijk": [
+                3,
+                0,
+                2
+              ],
+              "level": 2,
+              "root": "connector_y_14_16_z10_30"
+            },
+            {
+              "ijk": [
+                3,
+                0,
+                3
+              ],
+              "level": 2,
+              "root": "connector_y_14_16_z10_30"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                0
+              ],
+              "level": 1,
+              "root": "connector_y_14_16_z30_40"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                1
+              ],
+              "level": 1,
+              "root": "connector_y_14_16_z30_40"
+            },
+            {
+              "ijk": [
+                1,
+                0,
+                1
+              ],
+              "level": 1,
+              "root": "connector_y_14_16_z30_40"
+            },
+            {
+              "ijk": [
+                0,
+                1,
+                0
+              ],
+              "level": 1,
+              "root": "elbow_east_z0_10"
+            },
+            {
+              "ijk": [
+                0,
+                3,
+                0
+              ],
+              "level": 2,
+              "root": "elbow_east_z10_30"
+            },
+            {
+              "ijk": [
+                0,
+                3,
+                1
+              ],
+              "level": 2,
+              "root": "elbow_east_z10_30"
+            },
+            {
+              "ijk": [
+                0,
+                3,
+                2
+              ],
+              "level": 2,
+              "root": "elbow_east_z10_30"
+            },
+            {
+              "ijk": [
+                0,
+                3,
+                3
+              ],
+              "level": 2,
+              "root": "elbow_east_z10_30"
+            },
+            {
+              "ijk": [
+                1,
+                3,
+                0
+              ],
+              "level": 2,
+              "root": "elbow_east_z10_30"
+            },
+            {
+              "ijk": [
+                1,
+                3,
+                1
+              ],
+              "level": 2,
+              "root": "elbow_east_z10_30"
+            },
+            {
+              "ijk": [
+                1,
+                3,
+                2
+              ],
+              "level": 2,
+              "root": "elbow_east_z10_30"
+            },
+            {
+              "ijk": [
+                1,
+                3,
+                3
+              ],
+              "level": 2,
+              "root": "elbow_east_z10_30"
+            },
+            {
+              "ijk": [
+                0,
+                1,
+                1
+              ],
+              "level": 1,
+              "root": "elbow_east_z30_40"
+            },
+            {
+              "ijk": [
+                1,
+                1,
+                0
+              ],
+              "level": 1,
+              "root": "elbow_north_z0_10"
+            },
+            {
+              "ijk": [
+                1,
+                1,
+                1
+              ],
+              "level": 1,
+              "root": "elbow_north_z0_10"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                0
+              ],
+              "level": 2,
+              "root": "elbow_north_z10_30"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                1
+              ],
+              "level": 2,
+              "root": "elbow_north_z10_30"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                2
+              ],
+              "level": 2,
+              "root": "elbow_north_z10_30"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                3
+              ],
+              "level": 2,
+              "root": "elbow_north_z10_30"
+            },
+            {
+              "ijk": [
+                0,
+                3,
+                0
+              ],
+              "level": 2,
+              "root": "elbow_north_z10_30"
+            },
+            {
+              "ijk": [
+                0,
+                3,
+                1
+              ],
+              "level": 2,
+              "root": "elbow_north_z10_30"
+            },
+            {
+              "ijk": [
+                0,
+                3,
+                2
+              ],
+              "level": 2,
+              "root": "elbow_north_z10_30"
+            },
+            {
+              "ijk": [
+                0,
+                3,
+                3
+              ],
+              "level": 2,
+              "root": "elbow_north_z10_30"
+            },
+            {
+              "ijk": [
+                3,
+                3,
+                0
+              ],
+              "level": 2,
+              "root": "elbow_north_z10_30"
+            },
+            {
+              "ijk": [
+                3,
+                3,
+                1
+              ],
+              "level": 2,
+              "root": "elbow_north_z10_30"
+            },
+            {
+              "ijk": [
+                3,
+                3,
+                2
+              ],
+              "level": 2,
+              "root": "elbow_north_z10_30"
+            },
+            {
+              "ijk": [
+                3,
+                3,
+                3
+              ],
+              "level": 2,
+              "root": "elbow_north_z10_30"
+            },
+            {
+              "ijk": [
+                1,
+                1,
+                0
+              ],
+              "level": 1,
+              "root": "elbow_north_z30_40"
+            },
+            {
+              "ijk": [
+                1,
+                1,
+                1
+              ],
+              "level": 1,
+              "root": "elbow_north_z30_40"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                0
+              ],
+              "level": 0,
+              "root": "hole_x_sector_east_z10_30"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                0
+              ],
+              "level": 0,
+              "root": "hole_x_sector_north_z10_30"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                0
+              ],
+              "level": 0,
+              "root": "hole_x_sector_south_z10_30"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                0
+              ],
+              "level": 1,
+              "root": "hole_x_sector_west_z10_30"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                1
+              ],
+              "level": 1,
+              "root": "hole_x_sector_west_z10_30"
+            },
+            {
+              "ijk": [
+                1,
+                0,
+                3
+              ],
+              "level": 2,
+              "root": "hole_y_sector_north_z10_30"
+            },
+            {
+              "ijk": [
+                2,
+                0,
+                3
+              ],
+              "level": 2,
+              "root": "hole_y_sector_north_z10_30"
+            },
+            {
+              "ijk": [
+                3,
+                0,
+                3
+              ],
+              "level": 2,
+              "root": "hole_y_sector_north_z10_30"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                3
+              ],
+              "level": 2,
+              "root": "hole_y_sector_south_z10_30"
+            },
+            {
+              "ijk": [
+                1,
+                0,
+                3
+              ],
+              "level": 2,
+              "root": "hole_y_sector_south_z10_30"
+            },
+            {
+              "ijk": [
+                2,
+                0,
+                3
+              ],
+              "level": 2,
+              "root": "hole_y_sector_south_z10_30"
+            }
+          ],
+          "marked_fraction_squared": 0.5053586512798512,
+          "natural_indicator_squared": 559.5107789280007,
+          "prepare_s": 0.069472912,
+          "round": 4,
+          "solve_s": 1.6859084229999999,
+          "stiffness_scalar_entries": 2393136,
+          "tip_y_mm": -0.5061421858537332,
+          "true_residual_relative": 9.564248573423432e-11,
+          "verification_assembly_s": 0.553669702,
+          "volume_indicator_squared": 0.002382765529597951,
+          "volume_mm3": 32144.77892555587,
+          "warm_comparison": {
+            "cold_iterations": 443,
+            "cold_s": 1.150695137,
+            "cold_true_residual": 8.825858229030926e-11,
+            "cold_warm_displacement_relative": 2.981203379969874e-13,
+            "inherited_energy_q6_q8": [
+              252.15903823233026,
+              252.15907145720308
+            ],
+            "inherited_work_q6_q8": [
+              504.3181429128612,
+              504.31814291286105
+            ],
+            "previous_energy_q6_q8": [
+              252.15903802847345,
+              252.15907145660094
+            ],
+            "previous_work_q6_q8": [
+              504.3181429128612,
+              504.31814291286105
+            ],
+            "transfer_s": 0.185406936,
+            "warm_iterations": 660,
+            "warm_s": 1.6859084229999999,
+            "energy_transfer_relative_q6_q8": [
+              8.084453106960154e-10,
+              2.3878676813637867e-12
+            ],
+            "work_transfer_relative_q6_q8": [
+              0.0,
+              0.0
+            ]
+          }
+        },
+        {
+          "assembly_s": 2.244504171,
+          "cg_iterations": 833,
+          "energy_n_mm": 253.29243515750923,
+          "eta": 27.271745738943988,
+          "eta_upper_bound": false,
+          "free_vector_dofs": 22272,
+          "full_scalar_dofs": 10449,
+          "independent_scalar_dofs": 7489,
+          "indicator_s": 0.445773206,
+          "interface_indicator_squared": 307.15126035210665,
+          "leaves": 897,
+          "loaded_area_mm2": 320.00000000000017,
+          "marked": [
+            {
+              "ijk": [
+                1,
+                0,
+                0
+              ],
+              "level": 1,
+              "root": "arm_x_16_30_z10_30"
+            },
+            {
+              "ijk": [
+                1,
+                0,
+                1
+              ],
+              "level": 1,
+              "root": "arm_x_16_30_z10_30"
+            },
+            {
+              "ijk": [
+                1,
+                1,
+                0
+              ],
+              "level": 1,
+              "root": "arm_x_16_30_z10_30"
+            },
+            {
+              "ijk": [
+                1,
+                1,
+                1
+              ],
+              "level": 1,
+              "root": "arm_x_16_30_z10_30"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                0
+              ],
+              "level": 0,
+              "root": "arm_x_50_60_z10_30"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                0
+              ],
+              "level": 2,
+              "root": "connector_y_14_16_z0_10"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                1
+              ],
+              "level": 2,
+              "root": "connector_y_14_16_z0_10"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                2
+              ],
+              "level": 2,
+              "root": "connector_y_14_16_z0_10"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                3
+              ],
+              "level": 2,
+              "root": "connector_y_14_16_z0_10"
+            },
+            {
+              "ijk": [
+                3,
+                0,
+                1
+              ],
+              "level": 2,
+              "root": "connector_y_14_16_z0_10"
+            },
+            {
+              "ijk": [
+                3,
+                0,
+                2
+              ],
+              "level": 2,
+              "root": "connector_y_14_16_z0_10"
+            },
+            {
+              "ijk": [
+                3,
+                0,
+                3
+              ],
+              "level": 2,
+              "root": "connector_y_14_16_z0_10"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                0
+              ],
+              "level": 2,
+              "root": "connector_y_14_16_z30_40"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                1
+              ],
+              "level": 2,
+              "root": "connector_y_14_16_z30_40"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                2
+              ],
+              "level": 2,
+              "root": "connector_y_14_16_z30_40"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                3
+              ],
+              "level": 2,
+              "root": "connector_y_14_16_z30_40"
+            },
+            {
+              "ijk": [
+                3,
+                0,
+                0
+              ],
+              "level": 2,
+              "root": "connector_y_14_16_z30_40"
+            },
+            {
+              "ijk": [
+                3,
+                0,
+                1
+              ],
+              "level": 2,
+              "root": "connector_y_14_16_z30_40"
+            },
+            {
+              "ijk": [
+                3,
+                0,
+                2
+              ],
+              "level": 2,
+              "root": "connector_y_14_16_z30_40"
+            },
+            {
+              "ijk": [
+                1,
+                1,
+                0
+              ],
+              "level": 1,
+              "root": "elbow_east_z0_10"
+            },
+            {
+              "ijk": [
+                1,
+                1,
+                1
+              ],
+              "level": 1,
+              "root": "elbow_east_z0_10"
+            },
+            {
+              "ijk": [
+                2,
+                3,
+                0
+              ],
+              "level": 2,
+              "root": "elbow_east_z10_30"
+            },
+            {
+              "ijk": [
+                2,
+                3,
+                1
+              ],
+              "level": 2,
+              "root": "elbow_east_z10_30"
+            },
+            {
+              "ijk": [
+                2,
+                3,
+                2
+              ],
+              "level": 2,
+              "root": "elbow_east_z10_30"
+            },
+            {
+              "ijk": [
+                2,
+                3,
+                3
+              ],
+              "level": 2,
+              "root": "elbow_east_z10_30"
+            },
+            {
+              "ijk": [
+                1,
+                1,
+                0
+              ],
+              "level": 1,
+              "root": "elbow_east_z30_40"
+            },
+            {
+              "ijk": [
+                1,
+                1,
+                1
+              ],
+              "level": 1,
+              "root": "elbow_east_z30_40"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                0
+              ],
+              "level": 2,
+              "root": "elbow_north_z0_10"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                1
+              ],
+              "level": 2,
+              "root": "elbow_north_z0_10"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                2
+              ],
+              "level": 2,
+              "root": "elbow_north_z0_10"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                3
+              ],
+              "level": 2,
+              "root": "elbow_north_z0_10"
+            },
+            {
+              "ijk": [
+                0,
+                3,
+                0
+              ],
+              "level": 2,
+              "root": "elbow_north_z0_10"
+            },
+            {
+              "ijk": [
+                0,
+                3,
+                1
+              ],
+              "level": 2,
+              "root": "elbow_north_z0_10"
+            },
+            {
+              "ijk": [
+                0,
+                3,
+                2
+              ],
+              "level": 2,
+              "root": "elbow_north_z0_10"
+            },
+            {
+              "ijk": [
+                0,
+                3,
+                3
+              ],
+              "level": 2,
+              "root": "elbow_north_z0_10"
+            },
+            {
+              "ijk": [
+                2,
+                3,
+                0
+              ],
+              "level": 2,
+              "root": "elbow_north_z10_30"
+            },
+            {
+              "ijk": [
+                2,
+                3,
+                1
+              ],
+              "level": 2,
+              "root": "elbow_north_z10_30"
+            },
+            {
+              "ijk": [
+                2,
+                3,
+                2
+              ],
+              "level": 2,
+              "root": "elbow_north_z10_30"
+            },
+            {
+              "ijk": [
+                2,
+                3,
+                3
+              ],
+              "level": 2,
+              "root": "elbow_north_z10_30"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                0
+              ],
+              "level": 2,
+              "root": "elbow_north_z30_40"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                1
+              ],
+              "level": 2,
+              "root": "elbow_north_z30_40"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                2
+              ],
+              "level": 2,
+              "root": "elbow_north_z30_40"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                3
+              ],
+              "level": 2,
+              "root": "elbow_north_z30_40"
+            },
+            {
+              "ijk": [
+                0,
+                3,
+                0
+              ],
+              "level": 2,
+              "root": "elbow_north_z30_40"
+            },
+            {
+              "ijk": [
+                0,
+                3,
+                1
+              ],
+              "level": 2,
+              "root": "elbow_north_z30_40"
+            },
+            {
+              "ijk": [
+                0,
+                3,
+                2
+              ],
+              "level": 2,
+              "root": "elbow_north_z30_40"
+            },
+            {
+              "ijk": [
+                0,
+                3,
+                3
+              ],
+              "level": 2,
+              "root": "elbow_north_z30_40"
+            },
+            {
+              "ijk": [
+                1,
+                0,
+                0
+              ],
+              "level": 1,
+              "root": "hole_x_sector_west_z10_30"
+            },
+            {
+              "ijk": [
+                1,
+                0,
+                1
+              ],
+              "level": 1,
+              "root": "hole_x_sector_west_z10_30"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                0
+              ],
+              "level": 2,
+              "root": "hole_y_sector_north_z10_30"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                3
+              ],
+              "level": 2,
+              "root": "hole_y_sector_north_z10_30"
+            },
+            {
+              "ijk": [
+                0,
+                1,
+                0
+              ],
+              "level": 2,
+              "root": "hole_y_sector_north_z10_30"
+            },
+            {
+              "ijk": [
+                0,
+                1,
+                3
+              ],
+              "level": 2,
+              "root": "hole_y_sector_north_z10_30"
+            },
+            {
+              "ijk": [
+                0,
+                2,
+                3
+              ],
+              "level": 2,
+              "root": "hole_y_sector_north_z10_30"
+            },
+            {
+              "ijk": [
+                1,
+                0,
+                0
+              ],
+              "level": 2,
+              "root": "hole_y_sector_north_z10_30"
+            },
+            {
+              "ijk": [
+                1,
+                1,
+                0
+              ],
+              "level": 2,
+              "root": "hole_y_sector_north_z10_30"
+            },
+            {
+              "ijk": [
+                1,
+                1,
+                3
+              ],
+              "level": 2,
+              "root": "hole_y_sector_north_z10_30"
+            },
+            {
+              "ijk": [
+                1,
+                2,
+                0
+              ],
+              "level": 2,
+              "root": "hole_y_sector_north_z10_30"
+            },
+            {
+              "ijk": [
+                1,
+                2,
+                3
+              ],
+              "level": 2,
+              "root": "hole_y_sector_north_z10_30"
+            },
+            {
+              "ijk": [
+                1,
+                3,
+                0
+              ],
+              "level": 2,
+              "root": "hole_y_sector_north_z10_30"
+            },
+            {
+              "ijk": [
+                1,
+                3,
+                3
+              ],
+              "level": 2,
+              "root": "hole_y_sector_north_z10_30"
+            },
+            {
+              "ijk": [
+                2,
+                0,
+                0
+              ],
+              "level": 2,
+              "root": "hole_y_sector_north_z10_30"
+            },
+            {
+              "ijk": [
+                2,
+                1,
+                0
+              ],
+              "level": 2,
+              "root": "hole_y_sector_north_z10_30"
+            },
+            {
+              "ijk": [
+                2,
+                1,
+                3
+              ],
+              "level": 2,
+              "root": "hole_y_sector_north_z10_30"
+            },
+            {
+              "ijk": [
+                2,
+                2,
+                0
+              ],
+              "level": 2,
+              "root": "hole_y_sector_north_z10_30"
+            },
+            {
+              "ijk": [
+                2,
+                2,
+                3
+              ],
+              "level": 2,
+              "root": "hole_y_sector_north_z10_30"
+            },
+            {
+              "ijk": [
+                2,
+                3,
+                0
+              ],
+              "level": 2,
+              "root": "hole_y_sector_north_z10_30"
+            },
+            {
+              "ijk": [
+                2,
+                3,
+                3
+              ],
+              "level": 2,
+              "root": "hole_y_sector_north_z10_30"
+            },
+            {
+              "ijk": [
+                3,
+                0,
+                0
+              ],
+              "level": 2,
+              "root": "hole_y_sector_north_z10_30"
+            },
+            {
+              "ijk": [
+                3,
+                1,
+                0
+              ],
+              "level": 2,
+              "root": "hole_y_sector_north_z10_30"
+            },
+            {
+              "ijk": [
+                3,
+                1,
+                3
+              ],
+              "level": 2,
+              "root": "hole_y_sector_north_z10_30"
+            },
+            {
+              "ijk": [
+                3,
+                2,
+                3
+              ],
+              "level": 2,
+              "root": "hole_y_sector_north_z10_30"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                0
+              ],
+              "level": 2,
+              "root": "hole_y_sector_south_z10_30"
+            },
+            {
+              "ijk": [
+                0,
+                1,
+                0
+              ],
+              "level": 2,
+              "root": "hole_y_sector_south_z10_30"
+            },
+            {
+              "ijk": [
+                0,
+                1,
+                3
+              ],
+              "level": 2,
+              "root": "hole_y_sector_south_z10_30"
+            },
+            {
+              "ijk": [
+                0,
+                2,
+                3
+              ],
+              "level": 2,
+              "root": "hole_y_sector_south_z10_30"
+            },
+            {
+              "ijk": [
+                1,
+                0,
+                0
+              ],
+              "level": 2,
+              "root": "hole_y_sector_south_z10_30"
+            },
+            {
+              "ijk": [
+                1,
+                1,
+                0
+              ],
+              "level": 2,
+              "root": "hole_y_sector_south_z10_30"
+            },
+            {
+              "ijk": [
+                1,
+                1,
+                3
+              ],
+              "level": 2,
+              "root": "hole_y_sector_south_z10_30"
+            },
+            {
+              "ijk": [
+                1,
+                2,
+                0
+              ],
+              "level": 2,
+              "root": "hole_y_sector_south_z10_30"
+            },
+            {
+              "ijk": [
+                1,
+                2,
+                3
+              ],
+              "level": 2,
+              "root": "hole_y_sector_south_z10_30"
+            },
+            {
+              "ijk": [
+                1,
+                3,
+                0
+              ],
+              "level": 2,
+              "root": "hole_y_sector_south_z10_30"
+            },
+            {
+              "ijk": [
+                1,
+                3,
+                3
+              ],
+              "level": 2,
+              "root": "hole_y_sector_south_z10_30"
+            },
+            {
+              "ijk": [
+                2,
+                0,
+                0
+              ],
+              "level": 2,
+              "root": "hole_y_sector_south_z10_30"
+            },
+            {
+              "ijk": [
+                2,
+                1,
+                0
+              ],
+              "level": 2,
+              "root": "hole_y_sector_south_z10_30"
+            },
+            {
+              "ijk": [
+                2,
+                1,
+                3
+              ],
+              "level": 2,
+              "root": "hole_y_sector_south_z10_30"
+            },
+            {
+              "ijk": [
+                2,
+                2,
+                0
+              ],
+              "level": 2,
+              "root": "hole_y_sector_south_z10_30"
+            },
+            {
+              "ijk": [
+                2,
+                2,
+                3
+              ],
+              "level": 2,
+              "root": "hole_y_sector_south_z10_30"
+            },
+            {
+              "ijk": [
+                2,
+                3,
+                0
+              ],
+              "level": 2,
+              "root": "hole_y_sector_south_z10_30"
+            },
+            {
+              "ijk": [
+                2,
+                3,
+                3
+              ],
+              "level": 2,
+              "root": "hole_y_sector_south_z10_30"
+            },
+            {
+              "ijk": [
+                3,
+                0,
+                0
+              ],
+              "level": 2,
+              "root": "hole_y_sector_south_z10_30"
+            },
+            {
+              "ijk": [
+                3,
+                0,
+                3
+              ],
+              "level": 2,
+              "root": "hole_y_sector_south_z10_30"
+            },
+            {
+              "ijk": [
+                3,
+                1,
+                0
+              ],
+              "level": 2,
+              "root": "hole_y_sector_south_z10_30"
+            },
+            {
+              "ijk": [
+                3,
+                1,
+                3
+              ],
+              "level": 2,
+              "root": "hole_y_sector_south_z10_30"
+            },
+            {
+              "ijk": [
+                3,
+                2,
+                3
+              ],
+              "level": 2,
+              "root": "hole_y_sector_south_z10_30"
+            }
+          ],
+          "marked_fraction_squared": 0.5017150879008299,
+          "natural_indicator_squared": 436.59527052821034,
+          "prepare_s": 0.14436054,
+          "round": 5,
+          "solve_s": 4.225647701,
+          "stiffness_scalar_entries": 4601763,
+          "tip_y_mm": -0.5073709217657068,
+          "true_residual_relative": 6.964627767251329e-11,
+          "verification_assembly_s": 1.053102129,
+          "volume_indicator_squared": 0.0015847692930059656,
+          "volume_mm3": 32144.77892540138,
+          "warm_comparison": {
+            "cold_iterations": 847,
+            "cold_s": 4.233952074,
+            "cold_true_residual": 6.98714056370986e-11,
+            "cold_warm_displacement_relative": 1.8073480182464562e-13,
+            "inherited_energy_q6_q8": [
+              252.68410765252958,
+              252.68410782619904
+            ],
+            "inherited_work_q6_q8": [
+              505.3682143124836,
+              505.36821431248353
+            ],
+            "previous_energy_q6_q8": [
+              252.68407402223363,
+              252.68410715624458
+            ],
+            "previous_work_q6_q8": [
+              505.3682143124836,
+              505.36821431248353
+            ],
+            "transfer_s": 0.371718939,
+            "warm_iterations": 833,
+            "warm_s": 4.225647701,
+            "energy_transfer_relative_q6_q8": [
+              1.33092265874879e-07,
+              2.651351804772162e-09
+            ],
+            "work_transfer_relative_q6_q8": [
+              0.0,
+              0.0
+            ]
+          }
+        }
+      ],
+      "resources": {
+        "radius_x_ticks": 64,
+        "process_status": "completed",
+        "exit_code": 0,
+        "elapsed_s": 22.505062583019026,
+        "round_resources": [
+          {
+            "round": 0,
+            "peak_rss_kib": 10364,
+            "elapsed_s": 0.20107382396236062
+          },
+          {
+            "round": 1,
+            "peak_rss_kib": 13640,
+            "elapsed_s": 0.2009424670250155
+          },
+          {
+            "round": 2,
+            "peak_rss_kib": 22324,
+            "elapsed_s": 0.6028787010000087
+          },
+          {
+            "round": 3,
+            "peak_rss_kib": 37800,
+            "elapsed_s": 2.8125419440330006
+          },
+          {
+            "round": 4,
+            "peak_rss_kib": 67540,
+            "elapsed_s": 4.821783087973017
+          },
+          {
+            "round": 5,
+            "peak_rss_kib": 178868,
+            "elapsed_s": 12.658586167031899
+          }
+        ],
+        "log_tail": [
+          "radius 64 adaptive round 4: 463 leaves",
+          "radius 64 adaptive round 5: 897 leaves"
+        ]
+      }
+    },
+    {
+      "radius_ticks": 56,
+      "rounds": [
+        {
+          "assembly_s": 0.091143795,
+          "cg_iterations": 266,
+          "energy_n_mm": 245.15408882839589,
+          "eta": 60.72425483996182,
+          "eta_upper_bound": false,
+          "free_vector_dofs": 1530,
+          "full_scalar_dofs": 531,
+          "independent_scalar_dofs": 531,
+          "indicator_s": 0.016056254,
+          "induced_refinements": [],
+          "interface_indicator_squared": 1538.4301352127795,
+          "leaves": 36,
+          "loaded_area_mm2": 320.00000000000017,
+          "marked": [
+            {
+              "ijk": [
+                0,
+                0,
+                0
+              ],
+              "level": 0,
+              "root": "elbow_north_z10_30"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                0
+              ],
+              "level": 0,
+              "root": "hole_y_sector_north_z10_30"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                0
+              ],
+              "level": 0,
+              "root": "hole_y_sector_south_z10_30"
+            }
+          ],
+          "marked_fraction_squared": 0.5060888208883939,
+          "natural_indicator_squared": 2148.9804941518955,
+          "prepare_s": 0.002377638,
+          "round": 0,
+          "solve_s": 0.046194464,
+          "stiffness_scalar_entries": 197559,
+          "tip_y_mm": -0.4910552207488843,
+          "true_residual_relative": 7.845398251140338e-11,
+          "verification_assembly_s": 0.039631984,
+          "volume_indicator_squared": 0.024496503951494282,
+          "volume_mm3": 32239.026705392647,
+          "warm_comparison": null
+        },
+        {
+          "assembly_s": 0.141003199,
+          "cg_iterations": 283,
+          "energy_n_mm": 246.55366230592992,
+          "eta": 52.041600234018155,
+          "eta_upper_bound": false,
+          "free_vector_dofs": 1980,
+          "full_scalar_dofs": 867,
+          "independent_scalar_dofs": 681,
+          "indicator_s": 0.028009088,
+          "induced_refinements": [],
+          "interface_indicator_squared": 1336.6748015219923,
+          "leaves": 57,
+          "loaded_area_mm2": 320.00000000000017,
+          "marked": [
+            {
+              "ijk": [
+                0,
+                0,
+                0
+              ],
+              "level": 0,
+              "root": "connector_y_14_16_z0_10"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                0
+              ],
+              "level": 0,
+              "root": "connector_y_14_16_z10_30"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                0
+              ],
+              "level": 0,
+              "root": "connector_y_14_16_z30_40"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                0
+              ],
+              "level": 0,
+              "root": "elbow_east_z10_30"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                0
+              ],
+              "level": 0,
+              "root": "elbow_north_z0_10"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                0
+              ],
+              "level": 0,
+              "root": "elbow_north_z30_40"
+            }
+          ],
+          "marked_fraction_squared": 0.512132197796327,
+          "natural_indicator_squared": 1371.6365902426871,
+          "prepare_s": 0.005925811,
+          "round": 1,
+          "solve_s": 0.087158869,
+          "stiffness_scalar_entries": 316953,
+          "tip_y_mm": -0.4938573106043317,
+          "true_residual_relative": 8.580872685664375e-11,
+          "verification_assembly_s": 0.067938871,
+          "volume_indicator_squared": 0.016763152679001567,
+          "volume_mm3": 32239.02670528743,
+          "warm_comparison": {
+            "cold_iterations": 278,
+            "cold_s": 0.082747126,
+            "cold_true_residual": 9.526266215086452e-11,
+            "cold_warm_displacement_relative": 8.39748373371732e-13,
+            "inherited_energy_q6_q8": [
+              245.15363757801828,
+              245.1540898329949
+            ],
+            "inherited_work_q6_q8": [
+              490.3081776568497,
+              490.3081776568496
+            ],
+            "previous_energy_q6_q8": [
+              245.1535487129271,
+              245.15408882839589
+            ],
+            "previous_work_q6_q8": [
+              490.3081776568497,
+              490.3081776568496
+            ],
+            "transfer_s": 0.018355036,
+            "warm_iterations": 283,
+            "warm_s": 0.087158869,
+            "energy_transfer_relative_q6_q8": [
+              3.6248747625755584e-07,
+              4.097826966642515e-09
+            ],
+            "work_transfer_relative_q6_q8": [
+              0.0,
+              0.0
+            ]
+          }
+        },
+        {
+          "assembly_s": 0.240799741,
+          "cg_iterations": 400,
+          "energy_n_mm": 249.3346481122437,
+          "eta": 44.70729589564056,
+          "eta_upper_bound": false,
+          "free_vector_dofs": 3192,
+          "full_scalar_dofs": 1349,
+          "independent_scalar_dofs": 1085,
+          "indicator_s": 0.048246917,
+          "induced_refinements": [
+            {
+              "ijk": [
+                0,
+                0,
+                0
+              ],
+              "level": 0,
+              "root": "arm_y_22_42_z0_10"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                0
+              ],
+              "level": 0,
+              "root": "arm_y_22_42_z30_40"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                0
+              ],
+              "level": 0,
+              "root": "hole_y_sector_east_z10_30"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                0
+              ],
+              "level": 0,
+              "root": "hole_y_sector_west_z10_30"
+            }
+          ],
+          "interface_indicator_squared": 864.1985375803833,
+          "leaves": 99,
+          "loaded_area_mm2": 320.00000000000017,
+          "marked": [
+            {
+              "ijk": [
+                0,
+                0,
+                0
+              ],
+              "level": 1,
+              "root": "connector_y_14_16_z10_30"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                1
+              ],
+              "level": 1,
+              "root": "connector_y_14_16_z10_30"
+            },
+            {
+              "ijk": [
+                1,
+                0,
+                0
+              ],
+              "level": 1,
+              "root": "connector_y_14_16_z10_30"
+            },
+            {
+              "ijk": [
+                1,
+                0,
+                1
+              ],
+              "level": 1,
+              "root": "connector_y_14_16_z10_30"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                0
+              ],
+              "level": 0,
+              "root": "elbow_east_z0_10"
+            },
+            {
+              "ijk": [
+                0,
+                1,
+                0
+              ],
+              "level": 1,
+              "root": "elbow_east_z10_30"
+            },
+            {
+              "ijk": [
+                0,
+                1,
+                1
+              ],
+              "level": 1,
+              "root": "elbow_east_z10_30"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                0
+              ],
+              "level": 0,
+              "root": "elbow_east_z30_40"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                0
+              ],
+              "level": 1,
+              "root": "elbow_north_z10_30"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                1
+              ],
+              "level": 1,
+              "root": "elbow_north_z10_30"
+            },
+            {
+              "ijk": [
+                0,
+                1,
+                0
+              ],
+              "level": 1,
+              "root": "elbow_north_z10_30"
+            },
+            {
+              "ijk": [
+                0,
+                1,
+                1
+              ],
+              "level": 1,
+              "root": "elbow_north_z10_30"
+            },
+            {
+              "ijk": [
+                1,
+                1,
+                0
+              ],
+              "level": 1,
+              "root": "elbow_north_z10_30"
+            },
+            {
+              "ijk": [
+                1,
+                1,
+                1
+              ],
+              "level": 1,
+              "root": "elbow_north_z10_30"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                0
+              ],
+              "level": 0,
+              "root": "hole_x_sector_west_z10_30"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                1
+              ],
+              "level": 1,
+              "root": "hole_y_sector_north_z10_30"
+            },
+            {
+              "ijk": [
+                1,
+                0,
+                1
+              ],
+              "level": 1,
+              "root": "hole_y_sector_north_z10_30"
+            },
+            {
+              "ijk": [
+                1,
+                0,
+                1
+              ],
+              "level": 1,
+              "root": "hole_y_sector_south_z10_30"
+            }
+          ],
+          "marked_fraction_squared": 0.5115132602601561,
+          "natural_indicator_squared": 1134.5350691825035,
+          "prepare_s": 0.009687657,
+          "round": 2,
+          "solve_s": 0.200986717,
+          "stiffness_scalar_entries": 530703,
+          "tip_y_mm": -0.4994214948951266,
+          "true_residual_relative": 9.859864046101798e-11,
+          "verification_assembly_s": 0.10904718,
+          "volume_indicator_squared": 0.008699537472769765,
+          "volume_mm3": 32239.026705289707,
+          "warm_comparison": {
+            "cold_iterations": 337,
+            "cold_s": 0.170237138,
+            "cold_true_residual": 7.931122813481477e-11,
+            "cold_warm_displacement_relative": 3.230726919460384e-13,
+            "inherited_energy_q6_q8": [
+              246.55324686402201,
+              246.55366238345968
+            ],
+            "inherited_work_q6_q8": [
+              493.1073246118438,
+              493.1073246118436
+            ],
+            "previous_energy_q6_q8": [
+              246.553224815845,
+              246.55366230592992
+            ],
+            "previous_work_q6_q8": [
+              493.1073246118438,
+              493.1073246118436
+            ],
+            "transfer_s": 0.026274304,
+            "warm_iterations": 400,
+            "warm_s": 0.200986717,
+            "energy_transfer_relative_q6_q8": [
+              8.942562823577305e-08,
+              3.144537963351013e-10
+            ],
+            "work_transfer_relative_q6_q8": [
+              0.0,
+              0.0
+            ]
+          }
+        },
+        {
+          "assembly_s": 0.638845232,
+          "cg_iterations": 591,
+          "energy_n_mm": 251.78082523941598,
+          "eta": 37.40790625208921,
+          "eta_upper_bound": false,
+          "free_vector_dofs": 6858,
+          "full_scalar_dofs": 3195,
+          "independent_scalar_dofs": 2307,
+          "indicator_s": 0.125664201,
+          "induced_refinements": [
+            {
+              "ijk": [
+                0,
+                0,
+                0
+              ],
+              "level": 0,
+              "root": "connector_x_14_16_z10_30"
+            }
+          ],
+          "interface_indicator_squared": 580.5274252691898,
+          "leaves": 253,
+          "loaded_area_mm2": 320.00000000000017,
+          "marked": [
+            {
+              "ijk": [
+                0,
+                0,
+                0
+              ],
+              "level": 0,
+              "root": "arm_x_16_30_z10_30"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                0
+              ],
+              "level": 0,
+              "root": "arm_y_42_50_z10_30"
+            },
+            {
+              "ijk": [
+                1,
+                0,
+                1
+              ],
+              "level": 1,
+              "root": "connector_y_14_16_z0_10"
+            },
+            {
+              "ijk": [
+                1,
+                0,
+                0
+              ],
+              "level": 1,
+              "root": "connector_y_14_16_z30_40"
+            },
+            {
+              "ijk": [
+                0,
+                1,
+                1
+              ],
+              "level": 1,
+              "root": "elbow_east_z0_10"
+            },
+            {
+              "ijk": [
+                1,
+                1,
+                0
+              ],
+              "level": 1,
+              "root": "elbow_east_z10_30"
+            },
+            {
+              "ijk": [
+                1,
+                1,
+                1
+              ],
+              "level": 1,
+              "root": "elbow_east_z10_30"
+            },
+            {
+              "ijk": [
+                0,
+                1,
+                0
+              ],
+              "level": 1,
+              "root": "elbow_east_z30_40"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                0
+              ],
+              "level": 1,
+              "root": "elbow_north_z0_10"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                1
+              ],
+              "level": 1,
+              "root": "elbow_north_z0_10"
+            },
+            {
+              "ijk": [
+                0,
+                1,
+                0
+              ],
+              "level": 1,
+              "root": "elbow_north_z0_10"
+            },
+            {
+              "ijk": [
+                0,
+                1,
+                1
+              ],
+              "level": 1,
+              "root": "elbow_north_z0_10"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                0
+              ],
+              "level": 1,
+              "root": "elbow_north_z30_40"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                1
+              ],
+              "level": 1,
+              "root": "elbow_north_z30_40"
+            },
+            {
+              "ijk": [
+                0,
+                1,
+                0
+              ],
+              "level": 1,
+              "root": "elbow_north_z30_40"
+            },
+            {
+              "ijk": [
+                0,
+                1,
+                1
+              ],
+              "level": 1,
+              "root": "elbow_north_z30_40"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                0
+              ],
+              "level": 1,
+              "root": "hole_y_sector_north_z10_30"
+            },
+            {
+              "ijk": [
+                0,
+                1,
+                0
+              ],
+              "level": 1,
+              "root": "hole_y_sector_north_z10_30"
+            },
+            {
+              "ijk": [
+                0,
+                1,
+                1
+              ],
+              "level": 1,
+              "root": "hole_y_sector_north_z10_30"
+            },
+            {
+              "ijk": [
+                1,
+                0,
+                0
+              ],
+              "level": 1,
+              "root": "hole_y_sector_north_z10_30"
+            },
+            {
+              "ijk": [
+                1,
+                1,
+                0
+              ],
+              "level": 1,
+              "root": "hole_y_sector_north_z10_30"
+            },
+            {
+              "ijk": [
+                1,
+                1,
+                1
+              ],
+              "level": 1,
+              "root": "hole_y_sector_north_z10_30"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                0
+              ],
+              "level": 1,
+              "root": "hole_y_sector_south_z10_30"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                1
+              ],
+              "level": 1,
+              "root": "hole_y_sector_south_z10_30"
+            },
+            {
+              "ijk": [
+                0,
+                1,
+                0
+              ],
+              "level": 1,
+              "root": "hole_y_sector_south_z10_30"
+            },
+            {
+              "ijk": [
+                0,
+                1,
+                1
+              ],
+              "level": 1,
+              "root": "hole_y_sector_south_z10_30"
+            },
+            {
+              "ijk": [
+                1,
+                0,
+                0
+              ],
+              "level": 1,
+              "root": "hole_y_sector_south_z10_30"
+            },
+            {
+              "ijk": [
+                1,
+                1,
+                0
+              ],
+              "level": 1,
+              "root": "hole_y_sector_south_z10_30"
+            },
+            {
+              "ijk": [
+                1,
+                1,
+                1
+              ],
+              "level": 1,
+              "root": "hole_y_sector_south_z10_30"
+            }
+          ],
+          "marked_fraction_squared": 0.5070670143672814,
+          "natural_indicator_squared": 818.8201205366732,
+          "prepare_s": 0.03527291,
+          "round": 3,
+          "solve_s": 0.821703444,
+          "stiffness_scalar_entries": 1328319,
+          "tip_y_mm": -0.5043145174791448,
+          "true_residual_relative": 9.657741174972587e-11,
+          "verification_assembly_s": 0.296409029,
+          "volume_indicator_squared": 0.003904359231908726,
+          "volume_mm3": 32239.02670513937,
+          "warm_comparison": {
+            "cold_iterations": 591,
+            "cold_s": 0.80864113,
+            "cold_true_residual": 8.708942417432464e-11,
+            "cold_warm_displacement_relative": 1.2587590552715506e-13,
+            "inherited_energy_q6_q8": [
+              249.33462803550458,
+              249.3346565444982
+            ],
+            "inherited_work_q6_q8": [
+              498.66929622449305,
+              498.66929622449294
+            ],
+            "previous_energy_q6_q8": [
+              249.3342334782531,
+              249.3346481122437
+            ],
+            "previous_work_q6_q8": [
+              498.66929622449305,
+              498.66929622449294
+            ],
+            "transfer_s": 0.13087787,
+            "warm_iterations": 591,
+            "warm_s": 0.821703444,
+            "energy_transfer_relative_q6_q8": [
+              1.5824431565114594e-06,
+              3.381902402566084e-08
+            ],
+            "work_transfer_relative_q6_q8": [
+              0.0,
+              0.0
+            ]
+          }
+        },
+        {
+          "assembly_s": 1.161471523,
+          "cg_iterations": 659,
+          "energy_n_mm": 252.2990332801021,
+          "eta": 31.922467503943498,
+          "eta_upper_bound": false,
+          "free_vector_dofs": 11916,
+          "full_scalar_dofs": 5554,
+          "independent_scalar_dofs": 4005,
+          "indicator_s": 0.229238834,
+          "induced_refinements": [
+            {
+              "ijk": [
+                0,
+                0,
+                0
+              ],
+              "level": 0,
+              "root": "arm_y_16_22_z0_10"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                0
+              ],
+              "level": 0,
+              "root": "arm_y_16_22_z30_40"
+            },
+            {
+              "ijk": [
+                1,
+                0,
+                1
+              ],
+              "level": 1,
+              "root": "arm_y_22_42_z0_10"
+            },
+            {
+              "ijk": [
+                1,
+                1,
+                1
+              ],
+              "level": 1,
+              "root": "arm_y_22_42_z0_10"
+            },
+            {
+              "ijk": [
+                1,
+                0,
+                0
+              ],
+              "level": 1,
+              "root": "arm_y_22_42_z30_40"
+            },
+            {
+              "ijk": [
+                1,
+                1,
+                0
+              ],
+              "level": 1,
+              "root": "arm_y_22_42_z30_40"
+            }
+          ],
+          "interface_indicator_squared": 455.96083132634357,
+          "leaves": 463,
+          "loaded_area_mm2": 320.00000000000017,
+          "marked": [
+            {
+              "ijk": [
+                0,
+                0,
+                0
+              ],
+              "level": 0,
+              "root": "arm_y_42_50_z0_10"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                0
+              ],
+              "level": 0,
+              "root": "arm_y_42_50_z30_40"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                0
+              ],
+              "level": 1,
+              "root": "connector_y_14_16_z0_10"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                1
+              ],
+              "level": 1,
+              "root": "connector_y_14_16_z0_10"
+            },
+            {
+              "ijk": [
+                1,
+                0,
+                0
+              ],
+              "level": 1,
+              "root": "connector_y_14_16_z0_10"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                0
+              ],
+              "level": 2,
+              "root": "connector_y_14_16_z10_30"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                1
+              ],
+              "level": 2,
+              "root": "connector_y_14_16_z10_30"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                2
+              ],
+              "level": 2,
+              "root": "connector_y_14_16_z10_30"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                3
+              ],
+              "level": 2,
+              "root": "connector_y_14_16_z10_30"
+            },
+            {
+              "ijk": [
+                3,
+                0,
+                0
+              ],
+              "level": 2,
+              "root": "connector_y_14_16_z10_30"
+            },
+            {
+              "ijk": [
+                3,
+                0,
+                1
+              ],
+              "level": 2,
+              "root": "connector_y_14_16_z10_30"
+            },
+            {
+              "ijk": [
+                3,
+                0,
+                2
+              ],
+              "level": 2,
+              "root": "connector_y_14_16_z10_30"
+            },
+            {
+              "ijk": [
+                3,
+                0,
+                3
+              ],
+              "level": 2,
+              "root": "connector_y_14_16_z10_30"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                0
+              ],
+              "level": 1,
+              "root": "connector_y_14_16_z30_40"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                1
+              ],
+              "level": 1,
+              "root": "connector_y_14_16_z30_40"
+            },
+            {
+              "ijk": [
+                1,
+                0,
+                1
+              ],
+              "level": 1,
+              "root": "connector_y_14_16_z30_40"
+            },
+            {
+              "ijk": [
+                0,
+                1,
+                0
+              ],
+              "level": 1,
+              "root": "elbow_east_z0_10"
+            },
+            {
+              "ijk": [
+                0,
+                3,
+                0
+              ],
+              "level": 2,
+              "root": "elbow_east_z10_30"
+            },
+            {
+              "ijk": [
+                0,
+                3,
+                1
+              ],
+              "level": 2,
+              "root": "elbow_east_z10_30"
+            },
+            {
+              "ijk": [
+                0,
+                3,
+                2
+              ],
+              "level": 2,
+              "root": "elbow_east_z10_30"
+            },
+            {
+              "ijk": [
+                0,
+                3,
+                3
+              ],
+              "level": 2,
+              "root": "elbow_east_z10_30"
+            },
+            {
+              "ijk": [
+                1,
+                3,
+                0
+              ],
+              "level": 2,
+              "root": "elbow_east_z10_30"
+            },
+            {
+              "ijk": [
+                1,
+                3,
+                1
+              ],
+              "level": 2,
+              "root": "elbow_east_z10_30"
+            },
+            {
+              "ijk": [
+                1,
+                3,
+                2
+              ],
+              "level": 2,
+              "root": "elbow_east_z10_30"
+            },
+            {
+              "ijk": [
+                1,
+                3,
+                3
+              ],
+              "level": 2,
+              "root": "elbow_east_z10_30"
+            },
+            {
+              "ijk": [
+                0,
+                1,
+                1
+              ],
+              "level": 1,
+              "root": "elbow_east_z30_40"
+            },
+            {
+              "ijk": [
+                1,
+                1,
+                0
+              ],
+              "level": 1,
+              "root": "elbow_north_z0_10"
+            },
+            {
+              "ijk": [
+                1,
+                1,
+                1
+              ],
+              "level": 1,
+              "root": "elbow_north_z0_10"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                0
+              ],
+              "level": 2,
+              "root": "elbow_north_z10_30"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                1
+              ],
+              "level": 2,
+              "root": "elbow_north_z10_30"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                2
+              ],
+              "level": 2,
+              "root": "elbow_north_z10_30"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                3
+              ],
+              "level": 2,
+              "root": "elbow_north_z10_30"
+            },
+            {
+              "ijk": [
+                0,
+                3,
+                0
+              ],
+              "level": 2,
+              "root": "elbow_north_z10_30"
+            },
+            {
+              "ijk": [
+                0,
+                3,
+                1
+              ],
+              "level": 2,
+              "root": "elbow_north_z10_30"
+            },
+            {
+              "ijk": [
+                0,
+                3,
+                2
+              ],
+              "level": 2,
+              "root": "elbow_north_z10_30"
+            },
+            {
+              "ijk": [
+                0,
+                3,
+                3
+              ],
+              "level": 2,
+              "root": "elbow_north_z10_30"
+            },
+            {
+              "ijk": [
+                3,
+                3,
+                0
+              ],
+              "level": 2,
+              "root": "elbow_north_z10_30"
+            },
+            {
+              "ijk": [
+                3,
+                3,
+                1
+              ],
+              "level": 2,
+              "root": "elbow_north_z10_30"
+            },
+            {
+              "ijk": [
+                3,
+                3,
+                2
+              ],
+              "level": 2,
+              "root": "elbow_north_z10_30"
+            },
+            {
+              "ijk": [
+                3,
+                3,
+                3
+              ],
+              "level": 2,
+              "root": "elbow_north_z10_30"
+            },
+            {
+              "ijk": [
+                1,
+                1,
+                0
+              ],
+              "level": 1,
+              "root": "elbow_north_z30_40"
+            },
+            {
+              "ijk": [
+                1,
+                1,
+                1
+              ],
+              "level": 1,
+              "root": "elbow_north_z30_40"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                0
+              ],
+              "level": 0,
+              "root": "hole_x_sector_east_z10_30"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                0
+              ],
+              "level": 0,
+              "root": "hole_x_sector_north_z10_30"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                0
+              ],
+              "level": 0,
+              "root": "hole_x_sector_south_z10_30"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                0
+              ],
+              "level": 1,
+              "root": "hole_x_sector_west_z10_30"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                1
+              ],
+              "level": 1,
+              "root": "hole_x_sector_west_z10_30"
+            },
+            {
+              "ijk": [
+                1,
+                0,
+                0
+              ],
+              "level": 1,
+              "root": "hole_x_sector_west_z10_30"
+            },
+            {
+              "ijk": [
+                1,
+                0,
+                3
+              ],
+              "level": 2,
+              "root": "hole_y_sector_north_z10_30"
+            },
+            {
+              "ijk": [
+                2,
+                0,
+                3
+              ],
+              "level": 2,
+              "root": "hole_y_sector_north_z10_30"
+            },
+            {
+              "ijk": [
+                1,
+                0,
+                3
+              ],
+              "level": 2,
+              "root": "hole_y_sector_south_z10_30"
+            },
+            {
+              "ijk": [
+                2,
+                0,
+                3
+              ],
+              "level": 2,
+              "root": "hole_y_sector_south_z10_30"
+            }
+          ],
+          "marked_fraction_squared": 0.5003347014117148,
+          "natural_indicator_squared": 563.080713995131,
+          "prepare_s": 0.065098778,
+          "round": 4,
+          "solve_s": 1.681893814,
+          "stiffness_scalar_entries": 2393136,
+          "tip_y_mm": -0.5053506950664722,
+          "true_residual_relative": 9.279742645376733e-11,
+          "verification_assembly_s": 0.548644308,
+          "volume_indicator_squared": 0.0023862188522008228,
+          "volume_mm3": 32239.0267051426,
+          "warm_comparison": {
+            "cold_iterations": 442,
+            "cold_s": 1.139894781,
+            "cold_true_residual": 9.714628135898649e-11,
+            "cold_warm_displacement_relative": 2.114208605763963e-13,
+            "inherited_energy_q6_q8": [
+              251.78079741799127,
+              251.78082524011936
+            ],
+            "inherited_work_q6_q8": [
+              503.561650478715,
+              503.5616504787149
+            ],
+            "previous_energy_q6_q8": [
+              251.78079721400246,
+              251.78082523941598
+            ],
+            "previous_work_q6_q8": [
+              503.561650478715,
+              503.5616504787149
+            ],
+            "transfer_s": 0.184218881,
+            "warm_iterations": 659,
+            "warm_s": 1.681893814,
+            "energy_transfer_relative_q6_q8": [
+              8.101841419971834e-10,
+              2.793543174561819e-12
+            ],
+            "work_transfer_relative_q6_q8": [
+              0.0,
+              0.0
+            ]
+          }
+        },
+        {
+          "assembly_s": 2.172565797,
+          "cg_iterations": 812,
+          "energy_n_mm": 252.837655741104,
+          "eta": 27.404209647937527,
+          "eta_upper_bound": false,
+          "free_vector_dofs": 21552,
+          "full_scalar_dofs": 10173,
+          "independent_scalar_dofs": 7249,
+          "indicator_s": 0.42753391,
+          "interface_indicator_squared": 307.1629730762662,
+          "leaves": 869,
+          "loaded_area_mm2": 320.00000000000017,
+          "marked": [
+            {
+              "ijk": [
+                1,
+                0,
+                0
+              ],
+              "level": 1,
+              "root": "arm_x_16_30_z10_30"
+            },
+            {
+              "ijk": [
+                1,
+                0,
+                1
+              ],
+              "level": 1,
+              "root": "arm_x_16_30_z10_30"
+            },
+            {
+              "ijk": [
+                1,
+                1,
+                0
+              ],
+              "level": 1,
+              "root": "arm_x_16_30_z10_30"
+            },
+            {
+              "ijk": [
+                1,
+                1,
+                1
+              ],
+              "level": 1,
+              "root": "arm_x_16_30_z10_30"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                0
+              ],
+              "level": 0,
+              "root": "arm_x_50_60_z10_30"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                0
+              ],
+              "level": 2,
+              "root": "connector_y_14_16_z0_10"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                1
+              ],
+              "level": 2,
+              "root": "connector_y_14_16_z0_10"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                2
+              ],
+              "level": 2,
+              "root": "connector_y_14_16_z0_10"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                3
+              ],
+              "level": 2,
+              "root": "connector_y_14_16_z0_10"
+            },
+            {
+              "ijk": [
+                3,
+                0,
+                1
+              ],
+              "level": 2,
+              "root": "connector_y_14_16_z0_10"
+            },
+            {
+              "ijk": [
+                3,
+                0,
+                2
+              ],
+              "level": 2,
+              "root": "connector_y_14_16_z0_10"
+            },
+            {
+              "ijk": [
+                3,
+                0,
+                3
+              ],
+              "level": 2,
+              "root": "connector_y_14_16_z0_10"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                0
+              ],
+              "level": 2,
+              "root": "connector_y_14_16_z30_40"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                1
+              ],
+              "level": 2,
+              "root": "connector_y_14_16_z30_40"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                2
+              ],
+              "level": 2,
+              "root": "connector_y_14_16_z30_40"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                3
+              ],
+              "level": 2,
+              "root": "connector_y_14_16_z30_40"
+            },
+            {
+              "ijk": [
+                3,
+                0,
+                0
+              ],
+              "level": 2,
+              "root": "connector_y_14_16_z30_40"
+            },
+            {
+              "ijk": [
+                3,
+                0,
+                1
+              ],
+              "level": 2,
+              "root": "connector_y_14_16_z30_40"
+            },
+            {
+              "ijk": [
+                3,
+                0,
+                2
+              ],
+              "level": 2,
+              "root": "connector_y_14_16_z30_40"
+            },
+            {
+              "ijk": [
+                1,
+                1,
+                0
+              ],
+              "level": 1,
+              "root": "elbow_east_z0_10"
+            },
+            {
+              "ijk": [
+                1,
+                1,
+                1
+              ],
+              "level": 1,
+              "root": "elbow_east_z0_10"
+            },
+            {
+              "ijk": [
+                2,
+                3,
+                0
+              ],
+              "level": 2,
+              "root": "elbow_east_z10_30"
+            },
+            {
+              "ijk": [
+                2,
+                3,
+                1
+              ],
+              "level": 2,
+              "root": "elbow_east_z10_30"
+            },
+            {
+              "ijk": [
+                2,
+                3,
+                2
+              ],
+              "level": 2,
+              "root": "elbow_east_z10_30"
+            },
+            {
+              "ijk": [
+                2,
+                3,
+                3
+              ],
+              "level": 2,
+              "root": "elbow_east_z10_30"
+            },
+            {
+              "ijk": [
+                1,
+                1,
+                0
+              ],
+              "level": 1,
+              "root": "elbow_east_z30_40"
+            },
+            {
+              "ijk": [
+                1,
+                1,
+                1
+              ],
+              "level": 1,
+              "root": "elbow_east_z30_40"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                0
+              ],
+              "level": 2,
+              "root": "elbow_north_z0_10"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                1
+              ],
+              "level": 2,
+              "root": "elbow_north_z0_10"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                2
+              ],
+              "level": 2,
+              "root": "elbow_north_z0_10"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                3
+              ],
+              "level": 2,
+              "root": "elbow_north_z0_10"
+            },
+            {
+              "ijk": [
+                0,
+                3,
+                0
+              ],
+              "level": 2,
+              "root": "elbow_north_z0_10"
+            },
+            {
+              "ijk": [
+                0,
+                3,
+                1
+              ],
+              "level": 2,
+              "root": "elbow_north_z0_10"
+            },
+            {
+              "ijk": [
+                0,
+                3,
+                2
+              ],
+              "level": 2,
+              "root": "elbow_north_z0_10"
+            },
+            {
+              "ijk": [
+                0,
+                3,
+                3
+              ],
+              "level": 2,
+              "root": "elbow_north_z0_10"
+            },
+            {
+              "ijk": [
+                2,
+                3,
+                0
+              ],
+              "level": 2,
+              "root": "elbow_north_z10_30"
+            },
+            {
+              "ijk": [
+                2,
+                3,
+                1
+              ],
+              "level": 2,
+              "root": "elbow_north_z10_30"
+            },
+            {
+              "ijk": [
+                2,
+                3,
+                2
+              ],
+              "level": 2,
+              "root": "elbow_north_z10_30"
+            },
+            {
+              "ijk": [
+                2,
+                3,
+                3
+              ],
+              "level": 2,
+              "root": "elbow_north_z10_30"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                0
+              ],
+              "level": 2,
+              "root": "elbow_north_z30_40"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                1
+              ],
+              "level": 2,
+              "root": "elbow_north_z30_40"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                2
+              ],
+              "level": 2,
+              "root": "elbow_north_z30_40"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                3
+              ],
+              "level": 2,
+              "root": "elbow_north_z30_40"
+            },
+            {
+              "ijk": [
+                0,
+                3,
+                0
+              ],
+              "level": 2,
+              "root": "elbow_north_z30_40"
+            },
+            {
+              "ijk": [
+                0,
+                3,
+                1
+              ],
+              "level": 2,
+              "root": "elbow_north_z30_40"
+            },
+            {
+              "ijk": [
+                0,
+                3,
+                2
+              ],
+              "level": 2,
+              "root": "elbow_north_z30_40"
+            },
+            {
+              "ijk": [
+                0,
+                3,
+                3
+              ],
+              "level": 2,
+              "root": "elbow_north_z30_40"
+            },
+            {
+              "ijk": [
+                1,
+                0,
+                1
+              ],
+              "level": 1,
+              "root": "hole_x_sector_west_z10_30"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                0
+              ],
+              "level": 2,
+              "root": "hole_y_sector_north_z10_30"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                3
+              ],
+              "level": 2,
+              "root": "hole_y_sector_north_z10_30"
+            },
+            {
+              "ijk": [
+                0,
+                1,
+                0
+              ],
+              "level": 2,
+              "root": "hole_y_sector_north_z10_30"
+            },
+            {
+              "ijk": [
+                0,
+                1,
+                3
+              ],
+              "level": 2,
+              "root": "hole_y_sector_north_z10_30"
+            },
+            {
+              "ijk": [
+                0,
+                2,
+                3
+              ],
+              "level": 2,
+              "root": "hole_y_sector_north_z10_30"
+            },
+            {
+              "ijk": [
+                1,
+                0,
+                0
+              ],
+              "level": 2,
+              "root": "hole_y_sector_north_z10_30"
+            },
+            {
+              "ijk": [
+                1,
+                1,
+                0
+              ],
+              "level": 2,
+              "root": "hole_y_sector_north_z10_30"
+            },
+            {
+              "ijk": [
+                1,
+                1,
+                3
+              ],
+              "level": 2,
+              "root": "hole_y_sector_north_z10_30"
+            },
+            {
+              "ijk": [
+                1,
+                2,
+                0
+              ],
+              "level": 2,
+              "root": "hole_y_sector_north_z10_30"
+            },
+            {
+              "ijk": [
+                1,
+                2,
+                3
+              ],
+              "level": 2,
+              "root": "hole_y_sector_north_z10_30"
+            },
+            {
+              "ijk": [
+                1,
+                3,
+                0
+              ],
+              "level": 2,
+              "root": "hole_y_sector_north_z10_30"
+            },
+            {
+              "ijk": [
+                1,
+                3,
+                3
+              ],
+              "level": 2,
+              "root": "hole_y_sector_north_z10_30"
+            },
+            {
+              "ijk": [
+                2,
+                0,
+                0
+              ],
+              "level": 2,
+              "root": "hole_y_sector_north_z10_30"
+            },
+            {
+              "ijk": [
+                2,
+                1,
+                0
+              ],
+              "level": 2,
+              "root": "hole_y_sector_north_z10_30"
+            },
+            {
+              "ijk": [
+                2,
+                1,
+                3
+              ],
+              "level": 2,
+              "root": "hole_y_sector_north_z10_30"
+            },
+            {
+              "ijk": [
+                2,
+                2,
+                0
+              ],
+              "level": 2,
+              "root": "hole_y_sector_north_z10_30"
+            },
+            {
+              "ijk": [
+                2,
+                2,
+                3
+              ],
+              "level": 2,
+              "root": "hole_y_sector_north_z10_30"
+            },
+            {
+              "ijk": [
+                2,
+                3,
+                0
+              ],
+              "level": 2,
+              "root": "hole_y_sector_north_z10_30"
+            },
+            {
+              "ijk": [
+                2,
+                3,
+                3
+              ],
+              "level": 2,
+              "root": "hole_y_sector_north_z10_30"
+            },
+            {
+              "ijk": [
+                3,
+                0,
+                0
+              ],
+              "level": 2,
+              "root": "hole_y_sector_north_z10_30"
+            },
+            {
+              "ijk": [
+                3,
+                0,
+                3
+              ],
+              "level": 2,
+              "root": "hole_y_sector_north_z10_30"
+            },
+            {
+              "ijk": [
+                3,
+                1,
+                0
+              ],
+              "level": 2,
+              "root": "hole_y_sector_north_z10_30"
+            },
+            {
+              "ijk": [
+                3,
+                1,
+                3
+              ],
+              "level": 2,
+              "root": "hole_y_sector_north_z10_30"
+            },
+            {
+              "ijk": [
+                3,
+                2,
+                3
+              ],
+              "level": 2,
+              "root": "hole_y_sector_north_z10_30"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                0
+              ],
+              "level": 2,
+              "root": "hole_y_sector_south_z10_30"
+            },
+            {
+              "ijk": [
+                0,
+                0,
+                3
+              ],
+              "level": 2,
+              "root": "hole_y_sector_south_z10_30"
+            },
+            {
+              "ijk": [
+                0,
+                1,
+                0
+              ],
+              "level": 2,
+              "root": "hole_y_sector_south_z10_30"
+            },
+            {
+              "ijk": [
+                0,
+                1,
+                3
+              ],
+              "level": 2,
+              "root": "hole_y_sector_south_z10_30"
+            },
+            {
+              "ijk": [
+                0,
+                2,
+                3
+              ],
+              "level": 2,
+              "root": "hole_y_sector_south_z10_30"
+            },
+            {
+              "ijk": [
+                1,
+                0,
+                0
+              ],
+              "level": 2,
+              "root": "hole_y_sector_south_z10_30"
+            },
+            {
+              "ijk": [
+                1,
+                1,
+                0
+              ],
+              "level": 2,
+              "root": "hole_y_sector_south_z10_30"
+            },
+            {
+              "ijk": [
+                1,
+                1,
+                3
+              ],
+              "level": 2,
+              "root": "hole_y_sector_south_z10_30"
+            },
+            {
+              "ijk": [
+                1,
+                2,
+                0
+              ],
+              "level": 2,
+              "root": "hole_y_sector_south_z10_30"
+            },
+            {
+              "ijk": [
+                1,
+                2,
+                3
+              ],
+              "level": 2,
+              "root": "hole_y_sector_south_z10_30"
+            },
+            {
+              "ijk": [
+                1,
+                3,
+                0
+              ],
+              "level": 2,
+              "root": "hole_y_sector_south_z10_30"
+            },
+            {
+              "ijk": [
+                1,
+                3,
+                3
+              ],
+              "level": 2,
+              "root": "hole_y_sector_south_z10_30"
+            },
+            {
+              "ijk": [
+                2,
+                0,
+                0
+              ],
+              "level": 2,
+              "root": "hole_y_sector_south_z10_30"
+            },
+            {
+              "ijk": [
+                2,
+                1,
+                0
+              ],
+              "level": 2,
+              "root": "hole_y_sector_south_z10_30"
+            },
+            {
+              "ijk": [
+                2,
+                1,
+                3
+              ],
+              "level": 2,
+              "root": "hole_y_sector_south_z10_30"
+            },
+            {
+              "ijk": [
+                2,
+                2,
+                0
+              ],
+              "level": 2,
+              "root": "hole_y_sector_south_z10_30"
+            },
+            {
+              "ijk": [
+                2,
+                2,
+                3
+              ],
+              "level": 2,
+              "root": "hole_y_sector_south_z10_30"
+            },
+            {
+              "ijk": [
+                2,
+                3,
+                0
+              ],
+              "level": 2,
+              "root": "hole_y_sector_south_z10_30"
+            },
+            {
+              "ijk": [
+                2,
+                3,
+                3
+              ],
+              "level": 2,
+              "root": "hole_y_sector_south_z10_30"
+            },
+            {
+              "ijk": [
+                3,
+                0,
+                0
+              ],
+              "level": 2,
+              "root": "hole_y_sector_south_z10_30"
+            },
+            {
+              "ijk": [
+                3,
+                0,
+                3
+              ],
+              "level": 2,
+              "root": "hole_y_sector_south_z10_30"
+            },
+            {
+              "ijk": [
+                3,
+                1,
+                0
+              ],
+              "level": 2,
+              "root": "hole_y_sector_south_z10_30"
+            },
+            {
+              "ijk": [
+                3,
+                1,
+                3
+              ],
+              "level": 2,
+              "root": "hole_y_sector_south_z10_30"
+            }
+          ],
+          "marked_fraction_squared": 0.5025371233741168,
+          "natural_indicator_squared": 443.8261244403991,
+          "prepare_s": 0.138280207,
+          "round": 5,
+          "solve_s": 4.009838522,
+          "stiffness_scalar_entries": 4464387,
+          "tip_y_mm": -0.5064382380394656,
+          "true_residual_relative": 7.319050686631882e-11,
+          "verification_assembly_s": 1.025344973,
+          "volume_indicator_squared": 0.0016089114462858533,
+          "volume_mm3": 32239.026705006214,
+          "warm_comparison": {
+            "cold_iterations": 828,
+            "cold_s": 4.022079753,
+            "cold_true_residual": 7.59871227130717e-11,
+            "cold_warm_displacement_relative": 1.977315821663981e-13,
+            "inherited_energy_q6_q8": [
+              252.29903358340707,
+              252.2990337638397
+            ],
+            "inherited_work_q6_q8": [
+              504.5980665604796,
+              504.5980665604795
+            ],
+            "previous_energy_q6_q8": [
+              252.29900539513127,
+              252.2990332801021
+            ],
+            "previous_work_q6_q8": [
+              504.5980665604796,
+              504.5980665604795
+            ],
+            "transfer_s": 0.343745139,
+            "warm_iterations": 812,
+            "warm_s": 4.009838522,
+            "energy_transfer_relative_q6_q8": [
+              1.1172567138117984e-07,
+              1.9173185261678327e-09
+            ],
+            "work_transfer_relative_q6_q8": [
+              0.0,
+              0.0
+            ]
+          }
+        }
+      ],
+      "resources": {
+        "radius_x_ticks": 56,
+        "process_status": "completed",
+        "exit_code": 0,
+        "elapsed_s": 21.702670924016275,
+        "round_resources": [
+          {
+            "round": 0,
+            "peak_rss_kib": 10328,
+            "elapsed_s": 0.2011360980104655
+          },
+          {
+            "round": 1,
+            "peak_rss_kib": 13808,
+            "elapsed_s": 0.20107479498255998
+          },
+          {
+            "round": 2,
+            "peak_rss_kib": 22032,
+            "elapsed_s": 0.6029151219991036
+          },
+          {
+            "round": 3,
+            "peak_rss_kib": 39092,
+            "elapsed_s": 2.611978919012472
+          },
+          {
+            "round": 4,
+            "peak_rss_kib": 66296,
+            "elapsed_s": 4.823061802017037
+          },
+          {
+            "round": 5,
+            "peak_rss_kib": 117856,
+            "elapsed_s": 12.055469362006988
+          }
+        ],
+        "log_tail": [
+          "radius 56 adaptive round 4: 463 leaves",
+          "radius 56 adaptive round 5: 869 leaves"
+        ]
+      }
+    }
+  ]
+}

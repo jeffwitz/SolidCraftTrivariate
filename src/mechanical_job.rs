@@ -388,6 +388,9 @@ fn run_job(
                 | "certified_perforated_polygon_prism"
                 | crate::rational_sector_json::METHOD
                 | crate::counterbores_json::METHOD
+                | crate::countersinks_json::METHOD
+                | crate::sketch_layers_json::METHOD
+                | crate::orthogonal_sketch_json::METHOD
                 | crate::interval_bores_json::METHOD
                 | crate::circular_polygon_json::METHOD
                 | crate::affine_image::METHOD

@@ -1,0 +1,18 @@
+{
+  "recipe_file": "tests/references/orthogonal_sketch_bracket.json",
+  "local_chart": {
+    "origin_mm": [
+      0,
+      0
+    ],
+    "size_mm": 14,
+    "radius_mm": 6,
+    "z_interval_mm": [
+      0,
+      15
+    ]
+  },
+  "initial_diagnostic": "north fillet chart Bernstein determinant",
+  "cause": "The center translation in several restricted arc control numerators was missing a factor of the local weight.",
+  "assertion": "The stored arc of both half-charts obeys (X-cx W)^2+(Y-cy W)^2=r^2 W^2 on the closed parameter interval and has positive volume Jacobian."
+}

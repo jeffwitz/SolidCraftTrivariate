@@ -102,6 +102,9 @@ pub(crate) fn supports_source_method(method: &str) -> bool {
             | "certified_perforated_polygon_prism"
             | crate::rational_sector_json::METHOD
             | crate::counterbores_json::METHOD
+            | crate::countersinks_json::METHOD
+            | crate::sketch_layers_json::METHOD
+            | crate::orthogonal_sketch_json::METHOD
             | crate::interval_bores_json::METHOD
             | crate::circular_polygon_json::METHOD
     )
@@ -225,6 +228,9 @@ pub fn boundary_shell(model: &Json) -> Result<BoundaryShell, &'static str> {
         method,
         crate::affine_image::METHOD
             | crate::counterbores_json::METHOD
+            | crate::countersinks_json::METHOD
+            | crate::sketch_layers_json::METHOD
+            | crate::orthogonal_sketch_json::METHOD
             | crate::interval_bores_json::METHOD
             | "certified_coaxial_feature_program"
             | "certified_circular_bend"
@@ -275,7 +281,10 @@ pub fn boundary_shell(model: &Json) -> Result<BoundaryShell, &'static str> {
                 if let Some(anchor) = source_anchor {
                     return f == anchor;
                 }
-                if method == crate::interval_bores_json::METHOD {
+                if matches!(
+                    method,
+                    crate::interval_bores_json::METHOD | crate::sketch_layers_json::METHOD
+                ) {
                     return faces[f].feature == "start";
                 }
                 if let Some(tag) = bend_anchor {

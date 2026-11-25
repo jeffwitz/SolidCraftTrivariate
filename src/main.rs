@@ -54,7 +54,7 @@ const COMMANDS_AND_EVALUATORS: &str = r#"{"commands":["build","audit","evaluate"
 fn capabilities() -> Result<Json,String> {
     let mut result = parse(COMMANDS_AND_EVALUATORS)?;
     let Json::Object(fields) = &mut result else {return Err("invalid capabilities".into())};
-    let families = ["affine_pair_v1", "annular_pair_v1", "filleted_bracket_v1", "movable_bore_v1", "pocket_depth_v1", "exact_bore_v1", "row_bores_v1", "overlap_bore_v1", "axial_boolean_v1", "crescent_pocket_v1", "parameterized_bracket_v1","travelling_bore_v1","travelling_bore_bounded_v1","ruled_section_sweep_v1","coaxial_feature_program_v1","circular_bend_v1","orthogonal_feature_program_v1","polygon_prism_v1","polygonal_perforated_prism_v1","polygon_circular_bores_v1","polygon_interval_bores_v1","polygon_counterbores_v1","rational_sector_prism_v1","affine_image_v1"]
+    let families = ["affine_pair_v1", "annular_pair_v1", "filleted_bracket_v1", "movable_bore_v1", "pocket_depth_v1", "exact_bore_v1", "row_bores_v1", "overlap_bore_v1", "axial_boolean_v1", "crescent_pocket_v1", "parameterized_bracket_v1","travelling_bore_v1","travelling_bore_bounded_v1","ruled_section_sweep_v1","coaxial_feature_program_v1","circular_bend_v1","orthogonal_feature_program_v1","polygon_prism_v1","polygonal_perforated_prism_v1","polygon_circular_bores_v1","polygon_interval_bores_v1","polygon_counterbores_v1","polygon_countersinks_v1","sketch_layer_partition_v1","orthogonal_sketch_features_v1","rational_sector_prism_v1","affine_image_v1"]
         .into_iter().chain(SECTION_FAMILIES).map(|s| Json::String(s.to_owned())).collect();
     fields.insert("families".into(), Json::Array(families));
     Ok(result)

@@ -12,6 +12,13 @@ pub(crate) const METHOD: &str = "certified_polygon_counterbores";
 const PARAMETERS: [&str; 4] = ["outer", "bores", "height_mm", "top_shift_mm"];
 
 pub(crate) fn parse(data: &Json) -> Result<CounterborePrism, &'static str> {
+    parse_bore_profiles(data, "counterbore_radius_mm")
+}
+
+pub(crate) fn parse_bore_profiles(
+    data: &Json,
+    opening_radius: &str,
+) -> Result<CounterborePrism, &'static str> {
     let list = data.field("bores")?.items()?;
     if !(1..=4).contains(&list.len()) {
         return Err("counterbore_count");
@@ -23,7 +30,7 @@ pub(crate) fn parse(data: &Json) -> Result<CounterborePrism, &'static str> {
             "center_mm",
             "radius_mm",
             "guard_mm",
-            "counterbore_radius_mm",
+            opening_radius,
             "depth_mm",
             "opening",
         ])?;
@@ -37,7 +44,7 @@ pub(crate) fn parse(data: &Json) -> Result<CounterborePrism, &'static str> {
             center_mm: pair(v.field("center_mm")?)?,
             radius_mm: v.field("radius_mm")?.number()?,
             guard_mm: v.field("guard_mm")?.number()?,
-            counterbore_radius_mm: v.field("counterbore_radius_mm")?.number()?,
+            counterbore_radius_mm: v.field(opening_radius)?.number()?,
             depth_mm: v.field("depth_mm")?.number()?,
             opening,
         });

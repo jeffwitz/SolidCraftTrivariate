@@ -117,6 +117,9 @@ mod sector_analysis;
 pub mod counterbores;
 pub mod counterbores_audit;
 mod counterbores_json;
+pub mod countersinks;
+pub mod countersinks_audit;
+mod countersinks_json;
 pub mod interval_bores;
 pub mod interval_bores_audit;
 mod interval_bores_json;
@@ -124,3 +127,14 @@ pub mod interval_bores_session;
 pub mod interval_bores_edit;
 pub mod solidcraft_blind_bore;
 pub mod solidcraft_counterbore;
+
+pub mod sketch_layers;
+mod sketch_layers_json;
+pub mod sketch_arrangement;
+pub mod sketch_quads;
+
+pub mod sketch_bore_chart;
+pub mod sketch_fillet_chart;
+pub mod orthogonal_sketch;
+
+mod orthogonal_sketch_json;

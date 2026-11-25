@@ -13,12 +13,12 @@ pub struct BracketBlock {
 const LAYERS: [(i64, i64); 3] = [(0, 10), (10, 30), (30, 40)];
 const SECTORS: [&str; 4] = ["east", "north", "west", "south"];
 
-type Profile = [[i128; 3]; 6];
+pub(crate) type Profile = [[i128; 3]; 6];
 
 // Frozen E3 profile derived from the radius-6 arc at (14,14) and the straight
 // base in trivariate/elbow.py. Each triple is (wx, wy, w), scaled by 2^52.
 const ELBOW_PROFILE_SCALE: i128 = 4_503_599_627_370_496;
-const ELBOW_EAST_PROFILE: Profile = [
+pub(crate) const ELBOW_EAST_PROFILE: Profile = [
     [0, 0, ELBOW_PROFILE_SCALE],
     [
         43_943_239_765_609_632,
@@ -42,7 +42,7 @@ const ELBOW_EAST_PROFILE: Profile = [
 // Frozen E1 east-sector profile from trivariate/pierced.py. Triples are
 // homogeneous angular/radial controls (wx, wy, w), scaled by 2^53.
 const HOLE_PROFILE_SCALE: i128 = 9_007_199_254_740_992;
-const HOLE_EAST_PROFILE: Profile = [
+pub(crate) const HOLE_EAST_PROFILE: Profile = [
     [
         90_071_992_547_409_920,
         -90_071_992_547_409_920,

@@ -17,5 +17,6 @@ pub mod interchange;
 pub mod json;
 pub mod planar;
 pub mod rational_sweep;
+pub mod sections;
 pub mod stress;
 pub use bezier::{Evaluation, MapError, RationalBezierMap};

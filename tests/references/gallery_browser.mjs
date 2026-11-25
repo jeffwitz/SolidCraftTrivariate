@@ -6,6 +6,7 @@
  *
  * Usage:
  *   CHROME_BIN=/usr/bin/google-chrome node tests/references/gallery_browser.mjs [output-dir]
+ *   node tests/references/gallery_browser.mjs --check-expressions
  */
 
 import { spawn } from 'node:child_process';
@@ -28,6 +29,80 @@ const MIME_TYPES = {
   '.json': 'application/json; charset=utf-8',
   '.step': 'application/step',
 };
+
+const injectedExpressions = {
+  galleryReady: `(() => {
+    const status = document.querySelector('#canvas-state');
+    const select = document.querySelector('#experiment-select');
+    return Boolean(status?.hidden && select?.options.length > 0 && !select.disabled);
+  })()`,
+  bodySummary: 'document.body.innerText.slice(0, 1600)',
+  canvasRegion: `(() => {
+    const rect = document.querySelector('#model-canvas').getBoundingClientRect();
+    return { x: rect.x, y: rect.y, width: rect.width, height: rect.height, scale: 1 };
+  })()`,
+  resources: `fetch('./experiments.json').then(response => response.json()).then(async experiments =>
+    Promise.all(experiments.map(async experiment => ({
+      id: experiment.id,
+      title: experiment.title || experiment.id,
+      status: await Promise.all(['model', 'source', 'step'].map(async key => {
+        const response = await fetch(experiment[key]);
+        return response.status;
+      })),
+    }))))`,
+  selectExperiment: id => `(() => {
+    const select = document.querySelector('#experiment-select');
+    select.value = ${JSON.stringify(id)};
+    select.dispatchEvent(new Event('change'));
+  })()`,
+  blocksMode: "document.querySelector('[data-mode=blocks]').click()",
+  zCut: `(() => {
+    const axis = document.querySelector('#clip-axis');
+    axis.value = 'z';
+    axis.dispatchEvent(new Event('change'));
+    const fraction = document.querySelector('#clip-fraction');
+    fraction.value = '50';
+    fraction.dispatchEvent(new Event('input'));
+  })()`,
+  selectedId: "document.querySelector('#experiment-select').value",
+  mobileMetrics: `(() => ({
+    viewportWidth: innerWidth,
+    documentWidth: document.documentElement.scrollWidth,
+    canvas: (() => {
+      const rect = document.querySelector('#model-canvas').getBoundingClientRect();
+      return { x: rect.x, y: rect.y, width: rect.width, height: rect.height };
+    })(),
+  }))()`,
+};
+
+function validateInjectedExpressions() {
+  const expressions = [
+    ['galleryReady', injectedExpressions.galleryReady],
+    ['bodySummary', injectedExpressions.bodySummary],
+    ['canvasRegion', injectedExpressions.canvasRegion],
+    ['resources', injectedExpressions.resources],
+    ['selectExperiment', injectedExpressions.selectExperiment('s3-face-pocket')],
+    ['selectExperimentEscapedId', injectedExpressions.selectExperiment("quote'\\test")],
+    ['blocksMode', injectedExpressions.blocksMode],
+    ['zCut', injectedExpressions.zCut],
+    ['selectedId', injectedExpressions.selectedId],
+    ['mobileMetrics', injectedExpressions.mobileMetrics],
+  ];
+  for (const [name, expression] of expressions) {
+    try {
+      new Function(`return (${expression});`);
+    } catch (error) {
+      throw new SyntaxError(`Invalid Runtime.evaluate expression (${name}): ${error.message}`, { cause: error });
+    }
+  }
+}
+
+validateInjectedExpressions();
+
+if (process.argv[2] === '--check-expressions') {
+  console.log('Validated all injected Runtime.evaluate expressions.');
+  process.exit(0);
+}
 
 await mkdir(OUTPUT_DIR, { recursive: true });
 
@@ -135,6 +210,7 @@ function cdp(method, params = {}, sessionId) {
 
 const pause = milliseconds => new Promise(resolve => setTimeout(resolve, milliseconds));
 const watchdog = setTimeout(() => child.kill('SIGKILL'), 180_000);
+const chromeStopped = new Promise(resolve => child.once('exit', resolve));
 
 async function runBrowserChecks() {
   const { targetId } = await cdp('Target.createTarget', { url: 'about:blank' });
@@ -153,15 +229,11 @@ async function runBrowserChecks() {
   };
   const waitForGallery = async () => {
     for (let attempt = 0; attempt < 150; attempt++) {
-      const ready = await evaluate(`(() => {
-        const status = document.querySelector('#canvas-state');
-        const select = document.querySelector('#experiment-select');
-        return Boolean(status?.hidden && select?.options.length > 0 && !select.disabled);
-      })()`);
+      const ready = await evaluate(injectedExpressions.galleryReady);
       if (ready) return;
       await pause(200);
     }
-    const summary = await evaluate('document.body.innerText.slice(0, 1600)');
+    const summary = await evaluate(injectedExpressions.bodySummary);
     throw new Error(`Gallery did not become ready: ${summary}`);
   };
   const capture = async (name, region) => {
@@ -173,16 +245,9 @@ async function runBrowserChecks() {
     await writeFile(path.join(OUTPUT_DIR, `${name}.png`), bytes);
     return createHash('sha256').update(bytes).digest('hex');
   };
-  const canvasRegion = async () => evaluate(`(() => {
-    const rect = document.querySelector('#model-canvas').getBoundingClientRect();
-    return { x: rect.x, y: rect.y, width: rect.width, height: rect.height, scale: 1 };
-  })()`);
+  const canvasRegion = async () => evaluate(injectedExpressions.canvasRegion);
   const selectExperiment = async id => {
-    await evaluate(`(() => {
-      const select = document.querySelector('#experiment-select');
-      select.value = ${JSON.stringify(id)};
-      select.dispatchEvent(new Event('change'));
-    })()`);
+    await evaluate(injectedExpressions.selectExperiment(id));
     await waitForGallery();
   };
 
@@ -194,37 +259,23 @@ async function runBrowserChecks() {
   await command('Page.navigate', { url: serverUrl });
   await waitForGallery();
 
-  const resources = await evaluate(`fetch('./experiments.json').then(response => response.json()).then(async experiments =>
-    Promise.all(experiments.map(async experiment => ({
-      id: experiment.id,
-      status: await Promise.all(['model', 'source', 'step'].map(async key => {
-        const response = await fetch(experiment[key]);
-        return response.status;
-      })),
-    })))`);
+  const resources = await evaluate(injectedExpressions.resources);
   if (resources.some(experiment => experiment.status.some(status => status !== 200))) {
     throw new Error(`Gallery resource requests failed: ${JSON.stringify(resources)}`);
   }
 
   const version = await cdp('Browser.getVersion');
-  const s3Experiment = resources.find(experiment => /(?:^|[-_])s3(?:[-_]|$)|face[-_]?pocket/i.test(experiment.id));
+  const s3Experiment = resources.find(experiment => /(?:^|[-_])s3(?:[-_]|$)|face[-_]?pocket/i.test(`${experiment.id} ${experiment.title}`));
   const selectedExperiment = s3Experiment || resources[0];
   if (!selectedExperiment) throw new Error('No usable gallery experiments were found');
 
   await selectExperiment(selectedExperiment.id);
   const desktopHash = await capture('desktop');
   const surfaceHash = await capture('surface', await canvasRegion());
-  await evaluate("document.querySelector('[data-mode=blocks]').click()");
+  await evaluate(injectedExpressions.blocksMode);
   await pause(700);
   const blocksHash = await capture('blocks', await canvasRegion());
-  await evaluate(`(() => {
-    const axis = document.querySelector('#clip-axis');
-    axis.value = 'z';
-    axis.dispatchEvent(new Event('change'));
-    const fraction = document.querySelector('#clip-fraction');
-    fraction.value = '50';
-    fraction.dispatchEvent(new Event('input'));
-  })()`);
+  await evaluate(injectedExpressions.zCut);
   await pause(1200);
   const cutHash = await capture('cut', await canvasRegion());
   if (new Set([surfaceHash, blocksHash, cutHash]).size !== 3) {
@@ -234,7 +285,7 @@ async function runBrowserChecks() {
   const experimentChecks = [];
   for (const experiment of resources) {
     await selectExperiment(experiment.id);
-    const selectedId = await evaluate("document.querySelector('#experiment-select').value");
+    const selectedId = await evaluate(injectedExpressions.selectedId);
     if (selectedId !== experiment.id) throw new Error(`Failed to select ${experiment.id}`);
     experimentChecks.push(experiment.id);
   }
@@ -244,14 +295,7 @@ async function runBrowserChecks() {
     width: 390, height: 844, deviceScaleFactor: 1, mobile: true,
   });
   await pause(500);
-  const mobileMetrics = await evaluate(`(() => ({
-    viewportWidth: innerWidth,
-    documentWidth: document.documentElement.scrollWidth,
-    canvas: (() => {
-      const rect = document.querySelector('#model-canvas').getBoundingClientRect();
-      return { x: rect.x, y: rect.y, width: rect.width, height: rect.height };
-    })(),
-  }))()`);
+  const mobileMetrics = await evaluate(injectedExpressions.mobileMetrics);
   if (mobileMetrics.documentWidth > mobileMetrics.viewportWidth + 1
     || mobileMetrics.canvas.width < 1 || mobileMetrics.canvas.height < 1) {
     throw new Error(`Mobile layout failed: ${JSON.stringify(mobileMetrics)}`);
@@ -281,7 +325,14 @@ try {
   process.exitCode = 1;
 } finally {
   clearTimeout(watchdog);
-  child.kill();
+  if (!chromeExited) {
+    child.kill('SIGTERM');
+    await Promise.race([chromeStopped, pause(5_000)]);
+    if (!chromeExited) {
+      child.kill('SIGKILL');
+      await Promise.race([chromeStopped, pause(2_000)]);
+    }
+  }
   await new Promise(resolve => siteServer.close(resolve));
-  await rm(profileDir, { recursive: true, force: true });
+  await rm(profileDir, { recursive: true, force: true, maxRetries: 8, retryDelay: 250 });
 }

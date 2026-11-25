@@ -41,6 +41,45 @@ pub fn solve_constrained(
     tolerance: f64,
     max_iterations: usize,
 ) -> Result<ConstrainedSolution, &'static str> {
+    solve_with_guess(
+        stiffness,
+        component_lifts,
+        force_n,
+        tolerance,
+        max_iterations,
+        None,
+    )
+}
+
+/// Solve from a finite initial vector in the same reduced, component-major
+/// ordering as `ConstrainedSolution::reduced_values`. Essential values are
+/// applied through the supplied lifts independently of the initial guess.
+pub fn solve_constrained_from(
+    stiffness: &Stiffness,
+    component_lifts: [&Lift; 3],
+    force_n: &[f64],
+    tolerance: f64,
+    max_iterations: usize,
+    initial_reduced: &[f64],
+) -> Result<ConstrainedSolution, &'static str> {
+    solve_with_guess(
+        stiffness,
+        component_lifts,
+        force_n,
+        tolerance,
+        max_iterations,
+        Some(initial_reduced),
+    )
+}
+
+fn solve_with_guess(
+    stiffness: &Stiffness,
+    component_lifts: [&Lift; 3],
+    force_n: &[f64],
+    tolerance: f64,
+    max_iterations: usize,
+    guess: Option<&[f64]>,
+) -> Result<ConstrainedSolution, &'static str> {
     if !tolerance.is_finite() || tolerance <= 0. || tolerance >= 1. {
         return Err("tolerance must be finite and in (0,1)");
     }
@@ -109,23 +148,8 @@ pub fn solve_constrained(
             full_offsets[3 * i + c] = component_offsets[c][i];
         }
     }
-    let kg = stiffness.apply(&full_offsets)?;
-    let shifted: Vec<f64> = force_n.iter().zip(kg).map(|(f, k)| f - k).collect();
-    if shifted.iter().any(|x| !x.is_finite()) {
-        return Err("nonfinite shifted force");
-    }
-
-    let mut rhs = vec![0.; reduced_size];
-    for i in 0..n {
-        for c in 0..3 {
-            for term in &component_maps[c][i] {
-                rhs[term.index] += term.coefficient * shifted[3 * i + c];
-            }
-        }
-    }
-    if rhs.iter().any(|x| !x.is_finite()) {
-        return Err("nonfinite reduced force");
-    }
+    let shifted = stiffness.equilibrium_residual(&full_offsets, force_n)?;
+    let rhs = project_equilibrium(&component_maps, &shifted, reduced_size)?;
 
     // Exact diagonal of the congruence, accumulated from sparse CSR entries.
     let mut diagonal = vec![0.; reduced_size];
@@ -152,19 +176,41 @@ pub fn solve_constrained(
         return Err("reduced stiffness has nonpositive or nonfinite diagonal");
     }
 
-    let mut reduced = vec![0.; reduced_size];
+    if guess.is_some_and(|v| v.len() != reduced_size || v.iter().any(|x| !x.is_finite())) {
+        return Err("invalid initial reduced vector");
+    }
+    let mut reduced = guess.map_or_else(|| vec![0.; reduced_size], |v| v.to_vec());
     let mut iterations = 0usize;
+    let mut relative_residual = 0.;
     if reduced_size > 0 {
         let rhs_norm = norm(&rhs);
+        if !rhs_norm.is_finite() {
+            return Err("nonfinite reduced load norm");
+        }
         let target = tolerance * rhs_norm;
-        let mut residual = rhs.clone();
+        let equilibrium = |reduced: &[f64]| {
+            let full = reconstruct(&component_maps, &component_offsets, reduced, n);
+            let r = stiffness.equilibrium_residual(&full, force_n)?;
+            project_equilibrium(&component_maps, &r, reduced_size)
+        };
+        let mut residual = if rhs_norm == 0. {
+            reduced.fill(0.);
+            vec![0.; reduced_size]
+        } else if guess.is_some() {
+            equilibrium(&reduced)?
+        } else {
+            rhs.clone()
+        };
+        if rhs_norm > 0. {
+            relative_residual = norm(&residual) / rhs_norm;
+        }
         let mut z: Vec<f64> = residual.iter().zip(&diagonal).map(|(r, d)| r / d).collect();
         let mut direction = z.clone();
         let mut rz = dot(&residual, &z);
         if !rz.is_finite() || rz < 0. {
             return Err("invalid preconditioned residual");
         }
-        while norm(&residual) > target && (rhs_norm == 0. || norm(&residual) != 0.) {
+        while norm(&residual) > target {
             if iterations >= max_iterations {
                 return Err("conjugate-gradient iteration limit reached");
             }
@@ -181,7 +227,21 @@ pub fn solve_constrained(
             axpy(&mut residual, -alpha, &applied);
             iterations += 1;
             if norm(&residual) <= target {
-                break;
+                residual = equilibrium(&reduced)?;
+                relative_residual = norm(&residual) / rhs_norm;
+                if !relative_residual.is_finite() {
+                    return Err("nonfinite measured reduced residual");
+                }
+                if relative_residual <= tolerance {
+                    break;
+                }
+                z = residual.iter().zip(&diagonal).map(|(r, d)| r / d).collect();
+                direction.clone_from(&z);
+                rz = dot(&residual, &z);
+                if !rz.is_finite() || rz <= 0. {
+                    return Err("nonpositive preconditioned equilibrium residual");
+                }
+                continue;
             }
             z = residual.iter().zip(&diagonal).map(|(r, d)| r / d).collect();
             let next_rz = dot(&residual, &z);
@@ -202,24 +262,6 @@ pub fn solve_constrained(
         return Err("nonfinite reduced solution");
     }
 
-    // Recompute the reduced residual to avoid relying on recurrence drift.
-    let mut relative_residual = 0.;
-    if reduced_size > 0 {
-        let applied = apply_reduced(stiffness, &component_maps, n, &reduced)?;
-        let res: Vec<f64> = rhs.iter().zip(applied).map(|(b, a)| b - a).collect();
-        let denominator = norm(&rhs);
-        relative_residual = if denominator == 0. {
-            norm(&res)
-        } else {
-            norm(&res) / denominator
-        };
-        if !relative_residual.is_finite()
-            || relative_residual > tolerance * (1. + 32. * f64::EPSILON)
-        {
-            return Err("reduced residual exceeds tolerance");
-        }
-    }
-
     let displacement = reconstruct(&component_maps, &component_offsets, &reduced, n);
     if displacement.iter().any(|x| !x.is_finite()) {
         return Err("nonfinite reconstructed displacement");
@@ -236,6 +278,40 @@ pub fn solve_constrained(
         iterations,
         strain_energy_n_mm: 0.5 * quadratic.max(0.),
     })
+}
+
+/// Project a measured full force residual, retaining low-order terms where
+/// neighboring hanging-constraint forces cancel on a common master.
+fn project_equilibrium(
+    maps: &[Vec<Vec<Term>>],
+    full: &[f64],
+    size: usize,
+) -> Result<Vec<f64>, &'static str> {
+    let mut sum = vec![0_f64; size];
+    let mut correction = vec![0.; size];
+    for (i, vector) in full.as_chunks::<3>().0.iter().enumerate() {
+        for (component, &force) in vector.iter().enumerate() {
+            for term in &maps[component][i] {
+                let j = term.index;
+                let product = term.coefficient * force;
+                let next = sum[j] + product;
+                let roundoff = if sum[j].abs() >= product.abs() {
+                    (sum[j] - next) + product
+                } else {
+                    (product - next) + sum[j]
+                };
+                correction[j] += roundoff + term.coefficient.mul_add(force, -product);
+                sum[j] = next;
+            }
+        }
+    }
+    for (s, c) in sum.iter_mut().zip(correction) {
+        *s += c;
+        if !s.is_finite() {
+            return Err("nonfinite projected force residual");
+        }
+    }
+    Ok(sum)
 }
 
 fn reconstruct(
@@ -366,6 +442,38 @@ mod tests {
         assert!((u[7] - 2.8).abs() < 1e-12);
         assert_eq!([u[2], u[5], u[8]], [1., 2., 3.]);
         assert!(result.relative_residual <= 1e-12);
+    }
+
+    #[test]
+    fn initialized_reduced_solution_is_checked_against_the_full_affine_equilibrium() {
+        let k = identity_stiffness(2);
+        let x = lift(
+            vec![
+                (vec![(0, ratio(1, 1))], ratio(0, 1)),
+                (vec![(0, ratio(1, 2))], ratio(3, 2)),
+            ],
+            vec![0],
+        );
+        let fixed = lift(vec![(vec![], ratio(0, 1)), (vec![], ratio(0, 1))], vec![]);
+        let force = [2., 0., 0., 1., 0., 0.];
+        let cold = solve_constrained(&k, [&x, &fixed, &fixed], &force, 1e-12, 10).unwrap();
+        let warm = solve_constrained_from(
+            &k,
+            [&x, &fixed, &fixed],
+            &force,
+            1e-12,
+            10,
+            &cold.reduced_values,
+        )
+        .unwrap();
+        assert_eq!(warm.iterations, 0);
+        assert_eq!(cold.displacement_mm, warm.displacement_mm);
+        assert!(warm.relative_residual <= 1e-12);
+        assert!(solve_constrained_from(&k, [&x, &fixed, &fixed], &force, 1e-12, 10, &[]).is_err());
+        assert!(
+            solve_constrained_from(&k, [&x, &fixed, &fixed], &force, 1e-12, 10, &[f64::NAN])
+                .is_err()
+        );
     }
 
     #[test]

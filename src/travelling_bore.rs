@@ -65,6 +65,7 @@ struct Point {
     x_um: i128,
     y_um: i128,
     half_angle: Option<(i128, i128)>,
+    bounded_y_fm: Option<i128>,
 }
 
 impl Point {
@@ -73,6 +74,7 @@ impl Point {
             x_um,
             y_um,
             half_angle: None,
+            bounded_y_fm: None,
         }
     }
 
@@ -94,11 +96,12 @@ impl Point {
             x_um,
             y_um,
             half_angle: Some((y, den)),
+            bounded_y_fm: None,
         })
     }
 }
 
-fn isqrt(n: i128) -> i128 {
+pub(crate) fn isqrt(n: i128) -> i128 {
     if n <= 0 {
         return 0;
     }
@@ -144,11 +147,7 @@ fn arc_mid_h(a: Point, b: Point, cx_um: i128) -> Result<RH, &'static str> {
         .checked_mul(db)
         .and_then(|v| nb.checked_mul(da).and_then(|n| v.checked_add(n)))
         .ok_or("arc coordinate overflow")?;
-    let sx: i128 = if (a.x_um + b.x_um) / 2 >= cx_um {
-        1
-    } else {
-        -1
-    };
+    let sx: i128 = if a.x_um + b.x_um >= 2 * cx_um { 1 } else { -1 };
     let sy: i128 = if a.y_um + b.y_um >= 0 { 1 } else { -1 };
     let xnum = cx_um
         .checked_mul(product)
@@ -192,6 +191,19 @@ fn triangle_controls(points: [Point; 3], cx_um: i128) -> Result<[[i64; 3]; 6], &
     }
     if cross < 0 {
         p.swap(1, 2);
+    }
+    if p.iter().any(|v| v.bounded_y_fm.is_some()) {
+        let points = p.map(|v| {
+            [
+                v.x_um * 1_000_000_000,
+                v.bounded_y_fm.unwrap_or(v.y_um * 1_000_000_000),
+            ]
+        });
+        return crate::travelling_bore_bounded::triangle_net(
+            points,
+            p.map(|v| v.bounded_y_fm.is_some()),
+            cx_um,
+        );
     }
     let v = [
         vertex_h(p[0], cx_um)?,
@@ -322,14 +334,15 @@ fn append_central_half(
     y_sign: i128,
     id: &str,
     z_bounds: [i64; 2],
+    bounded: bool,
 ) -> Result<(), &'static str> {
     let [x0, x1] = x_bounds;
     let [z0, z1] = z_bounds;
-    let xm = (x0 + x1) / 2;
-    if (x0 + x1) / 2 > POCKET_LEFT_UM && (x0 + x1) / 2 < POCKET_RIGHT_UM && z0 == 4 {
+    let twice_mid = x0 + x1;
+    if twice_mid > 2 * POCKET_LEFT_UM && twice_mid < 2 * POCKET_RIGHT_UM && z0 == 4 {
         return Ok(());
     }
-    let sx = if xm >= cx_um { 1 } else { -1 };
+    let sx = if twice_mid >= 2 * cx_um { 1 } else { -1 };
     let a = (x0 - cx_um).abs().min((x1 - cx_um).abs());
     let b = (x0 - cx_um).abs().max((x1 - cx_um).abs());
     let y0 = 0_i128;
@@ -344,18 +357,30 @@ fn append_central_half(
     }
 
     let xa = cx_um + sx * a;
-    let ya = sqrt_circle_y(a)?;
-    let p = Point::circle(xa, y_sign * ya, cx_um)?;
+    let circle_point = |x_um: i128| {
+        let distance = (x_um - cx_um).abs();
+        if bounded {
+            let fm = y_sign * crate::travelling_bore_bounded::circle_height_fm(distance);
+            Ok(Point {
+                x_um,
+                y_um: fm / 1_000_000_000,
+                half_angle: None,
+                bounded_y_fm: Some(fm),
+            })
+        } else {
+            Point::circle(x_um, y_sign * sqrt_circle_y(distance)?, cx_um)
+        }
+    };
+    let p = circle_point(xa)?;
     let t_l = Point::plain(xa, y4);
     if b <= RADIUS_UM {
         let xb = cx_um + sx * b;
-        let yb = sqrt_circle_y(b)?;
-        let e = Point::circle(xb, y_sign * yb, cx_um)?;
+        let e = circle_point(xb)?;
         let t_r = Point::plain(xb, y4);
         append_triangle(blocks, [p, e, t_r], cx_um, &format!("{id}_t0"), z0, z1)?;
         append_triangle(blocks, [p, t_r, t_l], cx_um, &format!("{id}_t1"), z0, z1)?;
     } else {
-        let e = Point::circle(cx_um + sx * RADIUS_UM, 0, cx_um)?;
+        let e = circle_point(cx_um + sx * RADIUS_UM)?;
         let b_point = Point::plain(cx_um + sx * b, 0);
         let t_r = Point::plain(cx_um + sx * b, y4);
         append_triangle(blocks, [p, e, t_r], cx_um, &format!("{id}_t0"), z0, z1)?;
@@ -379,6 +404,10 @@ fn append_central_half(
 /// `[-6,-2] × [-4,4]` mm. Every returned control is an exact integer multiple
 /// of its block's positive homogeneous scale.
 pub fn travelling_bore_blocks(cx_um: i32) -> Result<Vec<BracketBlock>, &'static str> {
+    build_travel(cx_um, false)
+}
+
+pub(crate) fn build_travel(cx_um: i32, bounded: bool) -> Result<Vec<BracketBlock>, &'static str> {
     let cx_um = i128::from(cx_um);
     if !(-5_000..=14_000).contains(&cx_um) {
         return Err("bore center outside supported travel interval");
@@ -414,7 +443,7 @@ pub fn travelling_bore_blocks(cx_um: i32) -> Result<Vec<BracketBlock>, &'static 
                     "travel_c{column:02}_ym{}_z{layer}",
                     if y_sign > 0 { "p" } else { "n" }
                 );
-                append_central_half(&mut blocks, cx_um, [x0, x1], y_sign, &id, [z0, z1])?;
+                append_central_half(&mut blocks, cx_um, [x0, x1], y_sign, &id, [z0, z1], bounded)?;
             }
         }
     }
@@ -448,11 +477,9 @@ mod tests {
     fn supported_center_builds_positive_exact_blocks() {
         let blocks = travelling_bore_blocks(3_000).unwrap();
         assert!(!blocks.is_empty());
-        assert!(
-            blocks
-                .iter()
-                .all(|b| b.degrees == [2, 2, 1] && b.controls.len() == 18)
-        );
+        assert!(blocks
+            .iter()
+            .all(|b| b.degrees == [2, 2, 1] && b.controls.len() == 18));
         let mut ids = blocks.iter().map(|b| b.id.as_str()).collect::<Vec<_>>();
         ids.sort_unstable();
         ids.dedup();

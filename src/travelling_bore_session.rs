@@ -5,14 +5,34 @@ use crate::{
     incidence::BlockSide,
     travelling_bore::travelling_bore_blocks,
     travelling_bore_audit::audit_travelling_bore,
+    travelling_bore_bounded::travelling_bore_bounded_blocks,
+    travelling_bore_bounded_audit::audit_travelling_bore_bounded,
     travelling_bore_events::{analyze_travelling_bore, TravellingBoreReport},
 };
 use std::collections::{BTreeMap, BTreeSet};
+
+/// Construction contract selected for every transaction in a session.
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
+pub enum TravelGeometry {
+    #[default]
+    ExactMicrometreCuts,
+    BoundedRationalArcs,
+}
+
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub enum TravelFidelity {
+    ExactCircularArcs,
+    CertifiedApproximation {
+        radial_upper_mm: f64,
+        hausdorff_upper_mm: f64,
+    },
+}
 
 #[derive(Debug)]
 pub struct TravelState {
     pub center_x_um: i32,
     pub physical: TravellingBoreReport,
+    pub fidelity: TravelFidelity,
     pub blocks: Vec<BracketBlock>,
     pub certificate: BracketCertificate,
     pub selections: BTreeMap<String, Vec<BlockSide>>,
@@ -31,10 +51,18 @@ pub struct TravelChange {
 
 #[derive(Default)]
 pub struct TravellingBoreSession {
+    geometry: TravelGeometry,
     current: Option<TravelState>,
 }
 
 impl TravellingBoreSession {
+    pub fn with_geometry(geometry: TravelGeometry) -> Self {
+        Self {
+            geometry,
+            current: None,
+        }
+    }
+
     pub fn current(&self) -> Option<&TravelState> {
         self.current.as_ref()
     }
@@ -47,8 +75,22 @@ impl TravellingBoreSession {
         required_features: &[&str],
     ) -> Result<TravelChange, &'static str> {
         let physical = analyze_travelling_bore(i64::from(center_x_um))?;
-        let blocks = travelling_bore_blocks(center_x_um)?;
-        let certificate = audit_travelling_bore(center_x_um, &blocks)?;
+        let (blocks, certificate, fidelity) = match self.geometry {
+            TravelGeometry::ExactMicrometreCuts => {
+                let blocks = travelling_bore_blocks(center_x_um)?;
+                let cert = audit_travelling_bore(center_x_um, &blocks)?;
+                (blocks, cert, TravelFidelity::ExactCircularArcs)
+            }
+            TravelGeometry::BoundedRationalArcs => {
+                let blocks = travelling_bore_bounded_blocks(center_x_um)?;
+                let result = audit_travelling_bore_bounded(center_x_um, &blocks)?;
+                let fidelity = TravelFidelity::CertifiedApproximation {
+                    radial_upper_mm: result.radial_error_upper_mm,
+                    hausdorff_upper_mm: result.hausdorff_error_upper_mm,
+                };
+                (blocks, result.certificate, fidelity)
+            }
+        };
         let mut selections: BTreeMap<String, Vec<BlockSide>> = BTreeMap::new();
         for (side, feature) in &certificate.design_faces {
             selections
@@ -93,6 +135,7 @@ impl TravellingBoreSession {
         self.current = Some(TravelState {
             center_x_um,
             physical,
+            fidelity,
             blocks,
             certificate,
             selections,
@@ -123,6 +166,32 @@ mod tests {
             assert_eq!(state.certificate, certificate);
             assert_eq!(state.selections, selections);
         }
+    }
+
+    #[test]
+    fn bounded_edits_preserve_fidelity_and_selections_across_rejected_events() {
+        let mut session = TravellingBoreSession::with_geometry(TravelGeometry::BoundedRationalArcs);
+        session.apply(-100, &["bore_wall"]).unwrap();
+        assert!(session.apply(0, &[]).is_err());
+        assert_eq!(session.current().unwrap().center_x_um, -100);
+        session.apply(11900, &["bore_wall"]).unwrap();
+        let saved = session.current().unwrap().fidelity;
+        let TravelFidelity::CertifiedApproximation {
+            hausdorff_upper_mm, ..
+        } = saved
+        else {
+            panic!("missing bounded fidelity")
+        };
+        assert!((0.0..=1e-8).contains(&hausdorff_upper_mm));
+        assert!(session.apply(13000, &["bore_wall"]).is_err());
+        assert_eq!(session.current().unwrap().fidelity, saved);
+        let mut cold = TravellingBoreSession::with_geometry(TravelGeometry::BoundedRationalArcs);
+        cold.apply(11900, &[]).unwrap();
+        let (a, b) = (session.current().unwrap(), cold.current().unwrap());
+        assert_eq!(a.blocks, b.blocks);
+        assert_eq!(a.selections, b.selections);
+        assert_eq!(a.certificate, b.certificate);
+        assert_eq!(a.fidelity, b.fidelity);
     }
 
     #[test]

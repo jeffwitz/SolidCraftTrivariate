@@ -84,6 +84,52 @@ fn split_axis(
     Ok((lower, upper))
 }
 
+/// Restrict an elevated Q2 net to a sequence of dyadic octants.
+///
+/// Each path entry selects lower or upper half on `(u,v,w)`, in root-to-leaf
+/// order. Every split uses exact homogeneous de Casteljau coefficients; one
+/// common positive gcd is removed after each octant restriction.
+pub(crate) fn restrict_q2_child(
+    controls: &[[i128; 4]],
+    path: &[[u8; 3]],
+) -> Result<Vec<[i128; 4]>, &'static str> {
+    if controls.len() != 27 || controls.iter().any(|p| p[3] <= 0) {
+        return Err("invalid Q2 net for dyadic restriction");
+    }
+    if path.iter().flatten().any(|&bit| bit > 1) {
+        return Err("dyadic child bit must be zero or one");
+    }
+    let mut net = controls.to_vec();
+    for octant in path {
+        for (axis, &bit) in octant.iter().enumerate() {
+            let (lower, upper) = split_axis(&net, axis)?;
+            net = if bit == 0 { lower } else { upper };
+        }
+        let divisor = net.iter().flatten().copied().fold(0_i128, gcd_i128);
+        if divisor <= 0 {
+            return Err("invalid homogeneous scale after dyadic restriction");
+        }
+        for point in &mut net {
+            for component in point {
+                *component /= divisor;
+            }
+        }
+        if net.iter().any(|p| p[3] <= 0) {
+            return Err("nonpositive weight after dyadic restriction");
+        }
+    }
+    Ok(net)
+}
+
+fn gcd_i128(mut a: i128, mut b: i128) -> i128 {
+    a = a.abs();
+    b = b.abs();
+    while b != 0 {
+        (a, b) = (b, a % b);
+    }
+    a.max(1)
+}
+
 fn children(block: &AnalysisBlock, split_w: bool) -> Result<Vec<ChildNet>, &'static str> {
     if block.controls.len() != 27
         || block.dofs.len() != 27
@@ -200,10 +246,13 @@ pub fn refine_uniform(parent: &AnalysisSpace) -> Result<AnalysisSpace, &'static 
 /// block. All columns must be vertical with constant weights and ordered z.
 pub fn refine_cross_section(parent: &AnalysisSpace) -> Result<AnalysisSpace, &'static str> {
     for b in &parent.blocks {
-        if b.controls.len() != 27 || !b.controls.as_chunks::<3>().0.iter().all(|column| {
-            column.windows(2).all(|p| p[0][..2] == p[1][..2] &&
-                p[0][3] == p[1][3] && p[0][2] < p[1][2])
-        }) {
+        if b.controls.len() != 27
+            || !b.controls.as_chunks::<3>().0.iter().all(|column| {
+                column
+                    .windows(2)
+                    .all(|p| p[0][..2] == p[1][..2] && p[0][3] == p[1][3] && p[0][2] < p[1][2])
+            })
+        {
             return Err("cross-section refinement requires vertical extrusion columns");
         }
     }
@@ -283,7 +332,11 @@ fn refine(parent: &AnalysisSpace, split_w: bool) -> Result<AnalysisSpace, &'stat
                 let grid = [
                     2 * child.bits[0] + local[0],
                     2 * child.bits[1] + local[1],
-                    if split_w { 2 * child.bits[2] + local[2] } else { 2 * local[2] },
+                    if split_w {
+                        2 * child.bits[2] + local[2]
+                    } else {
+                        2 * local[2]
+                    },
                 ];
                 let key = topology_key(corners, grid);
                 keys.insert(key.clone());

@@ -10,6 +10,14 @@ pub struct FaceNet {
     pub controls: Vec<[i64; 4]>,
 }
 
+/// Wide exact face net used internally by repeatedly restricted adaptive
+/// charts. The public `FaceNet` remains the compact i64 interchange type.
+#[derive(Debug, Clone)]
+pub(crate) struct FaceNetWide {
+    pub degrees: [usize; 2],
+    pub controls: Vec<[i128; 4]>,
+}
+
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum Span {
     Full,
@@ -76,6 +84,25 @@ pub fn nested_constraints(
 ) -> Result<Vec<Row>, &'static str> {
     validate(master)?;
     validate(slave)?;
+    let master = FaceNetWide {
+        degrees: master.degrees,
+        controls: master.controls.iter().map(|p| p.map(i128::from)).collect(),
+    };
+    let slave = FaceNetWide {
+        degrees: slave.degrees,
+        controls: slave.controls.iter().map(|p| p.map(i128::from)).collect(),
+    };
+    nested_constraints_wide(&master, &slave, spans, o)
+}
+
+pub(crate) fn nested_constraints_wide(
+    master: &FaceNetWide,
+    slave: &FaceNetWide,
+    spans: [Span; 2],
+    o: Orientation,
+) -> Result<Vec<Row>, &'static str> {
+    validate_wide(master)?;
+    validate_wide(slave)?;
     let [p, q] = master.degrees;
     let [r, s] = if o.swap {
         [slave.degrees[1], slave.degrees[0]]
@@ -105,9 +132,20 @@ pub fn nested_constraints(
                     let index = m * (q + 1) + n;
                     let point = master.controls[index];
                     for (dest, value) in expected[slave_index].iter_mut().zip(point) {
-                        *dest += factor * i128::from(value);
+                        *dest = dest
+                            .checked_add(
+                                factor
+                                    .checked_mul(value)
+                                    .ok_or("restricted face coefficient exceeds i128")?,
+                            )
+                            .ok_or("restricted face coefficient exceeds i128")?;
                     }
-                    terms.push((index, factor * i128::from(point[3])));
+                    terms.push((
+                        index,
+                        factor
+                            .checked_mul(point[3])
+                            .ok_or("constraint coefficient exceeds i128")?,
+                    ));
                 }
             }
             let common = terms.iter().map(|(_, weight)| *weight).fold(0, gcd);
@@ -122,20 +160,25 @@ pub fn nested_constraints(
     // Each axis contributes at most a factor four, so i64 inputs and their
     // exact restricted net fit i128 even at the limits of signed i64.
     let scale = expected.iter().flatten().copied().fold(0, gcd);
-    let other = slave
-        .controls
-        .iter()
-        .flatten()
-        .map(|&x| i128::from(x))
-        .fold(0, gcd);
+    let other = slave.controls.iter().flatten().copied().fold(0, gcd);
     if expected
         .iter()
         .flatten()
         .zip(slave.controls.iter().flatten())
-        .any(|(e, &a)| e / scale != i128::from(a) / other)
+        .any(|(e, &a)| e / scale != a / other)
     {
         return Err("incompatible restricted homogeneous trace");
     }
     constraints.sort_by_key(|(index, _)| *index);
     Ok(constraints.into_iter().map(|(_, row)| row).collect())
+}
+
+fn validate_wide(net: &FaceNetWide) -> Result<(), &'static str> {
+    if net.degrees.iter().any(|&d| !(1..=2).contains(&d))
+        || net.controls.len() != (net.degrees[0] + 1) * (net.degrees[1] + 1)
+        || net.controls.iter().any(|p| p[3] <= 0)
+    {
+        return Err("invalid face net");
+    }
+    Ok(())
 }

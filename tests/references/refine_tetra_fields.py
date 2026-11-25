@@ -25,14 +25,14 @@ def session_rss(sid):
     return total
 
 
-def measure(cmd,env,log):
+def measure(cmd,env,log,cwd=None,seconds=1800):
     start=time.monotonic();peak=0;status="completed"
     with log.open("w") as stream:
-        child=subprocess.Popen(cmd,env=env,stdout=stream,stderr=subprocess.STDOUT,start_new_session=True)
+        child=subprocess.Popen(cmd,env=env,stdout=stream,stderr=subprocess.STDOUT,start_new_session=True,cwd=cwd)
         while child.poll() is None:
             peak=max(peak,session_rss(child.pid))
-            if time.monotonic()-start>=1800 or peak>=6*1024**2:
-                status="timeout" if time.monotonic()-start>=1800 else "rss_budget_exceeded"
+            if time.monotonic()-start>=seconds or peak>=6*1024**2:
+                status="timeout" if time.monotonic()-start>=seconds else "rss_budget_exceeded"
                 os.killpg(child.pid,signal.SIGKILL)
                 break
             time.sleep(.15)

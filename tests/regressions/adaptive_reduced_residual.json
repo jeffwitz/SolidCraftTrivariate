@@ -1,0 +1,9 @@
+{
+  "recipe": {"family": "parameterized_bracket_v1", "radii_sixteenths_mm": [64,64]},
+  "load": "x60 traction -1000 N in y, y50 clamp",
+  "quadrature": 8,
+  "marking": "first adaptive round with theta=0.5, estimator order 4",
+  "leaves": 57,
+  "previous_error": "reduced residual exceeds tolerance",
+  "assertion": "The constrained solve returns a field with measured norm(C^T(f-Ku))/norm(C^T(f-Kg)) <= 1e-10."
+}

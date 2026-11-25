@@ -8,14 +8,26 @@ use std::path::Path;
 
 pub fn write(
     path: &Path,
-    level: usize,
+    uniform_level: Option<usize>,
     radii: [u8; 2],
     q: usize,
     space: &AnalysisSpace,
     displacement: &[f64],
 ) -> Result<(), Box<dyn std::error::Error>> {
     let mut file = BufWriter::new(std::fs::File::create(path)?);
-    file.write_all(b"SCQ2FLD1")?;
+    let (magic, level) = match uniform_level {
+        Some(level) => (b"SCQ2FLD1", level),
+        None => (
+            b"SCQ2ADP1",
+            space
+                .blocks
+                .iter()
+                .map(|b| b.id.matches('/').count())
+                .max()
+                .unwrap_or(0),
+        ),
+    };
+    file.write_all(magic)?;
     file.write_all(&[level.try_into()?, radii[0], radii[1], q.try_into()?])?;
     file.write_all(&u32::try_from(space.blocks.len())?.to_le_bytes())?;
     for block in &space.blocks {

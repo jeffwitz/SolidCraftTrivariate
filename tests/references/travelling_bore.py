@@ -336,9 +336,9 @@ def set_material_center(center_um):
     analytic_material.center = center_um / 1000.0
 
 
-def materialized_samples(blocks, center_um):
+def materialized_samples(blocks, center_um, fidelity_band_mm=0.0):
     set_material_center(center_um)
-    failures, determinants = [], []
+    failures, boundary_band, determinants = [], [], []
     for block in blocks:
         for u in MODEL_SAMPLE_NODES:
             for v in MODEL_SAMPLE_NODES:
@@ -347,11 +347,18 @@ def materialized_samples(blocks, center_um):
                     determinant = j1_geometry.determinant(jac)
                     determinants.append(determinant)
                     if not analytic_material(point):
-                        failures.append({"block": block["id"], "uvw": [u, v, w],
-                                         "point_mm": point, "determinant_mm3": determinant})
+                        record = {"block": block["id"], "uvw": [u, v, w],
+                                  "point_mm": point, "determinant_mm3": determinant,
+                                  "ideal_boundary_clearance_mm": ideal_boundary_clearance(point, center_um)}
+                        if fidelity_band_mm and record["ideal_boundary_clearance_mm"] <= fidelity_band_mm:
+                            boundary_band.append(record)
+                        else:
+                            failures.append(record)
     return {
         "samples": len(determinants),
         "classification_failures": failures,
+        "outside_ideal_within_fidelity_band": boundary_band,
+        "fidelity_band_mm": fidelity_band_mm,
         "nonpositive_sampled_determinants": sum(value <= 0.0 for value in determinants),
         "minimum_sampled_determinant_mm3": min(determinants, default=None),
     }
@@ -424,12 +431,13 @@ def section_samples(blocks, center_um, fidelity_band_mm=0.0):
     candidates = [(block, physical_bounds(block)) for block in blocks]
     records, failures = [], []
     for z in (2.0, 6.0):
-        count, missed = 0, []
+        count, total_count, missed = 0, 0, []
         for x in SECTION_GRID:
             for y in SECTION_GRID:
                 point = (x + 0.137, y + 0.271, z)
                 if not analytic_material(point):
                     continue
+                total_count += 1
                 if fidelity_band_mm and ideal_boundary_clearance(point, center_um) <= fidelity_band_mm:
                     continue
                 count += 1
@@ -443,19 +451,14 @@ def section_samples(blocks, center_um, fidelity_band_mm=0.0):
                         break
                 if not found:
                     missed.append(point)
-        records.append({"z_mm": z, "analytic_material_points": count,
-                        "tested_material_points": count - sum(
-                            1 for x in SECTION_GRID for y in SECTION_GRID
-                            if analytic_material((x + 0.137, y + 0.271, z))
-                            and fidelity_band_mm
-                            and ideal_boundary_clearance((x + 0.137, y + 0.271, z), center_um)
-                            <= fidelity_band_mm),
+        records.append({"z_mm": z, "analytic_material_points": total_count,
+                        "tested_material_points": count,
+                        "excluded_near_ideal_boundary_points": total_count - count,
                         "uncovered_inverse_points": missed})
         failures.extend(missed)
     return {"sections": records, "uncovered_inverse_points": failures,
             "excluded_near_ideal_boundary_count": sum(
-                row["analytic_material_points"] - row["tested_material_points"]
-                for row in records) if records and "tested_material_points" in records[0] else 0,
+                row["excluded_near_ideal_boundary_points"] for row in records),
             "fidelity_band_mm": fidelity_band_mm}
 
 
@@ -645,14 +648,23 @@ def inspect_model(model, center_um, build_ms, build_status):
     area_converged = max(area_qdelta.values(), default=0.0) \
         <= AREA_REL_TOL * max(metrics["total_boundary_area_mm2"], 1.0)
     radial_errors = design_face_accuracy(model, center_um)
-    samples = materialized_samples(blocks, center_um)
-    inverse = section_samples(blocks, center_um)
-    cad = reference_cad(center_um)
-    cad_info = inspect_shape(cad, metrics, center_um)
+    bounded = model.get("schema") == "travelling_bore_bounded_v1"
+    samples = materialized_samples(blocks, center_um,
+                                   BOUNDED_FIDELITY_MM if bounded else 0.0)
+    inverse = section_samples(
+        blocks, center_um,
+        BOUNDED_FIDELITY_MM if model.get("schema") == "travelling_bore_bounded_v1" else 0.0)
+    try:
+        cad = reference_cad(center_um)
+        cad_info = inspect_shape(cad, metrics, center_um)
+        cad_info["status"] = "reference_built_and_inspected"
+    except Exception as error:
+        cad_info = {"status": "reference_occ_failed",
+                    "error": f"{type(error).__name__}: {error}"}
     topology = topology_signature(model)
     incidence = model.get("topology", {})
     tags = sorted(face.get("feature", "") for face in model.get("design_faces", []))
-    return {
+    report = {
         "build_status": "built",
         "build_wall_ms": build_ms,
         "native_status": build_status,
@@ -684,6 +696,22 @@ def inspect_model(model, center_um, build_ms, build_status):
                                 for face in model.get("design_faces", [])),
         },
     }
+    if model.get("schema") == "travelling_bore_bounded_v1":
+        native = build_status if isinstance(build_status, dict) else {}
+        report["representation_fidelity"] = {
+            "representation": native.get("representation"),
+            "fidelity_target": native.get("fidelity_target"),
+            "fidelity_budget_mm": native.get("fidelity_budget_mm"),
+            "radial_error_upper_bound_mm": native.get("radial_error_upper_bound_mm"),
+            "hausdorff_error_upper_bound_mm": native.get("hausdorff_error_upper_bound_mm"),
+            "observed_sampled_radial_error_mm": max(radial_errors.get("bore_wall", [0.0])
+                                                       if isinstance(radial_errors.get("bore_wall"), list)
+                                                       else [radial_errors.get("bore_wall", 0.0)]),
+            "observed_sampled_plane_error_mm": max(
+                (value for feature, value in radial_errors.items() if feature != "bore_wall"),
+                default=0.0),
+        }
+    return report
 
 
 def invalid_recipe_cases(cli, work, family):
@@ -807,6 +835,8 @@ def main():
             else "quantized_rational_arcs",
         "fidelity_budget_mm": None if args.family == "travelling_bore_v1" else 1e-8,
         "rational_intersection_rule": "sqrt(2000^2-delta_um^2) must be an integer micrometre",
+        "fidelity_target": None if args.family == "travelling_bore_v1"
+            else "ideal_clipped_bore_arcs",
         "continuity_at_exact_events": {str(event): physical_continuity(event)
                                         for event in TANGENCIES_UM},
         "cases": {},
@@ -837,25 +867,46 @@ def main():
                     samples = case["materialized_interior_samples"]
                     inverse = case["analytic_section_inverse_samples"]
                     cad = case["occ_constructed_reference"]
-                    case["qualified_by_oracle"] = (
+                    common_qualification = (
                         case["volume_relative_error_final"] <= VOLUME_REL_TOL
                         and case["volume_quadrature_converged"]
-                        and case["surface_quadrature_converged"]
-                        and max(case["surface_relative_errors_final"].values(), default=0.0) <= AREA_REL_TOL
-                        and max(case["design_face_maximum_radial_or_plane_error_mm"].values(), default=0.0)
-                        <= RADIUS_TOL_MM
                         and not case["surface_quadrature_diagnostics"]
                         and not samples["classification_failures"]
                         and samples["nonpositive_sampled_determinants"] == 0
                         and not inverse["uncovered_inverse_points"]
+                        and expected_admission
+                    )
+                    if args.family == "travelling_bore_bounded_v1":
+                        fidelity = case.get("representation_fidelity", {})
+                        case["qualified_by_oracle"] = common_qualification and (
+                            fidelity.get("representation") == "quantized_rational_arcs"
+                            and fidelity.get("fidelity_target") == "ideal_clipped_bore_arcs"
+                            and fidelity.get("fidelity_budget_mm") == BOUNDED_FIDELITY_MM
+                            and isinstance(fidelity.get("radial_error_upper_bound_mm"), (int, float))
+                            and 0.0 <= fidelity["radial_error_upper_bound_mm"] <= BOUNDED_FIDELITY_MM
+                            and isinstance(fidelity.get("hausdorff_error_upper_bound_mm"), (int, float))
+                            and 0.0 <= fidelity["hausdorff_error_upper_bound_mm"] <= BOUNDED_FIDELITY_MM
+                            and fidelity.get("observed_sampled_radial_error_mm", math.inf)
+                            <= BOUNDED_FIDELITY_MM
+                            and fidelity.get("observed_sampled_plane_error_mm", math.inf) <= 1e-12
+                        )
+                        case["qualification_scope"] = (
+                            "native fidelity bounds and independent analytic/geometric diagnostics; "
+                            "STEP/OCC status is reported separately and is not a substitute for certification"
+                        )
+                    else:
+                        case["qualified_by_oracle"] = common_qualification and (
+                        case["surface_quadrature_converged"]
+                        and max(case["surface_relative_errors_final"].values(), default=0.0) <= AREA_REL_TOL
+                        and max(case["design_face_maximum_radial_or_plane_error_mm"].values(), default=0.0)
+                        <= RADIUS_TOL_MM
                         and cad["solid_count"] == 1
                         and cad["all_shells_closed"]
                         and cad["brep_valid"]
                         and cad["volume_relative_error"] <= VOLUME_REL_TOL
                         and cad["area_error_mm2"] / max(metrics["total_boundary_area_mm2"], 1.0)
                         <= AREA_REL_TOL
-                        and expected_admission
-                    )
+                        )
                     case["signature_change_from_previous_accepted"] = (
                         None if previous_signature is None
                         else case["signature"] != previous_signature

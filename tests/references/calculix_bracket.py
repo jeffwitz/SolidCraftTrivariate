@@ -115,6 +115,12 @@ def run(args):
             stream.write("*NODE PRINT,NSET=Nall\nU\n")
         stream.write("*END STEP\n")
     mesh_seconds=time.monotonic()-begin
+    if args.deck_only:
+        (root/"mesh.json").write_text(json.dumps({
+            "occ_volume_mm3":feature.Shape.Volume,"tet10":mesh.VolumeCount,"nodes":len(nodes),
+            "geometry_mesh_deck_s":mesh_seconds,"loaded_area_mm2":area,
+        },indent=2)+"\n")
+        return
     with (root/"ccx.log").open("w") as log:
         subprocess.run([args.ccx,"-i","bracket"],cwd=root,stdout=log,stderr=subprocess.STDOUT,check=True)
     output=(root/"bracket.dat").read_text()
@@ -137,6 +143,7 @@ def run(args):
 if __name__=="__main__":
     parser=argparse.ArgumentParser()
     parser.add_argument("--store-displacements",action="store_true")
+    parser.add_argument("--deck-only",action="store_true")
     parser.add_argument("--size",type=float,required=True)
     parser.add_argument("--ccx",required=True)
     parser.add_argument("directory",type=Path)

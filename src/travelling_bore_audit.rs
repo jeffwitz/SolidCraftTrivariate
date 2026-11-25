@@ -22,8 +22,16 @@ const OUTER_HALF_UM: i128 = 10_000;
 const POCKET_X_UM: [i128; 2] = [-6_000, -2_000];
 const POCKET_Y_UM: [i128; 2] = [-4_000, 4_000];
 
-type Point = [i128; 3];
+pub(crate) type Point = [i128; 3];
 type Trace = Vec<Point>;
+
+#[derive(Debug, Clone, Copy, Default, PartialEq)]
+pub(crate) struct ArcMetric {
+    pub radial_error_upper_mm: f64,
+    pub hausdorff_error_upper_mm: f64,
+}
+
+pub(crate) type ArcVerifier = fn(&[Point], i128) -> Result<Option<ArcMetric>, &'static str>;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 enum Layer {
@@ -281,6 +289,54 @@ fn cross_delta(a: i128, b: i128, c: i128, d: i128) -> Result<i128, &'static str>
     checked_sub(checked_mul(a, b)?, checked_mul(c, d)?)
 }
 
+fn quadratic_nonnegative(bernstein: [i128; 3]) -> Result<bool, &'static str> {
+    if bernstein[0] < 0 || bernstein[2] < 0 {
+        return Ok(false);
+    }
+    let a = checked_add(
+        checked_sub(bernstein[0], checked_mul(2, bernstein[1])?)?,
+        bernstein[2],
+    )?;
+    let b = checked_mul(2, checked_sub(bernstein[1], bernstein[0])?)?;
+    // A concave or monotone quadratic reaches its minimum at an endpoint.
+    if a <= 0 || b >= 0 || checked_add(b, checked_mul(2, a)?)? <= 0 {
+        return Ok(true);
+    }
+    let four_ac = checked_mul(4, checked_mul(a, bernstein[0])?)?;
+    let b_squared = checked_mul(b, b)?;
+    Ok(four_ac >= b_squared)
+}
+
+fn quadratic_sign(bernstein: [i128; 3]) -> Result<i8, &'static str> {
+    if bernstein.iter().all(|value| *value >= 0) && bernstein.iter().any(|value| *value > 0) {
+        return Ok(1);
+    }
+    if bernstein.iter().all(|value| *value <= 0) && bernstein.iter().any(|value| *value < 0) {
+        return Ok(-1);
+    }
+    let divisor = bernstein
+        .iter()
+        .try_fold(0_i128, |g, value| gcd(g, *value))?;
+    if divisor == 0 {
+        return Err("travelling_bore_zero_boundary_derivative");
+    }
+    let bernstein = bernstein.map(|value| value / divisor);
+    let positive = quadratic_nonnegative(bernstein)? && bernstein.iter().any(|v| *v > 0);
+    let mut negated = [0_i128; 3];
+    for (out, value) in negated.iter_mut().zip(bernstein) {
+        *out = value
+            .checked_neg()
+            .ok_or("travelling_bore_integer_overflow")?;
+    }
+    let negative = quadratic_nonnegative(negated)?;
+    let negative = negative && bernstein.iter().any(|v| *v < 0);
+    match (positive, negative) {
+        (true, false) => Ok(1),
+        (false, true) => Ok(-1),
+        _ => Err("travelling_bore_nonmonotone_boundary"),
+    }
+}
+
 fn monotonic_sign(
     trace: &[Point],
     component: usize,
@@ -308,14 +364,7 @@ fn monotonic_sign(
     let n0 = checked_mul(2, cross_delta(h1, w0, h0, w1)?)?;
     let n1 = cross_delta(h2, w0, h0, w2)?;
     let n2 = checked_mul(2, cross_delta(h2, w1, h1, w2)?)?;
-    let values = [n0, n1, n2];
-    let positive = values.iter().all(|v| *v >= 0) && values.iter().any(|v| *v > 0);
-    let negative = values.iter().all(|v| *v <= 0) && values.iter().any(|v| *v < 0);
-    match (positive, negative) {
-        (true, false) => Ok(1),
-        (false, true) => Ok(-1),
-        _ => Err("travelling_bore_nonmonotone_boundary"),
-    }
+    quadratic_sign([n0, n1, n2])
 }
 
 fn compare_nonnegative(mut a: Rat, mut b: Rat) -> Result<Ordering, &'static str> {
@@ -458,6 +507,14 @@ fn circle_identity(trace: &[Point], center_um: i128) -> Result<bool, &'static st
     Ok(true)
 }
 
+fn exact_arc_verifier(trace: &[Point], center_um: i128) -> Result<Option<ArcMetric>, &'static str> {
+    if circle_identity(trace, center_um)? {
+        Ok(Some(ArcMetric::default()))
+    } else {
+        Ok(None)
+    }
+}
+
 fn circle_signs(trace: &[Point], center_um: i128) -> Result<(i8, i8), &'static str> {
     let mut sx = 0_i8;
     let mut sy = 0_i8;
@@ -486,6 +543,28 @@ fn circle_signs(trace: &[Point], center_um: i128) -> Result<(i8, i8), &'static s
         return Err("travelling_bore_arc_degenerate_quadrant");
     }
     Ok((sx, sy))
+}
+
+fn angle_monotonic_sign(trace: &[Point], center_um: i128) -> Result<i8, &'static str> {
+    let x = trace
+        .iter()
+        .map(|point| {
+            checked_sub(
+                checked_mul(SCALE_UM_PER_MM, point[0])?,
+                checked_mul(center_um, point[2])?,
+            )
+        })
+        .collect::<Result<Vec<_>, _>>()?;
+    let y = trace
+        .iter()
+        .map(|point| checked_mul(SCALE_UM_PER_MM, point[1]))
+        .collect::<Result<Vec<_>, _>>()?;
+    let [x0, x1, x2] = [x[0], x[1], x[2]];
+    let [y0, y1, y2] = [y[0], y[1], y[2]];
+    let n0 = checked_mul(2, cross_delta(x0, y1, y0, x1)?)?;
+    let n1 = cross_delta(x0, y2, y0, x2)?;
+    let n2 = checked_mul(2, cross_delta(x1, y2, y1, x2)?)?;
+    quadratic_sign([n0, n1, n2]).map_err(|_| "travelling_bore_nonmonotone_angle")
 }
 
 fn line_feature(trace: &[Point], layer: Layer) -> Result<Option<BoundaryFeature>, &'static str> {
@@ -604,9 +683,6 @@ fn validate_arc_coverage(
                 if edge.feature != Some(BoundaryFeature::Bore) {
                     continue;
                 }
-                if !circle_identity(trace, center_um)? {
-                    continue;
-                }
                 let (edge_sx, edge_sy) = circle_signs(trace, center_um)?;
                 if (edge_sx, edge_sy) != (sx, sy) {
                     continue;
@@ -674,30 +750,19 @@ fn validate_arc_coverage(
     Ok(())
 }
 
-fn exact_y_cut(center_um: i128, wall_um: i128) -> Result<i128, &'static str> {
-    let delta = (wall_um - center_um).abs();
-    if delta >= RADIUS_UM {
-        return Ok(0);
-    }
-    let radicand = checked_sub(
-        checked_mul(RADIUS_UM, RADIUS_UM)?,
-        checked_mul(delta, delta)?,
-    )?;
-    sqrt_exact(radicand)?.ok_or("travelling_bore_nonrepresentable_intersection")
-}
-
 fn expected_line_intervals(
     feature: BoundaryFeature,
-    center_um: i128,
+    _center_um: i128,
+    edges: &[BoundaryEdge],
 ) -> Result<Vec<(Rat, Rat)>, &'static str> {
     let i = |x| Rat::integer(x);
     Ok(match feature {
         BoundaryFeature::XMax => {
-            let cut = exact_y_cut(center_um, OUTER_HALF_UM)?;
-            if cut == 0 {
+            let cut = line_cut_endpoints(edges, feature)?;
+            if cut.is_empty() {
                 vec![(i(-OUTER_HALF_UM), i(OUTER_HALF_UM))]
             } else {
-                vec![(i(-OUTER_HALF_UM), i(-cut)), (i(cut), i(OUTER_HALF_UM))]
+                vec![(i(-OUTER_HALF_UM), cut[0]), (cut[1], i(OUTER_HALF_UM))]
             }
         }
         BoundaryFeature::XMin | BoundaryFeature::YMin | BoundaryFeature::YMax => {
@@ -707,20 +772,50 @@ fn expected_line_intervals(
             vec![(i(POCKET_X_UM[0]), i(POCKET_X_UM[1]))]
         }
         BoundaryFeature::PocketXMin | BoundaryFeature::PocketXMax => {
-            let x = if feature == BoundaryFeature::PocketXMin {
-                POCKET_X_UM[0]
-            } else {
-                POCKET_X_UM[1]
-            };
-            let cut = exact_y_cut(center_um, x)?;
-            if cut == 0 {
+            let cut = line_cut_endpoints(edges, feature)?;
+            if cut.is_empty() {
                 vec![(i(-4_000), i(4_000))]
             } else {
-                vec![(i(-4_000), i(-cut)), (i(cut), i(4_000))]
+                vec![(i(-4_000), cut[0]), (cut[1], i(4_000))]
             }
         }
         BoundaryFeature::Bore => return Err("travelling_bore_internal_feature_error"),
     })
+}
+
+fn line_cut_endpoints(
+    edges: &[BoundaryEdge],
+    feature: BoundaryFeature,
+) -> Result<Vec<Rat>, &'static str> {
+    let x = match feature {
+        BoundaryFeature::XMax => OUTER_HALF_UM,
+        BoundaryFeature::PocketXMin => POCKET_X_UM[0],
+        BoundaryFeature::PocketXMax => POCKET_X_UM[1],
+        _ => return Err("travelling_bore_invalid_cut_feature"),
+    };
+    let mut endpoints = Vec::new();
+    for edge in edges
+        .iter()
+        .filter(|edge| edge.feature == Some(BoundaryFeature::Bore))
+    {
+        for point in [edge.trace[0], edge.trace[2]] {
+            if checked_mul(SCALE_UM_PER_MM, point[0])? == checked_mul(x, point[2])? {
+                endpoints.push(endpoint_coordinate(normalize_point(point)?, 1)?);
+            }
+        }
+    }
+    for i in 1..endpoints.len() {
+        let mut j = i;
+        while j > 0 && rat_cmp(endpoints[j], endpoints[j - 1])? == Ordering::Less {
+            endpoints.swap(j, j - 1);
+            j -= 1;
+        }
+    }
+    endpoints.dedup_by(|a, b| *a == *b);
+    if !endpoints.is_empty() && endpoints.len() != 2 {
+        return Err("travelling_bore_boundary_cut_endpoints");
+    }
+    Ok(endpoints)
 }
 
 fn edge_line_interval(edge: &BoundaryEdge) -> Result<(Rat, Rat), &'static str> {
@@ -778,7 +873,7 @@ fn validate_line_coverage(
             .map(edge_line_interval)
             .collect::<Result<Vec<_>, _>>()?;
         actual = merge_intervals(actual)?;
-        let expected = expected_line_intervals(*feature, center_um)?;
+        let expected = expected_line_intervals(*feature, center_um, edges)?;
         if actual.len() != expected.len() {
             return Err("travelling_bore_line_coverage");
         }
@@ -853,17 +948,38 @@ fn boundary_cycles(edges: &[BoundaryEdge]) -> Result<usize, &'static str> {
     Ok(cycles)
 }
 
-fn classify_boundaries(edges: &mut [BoundaryEdge], center_um: i128) -> Result<(), &'static str> {
+fn classify_boundaries(
+    edges: &mut [BoundaryEdge],
+    center_um: i128,
+    verify_arc: ArcVerifier,
+) -> Result<ArcMetric, &'static str> {
+    let mut metric = ArcMetric::default();
     for edge in edges {
         if let Some(feature) = line_feature(&edge.trace, edge.layer)? {
             edge.feature = Some(feature);
             if !edge_orientation_is_valid(edge)? {
                 return Err("travelling_bore_boundary_orientation");
             }
-        } else if circle_identity(&edge.trace, center_um)? {
+        } else if let Some(arc_metric) = verify_arc(&edge.trace, center_um)? {
+            if !arc_metric.radial_error_upper_mm.is_finite()
+                || !arc_metric.hausdorff_error_upper_mm.is_finite()
+                || arc_metric.radial_error_upper_mm < 0.0
+                || arc_metric.hausdorff_error_upper_mm < 0.0
+            {
+                return Err("travelling_bore_invalid_arc_bound");
+            }
+            metric.radial_error_upper_mm = metric
+                .radial_error_upper_mm
+                .max(arc_metric.radial_error_upper_mm);
+            metric.hausdorff_error_upper_mm = metric
+                .hausdorff_error_upper_mm
+                .max(arc_metric.hausdorff_error_upper_mm);
             let (sx, sy) = circle_signs(&edge.trace, center_um)?;
             let _ = (sx, sy);
             monotonic_sign(&edge.trace, 0, Some(center_um))?;
+            if angle_monotonic_sign(&edge.trace, center_um)? != -1 {
+                return Err("travelling_bore_arc_orientation");
+            }
             let start = normalize_point(edge.trace[0])?;
             let end = normalize_point(edge.trace[2])?;
             let cross = cross_delta(
@@ -886,14 +1002,15 @@ fn classify_boundaries(edges: &mut [BoundaryEdge], center_um: i128) -> Result<()
             return Err("travelling_bore_unexpected_boundary_curve");
         }
     }
-    Ok(())
+    Ok(metric)
 }
 
 fn certify_layer(
     layer_blocks: &[&BracketBlock],
     center_um: i128,
     layer: Layer,
-) -> Result<(Vec<BoundaryEdge>, f64, usize), &'static str> {
+    verify_arc: ArcVerifier,
+) -> Result<(Vec<BoundaryEdge>, f64, usize, ArcMetric), &'static str> {
     let mut det = f64::INFINITY;
     for block in layer_blocks {
         let lower =
@@ -912,7 +1029,7 @@ fn certify_layer(
         .collect::<Vec<_>>();
     let mut boundary = paired_boundaries(&all)?;
     boundary.retain(|edge| edge.layer == layer);
-    classify_boundaries(&mut boundary, center_um)?;
+    let arc_metric = classify_boundaries(&mut boundary, center_um, verify_arc)?;
     validate_line_coverage(&boundary, center_um, layer)?;
     validate_arc_coverage(&boundary, center_um, layer)?;
     let cycles = boundary_cycles(&boundary)?;
@@ -925,7 +1042,7 @@ fn certify_layer(
     if cycles != expected_cycles {
         return Err("travelling_bore_boundary_component_count");
     }
-    Ok((boundary, det, cycles))
+    Ok((boundary, det, cycles, arc_metric))
 }
 
 fn face_controls(block: &BracketBlock, side: &BlockSide) -> Vec<[i64; 4]> {
@@ -1060,6 +1177,16 @@ pub fn audit_travelling_bore(
     cx_um: i32,
     blocks: &[BracketBlock],
 ) -> Result<BracketCertificate, &'static str> {
+    audit_travelling_bore_with_arc_verifier(cx_um, blocks, false, exact_arc_verifier)
+        .map(|result| result.0)
+}
+
+pub(crate) fn audit_travelling_bore_with_arc_verifier(
+    cx_um: i32,
+    blocks: &[BracketBlock],
+    allow_irrational_line_intersections: bool,
+    verify_arc: ArcVerifier,
+) -> Result<(BracketCertificate, f64, f64), &'static str> {
     let center = i128::from(cx_um);
     if !(CENTER_MIN_UM..=CENTER_MAX_UM).contains(&center) {
         return Err("travelling_bore_center_out_of_range");
@@ -1077,7 +1204,7 @@ pub fn audit_travelling_bore(
                 checked_mul(RADIUS_UM, RADIUS_UM)?,
                 checked_mul(delta, delta)?,
             )?;
-            if sqrt_exact(radicand)?.is_none() {
+            if sqrt_exact(radicand)?.is_none() && !allow_irrational_line_intersections {
                 return Err("travelling_bore_nonrepresentable_intersection");
             }
         }
@@ -1097,8 +1224,10 @@ pub fn audit_travelling_bore(
     if lower.is_empty() || upper.is_empty() {
         return Err("travelling_bore_missing_layer");
     }
-    let (lower_boundary, lower_det, _) = certify_layer(&lower, center, Layer::Lower)?;
-    let (upper_boundary, upper_det, _) = certify_layer(&upper, center, Layer::Upper)?;
+    let (lower_boundary, lower_det, _, lower_arc_metric) =
+        certify_layer(&lower, center, Layer::Lower, verify_arc)?;
+    let (upper_boundary, upper_det, _, upper_arc_metric) =
+        certify_layer(&upper, center, Layer::Upper, verify_arc)?;
     let mut boundaries = lower_boundary;
     boundaries.extend(upper_boundary);
     let incidence = enumerate_faces(blocks)?;
@@ -1116,12 +1245,19 @@ pub fn audit_travelling_bore(
     if !determinant_lower_bound_mm3.is_finite() || determinant_lower_bound_mm3 <= 0.0 {
         return Err("travelling_bore_determinant_certificate");
     }
-    Ok(BracketCertificate {
+    let radial_error_upper_mm = lower_arc_metric
+        .radial_error_upper_mm
+        .max(upper_arc_metric.radial_error_upper_mm);
+    let hausdorff_error_upper_mm = lower_arc_metric
+        .hausdorff_error_upper_mm
+        .max(upper_arc_metric.hausdorff_error_upper_mm);
+    let certificate = BracketCertificate {
         incidence,
         determinant_lower_bound_mm3,
-        radial_error_upper_mm: 0.0,
+        radial_error_upper_mm,
         design_faces,
-    })
+    };
+    Ok((certificate, radial_error_upper_mm, hausdorff_error_upper_mm))
 }
 
 #[cfg(test)]

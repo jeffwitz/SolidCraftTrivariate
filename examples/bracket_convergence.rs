@@ -46,7 +46,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     if let Some(path) = field_target {
         bracket_field::write(
             std::path::Path::new(path),
-            levels,
+            Some(levels),
             radii.unwrap_or([64, 64]),
             order,
             &space,

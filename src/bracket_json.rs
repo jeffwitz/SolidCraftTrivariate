@@ -81,7 +81,7 @@ fn certify(
     ))
 }
 
-pub(crate) const PARAMETRIC_FAMILIES: [&str; 8] = [
+pub(crate) const PARAMETRIC_FAMILIES: [&str; 9] = [
     "movable_bore_v1",
     "pocket_depth_v1",
     "exact_bore_v1",
@@ -90,11 +90,12 @@ pub(crate) const PARAMETRIC_FAMILIES: [&str; 8] = [
     "crescent_pocket_v1",
     "parameterized_bracket_v1",
     "travelling_bore_v1",
+    "travelling_bore_bounded_v1",
 ];
 
 fn parameters(family: &str) -> &'static [&'static str] {
     match family {
-        "travelling_bore_v1" => &["center_x_um"],
+        "travelling_bore_v1" | "travelling_bore_bounded_v1" => &["center_x_um"],
         "parameterized_bracket_v1" => &["radii_sixteenths_mm"],
         "movable_bore_v1" => &["center_half_mm", "radius_half_mm"],
         "row_bores_v1" => &["half_widths_half_mm", "centers_half_mm", "radii_half_mm"],
@@ -151,12 +152,32 @@ fn row_parameters(input: &Json) -> Result<RowParameters, &'static str> {
     })
 }
 
+fn bounded_template(
+    input: &Json,
+    blocks: &[BracketBlock],
+) -> Result<
+    (
+        crate::travelling_bore_bounded_audit::BoundedTravellingBoreCertificate,
+        f64,
+    ),
+    &'static str,
+> {
+    let center = input.field("center_x_um")?.number::<i32>()?;
+    let cert = crate::travelling_bore_bounded_audit::audit_travelling_bore_bounded(center, blocks)?;
+    let ideal = crate::travelling_bore_events::analyze_travelling_bore(i64::from(center))?;
+    Ok((cert, ideal.volume_mm3))
+}
+
 fn audit_template(
     input: &Json,
     family: &str,
     blocks: &[BracketBlock],
 ) -> Result<(BracketCertificate, Option<f64>), &'static str> {
     match family {
+        "travelling_bore_bounded_v1" => {
+            let (cert, volume) = bounded_template(input, blocks)?;
+            Ok((cert.certificate, Some(volume)))
+        }
         "travelling_bore_v1" => {
             let center = input.field("center_x_um")?.number::<i32>()?;
             let cert = crate::travelling_bore_audit::audit_travelling_bore(center, blocks)?;
@@ -233,6 +254,11 @@ pub(crate) fn build(recipe: &Json) -> Result<Json, &'static str> {
     recipe.keys(&keys)?;
     let blocks = match family {
         "filleted_bracket_v1" => bracket_blocks()?,
+        "travelling_bore_bounded_v1" => {
+            crate::travelling_bore_bounded::travelling_bore_bounded_blocks(
+                recipe.field("center_x_um")?.number()?,
+            )?
+        }
         "travelling_bore_v1" => {
             crate::travelling_bore::travelling_bore_blocks(recipe.field("center_x_um")?.number()?)?
         }
@@ -366,7 +392,18 @@ pub(crate) fn audit(model: &Json) -> Result<Json, &'static str> {
     keys.extend(parameters(family));
     model.keys(&keys)?;
     let blocks = decode_blocks(model)?;
-    let (certificate, ideal_volume) = audit_template(model, family, &blocks)?;
+    let (certificate, ideal_volume, bounded) = if family == "travelling_bore_bounded_v1" {
+        let (cert, volume) = bounded_template(model, &blocks)?;
+        let limits = (
+            cert.radial_error_upper_mm,
+            cert.hausdorff_error_upper_mm,
+            cert.fidelity_budget_mm,
+        );
+        (cert.certificate, Some(volume), Some(limits))
+    } else {
+        let (cert, volume) = audit_template(model, family, &blocks)?;
+        (cert, volume, None)
+    };
     if model.field("topology")? != &topology(&certificate.incidence) {
         return Err("incidence_mismatch");
     }
@@ -396,6 +433,13 @@ pub(crate) fn audit(model: &Json) -> Result<Json, &'static str> {
     ]);
     if let (Json::Object(fields), Some(volume)) = (&mut report, ideal_volume) {
         fields.insert("ideal_volume_mm3".into(), number(volume));
+    }
+    if let (Json::Object(fields), Some((radial, hausdorff, budget))) = (&mut report, bounded) {
+        fields.insert("radial_error_upper_bound_mm".into(), number(radial));
+        fields.insert("hausdorff_error_upper_bound_mm".into(), number(hausdorff));
+        fields.insert("fidelity_budget_mm".into(), number(budget));
+        fields.insert("fidelity_target".into(), text("ideal_clipped_bore_arcs"));
+        fields.insert("representation".into(), text("quantized_rational_arcs"));
     }
     Ok(report)
 }

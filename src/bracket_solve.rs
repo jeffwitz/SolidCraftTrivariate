@@ -460,6 +460,22 @@ fn point_displacement(
     Ok(first)
 }
 
+/// Interpolate a full coefficient field at the physical bracket tip.
+pub fn bracket_tip_displacement(
+    space: &AnalysisSpace,
+    full_solution: &[f64],
+) -> Result<[f64; 3], &'static str> {
+    if full_solution.len() != 3 * space.ndof || full_solution.iter().any(|v| !v.is_finite()) {
+        return Err("invalid full bracket displacement");
+    }
+    point_displacement(
+        space,
+        &loaded_faces(space)?,
+        full_solution,
+        [60.0, 4.0, 20.0],
+    )
+}
+
 /// Solve the audited bracket with a uniform total load of 1000 N in `-y`.
 pub fn solve_bracket(space: &AnalysisSpace, order: usize) -> Result<BracketResult, &'static str> {
     if space.ndof == 0 || space.blocks.is_empty() {

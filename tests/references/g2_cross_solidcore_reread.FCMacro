@@ -10,8 +10,10 @@ import Part
 root = Path(__file__).resolve().parents[2]
 step_path = root / "docs/results/g2-cross-solidcore.step"
 backend_path = root / "docs/results/g2-cross-brep-probes296.json"
+sweep_path = root / "docs/results/g2-cross-brep-solidcore-20261125.json"
 output_path = root / "docs/results/g2-cross-solidcore-reread-20261125.json"
 backend = json.loads(backend_path.read_text())
+sweep_report = json.loads(sweep_path.read_text())
 shape = Part.read(str(step_path))
 if shape is None or shape.isNull():
     raise RuntimeError("FreeCAD/OCC returned no shape from the SolidCore STEP")
@@ -25,9 +27,7 @@ for edge in shape.Edges:
     edge_usage.append(sum(any(edge.isSame(fe) for fe in face.Edges) for face in shape.Faces))
 
 tol = 2e-7
-classifications = []
-for sample in backend["independent_source_oracle"]["classifications"]:
-    point = sample["point_mm"]
+def classify(point):
     vertex = Part.Vertex(App.Vector(*point))
     # Distance to the solid is zero for every point contained by it, so use
     # the imported boundary faces for the ON test.
@@ -38,6 +38,12 @@ for sample in backend["independent_source_oracle"]["classifications"]:
         actual = "Inside"
     else:
         actual = "Outside"
+    return actual, distance
+
+classifications = []
+for sample in backend["independent_source_oracle"]["classifications"]:
+    point = sample["point_mm"]
+    actual, distance = classify(point)
     classifications.append({
         "point_mm": point,
         "expected": sample["expected"],
@@ -50,11 +56,28 @@ expected_volume = backend["backend_result"]["remaining_solid_volume_mm3"]
 reread_volume = float(solid.Volume)
 expected_oracle = backend["independent_source_oracle"]["q64"]["remaining_solid_volume_mm3"]
 mismatches = [x for x in classifications if not x["matches"]]
+seam_sweep = sweep_report["native_seam_tolerance_sweep"]
+sweep_probe_sha256 = hashlib.sha256(json.dumps(
+    seam_sweep["probes"], sort_keys=True, separators=(",", ":"), allow_nan=False
+).encode("utf-8")).hexdigest()
+void_disagreements = []
+for probe in seam_sweep["probes"]:
+    if probe["source_expected"] != "Outside" or probe["native"] != "Inside":
+        continue
+    actual, distance = classify(probe["point_mm"])
+    void_disagreements.append({
+        **probe,
+        "step_reopened_classification": actual,
+        "step_boundary_distance_mm": distance,
+        "step_classifies_as_void": actual == "Outside",
+    })
 report = {
     "reader": "FreeCAD Part.read / OpenCascade",
     "command": "rtk env QT_QPA_PLATFORM=offscreen freecadcmd tests/references/g2_cross_solidcore_reread.FCMacro",
     "solidcore_report_path": str(backend_path),
     "solidcore_report_sha256": hashlib.sha256(backend_path.read_bytes()).hexdigest(),
+    "seam_tolerance_sweep_report_path": str(sweep_path),
+    "seam_tolerance_sweep_report_sha256": hashlib.sha256(sweep_path.read_bytes()).hexdigest(),
     "initial_classifier_diagnostic": {
         "method": "Shape.distToShape(point)",
         "observed_false_on_boundary_count": 148,
@@ -88,6 +111,18 @@ report = {
     "classification_mismatch_count": len(mismatches),
     "classification_mismatches": mismatches,
     "classifications": classifications,
+    "native_inside_source_void_sweep": {
+        "source_probe_count": len(seam_sweep["probes"]),
+        "source_probe_set_sha256": sweep_probe_sha256,
+        "source_probe_offsets_mm": seam_sweep["offsets_mm"],
+        "selected_probe_count": len(void_disagreements),
+        "selected_offsets_mm": [1e-4, 1e-3, 1e-2],
+        "classification_tolerance_mm": tol,
+        "step_classifies_as_void_count": sum(x["step_classifies_as_void"] for x in void_disagreements),
+        "step_classifies_as_material_count": sum(x["step_reopened_classification"] == "Inside" for x in void_disagreements),
+        "step_classifies_as_boundary_count": sum(x["step_reopened_classification"] == "OnBoundary" for x in void_disagreements),
+        "points": void_disagreements,
+    },
 }
 output_path.write_text(json.dumps(report, indent=2, sort_keys=True, allow_nan=False) + "\n")
 print(json.dumps({k: report[k] for k in (

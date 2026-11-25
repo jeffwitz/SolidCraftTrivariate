@@ -231,6 +231,14 @@ pub fn build_analysis_space(blocks: &[BracketBlock]) -> Result<AnalysisSpace, &'
     from_certified_faces(blocks, &certificate.incidence, &certificate.design_faces)
 }
 
+/// Build the conforming Q2 space of the bracket with independently checked bore radii.
+pub fn parameterized_bracket_space(
+    rx: u8, ry: u8, blocks: &[BracketBlock],
+) -> Result<AnalysisSpace, &'static str> {
+    let report = crate::bracket_parameters_audit::audit_bracket_parameters(rx,ry,blocks)?;
+    from_certified_faces(blocks, &report.certificate.incidence, &report.certificate.design_faces)
+}
+
 /// Build the conforming space of one audited fixed section template.
 pub fn section_analysis_space(
     family: &str,

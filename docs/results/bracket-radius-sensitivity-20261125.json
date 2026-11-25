@@ -1,0 +1,194 @@
+{
+  "family": "parameterized_bracket_v1",
+  "radius_parameter": "x bore radius in millimetres",
+  "base_radius_mm": 4.0,
+  "reference_y_radius_mm": 4.0,
+  "radius_steps_mm": [
+    0.5,
+    0.25,
+    0.125,
+    0.0625
+  ],
+  "material": {
+    "young_mpa": 210000,
+    "poisson": 0.3
+  },
+  "results": [
+    {
+      "quadrature_order": 6,
+      "radius_x_mm": 4.0,
+      "radius_y_mm": 4.0,
+      "scalar_dofs": 531,
+      "blocks": 36,
+      "load_area_mm2": 320.0000000000002,
+      "compliance_n_mm": 491.0531844411785,
+      "compliance_derivative_n_mm_per_mm": 1.6013781962337816,
+      "compliance_derivative_explicit_minus_uKprimeu": 1.6013781962337816,
+      "mean_y_displacement_mm": -0.49105318444117846,
+      "mean_y_derivative_mm_per_mm": -0.001601378196238873,
+      "tangent_adjoint_relative_error": 1.7935192090104585e-11,
+      "mean_tangent_adjoint_relative_error": 2.1114268341644906e-11,
+      "tangent_residual": 7.319508206527333e-11,
+      "adjoint_residual": 9.303041045637036e-11,
+      "fillet_limits_mpa": {
+        "elbow_east_z10_30": 82.99372384125827,
+        "elbow_north_z10_30": 81.54466514291762
+      },
+      "edited_radius_x_mm": 3.5,
+      "edited_mean_y_displacement_mm": -0.4903092583987153,
+      "edited_tip_y_displacement_mm": -0.49105630953078255,
+      "edited_fillet_limits_mpa": {
+        "elbow_east_z10_30": 82.98337999770433,
+        "elbow_north_z10_30": 81.53747946655379
+      },
+      "edited_solver_residual": 9.343563816928722e-11,
+      "fd_cases": [
+        {
+          "h_mm": 0.5,
+          "plus_compliance_n_mm": 491.91255377581143,
+          "minus_compliance_n_mm": 490.3092583987153,
+          "centered_compliance_derivative": 1.6032953770961171,
+          "centered_mean_y_derivative_mm_per_mm": -0.0016032953770961367,
+          "compliance_derivative_error": 0.0019171808623354991,
+          "mean_y_derivative_error": 1.9171808572637783e-06,
+          "taylor_remainder_n_mm": 0.05868023651606791,
+          "taylor_ratio_to_next": 4.035476774011627,
+          "max_fd_residual": 9.343563816928722e-11,
+          "kprime_relative_error": 0.005226441854397714
+        },
+        {
+          "h_mm": 0.25,
+          "plus_compliance_n_mm": 491.4680700816128,
+          "minus_compliance_n_mm": 490.6671412605058,
+          "centered_compliance_derivative": 1.6018576422139859,
+          "centered_mean_y_derivative_mm_per_mm": -0.0016018576422139885,
+          "compliance_derivative_error": 0.00047944598020421836,
+          "mean_y_derivative_error": 4.794459751156221e-07,
+          "taylor_remainder_n_mm": 0.014541091375861015,
+          "taylor_ratio_to_next": 4.017191284211918,
+          "max_fd_residual": 9.400545984361317e-11,
+          "kprime_relative_error": 0.001299507865196557
+        },
+        {
+          "h_mm": 0.125,
+          "plus_compliance_n_mm": 491.25697643166023,
+          "minus_compliance_n_mm": 490.85660191582923,
+          "centered_compliance_derivative": 1.6014980633240157,
+          "centered_mean_y_derivative_mm_per_mm": -0.0016014980633238807,
+          "compliance_derivative_error": 0.00011986709023403819,
+          "mean_y_derivative_error": 1.1986708500777432e-07,
+          "taylor_remainder_n_mm": 0.003619715952538627,
+          "taylor_ratio_to_next": 4.008460957556997,
+          "max_fd_residual": 9.663310475034372e-11,
+          "kprime_relative_error": 0.00032443694454721897
+        },
+        {
+          "h_mm": 0.0625,
+          "plus_compliance_n_mm": 491.1541735973301,
+          "minus_compliance_n_mm": 490.9539975772355,
+          "centered_compliance_derivative": 1.6014081607568187,
+          "centered_mean_y_derivative_mm_per_mm": -0.001601408160756712,
+          "compliance_derivative_error": 2.996452303705155e-05,
+          "mean_y_derivative_error": 2.996451783920939e-08,
+          "taylor_remainder_n_mm": 0.0009030188870156053,
+          "taylor_ratio_to_next": null,
+          "max_fd_residual": 9.246532599013845e-11,
+          "kprime_relative_error": 8.108179489444628e-05
+        }
+      ],
+      "quadratic_taylor_divisions": 3,
+      "total_wall_seconds": 1.2353358,
+      "qualification": {
+        "at_least_two_order_two_divisions": true
+      }
+    },
+    {
+      "quadrature_order": 8,
+      "radius_x_mm": 4.0,
+      "radius_y_mm": 4.0,
+      "scalar_dofs": 531,
+      "blocks": 36,
+      "load_area_mm2": 320.00000000000017,
+      "compliance_n_mm": 491.0520600183171,
+      "compliance_derivative_n_mm_per_mm": 1.6012653913171846,
+      "compliance_derivative_explicit_minus_uKprimeu": 1.6012653913171846,
+      "mean_y_displacement_mm": -0.4910520600183171,
+      "mean_y_derivative_mm_per_mm": -0.0016012653913461683,
+      "tangent_adjoint_relative_error": 1.9166026591667112e-11,
+      "mean_tangent_adjoint_relative_error": 3.726613340629187e-11,
+      "tangent_residual": 6.708842179449432e-11,
+      "adjoint_residual": 9.282297115899452e-11,
+      "fillet_limits_mpa": {
+        "elbow_east_z10_30": 82.99356283551222,
+        "elbow_north_z10_30": 81.54452119462081
+      },
+      "edited_radius_x_mm": 3.5,
+      "edited_mean_y_displacement_mm": -0.4903081776568496,
+      "edited_tip_y_displacement_mm": -0.4910552207488843,
+      "edited_fillet_limits_mpa": {
+        "elbow_east_z10_30": 82.98323434002815,
+        "elbow_north_z10_30": 81.53735106463442
+      },
+      "edited_solver_residual": 7.884101142546097e-11,
+      "fd_cases": [
+        {
+          "h_mm": 0.5,
+          "plus_compliance_n_mm": 491.911357067217,
+          "minus_compliance_n_mm": 490.3081776568496,
+          "centered_compliance_derivative": 1.6031794103674315,
+          "centered_mean_y_derivative_mm_per_mm": -0.0016031794103674168,
+          "compliance_derivative_error": 0.0019140190502469068,
+          "mean_y_derivative_error": 1.9140190212485475e-06,
+          "taylor_remainder_n_mm": 0.05866435324132624,
+          "taylor_ratio_to_next": 4.035415833416964,
+          "max_fd_residual": 8.51272300370232e-11,
+          "kprime_relative_error": 0.005228275844401924
+        },
+        {
+          "h_mm": 0.25,
+          "plus_compliance_n_mm": 491.4669137411439,
+          "minus_compliance_n_mm": 490.66604171501785,
+          "centered_compliance_derivative": 1.6017440522521156,
+          "centered_mean_y_derivative_mm_per_mm": -0.0016017440522521076,
+          "compliance_derivative_error": 0.0004786609349309856,
+          "mean_y_derivative_error": 4.786609059392877e-07,
+          "taylor_remainder_n_mm": 0.0145373749975235,
+          "taylor_ratio_to_next": 4.017165320835174,
+          "max_fd_residual": 9.6469788200233e-11,
+          "kprime_relative_error": 0.0012999468298529745
+        },
+        {
+          "h_mm": 0.125,
+          "plus_compliance_n_mm": 491.2558370064543,
+          "minus_compliance_n_mm": 490.85549074192176,
+          "centered_compliance_derivative": 1.6013850581302904,
+          "centered_mean_y_derivative_mm_per_mm": -0.0016013850581302336,
+          "compliance_derivative_error": 0.00011966681310582317,
+          "mean_y_derivative_error": 1.1966678406527542e-07,
+          "taylor_remainder_n_mm": 0.003618814222587474,
+          "taylor_ratio_to_next": 4.008440894625372,
+          "max_fd_residual": 8.828673050152643e-11,
+          "kprime_relative_error": 0.0003245455111350854
+        },
+        {
+          "h_mm": 0.0625,
+          "plus_compliance_n_mm": 491.1530419037234,
+          "minus_compliance_n_mm": 490.95287998974504,
+          "centered_compliance_derivative": 1.6012953118270161,
+          "centered_mean_y_derivative_mm_per_mm": -0.0016012953118273998,
+          "compliance_derivative_error": 2.9920509831526942e-05,
+          "mean_y_derivative_error": 2.9920481231515694e-08,
+          "taylor_remainder_n_mm": 0.0009027984490028729,
+          "taylor_ratio_to_next": null,
+          "max_fd_residual": 9.16799435625144e-11,
+          "kprime_relative_error": 8.110886383571007e-05
+        }
+      ],
+      "quadratic_taylor_divisions": 3,
+      "total_wall_seconds": 1.895186036,
+      "qualification": {
+        "at_least_two_order_two_divisions": true
+      }
+    }
+  ]
+}

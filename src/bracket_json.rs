@@ -81,23 +81,32 @@ fn certify(
     ))
 }
 
-pub(crate) const PARAMETRIC_FAMILIES: [&str; 6] = [
+pub(crate) const PARAMETRIC_FAMILIES: [&str; 7] = [
     "movable_bore_v1",
     "pocket_depth_v1",
     "exact_bore_v1",
     "row_bores_v1",
     "overlap_bore_v1",
     "crescent_pocket_v1",
+    "parameterized_bracket_v1",
 ];
 
 fn parameters(family: &str) -> &'static [&'static str] {
     match family {
+        "parameterized_bracket_v1" => &["radii_sixteenths_mm"],
         "movable_bore_v1" => &["center_half_mm", "radius_half_mm"],
         "row_bores_v1" => &["half_widths_half_mm", "centers_half_mm", "radii_half_mm"],
         "exact_bore_v1" => &["center_um", "radius_um"],
         "pocket_depth_v1" | "crescent_pocket_v1" => &["depth_half_mm"],
         _ => &[],
     }
+}
+
+pub(crate) fn bracket_radii(input: &Json) -> Result<[u8; 2], &'static str> {
+    let [x, y] = input.field("radii_sixteenths_mm")?.items()? else {
+        return Err("expected two bracket radius ticks");
+    };
+    Ok([x.number()?, y.number()?])
 }
 
 fn bore_parameters(input: &Json, fields: &[&str]) -> Result<([i32; 2], i32), &'static str> {
@@ -146,6 +155,11 @@ fn audit_template(
     blocks: &[BracketBlock],
 ) -> Result<(BracketCertificate, Option<f64>), &'static str> {
     match family {
+        "parameterized_bracket_v1" => {
+            let [rx, ry] = bracket_radii(input)?;
+            let result = crate::bracket_parameters_audit::audit_bracket_parameters(rx, ry, blocks)?;
+            Ok((result.certificate, Some(result.volume_mm3)))
+        }
         "crescent_pocket_v1" => {
             let ticks = input.field("depth_half_mm")?.number::<i32>()?;
             let cert = crate::crescent_audit::audit_crescent_pocket(ticks, blocks)?;
@@ -210,6 +224,10 @@ pub(crate) fn build(recipe: &Json) -> Result<Json, &'static str> {
     recipe.keys(&keys)?;
     let blocks = match family {
         "filleted_bracket_v1" => bracket_blocks()?,
+        "parameterized_bracket_v1" => {
+            let [rx, ry] = bracket_radii(recipe)?;
+            crate::bracket_parameters::build_bracket_parameters(rx, ry)?.blocks
+        }
         "crescent_pocket_v1" => crate::crescent_pocket::crescent_pocket_blocks(
             recipe.field("depth_half_mm")?.number()?,
         )?,

@@ -49,12 +49,12 @@ fn publish(target: &Path, contents: &str) -> std::io::Result<()> {
     }
 }
 
-const COMMANDS_AND_EVALUATORS: &str = r#"{"commands":["build","audit","evaluate","capabilities","export-step","certify-map"],"evaluators":{"rational_bezier_tensor":{"degrees":[[1,1,1],[2,1,1],[2,2,1]],"domain":[[0,1],[0,1],[0,1]]}}}"#;
+const COMMANDS_AND_EVALUATORS: &str = r#"{"commands":["build","audit","evaluate","capabilities","export-step","certify-map","export-analysis"],"evaluators":{"rational_bezier_tensor":{"degrees":[[1,1,1],[2,1,1],[2,2,1]],"domain":[[0,1],[0,1],[0,1]]}}}"#;
 
 fn capabilities() -> Result<Json,String> {
     let mut result = parse(COMMANDS_AND_EVALUATORS)?;
     let Json::Object(fields) = &mut result else {return Err("invalid capabilities".into())};
-    let families = ["affine_pair_v1", "annular_pair_v1", "filleted_bracket_v1", "movable_bore_v1", "pocket_depth_v1", "exact_bore_v1", "row_bores_v1", "overlap_bore_v1", "axial_boolean_v1", "crescent_pocket_v1"]
+    let families = ["affine_pair_v1", "annular_pair_v1", "filleted_bracket_v1", "movable_bore_v1", "pocket_depth_v1", "exact_bore_v1", "row_bores_v1", "overlap_bore_v1", "axial_boolean_v1", "crescent_pocket_v1", "parameterized_bracket_v1"]
         .into_iter().chain(SECTION_FAMILIES).map(|s| Json::String(s.to_owned())).collect();
     fields.insert("families".into(), Json::Array(families));
     Ok(result)
@@ -124,6 +124,11 @@ fn run(args: &[String]) -> Result<Json, String> {
             if report.field("status")?.text()?=="valid" {publish(Path::new(target),&model.to_string()).map_err(|e|e.to_string())?;}
             Ok(report)
         }
+        [cmd,path,order,target] if cmd=="export-analysis"=>{
+            let package=solidcraft_trivariate::solver_package::export_analysis(&read(path)?,order.parse().map_err(|_| "invalid quadrature order")?)?;
+            publish(Path::new(target),&package.to_string()).map_err(|e|e.to_string())?;
+            Ok(object([("status",Json::String("exported".into())),("schema",package.field("schema")?.clone())]))
+        }
         [cmd,path,target] if cmd=="export-step"=>{
             let model=read(path)?;
             let step=solidcraft_trivariate::step_boundary::export_step(&model)?;
@@ -144,7 +149,7 @@ fn run(args: &[String]) -> Result<Json, String> {
             Ok(object([("status",Json::String("evaluated".into())),("position",vector(res.position)),
                 ("jacobian_columns",Json::Array(res.jacobian_columns.into_iter().map(vector).collect()))]))
         }
-        _=>Err("usage: solidcraft-trivariate capabilities | build RECIPE OUTPUT | audit MODEL | evaluate MAP U V W | export-step MODEL OUTPUT | certify-map MAP MAX_LEAVES MAX_DEPTH".into()),
+        _=>Err("usage: solidcraft-trivariate capabilities | build RECIPE OUTPUT | audit MODEL | evaluate MAP U V W | export-step MODEL OUTPUT | certify-map MAP MAX_LEAVES MAX_DEPTH | export-analysis MODEL GAUSS_ORDER OUTPUT".into()),
     }
 }
 

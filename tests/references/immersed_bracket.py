@@ -175,7 +175,7 @@ def full_cell(bounds,radius_x=4.,radius_y=4.):
     return False
 
 
-def run(h,order,geometry_only=False,solver="lu",radius_x=4.,radius_y=4.):
+def run(h,order,geometry_only=False,solver="lu",radius_x=4.,radius_y=4.,field_output=None):
     start=time.perf_counter()
     young,nu=210000.,.3
     mu=young/(2*(1+nu));lam=young*nu/((1+nu)*(1-2*nu))
@@ -295,6 +295,9 @@ def run(h,order,geometry_only=False,solver="lu",radius_x=4.,radius_y=4.):
                     "lu_factor_nnz":int(lu.L.nnz+lu.U.nnz),
                     "lu_abs_pivot_ratio_diagnostic":float(np.min(np.abs(lu.U.diagonal()))/np.max(np.abs(lu.U.diagonal())))}
     solve_s=time.perf_counter()-solve
+    if field_output is not None:
+        np.savez(field_output,h_mm=h,radii_mm=np.array([radius_x,radius_y]),displacement_mm=u.reshape((*space.shape,3)),
+                 young_mpa=young,poisson=nu,gauss_order=order)
     residual=stiffness@u-rhs
     residual_norm=float(np.linalg.norm(residual[free])/np.linalg.norm(rhs[free]))
     force=rhs.reshape(-1,3).sum(axis=0)
@@ -330,7 +333,8 @@ if __name__=="__main__":
     parser.add_argument("--solver",choices=("lu","multigrid"),default="lu")
     parser.add_argument("--radius-x",type=float,default=4.)
     parser.add_argument("--radius-y",type=float,default=4.)
+    parser.add_argument("--field-output",help="write the solved B-spline displacement coefficients to NPZ")
     args=parser.parse_args()
     if not 2<=args.order<=16 or not 1<=args.h<=5:
         parser.error("expected order 2..16, h in [1,5] mm")
-    print(json.dumps(run(args.h,args.order,args.geometry_only,args.solver,args.radius_x,args.radius_y),indent=2))
+    print(json.dumps(run(args.h,args.order,args.geometry_only,args.solver,args.radius_x,args.radius_y,args.field_output),indent=2))

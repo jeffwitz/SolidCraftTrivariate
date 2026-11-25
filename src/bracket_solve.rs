@@ -166,6 +166,11 @@ fn integrate_load(
     Ok((force, area))
 }
 
+/// Integrate the reference bracket's uniform load over its complete x60 face.
+pub fn bracket_load(space: &AnalysisSpace, order: usize) -> Result<(Vec<f64>, f64), &'static str> {
+    integrate_load(space, order, &loaded_faces(space)?)
+}
+
 fn dot(a: &[f64], b: &[f64]) -> f64 {
     a.iter().zip(b).map(|(x, y)| x * y).sum()
 }

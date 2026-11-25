@@ -301,13 +301,13 @@
     "id": "annulus-four-chamfer",
     "title": "Anneau à quatre chanfreins · 4 volumes",
     "group": "Anneau · topologie fixe",
-    "description": "Les quatre secteurs de la pièce initiale conservent leurs raccords. Deux nœuds axiaux sont prévus dans chaque secteur pour le chanfrein.",
+    "description": "Les quatre secteurs et leurs raccords proviennent de la pièce vive. Les états vif, chanfreiné et arrondi partagent les mêmes nœuds, les mêmes poids et 63 pôles par secteur.",
     "model": "data/models/annulus-four-chamfer.json",
     "source": "data/models/annulus-four-chamfer.json",
     "sourceLabel": "Réseau NURBS (JSON)",
     "step": "data/steps/edges-annulus-chamfer.step",
     "stepLabel": "Géométrie de référence (STEP)",
-    "audit": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/cfe4fc36edbcc7e4ae4e58357686eeac1ffc9373/docs/annulus-four-block-topology.md",
+    "audit": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/campagne-nurbs-multiboucles/docs/annulus-original-edge-states.md",
     "metrics": [
       {
         "label": "Volumes logiques",
@@ -327,13 +327,13 @@
     "id": "annulus-four-sharp",
     "title": "Anneau vif · 4 volumes",
     "group": "Anneau · topologie fixe",
-    "description": "Les quatre secteurs de la pièce initiale conservent leurs raccords. Deux nœuds axiaux sont prévus dans chaque secteur pour le chanfrein.",
+    "description": "Les quatre secteurs et leurs raccords proviennent de la pièce vive. Les états vif, chanfreiné et arrondi partagent les mêmes nœuds, les mêmes poids et 63 pôles par secteur.",
     "model": "data/models/annulus-four-sharp.json",
     "source": "data/models/annulus-four-sharp.json",
     "sourceLabel": "Réseau NURBS (JSON)",
     "step": "data/steps/full-annulus.step",
     "stepLabel": "Géométrie de référence (STEP)",
-    "audit": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/cfe4fc36edbcc7e4ae4e58357686eeac1ffc9373/docs/annulus-four-block-topology.md",
+    "audit": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/campagne-nurbs-multiboucles/docs/annulus-original-edge-states.md",
     "metrics": [
       {
         "label": "Volumes logiques",
@@ -346,6 +346,36 @@
       {
         "label": "Volume",
         "value": "301,592895 mm³"
+      }
+    ]
+  },
+  {
+    "id": "annulus-four-fillet-singular",
+    "title": "Anneau à quatre congés · 4 volumes (exploratoire)",
+    "group": "Anneau · topologie originale à quatre volumes",
+    "description": "Les quatre congés de rayon 0,25 mm sont construits sur les quatre secteurs de la pièce vive. Le jacobien est nul sur quatre cercles de contact, deux sur chaque face d’extrémité. Cette carte expérimentale conserve la géométrie. Son aptitude à l’analyse isogéométrique (IGA) n’est pas qualifiée.",
+    "model": "data/models/annulus-four-fillet-singular.json",
+    "source": "data/models/annulus-four-fillet-singular.json",
+    "sourceLabel": "Réseau NURBS (JSON)",
+    "step": "data/steps/edges-annulus-fillet.step",
+    "stepLabel": "Référence B-Rep (STEP)",
+    "audit": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/campagne-nurbs-multiboucles/docs/annulus-original-edge-states.md",
+    "metrics": [
+      {
+        "label": "Volumes logiques",
+        "value": "4"
+      },
+      {
+        "label": "Arêtes circulaires traitées",
+        "value": "4 sur 4, rayon 0,25 mm"
+      },
+      {
+        "label": "Jacobian",
+        "value": "Nul sur 2 cercles en haut et 2 en bas"
+      },
+      {
+        "label": "IGA",
+        "value": "Non qualifiée"
       }
     ]
   },

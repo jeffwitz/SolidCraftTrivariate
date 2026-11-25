@@ -13,7 +13,7 @@ let viewer = null;
 let mode = 'blocks';
 let selectionVersion = 0;
 let modelReady = false;
-let viewerError = 'Le moteur de visualisation n’est pas disponible.';
+let viewerError = 'The viewer is unavailable.';
 
 function showState(message, kind = 'info') {
   ui.state.textContent = message;
@@ -56,7 +56,7 @@ function renderMetrics(metrics) {
   if (!Array.isArray(metrics) || metrics.length === 0) {
     const empty = document.createElement('div');
     empty.className = 'metric-empty';
-    empty.textContent = 'Aucune mesure publiée pour cette expérience.';
+    empty.textContent = 'No measurements are published for this experiment.';
     ui.metrics.append(empty);
     return;
   }
@@ -74,9 +74,9 @@ function renderMetrics(metrics) {
 
 async function readModel(experiment) {
   const url = safeLocalUrl(experiment.model);
-  if (!url) throw new Error('Chemin du modèle absent ou hors du site.');
+  if (!url) throw new Error('The model path is missing or points outside this site.');
   const response = await fetch(url, { cache: 'force-cache' });
-  if (!response.ok) throw new Error(`Le modèle n’a pas pu être chargé (${response.status}).`);
+  if (!response.ok) throw new Error(`Could not load the model (${response.status}).`);
   return response.json();
 }
 
@@ -99,11 +99,11 @@ function renderProfile(audit) {
   ui.profile.hidden = false;
   const title = document.createElement('figcaption');
   title.className = 'profile-title';
-  title.textContent = profiles.length > 1 ? 'Profils courbes distincts' : 'Profil courbe';
+  title.textContent = profiles.length > 1 ? 'Distinct curved profiles' : 'Curved profile';
   const featureLabel = name => ({
-    pocket: 'Poche', lower_hole: 'Perçage inférieur', upper_hole: 'Perçage supérieur',
-    upper_pocket: 'Poche supérieure',
-  })[name] || String(name || 'Cavité').replaceAll('_', ' ');
+    pocket: 'Pocket', lower_hole: 'Lower hole', upper_hole: 'Upper hole',
+    upper_pocket: 'Upper pocket',
+  })[name] || String(name || 'Cavity').replaceAll('_', ' ');
   const list = document.createElement('div');
   list.className = 'profile-list';
   for (const profile of profiles.slice(0, 2)) {
@@ -141,7 +141,7 @@ function renderProfile(audit) {
     svg.classList.add('profile-art');
     svg.setAttribute('viewBox', `${viewMinX} ${viewMinY} ${viewWidth} ${viewHeight}`);
     svg.setAttribute('role', 'img');
-    svg.setAttribute('aria-label', `Profil quadratique : ${featureLabel(profile.feature)}`);
+    svg.setAttribute('aria-label', `Quadratic profile: ${featureLabel(profile.feature)}`);
     const shape = document.createElementNS(svgNamespace, 'path');
     shape.classList.add('profile-path');
     shape.setAttribute('d', pathData);
@@ -185,9 +185,9 @@ async function selectExperiment(id) {
     if (mode === 'blocks') document.querySelector('[data-mode="surface"]').click();
   }
   applyClip();
-  ui.source.firstElementChild.textContent = experiment.sourceLabel || 'Recette source';
-  ui.step.firstElementChild.textContent = experiment.stepLabel || 'Modèle STEP';
-  ui.model.firstElementChild.textContent = boundary ? 'Surface triangulée (JSON)' : 'Modèle trivarié (JSON)';
+  ui.source.firstElementChild.textContent = experiment.sourceLabel || 'Source recipe';
+  ui.step.firstElementChild.textContent = experiment.stepLabel || 'STEP model';
+  ui.model.firstElementChild.textContent = boundary ? 'Triangulated surface (JSON)' : 'Trivariate model (JSON)';
   setLink(ui.model, experiment.model === experiment.source ? null : experiment.model);
   setLink(ui.source, experiment.source);
   setLink(ui.step, experiment.step);
@@ -196,13 +196,13 @@ async function selectExperiment(id) {
   const section = experiment.section;
   const hasSection = section && ['x', 'y', 'z'].includes(section.axis) && Number.isFinite(section.fraction) && section.fraction >= 0 && section.fraction <= 1;
   ui.sectionButton.hidden = !hasSection;
-  ui.sectionButton.textContent = 'Voir la coupe prescrite';
+  ui.sectionButton.textContent = 'Show prescribed section';
   if (location.hash === '#s3-face-pocket' && hasSection) requestAnimationFrame(() => ui.sectionButton.scrollIntoView({ block: 'center' }));
   if (!viewer) {
-    showState(`${viewerError} Les mesures et les liens de source restent accessibles.`, 'error');
+    showState(`${viewerError} Measurements and source links remain available.`, 'error');
     return;
   }
-  showState('Chargement du modèle…');
+  showState('Loading model…');
   try {
     const model = await readModel(experiment);
     if (version !== selectionVersion) return;
@@ -216,7 +216,7 @@ async function selectExperiment(id) {
     hideState();
   } catch (error) {
     if (version !== selectionVersion) return;
-    showState(`${error.message} Vérifiez que le site est servi en HTTP et que le modèle est publié.`, 'error');
+    showState(`${error.message} Make sure the site is served over HTTP and the model has been published.`, 'error');
   }
 }
 
@@ -273,18 +273,18 @@ async function start() {
   initControls();
   try {
     const response = await fetch(byId('catalog-url').href, { cache: 'no-cache' });
-    if (!response.ok) throw new Error(`Le catalogue d’expériences est indisponible (${response.status}).`);
+    if (!response.ok) throw new Error(`The experiment catalog is unavailable (${response.status}).`);
     const data = await response.json();
-    if (!Array.isArray(data) || data.length === 0) throw new Error('Le catalogue ne contient aucune expérience.');
+    if (!Array.isArray(data) || data.length === 0) throw new Error('The catalog contains no experiments.');
     experiments = data.filter((item) => item && typeof item.id === 'string' && typeof item.model === 'string');
-    if (experiments.length === 0) throw new Error('Aucune expérience ne contient de modèle exploitable.');
+    if (experiments.length === 0) throw new Error('No experiment has a usable model.');
     ui.selector.replaceChildren();
     const groups = new Map();
     for (const experiment of experiments) {
       const option = document.createElement('option');
       option.value = experiment.id;
       option.textContent = experiment.title || experiment.id;
-      const group = experiment.group || 'Modèles';
+      const group = experiment.group || 'Models';
       if (!groups.has(group)) {
         const container = document.createElement('optgroup');
         container.label = group;
@@ -297,11 +297,11 @@ async function start() {
     try {
       const { createViewer } = await import('./renderer.js?v=c385041a0b19');
       viewer = createViewer(ui.canvas);
-      if (!viewer || typeof viewer.setModel !== 'function') throw new Error('L’API du moteur de visualisation est incomplète.');
+      if (!viewer || typeof viewer.setModel !== 'function') throw new Error('The viewer API is incomplete.');
       hideState();
     } catch (error) {
-      viewerError = /webgl|context|gpu/i.test(error.message) ? 'WebGL n’est pas disponible dans ce navigateur.' : `Moteur WebGL indisponible : ${error.message}`;
-      showState(`${viewerError} Les mesures et les liens de source restent accessibles.`, 'error');
+      viewerError = /webgl|context|gpu/i.test(error.message) ? 'WebGL is unavailable in this browser.' : `WebGL viewer unavailable: ${error.message}`;
+      showState(`${viewerError} Measurements and source links remain available.`, 'error');
     }
     const requested = new URL(location.href).searchParams.get('model');
     const initial = experiments.find(entry => entry.id === requested) || experiments[0];
@@ -312,8 +312,8 @@ async function start() {
     }
     await selectExperiment(initial.id);
   } catch (error) {
-    showState(`${error.message} Le catalogue attendu est ./experiments.json.`, 'error');
-    ui.viewTitle.textContent = 'Aucun modèle chargé';
+    showState(`${error.message} Expected catalog: ./experiments.json.`, 'error');
+    ui.viewTitle.textContent = 'No model loaded';
     ui.description.textContent = '';
     renderMetrics([]);
   }

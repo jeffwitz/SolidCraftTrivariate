@@ -38,6 +38,13 @@ const injectedExpressions = {
     return Boolean(status?.hidden && select?.options.length > 0 && !select.disabled);
   })()`,
   bodySummary: 'document.body.innerText.slice(0, 1600)',
+  publicUiLocale: `(() => ({
+    lang: document.documentElement.lang,
+    heading: document.querySelector('#page-title').textContent,
+    canvasLabel: document.querySelector('#model-canvas').getAttribute('aria-label'),
+    resetLabel: document.querySelector('#reset-view').textContent.trim(),
+    loadingOption: document.querySelector('#experiment-select option').textContent,
+  }))()`,
   canvasRegion: `(() => {
     const rect = document.querySelector('#model-canvas').getBoundingClientRect();
     return { x: rect.x, y: rect.y, width: rect.width, height: rect.height, scale: 1 };
@@ -162,6 +169,7 @@ function validateInjectedExpressions() {
   const expressions = [
     ['galleryReady', injectedExpressions.galleryReady],
     ['bodySummary', injectedExpressions.bodySummary],
+    ['publicUiLocale', injectedExpressions.publicUiLocale],
     ['canvasRegion', injectedExpressions.canvasRegion],
     ['resources', injectedExpressions.resources],
     ['selectExperiment', injectedExpressions.selectExperiment('s3-face-pocket')],
@@ -281,7 +289,7 @@ const siteServer = createServer(async (req, res) => {
     }
     if (new URL(req.url, `http://${HOST}`).pathname === '/experiments.json' && !new URL(req.url, `http://${HOST}`).search) {
       res.writeHead(200, { 'Content-Type': 'application/json', 'Cache-Control': 'public, max-age=3600' })
-        .end(JSON.stringify([{ id: 'g2-cross-plate', title: 'Plaque G2 à perçages croisés', model: 'retired.json' }]));
+        .end(JSON.stringify([{ id: 'g2-cross-plate', title: 'G2 plate with crossed bores', model: 'retired.json' }]));
       return;
     }
     const relativePath = pathname === '/' ? 'index.html' : pathname.slice(1);
@@ -436,6 +444,12 @@ async function runBrowserChecks() {
   if (oldId !== 'g2-cross-plate') throw new Error('Historical catalog was not primed');
   await command('Page.navigate', { url: serverUrl + '?model=retired-curved-catalog-id' });
   await waitForGallery('plate_blind_pocket');
+  const publicUiLocale = await evaluate(injectedExpressions.publicUiLocale);
+  if (publicUiLocale.lang !== 'en' || !publicUiLocale.heading.includes('FieldCraft brackets')
+    || !publicUiLocale.canvasLabel.startsWith('Interactive 3D model')
+    || publicUiLocale.resetLabel !== 'Reset view' || publicUiLocale.loadingOption !== 'Loading…') {
+    throw new Error(`Public gallery UI is not consistently in English: ${JSON.stringify(publicUiLocale)}`);
+  }
   if (await evaluate("new URL(location.href).searchParams.get('model')") !== 'plate_blind_pocket') {
     throw new Error('Retired model permalink was not corrected');
   }

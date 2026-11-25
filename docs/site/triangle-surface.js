@@ -3,7 +3,7 @@ export function surfaceMesh({ vertices, triangles }) {
   if (!Array.isArray(vertices) || !vertices.length || vertices.length % 3
     || !vertices.every(Number.isFinite) || !Array.isArray(triangles)
     || !triangles.length || triangles.length % 3) {
-    throw new TypeError('La triangulation de la surface est invalide.');
+    throw new TypeError('The surface triangulation is invalid.');
   }
   const values = new Float32Array(triangles.length * 9);
   const bounds = [[Infinity, Infinity, Infinity], [-Infinity, -Infinity, -Infinity]];
@@ -15,7 +15,7 @@ export function surfaceMesh({ vertices, triangles }) {
   for (let i = 0; i < triangles.length; i += 3) {
     const [a, b, c] = triangles.slice(i, i + 3).map(index => {
       if (!Number.isSafeInteger(index) || index < 0 || 3 * index >= vertices.length) {
-        throw new RangeError('Indice de triangle hors du modèle.');
+        throw new RangeError('Triangle index is outside the model.');
       }
       return vertices.slice(index * 3, index * 3 + 3);
     });

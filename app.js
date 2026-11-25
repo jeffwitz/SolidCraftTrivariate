@@ -2,8 +2,9 @@ const byId = (id) => document.getElementById(id);
 const ui = {
   canvas: byId('model-canvas'), state: byId('canvas-state'), wrap: byId('canvas-wrap'),
   selector: byId('experiment-select'), description: byId('experiment-description'),
-  viewTitle: byId('view-title'), metrics: byId('metrics-list'), source: byId('source-link'), step: byId('step-link'),
+  viewTitle: byId('view-title'), metrics: byId('metrics-list'), source: byId('source-link'), step: byId('step-link'), hex8: byId('hex8-link'), audit: byId('audit-link'), figure: byId('figure-link'),
   axis: byId('clip-axis'), fraction: byId('clip-fraction'), value: byId('clip-value'), reset: byId('reset-view'),
+  sectionButton: byId('s3-face-pocket'),
 };
 
 let experiments = [];
@@ -87,6 +88,14 @@ async function selectExperiment(id) {
   renderMetrics(experiment.metrics);
   setLink(ui.source, experiment.source);
   setLink(ui.step, experiment.step);
+  setLink(ui.hex8, experiment.hex8);
+  setLink(ui.audit, experiment.audit);
+  setLink(ui.figure, experiment.figure);
+  const section = experiment.section;
+  const hasSection = section && ['x', 'y', 'z'].includes(section.axis) && Number.isFinite(section.fraction) && section.fraction >= 0 && section.fraction <= 1;
+  ui.sectionButton.hidden = !hasSection;
+  ui.sectionButton.textContent = 'Voir la poche en coupe';
+  if (location.hash === '#s3-face-pocket' && hasSection) requestAnimationFrame(() => ui.sectionButton.scrollIntoView({ block: 'center' }));
   if (!viewer) {
     showState(`${viewerError} Les mesures et les liens de source restent accessibles.`, 'error');
     return;
@@ -122,6 +131,14 @@ function initControls() {
     applyClip();
     viewer?.reset();
   });
+  ui.sectionButton.addEventListener('click', () => {
+    const section = activeExperiment()?.section;
+    if (!section || !['x', 'y', 'z'].includes(section.axis) || !Number.isFinite(section.fraction)) return;
+    ui.axis.value = section.axis;
+    ui.fraction.value = String(Math.round(section.fraction * 100));
+    applyClip();
+    ui.canvas.focus();
+  });
   document.querySelectorAll('[data-mode]').forEach((button) => button.addEventListener('click', () => {
     mode = button.dataset.mode;
     document.querySelectorAll('[data-mode]').forEach((candidate) => {
@@ -132,6 +149,8 @@ function initControls() {
     viewer?.setMode(mode);
   }));
 }
+
+function activeExperiment() { return experiments.find((item) => item.id === ui.selector.value); }
 
 async function start() {
   initControls();

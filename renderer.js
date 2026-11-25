@@ -36,7 +36,8 @@ void main() {
 }`;
 
 const SURFACE_COLOR = [0.78, 0.67, 0.52];
-const DEFAULT_CAMERA = { yaw: 0.75, pitch: 0.52, distance: 2.7 };
+const DEFAULT_CAMERA = { yaw: 0.72, pitch: 0.5, distance: 2 };
+const CAMERA_FILL = 0.64;
 const GRID = 12;
 const CAP_GRID = 6;
 const FACE_SIDES = [
@@ -241,11 +242,15 @@ function buildBlockGrid(evaluate, divisions) {
 
 function buildSurfaceMeshes(model, mode) {
   const hiddenSides = new Map();
+  const duplicateSides = new Map();
   for (const item of model.topology?.interfaces || []) {
     for (const [id, side] of [item.first, item.second]) {
       if (!hiddenSides.has(id)) hiddenSides.set(id, new Set());
       hiddenSides.get(id).add(side);
     }
+    const [duplicateBlock, duplicateSide] = item.second;
+    if (!duplicateSides.has(duplicateBlock)) duplicateSides.set(duplicateBlock, new Set());
+    duplicateSides.get(duplicateBlock).add(duplicateSide);
   }
 
   const meshes = [];
@@ -253,7 +258,9 @@ function buildSurfaceMeshes(model, mode) {
     const evaluate = makeEvaluator(block);
     const { grid, index, divisions } = buildBlockGrid(evaluate, GRID);
     const color = mode === 'surface' ? SURFACE_COLOR : blockColor(block.id);
-    const skip = mode === 'surface' ? hiddenSides.get(block.id) || new Set() : new Set();
+    const skip = mode === 'surface'
+      ? hiddenSides.get(block.id) || new Set()
+      : duplicateSides.get(block.id) || new Set();
     const output = [];
     const point = (u, v, w) => grid[index(u, v, w)];
 
@@ -305,15 +312,63 @@ function intersectTetrahedron(points, axis, plane) {
   return intersections;
 }
 
-function buildCapMeshes(model, axis, fraction, bounds) {
+function coplanarBlockFace(evaluate, axis, plane, tolerance) {
+  const samples = [0, 0.25, 0.5, 0.75, 1];
+  for (let parameterAxis = 0; parameterAxis < 3; parameterAxis++) {
+    for (let side = 0; side < 2; side++) {
+      let onPlane = true;
+      for (const first of samples) for (const second of samples) {
+        const parameters = [0.5, 0.5, 0.5];
+        parameters[parameterAxis] = side;
+        const otherAxes = [0, 1, 2].filter(index => index !== parameterAxis);
+        parameters[otherAxes[0]] = first;
+        parameters[otherAxes[1]] = second;
+        if (Math.abs(evaluate(...parameters)[axis] - plane) > tolerance) onPlane = false;
+      }
+      if (!onPlane) continue;
+
+      const parameters = [0.5, 0.5, 0.5];
+      parameters[parameterAxis] = side === 0 ? 1e-4 : 1 - 1e-4;
+      const inwardValue = evaluate(...parameters)[axis];
+      return {
+        sideName: `${'uvw'[parameterAxis]}${side}`,
+        retainedSide: inwardValue <= plane + tolerance,
+      };
+    }
+  }
+  return null;
+}
+
+function buildCapMeshes(model, axis, fraction, bounds, mode) {
   if (axis === null) return [];
   const axisIndex = { x: 0, y: 1, z: 2 }[axis];
   const plane = bounds[0][axisIndex] + (bounds[1][axisIndex] - bounds[0][axisIndex]) * fraction;
+  const tolerance = Math.max(1, bounds[1][axisIndex] - bounds[0][axisIndex]) * 1e-9;
+  const interfaces = new Map();
+  const duplicateSides = new Map();
+  for (const item of model.topology?.interfaces || []) {
+    for (const side of [item.first, item.second]) {
+      if (!interfaces.has(side[0])) interfaces.set(side[0], new Set());
+      interfaces.get(side[0]).add(side[1]);
+    }
+    const [duplicateBlock, duplicateSide] = item.second;
+    if (!duplicateSides.has(duplicateBlock)) duplicateSides.set(duplicateBlock, new Set());
+    duplicateSides.get(duplicateBlock).add(duplicateSide);
+  }
   const meshes = [];
   for (const block of model.blocks) {
     const evaluate = makeEvaluator(block);
     const { grid, index, divisions } = buildBlockGrid(evaluate, CAP_GRID);
     const output = [];
+    const coplanar = coplanarBlockFace(evaluate, axisIndex, plane, tolerance);
+    if (coplanar) {
+      const interfaceFace = interfaces.get(block.id)?.has(coplanar.sideName) || false;
+      const duplicateFace = duplicateSides.get(block.id)?.has(coplanar.sideName) || false;
+      const faceVisible = mode === 'blocks' ? !duplicateFace : !interfaceFace;
+      if (faceVisible || !coplanar.retainedSide) continue;
+      // The retained side needs one cap where its shared interface is hidden.
+    }
+    const color = mode === 'blocks' ? blockColor(block.id) : SURFACE_COLOR;
     const point = (u, v, w) => grid[index(u, v, w)];
     for (let i = 0; i < divisions; i++) {
       for (let j = 0; j < divisions; j++) {
@@ -332,7 +387,7 @@ function buildCapMeshes(model, axis, fraction, bounds) {
             for (const vertex of polygon) for (let component = 0; component < 3; component++) center[component] += vertex[component] / polygon.length;
             polygon.sort((a, b) => Math.atan2(a[v] - center[v], a[u] - center[u]) - Math.atan2(b[v] - center[v], b[u] - center[u]));
             for (let triangle = 1; triangle < polygon.length - 1; triangle++) {
-              appendTriangle(output, polygon[0], polygon[triangle], polygon[triangle + 1], SURFACE_COLOR);
+              appendTriangle(output, polygon[0], polygon[triangle], polygon[triangle + 1], color);
             }
           }
         }
@@ -382,12 +437,18 @@ export function createViewer(canvas) {
   let center = [0, 0, 0];
   let scale = 1;
   let camera = { ...DEFAULT_CAMERA };
+  let cameraAdjusted = false;
+  let lastCanvasSize = null;
   let drag = null;
   let frame = 0;
   let surfaceMeshes = [];
   let capMeshes = [];
   const activePointers = new Map();
   let pinchDistance = null;
+
+  if (typeof ResizeObserver === 'function') {
+    new ResizeObserver(scheduleDraw).observe(canvas);
+  }
 
   function deleteMeshes(meshes) {
     for (const mesh of meshes) if (mesh.buffer) gl.deleteBuffer(mesh.buffer);
@@ -415,6 +476,10 @@ export function createViewer(canvas) {
       canvas.width = width;
       canvas.height = height;
     }
+    if (!lastCanvasSize || lastCanvasSize[0] !== width || lastCanvasSize[1] !== height) {
+      lastCanvasSize = [width, height];
+      if (model && !cameraAdjusted) camera.distance = fittedDistance(width, height);
+    }
     gl.viewport(0, 0, width, height);
     gl.enable(gl.DEPTH_TEST);
     gl.disable(gl.CULL_FACE);
@@ -426,10 +491,10 @@ export function createViewer(canvas) {
     const cosPitch = Math.cos(camera.pitch);
     const eye = [
       camera.distance * Math.sin(camera.yaw) * cosPitch,
-      camera.distance * Math.sin(camera.pitch),
       camera.distance * Math.cos(camera.yaw) * cosPitch,
+      camera.distance * Math.sin(camera.pitch),
     ];
-    const view = lookAt(eye, [0, 0, 0], [0, 1, 0]);
+    const view = lookAt(eye, [0, 0, 0], [0, 0, 1]);
     const projection = perspective(Math.PI / 4, width / height, 0.01, 100);
     const mvp = multiplyMatrices(projection, view);
     const modelMatrix = new Float32Array([
@@ -467,7 +532,36 @@ export function createViewer(canvas) {
 
   function rebuildCaps() {
     deleteMeshes(capMeshes);
-    capMeshes = uploadMeshes(buildCapMeshes(model, clipAxis, clipFraction, bounds));
+    capMeshes = uploadMeshes(buildCapMeshes(model, clipAxis, clipFraction, bounds, mode));
+  }
+
+  function fittedDistance(width, height) {
+    if (!bounds) return DEFAULT_CAMERA.distance;
+    const direction = [
+      Math.sin(camera.yaw) * Math.cos(camera.pitch),
+      Math.cos(camera.yaw) * Math.cos(camera.pitch),
+      Math.sin(camera.pitch),
+    ];
+    const right = normalize([-Math.cos(camera.yaw), Math.sin(camera.yaw), 0]);
+    const up = normalize(cross(direction, right));
+    const aspect = Math.max(1e-6, width / height);
+    const tangentY = Math.tan(Math.PI / 8);
+    const tangentX = tangentY * aspect;
+    let requiredDistance = 0;
+    for (let corner = 0; corner < 8; corner++) {
+      const relative = [0, 1, 2].map(axis => (
+        ((corner >> axis) & 1 ? bounds[1][axis] : bounds[0][axis]) - center[axis]
+      ) / scale);
+      const depth = relative.reduce((sum, coordinate, axis) => sum + coordinate * direction[axis], 0);
+      const horizontal = Math.abs(relative.reduce((sum, coordinate, axis) => sum + coordinate * right[axis], 0));
+      const vertical = Math.abs(relative.reduce((sum, coordinate, axis) => sum + coordinate * up[axis], 0));
+      requiredDistance = Math.max(
+        requiredDistance,
+        depth + horizontal / (tangentX * CAMERA_FILL),
+        depth + vertical / (tangentY * CAMERA_FILL),
+      );
+    }
+    return Math.max(0.85, requiredDistance * 1.04);
   }
 
   canvas.style.touchAction = 'none';
@@ -489,14 +583,16 @@ export function createViewer(canvas) {
     if (activePointers.size >= 2) {
       const [first, second] = [...activePointers.values()];
       const nextDistance = Math.hypot(first.x - second.x, first.y - second.y);
-      if (pinchDistance > 0 && nextDistance > 0) camera.distance = clamp(camera.distance * pinchDistance / nextDistance, 1.1, 9);
+      if (pinchDistance > 0 && nextDistance > 0) camera.distance = clamp(camera.distance * pinchDistance / nextDistance, 0.85, 9);
       pinchDistance = nextDistance;
+      cameraAdjusted = true;
       scheduleDraw();
       return;
     }
     if (!drag) return;
     camera.yaw = drag.yaw + (event.clientX - drag.x) * 0.008;
     camera.pitch = clamp(drag.pitch + (event.clientY - drag.y) * 0.008, -1.45, 1.45);
+    cameraAdjusted = true;
     scheduleDraw();
   });
   function releasePointer(event) {
@@ -513,20 +609,24 @@ export function createViewer(canvas) {
   canvas.addEventListener('pointercancel', releasePointer);
   canvas.addEventListener('wheel', event => {
     event.preventDefault();
-    camera.distance = clamp(camera.distance * Math.exp(event.deltaY * 0.001), 1.1, 9);
+    camera.distance = clamp(camera.distance * Math.exp(event.deltaY * 0.001), 0.85, 9);
+    cameraAdjusted = true;
     scheduleDraw();
   }, { passive: false });
   canvas.addEventListener('keydown', event => {
     const orbitStep = event.shiftKey ? 0.14 : 0.06;
     if (event.key === 'Home') {
       camera = { ...DEFAULT_CAMERA };
+      camera.distance = fittedDistance(canvas.clientWidth, canvas.clientHeight);
+      cameraAdjusted = false;
     } else if (event.key === 'ArrowLeft') camera.yaw -= orbitStep;
     else if (event.key === 'ArrowRight') camera.yaw += orbitStep;
     else if (event.key === 'ArrowUp') camera.pitch = clamp(camera.pitch - orbitStep, -1.45, 1.45);
     else if (event.key === 'ArrowDown') camera.pitch = clamp(camera.pitch + orbitStep, -1.45, 1.45);
-    else if (event.key === '+' || event.key === '=' || event.code === 'NumpadAdd') camera.distance = clamp(camera.distance * 0.9, 1.1, 9);
-    else if (event.key === '-' || event.code === 'NumpadSubtract') camera.distance = clamp(camera.distance / 0.9, 1.1, 9);
+    else if (event.key === '+' || event.key === '=' || event.code === 'NumpadAdd') { camera.distance = clamp(camera.distance * 0.9, 0.85, 9); cameraAdjusted = true; }
+    else if (event.key === '-' || event.code === 'NumpadSubtract') { camera.distance = clamp(camera.distance / 0.9, 0.85, 9); cameraAdjusted = true; }
     else return;
+    if (event.key !== 'Home') cameraAdjusted = true;
     event.preventDefault();
     scheduleDraw();
   });
@@ -541,13 +641,18 @@ export function createViewer(canvas) {
       rebuildSurfaces();
       rebuildCaps();
       camera = { ...DEFAULT_CAMERA };
+      camera.distance = fittedDistance(canvas.clientWidth, canvas.clientHeight);
+      cameraAdjusted = false;
       scheduleDraw();
     },
     setMode(value) {
       if (value !== 'surface' && value !== 'blocks') throw new TypeError("Mode must be 'surface' or 'blocks'");
       if (mode === value) return;
       mode = value;
-      if (model) rebuildSurfaces();
+      if (model) {
+        rebuildSurfaces();
+        rebuildCaps();
+      }
       scheduleDraw();
     },
     setClip(axis, fraction) {
@@ -560,6 +665,8 @@ export function createViewer(canvas) {
     },
     reset() {
       camera = { ...DEFAULT_CAMERA };
+      camera.distance = fittedDistance(canvas.clientWidth, canvas.clientHeight);
+      cameraAdjusted = false;
       scheduleDraw();
     },
   };

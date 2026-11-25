@@ -1,0 +1,453 @@
+{
+  "family": "s3_face_pocket_v1",
+  "method": "direct periodic rational B-spline source evaluation; Cox/de Boor; vertical-ray intersections; adaptive 1D quadrature; no BRep or constructor geometry",
+  "source_recipe": "tests/references/g2_cross_sketches.recipe.json",
+  "source_profile": {
+    "degree": 3,
+    "knots": [
+      -3,
+      -2,
+      -1,
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11
+    ],
+    "controls_homogeneous": [
+      [
+        85,
+        25,
+        1
+      ],
+      [
+        166,
+        66,
+        2
+      ],
+      [
+        75,
+        35,
+        1
+      ],
+      [
+        134,
+        66,
+        2
+      ],
+      [
+        65,
+        25,
+        1
+      ],
+      [
+        134,
+        34,
+        2
+      ],
+      [
+        75,
+        15,
+        1
+      ],
+      [
+        166,
+        34,
+        2
+      ],
+      [
+        85,
+        25,
+        1
+      ],
+      [
+        166,
+        66,
+        2
+      ],
+      [
+        75,
+        35,
+        1
+      ]
+    ],
+    "active_domain": [
+      0,
+      8
+    ],
+    "source_sketch_id": "free",
+    "source_loop_id": "boundary"
+  },
+  "pocket": {
+    "support_z_mm": 4.0,
+    "floor_z_mm": 2.0,
+    "normal": [
+      0,
+      0,
+      -1
+    ],
+    "intermediate_y_exact_at_t_13_over_4": "5893/266"
+  },
+  "cases": {
+    "interior_principal": {
+      "footprint_xy_mm": [
+        [
+          55.0,
+          75.0
+        ],
+        [
+          22.154135338345863,
+          25.0
+        ]
+      ],
+      "recipe_identity_and_inputs": {
+        "recipe": "tests/references/s3_face_pocket.recipe.json",
+        "recipe_sha256": "2728d39340d81644ea25f2251d342d130c19fc367b89f0522a8753351166a5be",
+        "family": "s3_face_pocket_v1",
+        "support_feature": "rect_x/zmin",
+        "loop_id": "pocket",
+        "primitive": {
+          "kind": "rectangle",
+          "min": [
+            [
+              55,
+              1
+            ],
+            [
+              5893,
+              266
+            ]
+          ],
+          "max": [
+            [
+              75,
+              1
+            ],
+            [
+              25,
+              1
+            ]
+          ]
+        },
+        "frame_origin_mm": [
+          0,
+          0,
+          4
+        ],
+        "direction": [
+          0,
+          0,
+          -1
+        ],
+        "depth_mm": 2,
+        "parent_block_count": 32
+      },
+      "areas_mm2": {
+        "footprint": 56.91729323308273,
+        "preexisting_nurbs_void_inside_footprint": 25.49039179461207,
+        "material_cut_by_pocket": 31.42690143847066,
+        "quadrature_error_estimate_void_area": 1.629462011343527e-11
+      },
+      "volumes_mm3": {
+        "incremental_removed": 62.85380287694132,
+        "pocket_envelope": 113.83458646616546,
+        "envelope_already_void_before_pocket": 50.98078358922414
+      },
+      "old_arc_at_z4": {
+        "status": "the source wall arc is truncated at the footprint crossings; the portion adjacent to pre-existing hole becomes internal to the merged void",
+        "source_parameter_interval_removed": [
+          3.0,
+          3.2500000000000004
+        ],
+        "old_floor_left_edge_arc_lengths_mm": {
+          "edge_parameter_interval": [
+            2.5,
+            3.5
+          ],
+          "old_edge_length_before_pocket": 10.119835890167197,
+          "retained_left_portion_interval": [
+            2.5,
+            3.0
+          ],
+          "retained_left_portion_length": 5.0599179450835985,
+          "truncated_portion_interval": [
+            3.0,
+            3.2500000000000004
+          ],
+          "truncated_portion_length": 2.849996949390312,
+          "retained_right_portion_interval": [
+            3.2500000000000004,
+            3.5
+          ],
+          "retained_right_portion_length": 2.209920995693287,
+          "truncated_portion_relocated_on_floor_z2_length": 2.849996949390312,
+          "partition_sum_check": 10.119835890167197,
+          "partition_residual_mm": 0.0,
+          "quadrature_error_estimates_mm": {
+            "old_edge": 1.1235283536858987e-13,
+            "retained_left": 5.61763740534582e-14,
+            "truncated": 3.1641322333245814e-14,
+            "retained_right": 2.4535051720212383e-14
+          }
+        },
+        "closed_profile_perimeter_mm_t0_to_8": 61.76613143517342,
+        "source_curve_y_band_intersections_x_at_lower_upper": {
+          "lower_y": [
+            66.13157894736842,
+            83.86842105263159
+          ],
+          "upper_y": [
+            65.99999999999999,
+            83.99999999999999
+          ]
+        }
+      },
+      "new_surfaces": {
+        "floor": {
+          "z_mm": 2.0,
+          "exposed_area_mm2": 31.42690143847066
+        },
+        "side_walls": {
+          "y_min_wall_length_mm": 11.131578947368425,
+          "y_max_wall_length_mm": 10.999999999999986,
+          "x_min_wall_area_mm2": 5.691729323308273,
+          "total_exposed_side_wall_area_mm2": 49.954887218045094,
+          "x_max_wall": "absent; x=75 is inside the existing NURBS void"
+        },
+        "side_wall_line_intervals_x": {
+          "lower_y": [
+            66.13157894736842,
+            83.86842105263159
+          ],
+          "upper_y": [
+            65.99999999999999,
+            83.99999999999999
+          ]
+        }
+      },
+      "classification_witnesses": [
+        {
+          "point_mm": [
+            57.0,
+            22.438721804511278,
+            3
+          ],
+          "source_class_before_pocket": "material_before_pocket",
+          "source_class_after_pocket": "pocket_void"
+        },
+        {
+          "point_mm": [
+            65.0,
+            23.577067669172934,
+            3
+          ],
+          "source_class_before_pocket": "material_before_pocket",
+          "source_class_after_pocket": "pocket_void"
+        },
+        {
+          "point_mm": [
+            74.9999,
+            24.9999,
+            3
+          ],
+          "source_class_before_pocket": "inside_preexisting_nurbs_void",
+          "source_class_after_pocket": "inside_preexisting_nurbs_void"
+        },
+        {
+          "point_mm": [
+            75.0,
+            23.577067669172934,
+            3
+          ],
+          "source_class_before_pocket": "inside_preexisting_nurbs_void",
+          "source_class_after_pocket": "inside_preexisting_nurbs_void"
+        }
+      ]
+    },
+    "open_stock_edge_witness": {
+      "footprint_xy_mm": [
+        [
+          0.0,
+          75.0
+        ],
+        [
+          19.97222222222222,
+          25.0
+        ]
+      ],
+      "recipe_identity_and_inputs": {
+        "recipe": "tests/references/s3_face_pocket_open_side.recipe.json",
+        "recipe_sha256": "dde9723616e0727ec8a21308f62b882f39ee6dc702cf1cf20561b1393e9acd68",
+        "family": "s3_face_pocket_v1",
+        "support_feature": "rect_x/zmin",
+        "loop_id": "pocket",
+        "primitive": {
+          "kind": "rectangle",
+          "min": [
+            [
+              0,
+              1
+            ],
+            [
+              719,
+              36
+            ]
+          ],
+          "max": [
+            [
+              75,
+              1
+            ],
+            [
+              25,
+              1
+            ]
+          ]
+        },
+        "frame_origin_mm": [
+          0,
+          0,
+          4
+        ],
+        "direction": [
+          0,
+          0,
+          -1
+        ],
+        "depth_mm": 2,
+        "parent_block_count": 32
+      },
+      "areas_mm2": {
+        "footprint": 377.08333333333337,
+        "preexisting_nurbs_void_inside_footprint": 44.52183433834247,
+        "material_cut_by_pocket": 332.56149899499087,
+        "quadrature_error_estimate_void_area": 1.2724885274428146e-11
+      },
+      "volumes_mm3": {
+        "incremental_removed": 665.1229979899817,
+        "pocket_envelope": 754.1666666666667,
+        "envelope_already_void_before_pocket": 89.04366867668494
+      },
+      "old_arc_at_z4": {
+        "status": "the source wall arc is truncated at the footprint crossings; the portion adjacent to pre-existing hole becomes internal to the merged void",
+        "source_parameter_interval_removed": [
+          3.0,
+          3.5
+        ],
+        "old_floor_left_edge_arc_lengths_mm": {
+          "edge_parameter_interval": [
+            2.5,
+            3.5
+          ],
+          "old_edge_length_before_pocket": 10.119835890167197,
+          "retained_left_portion_interval": [
+            2.5,
+            3.0
+          ],
+          "retained_left_portion_length": 5.0599179450835985,
+          "truncated_portion_interval": [
+            3.0,
+            3.5
+          ],
+          "truncated_portion_length": 5.0599179450835985,
+          "retained_right_portion_interval": [
+            3.5,
+            3.5
+          ],
+          "retained_right_portion_length": 0.0,
+          "truncated_portion_relocated_on_floor_z2_length": 5.0599179450835985,
+          "partition_sum_check": 10.119835890167197,
+          "partition_residual_mm": 0.0,
+          "quadrature_error_estimates_mm": {
+            "old_edge": 1.1235283536858987e-13,
+            "retained_left": 5.61763740534582e-14,
+            "truncated": 5.61763740534582e-14,
+            "retained_right": 0.0
+          }
+        },
+        "closed_profile_perimeter_mm_t0_to_8": 61.76613143517342,
+        "source_curve_y_band_intersections_x_at_lower_upper": {
+          "lower_y": [
+            66.47222222222223,
+            83.52777777777779
+          ],
+          "upper_y": [
+            65.99999999999999,
+            83.99999999999999
+          ]
+        }
+      },
+      "new_surfaces": {
+        "floor": {
+          "z_mm": 2.0,
+          "exposed_area_mm2": 332.56149899499087
+        },
+        "side_walls": {
+          "y_min_wall_length_mm": 66.47222222222223,
+          "y_max_wall_length_mm": 65.99999999999999,
+          "x_min_wall_area_mm2": 0.0,
+          "total_exposed_side_wall_area_mm2": 264.94444444444446,
+          "x_max_wall": "absent; x=75 is inside the existing NURBS void"
+        },
+        "side_wall_line_intervals_x": {
+          "lower_y": [
+            66.47222222222223,
+            83.52777777777779
+          ],
+          "upper_y": [
+            65.99999999999999,
+            83.99999999999999
+          ]
+        }
+      },
+      "classification_witnesses": [
+        {
+          "point_mm": [
+            7.5,
+            20.474999999999998,
+            3
+          ],
+          "source_class_before_pocket": "material_before_pocket",
+          "source_class_after_pocket": "pocket_void"
+        },
+        {
+          "point_mm": [
+            37.5,
+            22.48611111111111,
+            3
+          ],
+          "source_class_before_pocket": "material_before_pocket",
+          "source_class_after_pocket": "pocket_void"
+        },
+        {
+          "point_mm": [
+            74.9999,
+            24.9999,
+            3
+          ],
+          "source_class_before_pocket": "inside_preexisting_nurbs_void",
+          "source_class_after_pocket": "inside_preexisting_nurbs_void"
+        },
+        {
+          "point_mm": [
+            75.0,
+            22.48611111111111,
+            3
+          ],
+          "source_class_before_pocket": "inside_preexisting_nurbs_void",
+          "source_class_after_pocket": "inside_preexisting_nurbs_void"
+        }
+      ]
+    }
+  },
+  "limits": [
+    "Boundary coincidences at y=y0 and x=75 are treated as source boundaries; quadrature is numerical and does not certify topology."
+  ]
+}

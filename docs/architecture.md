@@ -24,6 +24,12 @@ Pour les largeurs entières positives a,b, les cartes sont (au,v,w) et (a+bu,v,w
 
 Le premier raccord courbe porte sur des faces entières. Les côtés ont une orientation explicite, les degrés, nœuds, multiplicités, poids et coefficients homogènes doivent coïncider après réorientation et normalisation commune. Les raccords emboîtés et la frontière partielle relèvent d’une qualification ultérieure.
 
+## Minimiser les volumes dès l’esquisse
+
+Le planificateur prend comme entrée les contours, le constructeur 3D (extrusion, révolution…) et les traitements prévus. Parmi les candidats qui satisfont la fidélité de forme, la couverture, les raccords et la régularité sur le domaine fermé, il privilégie le plus petit nombre de volumes logiques. Pour une édition, il essaie d’abord la connectivité existante. À nombre de volumes égal, il privilégie la stabilité des identités, puis compare les travées, les points de contrôle et le coût d’analyse. Une extraction de Bézier pour certifier ou intégrer une travée ne crée aucune nouvelle identité de volume de conception.
+
+Chaque gabarit doit annoncer sa classe de topologies, ses hypothèses de régularité et ses règles de placement des nœuds. Pour la révolution d’un profil, le planificateur examine où les coins paramétriques des cartes aboutissent sur le contour après édition. Deux faces extérieures d’une même cellule tensorielle qui se rejoignent sur une peau devenue lisse imposent un déterminant nul sur leur arête commune. Cette obstruction écarte ce candidat précis. Le constructeur essaie alors un autre gabarit préparé et enregistre le coût du changement. Le rapport distingue un candidat admissible, le meilleur candidat testé et un minimum démontré. Cette règle guide le développement du planificateur.
+
 ## Références locales
 
 - SolidCraft et son sous-arbre solidcore fournissent la façade de corps, l’évaluation des features et les règles de coordination. FieldCraft fournit `tests/corpus/filleted-bracket-blocks/{recipe,fixture}.json` et `crates/testkit/tests/bracket_blocks.rs`.

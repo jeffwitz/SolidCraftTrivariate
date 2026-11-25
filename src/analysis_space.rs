@@ -282,6 +282,24 @@ pub fn ruled_sweep_analysis_space(
     from_certified_faces(blocks, &report.certificate.incidence, &design_faces)
 }
 
+/// Build the conforming space of a bent section, retaining the periodic seam as an internal trace.
+pub fn circular_bend_analysis_space(
+    recipe: crate::circular_bend::BendRecipe,
+    blocks: &[BracketBlock],
+) -> Result<AnalysisSpace, &'static str> {
+    let checked=crate::circular_bend_audit::audit_circular_bend(recipe, blocks)?.certificate;
+    from_certified_faces(blocks, &checked.incidence, &checked.design_faces)
+}
+
+/// Build the conforming space of an audited ordered coaxial program, including its void surfaces.
+pub fn coaxial_analysis_space(
+    program: &crate::coaxial_program::CoaxialProgram,
+    blocks: &[BracketBlock],
+) -> Result<AnalysisSpace, &'static str> {
+    let checked=crate::coaxial_audit::audit_coaxial_program(program, blocks)?.certificate;
+    from_certified_faces(blocks, &checked.incidence, &checked.design_faces)
+}
+
 /// Build an H1 analysis space from an independently re-audited axial boolean.
 ///
 /// Only exterior faces become boundary groups. Coplanar internal caps remain

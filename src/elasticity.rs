@@ -210,6 +210,16 @@ pub fn assemble(
     }
     let mu = young / (2. * (1. + poisson));
     let lambda = young * poisson / ((1. + poisson) * (1. - 2. * poisson));
+    assemble_lame(space, lambda, mu, order)
+}
+
+/// Integrate the isotropic bilinear form from its two Lamé coefficients.
+pub(crate) fn assemble_lame(
+    space: &AnalysisSpace,
+    lambda: f64,
+    mu: f64,
+    order: usize,
+) -> Result<Stiffness, &'static str> {
     let points = gauss(order)?;
     let mut rows = vec![BTreeMap::<usize, Matrix>::new(); space.ndof];
     let mut volume = 0.;

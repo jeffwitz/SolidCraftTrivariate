@@ -18,9 +18,13 @@ int main(int argc, char** argv) {
         GProp_GProps props;
         const double error = BRepGProp::VolumePropertiesGK(shape, props, eps, true, true);
         if (!std::isfinite(error) || error < 0 || !std::isfinite(props.Mass())) return 4;
+        GProp_GProps surface;
+        const double area_error = BRepGProp::SurfaceProperties(shape, surface, eps);
+        if (!std::isfinite(area_error) || area_error < 0 || !std::isfinite(surface.Mass())) return 5;
         if (eps == 1.e-12) std::cout << ",";
         std::cout << "{\"tolerance\":" << eps << ",\"volume_mm3\":" << props.Mass()
-                  << ",\"estimated_error\":" << error << "}";
+                  << ",\"estimated_error\":" << error << ",\"surface_mm2\":" << surface.Mass()
+                  << ",\"surface_estimated_error\":" << area_error << "}";
     }
     std::cout << "]\n";
 }

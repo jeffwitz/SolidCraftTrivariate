@@ -1,0 +1,1724 @@
+{
+  "schema": "circular_bend_independent_revolution_v1",
+  "occ": "7.8.1",
+  "freecad": [
+    "26",
+    "3",
+    "0"
+  ],
+  "numpy": "1.26.4",
+  "cases": [
+    {
+      "recipe": {
+        "family": "circular_bend_v1",
+        "section": "reference_rectangle_v1",
+        "major_radius_mm": 16,
+        "quadrants": 1
+      },
+      "expected_admission": true,
+      "build": {
+        "blocks": 1,
+        "cavities": 0,
+        "determinant_lower_bound_mm3": 2399.9999999999986,
+        "exterior_sides": 6,
+        "ideal_volume_mm3": 10053.096491487338,
+        "method": "certified_circular_bend",
+        "periodic_angle": false,
+        "section_fidelity_upper_mm": 0,
+        "shared_faces": 0,
+        "status": "valid"
+      },
+      "qualified": true,
+      "target_volume_mm3": 10053.096491487338,
+      "target_area_mm2": 2810.6192982974676,
+      "native": {
+        "12": {
+          "volume_mm3": 10053.096491487338,
+          "area_mm2": 2810.6192982974667,
+          "areas_by_feature_mm2": {
+            "section_x-10": 188.49555921538766,
+            "section_x10": 816.8140899333462,
+            "section_y-10": 502.6548245743667,
+            "section_y10": 502.6548245743667,
+            "start": 399.9999999999997,
+            "end": 399.9999999999997
+          },
+          "sampled_det_min": 2496.6698556750657
+        },
+        "20": {
+          "volume_mm3": 10053.096491487324,
+          "area_mm2": 2810.619298297467,
+          "areas_by_feature_mm2": {
+            "section_x-10": 188.49555921538752,
+            "section_x10": 816.8140899333459,
+            "section_y-10": 502.65482457436684,
+            "section_y10": 502.65482457436684,
+            "start": 399.9999999999998,
+            "end": 399.9999999999998
+          },
+          "sampled_det_min": 2435.8400435162666
+        }
+      },
+      "analytic_cad_volume_mm3": 10053.096491487337,
+      "analytic_cad_area_mm2": 2810.6192982974676,
+      "step": {
+        "format": "STEP AP214 boundary",
+        "status": "exported"
+      },
+      "step_solids": 1,
+      "step_shells": 1,
+      "step_valid": true,
+      "checked_points": 509,
+      "classifier_mismatches": [],
+      "step_mass": [
+        {
+          "tolerance": 1e-09,
+          "volume_mm3": 10053.096491487331,
+          "estimated_error": 6.884338728637826e-10,
+          "surface_mm2": 2810.619298297468,
+          "surface_estimated_error": 0
+        },
+        {
+          "tolerance": 1e-12,
+          "volume_mm3": 10053.096491487331,
+          "estimated_error": 1.422398239859979e-10,
+          "surface_mm2": 2810.6192982974676,
+          "surface_estimated_error": 2.842170943040401e-16
+        }
+      ],
+      "wall_s": 1.4298960550222546
+    },
+    {
+      "recipe": {
+        "family": "circular_bend_v1",
+        "section": "reference_rectangle_v1",
+        "major_radius_mm": 16,
+        "quadrants": 4
+      },
+      "expected_admission": true,
+      "build": {
+        "blocks": 4,
+        "cavities": 0,
+        "determinant_lower_bound_mm3": 2399.9999999999986,
+        "exterior_sides": 16,
+        "ideal_volume_mm3": 40212.385965949354,
+        "method": "certified_circular_bend",
+        "periodic_angle": true,
+        "section_fidelity_upper_mm": 0,
+        "shared_faces": 4,
+        "status": "valid"
+      },
+      "qualified": true,
+      "target_volume_mm3": 40212.385965949354,
+      "target_area_mm2": 8042.47719318987,
+      "native": {
+        "12": {
+          "volume_mm3": 40212.385965949354,
+          "area_mm2": 8042.4771931898695,
+          "areas_by_feature_mm2": {
+            "section_x-10": 753.9822368615506,
+            "section_x10": 3267.2563597333847,
+            "section_y-10": 2010.619298297467,
+            "section_y10": 2010.619298297467
+          },
+          "sampled_det_min": 2496.6698556750657
+        },
+        "20": {
+          "volume_mm3": 40212.385965949295,
+          "area_mm2": 8042.477193189869,
+          "areas_by_feature_mm2": {
+            "section_x-10": 753.9822368615501,
+            "section_x10": 3267.2563597333838,
+            "section_y-10": 2010.6192982974674,
+            "section_y10": 2010.6192982974674
+          },
+          "sampled_det_min": 2435.8400435162666
+        }
+      },
+      "analytic_cad_volume_mm3": 40212.385965949354,
+      "analytic_cad_area_mm2": 8042.477193189871,
+      "step": {
+        "format": "STEP AP214 boundary",
+        "status": "exported"
+      },
+      "step_solids": 1,
+      "step_shells": 1,
+      "step_valid": true,
+      "checked_points": 509,
+      "classifier_mismatches": [],
+      "step_mass": [
+        {
+          "tolerance": 1e-09,
+          "volume_mm3": 40212.38596594934,
+          "estimated_error": 9.494687107070532e-10,
+          "surface_mm2": 8042.477193189872,
+          "surface_estimated_error": 0
+        },
+        {
+          "tolerance": 1e-12,
+          "volume_mm3": 40212.38596594934,
+          "estimated_error": 1.0932719562968204e-10,
+          "surface_mm2": 8042.47719318987,
+          "surface_estimated_error": 2.783664951981745e-16
+        }
+      ],
+      "wall_s": 2.587605215026997
+    },
+    {
+      "recipe": {
+        "family": "circular_bend_v1",
+        "section": "reference_rectangle_v1",
+        "major_radius_mm": 24,
+        "quadrants": 2
+      },
+      "expected_admission": true,
+      "build": {
+        "blocks": 2,
+        "cavities": 0,
+        "determinant_lower_bound_mm3": 5599.999999999997,
+        "exterior_sides": 10,
+        "ideal_volume_mm3": 30159.289474462013,
+        "method": "certified_circular_bend",
+        "periodic_angle": false,
+        "section_fidelity_upper_mm": 0,
+        "shared_faces": 1,
+        "status": "valid"
+      },
+      "qualified": true,
+      "target_volume_mm3": 30159.289474462013,
+      "target_area_mm2": 6831.857894892402,
+      "native": {
+        "12": {
+          "volume_mm3": 30159.28947446204,
+          "area_mm2": 6831.857894892402,
+          "areas_by_feature_mm2": {
+            "section_x-10": 879.6459430051416,
+            "section_x10": 2136.283004441059,
+            "section_y-10": 1507.9644737231008,
+            "section_y10": 1507.9644737231008,
+            "start": 399.9999999999997,
+            "end": 399.9999999999997
+          },
+          "sampled_det_min": 5726.308839130184
+        },
+        "20": {
+          "volume_mm3": 30159.289474461944,
+          "area_mm2": 6831.857894892403,
+          "areas_by_feature_mm2": {
+            "section_x-10": 879.645943005142,
+            "section_x10": 2136.283004441061,
+            "section_y-10": 1507.9644737231,
+            "section_y10": 1507.9644737231,
+            "start": 399.9999999999998,
+            "end": 399.9999999999998
+          },
+          "sampled_det_min": 5646.85317116792
+        }
+      },
+      "analytic_cad_volume_mm3": 30159.289474462028,
+      "analytic_cad_area_mm2": 6831.857894892404,
+      "step": {
+        "format": "STEP AP214 boundary",
+        "status": "exported"
+      },
+      "step_solids": 1,
+      "step_shells": 1,
+      "step_valid": true,
+      "checked_points": 509,
+      "classifier_mismatches": [],
+      "step_mass": [
+        {
+          "tolerance": 1e-09,
+          "volume_mm3": 30159.289474462006,
+          "estimated_error": 9.327103175415865e-10,
+          "surface_mm2": 6831.857894892402,
+          "surface_estimated_error": 1.5078185156567785e-16
+        },
+        {
+          "tolerance": 1e-12,
+          "volume_mm3": 30159.289474462006,
+          "estimated_error": 1.2618281760468088e-10,
+          "surface_mm2": 6831.857894892404,
+          "surface_estimated_error": 3.877247611688859e-16
+        }
+      ],
+      "wall_s": 1.9917798020178452
+    },
+    {
+      "recipe": {
+        "family": "circular_bend_v1",
+        "section": "reference_rectangle_v1",
+        "major_radius_mm": 24,
+        "quadrants": 3
+      },
+      "expected_admission": true,
+      "build": {
+        "blocks": 3,
+        "cavities": 0,
+        "determinant_lower_bound_mm3": 5599.999999999997,
+        "exterior_sides": 14,
+        "ideal_volume_mm3": 45238.93421169302,
+        "method": "certified_circular_bend",
+        "periodic_angle": false,
+        "section_fidelity_upper_mm": 0,
+        "shared_faces": 2,
+        "status": "valid"
+      },
+      "qualified": true,
+      "target_volume_mm3": 45238.93421169302,
+      "target_area_mm2": 9847.786842338604,
+      "native": {
+        "12": {
+          "volume_mm3": 45238.93421169306,
+          "area_mm2": 9847.786842338603,
+          "areas_by_feature_mm2": {
+            "section_x-10": 1319.4689145077123,
+            "section_x10": 3204.4245066615886,
+            "section_y-10": 2261.946710584651,
+            "section_y10": 2261.946710584651,
+            "start": 399.9999999999997,
+            "end": 399.9999999999997
+          },
+          "sampled_det_min": 5726.308839130184
+        },
+        "20": {
+          "volume_mm3": 45238.93421169292,
+          "area_mm2": 9847.786842338604,
+          "areas_by_feature_mm2": {
+            "section_x-10": 1319.4689145077132,
+            "section_x10": 3204.4245066615917,
+            "section_y-10": 2261.9467105846497,
+            "section_y10": 2261.9467105846497,
+            "start": 399.9999999999998,
+            "end": 399.9999999999998
+          },
+          "sampled_det_min": 5646.85317116792
+        }
+      },
+      "analytic_cad_volume_mm3": 45238.93421169304,
+      "analytic_cad_area_mm2": 9847.786842338604,
+      "step": {
+        "format": "STEP AP214 boundary",
+        "status": "exported"
+      },
+      "step_solids": 1,
+      "step_shells": 1,
+      "step_valid": true,
+      "checked_points": 509,
+      "classifier_mismatches": [],
+      "step_mass": [
+        {
+          "tolerance": 1e-09,
+          "volume_mm3": 45238.93421169301,
+          "estimated_error": 1.08281954158415e-09,
+          "surface_mm2": 9847.786842338603,
+          "surface_estimated_error": 1.5078185156567785e-16
+        },
+        {
+          "tolerance": 1e-12,
+          "volume_mm3": 45238.93421169301,
+          "estimated_error": 1.2613554598686049e-10,
+          "surface_mm2": 9847.786842338606,
+          "surface_estimated_error": 3.877247611688859e-16
+        }
+      ],
+      "wall_s": 2.1966603890177794
+    },
+    {
+      "recipe": {
+        "family": "circular_bend_v1",
+        "section": "core_disk_v1",
+        "major_radius_mm": 16,
+        "quadrants": 1
+      },
+      "expected_admission": true,
+      "build": {
+        "blocks": 5,
+        "cavities": 0,
+        "determinant_lower_bound_mm3": 43.88225099390829,
+        "exterior_sides": 14,
+        "ideal_volume_mm3": 1263.3093633394378,
+        "method": "certified_circular_bend",
+        "periodic_angle": false,
+        "section_fidelity_upper_mm": 4.2e-15,
+        "shared_faces": 8,
+        "status": "valid"
+      },
+      "qualified": true,
+      "target_volume_mm3": 1263.3093633394378,
+      "target_area_mm2": 732.1856465845923,
+      "native": {
+        "12": {
+          "volume_mm3": 1263.3093633394387,
+          "area_mm2": 732.1856465845925,
+          "areas_by_feature_mm2": {
+            "start": 50.265482457436704,
+            "end": 50.265482457436704,
+            "section_circle_r4": 631.6546816697191
+          },
+          "sampled_det_min": 57.6367254505872
+        },
+        "20": {
+          "volume_mm3": 1263.3093633394387,
+          "area_mm2": 732.1856465845925,
+          "areas_by_feature_mm2": {
+            "start": 50.26548245743674,
+            "end": 50.26548245743674,
+            "section_circle_r4": 631.654681669719
+          },
+          "sampled_det_min": 55.88727502121988
+        }
+      },
+      "analytic_cad_volume_mm3": 1263.3093633394378,
+      "analytic_cad_area_mm2": 732.1856465845924,
+      "step": {
+        "format": "STEP AP214 boundary",
+        "status": "exported"
+      },
+      "step_solids": 1,
+      "step_shells": 1,
+      "step_valid": true,
+      "checked_points": 509,
+      "classifier_mismatches": [],
+      "step_mass": [
+        {
+          "tolerance": 1e-09,
+          "volume_mm3": 1263.3093633394383,
+          "estimated_error": 1.1146313217124957e-09,
+          "surface_mm2": 732.1856397535689,
+          "surface_estimated_error": 2.2204460492503136e-16
+        },
+        {
+          "tolerance": 1e-12,
+          "volume_mm3": 1263.3093633394383,
+          "estimated_error": 2.6815859402757033e-10,
+          "surface_mm2": 732.1856465725882,
+          "surface_estimated_error": 3.5996515508173905e-16
+        }
+      ],
+      "wall_s": 3.1480675379862078
+    },
+    {
+      "recipe": {
+        "family": "circular_bend_v1",
+        "section": "core_disk_v1",
+        "major_radius_mm": 16,
+        "quadrants": 4
+      },
+      "expected_admission": true,
+      "build": {
+        "blocks": 20,
+        "cavities": 0,
+        "determinant_lower_bound_mm3": 43.88225099390829,
+        "exterior_sides": 16,
+        "ideal_volume_mm3": 5053.237453357751,
+        "method": "certified_circular_bend",
+        "periodic_angle": true,
+        "section_fidelity_upper_mm": 4.2e-15,
+        "shared_faces": 52,
+        "status": "valid"
+      },
+      "qualified": true,
+      "target_volume_mm3": 5053.237453357751,
+      "target_area_mm2": 2526.6187266788756,
+      "native": {
+        "12": {
+          "volume_mm3": 5053.237453357755,
+          "area_mm2": 2526.618726678877,
+          "areas_by_feature_mm2": {
+            "section_circle_r4": 2526.618726678877
+          },
+          "sampled_det_min": 57.6367254505872
+        },
+        "20": {
+          "volume_mm3": 5053.237453357756,
+          "area_mm2": 2526.618726678876,
+          "areas_by_feature_mm2": {
+            "section_circle_r4": 2526.618726678876
+          },
+          "sampled_det_min": 55.88727502121988
+        }
+      },
+      "analytic_cad_volume_mm3": 5053.237453357752,
+      "analytic_cad_area_mm2": 2526.6187266788756,
+      "step": {
+        "format": "STEP AP214 boundary",
+        "status": "exported"
+      },
+      "step_solids": 1,
+      "step_shells": 1,
+      "step_valid": true,
+      "checked_points": 509,
+      "classifier_mismatches": [],
+      "step_mass": [
+        {
+          "tolerance": 1e-09,
+          "volume_mm3": 5053.2374533577495,
+          "estimated_error": 1.594782051027604e-09,
+          "surface_mm2": 2526.6187117906125,
+          "surface_estimated_error": 1.799825785997544e-16
+        },
+        {
+          "tolerance": 1e-12,
+          "volume_mm3": 5053.2374533577495,
+          "estimated_error": 1.7626745328713083e-10,
+          "surface_mm2": 2526.6187266553748,
+          "surface_estimated_error": 3.5996515508173905e-16
+        }
+      ],
+      "wall_s": 3.6217209430178627
+    },
+    {
+      "recipe": {
+        "family": "circular_bend_v1",
+        "section": "core_disk_v1",
+        "major_radius_mm": 24,
+        "quadrants": 2
+      },
+      "expected_admission": true,
+      "build": {
+        "blocks": 10,
+        "cavities": 0,
+        "determinant_lower_bound_mm3": 73.13708498984717,
+        "exterior_sides": 18,
+        "ideal_volume_mm3": 3789.9280900183135,
+        "method": "certified_circular_bend",
+        "periodic_angle": false,
+        "section_fidelity_upper_mm": 4.2e-15,
+        "shared_faces": 21,
+        "status": "valid"
+      },
+      "qualified": true,
+      "target_volume_mm3": 3789.9280900183135,
+      "target_area_mm2": 1995.49500992403,
+      "native": {
+        "12": {
+          "volume_mm3": 3789.928090018311,
+          "area_mm2": 1995.4950099240305,
+          "areas_by_feature_mm2": {
+            "start": 50.26548245743671,
+            "section_circle_r4": 1894.964045009157,
+            "end": 50.26548245743671
+          },
+          "sampled_det_min": 88.4114058200117
+        },
+        "20": {
+          "volume_mm3": 3789.9280900183153,
+          "area_mm2": 1995.4950099240298,
+          "areas_by_feature_mm2": {
+            "start": 50.26548245743675,
+            "section_circle_r4": 1894.9640450091563,
+            "end": 50.26548245743675
+          },
+          "sampled_det_min": 85.70637837609094
+        }
+      },
+      "analytic_cad_volume_mm3": 3789.9280900183135,
+      "analytic_cad_area_mm2": 1995.4950099240302,
+      "step": {
+        "format": "STEP AP214 boundary",
+        "status": "exported"
+      },
+      "step_solids": 1,
+      "step_shells": 1,
+      "step_valid": true,
+      "checked_points": 509,
+      "classifier_mismatches": [],
+      "step_mass": [
+        {
+          "tolerance": 1e-09,
+          "volume_mm3": 3789.928090018314,
+          "estimated_error": 1.910953804188311e-09,
+          "surface_mm2": 1995.4949956488754,
+          "surface_estimated_error": 3.0715891065758882e-16
+        },
+        {
+          "tolerance": 1e-12,
+          "volume_mm3": 3789.928090018315,
+          "estimated_error": 1.5892682321669149e-10,
+          "surface_mm2": 1995.4950099002758,
+          "surface_estimated_error": 2.0866588637165285e-16
+        }
+      ],
+      "wall_s": 3.4992377309827134
+    },
+    {
+      "recipe": {
+        "family": "circular_bend_v1",
+        "section": "core_disk_v1",
+        "major_radius_mm": 24,
+        "quadrants": 3
+      },
+      "expected_admission": true,
+      "build": {
+        "blocks": 15,
+        "cavities": 0,
+        "determinant_lower_bound_mm3": 73.13708498984717,
+        "exterior_sides": 22,
+        "ideal_volume_mm3": 5684.89213502747,
+        "method": "certified_circular_bend",
+        "periodic_angle": false,
+        "section_fidelity_upper_mm": 4.2e-15,
+        "shared_faces": 34,
+        "status": "valid"
+      },
+      "qualified": true,
+      "target_volume_mm3": 5684.89213502747,
+      "target_area_mm2": 2942.9770324286087,
+      "native": {
+        "12": {
+          "volume_mm3": 5684.892135027467,
+          "area_mm2": 2942.9770324286083,
+          "areas_by_feature_mm2": {
+            "start": 50.26548245743671,
+            "section_circle_r4": 2842.446067513735,
+            "end": 50.26548245743671
+          },
+          "sampled_det_min": 88.4114058200117
+        },
+        "20": {
+          "volume_mm3": 5684.892135027472,
+          "area_mm2": 2942.9770324286083,
+          "areas_by_feature_mm2": {
+            "start": 50.26548245743675,
+            "section_circle_r4": 2842.4460675137348,
+            "end": 50.26548245743675
+          },
+          "sampled_det_min": 85.70637837609094
+        }
+      },
+      "analytic_cad_volume_mm3": 5684.892135027471,
+      "analytic_cad_area_mm2": 2942.9770324286087,
+      "step": {
+        "format": "STEP AP214 boundary",
+        "status": "exported"
+      },
+      "step_solids": 1,
+      "step_shells": 1,
+      "step_valid": true,
+      "checked_points": 509,
+      "classifier_mismatches": [],
+      "step_mass": [
+        {
+          "tolerance": 1e-09,
+          "volume_mm3": 5684.892135027473,
+          "estimated_error": 2.2311003581395395e-09,
+          "surface_mm2": 2942.977012570354,
+          "surface_estimated_error": 3.0715891065758882e-16
+        },
+        {
+          "tolerance": 1e-12,
+          "volume_mm3": 5684.892135027475,
+          "estimated_error": 3.4387393791925374e-10,
+          "surface_mm2": 2942.9770323960406,
+          "surface_estimated_error": 2.0866588637165285e-16
+        }
+      ],
+      "wall_s": 4.092710304015782
+    },
+    {
+      "recipe": {
+        "family": "circular_bend_v1",
+        "section": "full_annulus_v1",
+        "major_radius_mm": 16,
+        "quadrants": 1
+      },
+      "expected_admission": true,
+      "build": {
+        "blocks": 4,
+        "cavities": 0,
+        "determinant_lower_bound_mm3": 46.352900397563026,
+        "exterior_sides": 16,
+        "ideal_volume_mm3": 947.4820225045784,
+        "method": "certified_circular_bend",
+        "periodic_angle": false,
+        "section_fidelity_upper_mm": 4.2e-15,
+        "shared_faces": 4,
+        "status": "valid"
+      },
+      "qualified": true,
+      "target_volume_mm3": 947.4820225045784,
+      "target_area_mm2": 1022.8802461907334,
+      "native": {
+        "12": {
+          "volume_mm3": 947.4820225045788,
+          "area_mm2": 1022.8802461907337,
+          "areas_by_feature_mm2": {
+            "section_circle_r4": 631.6546816697191,
+            "section_circle_r2": 315.8273408348595,
+            "start": 37.69911184307753,
+            "end": 37.69911184307753
+          },
+          "sampled_det_min": 84.31085646970809
+        },
+        "20": {
+          "volume_mm3": 947.4820225045789,
+          "area_mm2": 1022.8802461907335,
+          "areas_by_feature_mm2": {
+            "section_circle_r4": 631.654681669719,
+            "section_circle_r2": 315.8273408348595,
+            "start": 37.69911184307754,
+            "end": 37.69911184307754
+          },
+          "sampled_det_min": 83.17802397593101
+        }
+      },
+      "analytic_cad_volume_mm3": 947.4820225045784,
+      "analytic_cad_area_mm2": 1022.8802461907334,
+      "step": {
+        "format": "STEP AP214 boundary",
+        "status": "exported"
+      },
+      "step_solids": 1,
+      "step_shells": 1,
+      "step_valid": true,
+      "checked_points": 509,
+      "classifier_mismatches": [],
+      "step_mass": [
+        {
+          "tolerance": 1e-09,
+          "volume_mm3": 947.4820225045785,
+          "estimated_error": 1.6741522819808667e-09,
+          "surface_mm2": 1022.880240163346,
+          "surface_estimated_error": 2.0280630513037214e-16
+        },
+        {
+          "tolerance": 1e-12,
+          "volume_mm3": 947.4820225045786,
+          "estimated_error": 5.384905020467261e-10,
+          "surface_mm2": 1022.8802461812191,
+          "surface_estimated_error": 3.5996515508173905e-16
+        }
+      ],
+      "wall_s": 4.22794721100945
+    },
+    {
+      "recipe": {
+        "family": "circular_bend_v1",
+        "section": "full_annulus_v1",
+        "major_radius_mm": 16,
+        "quadrants": 4
+      },
+      "expected_admission": true,
+      "build": {
+        "blocks": 16,
+        "cavities": 1,
+        "determinant_lower_bound_mm3": 46.352900397563026,
+        "exterior_sides": 32,
+        "ideal_volume_mm3": 3789.9280900183135,
+        "method": "certified_circular_bend",
+        "periodic_angle": true,
+        "section_fidelity_upper_mm": 4.2e-15,
+        "shared_faces": 32,
+        "status": "valid"
+      },
+      "qualified": true,
+      "target_volume_mm3": 3789.9280900183135,
+      "target_area_mm2": 3789.9280900183135,
+      "native": {
+        "12": {
+          "volume_mm3": 3789.9280900183153,
+          "area_mm2": 3789.9280900183153,
+          "areas_by_feature_mm2": {
+            "section_circle_r4": 2526.618726678877,
+            "section_circle_r2": 1263.3093633394383
+          },
+          "sampled_det_min": 84.31085646970809
+        },
+        "20": {
+          "volume_mm3": 3789.928090018315,
+          "area_mm2": 3789.928090018314,
+          "areas_by_feature_mm2": {
+            "section_circle_r4": 2526.618726678876,
+            "section_circle_r2": 1263.309363339438
+          },
+          "sampled_det_min": 83.17802397593101
+        }
+      },
+      "analytic_cad_volume_mm3": 3789.928090018315,
+      "analytic_cad_area_mm2": 3789.9280900183135,
+      "step": {
+        "format": "STEP AP214 boundary",
+        "status": "exported"
+      },
+      "step_solids": 1,
+      "step_shells": 2,
+      "step_valid": true,
+      "checked_points": 509,
+      "classifier_mismatches": [],
+      "step_mass": [
+        {
+          "tolerance": 1e-09,
+          "volume_mm3": 3789.928090018308,
+          "estimated_error": 3.0362723252748934e-09,
+          "surface_mm2": 3789.9280676859184,
+          "surface_estimated_error": 3.5996515719950863e-16
+        },
+        {
+          "tolerance": 1e-12,
+          "volume_mm3": 3789.928090018308,
+          "estimated_error": 3.3469337767156037e-10,
+          "surface_mm2": 3789.9280899830605,
+          "surface_estimated_error": 3.5996515508173905e-16
+        }
+      ],
+      "wall_s": 8.73279142100364
+    },
+    {
+      "recipe": {
+        "family": "circular_bend_v1",
+        "section": "full_annulus_v1",
+        "major_radius_mm": 24,
+        "quadrants": 2
+      },
+      "expected_admission": true,
+      "build": {
+        "blocks": 8,
+        "cavities": 0,
+        "determinant_lower_bound_mm3": 77.25483399593838,
+        "exterior_sides": 24,
+        "ideal_volume_mm3": 2842.446067513735,
+        "method": "certified_circular_bend",
+        "periodic_angle": false,
+        "section_fidelity_upper_mm": 4.2e-15,
+        "shared_faces": 12,
+        "status": "valid"
+      },
+      "qualified": true,
+      "target_volume_mm3": 2842.446067513735,
+      "target_area_mm2": 2917.8442911998904,
+      "native": {
+        "12": {
+          "volume_mm3": 2842.4460675137375,
+          "area_mm2": 2917.84429119989,
+          "areas_by_feature_mm2": {
+            "section_circle_r4": 1894.964045009157,
+            "section_circle_r2": 947.4820225045784,
+            "start": 37.69911184307753,
+            "end": 37.69911184307753
+          },
+          "sampled_det_min": 130.6539291935647
+        },
+        "20": {
+          "volume_mm3": 2842.4460675137384,
+          "area_mm2": 2917.844291199889,
+          "areas_by_feature_mm2": {
+            "section_circle_r4": 1894.9640450091563,
+            "section_circle_r2": 947.4820225045783,
+            "start": 37.699111843077546,
+            "end": 37.699111843077546
+          },
+          "sampled_det_min": 128.8361996028114
+        }
+      },
+      "analytic_cad_volume_mm3": 2842.4460675137343,
+      "analytic_cad_area_mm2": 2917.8442911998904,
+      "step": {
+        "format": "STEP AP214 boundary",
+        "status": "exported"
+      },
+      "step_solids": 1,
+      "step_shells": 1,
+      "step_valid": true,
+      "checked_points": 509,
+      "classifier_mismatches": [],
+      "step_mass": [
+        {
+          "tolerance": 1e-09,
+          "volume_mm3": 2842.4460675137357,
+          "estimated_error": 3.331524471895367e-09,
+          "surface_mm2": 2917.8442740063056,
+          "surface_estimated_error": 3.769546311354234e-16
+        },
+        {
+          "tolerance": 1e-12,
+          "volume_mm3": 2842.4460675137348,
+          "estimated_error": 3.788674564334672e-10,
+          "surface_mm2": 2917.84429117275,
+          "surface_estimated_error": 3.769546289177014e-16
+        }
+      ],
+      "wall_s": 6.290143510035705
+    },
+    {
+      "recipe": {
+        "family": "circular_bend_v1",
+        "section": "full_annulus_v1",
+        "major_radius_mm": 24,
+        "quadrants": 3
+      },
+      "expected_admission": true,
+      "build": {
+        "blocks": 12,
+        "cavities": 0,
+        "determinant_lower_bound_mm3": 77.25483399593838,
+        "exterior_sides": 32,
+        "ideal_volume_mm3": 4263.669101270602,
+        "method": "certified_circular_bend",
+        "periodic_angle": false,
+        "section_fidelity_upper_mm": 4.2e-15,
+        "shared_faces": 20,
+        "status": "valid"
+      },
+      "qualified": true,
+      "target_volume_mm3": 4263.669101270602,
+      "target_area_mm2": 4339.067324956757,
+      "native": {
+        "12": {
+          "volume_mm3": 4263.669101270606,
+          "area_mm2": 4339.067324956759,
+          "areas_by_feature_mm2": {
+            "section_circle_r4": 2842.446067513735,
+            "section_circle_r2": 1421.2230337568676,
+            "start": 37.69911184307753,
+            "end": 37.69911184307753
+          },
+          "sampled_det_min": 130.6539291935647
+        },
+        "20": {
+          "volume_mm3": 4263.669101270608,
+          "area_mm2": 4339.067324956758,
+          "areas_by_feature_mm2": {
+            "section_circle_r4": 2842.4460675137348,
+            "section_circle_r2": 1421.2230337568674,
+            "start": 37.699111843077546,
+            "end": 37.699111843077546
+          },
+          "sampled_det_min": 128.8361996028114
+        }
+      },
+      "analytic_cad_volume_mm3": 4263.669101270605,
+      "analytic_cad_area_mm2": 4339.067324956758,
+      "step": {
+        "format": "STEP AP214 boundary",
+        "status": "exported"
+      },
+      "step_solids": 1,
+      "step_shells": 1,
+      "step_valid": true,
+      "checked_points": 509,
+      "classifier_mismatches": [],
+      "step_mass": [
+        {
+          "tolerance": 1e-09,
+          "volume_mm3": 4263.669101270597,
+          "estimated_error": 4.176828244714694e-09,
+          "surface_mm2": 4339.0672993885255,
+          "surface_estimated_error": 3.769546311354234e-16
+        },
+        {
+          "tolerance": 1e-12,
+          "volume_mm3": 4263.669101270593,
+          "estimated_error": 4.547197950062971e-10,
+          "surface_mm2": 4339.067324916399,
+          "surface_estimated_error": 3.769546289177014e-16
+        }
+      ],
+      "wall_s": 6.824479114962742
+    },
+    {
+      "recipe": {
+        "family": "circular_bend_v1",
+        "section": "pierced_square_v1",
+        "major_radius_mm": 16,
+        "quadrants": 1
+      },
+      "expected_admission": true,
+      "build": {
+        "blocks": 4,
+        "cavities": 0,
+        "determinant_lower_bound_mm3": 139.74095218659733,
+        "exterior_sides": 16,
+        "ideal_volume_mm3": 8789.7871281479,
+        "method": "certified_circular_bend",
+        "periodic_angle": false,
+        "section_fidelity_upper_mm": 4.2e-15,
+        "shared_faces": 4,
+        "status": "valid"
+      },
+      "qualified": true,
+      "target_volume_mm3": 8789.7871281479,
+      "target_area_mm2": 3341.743015052313,
+      "native": {
+        "12": {
+          "volume_mm3": 8789.787128147902,
+          "area_mm2": 3341.7430150523137,
+          "areas_by_feature_mm2": {
+            "section_x10": 816.8140899333463,
+            "section_circle_r4": 631.6546816697191,
+            "start": 349.73451754256365,
+            "end": 349.73451754256365,
+            "section_y10": 502.654824574367,
+            "section_y-10": 502.6548245743666,
+            "section_x-10": 188.4955592153876
+          },
+          "sampled_det_min": 576.6281989813203
+        },
+        "20": {
+          "volume_mm3": 8789.787128147882,
+          "area_mm2": 3341.743015052312,
+          "areas_by_feature_mm2": {
+            "section_x10": 816.8140899333459,
+            "section_circle_r4": 631.654681669719,
+            "start": 349.734517542563,
+            "end": 349.734517542563,
+            "section_y10": 502.6548245743667,
+            "section_y-10": 502.65482457436696,
+            "section_x-10": 188.49555921538752
+          },
+          "sampled_det_min": 565.6127230005612
+        }
+      },
+      "analytic_cad_volume_mm3": 8789.787128147898,
+      "analytic_cad_area_mm2": 3341.7430150523132,
+      "step": {
+        "format": "STEP AP214 boundary",
+        "status": "exported"
+      },
+      "step_solids": 1,
+      "step_shells": 1,
+      "step_valid": true,
+      "checked_points": 509,
+      "classifier_mismatches": [],
+      "step_mass": [
+        {
+          "tolerance": 1e-09,
+          "volume_mm3": 8789.787128147897,
+          "estimated_error": 1.117719571165235e-09,
+          "surface_mm2": 3341.743037088357,
+          "surface_estimated_error": 1.7998257859975434e-16
+        },
+        {
+          "tolerance": 1e-12,
+          "volume_mm3": 8789.787128147897,
+          "estimated_error": 2.031294402800069e-10,
+          "surface_mm2": 3341.743015099312,
+          "surface_estimated_error": 3.5996515508173905e-16
+        }
+      ],
+      "wall_s": 2.952464827976655
+    },
+    {
+      "recipe": {
+        "family": "circular_bend_v1",
+        "section": "pierced_square_v1",
+        "major_radius_mm": 16,
+        "quadrants": 4
+      },
+      "expected_admission": true,
+      "build": {
+        "blocks": 16,
+        "cavities": 1,
+        "determinant_lower_bound_mm3": 139.74095218659733,
+        "exterior_sides": 32,
+        "ideal_volume_mm3": 35159.1485125916,
+        "method": "certified_circular_bend",
+        "periodic_angle": true,
+        "section_fidelity_upper_mm": 4.2e-15,
+        "shared_faces": 32,
+        "status": "valid"
+      },
+      "qualified": true,
+      "target_volume_mm3": 35159.1485125916,
+      "target_area_mm2": 10569.095919868745,
+      "native": {
+        "12": {
+          "volume_mm3": 35159.14851259161,
+          "area_mm2": 10569.095919868747,
+          "areas_by_feature_mm2": {
+            "section_x10": 3267.256359733385,
+            "section_circle_r4": 2526.618726678877,
+            "section_y10": 2010.619298297468,
+            "section_y-10": 2010.6192982974665,
+            "section_x-10": 753.9822368615504
+          },
+          "sampled_det_min": 576.6281989813203
+        },
+        "20": {
+          "volume_mm3": 35159.14851259153,
+          "area_mm2": 10569.095919868743,
+          "areas_by_feature_mm2": {
+            "section_x10": 3267.2563597333838,
+            "section_circle_r4": 2526.618726678876,
+            "section_y10": 2010.619298297467,
+            "section_y-10": 2010.6192982974678,
+            "section_x-10": 753.9822368615501
+          },
+          "sampled_det_min": 565.6127230005612
+        }
+      },
+      "analytic_cad_volume_mm3": 35159.14851259159,
+      "analytic_cad_area_mm2": 10569.095919868745,
+      "step": {
+        "format": "STEP AP214 boundary",
+        "status": "exported"
+      },
+      "step_solids": 1,
+      "step_shells": 2,
+      "step_valid": true,
+      "checked_points": 509,
+      "classifier_mismatches": [],
+      "step_mass": [
+        {
+          "tolerance": 1e-09,
+          "volume_mm3": 35159.148512591615,
+          "estimated_error": 1.3151403477023489e-09,
+          "surface_mm2": 10569.095904980488,
+          "surface_estimated_error": 1.7998257859975434e-16
+        },
+        {
+          "tolerance": 1e-12,
+          "volume_mm3": 35159.148512591615,
+          "estimated_error": 1.5037420029856654e-10,
+          "surface_mm2": 10569.095919845246,
+          "surface_estimated_error": 3.5996515508173905e-16
+        }
+      ],
+      "wall_s": 5.302109429962002
+    },
+    {
+      "recipe": {
+        "family": "circular_bend_v1",
+        "section": "pierced_square_v1",
+        "major_radius_mm": 24,
+        "quadrants": 2
+      },
+      "expected_admission": true,
+      "build": {
+        "blocks": 8,
+        "cavities": 0,
+        "determinant_lower_bound_mm3": 326.06222176872706,
+        "exterior_sides": 24,
+        "ideal_volume_mm3": 26369.361384443702,
+        "method": "certified_circular_bend",
+        "periodic_angle": false,
+        "section_fidelity_upper_mm": 4.2e-15,
+        "shared_faces": 12,
+        "status": "valid"
+      },
+      "qualified": true,
+      "target_volume_mm3": 26369.361384443702,
+      "target_area_mm2": 8626.290974986685,
+      "native": {
+        "12": {
+          "volume_mm3": 26369.361384443702,
+          "area_mm2": 8626.290974986687,
+          "areas_by_feature_mm2": {
+            "section_x10": 2136.2830044410584,
+            "section_circle_r4": 1894.964045009157,
+            "start": 349.7345175425636,
+            "section_y10": 1507.9644737231008,
+            "section_y-10": 1507.9644737231006,
+            "section_x-10": 879.6459430051417,
+            "end": 349.7345175425636
+          },
+          "sampled_det_min": 962.4390344839112
+        },
+        "20": {
+          "volume_mm3": 26369.361384443684,
+          "area_mm2": 8626.290974986687,
+          "areas_by_feature_mm2": {
+            "section_x10": 2136.283004441061,
+            "section_circle_r4": 1894.9640450091563,
+            "start": 349.73451754256314,
+            "section_y10": 1507.9644737231013,
+            "section_y-10": 1507.9644737230994,
+            "section_x-10": 879.645943005142,
+            "end": 349.73451754256314
+          },
+          "sampled_det_min": 943.1949253180996
+        }
+      },
+      "analytic_cad_volume_mm3": 26369.36138444371,
+      "analytic_cad_area_mm2": 8626.290974986689,
+      "step": {
+        "format": "STEP AP214 boundary",
+        "status": "exported"
+      },
+      "step_solids": 1,
+      "step_shells": 1,
+      "step_valid": true,
+      "checked_points": 509,
+      "classifier_mismatches": [],
+      "step_mass": [
+        {
+          "tolerance": 1e-09,
+          "volume_mm3": 26369.3613844437,
+          "estimated_error": 1.4194220997168072e-09,
+          "surface_mm2": 8626.290989578602,
+          "surface_estimated_error": 2.8234312156789014e-16
+        },
+        {
+          "tolerance": 1e-12,
+          "volume_mm3": 26369.3613844437,
+          "estimated_error": 1.5139934022227914e-10,
+          "surface_mm2": 8626.290975021933,
+          "surface_estimated_error": 4.173317727433057e-16
+        }
+      ],
+      "wall_s": 5.61483010899974
+    },
+    {
+      "recipe": {
+        "family": "circular_bend_v1",
+        "section": "pierced_square_v1",
+        "major_radius_mm": 24,
+        "quadrants": 3
+      },
+      "expected_admission": true,
+      "build": {
+        "blocks": 12,
+        "cavities": 0,
+        "determinant_lower_bound_mm3": 326.06222176872706,
+        "exterior_sides": 32,
+        "ideal_volume_mm3": 39554.04207666555,
+        "method": "certified_circular_bend",
+        "periodic_angle": false,
+        "section_fidelity_upper_mm": 4.2e-15,
+        "shared_faces": 20,
+        "status": "valid"
+      },
+      "qualified": true,
+      "target_volume_mm3": 39554.04207666555,
+      "target_area_mm2": 12589.701944937466,
+      "native": {
+        "12": {
+          "volume_mm3": 39554.04207666555,
+          "area_mm2": 12589.701944937464,
+          "areas_by_feature_mm2": {
+            "section_x10": 3204.4245066615877,
+            "section_circle_r4": 2842.446067513735,
+            "start": 349.7345175425636,
+            "section_y10": 2261.946710584651,
+            "section_y-10": 2261.9467105846506,
+            "section_x-10": 1319.4689145077125,
+            "end": 349.7345175425636
+          },
+          "sampled_det_min": 962.4390344839112
+        },
+        "20": {
+          "volume_mm3": 39554.04207666553,
+          "area_mm2": 12589.701944937467,
+          "areas_by_feature_mm2": {
+            "section_x10": 3204.4245066615917,
+            "section_circle_r4": 2842.4460675137348,
+            "start": 349.73451754256314,
+            "section_y10": 2261.946710584652,
+            "section_y-10": 2261.9467105846493,
+            "section_x-10": 1319.4689145077132,
+            "end": 349.73451754256314
+          },
+          "sampled_det_min": 943.1949253180996
+        }
+      },
+      "analytic_cad_volume_mm3": 39554.04207666556,
+      "analytic_cad_area_mm2": 12589.701944937467,
+      "step": {
+        "format": "STEP AP214 boundary",
+        "status": "exported"
+      },
+      "step_solids": 1,
+      "step_shells": 1,
+      "step_valid": true,
+      "checked_points": 509,
+      "classifier_mismatches": [],
+      "step_mass": [
+        {
+          "tolerance": 1e-09,
+          "volume_mm3": 39554.04207666554,
+          "estimated_error": 1.5955223658716308e-09,
+          "surface_mm2": 12589.701953946284,
+          "surface_estimated_error": 2.8234312156789014e-16
+        },
+        {
+          "tolerance": 1e-12,
+          "volume_mm3": 39554.04207666554,
+          "estimated_error": 1.875817619162378e-10,
+          "surface_mm2": 12589.701944963901,
+          "surface_estimated_error": 4.173317727433057e-16
+        }
+      ],
+      "wall_s": 6.756789207982365
+    },
+    {
+      "recipe": {
+        "family": "circular_bend_v1",
+        "section": "full_annulus_v1",
+        "major_radius_mm": 5,
+        "quadrants": 4
+      },
+      "expected_admission": true,
+      "build": {
+        "blocks": 16,
+        "cavities": 1,
+        "determinant_lower_bound_mm3": 3.8627416997969037,
+        "exterior_sides": 32,
+        "ideal_volume_mm3": 1184.352528130723,
+        "method": "certified_circular_bend",
+        "periodic_angle": true,
+        "section_fidelity_upper_mm": 4.2e-15,
+        "shared_faces": 32,
+        "status": "valid"
+      },
+      "qualified": true,
+      "target_volume_mm3": 1184.352528130723,
+      "target_area_mm2": 1184.352528130723,
+      "native": {
+        "12": {
+          "volume_mm3": 1184.352528130722,
+          "area_mm2": 1184.352528130723,
+          "areas_by_feature_mm2": {
+            "section_circle_r4": 789.5683520871485,
+            "section_circle_r2": 394.78417604357446
+          },
+          "sampled_det_min": 13.808875889128405
+        },
+        "20": {
+          "volume_mm3": 1184.352528130723,
+          "area_mm2": 1184.3525281307225,
+          "areas_by_feature_mm2": {
+            "section_circle_r4": 789.5683520871484,
+            "section_circle_r2": 394.78417604357423
+          },
+          "sampled_det_min": 13.461751931893582
+        }
+      },
+      "analytic_cad_volume_mm3": 1184.3525281307232,
+      "analytic_cad_area_mm2": 1184.352528130723,
+      "step": {
+        "format": "STEP AP214 boundary",
+        "status": "exported"
+      },
+      "step_solids": 1,
+      "step_shells": 2,
+      "step_valid": true,
+      "checked_points": 509,
+      "classifier_mismatches": [],
+      "step_mass": [
+        {
+          "tolerance": 1e-09,
+          "volume_mm3": 1184.3525281307232,
+          "estimated_error": 1.6940870872202806e-09,
+          "surface_mm2": 1184.3525211518495,
+          "surface_estimated_error": 3.34802061872736e-16
+        },
+        {
+          "tolerance": 1e-12,
+          "volume_mm3": 1184.3525281307232,
+          "estimated_error": 1.8659371662379613e-10,
+          "surface_mm2": 1184.352528119707,
+          "surface_estimated_error": 3.375340625335407e-16
+        }
+      ],
+      "wall_s": 8.590360405971296
+    },
+    {
+      "recipe": {
+        "family": "circular_bend_v1",
+        "section": "full_annulus_v1",
+        "major_radius_mm": 64,
+        "quadrants": 3
+      },
+      "expected_admission": true,
+      "build": {
+        "blocks": 12,
+        "cavities": 0,
+        "determinant_lower_bound_mm3": 231.76450198781518,
+        "exterior_sides": 32,
+        "ideal_volume_mm3": 11369.78427005494,
+        "method": "certified_circular_bend",
+        "periodic_angle": false,
+        "section_fidelity_upper_mm": 4.2e-15,
+        "shared_faces": 20,
+        "status": "valid"
+      },
+      "qualified": true,
+      "target_volume_mm3": 11369.78427005494,
+      "target_area_mm2": 11445.182493741097,
+      "native": {
+        "12": {
+          "volume_mm3": 11369.784270054934,
+          "area_mm2": 11445.182493741091,
+          "areas_by_feature_mm2": {
+            "section_circle_r4": 7579.856180036624,
+            "section_circle_r2": 3789.928090018311,
+            "start": 37.69911184307753,
+            "end": 37.69911184307753
+          },
+          "sampled_det_min": 362.36929281284756
+        },
+        "20": {
+          "volume_mm3": 11369.784270054928,
+          "area_mm2": 11445.182493741093,
+          "areas_by_feature_mm2": {
+            "section_circle_r4": 7579.856180036627,
+            "section_circle_r2": 3789.92809001831,
+            "start": 37.69911184307752,
+            "end": 37.69911184307752
+          },
+          "sampled_det_min": 357.127077737213
+        }
+      },
+      "analytic_cad_volume_mm3": 11369.784270054934,
+      "analytic_cad_area_mm2": 11445.182493741097,
+      "step": {
+        "format": "STEP AP214 boundary",
+        "status": "exported"
+      },
+      "step_solids": 1,
+      "step_shells": 1,
+      "step_valid": true,
+      "checked_points": 509,
+      "classifier_mismatches": [],
+      "step_mass": [
+        {
+          "tolerance": 1e-09,
+          "volume_mm3": 11369.784270054955,
+          "estimated_error": 1.0241553829761813e-08,
+          "surface_mm2": 11445.18242629961,
+          "surface_estimated_error": 3.7038592170984037e-16
+        },
+        {
+          "tolerance": 1e-12,
+          "volume_mm3": 11369.78427005496,
+          "estimated_error": 1.0841970178506785e-09,
+          "surface_mm2": 11445.18249363463,
+          "surface_estimated_error": 3.407890345726018e-16
+        }
+      ],
+      "wall_s": 10.535406583047006
+    },
+    {
+      "recipe": {
+        "family": "circular_bend_v1",
+        "section": "reference_rectangle_v1",
+        "major_radius_mm": 11,
+        "quadrants": 4
+      },
+      "expected_admission": true,
+      "build": {
+        "blocks": 4,
+        "cavities": 0,
+        "determinant_lower_bound_mm3": 399.99999999999983,
+        "exterior_sides": 16,
+        "ideal_volume_mm3": 27646.01535159018,
+        "method": "certified_circular_bend",
+        "periodic_angle": true,
+        "section_fidelity_upper_mm": 0,
+        "shared_faces": 4,
+        "status": "valid"
+      },
+      "qualified": true,
+      "target_volume_mm3": 27646.01535159018,
+      "target_area_mm2": 5529.203070318036,
+      "native": {
+        "12": {
+          "volume_mm3": 27646.015351590242,
+          "area_mm2": 5529.203070318036,
+          "areas_by_feature_mm2": {
+            "section_x-10": 125.66370614359172,
+            "section_x10": 2638.9378290154264,
+            "section_y-10": 1382.300767579509,
+            "section_y10": 1382.300767579509
+          },
+          "sampled_det_min": 478.145491015618
+        },
+        "20": {
+          "volume_mm3": 27646.01535159027,
+          "area_mm2": 5529.203070318036,
+          "areas_by_feature_mm2": {
+            "section_x-10": 125.66370614359171,
+            "section_x10": 2638.937829015428,
+            "section_y-10": 1382.3007675795081,
+            "section_y10": 1382.3007675795081
+          },
+          "sampled_det_min": 428.9568387339783
+        }
+      },
+      "analytic_cad_volume_mm3": 27646.015351590184,
+      "analytic_cad_area_mm2": 5529.203070318035,
+      "step": {
+        "format": "STEP AP214 boundary",
+        "status": "exported"
+      },
+      "step_solids": 1,
+      "step_shells": 1,
+      "step_valid": true,
+      "checked_points": 509,
+      "classifier_mismatches": [],
+      "step_mass": [
+        {
+          "tolerance": 1e-09,
+          "volume_mm3": 27646.015351590166,
+          "estimated_error": 8.859030554859435e-10,
+          "surface_mm2": 5529.203070318036,
+          "surface_estimated_error": 3.446442321501207e-16
+        },
+        {
+          "tolerance": 1e-12,
+          "volume_mm3": 27646.015351590166,
+          "estimated_error": 1.0582738505526056e-10,
+          "surface_mm2": 5529.203070318035,
+          "surface_estimated_error": 1.644892926171031e-16
+        }
+      ],
+      "wall_s": 3.7221423980081454
+    },
+    {
+      "recipe": {
+        "family": "circular_bend_v1",
+        "section": "reference_rectangle_v1",
+        "major_radius_mm": 64,
+        "quadrants": 3
+      },
+      "expected_admission": true,
+      "build": {
+        "blocks": 3,
+        "cavities": 0,
+        "determinant_lower_bound_mm3": 21599.99999999999,
+        "exterior_sides": 14,
+        "ideal_volume_mm3": 120637.15789784805,
+        "method": "certified_circular_bend",
+        "periodic_angle": false,
+        "section_fidelity_upper_mm": 0,
+        "shared_faces": 2,
+        "status": "valid"
+      },
+      "qualified": true,
+      "target_volume_mm3": 120637.15789784805,
+      "target_area_mm2": 24927.43157956961,
+      "native": {
+        "12": {
+          "volume_mm3": 120637.15789784814,
+          "area_mm2": 24927.431579569606,
+          "areas_by_feature_mm2": {
+            "section_x-10": 5089.3800988154635,
+            "section_x10": 6974.33569096934,
+            "section_y-10": 6031.8578948924005,
+            "section_y10": 6031.8578948924005,
+            "start": 399.9999999999997,
+            "end": 399.9999999999997
+          },
+          "sampled_det_min": 21874.50375640577
+        },
+        "20": {
+          "volume_mm3": 120637.15789784852,
+          "area_mm2": 24927.431579569617,
+          "areas_by_feature_mm2": {
+            "section_x-10": 5089.3800988154635,
+            "section_x10": 6974.335690969346,
+            "section_y-10": 6031.857894892404,
+            "section_y10": 6031.857894892404,
+            "start": 399.9999999999998,
+            "end": 399.9999999999998
+          },
+          "sampled_det_min": 21701.918809426235
+        }
+      },
+      "analytic_cad_volume_mm3": 120637.15789784805,
+      "analytic_cad_area_mm2": 24927.431579569613,
+      "step": {
+        "format": "STEP AP214 boundary",
+        "status": "exported"
+      },
+      "step_solids": 1,
+      "step_shells": 1,
+      "step_valid": true,
+      "checked_points": 509,
+      "classifier_mismatches": [],
+      "step_mass": [
+        {
+          "tolerance": 1e-09,
+          "volume_mm3": 120637.15789784802,
+          "estimated_error": 2.1172294062093495e-09,
+          "surface_mm2": 24927.431579569613,
+          "surface_estimated_error": 2.2617277734851674e-16
+        },
+        {
+          "tolerance": 1e-12,
+          "volume_mm3": 120637.15789784802,
+          "estimated_error": 2.356876041228037e-10,
+          "surface_mm2": 24927.431579569613,
+          "surface_estimated_error": 2.842170943040401e-16
+        }
+      ],
+      "wall_s": 3.1462091830326244
+    },
+    {
+      "recipe": {
+        "family": "circular_bend_v1",
+        "section": "reference_rectangle_v1",
+        "major_radius_mm": 9,
+        "quadrants": 2
+      },
+      "expected_admission": false,
+      "build": {
+        "reason": "circular_bend_axis_intersection",
+        "status": "error"
+      },
+      "qualified": true,
+      "preserved": true,
+      "wall_s": 0.002631761017255485
+    },
+    {
+      "recipe": {
+        "family": "circular_bend_v1",
+        "section": "reference_rectangle_v1",
+        "major_radius_mm": 10,
+        "quadrants": 2
+      },
+      "expected_admission": false,
+      "build": {
+        "reason": "circular_bend_axis_intersection",
+        "status": "error"
+      },
+      "qualified": true,
+      "preserved": true,
+      "wall_s": 0.0024986190255731344
+    },
+    {
+      "recipe": {
+        "family": "circular_bend_v1",
+        "section": "core_disk_v1",
+        "major_radius_mm": 3,
+        "quadrants": 2
+      },
+      "expected_admission": false,
+      "build": {
+        "reason": "circular_bend_axis_intersection",
+        "status": "error"
+      },
+      "qualified": true,
+      "preserved": true,
+      "wall_s": 0.002291373035404831
+    },
+    {
+      "recipe": {
+        "family": "circular_bend_v1",
+        "section": "core_disk_v1",
+        "major_radius_mm": 4,
+        "quadrants": 2
+      },
+      "expected_admission": false,
+      "build": {
+        "reason": "circular_bend_axis_intersection",
+        "status": "error"
+      },
+      "qualified": true,
+      "preserved": true,
+      "wall_s": 0.0022997590131126344
+    },
+    {
+      "recipe": {
+        "family": "circular_bend_v1",
+        "section": "full_annulus_v1",
+        "major_radius_mm": 3,
+        "quadrants": 2
+      },
+      "expected_admission": false,
+      "build": {
+        "reason": "circular_bend_axis_intersection",
+        "status": "error"
+      },
+      "qualified": true,
+      "preserved": true,
+      "wall_s": 0.0022917910246178508
+    },
+    {
+      "recipe": {
+        "family": "circular_bend_v1",
+        "section": "full_annulus_v1",
+        "major_radius_mm": 4,
+        "quadrants": 2
+      },
+      "expected_admission": false,
+      "build": {
+        "reason": "circular_bend_axis_intersection",
+        "status": "error"
+      },
+      "qualified": true,
+      "preserved": true,
+      "wall_s": 0.0016691040364094079
+    },
+    {
+      "recipe": {
+        "family": "circular_bend_v1",
+        "section": "pierced_square_v1",
+        "major_radius_mm": 9,
+        "quadrants": 2
+      },
+      "expected_admission": false,
+      "build": {
+        "reason": "circular_bend_axis_intersection",
+        "status": "error"
+      },
+      "qualified": true,
+      "preserved": true,
+      "wall_s": 0.002324867993593216
+    },
+    {
+      "recipe": {
+        "family": "circular_bend_v1",
+        "section": "pierced_square_v1",
+        "major_radius_mm": 10,
+        "quadrants": 2
+      },
+      "expected_admission": false,
+      "build": {
+        "reason": "circular_bend_axis_intersection",
+        "status": "error"
+      },
+      "qualified": true,
+      "preserved": true,
+      "wall_s": 0.0023503979900851846
+    },
+    {
+      "recipe": {
+        "family": "circular_bend_v1",
+        "section": "reference_rectangle_v1",
+        "major_radius_mm": 16,
+        "quadrants": 0
+      },
+      "expected_admission": false,
+      "build": {
+        "reason": "circular_bend_parameter_range",
+        "status": "error"
+      },
+      "qualified": true,
+      "preserved": true,
+      "wall_s": 0.0022439060267060995
+    },
+    {
+      "recipe": {
+        "family": "circular_bend_v1",
+        "section": "reference_rectangle_v1",
+        "major_radius_mm": 16,
+        "quadrants": 5
+      },
+      "expected_admission": false,
+      "build": {
+        "reason": "circular_bend_parameter_range",
+        "status": "error"
+      },
+      "qualified": true,
+      "preserved": true,
+      "wall_s": 0.0022706229938194156
+    },
+    {
+      "recipe": {
+        "family": "circular_bend_v1",
+        "section": "reference_rectangle_v1",
+        "major_radius_mm": 65,
+        "quadrants": 1
+      },
+      "expected_admission": false,
+      "build": {
+        "reason": "circular_bend_parameter_range",
+        "status": "error"
+      },
+      "qualified": true,
+      "preserved": true,
+      "wall_s": 0.0022200620151124895
+    }
+  ]
+}

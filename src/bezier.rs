@@ -51,7 +51,7 @@ impl RationalBezierMap {
         {
             return Err(MapError::InvalidControl);
         }
-        if !matches!(degrees, [1, 1, 1] | [2, 1, 1] | [2, 2, 1]) {
+        if degrees.iter().any(|d| !(1..=2).contains(d)) {
             return Err(MapError::UnsupportedDegrees);
         }
         Ok(Self { degrees, controls })
@@ -63,11 +63,16 @@ impl RationalBezierMap {
         }
         let (bu, du) = basis(self.degrees[0], u);
         let (bv, dv) = basis(self.degrees[1], v);
-        let (bw, dw) = basis(1, w);
+        let (bw, dw) = basis(self.degrees[2], w);
+        let w_count = self.degrees[2] + 1;
         let v_count = self.degrees[1] + 1;
         let mut h = [[0.0; 4]; 4];
         for (index, p) in self.controls.iter().enumerate() {
-            let (i, j, k) = (index / (2 * v_count), (index / 2) % v_count, index % 2);
+            let (i, j, k) = (
+                index / (w_count * v_count),
+                (index / w_count) % v_count,
+                index % w_count,
+            );
             let factors = [
                 bu[i] * bv[j] * bw[k],
                 du[i] * bv[j] * bw[k],

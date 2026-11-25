@@ -1,0 +1,2951 @@
+{
+  "schema": "lame_cylinder_pressure_v1",
+  "projected_bulk": true,
+  "cases": [
+    {
+      "nu": 0.3,
+      "pressures_mpa": [
+        100,
+        0
+      ],
+      "oracle": {
+        "inner_displacement_mm": 0.0018158730158730158,
+        "outer_displacement_mm": 0.0011555555555555555,
+        "inner_hoop_mpa": 166.66666666666666,
+        "outer_hoop_mpa": 66.66666666666666,
+        "strain_energy_n_mm": 9.127573322429788,
+        "top_reaction_n": 753.98223686155
+      },
+      "runs": [
+        {
+          "status": "completed",
+          "exit_code": 0,
+          "elapsed_s": 0.15208431700011715,
+          "tree_peak_rss_kib": 1300,
+          "level": 0,
+          "order": 8,
+          "alternate_gauge": false,
+          "command": [
+            "/home/jeff/Code/SolidCraftTrivariate/target/release/examples/pressure_cylinder",
+            "0",
+            "8",
+            "0.3",
+            "100",
+            "0",
+            "false",
+            "--projected"
+          ],
+          "result": {
+            "alternative_gauge": false,
+            "assembly_s": 0.020212166,
+            "axial_reactions_n": [
+              -753.9822368466192,
+              753.9822368651171
+            ],
+            "blocks": 4,
+            "check_q8_relative_energy_norm": 0.09099150890474907,
+            "check_q8_relative_l2": 0.009222550190521367,
+            "exact_energy_n_mm": 9.127573322429775,
+            "exact_top_reaction_n": 753.9822368615503,
+            "inner": {
+              "area_mm2": 100.53096491487334,
+              "exact_hoop_mpa": 166.66666666666669,
+              "exact_radial_displacement_mm": 0.0018158730158730162,
+              "max_sampled_hoop_error_mpa": 7.521641856416636,
+              "max_sampled_hoop_relative": 0.045129851138499814,
+              "mean_radial_displacement_mm": 0.0018101245034399794,
+              "primal_max_sampled_hoop_error_mpa": 16.409645275524156
+            },
+            "inner_mpa": 100,
+            "level": 0,
+            "load_area_relative_error": 9.302891790241574e-12,
+            "nu": 0.3,
+            "order": 8,
+            "outer": {
+              "area_mm2": 201.06192982974667,
+              "exact_hoop_mpa": 66.66666666666667,
+              "exact_radial_displacement_mm": 0.0011555555555555557,
+              "max_sampled_hoop_error_mpa": 4.042718808533657,
+              "max_sampled_hoop_relative": 0.06064078212800485,
+              "mean_radial_displacement_mm": 0.0011526812993394747,
+              "primal_max_sampled_hoop_error_mpa": 7.922923249470188
+            },
+            "outer_mpa": 0,
+            "pcg_iterations": 22,
+            "physical_strain_energy_n_mm": 9.145354302743304,
+            "preparation_s": 0.002719556,
+            "pressure_resultant_n": [
+              3.694822225952521e-13,
+              1.9087846131167832e-13,
+              7.241178746248261e-15
+            ],
+            "projected_bulk": true,
+            "relative_energy_norm": 0.09099150933063539,
+            "relative_l2": 0.009222550221511645,
+            "relative_residual": 6.664452499651723e-11,
+            "solve_s": 0.000833844,
+            "strain_energy_n_mm": 9.098678147256171,
+            "total_s": 0.035825858,
+            "vector_dofs": 216,
+            "work_n_mm": 18.197356294518457
+          },
+          "checks": {
+            "analytic_agreement": 1.3623005191583225e-15,
+            "pressure_force_relative": 4.137408382689686e-17,
+            "work_energy_relative": 3.359949732401232e-13,
+            "axial_reaction_relative": 1.9802482129823613e-11,
+            "affine": false,
+            "field_quadrature_delta": 4.2588632620521594e-10,
+            "threshold_satisfied": false
+          }
+        },
+        {
+          "status": "completed",
+          "exit_code": 0,
+          "elapsed_s": 0.1518447439884767,
+          "tree_peak_rss_kib": 2016,
+          "level": 1,
+          "order": 8,
+          "alternate_gauge": false,
+          "command": [
+            "/home/jeff/Code/SolidCraftTrivariate/target/release/examples/pressure_cylinder",
+            "1",
+            "8",
+            "0.3",
+            "100",
+            "0",
+            "false",
+            "--projected"
+          ],
+          "result": {
+            "alternative_gauge": false,
+            "assembly_s": 0.073936917,
+            "axial_reactions_n": [
+              -753.982236863121,
+              753.9822368644216
+            ],
+            "blocks": 16,
+            "check_q8_relative_energy_norm": 0.028952445924090593,
+            "check_q8_relative_l2": 0.0014975123174747352,
+            "exact_energy_n_mm": 9.127573322429775,
+            "exact_top_reaction_n": 753.9822368615503,
+            "inner": {
+              "area_mm2": 100.5309649148735,
+              "exact_hoop_mpa": 166.66666666666669,
+              "exact_radial_displacement_mm": 0.0018158730158730162,
+              "max_sampled_hoop_error_mpa": 2.9150112689742116,
+              "max_sampled_hoop_relative": 0.017490067613845268,
+              "mean_radial_displacement_mm": 0.001815292684942349,
+              "primal_max_sampled_hoop_error_mpa": 6.701679904829263
+            },
+            "inner_mpa": 100,
+            "level": 1,
+            "load_area_relative_error": 6.661338147750939e-16,
+            "nu": 0.3,
+            "order": 8,
+            "outer": {
+              "area_mm2": 201.061929829747,
+              "exact_hoop_mpa": 66.66666666666667,
+              "exact_radial_displacement_mm": 0.0011555555555555557,
+              "max_sampled_hoop_error_mpa": 0.5578711940380288,
+              "max_sampled_hoop_relative": 0.008368067910570431,
+              "mean_radial_displacement_mm": 0.0011552653900909517,
+              "primal_max_sampled_hoop_error_mpa": 1.1603488642033
+            },
+            "outer_mpa": 0,
+            "pcg_iterations": 95,
+            "physical_strain_energy_n_mm": 9.129390334299817,
+            "preparation_s": 0.005177776,
+            "pressure_resultant_n": [
+              3.126388037344441e-13,
+              -6.252776074688882e-13,
+              9.897075967473132e-16
+            ],
+            "projected_bulk": true,
+            "relative_energy_norm": 0.02895244592431272,
+            "relative_l2": 0.001497512317498286,
+            "relative_residual": 6.612509345502224e-11,
+            "solve_s": 0.007533907,
+            "strain_energy_n_mm": 9.124656261010166,
+            "total_s": 0.119270469,
+            "vector_dofs": 720,
+            "work_n_mm": 18.249312522016577
+          },
+          "checks": {
+            "analytic_agreement": 1.3623005191583225e-15,
+            "pressure_force_relative": 6.953900409919775e-17,
+            "work_energy_relative": 2.0577314098604736e-13,
+            "axial_reaction_relative": 3.808598788697458e-12,
+            "affine": false,
+            "field_quadrature_delta": 2.221278716518782e-13,
+            "threshold_satisfied": false
+          }
+        },
+        {
+          "status": "completed",
+          "exit_code": 0,
+          "elapsed_s": 0.6040816400200129,
+          "tree_peak_rss_kib": 10352,
+          "level": 2,
+          "order": 8,
+          "alternate_gauge": false,
+          "command": [
+            "/home/jeff/Code/SolidCraftTrivariate/target/release/examples/pressure_cylinder",
+            "2",
+            "8",
+            "0.3",
+            "100",
+            "0",
+            "false",
+            "--projected"
+          ],
+          "result": {
+            "alternative_gauge": false,
+            "assembly_s": 0.303068526,
+            "axial_reactions_n": [
+              -753.9822368628824,
+              753.9822368631887
+            ],
+            "blocks": 64,
+            "check_q8_relative_energy_norm": 0.007937937582550873,
+            "check_q8_relative_l2": 0.0002066025623391336,
+            "exact_energy_n_mm": 9.127573322429775,
+            "exact_top_reaction_n": 753.9822368615503,
+            "inner": {
+              "area_mm2": 100.53096491487328,
+              "exact_hoop_mpa": 166.66666666666669,
+              "exact_radial_displacement_mm": 0.0018158730158730162,
+              "max_sampled_hoop_error_mpa": 0.9727077786757832,
+              "max_sampled_hoop_relative": 0.005836246672054698,
+              "mean_radial_displacement_mm": 0.0018158294191406024,
+              "primal_max_sampled_hoop_error_mpa": 2.2360789283295333
+            },
+            "inner_mpa": 100,
+            "level": 2,
+            "load_area_relative_error": 3.1086244689504383e-15,
+            "nu": 0.3,
+            "order": 8,
+            "outer": {
+              "area_mm2": 201.06192982974656,
+              "exact_hoop_mpa": 66.66666666666667,
+              "exact_radial_displacement_mm": 0.0011555555555555557,
+              "max_sampled_hoop_error_mpa": 0.10824861874735348,
+              "max_sampled_hoop_relative": 0.001623729281210302,
+              "mean_radial_displacement_mm": 0.0011555337571898363,
+              "primal_max_sampled_hoop_error_mpa": 0.23562113010378027
+            },
+            "outer_mpa": 0,
+            "pcg_iterations": 201,
+            "physical_strain_energy_n_mm": 9.127710176453569,
+            "preparation_s": 0.013642751,
+            "pressure_resultant_n": [
+              -7.815970093361102e-13,
+              -3.126388037344441e-13,
+              -8.367731604637224e-16
+            ],
+            "projected_bulk": true,
+            "relative_energy_norm": 0.007937937582550863,
+            "relative_l2": 0.0002066025623391699,
+            "relative_residual": 6.828180428123461e-11,
+            "solve_s": 0.059382092,
+            "strain_energy_n_mm": 9.127354181349265,
+            "total_s": 0.497879912,
+            "vector_dofs": 2592,
+            "work_n_mm": 18.254708362701862
+          },
+          "checks": {
+            "analytic_agreement": 1.3623005191583225e-15,
+            "pressure_force_relative": 8.373600693136947e-17,
+            "work_energy_relative": 1.825526524172992e-13,
+            "axial_reaction_relative": 2.1735203903192472e-12,
+            "affine": false,
+            "field_quadrature_delta": 3.629366772395226e-17,
+            "threshold_satisfied": false
+          }
+        },
+        {
+          "status": "completed",
+          "exit_code": 0,
+          "elapsed_s": 1.9605367500334978,
+          "tree_peak_rss_kib": 30512,
+          "level": 3,
+          "order": 8,
+          "alternate_gauge": false,
+          "command": [
+            "/home/jeff/Code/SolidCraftTrivariate/target/release/examples/pressure_cylinder",
+            "3",
+            "8",
+            "0.3",
+            "100",
+            "0",
+            "false",
+            "--projected"
+          ],
+          "result": {
+            "alternative_gauge": false,
+            "assembly_s": 0.949177457,
+            "axial_reactions_n": [
+              -753.9822368602677,
+              753.9822368602573
+            ],
+            "blocks": 256,
+            "check_q8_relative_energy_norm": 0.0020406767195662334,
+            "check_q8_relative_l2": 2.6603804895127964e-05,
+            "exact_energy_n_mm": 9.127573322429775,
+            "exact_top_reaction_n": 753.9822368615503,
+            "inner": {
+              "area_mm2": 100.53096491487337,
+              "exact_hoop_mpa": 166.66666666666669,
+              "exact_radial_displacement_mm": 0.0018158730158730162,
+              "max_sampled_hoop_error_mpa": 0.28780079124567237,
+              "max_sampled_hoop_relative": 0.001726804747474034,
+              "mean_radial_displacement_mm": 0.0018158701349947227,
+              "primal_max_sampled_hoop_error_mpa": 0.6561959218827553
+            },
+            "inner_mpa": 100,
+            "level": 3,
+            "load_area_relative_error": 1.3322676295501878e-15,
+            "nu": 0.3,
+            "order": 8,
+            "outer": {
+              "area_mm2": 201.06192982974673,
+              "exact_hoop_mpa": 66.66666666666667,
+              "exact_radial_displacement_mm": 0.0011555555555555557,
+              "max_sampled_hoop_error_mpa": 0.024108099652139003,
+              "max_sampled_hoop_relative": 0.000361621494782085,
+              "mean_radial_displacement_mm": 0.001155554115115988,
+              "primal_max_sampled_hoop_error_mpa": 0.053548119808297656
+            },
+            "outer_mpa": 0,
+            "pcg_iterations": 405,
+            "physical_strain_energy_n_mm": 9.127582371196986,
+            "preparation_s": 0.036305869,
+            "pressure_resultant_n": [
+              1.3358203432289883e-12,
+              -6.039613253960852e-13,
+              7.936780228662687e-17
+            ],
+            "projected_bulk": true,
+            "relative_energy_norm": 0.002040676719566181,
+            "relative_l2": 2.660380489511969e-05,
+            "relative_residual": 8.18537713018982e-11,
+            "solve_s": 0.568772813,
+            "strain_energy_n_mm": 9.127558841556008,
+            "total_s": 1.837482593,
+            "vector_dofs": 9792,
+            "work_n_mm": 18.255117683112108
+          },
+          "checks": {
+            "analytic_agreement": 1.3623005191583225e-15,
+            "pressure_force_relative": 1.45826709906805e-16,
+            "work_energy_relative": 5.0599813845224295e-15,
+            "axial_reaction_relative": 1.7143896523017578e-12,
+            "affine": false,
+            "field_quadrature_delta": 5.2475385148298415e-17,
+            "threshold_satisfied": false
+          }
+        },
+        {
+          "status": "completed",
+          "exit_code": 0,
+          "elapsed_s": 9.19827712298138,
+          "tree_peak_rss_kib": 110784,
+          "level": 4,
+          "order": 8,
+          "alternate_gauge": false,
+          "command": [
+            "/home/jeff/Code/SolidCraftTrivariate/target/release/examples/pressure_cylinder",
+            "4",
+            "8",
+            "0.3",
+            "100",
+            "0",
+            "false",
+            "--projected"
+          ],
+          "result": {
+            "alternative_gauge": false,
+            "assembly_s": 3.612344266,
+            "axial_reactions_n": [
+              -753.9822368613923,
+              753.9822368613922
+            ],
+            "blocks": 1024,
+            "check_q8_relative_energy_norm": 0.0005139780226109788,
+            "check_q8_relative_l2": 3.3518534195215285e-06,
+            "exact_energy_n_mm": 9.127573322429775,
+            "exact_top_reaction_n": 753.9822368615503,
+            "inner": {
+              "area_mm2": 100.53096491487341,
+              "exact_hoop_mpa": 166.66666666666669,
+              "exact_radial_displacement_mm": 0.0018158730158730162,
+              "max_sampled_hoop_error_mpa": 0.0788269468914109,
+              "max_sampled_hoop_relative": 0.0004729616813484653,
+              "mean_radial_displacement_mm": 0.0018158728331259474,
+              "primal_max_sampled_hoop_error_mpa": 0.1786437941462964
+            },
+            "inner_mpa": 100,
+            "level": 4,
+            "load_area_relative_error": 3.774758283725532e-15,
+            "nu": 0.3,
+            "order": 8,
+            "outer": {
+              "area_mm2": 201.06192982974682,
+              "exact_hoop_mpa": 66.66666666666667,
+              "exact_radial_displacement_mm": 0.0011555555555555557,
+              "max_sampled_hoop_error_mpa": 0.005709897326497071,
+              "max_sampled_hoop_relative": 8.564845989745606e-05,
+              "mean_radial_displacement_mm": 0.0011555554641819717,
+              "primal_max_sampled_hoop_error_mpa": 0.012780099076238116
+            },
+            "outer_mpa": 0,
+            "pcg_iterations": 763,
+            "physical_strain_energy_n_mm": 9.127573896518316,
+            "preparation_s": 0.130840845,
+            "pressure_resultant_n": [
+              1.0409451078885468e-12,
+              -7.105427357601002e-14,
+              5.658132637436267e-17
+            ],
+            "projected_bulk": true,
+            "relative_energy_norm": 0.0005139780226108303,
+            "relative_l2": 3.351853419515452e-06,
+            "relative_residual": 9.062649768938263e-11,
+            "solve_s": 4.244516254,
+            "strain_energy_n_mm": 9.127572403842539,
+            "total_s": 9.083375544999999,
+            "vector_dofs": 38016,
+            "work_n_mm": 18.255144807685618
+          },
+          "checks": {
+            "analytic_agreement": 1.3623005191583225e-15,
+            "pressure_force_relative": 1.0378566967918156e-16,
+            "work_energy_relative": 2.958138567875621e-14,
+            "axial_reaction_relative": 2.0928520997316093e-13,
+            "affine": false,
+            "field_quadrature_delta": 1.485356976305141e-16,
+            "threshold_satisfied": true
+          }
+        },
+        {
+          "status": "completed",
+          "exit_code": 0,
+          "elapsed_s": 0.15174731402657926,
+          "tree_peak_rss_kib": 1128,
+          "level": 1,
+          "order": 8,
+          "alternate_gauge": true,
+          "command": [
+            "/home/jeff/Code/SolidCraftTrivariate/target/release/examples/pressure_cylinder",
+            "1",
+            "8",
+            "0.3",
+            "100",
+            "0",
+            "true",
+            "--projected"
+          ],
+          "result": {
+            "alternative_gauge": true,
+            "assembly_s": 0.066968862,
+            "axial_reactions_n": [
+              -753.9822368635809,
+              753.9822368652117
+            ],
+            "blocks": 16,
+            "check_q8_relative_energy_norm": 0.02895244592409487,
+            "check_q8_relative_l2": 0.0014975123174494705,
+            "exact_energy_n_mm": 9.127573322429775,
+            "exact_top_reaction_n": 753.9822368615503,
+            "inner": {
+              "area_mm2": 100.5309649148735,
+              "exact_hoop_mpa": 166.66666666666669,
+              "exact_radial_displacement_mm": 0.0018158730158730162,
+              "max_sampled_hoop_error_mpa": 2.9150112704676587,
+              "max_sampled_hoop_relative": 0.01749006762280595,
+              "mean_radial_displacement_mm": 0.001815292684942393,
+              "primal_max_sampled_hoop_error_mpa": 6.701679900858153
+            },
+            "inner_mpa": 100,
+            "level": 1,
+            "load_area_relative_error": 6.661338147750939e-16,
+            "nu": 0.3,
+            "order": 8,
+            "outer": {
+              "area_mm2": 201.061929829747,
+              "exact_hoop_mpa": 66.66666666666667,
+              "exact_radial_displacement_mm": 0.0011555555555555557,
+              "max_sampled_hoop_error_mpa": 0.5578711933044502,
+              "max_sampled_hoop_relative": 0.008368067899566753,
+              "mean_radial_displacement_mm": 0.001155265390091178,
+              "primal_max_sampled_hoop_error_mpa": 1.1603488655846803
+            },
+            "outer_mpa": 0,
+            "pcg_iterations": 95,
+            "physical_strain_energy_n_mm": 9.12939033430026,
+            "preparation_s": 0.005295177,
+            "pressure_resultant_n": [
+              3.126388037344441e-13,
+              -6.252776074688882e-13,
+              9.897075967473132e-16
+            ],
+            "projected_bulk": true,
+            "relative_energy_norm": 0.02895244592431712,
+            "relative_l2": 0.0014975123174730278,
+            "relative_residual": 6.225462062777907e-11,
+            "solve_s": 0.006137797,
+            "strain_energy_n_mm": 9.124656261010598,
+            "total_s": 0.106624781,
+            "vector_dofs": 720,
+            "work_n_mm": 18.249312522017025
+          },
+          "checks": {
+            "analytic_agreement": 1.3623005191583225e-15,
+            "pressure_force_relative": 6.953900409919775e-17,
+            "work_energy_relative": 2.2855030039508814e-13,
+            "axial_reaction_relative": 4.85653265707892e-12,
+            "affine": false,
+            "field_quadrature_delta": 2.2224930229519657e-13,
+            "threshold_satisfied": false
+          }
+        },
+        {
+          "status": "completed",
+          "exit_code": 0,
+          "elapsed_s": 17.03253876400413,
+          "tree_peak_rss_kib": 121700,
+          "level": 4,
+          "order": 12,
+          "alternate_gauge": false,
+          "command": [
+            "/home/jeff/Code/SolidCraftTrivariate/target/release/examples/pressure_cylinder",
+            "4",
+            "12",
+            "0.3",
+            "100",
+            "0",
+            "false",
+            "--projected"
+          ],
+          "result": {
+            "alternative_gauge": false,
+            "assembly_s": 11.481453738,
+            "axial_reactions_n": [
+              -753.9822368613923,
+              753.9822368613911
+            ],
+            "blocks": 1024,
+            "check_q8_relative_energy_norm": 0.0005139780226121476,
+            "check_q8_relative_l2": 3.351853419736697e-06,
+            "exact_energy_n_mm": 9.127573322429775,
+            "exact_top_reaction_n": 753.9822368615503,
+            "inner": {
+              "area_mm2": 100.53096491487341,
+              "exact_hoop_mpa": 166.66666666666669,
+              "exact_radial_displacement_mm": 0.0018158730158730162,
+              "max_sampled_hoop_error_mpa": 0.07882694662288259,
+              "max_sampled_hoop_relative": 0.00047296167973729546,
+              "mean_radial_displacement_mm": 0.0018158728331260454,
+              "primal_max_sampled_hoop_error_mpa": 0.1786437930968532
+            },
+            "inner_mpa": 100,
+            "level": 4,
+            "load_area_relative_error": 5.329070518200751e-15,
+            "nu": 0.3,
+            "order": 12,
+            "outer": {
+              "area_mm2": 201.06192982974682,
+              "exact_hoop_mpa": 66.66666666666667,
+              "exact_radial_displacement_mm": 0.0011555555555555557,
+              "max_sampled_hoop_error_mpa": 0.005709897826776,
+              "max_sampled_hoop_relative": 8.564846740163999e-05,
+              "mean_radial_displacement_mm": 0.0011555554641820185,
+              "primal_max_sampled_hoop_error_mpa": 0.012780099437961212
+            },
+            "outer_mpa": 0,
+            "pcg_iterations": 763,
+            "physical_strain_energy_n_mm": 9.127573896519296,
+            "preparation_s": 0.146911666,
+            "pressure_resultant_n": [
+              1.0231815394945443e-12,
+              -2.5224267119483557e-13,
+              -1.4090423936813422e-17
+            ],
+            "projected_bulk": true,
+            "relative_energy_norm": 0.0005139780226120099,
+            "relative_l2": 3.3518534197301104e-06,
+            "relative_residual": 9.006235791174968e-11,
+            "solve_s": 4.2104062429999995,
+            "strain_energy_n_mm": 9.1275724038433,
+            "total_s": 16.948281674,
+            "vector_dofs": 38016,
+            "work_n_mm": 18.255144807686666
+          },
+          "checks": {
+            "analytic_agreement": 1.3623005191583225e-15,
+            "pressure_force_relative": 1.0482495299687091e-16,
+            "work_energy_relative": 3.5030588303787325e-15,
+            "axial_reaction_relative": 2.1064224663725205e-13,
+            "affine": false,
+            "field_quadrature_delta": 1.3769367590565906e-16,
+            "threshold_satisfied": true
+          }
+        }
+      ],
+      "convergence": [
+        {
+          "level": 1,
+          "l2_slope": 2.6225978704829966,
+          "energy_slope": 1.6520466964075284
+        },
+        {
+          "level": 2,
+          "l2_slope": 2.85763781756335,
+          "energy_slope": 1.8668491099993882
+        },
+        {
+          "level": 3,
+          "l2_slope": 2.9571536461285874,
+          "energy_slope": 1.9597165669595606
+        },
+        {
+          "level": 4,
+          "l2_slope": 2.98860163097326,
+          "energy_slope": 1.9892690741650259
+        }
+      ],
+      "gauge_comparison": {
+        "relative_l2": 2.5258224331525803e-14,
+        "relative_energy_norm": 4.399258735077183e-15,
+        "strain_energy_n_mm": 4.3165471197426086e-13
+      },
+      "qualified": true
+    },
+    {
+      "nu": 0.3,
+      "pressures_mpa": [
+        100,
+        30
+      ],
+      "oracle": {
+        "inner_displacement_mm": 0.0011225396825396824,
+        "outer_displacement_mm": 0.0005117460317460317,
+        "inner_hoop_mpa": 86.66666666666664,
+        "outer_hoop_mpa": 16.666666666666664,
+        "strain_energy_n_mm": 4.099110201163922,
+        "top_reaction_n": -150.79644737231027
+      },
+      "runs": [
+        {
+          "status": "completed",
+          "exit_code": 0,
+          "elapsed_s": 0.1517523069633171,
+          "tree_peak_rss_kib": 1016,
+          "level": 0,
+          "order": 8,
+          "alternate_gauge": false,
+          "command": [
+            "/home/jeff/Code/SolidCraftTrivariate/target/release/examples/pressure_cylinder",
+            "0",
+            "8",
+            "0.3",
+            "100",
+            "30",
+            "false",
+            "--projected"
+          ],
+          "result": {
+            "alternative_gauge": false,
+            "assembly_s": 0.018712859,
+            "axial_reactions_n": [
+              150.7964473831566,
+              -150.79644735609062
+            ],
+            "blocks": 4,
+            "check_q8_relative_energy_norm": 0.0950455471406096,
+            "check_q8_relative_l2": 0.011982992699249543,
+            "exact_energy_n_mm": 4.099110201163916,
+            "exact_top_reaction_n": -150.79644737231007,
+            "inner": {
+              "area_mm2": 100.53096491487334,
+              "exact_hoop_mpa": 86.66666666666666,
+              "exact_radial_displacement_mm": 0.0011225396825396824,
+              "max_sampled_hoop_error_mpa": 5.265148983193214,
+              "max_sampled_hoop_relative": 0.06075171903684478,
+              "mean_radial_displacement_mm": 0.0011185157238363936,
+              "primal_max_sampled_hoop_error_mpa": 11.486750862063587
+            },
+            "inner_mpa": 100,
+            "level": 0,
+            "load_area_relative_error": 9.302891790241574e-12,
+            "nu": 0.3,
+            "order": 8,
+            "outer": {
+              "area_mm2": 201.06192982974667,
+              "exact_hoop_mpa": 16.666666666666664,
+              "exact_radial_displacement_mm": 0.0005117460317460317,
+              "max_sampled_hoop_error_mpa": 2.829903081273315,
+              "max_sampled_hoop_relative": 0.1697941848763989,
+              "mean_radial_displacement_mm": 0.0005097340523948085,
+              "primal_max_sampled_hoop_error_mpa": 5.546046104857986
+            },
+            "outer_mpa": 30,
+            "pcg_iterations": 22,
+            "physical_strain_energy_n_mm": 4.107822881513818,
+            "preparation_s": 0.002455698,
+            "pressure_resultant_n": [
+              8.242295734817162e-13,
+              3.935254459265774e-13,
+              -1.4482357492496503e-15
+            ],
+            "projected_bulk": true,
+            "relative_energy_norm": 0.09504554758499656,
+            "relative_l2": 0.011982992739513311,
+            "relative_residual": 6.958956175147637e-11,
+            "solve_s": 0.000783641,
+            "strain_energy_n_mm": 4.084951565328627,
+            "total_s": 0.029990708,
+            "vector_dofs": 216,
+            "work_n_mm": 8.169903130663945
+          },
+          "checks": {
+            "analytic_agreement": 1.5167313472410474e-15,
+            "pressure_force_relative": 5.678323660176382e-17,
+            "work_energy_relative": 8.190471915035328e-13,
+            "axial_reaction_relative": 1.0755985685974723e-10,
+            "affine": false,
+            "field_quadrature_delta": 4.443869577874793e-10,
+            "threshold_satisfied": false
+          }
+        },
+        {
+          "status": "completed",
+          "exit_code": 0,
+          "elapsed_s": 0.15165226202225313,
+          "tree_peak_rss_kib": 1144,
+          "level": 1,
+          "order": 8,
+          "alternate_gauge": false,
+          "command": [
+            "/home/jeff/Code/SolidCraftTrivariate/target/release/examples/pressure_cylinder",
+            "1",
+            "8",
+            "0.3",
+            "100",
+            "30",
+            "false",
+            "--projected"
+          ],
+          "result": {
+            "alternative_gauge": false,
+            "assembly_s": 0.069653876,
+            "axial_reactions_n": [
+              150.79644737012194,
+              -150.79644737477247
+            ],
+            "blocks": 16,
+            "check_q8_relative_energy_norm": 0.03024239401044178,
+            "check_q8_relative_l2": 0.0019457393884704682,
+            "exact_energy_n_mm": 4.099110201163916,
+            "exact_top_reaction_n": -150.79644737231007,
+            "inner": {
+              "area_mm2": 100.5309649148735,
+              "exact_hoop_mpa": 86.66666666666666,
+              "exact_radial_displacement_mm": 0.0011225396825396824,
+              "max_sampled_hoop_error_mpa": 2.040507894720534,
+              "max_sampled_hoop_relative": 0.02354432186216001,
+              "mean_radial_displacement_mm": 0.0011221334508888768,
+              "primal_max_sampled_hoop_error_mpa": 4.691175932362285
+            },
+            "inner_mpa": 100,
+            "level": 1,
+            "load_area_relative_error": 6.661338147750939e-16,
+            "nu": 0.3,
+            "order": 8,
+            "outer": {
+              "area_mm2": 201.061929829747,
+              "exact_hoop_mpa": 16.666666666666664,
+              "exact_radial_displacement_mm": 0.0005117460317460317,
+              "max_sampled_hoop_error_mpa": 0.390509835589512,
+              "max_sampled_hoop_relative": 0.023430590135370726,
+              "mean_radial_displacement_mm": 0.0005115429159205833,
+              "primal_max_sampled_hoop_error_mpa": 0.8122442054550518
+            },
+            "outer_mpa": 30,
+            "pcg_iterations": 95,
+            "physical_strain_energy_n_mm": 4.100000536985176,
+            "preparation_s": 0.005438597,
+            "pressure_resultant_n": [
+              5.400124791776761e-13,
+              -1.7053025658242404e-13,
+              -1.9794151934946382e-16
+            ],
+            "projected_bulk": true,
+            "relative_energy_norm": 0.03024239401067373,
+            "relative_l2": 0.0019457393885010615,
+            "relative_residual": 4.811651015680053e-11,
+            "solve_s": 0.006201479,
+            "strain_energy_n_mm": 4.097680841073229,
+            "total_s": 0.106011434,
+            "vector_dofs": 720,
+            "work_n_mm": 8.195361682139703
+          },
+          "checks": {
+            "analytic_agreement": 1.5167313472410474e-15,
+            "pressure_force_relative": 3.520672608264302e-17,
+            "work_energy_relative": 8.243059089089298e-13,
+            "axial_reaction_relative": 1.6327978228732774e-11,
+            "affine": false,
+            "field_quadrature_delta": 2.319498759728589e-13,
+            "threshold_satisfied": false
+          }
+        },
+        {
+          "status": "completed",
+          "exit_code": 0,
+          "elapsed_s": 0.4528743429691531,
+          "tree_peak_rss_kib": 10360,
+          "level": 2,
+          "order": 8,
+          "alternate_gauge": false,
+          "command": [
+            "/home/jeff/Code/SolidCraftTrivariate/target/release/examples/pressure_cylinder",
+            "2",
+            "8",
+            "0.3",
+            "100",
+            "30",
+            "false",
+            "--projected"
+          ],
+          "result": {
+            "alternative_gauge": false,
+            "assembly_s": 0.231685529,
+            "axial_reactions_n": [
+              150.79644737149647,
+              -150.79644737282874
+            ],
+            "blocks": 64,
+            "check_q8_relative_energy_norm": 0.008291604675830743,
+            "check_q8_relative_l2": 0.00026844169385635357,
+            "exact_energy_n_mm": 4.099110201163916,
+            "exact_top_reaction_n": -150.79644737231007,
+            "inner": {
+              "area_mm2": 100.53096491487328,
+              "exact_hoop_mpa": 86.66666666666666,
+              "exact_radial_displacement_mm": 0.0011225396825396824,
+              "max_sampled_hoop_error_mpa": 0.6808954613016027,
+              "max_sampled_hoop_relative": 0.00785648609194157,
+              "mean_radial_displacement_mm": 0.0011225091648264546,
+              "primal_max_sampled_hoop_error_mpa": 1.5652552922141183
+            },
+            "inner_mpa": 100,
+            "level": 2,
+            "load_area_relative_error": 3.1086244689504383e-15,
+            "nu": 0.3,
+            "order": 8,
+            "outer": {
+              "area_mm2": 201.06192982974656,
+              "exact_hoop_mpa": 16.666666666666664,
+              "exact_radial_displacement_mm": 0.0005117460317460317,
+              "max_sampled_hoop_error_mpa": 0.07577404462071868,
+              "max_sampled_hoop_relative": 0.004546442677243121,
+              "mean_radial_displacement_mm": 0.0005117307728894662,
+              "primal_max_sampled_hoop_error_mpa": 0.16493480481338452
+            },
+            "outer_mpa": 30,
+            "pcg_iterations": 196,
+            "physical_strain_energy_n_mm": 4.099177259631471,
+            "preparation_s": 0.01287407,
+            "pressure_resultant_n": [
+              5.258016244624741e-13,
+              -1.3926637620897964e-12,
+              1.6735463209274403e-16
+            ],
+            "projected_bulk": true,
+            "relative_energy_norm": 0.00829160467583068,
+            "relative_l2": 0.00026844169385639954,
+            "relative_residual": 9.530290767279454e-11,
+            "solve_s": 0.047855824,
+            "strain_energy_n_mm": 4.099002822030396,
+            "total_s": 0.388464901,
+            "vector_dofs": 2592,
+            "work_n_mm": 8.198005644066495
+          },
+          "checks": {
+            "analytic_agreement": 1.5167313472410474e-15,
+            "pressure_force_relative": 9.25471519145414e-17,
+            "work_energy_relative": 6.95547881039312e-13,
+            "axial_reaction_relative": 5.3966709448500595e-12,
+            "affine": false,
+            "field_quadrature_delta": 6.245004513516506e-17,
+            "threshold_satisfied": false
+          }
+        },
+        {
+          "status": "completed",
+          "exit_code": 0,
+          "elapsed_s": 1.809656367986463,
+          "tree_peak_rss_kib": 30484,
+          "level": 3,
+          "order": 8,
+          "alternate_gauge": false,
+          "command": [
+            "/home/jeff/Code/SolidCraftTrivariate/target/release/examples/pressure_cylinder",
+            "3",
+            "8",
+            "0.3",
+            "100",
+            "30",
+            "false",
+            "--projected"
+          ],
+          "result": {
+            "alternative_gauge": false,
+            "assembly_s": 0.903512979,
+            "axial_reactions_n": [
+              150.79644737297363,
+              -150.79644737296795
+            ],
+            "blocks": 256,
+            "check_q8_relative_energy_norm": 0.002131597087271137,
+            "check_q8_relative_l2": 3.456670799625107e-05,
+            "exact_energy_n_mm": 4.099110201163916,
+            "exact_top_reaction_n": -150.79644737231007,
+            "inner": {
+              "area_mm2": 100.53096491487337,
+              "exact_hoop_mpa": 86.66666666666666,
+              "exact_radial_displacement_mm": 0.0011225396825396824,
+              "max_sampled_hoop_error_mpa": 0.20146056428069414,
+              "max_sampled_hoop_relative": 0.002324544972469548,
+              "mean_radial_displacement_mm": 0.0011225376659247507,
+              "primal_max_sampled_hoop_error_mpa": 0.4593371651216813
+            },
+            "inner_mpa": 100,
+            "level": 3,
+            "load_area_relative_error": 1.3322676295501878e-15,
+            "nu": 0.3,
+            "order": 8,
+            "outer": {
+              "area_mm2": 201.06192982974673,
+              "exact_hoop_mpa": 16.666666666666664,
+              "exact_radial_displacement_mm": 0.0005117460317460317,
+              "max_sampled_hoop_error_mpa": 0.016875677607032458,
+              "max_sampled_hoop_relative": 0.0010125406564219475,
+              "mean_radial_displacement_mm": 0.000511745023438348,
+              "primal_max_sampled_hoop_error_mpa": 0.03748370867880979
+            },
+            "outer_mpa": 30,
+            "pcg_iterations": 395,
+            "physical_strain_energy_n_mm": 4.099114635060314,
+            "preparation_s": 0.039640104,
+            "pressure_resultant_n": [
+              2.8421709430404007e-12,
+              -2.1955770534987096e-12,
+              -1.5873560457325506e-17
+            ],
+            "projected_bulk": true,
+            "relative_energy_norm": 0.0021315970872711793,
+            "relative_l2": 3.456670799625569e-05,
+            "relative_residual": 9.704269825141819e-11,
+            "solve_s": 0.533383492,
+            "strain_energy_n_mm": 4.099103105536173,
+            "total_s": 1.754422113,
+            "vector_dofs": 9792,
+            "work_n_mm": 8.198206211071994
+          },
+          "checks": {
+            "analytic_agreement": 1.5167313472410474e-15,
+            "pressure_force_relative": 2.232799230596081e-16,
+            "work_energy_relative": 4.290190380015385e-14,
+            "axial_reaction_relative": 4.399060519428645e-12,
+            "affine": false,
+            "field_quadrature_delta": 4.206704429243757e-17,
+            "threshold_satisfied": false
+          }
+        },
+        {
+          "status": "completed",
+          "exit_code": 0,
+          "elapsed_s": 8.894990232016426,
+          "tree_peak_rss_kib": 110852,
+          "level": 4,
+          "order": 8,
+          "alternate_gauge": false,
+          "command": [
+            "/home/jeff/Code/SolidCraftTrivariate/target/release/examples/pressure_cylinder",
+            "4",
+            "8",
+            "0.3",
+            "100",
+            "30",
+            "false",
+            "--projected"
+          ],
+          "result": {
+            "alternative_gauge": false,
+            "assembly_s": 3.897295868,
+            "axial_reactions_n": [
+              150.79644737220107,
+              -150.79644737220048
+            ],
+            "blocks": 1024,
+            "check_q8_relative_energy_norm": 0.0005368778138216591,
+            "check_q8_relative_l2": 4.355111579572329e-06,
+            "exact_energy_n_mm": 4.099110201163916,
+            "exact_top_reaction_n": -150.79644737231007,
+            "inner": {
+              "area_mm2": 100.53096491487341,
+              "exact_hoop_mpa": 86.66666666666666,
+              "exact_radial_displacement_mm": 0.0011225396825396824,
+              "max_sampled_hoop_error_mpa": 0.05517886992674903,
+              "max_sampled_hoop_relative": 0.0006366792683855659,
+              "mean_radial_displacement_mm": 0.0011225395546168263,
+              "primal_max_sampled_hoop_error_mpa": 0.12505067409654202
+            },
+            "inner_mpa": 100,
+            "level": 4,
+            "load_area_relative_error": 3.774758283725532e-15,
+            "nu": 0.3,
+            "order": 8,
+            "outer": {
+              "area_mm2": 201.06192982974682,
+              "exact_hoop_mpa": 16.666666666666664,
+              "exact_radial_displacement_mm": 0.0005117460317460317,
+              "max_sampled_hoop_error_mpa": 0.003996943201507008,
+              "max_sampled_hoop_relative": 0.00023981659209042054,
+              "mean_radial_displacement_mm": 0.0005117459677846392,
+              "primal_max_sampled_hoop_error_mpa": 0.008946132771242787
+            },
+            "outer_mpa": 30,
+            "pcg_iterations": 737,
+            "physical_strain_energy_n_mm": 4.099110482467663,
+            "preparation_s": 0.124594239,
+            "pressure_resultant_n": [
+              7.425171588693047e-13,
+              4.405364961712621e-13,
+              -1.1316265274872602e-17
+            ],
+            "projected_bulk": true,
+            "relative_energy_norm": 0.0005368778138215277,
+            "relative_l2": 4.3551115795599555e-06,
+            "relative_residual": 9.992947089618048e-11,
+            "solve_s": 3.759589583,
+            "strain_energy_n_mm": 4.099109751056635,
+            "total_s": 8.878394352,
+            "vector_dofs": 38016,
+            "work_n_mm": 8.198219502113053
+          },
+          "checks": {
+            "analytic_agreement": 1.5167313472410474e-15,
+            "pressure_force_relative": 5.367549588183699e-17,
+            "work_energy_relative": 2.6434463526009203e-14,
+            "axial_reaction_relative": 7.280878657477659e-13,
+            "affine": false,
+            "field_quadrature_delta": 1.3140530330524314e-16,
+            "threshold_satisfied": true
+          }
+        },
+        {
+          "status": "completed",
+          "exit_code": 0,
+          "elapsed_s": 0.15147466404596344,
+          "tree_peak_rss_kib": 1140,
+          "level": 1,
+          "order": 8,
+          "alternate_gauge": true,
+          "command": [
+            "/home/jeff/Code/SolidCraftTrivariate/target/release/examples/pressure_cylinder",
+            "1",
+            "8",
+            "0.3",
+            "100",
+            "30",
+            "true",
+            "--projected"
+          ],
+          "result": {
+            "alternative_gauge": true,
+            "assembly_s": 0.059202972,
+            "axial_reactions_n": [
+              150.79644736918183,
+              -150.79644737012913
+            ],
+            "blocks": 16,
+            "check_q8_relative_energy_norm": 0.030242394010409332,
+            "check_q8_relative_l2": 0.0019457393882452555,
+            "exact_energy_n_mm": 4.099110201163916,
+            "exact_top_reaction_n": -150.79644737231007,
+            "inner": {
+              "area_mm2": 100.5309649148735,
+              "exact_hoop_mpa": 86.66666666666666,
+              "exact_radial_displacement_mm": 0.0011225396825396824,
+              "max_sampled_hoop_error_mpa": 2.0405078901583806,
+              "max_sampled_hoop_relative": 0.023544321809519778,
+              "mean_radial_displacement_mm": 0.0011221334508878856,
+              "primal_max_sampled_hoop_error_mpa": 4.691175934257785
+            },
+            "inner_mpa": 100,
+            "level": 1,
+            "load_area_relative_error": 6.661338147750939e-16,
+            "nu": 0.3,
+            "order": 8,
+            "outer": {
+              "area_mm2": 201.061929829747,
+              "exact_hoop_mpa": 16.666666666666664,
+              "exact_radial_displacement_mm": 0.0005117460317460317,
+              "max_sampled_hoop_error_mpa": 0.390509840327951,
+              "max_sampled_hoop_relative": 0.02343059041967706,
+              "mean_radial_displacement_mm": 0.0005115429159210048,
+              "primal_max_sampled_hoop_error_mpa": 0.8122442057423989
+            },
+            "outer_mpa": 30,
+            "pcg_iterations": 95,
+            "physical_strain_energy_n_mm": 4.100000536972665,
+            "preparation_s": 0.004338641,
+            "pressure_resultant_n": [
+              5.400124791776761e-13,
+              -1.7053025658242404e-13,
+              -1.9794151934946382e-16
+            ],
+            "projected_bulk": true,
+            "relative_energy_norm": 0.030242394010641212,
+            "relative_l2": 0.001945739388275848,
+            "relative_residual": 4.789113387848257e-11,
+            "solve_s": 0.005990664,
+            "strain_energy_n_mm": 4.097680841060727,
+            "total_s": 0.098522115,
+            "vector_dofs": 720,
+            "work_n_mm": 8.195361682127196
+          },
+          "checks": {
+            "analytic_agreement": 1.5167313472410474e-15,
+            "pressure_force_relative": 3.520672608264302e-17,
+            "work_energy_relative": 7.005408092563212e-13,
+            "axial_reaction_relative": 2.0746074956921586e-11,
+            "affine": false,
+            "field_quadrature_delta": 2.318804870338198e-13,
+            "threshold_satisfied": false
+          }
+        },
+        {
+          "status": "completed",
+          "exit_code": 0,
+          "elapsed_s": 16.728676871978678,
+          "tree_peak_rss_kib": 110812,
+          "level": 4,
+          "order": 12,
+          "alternate_gauge": false,
+          "command": [
+            "/home/jeff/Code/SolidCraftTrivariate/target/release/examples/pressure_cylinder",
+            "4",
+            "12",
+            "0.3",
+            "100",
+            "30",
+            "false",
+            "--projected"
+          ],
+          "result": {
+            "alternative_gauge": false,
+            "assembly_s": 11.33505572,
+            "axial_reactions_n": [
+              150.79644737254796,
+              -150.79644737254802
+            ],
+            "blocks": 1024,
+            "check_q8_relative_energy_norm": 0.0005368778138257774,
+            "check_q8_relative_l2": 4.355111574658426e-06,
+            "exact_energy_n_mm": 4.099110201163916,
+            "exact_top_reaction_n": -150.79644737231007,
+            "inner": {
+              "area_mm2": 100.53096491487341,
+              "exact_hoop_mpa": 86.66666666666666,
+              "exact_radial_displacement_mm": 0.0011225396825396824,
+              "max_sampled_hoop_error_mpa": 0.05517886551490392,
+              "max_sampled_hoop_relative": 0.0006366792174796607,
+              "mean_radial_displacement_mm": 0.001122539554616732,
+              "primal_max_sampled_hoop_error_mpa": 0.12505066079891947
+            },
+            "inner_mpa": 100,
+            "level": 4,
+            "load_area_relative_error": 5.329070518200751e-15,
+            "nu": 0.3,
+            "order": 12,
+            "outer": {
+              "area_mm2": 201.06192982974682,
+              "exact_hoop_mpa": 16.666666666666664,
+              "exact_radial_displacement_mm": 0.0005117460317460317,
+              "max_sampled_hoop_error_mpa": 0.003996942883564003,
+              "max_sampled_hoop_relative": 0.00023981657301384022,
+              "mean_radial_displacement_mm": 0.0005117459677844786,
+              "primal_max_sampled_hoop_error_mpa": 0.008946120556998949
+            },
+            "outer_mpa": 30,
+            "pcg_iterations": 739,
+            "physical_strain_energy_n_mm": 4.099110482467517,
+            "preparation_s": 0.148502722,
+            "pressure_resultant_n": [
+              7.958078640513122e-13,
+              2.7355895326763857e-13,
+              2.818084787362691e-18
+            ],
+            "projected_bulk": true,
+            "relative_energy_norm": 0.0005368778138256306,
+            "relative_l2": 4.355111574646133e-06,
+            "relative_residual": 8.806235793517327e-11,
+            "solve_s": 4.117996469,
+            "strain_energy_n_mm": 4.09910975105653,
+            "total_s": 16.710497036,
+            "vector_dofs": 38016,
+            "work_n_mm": 8.198219502113055
+          },
+          "checks": {
+            "analytic_agreement": 1.5167313472410474e-15,
+            "pressure_force_relative": 5.231679827295069e-17,
+            "work_energy_relative": 6.500277916231938e-16,
+            "axial_reaction_relative": 1.5766127354336168e-12,
+            "affine": false,
+            "field_quadrature_delta": 1.468009741545373e-16,
+            "threshold_satisfied": true
+          }
+        }
+      ],
+      "convergence": [
+        {
+          "level": 1,
+          "l2_slope": 2.6225978704419393,
+          "energy_slope": 1.652046696406655
+        },
+        {
+          "level": 2,
+          "l2_slope": 2.8576378183834237,
+          "energy_slope": 1.8668491100046276
+        },
+        {
+          "level": 3,
+          "l2_slope": 2.957153647222452,
+          "energy_slope": 1.9597165669517094
+        },
+        {
+          "level": 4,
+          "l2_slope": 2.988601626485042,
+          "energy_slope": 1.9892690741669592
+        }
+      ],
+      "gauge_comparison": {
+        "relative_l2": 2.2521351103477194e-13,
+        "relative_energy_norm": 3.2519126280661226e-14,
+        "strain_energy_n_mm": 1.2501999435698963e-11
+      },
+      "qualified": true
+    },
+    {
+      "nu": 0.3,
+      "pressures_mpa": [
+        40,
+        40
+      ],
+      "oracle": {
+        "inner_displacement_mm": -0.0001980952380952381,
+        "outer_displacement_mm": -0.0003961904761904762,
+        "inner_hoop_mpa": -40.0,
+        "outer_hoop_mpa": -40.0,
+        "strain_energy_n_mm": 1.1948823258453525,
+        "top_reaction_n": -904.7786842338603
+      },
+      "runs": [
+        {
+          "status": "completed",
+          "exit_code": 0,
+          "elapsed_s": 0.15147153899306431,
+          "tree_peak_rss_kib": 1144,
+          "level": 0,
+          "order": 8,
+          "alternate_gauge": false,
+          "command": [
+            "/home/jeff/Code/SolidCraftTrivariate/target/release/examples/pressure_cylinder",
+            "0",
+            "8",
+            "0.3",
+            "40",
+            "40",
+            "false",
+            "--projected"
+          ],
+          "result": {
+            "alternative_gauge": false,
+            "assembly_s": 0.015114878,
+            "axial_reactions_n": [
+              904.7786842245573,
+              -904.7786842223418
+            ],
+            "blocks": 4,
+            "check_q8_relative_energy_norm": 1.4220578643883548e-08,
+            "check_q8_relative_l2": 8.21351916931746e-09,
+            "exact_energy_n_mm": 1.1948823258453523,
+            "exact_top_reaction_n": -904.7786842338604,
+            "inner": {
+              "area_mm2": 100.53096491487334,
+              "exact_hoop_mpa": -40,
+              "exact_radial_displacement_mm": -0.0001980952380952381,
+              "max_sampled_hoop_error_mpa": 4.3865089338623875e-07,
+              "max_sampled_hoop_relative": 1.0966272334655969e-08,
+              "mean_radial_displacement_mm": -0.00019809523809615257,
+              "primal_max_sampled_hoop_error_mpa": 1.9691077923766898e-06
+            },
+            "inner_mpa": 40,
+            "level": 0,
+            "load_area_relative_error": 9.302891790241574e-12,
+            "nu": 0.3,
+            "order": 8,
+            "outer": {
+              "area_mm2": 201.06192982974667,
+              "exact_hoop_mpa": -40,
+              "exact_radial_displacement_mm": -0.0003961904761904762,
+              "max_sampled_hoop_error_mpa": 1.2114836778209792e-07,
+              "max_sampled_hoop_relative": 3.028709194552448e-09,
+              "mean_radial_displacement_mm": -0.0003961904761902785,
+              "primal_max_sampled_hoop_error_mpa": 4.013995322793562e-07
+            },
+            "outer_mpa": 40,
+            "pcg_iterations": 22,
+            "physical_strain_energy_n_mm": 1.1948823258400838,
+            "preparation_s": 0.00199207,
+            "pressure_resultant_n": [
+              1.4210854715202004e-14,
+              -6.4774750775827e-14,
+              -8.689414495497908e-15
+            ],
+            "projected_bulk": true,
+            "relative_energy_norm": 1.4220584501672617e-08,
+            "relative_l2": 8.213519352859815e-09,
+            "relative_residual": 4.188731339407794e-11,
+            "solve_s": 0.000619824,
+            "strain_energy_n_mm": 1.1948823258289685,
+            "total_s": 0.024793744,
+            "vector_dofs": 216,
+            "work_n_mm": 2.389764651663207
+          },
+          "checks": {
+            "analytic_agreement": 1.8582968391296583e-16,
+            "pressure_force_relative": 5.544075817129018e-18,
+            "work_energy_relative": 2.2052408590254037e-12,
+            "axial_reaction_relative": 1.2730763030776124e-11,
+            "affine": true,
+            "field_quadrature_delta": 5.857789069520759e-15,
+            "threshold_satisfied": true
+          }
+        },
+        {
+          "status": "completed",
+          "exit_code": 0,
+          "elapsed_s": 0.1517124850070104,
+          "tree_peak_rss_kib": 1144,
+          "level": 1,
+          "order": 8,
+          "alternate_gauge": false,
+          "command": [
+            "/home/jeff/Code/SolidCraftTrivariate/target/release/examples/pressure_cylinder",
+            "1",
+            "8",
+            "0.3",
+            "40",
+            "40",
+            "false",
+            "--projected"
+          ],
+          "result": {
+            "alternative_gauge": false,
+            "assembly_s": 0.066045084,
+            "axial_reactions_n": [
+              904.7786842359992,
+              -904.7786842315779
+            ],
+            "blocks": 16,
+            "check_q8_relative_energy_norm": 1.4507046855654566e-10,
+            "check_q8_relative_l2": 3.961939765303159e-11,
+            "exact_energy_n_mm": 1.1948823258453523,
+            "exact_top_reaction_n": -904.7786842338604,
+            "inner": {
+              "area_mm2": 100.5309649148735,
+              "exact_hoop_mpa": -40,
+              "exact_radial_displacement_mm": -0.0001980952380952381,
+              "max_sampled_hoop_error_mpa": 1.2476817801143625e-08,
+              "max_sampled_hoop_relative": 3.1192044502859063e-10,
+              "mean_radial_displacement_mm": -0.00019809523809533112,
+              "primal_max_sampled_hoop_error_mpa": 1.4947303839107917e-08
+            },
+            "inner_mpa": 40,
+            "level": 1,
+            "load_area_relative_error": 6.661338147750939e-16,
+            "nu": 0.3,
+            "order": 8,
+            "outer": {
+              "area_mm2": 201.061929829747,
+              "exact_hoop_mpa": -40,
+              "exact_radial_displacement_mm": -0.0003961904761904762,
+              "max_sampled_hoop_error_mpa": 1.4159461159124476e-08,
+              "max_sampled_hoop_relative": 3.539865289781119e-10,
+              "mean_radial_displacement_mm": -0.00039619047619049864,
+              "primal_max_sampled_hoop_error_mpa": 2.033397805689674e-08
+            },
+            "outer_mpa": 40,
+            "pcg_iterations": 94,
+            "physical_strain_energy_n_mm": 1.1948823258451642,
+            "preparation_s": 0.005237131,
+            "pressure_resultant_n": [
+              1.0373923942097463e-12,
+              1.4210854715202004e-13,
+              -1.187649116096777e-15
+            ],
+            "projected_bulk": true,
+            "relative_energy_norm": 1.4507047293876052e-10,
+            "relative_l2": 3.961939563869752e-11,
+            "relative_residual": 9.717795985698607e-11,
+            "solve_s": 0.006133334,
+            "strain_energy_n_mm": 1.1948823258451604,
+            "total_s": 0.102096085,
+            "vector_dofs": 720,
+            "work_n_mm": 2.3897646516905158
+          },
+          "checks": {
+            "analytic_agreement": 1.8582968391296583e-16,
+            "pressure_force_relative": 8.6795918347623e-17,
+            "work_energy_relative": 8.157923123780512e-14,
+            "axial_reaction_relative": 2.5225803766937906e-12,
+            "affine": true,
+            "field_quadrature_delta": 4.38221485681295e-18,
+            "threshold_satisfied": true
+          }
+        },
+        {
+          "status": "completed",
+          "exit_code": 0,
+          "elapsed_s": 0.4530344969825819,
+          "tree_peak_rss_kib": 10408,
+          "level": 2,
+          "order": 8,
+          "alternate_gauge": false,
+          "command": [
+            "/home/jeff/Code/SolidCraftTrivariate/target/release/examples/pressure_cylinder",
+            "2",
+            "8",
+            "0.3",
+            "40",
+            "40",
+            "false",
+            "--projected"
+          ],
+          "result": {
+            "alternative_gauge": false,
+            "assembly_s": 0.240812972,
+            "axial_reactions_n": [
+              904.7786842338817,
+              -904.7786842334718
+            ],
+            "blocks": 64,
+            "check_q8_relative_energy_norm": 2.1288781226163085e-10,
+            "check_q8_relative_l2": 2.5278971140529517e-11,
+            "exact_energy_n_mm": 1.1948823258453523,
+            "exact_top_reaction_n": -904.7786842338604,
+            "inner": {
+              "area_mm2": 100.53096491487328,
+              "exact_hoop_mpa": -40,
+              "exact_radial_displacement_mm": -0.0001980952380952381,
+              "max_sampled_hoop_error_mpa": 1.639255486907132e-08,
+              "max_sampled_hoop_relative": 4.09813871726783e-10,
+              "mean_radial_displacement_mm": -0.00019809523809505427,
+              "primal_max_sampled_hoop_error_mpa": 5.413581050106586e-08
+            },
+            "inner_mpa": 40,
+            "level": 2,
+            "load_area_relative_error": 3.1086244689504383e-15,
+            "nu": 0.3,
+            "order": 8,
+            "outer": {
+              "area_mm2": 201.06192982974656,
+              "exact_hoop_mpa": -40,
+              "exact_radial_displacement_mm": -0.0003961904761904762,
+              "max_sampled_hoop_error_mpa": 1.0962899921196367e-08,
+              "max_sampled_hoop_relative": 2.740724980299092e-10,
+              "mean_radial_displacement_mm": -0.00039619047619032425,
+              "primal_max_sampled_hoop_error_mpa": 1.806687066618906e-08
+            },
+            "outer_mpa": 40,
+            "pcg_iterations": 196,
+            "physical_strain_energy_n_mm": 1.1948823258448746,
+            "preparation_s": 0.012812517,
+            "pressure_resultant_n": [
+              -1.4068746168049984e-12,
+              5.186961971048731e-13,
+              1.004127792556467e-15
+            ],
+            "projected_bulk": true,
+            "relative_energy_norm": 2.1288782601223405e-10,
+            "relative_l2": 2.5278968255795337e-11,
+            "relative_residual": 6.668863923047792e-11,
+            "solve_s": 0.044753677,
+            "strain_energy_n_mm": 1.1948823258448673,
+            "total_s": 0.390863209,
+            "vector_dofs": 2592,
+            "work_n_mm": 2.389764651690221
+          },
+          "checks": {
+            "analytic_agreement": 1.8582968391296583e-16,
+            "pressure_force_relative": 1.2429400453815296e-16,
+            "work_energy_relative": 2.0348350388478022e-13,
+            "axial_reaction_relative": 4.293513223332677e-13,
+            "affine": true,
+            "field_quadrature_delta": 1.3750603205165294e-17,
+            "threshold_satisfied": true
+          }
+        },
+        {
+          "status": "completed",
+          "exit_code": 0,
+          "elapsed_s": 1.8104423769982532,
+          "tree_peak_rss_kib": 30476,
+          "level": 3,
+          "order": 8,
+          "alternate_gauge": false,
+          "command": [
+            "/home/jeff/Code/SolidCraftTrivariate/target/release/examples/pressure_cylinder",
+            "3",
+            "8",
+            "0.3",
+            "40",
+            "40",
+            "false",
+            "--projected"
+          ],
+          "result": {
+            "alternative_gauge": false,
+            "assembly_s": 0.896831268,
+            "axial_reactions_n": [
+              904.778684233785,
+              -904.7786842337239
+            ],
+            "blocks": 256,
+            "check_q8_relative_energy_norm": 1.858720344576241e-10,
+            "check_q8_relative_l2": 2.7408090786171342e-11,
+            "exact_energy_n_mm": 1.1948823258453523,
+            "exact_top_reaction_n": -904.7786842338604,
+            "inner": {
+              "area_mm2": 100.53096491487337,
+              "exact_hoop_mpa": -40,
+              "exact_radial_displacement_mm": -0.0001980952380952381,
+              "max_sampled_hoop_error_mpa": 9.746592866122228e-09,
+              "max_sampled_hoop_relative": 2.436648216530557e-10,
+              "mean_radial_displacement_mm": -0.00019809523809531426,
+              "primal_max_sampled_hoop_error_mpa": 3.382016444675173e-08
+            },
+            "inner_mpa": 40,
+            "level": 3,
+            "load_area_relative_error": 1.3322676295501878e-15,
+            "nu": 0.3,
+            "order": 8,
+            "outer": {
+              "area_mm2": 201.06192982974673,
+              "exact_hoop_mpa": -40,
+              "exact_radial_displacement_mm": -0.0003961904761904762,
+              "max_sampled_hoop_error_mpa": 1.6446470851860795e-08,
+              "max_sampled_hoop_relative": 4.1116177129651987e-10,
+              "mean_radial_displacement_mm": -0.0003961904761904793,
+              "primal_max_sampled_hoop_error_mpa": 5.97501639276743e-08
+            },
+            "outer_mpa": 40,
+            "pcg_iterations": 401,
+            "physical_strain_energy_n_mm": 1.194882325845084,
+            "preparation_s": 0.038091354,
+            "pressure_resultant_n": [
+              -5.719869022868806e-13,
+              3.872457909892546e-13,
+              -9.524136274395242e-17
+            ],
+            "projected_bulk": true,
+            "relative_energy_norm": 1.8587204800204285e-10,
+            "relative_l2": 2.7408095009814444e-11,
+            "relative_residual": 9.07459106597813e-11,
+            "solve_s": 0.544227568,
+            "strain_energy_n_mm": 1.1948823258450714,
+            "total_s": 1.7561501179999999,
+            "vector_dofs": 9792,
+            "work_n_mm": 2.3897646516904207
+          },
+          "checks": {
+            "analytic_agreement": 1.8582968391296583e-16,
+            "pressure_force_relative": 5.725804349074815e-17,
+            "work_energy_relative": 1.1632938212954398e-13,
+            "axial_reaction_relative": 1.5078185156567786e-13,
+            "affine": true,
+            "field_quadrature_delta": 1.3544418743963649e-17,
+            "threshold_satisfied": true
+          }
+        },
+        {
+          "status": "completed",
+          "exit_code": 0,
+          "elapsed_s": 9.349448330991436,
+          "tree_peak_rss_kib": 110992,
+          "level": 4,
+          "order": 8,
+          "alternate_gauge": false,
+          "command": [
+            "/home/jeff/Code/SolidCraftTrivariate/target/release/examples/pressure_cylinder",
+            "4",
+            "8",
+            "0.3",
+            "40",
+            "40",
+            "false",
+            "--projected"
+          ],
+          "result": {
+            "alternative_gauge": false,
+            "assembly_s": 3.798919728,
+            "axial_reactions_n": [
+              904.7786842342866,
+              -904.7786842342871
+            ],
+            "blocks": 1024,
+            "check_q8_relative_energy_norm": 1.266401262255292e-10,
+            "check_q8_relative_l2": 1.75613633290368e-11,
+            "exact_energy_n_mm": 1.1948823258453523,
+            "exact_top_reaction_n": -904.7786842338604,
+            "inner": {
+              "area_mm2": 100.53096491487341,
+              "exact_hoop_mpa": -40,
+              "exact_radial_displacement_mm": -0.0001980952380952381,
+              "max_sampled_hoop_error_mpa": 8.76971739671717e-09,
+              "max_sampled_hoop_relative": 2.1924293491792924e-10,
+              "mean_radial_displacement_mm": -0.00019809523809518543,
+              "primal_max_sampled_hoop_error_mpa": 1.8019555625414796e-08
+            },
+            "inner_mpa": 40,
+            "level": 4,
+            "load_area_relative_error": 3.774758283725532e-15,
+            "nu": 0.3,
+            "order": 8,
+            "outer": {
+              "area_mm2": 201.06192982974682,
+              "exact_hoop_mpa": -40,
+              "exact_radial_displacement_mm": -0.0003961904761904762,
+              "max_sampled_hoop_error_mpa": 1.0120373872268829e-08,
+              "max_sampled_hoop_relative": 2.530093468067207e-10,
+              "mean_radial_displacement_mm": -0.00039619047619058906,
+              "primal_max_sampled_hoop_error_mpa": 2.1053153886896325e-08
+            },
+            "outer_mpa": 40,
+            "pcg_iterations": 757,
+            "physical_strain_energy_n_mm": 1.1948823258464945,
+            "preparation_s": 0.123233619,
+            "pressure_resultant_n": [
+              -1.8829382497642655e-13,
+              6.945555242054979e-13,
+              -6.789759164923515e-17
+            ],
+            "projected_bulk": true,
+            "relative_energy_norm": 1.2664012510005748e-10,
+            "relative_l2": 1.7561361275188442e-11,
+            "relative_residual": 9.707099210284189e-11,
+            "solve_s": 4.173641403,
+            "strain_energy_n_mm": 1.1948823258464731,
+            "total_s": 9.191055075,
+            "vector_dofs": 38016,
+            "work_n_mm": 2.3897646516918307
+          },
+          "checks": {
+            "analytic_agreement": 1.8582968391296583e-16,
+            "pressure_force_relative": 5.965212265152684e-17,
+            "work_energy_relative": 4.668041659889324e-13,
+            "axial_reaction_relative": 4.716958923146288e-13,
+            "affine": true,
+            "field_quadrature_delta": 2.0538483572013072e-18,
+            "threshold_satisfied": true
+          }
+        },
+        {
+          "status": "completed",
+          "exit_code": 0,
+          "elapsed_s": 0.151777959021274,
+          "tree_peak_rss_kib": 1116,
+          "level": 1,
+          "order": 8,
+          "alternate_gauge": true,
+          "command": [
+            "/home/jeff/Code/SolidCraftTrivariate/target/release/examples/pressure_cylinder",
+            "1",
+            "8",
+            "0.3",
+            "40",
+            "40",
+            "true",
+            "--projected"
+          ],
+          "result": {
+            "alternative_gauge": true,
+            "assembly_s": 0.063663101,
+            "axial_reactions_n": [
+              904.7786842405181,
+              -904.7786842360313
+            ],
+            "blocks": 16,
+            "check_q8_relative_energy_norm": 1.4771360619022779e-10,
+            "check_q8_relative_l2": 4.0188848414025287e-11,
+            "exact_energy_n_mm": 1.1948823258453523,
+            "exact_top_reaction_n": -904.7786842338604,
+            "inner": {
+              "area_mm2": 100.5309649148735,
+              "exact_hoop_mpa": -40,
+              "exact_radial_displacement_mm": -0.0001980952380952381,
+              "max_sampled_hoop_error_mpa": 1.8348401908951928e-08,
+              "max_sampled_hoop_relative": 4.587100477237982e-10,
+              "mean_radial_displacement_mm": -0.0001980952380945431,
+              "primal_max_sampled_hoop_error_mpa": 2.100527751736081e-08
+            },
+            "inner_mpa": 40,
+            "level": 1,
+            "load_area_relative_error": 6.661338147750939e-16,
+            "nu": 0.3,
+            "order": 8,
+            "outer": {
+              "area_mm2": 201.061929829747,
+              "exact_hoop_mpa": -40,
+              "exact_radial_displacement_mm": -0.0003961904761904762,
+              "max_sampled_hoop_error_mpa": 1.3146369326477725e-08,
+              "max_sampled_hoop_relative": 3.2865923316194314e-10,
+              "mean_radial_displacement_mm": -0.0003961904761915781,
+              "primal_max_sampled_hoop_error_mpa": 1.4945527482268517e-08
+            },
+            "outer_mpa": 40,
+            "pcg_iterations": 94,
+            "physical_strain_energy_n_mm": 1.1948823258570145,
+            "preparation_s": 0.0054884,
+            "pressure_resultant_n": [
+              1.0373923942097463e-12,
+              1.4210854715202004e-13,
+              -1.187649116096777e-15
+            ],
+            "projected_bulk": true,
+            "relative_energy_norm": 1.4771360672379772e-10,
+            "relative_l2": 4.0188847349638626e-11,
+            "relative_residual": 9.045421313432938e-11,
+            "solve_s": 0.008289987,
+            "strain_energy_n_mm": 1.1948823258570098,
+            "total_s": 0.095408158,
+            "vector_dofs": 720,
+            "work_n_mm": 2.389764651702365
+          },
+          "checks": {
+            "analytic_agreement": 1.8582968391296583e-16,
+            "pressure_force_relative": 8.6795918347623e-17,
+            "work_energy_relative": 4.8769142245642964e-12,
+            "axial_reaction_relative": 7.358531311033993e-12,
+            "affine": true,
+            "field_quadrature_delta": 1.0643866602461875e-18,
+            "threshold_satisfied": true
+          }
+        },
+        {
+          "status": "completed",
+          "exit_code": 0,
+          "elapsed_s": 17.04893691203324,
+          "tree_peak_rss_kib": 110864,
+          "level": 4,
+          "order": 12,
+          "alternate_gauge": false,
+          "command": [
+            "/home/jeff/Code/SolidCraftTrivariate/target/release/examples/pressure_cylinder",
+            "4",
+            "12",
+            "0.3",
+            "40",
+            "40",
+            "false",
+            "--projected"
+          ],
+          "result": {
+            "alternative_gauge": false,
+            "assembly_s": 11.490691231,
+            "axial_reactions_n": [
+              904.7786842339118,
+              -904.7786842339119
+            ],
+            "blocks": 1024,
+            "check_q8_relative_energy_norm": 1.2126533188666318e-10,
+            "check_q8_relative_l2": 1.6586746997247486e-11,
+            "exact_energy_n_mm": 1.1948823258453523,
+            "exact_top_reaction_n": -904.7786842338604,
+            "inner": {
+              "area_mm2": 100.53096491487341,
+              "exact_hoop_mpa": -40,
+              "exact_radial_displacement_mm": -0.0001980952380952381,
+              "max_sampled_hoop_error_mpa": 7.709957117185695e-09,
+              "max_sampled_hoop_relative": 1.9274892792964238e-10,
+              "mean_radial_displacement_mm": -0.0001980952380952309,
+              "primal_max_sampled_hoop_error_mpa": 1.708470165340259e-08
+            },
+            "inner_mpa": 40,
+            "level": 4,
+            "load_area_relative_error": 5.329070518200751e-15,
+            "nu": 0.3,
+            "order": 12,
+            "outer": {
+              "area_mm2": 201.06192982974682,
+              "exact_hoop_mpa": -40,
+              "exact_radial_displacement_mm": -0.0003961904761904762,
+              "max_sampled_hoop_error_mpa": 9.87690640386063e-09,
+              "max_sampled_hoop_relative": 2.4692266009651577e-10,
+              "mean_radial_displacement_mm": -0.0003961904761904894,
+              "primal_max_sampled_hoop_error_mpa": 2.0396271338540828e-08
+            },
+            "outer_mpa": 40,
+            "pcg_iterations": 758,
+            "physical_strain_energy_n_mm": 1.1948823258454948,
+            "preparation_s": 0.153550872,
+            "pressure_resultant_n": [
+              -7.425171588693047e-13,
+              2.2932766796657233e-12,
+              1.6908508724176096e-17
+            ],
+            "projected_bulk": true,
+            "relative_energy_norm": 1.2126533509094997e-10,
+            "relative_l2": 1.6586744719243083e-11,
+            "relative_residual": 8.90820412016956e-11,
+            "solve_s": 4.234474187,
+            "strain_energy_n_mm": 1.1948823258454715,
+            "total_s": 16.993149273,
+            "vector_dofs": 38016,
+            "work_n_mm": 2.3897646516908346
+          },
+          "checks": {
+            "analytic_agreement": 1.8582968391296583e-16,
+            "pressure_force_relative": 1.998130156782875e-16,
+            "work_energy_relative": 4.534244287475915e-14,
+            "axial_reaction_relative": 5.704580050901479e-14,
+            "affine": true,
+            "field_quadrature_delta": 3.2042867878236223e-18,
+            "threshold_satisfied": true
+          }
+        }
+      ],
+      "convergence": [],
+      "gauge_comparison": {
+        "relative_l2": 5.694517109411062e-13,
+        "relative_energy_norm": 2.643133785037204e-12,
+        "strain_energy_n_mm": 1.1849410341824296e-11
+      },
+      "qualified": true
+    },
+    {
+      "nu": 0.49,
+      "pressures_mpa": [
+        100,
+        0
+      ],
+      "oracle": {
+        "inner_displacement_mm": 0.0019015238095238098,
+        "outer_displacement_mm": 0.000964952380952381,
+        "inner_hoop_mpa": 166.666666666667,
+        "outer_hoop_mpa": 66.66666666666661,
+        "strain_energy_n_mm": 9.558101169001738,
+        "top_reaction_n": 1231.504320207197
+      },
+      "runs": [
+        {
+          "status": "completed",
+          "exit_code": 0,
+          "elapsed_s": 0.1516344519914128,
+          "tree_peak_rss_kib": 1016,
+          "level": 0,
+          "order": 8,
+          "alternate_gauge": false,
+          "command": [
+            "/home/jeff/Code/SolidCraftTrivariate/target/release/examples/pressure_cylinder",
+            "0",
+            "8",
+            "0.49",
+            "100",
+            "0",
+            "false",
+            "--projected"
+          ],
+          "result": {
+            "alternative_gauge": false,
+            "assembly_s": 0.019191181,
+            "axial_reactions_n": [
+              -1231.5043201905085,
+              1231.5043201984802
+            ],
+            "blocks": 4,
+            "check_q8_relative_energy_norm": 0.3638185373699524,
+            "check_q8_relative_l2": 0.011285022596376365,
+            "exact_energy_n_mm": 9.558101169001723,
+            "exact_top_reaction_n": 1231.504320207199,
+            "inner": {
+              "area_mm2": 100.53096491487334,
+              "exact_hoop_mpa": 166.66666666666669,
+              "exact_radial_displacement_mm": 0.0019015238095238095,
+              "max_sampled_hoop_error_mpa": 7.1578026292185655,
+              "max_sampled_hoop_relative": 0.04294681577531139,
+              "mean_radial_displacement_mm": 0.0018949200667734384,
+              "primal_max_sampled_hoop_error_mpa": 542.6750601025667
+            },
+            "inner_mpa": 100,
+            "level": 0,
+            "load_area_relative_error": 9.302891790241574e-12,
+            "nu": 0.49,
+            "order": 8,
+            "outer": {
+              "area_mm2": 201.06192982974667,
+              "exact_hoop_mpa": 66.66666666666667,
+              "exact_radial_displacement_mm": 0.0009649523809523809,
+              "max_sampled_hoop_error_mpa": 4.356789573434966,
+              "max_sampled_hoop_relative": 0.06535184360152449,
+              "mean_radial_displacement_mm": 0.0009616505095771808,
+              "primal_max_sampled_hoop_error_mpa": 270.5596180522081
+            },
+            "outer_mpa": 0,
+            "pcg_iterations": 61,
+            "physical_strain_energy_n_mm": 10.756860923653491,
+            "preparation_s": 0.002485849,
+            "pressure_resultant_n": [
+              3.694822225952521e-13,
+              1.9087846131167832e-13,
+              7.241178746248261e-15
+            ],
+            "projected_bulk": true,
+            "relative_energy_norm": 0.36381853758489197,
+            "relative_l2": 0.011285022633230382,
+            "relative_residual": 5.297337376231445e-11,
+            "solve_s": 0.001537665,
+            "strain_energy_n_mm": 9.524907137379175,
+            "total_s": 0.032002806,
+            "vector_dofs": 216,
+            "work_n_mm": 19.049814274751814
+          },
+          "checks": {
+            "analytic_agreement": 1.8758328224066606e-15,
+            "pressure_force_relative": 4.137408382689686e-17,
+            "work_energy_relative": 3.4315259323313504e-13,
+            "axial_reaction_relative": 1.3551349664529886e-11,
+            "affine": false,
+            "field_quadrature_delta": 2.1493956614548893e-10,
+            "threshold_satisfied": false
+          }
+        },
+        {
+          "status": "completed",
+          "exit_code": 0,
+          "elapsed_s": 0.15167475503403693,
+          "tree_peak_rss_kib": 1016,
+          "level": 1,
+          "order": 8,
+          "alternate_gauge": false,
+          "command": [
+            "/home/jeff/Code/SolidCraftTrivariate/target/release/examples/pressure_cylinder",
+            "1",
+            "8",
+            "0.49",
+            "100",
+            "0",
+            "false",
+            "--projected"
+          ],
+          "result": {
+            "alternative_gauge": false,
+            "assembly_s": 0.065854736,
+            "axial_reactions_n": [
+              -1231.5043202601078,
+              1231.5043201663318
+            ],
+            "blocks": 16,
+            "check_q8_relative_energy_norm": 0.11569842129544544,
+            "check_q8_relative_l2": 0.0018198108040544355,
+            "exact_energy_n_mm": 9.558101169001723,
+            "exact_top_reaction_n": 1231.504320207199,
+            "inner": {
+              "area_mm2": 100.5309649148735,
+              "exact_hoop_mpa": 166.66666666666669,
+              "exact_radial_displacement_mm": 0.0019015238095238095,
+              "max_sampled_hoop_error_mpa": 2.8047867737925287,
+              "max_sampled_hoop_relative": 0.01682872064275517,
+              "mean_radial_displacement_mm": 0.0019008580743044015,
+              "primal_max_sampled_hoop_error_mpa": 217.84324228196385
+            },
+            "inner_mpa": 100,
+            "level": 1,
+            "load_area_relative_error": 6.661338147750939e-16,
+            "nu": 0.49,
+            "order": 8,
+            "outer": {
+              "area_mm2": 201.061929829747,
+              "exact_hoop_mpa": 66.66666666666667,
+              "exact_radial_displacement_mm": 0.0009649523809523809,
+              "max_sampled_hoop_error_mpa": 0.579812865513361,
+              "max_sampled_hoop_relative": 0.008697192982700414,
+              "mean_radial_displacement_mm": 0.0009646195133427454,
+              "primal_max_sampled_hoop_error_mpa": 38.823123507864295
+            },
+            "outer_mpa": 0,
+            "pcg_iterations": 351,
+            "physical_strain_energy_n_mm": 9.679354402653837,
+            "preparation_s": 0.005008205,
+            "pressure_resultant_n": [
+              3.126388037344441e-13,
+              -6.252776074688882e-13,
+              9.897075967473132e-16
+            ],
+            "projected_bulk": true,
+            "relative_energy_norm": 0.11569842129556514,
+            "relative_l2": 0.001819810804082624,
+            "relative_residual": 8.609576642970339e-11,
+            "solve_s": 0.026728856,
+            "strain_energy_n_mm": 9.55475481880385,
+            "total_s": 0.115698674,
+            "vector_dofs": 720,
+            "work_n_mm": 19.10950963760497
+          },
+          "checks": {
+            "analytic_agreement": 1.8758328224066606e-15,
+            "pressure_force_relative": 6.953900409919775e-17,
+            "work_energy_relative": 1.429673953339394e-13,
+            "axial_reaction_relative": 4.2964334677640265e-11,
+            "affine": false,
+            "field_quadrature_delta": 1.196959198423997e-13,
+            "threshold_satisfied": false
+          }
+        },
+        {
+          "status": "completed",
+          "exit_code": 0,
+          "elapsed_s": 0.6038087399792857,
+          "tree_peak_rss_kib": 10392,
+          "level": 2,
+          "order": 8,
+          "alternate_gauge": false,
+          "command": [
+            "/home/jeff/Code/SolidCraftTrivariate/target/release/examples/pressure_cylinder",
+            "2",
+            "8",
+            "0.49",
+            "100",
+            "0",
+            "false",
+            "--projected"
+          ],
+          "result": {
+            "alternative_gauge": false,
+            "assembly_s": 0.246106453,
+            "axial_reactions_n": [
+              -1231.5043202042207,
+              1231.5043202095453
+            ],
+            "blocks": 64,
+            "check_q8_relative_energy_norm": 0.031707373234961825,
+            "check_q8_relative_l2": 0.00024983545207130407,
+            "exact_energy_n_mm": 9.558101169001723,
+            "exact_top_reaction_n": 1231.504320207199,
+            "inner": {
+              "area_mm2": 100.53096491487328,
+              "exact_hoop_mpa": 166.66666666666669,
+              "exact_radial_displacement_mm": 0.0019015238095238095,
+              "max_sampled_hoop_error_mpa": 0.9504673217114714,
+              "max_sampled_hoop_relative": 0.0057028039302688275,
+              "mean_radial_displacement_mm": 0.001901473827922851,
+              "primal_max_sampled_hoop_error_mpa": 72.62625490246097
+            },
+            "inner_mpa": 100,
+            "level": 2,
+            "load_area_relative_error": 3.1086244689504383e-15,
+            "nu": 0.49,
+            "order": 8,
+            "outer": {
+              "area_mm2": 201.06192982974656,
+              "exact_hoop_mpa": 66.66666666666667,
+              "exact_radial_displacement_mm": 0.0009649523809523809,
+              "max_sampled_hoop_error_mpa": 0.11019982714735477,
+              "max_sampled_hoop_relative": 0.0016529974072103215,
+              "mean_radial_displacement_mm": 0.0009649273901518982,
+              "primal_max_sampled_hoop_error_mpa": 7.77313260775999
+            },
+            "outer_mpa": 0,
+            "pcg_iterations": 784,
+            "physical_strain_energy_n_mm": 9.567208008007368,
+            "preparation_s": 0.012847969,
+            "pressure_resultant_n": [
+              -7.815970093361102e-13,
+              -3.126388037344441e-13,
+              -8.367731604637224e-16
+            ],
+            "projected_bulk": true,
+            "relative_energy_norm": 0.03170737323496128,
+            "relative_l2": 0.00024983545207132206,
+            "relative_residual": 9.698978276840405e-11,
+            "solve_s": 0.163531143,
+            "strain_energy_n_mm": 9.557849934073099,
+            "total_s": 0.518968776,
+            "vector_dofs": 2592,
+            "work_n_mm": 19.11569986814621
+          },
+          "checks": {
+            "analytic_agreement": 1.8758328224066606e-15,
+            "pressure_force_relative": 8.373600693136947e-17,
+            "work_energy_relative": 5.575595510453632e-16,
+            "axial_reaction_relative": 2.4168176779527255e-12,
+            "affine": false,
+            "field_quadrature_delta": 5.48172618408671e-16,
+            "threshold_satisfied": false
+          }
+        },
+        {
+          "status": "completed",
+          "exit_code": 0,
+          "elapsed_s": 3.3204881830024533,
+          "tree_peak_rss_kib": 30548,
+          "level": 3,
+          "order": 8,
+          "alternate_gauge": false,
+          "command": [
+            "/home/jeff/Code/SolidCraftTrivariate/target/release/examples/pressure_cylinder",
+            "3",
+            "8",
+            "0.49",
+            "100",
+            "0",
+            "false",
+            "--projected"
+          ],
+          "result": {
+            "alternative_gauge": false,
+            "assembly_s": 0.89440456,
+            "axial_reactions_n": [
+              -1231.5043202109287,
+              1231.5043202076547
+            ],
+            "blocks": 256,
+            "check_q8_relative_energy_norm": 0.00815008696605323,
+            "check_q8_relative_l2": 3.2114103305150625e-05,
+            "exact_energy_n_mm": 9.558101169001723,
+            "exact_top_reaction_n": 1231.504320207199,
+            "inner": {
+              "area_mm2": 100.53096491487337,
+              "exact_hoop_mpa": 166.66666666666669,
+              "exact_radial_displacement_mm": 0.0019015238095238095,
+              "max_sampled_hoop_error_mpa": 0.28423217950123103,
+              "max_sampled_hoop_relative": 0.001705393077007386,
+              "mean_radial_displacement_mm": 0.0019015205073669877,
+              "primal_max_sampled_hoop_error_mpa": 21.356848764372558
+            },
+            "inner_mpa": 100,
+            "level": 3,
+            "load_area_relative_error": 1.3322676295501878e-15,
+            "nu": 0.49,
+            "order": 8,
+            "outer": {
+              "area_mm2": 201.06192982974673,
+              "exact_hoop_mpa": 66.66666666666667,
+              "exact_radial_displacement_mm": 0.0009649523809523809,
+              "max_sampled_hoop_error_mpa": 0.024302067505018954,
+              "max_sampled_hoop_relative": 0.00036453101257528426,
+              "mean_radial_displacement_mm": 0.0009649507298739902,
+              "primal_max_sampled_hoop_error_mpa": 1.755859711883872
+            },
+            "outer_mpa": 0,
+            "pcg_iterations": 1532,
+            "physical_strain_energy_n_mm": 9.558702858624727,
+            "preparation_s": 0.038542484,
+            "pressure_resultant_n": [
+              1.3358203432289883e-12,
+              -6.039613253960852e-13,
+              7.936780228662687e-17
+            ],
+            "projected_bulk": true,
+            "relative_energy_norm": 0.00815008696605317,
+            "relative_l2": 3.2114103305152984e-05,
+            "relative_residual": 9.967582161935749e-11,
+            "solve_s": 2.002579701,
+            "strain_energy_n_mm": 9.558084570551056,
+            "total_s": 3.211444021,
+            "vector_dofs": 9792,
+            "work_n_mm": 19.11616914110225
+          },
+          "checks": {
+            "analytic_agreement": 1.8758328224066606e-15,
+            "pressure_force_relative": 1.45826709906805e-16,
+            "work_energy_relative": 7.248096229453603e-15,
+            "axial_reaction_relative": 3.0301613239541735e-12,
+            "affine": false,
+            "field_quadrature_delta": 5.898059818321144e-17,
+            "threshold_satisfied": false
+          }
+        },
+        {
+          "status": "completed",
+          "exit_code": 0,
+          "elapsed_s": 21.27595545403892,
+          "tree_peak_rss_kib": 112176,
+          "level": 4,
+          "order": 8,
+          "alternate_gauge": false,
+          "command": [
+            "/home/jeff/Code/SolidCraftTrivariate/target/release/examples/pressure_cylinder",
+            "4",
+            "8",
+            "0.49",
+            "100",
+            "0",
+            "false",
+            "--projected"
+          ],
+          "result": {
+            "alternative_gauge": false,
+            "assembly_s": 3.5967189299999998,
+            "axial_reactions_n": [
+              -1231.504320206829,
+              1231.5043202072713
+            ],
+            "blocks": 1024,
+            "check_q8_relative_energy_norm": 0.002052650229923632,
+            "check_q8_relative_l2": 4.044111621170249e-06,
+            "exact_energy_n_mm": 9.558101169001723,
+            "exact_top_reaction_n": 1231.504320207199,
+            "inner": {
+              "area_mm2": 100.53096491487341,
+              "exact_hoop_mpa": 166.66666666666669,
+              "exact_radial_displacement_mm": 0.0019015238095238095,
+              "max_sampled_hoop_error_mpa": 0.07832002213578448,
+              "max_sampled_hoop_relative": 0.00046992013281470685,
+              "mean_radial_displacement_mm": 0.0019015236000638324,
+              "primal_max_sampled_hoop_error_mpa": 5.823829113699503
+            },
+            "inner_mpa": 100,
+            "level": 4,
+            "load_area_relative_error": 3.774758283725532e-15,
+            "nu": 0.49,
+            "order": 8,
+            "outer": {
+              "area_mm2": 201.06192982974682,
+              "exact_hoop_mpa": 66.66666666666667,
+              "exact_radial_displacement_mm": 0.0009649523809523809,
+              "max_sampled_hoop_error_mpa": 0.005731028947039363,
+              "max_sampled_hoop_relative": 8.596543420559044e-05,
+              "mean_radial_displacement_mm": 0.0009649522762223919,
+              "primal_max_sampled_hoop_error_mpa": 0.41811855815885224
+            },
+            "outer_mpa": 0,
+            "pcg_iterations": 2998,
+            "physical_strain_energy_n_mm": 9.558139335125906,
+            "preparation_s": 0.141103764,
+            "pressure_resultant_n": [
+              1.0409451078885468e-12,
+              -7.105427357601002e-14,
+              5.658132637436267e-17
+            ],
+            "projected_bulk": true,
+            "relative_energy_norm": 0.002052650229922983,
+            "relative_l2": 4.044111621162975e-06,
+            "relative_residual": 9.926617552995799e-11,
+            "solve_s": 16.422132566,
+            "strain_energy_n_mm": 9.558100116140878,
+            "total_s": 21.251499419,
+            "vector_dofs": 38016,
+            "work_n_mm": 19.11620023228211
+          },
+          "checks": {
+            "analytic_agreement": 1.8758328224066606e-15,
+            "pressure_force_relative": 1.0378566967918156e-16,
+            "work_energy_relative": 1.8584831899809205e-14,
+            "axial_reaction_relative": 2.9873269693869444e-13,
+            "affine": false,
+            "field_quadrature_delta": 6.487865800153259e-16,
+            "threshold_satisfied": false
+          }
+        },
+        {
+          "status": "completed",
+          "exit_code": 0,
+          "elapsed_s": 0.15172826300840825,
+          "tree_peak_rss_kib": 1016,
+          "level": 1,
+          "order": 8,
+          "alternate_gauge": true,
+          "command": [
+            "/home/jeff/Code/SolidCraftTrivariate/target/release/examples/pressure_cylinder",
+            "1",
+            "8",
+            "0.49",
+            "100",
+            "0",
+            "true",
+            "--projected"
+          ],
+          "result": {
+            "alternative_gauge": true,
+            "assembly_s": 0.065559221,
+            "axial_reactions_n": [
+              -1231.5043201573778,
+              1231.5043202739237
+            ],
+            "blocks": 16,
+            "check_q8_relative_energy_norm": 0.11569842129543265,
+            "check_q8_relative_l2": 0.0018198108040427224,
+            "exact_energy_n_mm": 9.558101169001723,
+            "exact_top_reaction_n": 1231.504320207199,
+            "inner": {
+              "area_mm2": 100.5309649148735,
+              "exact_hoop_mpa": 166.66666666666669,
+              "exact_radial_displacement_mm": 0.0019015238095238095,
+              "max_sampled_hoop_error_mpa": 2.8047867739103083,
+              "max_sampled_hoop_relative": 0.016828720643461848,
+              "mean_radial_displacement_mm": 0.0019008580743043342,
+              "primal_max_sampled_hoop_error_mpa": 217.84324236202986
+            },
+            "inner_mpa": 100,
+            "level": 1,
+            "load_area_relative_error": 6.661338147750939e-16,
+            "nu": 0.49,
+            "order": 8,
+            "outer": {
+              "area_mm2": 201.061929829747,
+              "exact_hoop_mpa": 66.66666666666667,
+              "exact_radial_displacement_mm": 0.0009649523809523809,
+              "max_sampled_hoop_error_mpa": 0.5798128475174309,
+              "max_sampled_hoop_relative": 0.008697192712761462,
+              "mean_radial_displacement_mm": 0.0009646195133427407,
+              "primal_max_sampled_hoop_error_mpa": 38.823123581229055
+            },
+            "outer_mpa": 0,
+            "pcg_iterations": 351,
+            "physical_strain_energy_n_mm": 9.67935440265316,
+            "preparation_s": 0.005394754,
+            "pressure_resultant_n": [
+              3.126388037344441e-13,
+              -6.252776074688882e-13,
+              9.897075967473132e-16
+            ],
+            "projected_bulk": true,
+            "relative_energy_norm": 0.11569842129555255,
+            "relative_l2": 0.001819810804070915,
+            "relative_residual": 9.740946332611009e-11,
+            "solve_s": 0.026392375,
+            "strain_energy_n_mm": 9.554754818803168,
+            "total_s": 0.115525229,
+            "vector_dofs": 720,
+            "work_n_mm": 19.109509637604326
+          },
+          "checks": {
+            "analytic_agreement": 1.8758328224066606e-15,
+            "pressure_force_relative": 6.953900409919775e-17,
+            "work_energy_relative": 1.0522697757999412e-13,
+            "axial_reaction_relative": 5.4183058326642665e-11,
+            "affine": false,
+            "field_quadrature_delta": 1.199040866595169e-13,
+            "threshold_satisfied": false
+          }
+        },
+        {
+          "status": "completed",
+          "exit_code": 0,
+          "elapsed_s": 29.136873112991452,
+          "tree_peak_rss_kib": 110836,
+          "level": 4,
+          "order": 12,
+          "alternate_gauge": false,
+          "command": [
+            "/home/jeff/Code/SolidCraftTrivariate/target/release/examples/pressure_cylinder",
+            "4",
+            "12",
+            "0.49",
+            "100",
+            "0",
+            "false",
+            "--projected"
+          ],
+          "result": {
+            "alternative_gauge": false,
+            "assembly_s": 11.357054929,
+            "axial_reactions_n": [
+              -1231.5043202070972,
+              1231.5043202070392
+            ],
+            "blocks": 1024,
+            "check_q8_relative_energy_norm": 0.002052650229924375,
+            "check_q8_relative_l2": 4.0441116203620974e-06,
+            "exact_energy_n_mm": 9.558101169001723,
+            "exact_top_reaction_n": 1231.504320207199,
+            "inner": {
+              "area_mm2": 100.53096491487341,
+              "exact_hoop_mpa": 166.66666666666669,
+              "exact_radial_displacement_mm": 0.0019015238095238095,
+              "max_sampled_hoop_error_mpa": 0.07832002274494698,
+              "max_sampled_hoop_relative": 0.00046992013646968183,
+              "mean_radial_displacement_mm": 0.0019015236000639807,
+              "primal_max_sampled_hoop_error_mpa": 5.8238291100363995
+            },
+            "inner_mpa": 100,
+            "level": 4,
+            "load_area_relative_error": 5.329070518200751e-15,
+            "nu": 0.49,
+            "order": 12,
+            "outer": {
+              "area_mm2": 201.06192982974682,
+              "exact_hoop_mpa": 66.66666666666667,
+              "exact_radial_displacement_mm": 0.0009649523809523809,
+              "max_sampled_hoop_error_mpa": 0.005731027557757784,
+              "max_sampled_hoop_relative": 8.596541336636675e-05,
+              "mean_radial_displacement_mm": 0.0009649522762224678,
+              "primal_max_sampled_hoop_error_mpa": 0.418118547525566
+            },
+            "outer_mpa": 0,
+            "pcg_iterations": 2999,
+            "physical_strain_energy_n_mm": 9.558139335127201,
+            "preparation_s": 0.151341633,
+            "pressure_resultant_n": [
+              1.0231815394945443e-12,
+              -2.5224267119483557e-13,
+              -1.4090423936813422e-17
+            ],
+            "projected_bulk": true,
+            "relative_energy_norm": 0.0020526502299237485,
+            "relative_l2": 4.044111620353623e-06,
+            "relative_residual": 9.358874272985363e-11,
+            "solve_s": 16.426791479,
+            "strain_energy_n_mm": 9.558100116141564,
+            "total_s": 29.020356544,
+            "vector_dofs": 38016,
+            "work_n_mm": 19.116200232283585
+          },
+          "checks": {
+            "analytic_agreement": 1.8758328224066606e-15,
+            "pressure_force_relative": 1.0482495299687091e-16,
+            "work_energy_relative": 2.3974433150752153e-14,
+            "axial_reaction_relative": 1.2813380202438437e-13,
+            "affine": false,
+            "field_quadrature_delta": 6.266688556966216e-16,
+            "threshold_satisfied": false
+          }
+        }
+      ],
+      "convergence": [
+        {
+          "level": 1,
+          "l2_slope": 2.6325489378923446,
+          "energy_slope": 1.65284987524813
+        },
+        {
+          "level": 2,
+          "l2_slope": 2.864738351554922,
+          "energy_slope": 1.8674789101087317
+        },
+        {
+          "level": 3,
+          "l2_slope": 2.9596992933572897,
+          "energy_slope": 1.95993100487772
+        },
+        {
+          "level": 4,
+          "l2_slope": 2.989312291258116,
+          "energy_slope": 1.989327639576685
+        }
+      ],
+      "gauge_comparison": {
+        "relative_l2": 1.170916662240895e-14,
+        "relative_energy_norm": 1.2587153541687712e-14,
+        "strain_energy_n_mm": 6.821210263296962e-13
+      },
+      "qualified": false
+    },
+    {
+      "nu": 0.4999,
+      "pressures_mpa": [
+        100,
+        0
+      ],
+      "oracle": {
+        "inner_displacement_mm": 0.0019047301523809524,
+        "outer_displacement_mm": 0.0009525079238095238,
+        "inner_hoop_mpa": 166.666666666668,
+        "outer_hoop_mpa": 66.666666666668,
+        "strain_energy_n_mm": 9.574218006065562,
+        "top_reaction_n": 1256.38573402368
+      },
+      "runs": [
+        {
+          "status": "completed",
+          "exit_code": 0,
+          "elapsed_s": 0.15188499703072011,
+          "tree_peak_rss_kib": 1016,
+          "level": 0,
+          "order": 8,
+          "alternate_gauge": false,
+          "command": [
+            "/home/jeff/Code/SolidCraftTrivariate/target/release/examples/pressure_cylinder",
+            "0",
+            "8",
+            "0.4999",
+            "100",
+            "0",
+            "false",
+            "--projected"
+          ],
+          "result": {
+            "alternative_gauge": false,
+            "assembly_s": 0.019584439,
+            "axial_reactions_n": [
+              -1256.3857340092472,
+              1256.3857339935987
+            ],
+            "blocks": 4,
+            "check_q8_relative_energy_norm": 3.6120363645704767,
+            "check_q8_relative_l2": 0.011419247522140349,
+            "exact_energy_n_mm": 9.574218006065546,
+            "exact_top_reaction_n": 1256.3857340236302,
+            "inner": {
+              "area_mm2": 100.53096491487334,
+              "exact_hoop_mpa": 166.66666666666669,
+              "exact_radial_displacement_mm": 0.0019047301523809524,
+              "max_sampled_hoop_error_mpa": 7.131201726983534,
+              "max_sampled_hoop_relative": 0.042787210361901196,
+              "mean_radial_displacement_mm": 0.0018980814237974945,
+              "primal_max_sampled_hoop_error_mpa": 55350.710438287526
+            },
+            "inner_mpa": 100,
+            "level": 0,
+            "load_area_relative_error": 9.302891790241574e-12,
+            "nu": 0.4999,
+            "order": 8,
+            "outer": {
+              "area_mm2": 201.06192982974667,
+              "exact_hoop_mpa": 66.66666666666667,
+              "exact_radial_displacement_mm": 0.0009525079238095239,
+              "max_sampled_hoop_error_mpa": 4.379751828377877,
+              "max_sampled_hoop_relative": 0.06569627742566815,
+              "mean_radial_displacement_mm": 0.0009491835595177938,
+              "primal_max_sampled_hoop_error_mpa": 27674.53872451329
+            },
+            "outer_mpa": 0,
+            "pcg_iterations": 181,
+            "physical_strain_energy_n_mm": 134.42034938847232,
+            "preparation_s": 0.002779268,
+            "pressure_resultant_n": [
+              3.694822225952521e-13,
+              1.9087846131167832e-13,
+              7.241178746248261e-15
+            ],
+            "projected_bulk": true,
+            "relative_energy_norm": 3.6120363656313588,
+            "relative_l2": 0.011419247559346117,
+            "relative_residual": 6.725231006598827e-11,
+            "solve_s": 0.003478235,
+            "strain_energy_n_mm": 9.540797850937684,
+            "total_s": 0.033872655,
+            "vector_dofs": 216,
+            "work_n_mm": 19.08159570195841
+          },
+          "checks": {
+            "analytic_agreement": 3.9633397270912743e-14,
+            "pressure_force_relative": 4.137408382689686e-17,
+            "work_energy_relative": 4.3518964988929885e-12,
+            "axial_reaction_relative": 2.3942734363216824e-11,
+            "affine": false,
+            "field_quadrature_delta": 1.0608820488755555e-09,
+            "threshold_satisfied": false
+          }
+        },
+        {
+          "status": "completed",
+          "exit_code": 0,
+          "elapsed_s": 0.30274996196385473,
+          "tree_peak_rss_kib": 5024,
+          "level": 1,
+          "order": 8,
+          "alternate_gauge": false,
+          "command": [
+            "/home/jeff/Code/SolidCraftTrivariate/target/release/examples/pressure_cylinder",
+            "1",
+            "8",
+            "0.4999",
+            "100",
+            "0",
+            "false",
+            "--projected"
+          ],
+          "result": {
+            "alternative_gauge": false,
+            "assembly_s": 0.061548294,
+            "axial_reactions_n": [
+              -1256.3857340271074,
+              1256.3857340293825
+            ],
+            "blocks": 16,
+            "check_q8_relative_energy_norm": 1.148599277459645,
+            "check_q8_relative_l2": 0.0018404257614060874,
+            "exact_energy_n_mm": 9.574218006065546,
+            "exact_top_reaction_n": 1256.3857340236302,
+            "inner": {
+              "area_mm2": 100.5309649148735,
+              "exact_hoop_mpa": 166.66666666666669,
+              "exact_radial_displacement_mm": 0.0019047301523809524,
+              "max_sampled_hoop_error_mpa": 2.7967397362105544,
+              "max_sampled_hoop_relative": 0.016780438417263323,
+              "mean_radial_displacement_mm": 0.0019040599507044675,
+              "primal_max_sampled_hoop_error_mpa": 22210.10955764559
+            },
+            "inner_mpa": 100,
+            "level": 1,
+            "load_area_relative_error": 6.661338147750939e-16,
+            "nu": 0.4999,
+            "order": 8,
+            "outer": {
+              "area_mm2": 201.061929829747,
+              "exact_hoop_mpa": 66.66666666666667,
+              "exact_radial_displacement_mm": 0.0009525079238095239,
+              "max_sampled_hoop_error_mpa": 0.58141403409779,
+              "max_sampled_hoop_relative": 0.00872121051146685,
+              "mean_radial_displacement_mm": 0.0009521728229712818,
+              "primal_max_sampled_hoop_error_mpa": 3966.010551769872
+            },
+            "outer_mpa": 0,
+            "pcg_iterations": 1830,
+            "physical_strain_energy_n_mm": 22.198557608995813,
+            "preparation_s": 0.005582156,
+            "pressure_resultant_n": [
+              3.126388037344441e-13,
+              -6.252776074688882e-13,
+              9.897075967473132e-16
+            ],
+            "projected_bulk": true,
+            "relative_energy_norm": 1.148599277460281,
+            "relative_l2": 0.0018404257614345262,
+            "relative_residual": 9.737153255317719e-11,
+            "solve_s": 0.129652974,
+            "strain_energy_n_mm": 9.570849205000162,
+            "total_s": 0.214632729,
+            "vector_dofs": 720,
+            "work_n_mm": 19.141698410008672
+          },
+          "checks": {
+            "analytic_agreement": 3.9633397270912743e-14,
+            "pressure_force_relative": 6.953900409919775e-17,
+            "work_energy_relative": 4.3616177448597863e-13,
+            "axial_reaction_relative": 4.538838372394939e-12,
+            "affine": false,
+            "field_quadrature_delta": 6.359357485052897e-13,
+            "threshold_satisfied": false
+          }
+        },
+        {
+          "status": "completed",
+          "exit_code": 0,
+          "elapsed_s": 2.4155025529908016,
+          "tree_peak_rss_kib": 10332,
+          "level": 2,
+          "order": 8,
+          "alternate_gauge": false,
+          "command": [
+            "/home/jeff/Code/SolidCraftTrivariate/target/release/examples/pressure_cylinder",
+            "2",
+            "8",
+            "0.4999",
+            "100",
+            "0",
+            "false",
+            "--projected"
+          ],
+          "result": {
+            "alternative_gauge": false,
+            "assembly_s": 0.226991113,
+            "axial_reactions_n": [
+              -1256.3857340213522,
+              1256.3857340224015
+            ],
+            "blocks": 64,
+            "check_q8_relative_energy_norm": 0.3147630794480588,
+            "check_q8_relative_l2": 0.00025256399337727966,
+            "exact_energy_n_mm": 9.574218006065546,
+            "exact_top_reaction_n": 1256.3857340236302,
+            "inner": {
+              "area_mm2": 100.53096491487328,
+              "exact_hoop_mpa": 166.66666666666669,
+              "exact_radial_displacement_mm": 0.0019047301523809524,
+              "max_sampled_hoop_error_mpa": 0.9488447589071143,
+              "max_sampled_hoop_relative": 0.005693068553442685,
+              "mean_radial_displacement_mm": 0.0019046798377319112,
+              "primal_max_sampled_hoop_error_mpa": 7405.767487828405
+            },
+            "inner_mpa": 100,
+            "level": 2,
+            "load_area_relative_error": 3.1086244689504383e-15,
+            "nu": 0.4999,
+            "order": 8,
+            "outer": {
+              "area_mm2": 201.06192982974656,
+              "exact_hoop_mpa": 66.66666666666667,
+              "exact_radial_displacement_mm": 0.0009525079238095239,
+              "max_sampled_hoop_error_mpa": 0.1103421528651296,
+              "max_sampled_hoop_relative": 0.001655132292976944,
+              "mean_radial_displacement_mm": 0.0009524827664850034,
+              "primal_max_sampled_hoop_error_mpa": 793.4665325701575
+            },
+            "outer_mpa": 0,
+            "pcg_iterations": 7023,
+            "physical_strain_energy_n_mm": 10.522285459830265,
+            "preparation_s": 0.013272802,
+            "pressure_resultant_n": [
+              -7.815970093361102e-13,
+              -3.126388037344441e-13,
+              -8.367731604637224e-16
+            ],
+            "projected_bulk": true,
+            "relative_energy_norm": 0.31476307944805315,
+            "relative_l2": 0.0002525639933773206,
+            "relative_residual": 7.983789632320762e-11,
+            "solve_s": 2.009570168,
+            "strain_energy_n_mm": 9.573965097045297,
+            "total_s": 2.3190603579999998,
+            "vector_dofs": 2592,
+            "work_n_mm": 19.147930194109364
+          },
+          "checks": {
+            "analytic_agreement": 3.9633397270912743e-14,
+            "pressure_force_relative": 8.373600693136947e-17,
+            "work_energy_relative": 9.802096714816468e-13,
+            "axial_reaction_relative": 1.85281607881098e-12,
+            "affine": false,
+            "field_quadrature_delta": 5.662137425588298e-15,
+            "threshold_satisfied": false
+          }
+        },
+        {
+          "status": "completed",
+          "exit_code": 0,
+          "elapsed_s": 21.442514377995394,
+          "tree_peak_rss_kib": 30416,
+          "level": 3,
+          "order": 8,
+          "alternate_gauge": false,
+          "command": [
+            "/home/jeff/Code/SolidCraftTrivariate/target/release/examples/pressure_cylinder",
+            "3",
+            "8",
+            "0.4999",
+            "100",
+            "0",
+            "false",
+            "--projected"
+          ],
+          "result": {
+            "alternative_gauge": false,
+            "assembly_s": 0.887764007,
+            "axial_reactions_n": [
+              -1256.3857340154846,
+              1256.3857340167558
+            ],
+            "blocks": 256,
+            "check_q8_relative_energy_norm": 0.08090584459777297,
+            "check_q8_relative_l2": 3.246012909238636e-05,
+            "exact_energy_n_mm": 9.574218006065546,
+            "exact_top_reaction_n": 1256.3857340236302,
+            "inner": {
+              "area_mm2": 100.53096491487337,
+              "exact_hoop_mpa": 166.66666666666669,
+              "exact_radial_displacement_mm": 0.0019047301523809524,
+              "max_sampled_hoop_error_mpa": 0.28397189386731725,
+              "max_sampled_hoop_relative": 0.0017038313632039032,
+              "mean_radial_displacement_mm": 0.001904726828266081,
+              "primal_max_sampled_hoop_error_mpa": 2178.2161106309645
+            },
+            "inner_mpa": 100,
+            "level": 3,
+            "load_area_relative_error": 1.3322676295501878e-15,
+            "nu": 0.4999,
+            "order": 8,
+            "outer": {
+              "area_mm2": 201.06192982974673,
+              "exact_hoop_mpa": 66.66666666666667,
+              "exact_radial_displacement_mm": 0.0009525079238095239,
+              "max_sampled_hoop_error_mpa": 0.02431620766840581,
+              "max_sampled_hoop_relative": 0.0003647431150260871,
+              "mean_radial_displacement_mm": 0.0009525062617520878,
+              "primal_max_sampled_hoop_error_mpa": 179.1749232927802
+            },
+            "outer_mpa": 0,
+            "pcg_iterations": 15213,
+            "physical_strain_energy_n_mm": 9.6368550804093,
+            "preparation_s": 0.039606655,
+            "pressure_resultant_n": [
+              1.3358203432289883e-12,
+              -6.039613253960852e-13,
+              7.936780228662687e-17
+            ],
+            "projected_bulk": true,
+            "relative_energy_norm": 0.08090584459777114,
+            "relative_l2": 3.246012909240458e-05,
+            "relative_residual": 9.994560809282282e-11,
+            "solve_s": 20.091281788,
+            "strain_energy_n_mm": 9.574201297243727,
+            "total_s": 21.319211735,
+            "vector_dofs": 9792,
+            "work_n_mm": 19.148402594483546
+          },
+          "checks": {
+            "analytic_agreement": 3.9633397270912743e-14,
+            "pressure_force_relative": 1.45826709906805e-16,
+            "work_energy_relative": 2.0408935039863862e-13,
+            "axial_reaction_relative": 6.523041877775246e-12,
+            "affine": false,
+            "field_quadrature_delta": 1.8318679906315083e-15,
+            "threshold_satisfied": false
+          }
+        },
+        {
+          "status": "execution_error",
+          "exit_code": 1,
+          "elapsed_s": 118.2377636070014,
+          "tree_peak_rss_kib": 110688,
+          "level": 4,
+          "order": 8,
+          "alternate_gauge": false,
+          "command": [
+            "/home/jeff/Code/SolidCraftTrivariate/target/release/examples/pressure_cylinder",
+            "4",
+            "8",
+            "0.4999",
+            "100",
+            "0",
+            "false",
+            "--projected"
+          ],
+          "diagnostic": "Error: \"conjugate-gradient iteration limit reached\"\n"
+        },
+        {
+          "status": "completed",
+          "exit_code": 0,
+          "elapsed_s": 0.30273593799211085,
+          "tree_peak_rss_kib": 4956,
+          "level": 1,
+          "order": 8,
+          "alternate_gauge": true,
+          "command": [
+            "/home/jeff/Code/SolidCraftTrivariate/target/release/examples/pressure_cylinder",
+            "1",
+            "8",
+            "0.4999",
+            "100",
+            "0",
+            "true",
+            "--projected"
+          ],
+          "result": {
+            "alternative_gauge": true,
+            "assembly_s": 0.073931563,
+            "axial_reactions_n": [
+              -1256.385734037203,
+              1256.3857340465238
+            ],
+            "blocks": 16,
+            "check_q8_relative_energy_norm": 1.148599277459584,
+            "check_q8_relative_l2": 0.0018404257614115813,
+            "exact_energy_n_mm": 9.574218006065546,
+            "exact_top_reaction_n": 1256.3857340236302,
+            "inner": {
+              "area_mm2": 100.5309649148735,
+              "exact_hoop_mpa": 166.66666666666669,
+              "exact_radial_displacement_mm": 0.0019047301523809524,
+              "max_sampled_hoop_error_mpa": 2.796739713076647,
+              "max_sampled_hoop_relative": 0.016780438278459882,
+              "mean_radial_displacement_mm": 0.0019040599507043625,
+              "primal_max_sampled_hoop_error_mpa": 22210.109550817244
+            },
+            "inner_mpa": 100,
+            "level": 1,
+            "load_area_relative_error": 6.661338147750939e-16,
+            "nu": 0.4999,
+            "order": 8,
+            "outer": {
+              "area_mm2": 201.061929829747,
+              "exact_hoop_mpa": 66.66666666666667,
+              "exact_radial_displacement_mm": 0.0009525079238095239,
+              "max_sampled_hoop_error_mpa": 0.581414035480222,
+              "max_sampled_hoop_relative": 0.008721210532203328,
+              "mean_radial_displacement_mm": 0.0009521728229712306,
+              "primal_max_sampled_hoop_error_mpa": 3966.0105485006547
+            },
+            "outer_mpa": 0,
+            "pcg_iterations": 1828,
+            "physical_strain_energy_n_mm": 22.198557608993394,
+            "preparation_s": 0.004797349,
+            "pressure_resultant_n": [
+              3.126388037344441e-13,
+              -6.252776074688882e-13,
+              9.897075967473132e-16
+            ],
+            "projected_bulk": true,
+            "relative_energy_norm": 1.1485992774602127,
+            "relative_l2": 0.0018404257614400284,
+            "relative_residual": 8.107254165380111e-11,
+            "solve_s": 0.131548342,
+            "strain_energy_n_mm": 9.570849205002787,
+            "total_s": 0.228575953,
+            "vector_dofs": 720,
+            "work_n_mm": 19.141698410007614
+          },
+          "checks": {
+            "analytic_agreement": 3.9633397270912743e-14,
+            "pressure_force_relative": 6.953900409919775e-17,
+            "work_energy_relative": 1.0653483342760981e-13,
+            "axial_reaction_relative": 1.8182137703260554e-11,
+            "affine": false,
+            "field_quadrature_delta": 6.288303211476887e-13,
+            "threshold_satisfied": false
+          }
+        },
+        {
+          "status": "execution_error",
+          "exit_code": 1,
+          "elapsed_s": 122.94339882803615,
+          "tree_peak_rss_kib": 110764,
+          "level": 4,
+          "order": 12,
+          "alternate_gauge": false,
+          "command": [
+            "/home/jeff/Code/SolidCraftTrivariate/target/release/examples/pressure_cylinder",
+            "4",
+            "12",
+            "0.4999",
+            "100",
+            "0",
+            "false",
+            "--projected"
+          ],
+          "diagnostic": "Error: \"conjugate-gradient iteration limit reached\"\n"
+        }
+      ],
+      "convergence": [
+        {
+          "level": 1,
+          "l2_slope": 2.633356130326563,
+          "energy_slope": 1.6529368585126685
+        },
+        {
+          "level": 2,
+          "l2_slope": 2.865318673867106,
+          "energy_slope": 1.8675373262349388
+        },
+        {
+          "level": 3,
+          "l2_slope": 2.9599083343577997,
+          "energy_slope": 1.9599504968441666
+        }
+      ],
+      "gauge_comparison": {
+        "relative_l2": 5.502109184929438e-15,
+        "relative_energy_norm": 6.816769371198461e-14,
+        "strain_energy_n_mm": 2.62545540863357e-12
+      },
+      "qualified": false
+    }
+  ]
+}

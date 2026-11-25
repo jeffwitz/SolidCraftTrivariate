@@ -100,6 +100,7 @@ pub fn boundary_shell(model: &Json) -> Result<BoundaryShell, &'static str> {
         "certified_fixed_extrusion_partition"
             | "certified_ruled_similarity_sweep"
             | "certified_coaxial_feature_program"
+            | "certified_circular_bend"
     ) {
         return Err("unsupported_boundary_model_family");
     }
@@ -209,7 +210,10 @@ pub fn boundary_shell(model: &Json) -> Result<BoundaryShell, &'static str> {
         adjacent.entry(*a).or_default().push(*b);
         adjacent.entry(*b).or_default().push(*a);
     }
-    let expected_voids = if method == "certified_coaxial_feature_program" {
+    let expected_voids = if matches!(
+        method,
+        "certified_coaxial_feature_program" | "certified_circular_bend"
+    ) {
         report.field("cavities")?.number::<usize>()?
     } else {
         0
@@ -227,17 +231,29 @@ pub fn boundary_shell(model: &Json) -> Result<BoundaryShell, &'static str> {
         return Err("unexpected_boundary_shell_count");
     }
     if expected_voids > 0 {
-        // Every admitted coaxial feature stays strictly inside x=10. The
-        // untouched plate wall therefore belongs to exactly the outer shell.
+        // A coaxial plate retains its x=10 wall. For a periodic bend the
+        // outer section curve is certified by its independent section audit.
+        let bend_anchor = if method == "certified_circular_bend" {
+            match model.field("section")?.text()? {
+                "full_annulus_v1" => Some("section_circle_r4"),
+                "pierced_square_v1" => Some("section_x10"),
+                _ => return Err("unexpected_bend_void"),
+            }
+        } else {
+            None
+        };
         let mut outer = components.iter().enumerate().filter(|(_, component)| {
             component.iter().any(|&f| {
+                if let Some(tag) = bend_anchor {
+                    return faces[f].feature == tag;
+                }
                 faces[f]
                     .controls
                     .iter()
                     .all(|p| i128::from(p[0]) == 10 * i128::from(p[3]))
             })
         });
-        let index = outer.next().ok_or("coaxial_outer_shell_missing")?.0;
+        let index = outer.next().ok_or("outer_shell_missing")?.0;
         if outer.next().is_some() {
             return Err("ambiguous_outer_shell");
         }

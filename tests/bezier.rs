@@ -115,3 +115,44 @@ fn biquadratic_rational_chart_matches_separable_quotients_and_product_rule() {
         }
     }
 }
+
+#[test]
+fn every_tensor_degree_combination_has_the_correct_axis_strides() {
+    for p in 1..=2 {
+        for q in 1..=2 {
+            for r in 1..=2 {
+                let degrees = [p, q, r];
+                let mut controls = Vec::new();
+                for i in 0..=p {
+                    for j in 0..=q {
+                        for k in 0..=r {
+                            let coordinates = [i, j, k];
+                            let fun = |a: usize| {
+                                if degrees[a] == 1 {
+                                    coordinates[a] as f64
+                                } else {
+                                    f64::from(coordinates[a] == 2)
+                                }
+                            };
+                            controls.push([fun(0), fun(1), fun(2), 1.]);
+                        }
+                    }
+                }
+                let map = RationalBezierMap::new(degrees, controls).unwrap();
+                let uvw: [f64; 3] = [0.125, 0.375, 0.875];
+                let e = map.evaluate(uvw).unwrap();
+                for a in 0..3 {
+                    assert!((e.position[a] - uvw[a].powi(degrees[a] as i32)).abs() < 1e-14);
+                    for b in 0..3 {
+                        let expected = if a == b {
+                            degrees[a] as f64 * uvw[a].powi(degrees[a] as i32 - 1)
+                        } else {
+                            0.
+                        };
+                        assert!((e.jacobian_columns[b][a] - expected).abs() < 1e-14);
+                    }
+                }
+            }
+        }
+    }
+}

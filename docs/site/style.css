@@ -81,6 +81,8 @@ select { max-width: 100%; padding: 7px 25px 7px 9px; border: 1px solid var(--lin
 .metric-empty { padding: 14px 0; color: #888f87; font-size: 11px; }
 .source-links { margin-top: auto; padding-top: 19px; display: grid; }
 .source-links a { min-height: 38px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--line); color: var(--green); text-decoration: none; font-size: 11px; }
+.source-links a[hidden] { display: none; }
+.segment:disabled, .clip-control select:disabled { opacity: .45; cursor: default; }
 .source-links a:hover { color: #173f32; }
 .source-links .campaign-link { color: #656e66; }
 .page-footer { min-height: 77px; margin-top: 24px; display: flex; align-items: center; justify-content: space-between; gap: 14px; border-top: 1px solid var(--line); color: #7b827a; font-size: 10px; }

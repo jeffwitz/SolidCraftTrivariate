@@ -12,6 +12,7 @@
 import { spawn } from 'node:child_process';
 import { createServer } from 'node:http';
 import { createHash } from 'node:crypto';
+import { inflateSync } from 'node:zlib';
 import { mkdtemp, mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
@@ -42,15 +43,33 @@ const injectedExpressions = {
     return { x: rect.x, y: rect.y, width: rect.width, height: rect.height, scale: 1 };
   })()`,
   resources: `fetch('./experiments.json').then(response => response.json()).then(async experiments =>
-    Promise.all(experiments.map(async experiment => ({
+    Promise.all(experiments.map(async experiment => {
+      const assetExtensions = ['.json', '.step', '.vtk', '.vtu', '.stl', '.obj', '.glb', '.gltf', '.png', '.jpg', '.jpeg'];
+      const assets = Object.entries(experiment)
+        .filter(([key, value]) => typeof value === 'string'
+          && assetExtensions.some(extension => value.split('?')[0].split('#')[0].toLowerCase().endsWith(extension))
+          && !value.startsWith('http://') && !value.startsWith('https://'))
+        .map(([key, value]) => ({ key, path: value }));
+    return {
       id: experiment.id,
       title: experiment.title || experiment.id,
+      representation: experiment.representation || null,
       section: experiment.section || null,
-      status: await Promise.all(['model', 'source', 'step'].map(async key => {
-        const response = await fetch(experiment[key]);
-        return response.status;
+      links: {
+        model: Boolean(experiment.model && experiment.model !== experiment.source),
+        source: Boolean(experiment.source),
+        step: Boolean(experiment.step),
+        audit: Boolean(experiment.audit),
+        figure: Boolean(experiment.figure),
+        hex8: Boolean(experiment.hex8),
+      },
+      chamferStep: Boolean(experiment.chamferStep),
+      filletStep: Boolean(experiment.filletStep),
+      assets: await Promise.all(assets.map(async asset => {
+        const response = await fetch(asset.path, { method: 'HEAD' });
+        return { ...asset, status: response.status };
       })),
-    }))))`,
+    };})))`,
   selectExperiment: id => `(() => {
     const select = document.querySelector('#experiment-select');
     select.value = ${JSON.stringify(id)};
@@ -72,6 +91,26 @@ const injectedExpressions = {
   }))()`,
   surfaceMode: "document.querySelector('[data-mode=surface]').click()",
   selectedId: "document.querySelector('#experiment-select').value",
+  selectedState: `(() => ({
+    id: document.querySelector('#experiment-select').value,
+    title: document.querySelector('#view-title').textContent,
+    stateHidden: document.querySelector('#canvas-state').hidden,
+    stateText: document.querySelector('#canvas-state').textContent,
+    canvas: (() => {
+      const rect = document.querySelector('#model-canvas').getBoundingClientRect();
+      return { width: rect.width, height: rect.height };
+    })(),
+  }))()`,
+  visibleVariantLinks: `(() => Object.fromEntries([
+    ['model', '#model-link'], ['source', '#source-link'], ['step', '#step-link'], ['audit', '#audit-link'],
+    ['figure', '#figure-link'], ['hex8', '#hex8-link'],
+    ['chamfer', '#chamfer-step'], ['fillet', '#fillet-step'],
+  ].map(([name, selector]) => [name, !document.querySelector(selector).hidden])))()`,
+  modeControls: `(() => ({
+    surface: !document.querySelector('[data-mode=surface]').disabled,
+    blocks: !document.querySelector('[data-mode=blocks]').disabled,
+    clip: !document.querySelector('#clip-axis').disabled,
+  }))()`,
   mobileMetrics: `(() => ({
     viewportWidth: innerWidth,
     documentWidth: document.documentElement.scrollWidth,
@@ -97,6 +136,9 @@ function validateInjectedExpressions() {
     ['selectedClip', injectedExpressions.selectedClip],
     ['surfaceMode', injectedExpressions.surfaceMode],
     ['selectedId', injectedExpressions.selectedId],
+    ['selectedState', injectedExpressions.selectedState],
+    ['visibleVariantLinks', injectedExpressions.visibleVariantLinks],
+    ['modeControls', injectedExpressions.modeControls],
     ['mobileMetrics', injectedExpressions.mobileMetrics],
   ];
   for (const [name, expression] of expressions) {
@@ -124,6 +166,69 @@ function sendFile(res, filePath, bytes) {
     'Cache-Control': 'no-store',
   });
   res.end(bytes);
+}
+
+function inspectPng(bytes) {
+  const signature = Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]);
+  if (!bytes.subarray(0, 8).equals(signature)) throw new Error('Chrome returned a non-PNG screenshot');
+  let width = 0;
+  let height = 0;
+  let colorType = 0;
+  let bitDepth = 0;
+  let interlace = 0;
+  const imageData = [];
+  for (let offset = 8; offset < bytes.length;) {
+    const length = bytes.readUInt32BE(offset);
+    const type = bytes.toString('ascii', offset + 4, offset + 8);
+    const data = bytes.subarray(offset + 8, offset + 8 + length);
+    if (type === 'IHDR') {
+      width = data.readUInt32BE(0);
+      height = data.readUInt32BE(4);
+      bitDepth = data[8];
+      colorType = data[9];
+      interlace = data[12];
+    } else if (type === 'IDAT') imageData.push(data);
+    else if (type === 'IEND') break;
+    offset += length + 12;
+  }
+  const channels = colorType === 6 ? 4 : colorType === 2 ? 3 : 0;
+  if (!width || !height || bitDepth !== 8 || !channels || interlace !== 0) {
+    throw new Error(`Unsupported Chrome PNG format: ${width}x${height}, depth ${bitDepth}, type ${colorType}, interlace ${interlace}`);
+  }
+  const stride = width * channels;
+  const packed = inflateSync(Buffer.concat(imageData));
+  const pixels = Buffer.alloc(stride * height);
+  const paeth = (a, b, c) => {
+    const p = a + b - c;
+    const pa = Math.abs(p - a);
+    const pb = Math.abs(p - b);
+    const pc = Math.abs(p - c);
+    return pa <= pb && pa <= pc ? a : pb <= pc ? b : c;
+  };
+  for (let y = 0; y < height; y++) {
+    const filter = packed[y * (stride + 1)];
+    const source = y * (stride + 1) + 1;
+    const row = y * stride;
+    for (let x = 0; x < stride; x++) {
+      const raw = packed[source + x];
+      const left = x >= channels ? pixels[row + x - channels] : 0;
+      const up = y > 0 ? pixels[row + x - stride] : 0;
+      const upperLeft = y > 0 && x >= channels ? pixels[row + x - stride - channels] : 0;
+      const predictor = filter === 0 ? 0 : filter === 1 ? left : filter === 2 ? up
+        : filter === 3 ? Math.floor((left + up) / 2) : filter === 4 ? paeth(left, up, upperLeft) : null;
+      if (predictor === null) throw new Error(`Unsupported PNG row filter ${filter}`);
+      pixels[row + x] = (raw + predictor) & 255;
+    }
+  }
+  const background = [240, 235, 222];
+  let paintedPixels = 0;
+  // Exclude the axis legend, help text and canvas edges.
+  for (let index = Math.ceil(height * 0.15) * stride; index < Math.floor(height * 0.85) * stride; index += channels) {
+    if (Math.max(...background.map((value, channel) => Math.abs(pixels[index + channel] - value))) > 7) {
+      paintedPixels++;
+    }
+  }
+  return { width, height, paintedPixels, pixelCount: width * height };
 }
 
 const siteServer = createServer(async (req, res) => {
@@ -238,28 +343,40 @@ async function runBrowserChecks() {
     }
     return response.result.value;
   };
-  const waitForGallery = async () => {
-    for (let attempt = 0; attempt < 150; attempt++) {
+  const waitForGallery = async expectedId => {
+    for (let attempt = 0; attempt < 300; attempt++) {
       const ready = await evaluate(injectedExpressions.galleryReady);
-      if (ready) return;
+      const selected = expectedId
+        ? await evaluate(injectedExpressions.selectedId) === expectedId
+        : true;
+      if (ready && selected) {
+        await pause(100);
+        return;
+      }
       await pause(200);
     }
     const summary = await evaluate(injectedExpressions.bodySummary);
     throw new Error(`Gallery did not become ready: ${summary}`);
   };
-  const capture = async (name, region) => {
+  const capture = async (name, region, analyze = false) => {
     const result = await command('Page.captureScreenshot', {
       format: 'png',
       ...(region ? { clip: region } : {}),
     });
     const bytes = Buffer.from(result.data, 'base64');
     await writeFile(path.join(OUTPUT_DIR, `${name}.png`), bytes);
-    return createHash('sha256').update(bytes).digest('hex');
+    const hash = createHash('sha256').update(bytes).digest('hex');
+    return analyze ? { hash, ...inspectPng(bytes) } : hash;
   };
   const canvasRegion = async () => evaluate(injectedExpressions.canvasRegion);
   const selectExperiment = async id => {
     await evaluate(injectedExpressions.selectExperiment(id));
-    await waitForGallery();
+    await waitForGallery(id);
+    const state = await evaluate(injectedExpressions.selectedState);
+    if (state.id !== id || !state.stateHidden || state.canvas.width < 1 || state.canvas.height < 1) {
+      throw new Error(`Experiment ${id} did not recover to a rendered canvas: ${JSON.stringify(state)}`);
+    }
+    return state;
   };
 
   await command('Runtime.enable', {});
@@ -271,7 +388,11 @@ async function runBrowserChecks() {
   await waitForGallery();
 
   const resources = await evaluate(injectedExpressions.resources);
-  if (resources.some(experiment => experiment.status.some(status => status !== 200))) {
+  if (resources.length !== 17) {
+    throw new Error(`Expected 17 gallery entries after the edge-treatment expansion; found ${resources.length}`);
+  }
+  if (resources.some(experiment => experiment.assets.length === 0
+    || experiment.assets.some(asset => asset.status !== 200))) {
     throw new Error(`Gallery resource requests failed: ${JSON.stringify(resources)}`);
   }
 
@@ -310,14 +431,45 @@ async function runBrowserChecks() {
     throw new Error('Surface, blocks, and cut screenshots were not visually distinct');
   }
 
+  await evaluate("document.querySelector('#reset-view').click()");
   const experimentChecks = [];
+  const modelScreens = [];
   for (const experiment of resources) {
-    await selectExperiment(experiment.id);
-    const selectedId = await evaluate(injectedExpressions.selectedId);
-    if (selectedId !== experiment.id) throw new Error(`Failed to select ${experiment.id}`);
+    const state = await selectExperiment(experiment.id);
+    const visibleLinks = await evaluate(injectedExpressions.visibleVariantLinks);
+    const controls = await evaluate(injectedExpressions.modeControls);
+    const isBoundary = experiment.representation === 'boundary';
+    if (isBoundary && (controls.blocks || controls.clip)) {
+      throw new Error(`Boundary experiment ${experiment.id} exposes unsupported block/cut controls: ${JSON.stringify(controls)}`);
+    }
+    for (const [key, present] of [['chamferStep', experiment.chamferStep], ['filletStep', experiment.filletStep]]) {
+      if (present && !visibleLinks[key === 'chamferStep' ? 'chamfer' : 'fillet']) {
+        throw new Error(`Experiment ${experiment.id} hides its ${key} download link`);
+      }
+    }
+    for (const key of Object.keys(experiment.links)) {
+      if (visibleLinks[key] !== experiment.links[key]) {
+        throw new Error(`Experiment ${experiment.id} link ${key} visibility mismatch: expected ${experiment.links[key]}, got ${visibleLinks[key]}`);
+      }
+    }
+    if (state.title !== experiment.title) {
+      throw new Error(`Experiment ${experiment.id} selected, but title is ${JSON.stringify(state.title)}`);
+    }
+    const modelScreen = await capture(`model-${experiment.id.replace(/[^a-z0-9_-]/gi, '-')}`, await canvasRegion(), true);
+    if (modelScreen.paintedPixels < 250) {
+      throw new Error(`Experiment ${experiment.id} canvas appears blank: ${JSON.stringify(modelScreen)}`);
+    }
+    modelScreens.push({ id: experiment.id, representation: experiment.representation || 'trivariate', ...modelScreen, visibleLinks, controls, state });
     experimentChecks.push(experiment.id);
   }
+  if (new Set(modelScreens.map(item => item.hash)).size < 2) {
+    throw new Error('Canvas did not change across experiment selections; model rendering may be stale');
+  }
 
+  // Re-select the first entry after traversing the full catalog to verify recovery from
+  // repeated model replacement and to leave a known model active for the mobile pass.
+  await command('Page.navigate', { url: serverUrl + '?model=annulus-ten-fillet' });
+  await waitForGallery('annulus-ten-fillet');
   await selectExperiment(selectedExperiment.id);
   await command('Emulation.setDeviceMetricsOverride', {
     width: 390, height: 844, deviceScaleFactor: 1, mobile: true,
@@ -336,6 +488,7 @@ async function runBrowserChecks() {
     url: serverUrl,
     chrome: { product: version.product, userAgent: version.userAgent },
     experiments: experimentChecks,
+    modelScreens,
     selectedS3Experiment: s3Experiment?.id || null,
     cutPercent,
     screenshotHashes: { desktop: desktopHash, surface: surfaceHash, blocks: blocksHash, blocksCut: blocksCutHash, cut: cutHash, mobile: mobileHash },

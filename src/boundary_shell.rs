@@ -1,4 +1,4 @@
-//! Exact boundary incidence for a single closed shell of certified whole-face blocks.
+//! Exact boundary incidence and closed-shell components of certified whole-face blocks.
 use crate::{bracket::BracketBlock, bracket_json::decode_blocks, interchange::audit, json::Json};
 use std::collections::{BTreeMap, BTreeSet};
 
@@ -23,6 +23,8 @@ pub struct BoundaryShell {
     pub vertices: Vec<[i128; 4]>,
     pub edges: Vec<ShellEdge>,
     pub faces: Vec<ShellFace>,
+    /// Indices into faces, with the material exterior first and each void after it.
+    pub components: Vec<Vec<usize>>,
 }
 
 fn gcd(mut a: i128, mut b: i128) -> i128 {
@@ -77,7 +79,7 @@ fn extract(block: &BracketBlock, axis: usize, upper: bool) -> ([usize; 2], Vec<[
     (degrees, points)
 }
 
-fn reachable(start: usize, adjacent: &BTreeMap<usize, Vec<usize>>) -> usize {
+fn reachable(start: usize, adjacent: &BTreeMap<usize, Vec<usize>>) -> BTreeSet<usize> {
     let mut visited = BTreeSet::new();
     let mut pending = vec![start];
     while let Some(v) = pending.pop() {
@@ -85,14 +87,20 @@ fn reachable(start: usize, adjacent: &BTreeMap<usize, Vec<usize>>) -> usize {
             pending.extend(&adjacent[&v]);
         }
     }
-    visited.len()
+    visited
 }
 
 /// Load a canonically audited model and construct its exterior shell, proving
 /// exact trace identity before identifying two curves with common endpoints.
 pub fn boundary_shell(model: &Json) -> Result<BoundaryShell, &'static str> {
     let report = audit(model)?;
-    if !matches!(report.field("method")?.text()?, "certified_fixed_extrusion_partition" | "certified_ruled_similarity_sweep") {
+    let method = report.field("method")?.text()?;
+    if !matches!(
+        method,
+        "certified_fixed_extrusion_partition"
+            | "certified_ruled_similarity_sweep"
+            | "certified_coaxial_feature_program"
+    ) {
         return Err("unsupported_boundary_model_family");
     }
     let blocks: BTreeMap<_, _> = decode_blocks(model)?
@@ -201,12 +209,43 @@ pub fn boundary_shell(model: &Json) -> Result<BoundaryShell, &'static str> {
         adjacent.entry(*a).or_default().push(*b);
         adjacent.entry(*b).or_default().push(*a);
     }
-    if reachable(0, &adjacent) != faces.len() {
-        return Err("multiple_boundary_shells");
+    let expected_voids = if method == "certified_coaxial_feature_program" {
+        report.field("cavities")?.number::<usize>()?
+    } else {
+        0
+    };
+    let mut components = Vec::new();
+    let mut pending: BTreeSet<_> = (0..faces.len()).collect();
+    while let Some(&seed) = pending.first() {
+        let connected = reachable(seed, &adjacent);
+        for i in &connected {
+            pending.remove(i);
+        }
+        components.push(connected.into_iter().collect::<Vec<_>>());
+    }
+    if components.len() != expected_voids + 1 {
+        return Err("unexpected_boundary_shell_count");
+    }
+    if expected_voids > 0 {
+        // Every admitted coaxial feature stays strictly inside x=10. The
+        // untouched plate wall therefore belongs to exactly the outer shell.
+        let mut outer = components.iter().enumerate().filter(|(_, component)| {
+            component.iter().any(|&f| {
+                faces[f]
+                    .controls
+                    .iter()
+                    .all(|p| i128::from(p[0]) == 10 * i128::from(p[3]))
+            })
+        });
+        let index = outer.next().ok_or("coaxial_outer_shell_missing")?.0;
+        if outer.next().is_some() {
+            return Err("ambiguous_outer_shell");
+        }
+        components.swap(0, index);
     }
     for link in links.values() {
         if link.values().any(|v| v.len() != 2)
-            || reachable(*link.keys().next().unwrap(), link) != link.len()
+            || reachable(*link.keys().next().unwrap(), link).len() != link.len()
         {
             return Err("nonmanifold_boundary_vertex");
         }
@@ -215,5 +254,6 @@ pub fn boundary_shell(model: &Json) -> Result<BoundaryShell, &'static str> {
         vertices,
         edges,
         faces,
+        components,
     })
 }

@@ -1,4 +1,4 @@
-//! AP214 exchange of an already audited single rational B-rep boundary shell.
+//! AP214 exchange of a certified rational B-rep with optional interior voids.
 
 use crate::{
     boundary_shell::{boundary_shell, BoundaryShell},
@@ -173,12 +173,28 @@ fn write_shell(shell: BoundaryShell) -> Result<String, &'static str> {
         edge_refs.push(edge_curve);
     }
     let mut face_refs = Vec::new();
-    for face in &shell.faces {
+    let mut is_void = vec![false; shell.faces.len()];
+    for component in shell.components.iter().skip(1) {
+        for &face in component {
+            is_void[face] = true;
+        }
+    }
+    for (face_index, face) in shell.faces.iter().enumerate() {
+        // The oriented void wrapper reverses an independently outward-facing
+        // closed shell. Source loops are already outward from the material.
+        let reverse = is_void[face_index];
+        let same_sense = face.same_sense ^ reverse;
         if face.loop_edges.len() < 3 {
             return Err("invalid_boundary_loop");
         }
         let mut oriented = Vec::new();
-        for &(edge, forward) in &face.loop_edges {
+        for i in 0..face.loop_edges.len() {
+            let (edge, forward) = if reverse {
+                let (e, f) = face.loop_edges[face.loop_edges.len() - 1 - i];
+                (e, !f)
+            } else {
+                face.loop_edges[i]
+            };
             oriented.push(w.entity(format!(
                 "ORIENTED_EDGE('',*,*,#{},.{}.)",
                 edge_refs[edge],
@@ -195,26 +211,45 @@ fn write_shell(shell: BoundaryShell) -> Result<String, &'static str> {
         ));
         let bound = w.entity(format!(
             "FACE_BOUND('',#{loop_id},.{}.)",
-            if face.same_sense { "T" } else { "F" }
+            if same_sense { "T" } else { "F" }
         ));
         let surface = surface_entity(&mut w, face)?;
         let label = step_text(&format!("{}:{}:{}", face.feature, face.block, face.side));
         face_refs.push(w.entity(format!(
             "ADVANCED_FACE('{label}',(#{bound}),#{surface},.{}.)",
-            if face.same_sense { "T" } else { "F" }
+            if same_sense { "T" } else { "F" }
         )));
     }
-    let closed = w.entity(format!(
-        "CLOSED_SHELL('',({}))",
-        face_refs
+    let closed = shell
+        .components
+        .iter()
+        .map(|component| {
+            let members = component
+                .iter()
+                .map(|&i| format!("#{}", face_refs[i]))
+                .collect::<Vec<_>>()
+                .join(",");
+            w.entity(format!("CLOSED_SHELL('',({members}))"))
+        })
+        .collect::<Vec<_>>();
+    let outer = closed[0];
+    let solid = if closed.len() == 1 {
+        w.entity(format!(
+            "MANIFOLD_SOLID_BREP('SolidCraft boundary',#{outer})"
+        ))
+    } else {
+        let voids = closed[1..]
             .iter()
-            .map(|id| format!("#{id}"))
+            .map(|c| {
+                let id = w.entity(format!("ORIENTED_CLOSED_SHELL('',*,#{c},.F.)"));
+                format!("#{id}")
+            })
             .collect::<Vec<_>>()
-            .join(",")
-    ));
-    let solid = w.entity(format!(
-        "MANIFOLD_SOLID_BREP('SolidCraft boundary',#{closed})"
-    ));
+            .join(",");
+        w.entity(format!(
+            "BREP_WITH_VOIDS('SolidCraft boundary',#{outer},({voids}))"
+        ))
+    };
     let origin = cartesian(&mut w, [0.0; 3]);
     let z_axis = w.entity("DIRECTION('',(0.,0.,1.))".into());
     let x_axis = w.entity("DIRECTION('',(1.,0.,0.))".into());

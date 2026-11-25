@@ -86,17 +86,26 @@ def summarize(root,m):
         def obs(r):
             v=r["result"]
             stress=v.get("fillet_limits_mpa",{})
-            sig=list(stress.values()) if stress else [r["probe"]["von_mises_mpa"] if r["method"]=="tetra" else v["von_mises_mpa"]]
+            sig={}
+            if stress:
+                for key,value in stress.items():
+                    sig.setdefault(key.split("/")[0],[]).append(value)
+            else:
+                sig["physical_probe"]=[r["probe"]["von_mises_mpa"] if r["method"]=="tetra" else v["von_mises_mpa"]]
             return v["point_tip_y_mm"],sig
         def change(a,b):
             return abs(a/b-1)
+        def side_change(current,previous):
+            if current.keys()!=previous.keys():
+                raise ValueError("Fillet trace supports changed")
+            return max(change(a,b) for key in current for a in current[key] for b in previous[key])
         rt,rs=obs(ref)
         old,olds=obs(prevref)
         limits=m["qoi"]
         expected=34080-math.pi*(360+8*sum((a/16)**2 for a in case))
         reference_ok=(change(rt,old)<=limits["successive_tip_relative_change"] and
-                      change(rs[0],olds[0])<=limits["successive_fillet_relative_change"] and
-                      ref["result"]["reaction_relative_error"]<=limits["reaction_relative"])
+                      side_change(rs,olds)<=limits["successive_fillet_relative_change"] and
+                      (math.dist(ref["result"]["reaction_n"],[0.,1000.,0.])/1000.)<=limits["reaction_relative"])
         summary["reference_status"]="stable" if reference_ok else "indeterminate"
         for method,ladder in table.items():
             first=None
@@ -112,14 +121,14 @@ def summarize(root,m):
                 vol=v.get("volume_mm3",v.get("occ_volume_mm3"))
                 reaction=math.dist(force,[0.,1000.,0.])/1000.
                 p=previous.get(q)
-                stable=p is not None and change(t,p[0])<=limits["successive_tip_relative_change"] and max(change(x,y) for x,y in zip(s,p[1]))<=limits["successive_fillet_relative_change"]
+                stable=p is not None and change(t,p[0])<=limits["successive_tip_relative_change"] and side_change(s,p[1])<=limits["successive_fillet_relative_change"]
                 previous[q]=(t,s)
                 peer=ladder.get((h,6)) if q==8 else None
                 quad=None
                 if peer and peer["status"]=="completed":
                     pt,ps=obs(peer)
-                    quad=max([change(t,pt),*(change(x,y) for x,y in zip(s,ps))])
-                checks=dict(tip_relative=change(t,rt),stress_relative=max(change(x,rs[0]) for x in s),
+                    quad=max(change(t,pt),side_change(s,ps))
+                checks=dict(tip_relative=change(t,rt),stress_relative=max(change(x,rs["physical_probe"][0]) for side in s.values() for x in side),
                             volume_relative=change(vol,expected),reaction_relative=reaction,mesh_stable=stable,quadrature_relative=quad)
                 meet=(reference_ok and stable and checks["tip_relative"]<=limits["tip_relative_to_finest_tetra"]
                       and checks["stress_relative"]<=limits["fillet_von_mises_relative_to_finest_tetra"]
@@ -130,7 +139,7 @@ def summarize(root,m):
                     first=dict(resolution=h,q=q,level_wall_s=elapsed,search_wall_s=cumulative,
                                tree_peak_rss_kib=max(r["tree_peak_rss_kib"],r.get("postprocessing",{}).get("tree_peak_rss_kib",0)))
             summary["qualification"][method]=first
-    return dict(manifest=m,git_head=subprocess.check_output(["git","rev-parse","HEAD"],cwd=ROOT,text=True).strip(),cases=cases)
+    return dict(manifest=m,summary_revision=subprocess.check_output(["git","rev-parse","HEAD"],cwd=ROOT,text=True).strip(),cases=cases)
 
 
 def main():

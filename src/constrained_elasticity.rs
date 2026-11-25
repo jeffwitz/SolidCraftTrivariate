@@ -48,6 +48,7 @@ pub fn solve_constrained(
         tolerance,
         max_iterations,
         None,
+        None,
     )
 }
 
@@ -69,6 +70,34 @@ pub fn solve_constrained_from(
         tolerance,
         max_iterations,
         Some(initial_reduced),
+        None,
+    )
+}
+
+/// A fixed symmetric positive definite operator on the mounted reduced space.
+pub trait ReducedPreconditioner {
+    fn apply(&self, residual: &[f64]) -> Result<Vec<f64>, &'static str>;
+}
+
+/// Solve with a supplied reduced preconditioner in the same component-major
+/// ordering as the returned reduced values. Convergence uses the full measured
+/// force residual projected back through the exact affine constraints.
+pub fn solve_preconditioned(
+    stiffness: &Stiffness,
+    component_lifts: [&Lift; 3],
+    force_n: &[f64],
+    tolerance: f64,
+    max_iterations: usize,
+    preconditioner: &dyn ReducedPreconditioner,
+) -> Result<ConstrainedSolution, &'static str> {
+    solve_with_guess(
+        stiffness,
+        component_lifts,
+        force_n,
+        tolerance,
+        max_iterations,
+        None,
+        Some(preconditioner),
     )
 }
 
@@ -79,6 +108,7 @@ fn solve_with_guess(
     tolerance: f64,
     max_iterations: usize,
     guess: Option<&[f64]>,
+    preconditioner: Option<&dyn ReducedPreconditioner>,
 ) -> Result<ConstrainedSolution, &'static str> {
     if !tolerance.is_finite() || tolerance <= 0. || tolerance >= 1. {
         return Err("tolerance must be finite and in (0,1)");
@@ -151,30 +181,41 @@ fn solve_with_guess(
     let shifted = stiffness.equilibrium_residual(&full_offsets, force_n)?;
     let rhs = project_equilibrium(&component_maps, &shifted, reduced_size)?;
 
-    // Exact diagonal of the congruence, accumulated from sparse CSR entries.
-    let mut diagonal = vec![0.; reduced_size];
-    for i in 0..n {
-        for entry in stiffness.offsets[i]..stiffness.offsets[i + 1] {
-            let j = stiffness.columns[entry];
-            let block = stiffness.values[entry];
-            for c in 0..3 {
-                for d in 0..3 {
-                    let a = &component_maps[c][i];
-                    let b = &component_maps[d][j];
-                    for ta in a {
-                        for tb in b {
-                            if ta.index == tb.index {
-                                diagonal[ta.index] += ta.coefficient * block[c][d] * tb.coefficient;
+    let diagonal = if preconditioner.is_none() {
+        let mut diagonal = vec![0.; reduced_size];
+        for i in 0..n {
+            for entry in stiffness.offsets[i]..stiffness.offsets[i + 1] {
+                let j = stiffness.columns[entry];
+                let block = stiffness.values[entry];
+                for (c, maps) in component_maps.iter().enumerate() {
+                    for left in &maps[i] {
+                        for right in &maps[j] {
+                            if left.index == right.index {
+                                diagonal[left.index] +=
+                                    left.coefficient * block[c][c] * right.coefficient;
                             }
                         }
                     }
                 }
             }
         }
-    }
-    if diagonal.iter().any(|d| !d.is_finite() || *d <= 0.) {
-        return Err("reduced stiffness has nonpositive or nonfinite diagonal");
-    }
+        if diagonal.iter().any(|d| !d.is_finite() || *d <= 0.) {
+            return Err("reduced stiffness has nonpositive or nonfinite diagonal");
+        }
+        diagonal
+    } else {
+        Vec::new()
+    };
+    let precondition = |r: &[f64]| -> Result<Vec<f64>, &'static str> {
+        let z = match preconditioner {
+            Some(prec) => prec.apply(r)?,
+            None => r.iter().zip(&diagonal).map(|(x, d)| x / d).collect(),
+        };
+        if z.len() != r.len() || z.iter().any(|x| !x.is_finite()) {
+            return Err("invalid reduced preconditioner output");
+        }
+        Ok(z)
+    };
 
     if guess.is_some_and(|v| v.len() != reduced_size || v.iter().any(|x| !x.is_finite())) {
         return Err("invalid initial reduced vector");
@@ -204,7 +245,7 @@ fn solve_with_guess(
         if rhs_norm > 0. {
             relative_residual = norm(&residual) / rhs_norm;
         }
-        let mut z: Vec<f64> = residual.iter().zip(&diagonal).map(|(r, d)| r / d).collect();
+        let mut z: Vec<f64> = precondition(&residual)?;
         let mut direction = z.clone();
         let mut rz = dot(&residual, &z);
         if !rz.is_finite() || rz < 0. {
@@ -235,7 +276,7 @@ fn solve_with_guess(
                 if relative_residual <= tolerance {
                     break;
                 }
-                z = residual.iter().zip(&diagonal).map(|(r, d)| r / d).collect();
+                z = precondition(&residual)?;
                 direction.clone_from(&z);
                 rz = dot(&residual, &z);
                 if !rz.is_finite() || rz <= 0. {
@@ -243,7 +284,7 @@ fn solve_with_guess(
                 }
                 continue;
             }
-            z = residual.iter().zip(&diagonal).map(|(r, d)| r / d).collect();
+            z = precondition(&residual)?;
             let next_rz = dot(&residual, &z);
             if !next_rz.is_finite() || next_rz <= 0. {
                 return Err("invalid conjugate-gradient residual");

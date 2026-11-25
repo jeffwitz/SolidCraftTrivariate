@@ -1,0 +1,358 @@
+[
+  {
+    "id": "plate",
+    "admitted": true,
+    "recipe": {
+      "family": "coaxial_feature_program_v1",
+      "base_height_mm": 8,
+      "features": []
+    }
+  },
+  {
+    "id": "through",
+    "admitted": true,
+    "recipe": {
+      "family": "coaxial_feature_program_v1",
+      "base_height_mm": 8,
+      "features": [
+        {
+          "id": "hole",
+          "operation": "cut",
+          "radius_mm": 4,
+          "z_mm": [
+            0,
+            8
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "blind",
+    "admitted": true,
+    "recipe": {
+      "family": "coaxial_feature_program_v1",
+      "base_height_mm": 8,
+      "features": [
+        {
+          "id": "pocket",
+          "operation": "cut",
+          "radius_mm": 4,
+          "z_mm": [
+            4,
+            8
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "counterbore",
+    "admitted": true,
+    "recipe": {
+      "family": "coaxial_feature_program_v1",
+      "base_height_mm": 8,
+      "features": [
+        {
+          "id": "hole",
+          "operation": "cut",
+          "radius_mm": 2,
+          "z_mm": [
+            0,
+            8
+          ]
+        },
+        {
+          "id": "seat",
+          "operation": "cut",
+          "radius_mm": 5,
+          "z_mm": [
+            5,
+            8
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "pierced_boss",
+    "admitted": true,
+    "recipe": {
+      "family": "coaxial_feature_program_v1",
+      "base_height_mm": 8,
+      "features": [
+        {
+          "id": "boss",
+          "operation": "add",
+          "radius_mm": 6,
+          "z_mm": [
+            8,
+            12
+          ]
+        },
+        {
+          "id": "hole",
+          "operation": "cut",
+          "radius_mm": 2,
+          "z_mm": [
+            0,
+            12
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "cavity",
+    "admitted": true,
+    "recipe": {
+      "family": "coaxial_feature_program_v1",
+      "base_height_mm": 8,
+      "features": [
+        {
+          "id": "closed",
+          "operation": "cut",
+          "radius_mm": 3,
+          "z_mm": [
+            2,
+            6
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "floating_plug",
+    "admitted": false,
+    "recipe": {
+      "family": "coaxial_feature_program_v1",
+      "base_height_mm": 8,
+      "features": [
+        {
+          "id": "wide",
+          "operation": "cut",
+          "radius_mm": 5,
+          "z_mm": [
+            4,
+            8
+          ]
+        },
+        {
+          "id": "plug",
+          "operation": "add",
+          "radius_mm": 3,
+          "z_mm": [
+            6,
+            10
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "boss_then_bore",
+    "admitted": true,
+    "recipe": {
+      "family": "coaxial_feature_program_v1",
+      "base_height_mm": 8,
+      "features": [
+        {
+          "id": "boss",
+          "operation": "add",
+          "radius_mm": 6,
+          "z_mm": [
+            8,
+            12
+          ]
+        },
+        {
+          "id": "bore",
+          "operation": "cut",
+          "radius_mm": 4,
+          "z_mm": [
+            0,
+            12
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "bore_then_boss",
+    "admitted": true,
+    "recipe": {
+      "family": "coaxial_feature_program_v1",
+      "base_height_mm": 8,
+      "features": [
+        {
+          "id": "bore",
+          "operation": "cut",
+          "radius_mm": 4,
+          "z_mm": [
+            0,
+            12
+          ]
+        },
+        {
+          "id": "boss",
+          "operation": "add",
+          "radius_mm": 6,
+          "z_mm": [
+            8,
+            12
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "floating_boss",
+    "admitted": false,
+    "recipe": {
+      "family": "coaxial_feature_program_v1",
+      "base_height_mm": 8,
+      "features": [
+        {
+          "id": "boss",
+          "operation": "add",
+          "radius_mm": 2,
+          "z_mm": [
+            10,
+            12
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "circular_edge_contact",
+    "admitted": false,
+    "recipe": {
+      "family": "coaxial_feature_program_v1",
+      "base_height_mm": 8,
+      "features": [
+        {
+          "id": "pocket",
+          "operation": "cut",
+          "radius_mm": 5,
+          "z_mm": [
+            4,
+            8
+          ]
+        },
+        {
+          "id": "boss",
+          "operation": "add",
+          "radius_mm": 5,
+          "z_mm": [
+            8,
+            10
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "duplicate_id",
+    "admitted": false,
+    "recipe": {
+      "family": "coaxial_feature_program_v1",
+      "base_height_mm": 8,
+      "features": [
+        {
+          "id": "same",
+          "operation": "cut",
+          "radius_mm": 2,
+          "z_mm": [
+            0,
+            8
+          ]
+        },
+        {
+          "id": "same",
+          "operation": "add",
+          "radius_mm": 4,
+          "z_mm": [
+            8,
+            10
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "zero_radius",
+    "admitted": false,
+    "recipe": {
+      "family": "coaxial_feature_program_v1",
+      "base_height_mm": 8,
+      "features": [
+        {
+          "id": "empty",
+          "operation": "cut",
+          "radius_mm": 0,
+          "z_mm": [
+            0,
+            8
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "two_cavities",
+    "admitted": true,
+    "recipe": {
+      "family": "coaxial_feature_program_v1",
+      "base_height_mm": 12,
+      "features": [
+        {
+          "id": "lower",
+          "operation": "cut",
+          "radius_mm": 2,
+          "z_mm": [
+            1,
+            3
+          ]
+        },
+        {
+          "id": "upper",
+          "operation": "cut",
+          "radius_mm": 4,
+          "z_mm": [
+            6,
+            10
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "annular_cavity",
+    "admitted": true,
+    "recipe": {
+      "family": "coaxial_feature_program_v1",
+      "base_height_mm": 8,
+      "features": [
+        {
+          "id": "void",
+          "operation": "cut",
+          "radius_mm": 5,
+          "z_mm": [
+            2,
+            6
+          ]
+        },
+        {
+          "id": "core",
+          "operation": "add",
+          "radius_mm": 2,
+          "z_mm": [
+            2,
+            6
+          ]
+        }
+      ]
+    }
+  }
+]

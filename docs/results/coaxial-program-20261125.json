@@ -1,0 +1,1389 @@
+{
+  "occ": "7.8.1",
+  "freecad": [
+    "26",
+    "3",
+    "0"
+  ],
+  "cases": [
+    {
+      "id": "plate",
+      "expected_admission": true,
+      "build_diagnostic": {
+        "blocks": 1,
+        "cavities": 0,
+        "determinant_lower_bound_mm3": 3200,
+        "exterior_sides": 6,
+        "ideal_volume_mm3": 3200,
+        "method": "certified_coaxial_feature_program",
+        "radial_error_upper_bound_mm": 0,
+        "shared_faces": 0,
+        "status": "valid"
+      },
+      "ideal_volume_mm3": 3200.0,
+      "integrated_volume_mm3": 3200.0000000000005,
+      "relative_volume_error": 2.220446049250313e-16,
+      "reference_area_by_support": {
+        "z0:-1": 400.0,
+        "z8:1": 400.0,
+        "x-10": 160.0,
+        "x10": 160.0,
+        "y-10": 160.0,
+        "y10": 160.0
+      },
+      "native_area_by_support": {
+        "x-10": 160.00000000000014,
+        "x10": 160.00000000000014,
+        "y-10": 160.00000000000014,
+        "y10": 160.00000000000014,
+        "z0:-1": 399.9999999999993,
+        "z8:1": 399.9999999999993
+      },
+      "native_area_by_feature": {
+        "base": {
+          "x-10": 160.00000000000014,
+          "x10": 160.00000000000014,
+          "y-10": 160.00000000000014,
+          "y10": 160.00000000000014,
+          "z0:-1": 399.9999999999993,
+          "z8:1": 399.9999999999993
+        }
+      },
+      "provenance_mismatches": [],
+      "quadrature_by_order": {
+        "8": {
+          "volume_mm3": 3200.000000000002,
+          "support_areas_mm2": {
+            "x-10": 160.00000000000009,
+            "x10": 160.00000000000009,
+            "y-10": 160.00000000000006,
+            "y10": 160.00000000000006,
+            "z0:-1": 400.0000000000002,
+            "z8:1": 400.0000000000002
+          }
+        },
+        "16": {
+          "volume_mm3": 3199.999999999995,
+          "support_areas_mm2": {
+            "x-10": 160.0000000000001,
+            "x10": 160.0000000000001,
+            "y-10": 160.0000000000001,
+            "y10": 160.0000000000001,
+            "z0:-1": 400.0000000000001,
+            "z8:1": 400.0000000000001
+          }
+        },
+        "24": {
+          "volume_mm3": 3200.0000000000005,
+          "support_areas_mm2": {
+            "x-10": 160.00000000000014,
+            "x10": 160.00000000000014,
+            "y-10": 160.00000000000014,
+            "y10": 160.00000000000014,
+            "z0:-1": 399.9999999999993,
+            "z8:1": 399.9999999999993
+          }
+        }
+      },
+      "quadrature_stable": true,
+      "maximum_relative_area_error": 1.6653345369377348e-15,
+      "occ_reference_volume_mm3": 3199.999999999999,
+      "occ_reference_shells": 1,
+      "native_qualified": true,
+      "step_diagnostic": {
+        "format": "STEP AP214 boundary",
+        "status": "exported"
+      },
+      "step_qualified": true,
+      "step_default_volume_mm3": 3200.000000000001,
+      "step_default_relative_volume_error": 2.220446049250313e-16,
+      "step_adaptive_mass": [
+        {
+          "tolerance": 1e-09,
+          "volume_mm3": 3199.9999999999986,
+          "estimated_error": 6.394884621840904e-16
+        },
+        {
+          "tolerance": 1e-12,
+          "volume_mm3": 3199.9999999999986,
+          "estimated_error": 6.394884621840904e-16
+        }
+      ],
+      "step_solids": 1,
+      "step_shells": 1,
+      "step_valid": true,
+      "step_relative_volume_error": 4.440892098500626e-16,
+      "points_classified": 412,
+      "classification_mismatches": 0,
+      "qualified": true,
+      "wall_s": 1.6883137359982356
+    },
+    {
+      "id": "through",
+      "expected_admission": true,
+      "build_diagnostic": {
+        "blocks": 8,
+        "cavities": 0,
+        "determinant_lower_bound_mm3": 20.99999999999977,
+        "exterior_sides": 32,
+        "ideal_volume_mm3": 2797.8761403405065,
+        "method": "certified_coaxial_feature_program",
+        "radial_error_upper_bound_mm": 0,
+        "shared_faces": 8,
+        "status": "valid"
+      },
+      "ideal_volume_mm3": 2797.8761403405065,
+      "integrated_volume_mm3": 2797.8761403405156,
+      "relative_volume_error": 3.3306690738754696e-15,
+      "reference_area_by_support": {
+        "z0:-1": 349.7345175425633,
+        "z8:1": 349.7345175425633,
+        "r4:-1": 201.06192982974676,
+        "x-10": 160.0,
+        "x10": 160.0,
+        "y-10": 160.0,
+        "y10": 160.0
+      },
+      "native_area_by_support": {
+        "x10": 159.99999999999972,
+        "r4:-1": 201.06192982974756,
+        "z0:-1": 349.7345175425628,
+        "z8:1": 349.7345175425628,
+        "y10": 159.99999999999972,
+        "x-10": 159.99999999999972,
+        "y-10": 159.99999999999972
+      },
+      "native_area_by_feature": {
+        "base": {
+          "x10": 159.99999999999972,
+          "z0:-1": 349.7345175425628,
+          "z8:1": 349.7345175425628,
+          "y10": 159.99999999999972,
+          "x-10": 159.99999999999972,
+          "y-10": 159.99999999999972
+        },
+        "hole": {
+          "r4:-1": 201.06192982974756
+        }
+      },
+      "provenance_mismatches": [],
+      "quadrature_by_order": {
+        "8": {
+          "volume_mm3": 2797.8752284030543,
+          "support_areas_mm2": {
+            "x10": 160.0,
+            "r4:-1": 201.06192982974667,
+            "z0:-1": 349.73440355038224,
+            "z8:1": 349.73440355038224,
+            "y10": 160.0,
+            "x-10": 160.0,
+            "y-10": 160.0
+          }
+        },
+        "16": {
+          "volume_mm3": 2797.876140340467,
+          "support_areas_mm2": {
+            "x10": 160.0000000000005,
+            "r4:-1": 201.06192982974642,
+            "z0:-1": 349.7345175425581,
+            "z8:1": 349.7345175425581,
+            "y10": 160.0000000000005,
+            "x-10": 160.0000000000005,
+            "y-10": 160.0000000000005
+          }
+        },
+        "24": {
+          "volume_mm3": 2797.8761403405156,
+          "support_areas_mm2": {
+            "x10": 159.99999999999972,
+            "r4:-1": 201.06192982974756,
+            "z0:-1": 349.7345175425628,
+            "z8:1": 349.7345175425628,
+            "y10": 159.99999999999972,
+            "x-10": 159.99999999999972,
+            "y-10": 159.99999999999972
+          }
+        }
+      },
+      "quadrature_stable": true,
+      "maximum_relative_area_error": 3.9968028886505635e-15,
+      "occ_reference_volume_mm3": 2797.876140340506,
+      "occ_reference_shells": 1,
+      "native_qualified": true,
+      "step_diagnostic": {
+        "format": "STEP AP214 boundary",
+        "status": "exported"
+      },
+      "step_qualified": true,
+      "step_default_volume_mm3": 2797.875836361356,
+      "step_default_relative_volume_error": 1.086463928823278e-07,
+      "step_adaptive_mass": [
+        {
+          "tolerance": 1e-09,
+          "volume_mm3": 2797.8761403405047,
+          "estimated_error": 8.154754138625821e-10
+        },
+        {
+          "tolerance": 1e-12,
+          "volume_mm3": 2797.8761403405047,
+          "estimated_error": 7.183151698792865e-10
+        }
+      ],
+      "step_solids": 1,
+      "step_shells": 1,
+      "step_valid": true,
+      "step_relative_volume_error": 6.661338147750939e-16,
+      "points_classified": 424,
+      "classification_mismatches": 0,
+      "qualified": true,
+      "wall_s": 7.701032662007492
+    },
+    {
+      "id": "blind",
+      "expected_admission": true,
+      "build_diagnostic": {
+        "blocks": 28,
+        "cavities": 0,
+        "determinant_lower_bound_mm3": 0.343749999999997,
+        "exterior_sides": 64,
+        "ideal_volume_mm3": 2998.938070170253,
+        "method": "certified_coaxial_feature_program",
+        "radial_error_upper_bound_mm": 0,
+        "shared_faces": 52,
+        "status": "valid"
+      },
+      "ideal_volume_mm3": 2998.938070170253,
+      "integrated_volume_mm3": 2998.9380701702785,
+      "relative_volume_error": 8.43769498715119e-15,
+      "reference_area_by_support": {
+        "z0:-1": 400.0,
+        "z4:1": 50.26548245743669,
+        "x-10": 160.0,
+        "x10": 160.0,
+        "y-10": 160.0,
+        "y10": 160.0,
+        "z8:1": 349.7345175425633,
+        "r4:-1": 100.53096491487338
+      },
+      "native_area_by_support": {
+        "z0:-1": 400.00000000000244,
+        "z4:1": 50.265482457436626,
+        "x10": 159.99999999999847,
+        "y10": 159.99999999999852,
+        "x-10": 159.99999999999852,
+        "y-10": 159.99999999999852,
+        "r4:-1": 100.53096491487378,
+        "z8:1": 349.7345175425628
+      },
+      "native_area_by_feature": {
+        "base": {
+          "z0:-1": 400.00000000000244,
+          "x10": 159.99999999999847,
+          "y10": 159.99999999999852,
+          "x-10": 159.99999999999852,
+          "y-10": 159.99999999999852,
+          "z8:1": 349.7345175425628
+        },
+        "pocket": {
+          "z4:1": 50.265482457436626,
+          "r4:-1": 100.53096491487378
+        }
+      },
+      "provenance_mismatches": [],
+      "quadrature_by_order": {
+        "8": {
+          "volume_mm3": 2998.9371817081797,
+          "support_areas_mm2": {
+            "z0:-1": 399.9998918766581,
+            "z4:1": 50.26548832627597,
+            "x10": 159.9999999999999,
+            "y10": 159.9999999999999,
+            "x-10": 159.9999999999999,
+            "y-10": 159.9999999999999,
+            "r4:-1": 100.53096491487334,
+            "z8:1": 349.73440355038224
+          }
+        },
+        "16": {
+          "volume_mm3": 2998.9380701702303,
+          "support_areas_mm2": {
+            "z0:-1": 399.99999999999443,
+            "z4:1": 50.26548245743658,
+            "x10": 160.0000000000006,
+            "y10": 160.0000000000006,
+            "x-10": 160.0000000000006,
+            "y-10": 160.0000000000006,
+            "r4:-1": 100.53096491487321,
+            "z8:1": 349.7345175425581
+          }
+        },
+        "24": {
+          "volume_mm3": 2998.9380701702785,
+          "support_areas_mm2": {
+            "z0:-1": 400.00000000000244,
+            "z4:1": 50.265482457436626,
+            "x10": 159.99999999999847,
+            "y10": 159.99999999999852,
+            "x-10": 159.99999999999852,
+            "y-10": 159.99999999999852,
+            "r4:-1": 100.53096491487378,
+            "z8:1": 349.7345175425628
+          }
+        }
+      },
+      "quadrature_stable": true,
+      "maximum_relative_area_error": 9.547918011776346e-15,
+      "occ_reference_volume_mm3": 2998.9380701702535,
+      "occ_reference_shells": 1,
+      "native_qualified": true,
+      "step_diagnostic": {
+        "format": "STEP AP214 boundary",
+        "status": "exported"
+      },
+      "step_qualified": true,
+      "step_default_volume_mm3": 2998.9377740162236,
+      "step_default_relative_volume_error": 9.875296602679384e-08,
+      "step_adaptive_mass": [
+        {
+          "tolerance": 1e-09,
+          "volume_mm3": 2998.9380701702526,
+          "estimated_error": 8.005452494858551e-10
+        },
+        {
+          "tolerance": 1e-12,
+          "volume_mm3": 2998.9380701702526,
+          "estimated_error": 7.022059379672665e-10
+        }
+      ],
+      "step_solids": 1,
+      "step_shells": 1,
+      "step_valid": true,
+      "step_relative_volume_error": 1.1102230246251565e-16,
+      "points_classified": 432,
+      "classification_mismatches": 0,
+      "qualified": true,
+      "wall_s": 15.596285475010518
+    },
+    {
+      "id": "counterbore",
+      "expected_admission": true,
+      "build_diagnostic": {
+        "blocks": 24,
+        "cavities": 0,
+        "determinant_lower_bound_mm3": 5.859374999999951,
+        "exterior_sides": 64,
+        "ideal_volume_mm3": 2901.548697908969,
+        "method": "certified_coaxial_feature_program",
+        "radial_error_upper_bound_mm": 0,
+        "shared_faces": 40,
+        "status": "valid"
+      },
+      "ideal_volume_mm3": 2901.548697908969,
+      "integrated_volume_mm3": 2901.5486979090024,
+      "relative_volume_error": 1.1546319456101628e-14,
+      "reference_area_by_support": {
+        "z0:-1": 387.4336293856408,
+        "z5:1": 65.97344572538566,
+        "r2:-1": 62.83185307179586,
+        "x-10": 160.0,
+        "x10": 160.0,
+        "y-10": 160.0,
+        "y10": 160.0,
+        "z8:1": 321.46018366025515,
+        "r5:-1": 94.24777960769379
+      },
+      "native_area_by_support": {
+        "r2:-1": 62.831853071796075,
+        "z0:-1": 387.4336293856417,
+        "z5:1": 65.97344572538577,
+        "x10": 160.0000000000003,
+        "y10": 160.0000000000003,
+        "x-10": 160.0000000000003,
+        "y-10": 160.0000000000003,
+        "r5:-1": 94.24777960769413,
+        "z8:1": 321.46018366025584
+      },
+      "native_area_by_feature": {
+        "hole": {
+          "r2:-1": 62.831853071796075
+        },
+        "base": {
+          "z0:-1": 387.4336293856417,
+          "x10": 160.0000000000003,
+          "y10": 160.0000000000003,
+          "x-10": 160.0000000000003,
+          "y-10": 160.0000000000003,
+          "z8:1": 321.46018366025584
+        },
+        "seat": {
+          "z5:1": 65.97344572538577,
+          "r5:-1": 94.24777960769413
+        }
+      },
+      "provenance_mismatches": [],
+      "quadrature_by_order": {
+        "8": {
+          "volume_mm3": 2901.547981953556,
+          "support_areas_mm2": {
+            "r2:-1": 62.83185307179591,
+            "z0:-1": 387.4335398912133,
+            "z5:1": 65.97344572538573,
+            "x10": 159.99999999999963,
+            "y10": 159.99999999999963,
+            "x-10": 159.99999999999963,
+            "y-10": 159.99999999999963,
+            "r5:-1": 94.24777960769397,
+            "z8:1": 321.4600941658276
+          }
+        },
+        "16": {
+          "volume_mm3": 2901.5486979088855,
+          "support_areas_mm2": {
+            "r2:-1": 62.831853071795805,
+            "z0:-1": 387.43362938563695,
+            "z5:1": 65.97344572538555,
+            "x10": 160.00000000000014,
+            "y10": 160.00000000000014,
+            "x-10": 160.00000000000014,
+            "y-10": 160.00000000000014,
+            "r5:-1": 94.24777960769364,
+            "z8:1": 321.46018366025163
+          }
+        },
+        "24": {
+          "volume_mm3": 2901.5486979090024,
+          "support_areas_mm2": {
+            "r2:-1": 62.831853071796075,
+            "z0:-1": 387.4336293856417,
+            "z5:1": 65.97344572538577,
+            "x10": 160.0000000000003,
+            "y10": 160.0000000000003,
+            "x-10": 160.0000000000003,
+            "y-10": 160.0000000000003,
+            "r5:-1": 94.24777960769413,
+            "z8:1": 321.46018366025584
+          }
+        }
+      },
+      "quadrature_stable": true,
+      "maximum_relative_area_error": 3.552713678800501e-15,
+      "occ_reference_volume_mm3": 2901.5486979089687,
+      "occ_reference_shells": 1,
+      "native_qualified": true,
+      "step_diagnostic": {
+        "format": "STEP AP214 boundary",
+        "status": "exported"
+      },
+      "step_qualified": true,
+      "step_default_volume_mm3": 2901.548459257164,
+      "step_default_relative_volume_error": 8.224980185822517e-08,
+      "step_adaptive_mass": [
+        {
+          "tolerance": 1e-09,
+          "volume_mm3": 2901.5486979089683,
+          "estimated_error": 6.523238109400168e-10
+        },
+        {
+          "tolerance": 1e-12,
+          "volume_mm3": 2901.5486979089683,
+          "estimated_error": 5.679419839262201e-10
+        }
+      ],
+      "step_solids": 1,
+      "step_shells": 1,
+      "step_valid": true,
+      "step_relative_volume_error": 3.3306690738754696e-16,
+      "points_classified": 448,
+      "classification_mismatches": 0,
+      "qualified": true,
+      "wall_s": 15.314858230005484
+    },
+    {
+      "id": "pierced_boss",
+      "expected_admission": true,
+      "build_diagnostic": {
+        "blocks": 24,
+        "cavities": 0,
+        "determinant_lower_bound_mm3": 6.249999999999953,
+        "exterior_sides": 64,
+        "ideal_volume_mm3": 3501.59289474462,
+        "method": "certified_coaxial_feature_program",
+        "radial_error_upper_bound_mm": 0,
+        "shared_faces": 40,
+        "status": "valid"
+      },
+      "ideal_volume_mm3": 3501.59289474462,
+      "integrated_volume_mm3": 3501.592894744561,
+      "relative_volume_error": 1.687538997430238e-14,
+      "reference_area_by_support": {
+        "z0:-1": 387.4336293856408,
+        "r2:-1": 150.79644737231007,
+        "z8:1": 286.90266447076743,
+        "x-10": 160.0,
+        "x10": 160.0,
+        "y-10": 160.0,
+        "y10": 160.0,
+        "z12:1": 100.53096491487338,
+        "r6:1": 150.79644737231007
+      },
+      "native_area_by_support": {
+        "r2:-1": 150.7964473723112,
+        "z0:-1": 387.4336293856401,
+        "x10": 159.99999999999972,
+        "z8:1": 286.9026644707678,
+        "y10": 159.99999999999972,
+        "x-10": 159.99999999999972,
+        "y-10": 159.99999999999972,
+        "r6:1": 150.79644737231095,
+        "z12:1": 100.53096491487346
+      },
+      "native_area_by_feature": {
+        "hole": {
+          "r2:-1": 150.7964473723112
+        },
+        "base": {
+          "z0:-1": 387.4336293856401,
+          "x10": 159.99999999999972,
+          "z8:1": 286.9026644707678,
+          "y10": 159.99999999999972,
+          "x-10": 159.99999999999972,
+          "y-10": 159.99999999999972
+        },
+        "boss": {
+          "r6:1": 150.79644737231095,
+          "z12:1": 100.53096491487346
+        }
+      },
+      "provenance_mismatches": [],
+      "quadrature_by_order": {
+        "8": {
+          "volume_mm3": 3501.5923575672723,
+          "support_areas_mm2": {
+            "r2:-1": 150.7964473723102,
+            "z0:-1": 387.4335622384732,
+            "x10": 160.0,
+            "z8:1": 286.9025973235998,
+            "y10": 160.0,
+            "x-10": 160.0,
+            "y-10": 160.0,
+            "r6:1": 150.79644737230998,
+            "z12:1": 100.53096491487356
+          }
+        },
+        "16": {
+          "volume_mm3": 3501.5928947445777,
+          "support_areas_mm2": {
+            "r2:-1": 150.7964473723104,
+            "z0:-1": 387.43362938563774,
+            "x10": 160.0000000000005,
+            "z8:1": 286.90266447076505,
+            "y10": 160.0000000000005,
+            "x-10": 160.0000000000005,
+            "y-10": 160.0000000000005,
+            "r6:1": 150.79644737230961,
+            "z12:1": 100.53096491487366
+          }
+        },
+        "24": {
+          "volume_mm3": 3501.592894744561,
+          "support_areas_mm2": {
+            "r2:-1": 150.7964473723112,
+            "z0:-1": 387.4336293856401,
+            "x10": 159.99999999999972,
+            "z8:1": 286.9026644707678,
+            "y10": 159.99999999999972,
+            "x-10": 159.99999999999972,
+            "y-10": 159.99999999999972,
+            "r6:1": 150.79644737231095,
+            "z12:1": 100.53096491487346
+          }
+        }
+      },
+      "quadrature_stable": true,
+      "maximum_relative_area_error": 7.549516567451064e-15,
+      "occ_reference_volume_mm3": 3501.59289474462,
+      "occ_reference_shells": 1,
+      "native_qualified": true,
+      "step_diagnostic": {
+        "format": "STEP AP214 boundary",
+        "status": "exported"
+      },
+      "step_qualified": true,
+      "step_default_volume_mm3": 3501.5927156855073,
+      "step_default_relative_volume_error": 5.113647361110196e-08,
+      "step_adaptive_mass": [
+        {
+          "tolerance": 1e-09,
+          "volume_mm3": 3501.5928947446196,
+          "estimated_error": 4.6202910177151696e-10
+        },
+        {
+          "tolerance": 1e-12,
+          "volume_mm3": 3501.59289474462,
+          "estimated_error": 3.965692809296111e-10
+        }
+      ],
+      "step_solids": 1,
+      "step_shells": 1,
+      "step_valid": true,
+      "step_relative_volume_error": 1.1102230246251565e-16,
+      "points_classified": 448,
+      "classification_mismatches": 0,
+      "qualified": true,
+      "wall_s": 15.219947576988488
+    },
+    {
+      "id": "cavity",
+      "expected_admission": true,
+      "build_diagnostic": {
+        "blocks": 48,
+        "cavities": 1,
+        "determinant_lower_bound_mm3": 0.09667968749999918,
+        "exterior_sides": 96,
+        "ideal_volume_mm3": 3086.9026644707674,
+        "method": "certified_coaxial_feature_program",
+        "radial_error_upper_bound_mm": 0,
+        "shared_faces": 96,
+        "status": "valid"
+      },
+      "ideal_volume_mm3": 3086.9026644707674,
+      "integrated_volume_mm3": 3086.902664470743,
+      "relative_volume_error": 7.993605777301127e-15,
+      "reference_area_by_support": {
+        "z0:-1": 400.0,
+        "z2:1": 28.274333882308138,
+        "x-10": 160.0,
+        "x10": 160.0,
+        "y-10": 160.0,
+        "y10": 160.0,
+        "r3:-1": 75.39822368615503,
+        "z6:-1": 28.274333882308138,
+        "z8:1": 400.0
+      },
+      "native_area_by_support": {
+        "z0:-1": 399.9999999999957,
+        "z2:1": 28.27433388230824,
+        "x10": 159.99999999999994,
+        "y10": 159.99999999999991,
+        "x-10": 159.99999999999991,
+        "y-10": 159.99999999999991,
+        "r3:-1": 75.39822368615546,
+        "z6:-1": 28.27433388230824,
+        "z8:1": 399.9999999999957
+      },
+      "native_area_by_feature": {
+        "base": {
+          "z0:-1": 399.9999999999957,
+          "x10": 159.99999999999994,
+          "y10": 159.99999999999991,
+          "x-10": 159.99999999999991,
+          "y-10": 159.99999999999991,
+          "z8:1": 399.9999999999957
+        },
+        "closed": {
+          "z2:1": 28.27433388230824,
+          "r3:-1": 75.39822368615546,
+          "z6:-1": 28.27433388230824
+        }
+      },
+      "provenance_mismatches": [],
+      "quadrature_by_order": {
+        "8": {
+          "volume_mm3": 3086.901552552236,
+          "support_areas_mm2": {
+            "z0:-1": 399.9998626607964,
+            "z2:1": 28.274337183530513,
+            "x10": 160.0000000000002,
+            "y10": 160.0000000000002,
+            "x-10": 160.0000000000002,
+            "y-10": 160.0000000000002,
+            "r3:-1": 75.39822368615499,
+            "z6:-1": 28.274337183530513,
+            "z8:1": 399.9998626607964
+          }
+        },
+        "16": {
+          "volume_mm3": 3086.9026644707815,
+          "support_areas_mm2": {
+            "z0:-1": 399.9999999999943,
+            "z2:1": 28.27433388230853,
+            "x10": 160.00000000000023,
+            "y10": 160.00000000000023,
+            "x-10": 160.00000000000023,
+            "y-10": 160.00000000000023,
+            "r3:-1": 75.3982236861548,
+            "z6:-1": 28.27433388230853,
+            "z8:1": 399.9999999999943
+          }
+        },
+        "24": {
+          "volume_mm3": 3086.902664470743,
+          "support_areas_mm2": {
+            "z0:-1": 399.9999999999957,
+            "z2:1": 28.27433388230824,
+            "x10": 159.99999999999994,
+            "y10": 159.99999999999991,
+            "x-10": 159.99999999999991,
+            "y-10": 159.99999999999991,
+            "r3:-1": 75.39822368615546,
+            "z6:-1": 28.27433388230824,
+            "z8:1": 399.9999999999957
+          }
+        }
+      },
+      "quadrature_stable": true,
+      "maximum_relative_area_error": 1.0769163338864018e-14,
+      "occ_reference_volume_mm3": 3086.9026644707665,
+      "occ_reference_shells": 2,
+      "native_qualified": true,
+      "step_diagnostic": {
+        "format": "STEP AP214 boundary",
+        "status": "exported"
+      },
+      "step_qualified": true,
+      "step_default_volume_mm3": 3086.902293831252,
+      "step_default_relative_volume_error": 1.20068416764596e-07,
+      "step_adaptive_mass": [
+        {
+          "tolerance": 1e-09,
+          "volume_mm3": 3086.902664470767,
+          "estimated_error": 9.0554211172699e-10
+        },
+        {
+          "tolerance": 1e-12,
+          "volume_mm3": 3086.902664470767,
+          "estimated_error": 8.040172383377016e-10
+        }
+      ],
+      "step_solids": 1,
+      "step_shells": 2,
+      "step_valid": true,
+      "step_relative_volume_error": 1.1102230246251565e-16,
+      "points_classified": 440,
+      "classification_mismatches": 0,
+      "qualified": true,
+      "wall_s": 23.695708570012357
+    },
+    {
+      "id": "floating_plug",
+      "expected_admission": false,
+      "build_diagnostic": {
+        "reason": "coaxial_disconnected_material",
+        "status": "error"
+      },
+      "previous_unchanged": true,
+      "qualified": true,
+      "wall_s": 0.0027976040146313608
+    },
+    {
+      "id": "boss_then_bore",
+      "expected_admission": true,
+      "build_diagnostic": {
+        "blocks": 24,
+        "cavities": 0,
+        "determinant_lower_bound_mm3": 6.249999999999944,
+        "exterior_sides": 64,
+        "ideal_volume_mm3": 3049.20355262769,
+        "method": "certified_coaxial_feature_program",
+        "radial_error_upper_bound_mm": 0,
+        "shared_faces": 40,
+        "status": "valid"
+      },
+      "ideal_volume_mm3": 3049.20355262769,
+      "integrated_volume_mm3": 3049.2035526276345,
+      "relative_volume_error": 1.8207657603852567e-14,
+      "reference_area_by_support": {
+        "z0:-1": 349.7345175425633,
+        "r4:-1": 301.59289474462014,
+        "z8:1": 286.90266447076743,
+        "x-10": 160.0,
+        "x10": 160.0,
+        "y-10": 160.0,
+        "y10": 160.0,
+        "z12:1": 62.83185307179586,
+        "r6:1": 150.79644737231007
+      },
+      "native_area_by_support": {
+        "r4:-1": 301.5928947446224,
+        "z0:-1": 349.7345175425627,
+        "x10": 159.99999999999972,
+        "z8:1": 286.9026644707678,
+        "y10": 159.99999999999972,
+        "x-10": 159.99999999999972,
+        "y-10": 159.99999999999972,
+        "r6:1": 150.79644737231095,
+        "z12:1": 62.83185307179593
+      },
+      "native_area_by_feature": {
+        "bore": {
+          "r4:-1": 301.5928947446224
+        },
+        "base": {
+          "z0:-1": 349.7345175425627,
+          "x10": 159.99999999999972,
+          "z8:1": 286.9026644707678,
+          "y10": 159.99999999999972,
+          "x-10": 159.99999999999972,
+          "y-10": 159.99999999999972
+        },
+        "boss": {
+          "r6:1": 150.79644737231095,
+          "z12:1": 62.83185307179593
+        }
+      },
+      "provenance_mismatches": [],
+      "quadrature_by_order": {
+        "8": {
+          "volume_mm3": 3049.2030154503386,
+          "support_areas_mm2": {
+            "r4:-1": 301.5928947446204,
+            "z0:-1": 349.7344503953955,
+            "x10": 160.0,
+            "z8:1": 286.9025973235998,
+            "y10": 160.0,
+            "x-10": 160.0,
+            "y-10": 160.0,
+            "r6:1": 150.79644737230998,
+            "z12:1": 62.83185307179598
+          }
+        },
+        "16": {
+          "volume_mm3": 3049.2035526276773,
+          "support_areas_mm2": {
+            "r4:-1": 301.5928947446208,
+            "z0:-1": 349.7345175425596,
+            "x10": 160.0000000000005,
+            "z8:1": 286.90266447076505,
+            "y10": 160.0000000000005,
+            "x-10": 160.0000000000005,
+            "y-10": 160.0000000000005,
+            "r6:1": 150.79644737230961,
+            "z12:1": 62.831853071795784
+          }
+        },
+        "24": {
+          "volume_mm3": 3049.2035526276345,
+          "support_areas_mm2": {
+            "r4:-1": 301.5928947446224,
+            "z0:-1": 349.7345175425627,
+            "x10": 159.99999999999972,
+            "z8:1": 286.9026644707678,
+            "y10": 159.99999999999972,
+            "x-10": 159.99999999999972,
+            "y-10": 159.99999999999972,
+            "r6:1": 150.79644737231095,
+            "z12:1": 62.83185307179593
+          }
+        }
+      },
+      "quadrature_stable": true,
+      "maximum_relative_area_error": 7.549516567451064e-15,
+      "occ_reference_volume_mm3": 3049.2035526276895,
+      "occ_reference_shells": 1,
+      "native_qualified": true,
+      "step_diagnostic": {
+        "format": "STEP AP214 boundary",
+        "status": "exported"
+      },
+      "step_qualified": true,
+      "step_default_volume_mm3": 3049.2033735685786,
+      "step_default_relative_volume_error": 5.872323982636374e-08,
+      "step_adaptive_mass": [
+        {
+          "tolerance": 1e-09,
+          "volume_mm3": 3049.2035526276914,
+          "estimated_error": 5.30669566604364e-10
+        },
+        {
+          "tolerance": 1e-12,
+          "volume_mm3": 3049.203552627692,
+          "estimated_error": 4.554056020741676e-10
+        }
+      ],
+      "step_solids": 1,
+      "step_shells": 1,
+      "step_valid": true,
+      "step_relative_volume_error": 6.661338147750939e-16,
+      "points_classified": 448,
+      "classification_mismatches": 0,
+      "qualified": true,
+      "wall_s": 15.306874325033277
+    },
+    {
+      "id": "bore_then_boss",
+      "expected_admission": true,
+      "build_diagnostic": {
+        "blocks": 36,
+        "cavities": 0,
+        "determinant_lower_bound_mm3": 0.343749999999997,
+        "exterior_sides": 80,
+        "ideal_volume_mm3": 3250.2654824574365,
+        "method": "certified_coaxial_feature_program",
+        "radial_error_upper_bound_mm": 0,
+        "shared_faces": 68,
+        "status": "valid"
+      },
+      "ideal_volume_mm3": 3250.2654824574365,
+      "integrated_volume_mm3": 3250.265482457417,
+      "relative_volume_error": 5.995204332975845e-15,
+      "reference_area_by_support": {
+        "z0:-1": 349.7345175425633,
+        "r4:-1": 201.06192982974676,
+        "z8:1": 286.90266447076743,
+        "x-10": 160.0,
+        "x10": 160.0,
+        "y-10": 160.0,
+        "y10": 160.0,
+        "z8:-1": 50.26548245743669,
+        "z12:1": 113.09733552923255,
+        "r6:1": 150.79644737231007
+      },
+      "native_area_by_support": {
+        "r4:-1": 201.06192982974756,
+        "z0:-1": 349.7345175425627,
+        "x10": 159.99999999999972,
+        "z8:1": 286.9026644707678,
+        "y10": 159.99999999999972,
+        "x-10": 159.99999999999972,
+        "y-10": 159.99999999999972,
+        "z8:-1": 50.265482457436626,
+        "z12:1": 113.09733552923255,
+        "r6:1": 150.79644737231095
+      },
+      "native_area_by_feature": {
+        "bore": {
+          "r4:-1": 201.06192982974756
+        },
+        "base": {
+          "z0:-1": 349.7345175425627,
+          "x10": 159.99999999999972,
+          "z8:1": 286.9026644707678,
+          "y10": 159.99999999999972,
+          "x-10": 159.99999999999972,
+          "y-10": 159.99999999999972
+        },
+        "boss": {
+          "z8:-1": 50.265482457436626,
+          "z12:1": 113.09733552923255,
+          "r6:1": 150.79644737231095
+        }
+      },
+      "provenance_mismatches": [],
+      "quadrature_by_order": {
+        "8": {
+          "volume_mm3": 3250.26496875546,
+          "support_areas_mm2": {
+            "r4:-1": 201.06192982974667,
+            "z0:-1": 349.7344503953955,
+            "x10": 160.0,
+            "z8:1": 286.9025973235998,
+            "y10": 160.0,
+            "x-10": 160.0,
+            "y-10": 160.0,
+            "z8:-1": 50.26548832627597,
+            "z12:1": 113.0973413980723,
+            "r6:1": 150.79644737230998
+          }
+        },
+        "16": {
+          "volume_mm3": 3250.2654824575325,
+          "support_areas_mm2": {
+            "r4:-1": 201.06192982974642,
+            "z0:-1": 349.7345175425596,
+            "x10": 160.0000000000005,
+            "z8:1": 286.90266447076505,
+            "y10": 160.0000000000005,
+            "x-10": 160.0000000000005,
+            "y-10": 160.0000000000005,
+            "z8:-1": 50.26548245743658,
+            "z12:1": 113.09733552923312,
+            "r6:1": 150.79644737230961
+          }
+        },
+        "24": {
+          "volume_mm3": 3250.265482457417,
+          "support_areas_mm2": {
+            "r4:-1": 201.06192982974756,
+            "z0:-1": 349.7345175425627,
+            "x10": 159.99999999999972,
+            "z8:1": 286.9026644707678,
+            "y10": 159.99999999999972,
+            "x-10": 159.99999999999972,
+            "y-10": 159.99999999999972,
+            "z8:-1": 50.265482457436626,
+            "z12:1": 113.09733552923255,
+            "r6:1": 150.79644737231095
+          }
+        }
+      },
+      "quadrature_stable": true,
+      "maximum_relative_area_error": 5.773159728050814e-15,
+      "occ_reference_volume_mm3": 3250.265482457436,
+      "occ_reference_shells": 1,
+      "native_qualified": true,
+      "step_diagnostic": {
+        "format": "STEP AP214 boundary",
+        "status": "exported"
+      },
+      "step_qualified": true,
+      "step_default_volume_mm3": 3250.2653112234416,
+      "step_default_relative_volume_error": 5.2683079565518653e-08,
+      "step_adaptive_mass": [
+        {
+          "tolerance": 1e-09,
+          "volume_mm3": 3250.2654824574347,
+          "estimated_error": 5.23683706894496e-10
+        },
+        {
+          "tolerance": 1e-12,
+          "volume_mm3": 3250.265482457435,
+          "estimated_error": 4.472005394072932e-10
+        }
+      ],
+      "step_solids": 1,
+      "step_shells": 1,
+      "step_valid": true,
+      "step_relative_volume_error": 5.551115123125783e-16,
+      "points_classified": 448,
+      "classification_mismatches": 0,
+      "qualified": true,
+      "wall_s": 19.635469318018295
+    },
+    {
+      "id": "floating_boss",
+      "expected_admission": false,
+      "build_diagnostic": {
+        "reason": "coaxial_disconnected_material",
+        "status": "error"
+      },
+      "previous_unchanged": true,
+      "qualified": true,
+      "wall_s": 0.002777479006908834
+    },
+    {
+      "id": "circular_edge_contact",
+      "expected_admission": false,
+      "build_diagnostic": {
+        "reason": "coaxial_nonmanifold_edge_contact",
+        "status": "error"
+      },
+      "previous_unchanged": true,
+      "qualified": true,
+      "wall_s": 0.002390531008131802
+    },
+    {
+      "id": "duplicate_id",
+      "expected_admission": false,
+      "build_diagnostic": {
+        "reason": "coaxial_feature_id",
+        "status": "error"
+      },
+      "previous_unchanged": true,
+      "qualified": true,
+      "wall_s": 0.0024230940034613013
+    },
+    {
+      "id": "zero_radius",
+      "expected_admission": false,
+      "build_diagnostic": {
+        "reason": "coaxial_feature_range",
+        "status": "error"
+      },
+      "previous_unchanged": true,
+      "qualified": true,
+      "wall_s": 0.002303707995451987
+    },
+    {
+      "id": "two_cavities",
+      "expected_admission": true,
+      "build_diagnostic": {
+        "blocks": 108,
+        "cavities": 2,
+        "determinant_lower_bound_mm3": 0.021484374999999813,
+        "exterior_sides": 176,
+        "ideal_volume_mm3": 4573.805328941535,
+        "method": "certified_coaxial_feature_program",
+        "radial_error_upper_bound_mm": 0,
+        "shared_faces": 236,
+        "status": "valid"
+      },
+      "ideal_volume_mm3": 4573.805328941535,
+      "integrated_volume_mm3": 4573.805328941453,
+      "relative_volume_error": 1.787459069646502e-14,
+      "reference_area_by_support": {
+        "z0:-1": 400.0,
+        "z1:1": 12.566370614359172,
+        "x-10": 240.0,
+        "x10": 240.0,
+        "y-10": 240.0,
+        "y10": 240.0,
+        "r2:-1": 25.132741228718345,
+        "z3:-1": 12.566370614359172,
+        "z6:1": 50.26548245743669,
+        "r4:-1": 100.53096491487338,
+        "z10:-1": 50.26548245743669,
+        "z12:1": 400.0
+      },
+      "native_area_by_support": {
+        "z0:-1": 400.0000000000005,
+        "z1:1": 12.566370614359156,
+        "x10": 239.99999999999636,
+        "y10": 239.99999999999645,
+        "x-10": 239.99999999999645,
+        "y-10": 239.99999999999645,
+        "z10:-1": 50.265482457436676,
+        "z12:1": 400.0000000000005,
+        "r2:-1": 25.132741228718448,
+        "z3:-1": 12.566370614359156,
+        "z6:1": 50.265482457436676,
+        "r4:-1": 100.53096491487378
+      },
+      "native_area_by_feature": {
+        "base": {
+          "z0:-1": 400.0000000000005,
+          "x10": 239.99999999999636,
+          "y10": 239.99999999999645,
+          "x-10": 239.99999999999645,
+          "y-10": 239.99999999999645,
+          "z12:1": 400.0000000000005
+        },
+        "lower": {
+          "z1:1": 12.566370614359156,
+          "r2:-1": 25.132741228718448,
+          "z3:-1": 12.566370614359156
+        },
+        "upper": {
+          "z10:-1": 50.265482457436676,
+          "z6:1": 50.265482457436676,
+          "r4:-1": 100.53096491487378
+        }
+      },
+      "provenance_mismatches": [],
+      "quadrature_by_order": {
+        "8": {
+          "volume_mm3": 4573.803969838634,
+          "support_areas_mm2": {
+            "z0:-1": 399.99988747503033,
+            "z1:1": 12.566372081568993,
+            "x10": 239.9999999999995,
+            "y10": 239.9999999999995,
+            "x-10": 239.9999999999995,
+            "y-10": 239.9999999999995,
+            "z10:-1": 50.26548392464712,
+            "z12:1": 399.99988747503033,
+            "r2:-1": 25.132741228718334,
+            "z3:-1": 12.566372081568993,
+            "z6:1": 50.26548392464712,
+            "r4:-1": 100.53096491487337
+          }
+        },
+        "16": {
+          "volume_mm3": 4573.8053289415375,
+          "support_areas_mm2": {
+            "z0:-1": 399.9999999999996,
+            "z1:1": 12.566370614359146,
+            "x10": 240.00000000000028,
+            "y10": 240.00000000000028,
+            "x-10": 240.00000000000028,
+            "y-10": 240.00000000000028,
+            "z10:-1": 50.265482457436306,
+            "z12:1": 399.9999999999996,
+            "r2:-1": 25.132741228718302,
+            "z3:-1": 12.566370614359146,
+            "z6:1": 50.265482457436306,
+            "r4:-1": 100.53096491487322
+          }
+        },
+        "24": {
+          "volume_mm3": 4573.805328941453,
+          "support_areas_mm2": {
+            "z0:-1": 400.0000000000005,
+            "z1:1": 12.566370614359156,
+            "x10": 239.99999999999636,
+            "y10": 239.99999999999645,
+            "x-10": 239.99999999999645,
+            "y-10": 239.99999999999645,
+            "z10:-1": 50.265482457436676,
+            "z12:1": 400.0000000000005,
+            "r2:-1": 25.132741228718448,
+            "z3:-1": 12.566370614359156,
+            "z6:1": 50.265482457436676,
+            "r4:-1": 100.53096491487378
+          }
+        }
+      },
+      "quadrature_stable": true,
+      "maximum_relative_area_error": 1.5210055437364645e-14,
+      "occ_reference_volume_mm3": 4573.805328941535,
+      "occ_reference_shells": 3,
+      "native_qualified": true,
+      "step_diagnostic": {
+        "format": "STEP AP214 boundary",
+        "status": "exported"
+      },
+      "step_qualified": true,
+      "step_default_volume_mm3": 4573.804875907232,
+      "step_default_relative_volume_error": 9.904975628582946e-08,
+      "step_adaptive_mass": [
+        {
+          "tolerance": 1e-09,
+          "volume_mm3": 4573.805328941531,
+          "estimated_error": 7.822102654855619e-10
+        },
+        {
+          "tolerance": 1e-12,
+          "volume_mm3": 4573.805328941531,
+          "estimated_error": 6.939069951755834e-10
+        }
+      ],
+      "step_solids": 1,
+      "step_shells": 3,
+      "step_valid": true,
+      "step_relative_volume_error": 7.771561172376096e-16,
+      "points_classified": 484,
+      "classification_mismatches": 0,
+      "qualified": true,
+      "wall_s": 46.313965032983106
+    },
+    {
+      "id": "annular_cavity",
+      "expected_admission": true,
+      "build_diagnostic": {
+        "blocks": 76,
+        "cavities": 1,
+        "determinant_lower_bound_mm3": 0.042968749999999625,
+        "exterior_sides": 112,
+        "ideal_volume_mm3": 2936.1062170984574,
+        "method": "certified_coaxial_feature_program",
+        "radial_error_upper_bound_mm": 0,
+        "shared_faces": 172,
+        "status": "valid"
+      },
+      "ideal_volume_mm3": 2936.106217098457,
+      "integrated_volume_mm3": 2936.106217098414,
+      "relative_volume_error": 1.454392162258955e-14,
+      "reference_area_by_support": {
+        "z0:-1": 400.0,
+        "z2:1": 65.97344572538566,
+        "x-10": 160.0,
+        "x10": 160.0,
+        "y-10": 160.0,
+        "y10": 160.0,
+        "r2:1": 50.26548245743669,
+        "r5:-1": 125.66370614359172,
+        "z8:1": 400.0,
+        "z6:-1": 65.97344572538566
+      },
+      "native_area_by_support": {
+        "z0:-1": 400.00000000000153,
+        "z2:1": 65.97344572538577,
+        "x10": 159.99999999999994,
+        "y10": 159.99999999999991,
+        "x-10": 159.99999999999991,
+        "y-10": 159.99999999999991,
+        "r2:1": 50.265482457436896,
+        "r5:-1": 125.66370614359215,
+        "z8:1": 400.00000000000153,
+        "z6:-1": 65.97344572538577
+      },
+      "native_area_by_feature": {
+        "base": {
+          "z0:-1": 400.00000000000153,
+          "x10": 159.99999999999994,
+          "y10": 159.99999999999991,
+          "x-10": 159.99999999999991,
+          "y-10": 159.99999999999991,
+          "z8:1": 400.00000000000153
+        },
+        "void": {
+          "z2:1": 65.97344572538577,
+          "r5:-1": 125.66370614359215,
+          "z6:-1": 65.97344572538577
+        },
+        "core": {
+          "r2:1": 50.265482457436896
+        }
+      },
+      "provenance_mismatches": [],
+      "quadrature_by_order": {
+        "8": {
+          "volume_mm3": 2936.1055128807056,
+          "support_areas_mm2": {
+            "z0:-1": 399.99991197278405,
+            "z2:1": 65.97344572538573,
+            "x10": 160.0000000000002,
+            "y10": 160.0000000000002,
+            "x-10": 160.0000000000002,
+            "y-10": 160.0000000000002,
+            "r2:1": 50.26548245743667,
+            "r5:-1": 125.66370614359182,
+            "z8:1": 399.99991197278405,
+            "z6:-1": 65.97344572538573
+          }
+        },
+        "16": {
+          "volume_mm3": 2936.1062170985433,
+          "support_areas_mm2": {
+            "z0:-1": 400.0000000000013,
+            "z2:1": 65.97344572538555,
+            "x10": 160.00000000000023,
+            "y10": 160.00000000000023,
+            "x-10": 160.00000000000023,
+            "y-10": 160.00000000000023,
+            "r2:1": 50.265482457436605,
+            "r5:-1": 125.66370614359161,
+            "z8:1": 400.0000000000013,
+            "z6:-1": 65.97344572538555
+          }
+        },
+        "24": {
+          "volume_mm3": 2936.106217098414,
+          "support_areas_mm2": {
+            "z0:-1": 400.00000000000153,
+            "z2:1": 65.97344572538577,
+            "x10": 159.99999999999994,
+            "y10": 159.99999999999991,
+            "x-10": 159.99999999999991,
+            "y-10": 159.99999999999991,
+            "r2:1": 50.265482457436896,
+            "r5:-1": 125.66370614359215,
+            "z8:1": 400.00000000000153,
+            "z6:-1": 65.97344572538577
+          }
+        }
+      },
+      "quadrature_stable": true,
+      "maximum_relative_area_error": 3.9968028886505635e-15,
+      "occ_reference_volume_mm3": 2936.1062170984574,
+      "occ_reference_shells": 2,
+      "native_qualified": true,
+      "step_diagnostic": {
+        "format": "STEP AP214 boundary",
+        "status": "exported"
+      },
+      "step_qualified": true,
+      "step_default_volume_mm3": 2936.1059823592077,
+      "step_default_relative_volume_error": 7.994916795261986e-08,
+      "step_adaptive_mass": [
+        {
+          "tolerance": 1e-09,
+          "volume_mm3": 2936.106217098454,
+          "estimated_error": 6.534797932143957e-10
+        },
+        {
+          "tolerance": 1e-12,
+          "volume_mm3": 2936.106217098454,
+          "estimated_error": 5.666111033390507e-10
+        }
+      ],
+      "step_solids": 1,
+      "step_shells": 2,
+      "step_valid": true,
+      "step_relative_volume_error": 8.881784197001252e-16,
+      "points_classified": 460,
+      "classification_mismatches": 0,
+      "qualified": true,
+      "wall_s": 29.262507367006037
+    }
+  ]
+}

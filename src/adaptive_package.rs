@@ -1,6 +1,7 @@
 //! Deterministic X2 analysis-package export for dyadically refined brackets.
 
 use crate::{
+    adaptive_complex,
     adaptive_partition::{
         AdaptivePartition, ExteriorPatch, FacePatch, FaceRect, LeafKey, LeafSide,
     },
@@ -324,6 +325,7 @@ fn adaptive_mesh_json(
     tags: &BTreeMap<BlockSide, String>,
     plan: &RefinementPlan,
 ) -> Result<(Json, Vec<Json>), &'static str> {
+    let oriented_complex = adaptive_complex::build_oriented_complex(adaptive, partition)?;
     let report = partition.snapshot()?;
     let denom = partition.grid_denominator();
     let leaves = report
@@ -398,6 +400,7 @@ fn adaptive_mesh_json(
         ("leaves", Json::Array(leaves)),
         ("interfaces", Json::Array(interfaces)),
         ("exterior_patches", Json::Array(exterior)),
+        ("oriented_complex", oriented_complex.to_json()),
         ("exact_lift", lift_json(&adaptive.lift)),
         (
             "geometry_relation",

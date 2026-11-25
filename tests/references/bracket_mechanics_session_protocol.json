@@ -1,0 +1,31 @@
+{
+  "protocol": "bracket_mechanics_session_cost_v1",
+  "base_revision": "4cb161137e94a78467ca1b807a74d32c09d765f2",
+  "implementation": "src/bracket_mechanics_session.rs",
+  "oracle_independence": "Rebuild every candidate geometry and adaptive space, audit it independently, assemble all Q2 elements from scratch, and solve with a zero reduced initial vector. Do not consume the session cache or its published report as expected results.",
+  "sequence_sixteenths_mm": [[50, 74], [51, 74], [81, 74], [50, 74], [50, 73]],
+  "transaction_expectations": ["accept", "accept", "reject_without_state_or_cache_change", "accept", "accept"],
+  "levels": [0, 1, 2],
+  "level_3_policy": {
+    "cells": 18432,
+    "bytes_per_entry_upper_bound": 131072,
+    "total_bytes_upper_bound": 2415919104,
+    "cache_cap_bytes": 402653184,
+    "preflight_before_local_matrix_allocation": true,
+    "run_only_if_preflight_fits_and_projected_run_within_seconds": 1800,
+    "memory_budget_bytes": 6442450944
+  },
+  "material": {"young_mpa": 210000.0, "poisson": 0.3},
+  "quadrature_order": 8,
+  "load": {"feature": "x60", "resultant_n": [0.0, -1000.0, 0.0]},
+  "dirichlet_feature": "y50",
+  "thresholds": {
+    "stiffness_action_relative": 1e-11,
+    "warm_cold_displacement_relative": 1e-8,
+    "warm_cold_energy_relative": 1e-8,
+    "true_relative_residual": 1e-10
+  },
+  "cache_identity": ["stable_block_id", "exact_homogeneous_controls", "young_bits", "poisson_bits", "quadrature_order"],
+  "merge_rule": "For each local CSR row/column, map both scalar indices through the candidate block DOF map before accumulation; rebuild global numbering for each candidate.",
+  "report": "docs/results/bracket-edit-cost-20261125.json"
+}

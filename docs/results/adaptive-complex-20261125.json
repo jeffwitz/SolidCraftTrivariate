@@ -1,0 +1,415 @@
+{
+  "schema": "adaptive_oriented_complex_qualification_v1",
+  "revision": "3d40313e3c376bb7ff2ecb3187b9959c16ea17b7",
+  "commands": [
+    "rtk cargo build --release --locked --offline",
+    "rtk cargo test --release --test adaptive_complex optionally_write_d4_complex_for_independent_oracle",
+    "rtk python3 tests/references/run_adaptive_complex.py"
+  ],
+  "oracle": "tests/references/adaptive_homology.py using exact GF(2) rank and j1_geometry chart evaluation",
+  "environment": {
+    "python": "3.12.3",
+    "numpy": "2.4.4",
+    "scipy": "1.17.1",
+    "build": "Cargo release, locked offline"
+  },
+  "provenance_parameters": [
+    0.25,
+    0.5,
+    0.75
+  ],
+  "cases": [
+    {
+      "case": "x64-depth0.package",
+      "source": "adaptive_package",
+      "material": {
+        "cell_counts": [
+          104,
+          230,
+          161,
+          36
+        ],
+        "boundary_map_ranks_mod_2": [
+          103,
+          125,
+          36
+        ],
+        "betti_mod_2": [
+          1,
+          2,
+          0,
+          0
+        ],
+        "euler": -1
+      },
+      "boundary": {
+        "cell_counts": [
+          104,
+          212,
+          106
+        ],
+        "boundary_map_ranks_mod_2": [
+          103,
+          105
+        ],
+        "betti_mod_2": [
+          1,
+          4,
+          1
+        ],
+        "euler": -2
+      },
+      "maximum_edges_per_face": 4,
+      "maximum_faces_per_cell": 6,
+      "elapsed_s": 0.020561484969221056,
+      "chart_agreement": {
+        "max_chart_vertex_difference_mm": 0.0,
+        "max_chart_edge_difference_mm": 0.0
+      }
+    },
+    {
+      "case": "x64-depth1.package",
+      "source": "adaptive_package",
+      "material": {
+        "cell_counts": [
+          123,
+          272,
+          191,
+          43
+        ],
+        "boundary_map_ranks_mod_2": [
+          122,
+          148,
+          43
+        ],
+        "betti_mod_2": [
+          1,
+          2,
+          0,
+          0
+        ],
+        "euler": -1
+      },
+      "boundary": {
+        "cell_counts": [
+          117,
+          234,
+          115
+        ],
+        "boundary_map_ranks_mod_2": [
+          116,
+          114
+        ],
+        "betti_mod_2": [
+          1,
+          4,
+          1
+        ],
+        "euler": -2
+      },
+      "maximum_edges_per_face": 5,
+      "maximum_faces_per_cell": 9,
+      "elapsed_s": 0.021283328998833895,
+      "chart_agreement": {
+        "max_chart_vertex_difference_mm": 0.0,
+        "max_chart_edge_difference_mm": 0.0
+      }
+    },
+    {
+      "case": "x64-depth2.package",
+      "source": "adaptive_package",
+      "material": {
+        "cell_counts": [
+          170,
+          382,
+          275,
+          64
+        ],
+        "boundary_map_ranks_mod_2": [
+          169,
+          211,
+          64
+        ],
+        "betti_mod_2": [
+          1,
+          2,
+          0,
+          0
+        ],
+        "euler": -1
+      },
+      "boundary": {
+        "cell_counts": [
+          143,
+          281,
+          136
+        ],
+        "boundary_map_ranks_mod_2": [
+          142,
+          135
+        ],
+        "betti_mod_2": [
+          1,
+          4,
+          1
+        ],
+        "euler": -2
+      },
+      "maximum_edges_per_face": 6,
+      "maximum_faces_per_cell": 9,
+      "elapsed_s": 0.029532977961935103,
+      "chart_agreement": {
+        "max_chart_vertex_difference_mm": 0.0,
+        "max_chart_edge_difference_mm": 0.0
+      }
+    },
+    {
+      "case": "x56-depth0.package",
+      "source": "adaptive_package",
+      "material": {
+        "cell_counts": [
+          104,
+          230,
+          161,
+          36
+        ],
+        "boundary_map_ranks_mod_2": [
+          103,
+          125,
+          36
+        ],
+        "betti_mod_2": [
+          1,
+          2,
+          0,
+          0
+        ],
+        "euler": -1
+      },
+      "boundary": {
+        "cell_counts": [
+          104,
+          212,
+          106
+        ],
+        "boundary_map_ranks_mod_2": [
+          103,
+          105
+        ],
+        "betti_mod_2": [
+          1,
+          4,
+          1
+        ],
+        "euler": -2
+      },
+      "maximum_edges_per_face": 4,
+      "maximum_faces_per_cell": 6,
+      "elapsed_s": 0.01738536002812907,
+      "chart_agreement": {
+        "max_chart_vertex_difference_mm": 0.0,
+        "max_chart_edge_difference_mm": 0.0
+      }
+    },
+    {
+      "case": "x56-depth1.package",
+      "source": "adaptive_package",
+      "material": {
+        "cell_counts": [
+          123,
+          272,
+          191,
+          43
+        ],
+        "boundary_map_ranks_mod_2": [
+          122,
+          148,
+          43
+        ],
+        "betti_mod_2": [
+          1,
+          2,
+          0,
+          0
+        ],
+        "euler": -1
+      },
+      "boundary": {
+        "cell_counts": [
+          117,
+          234,
+          115
+        ],
+        "boundary_map_ranks_mod_2": [
+          116,
+          114
+        ],
+        "betti_mod_2": [
+          1,
+          4,
+          1
+        ],
+        "euler": -2
+      },
+      "maximum_edges_per_face": 5,
+      "maximum_faces_per_cell": 9,
+      "elapsed_s": 0.02104529703501612,
+      "chart_agreement": {
+        "max_chart_vertex_difference_mm": 0.0,
+        "max_chart_edge_difference_mm": 0.0
+      }
+    },
+    {
+      "case": "x56-depth2.package",
+      "source": "adaptive_package",
+      "material": {
+        "cell_counts": [
+          170,
+          382,
+          275,
+          64
+        ],
+        "boundary_map_ranks_mod_2": [
+          169,
+          211,
+          64
+        ],
+        "betti_mod_2": [
+          1,
+          2,
+          0,
+          0
+        ],
+        "euler": -1
+      },
+      "boundary": {
+        "cell_counts": [
+          143,
+          281,
+          136
+        ],
+        "boundary_map_ranks_mod_2": [
+          142,
+          135
+        ],
+        "betti_mod_2": [
+          1,
+          4,
+          1
+        ],
+        "euler": -2
+      },
+      "maximum_edges_per_face": 6,
+      "maximum_faces_per_cell": 9,
+      "elapsed_s": 0.028975757013540715,
+      "chart_agreement": {
+        "max_chart_vertex_difference_mm": 0.0,
+        "max_chart_edge_difference_mm": 0.0
+      }
+    },
+    {
+      "case": "two-cubes-d4-refined-a",
+      "source": "standalone_complex",
+      "material": {
+        "cell_counts": [
+          31,
+          62,
+          41,
+          9
+        ],
+        "boundary_map_ranks_mod_2": [
+          30,
+          32,
+          9
+        ],
+        "betti_mod_2": [
+          1,
+          0,
+          0,
+          0
+        ],
+        "euler": 1
+      },
+      "boundary": {
+        "cell_counts": [
+          29,
+          52,
+          25
+        ],
+        "boundary_map_ranks_mod_2": [
+          28,
+          24
+        ],
+        "betti_mod_2": [
+          1,
+          0,
+          1
+        ],
+        "euler": 2
+      },
+      "maximum_edges_per_face": 5,
+      "maximum_faces_per_cell": 9,
+      "elapsed_s": 0.005821302009280771
+    }
+  ],
+  "package_costs": [
+    {
+      "radius_ticks": [
+        64,
+        64
+      ],
+      "depth": 0,
+      "export_wall_s": 0.16522795899072662,
+      "package_bytes": 500333
+    },
+    {
+      "radius_ticks": [
+        64,
+        64
+      ],
+      "depth": 1,
+      "export_wall_s": 0.17977271100971848,
+      "package_bytes": 612888
+    },
+    {
+      "radius_ticks": [
+        64,
+        64
+      ],
+      "depth": 2,
+      "export_wall_s": 0.2718628420261666,
+      "package_bytes": 922912
+    },
+    {
+      "radius_ticks": [
+        56,
+        64
+      ],
+      "depth": 0,
+      "export_wall_s": 0.1692465310334228,
+      "package_bytes": 500529
+    },
+    {
+      "radius_ticks": [
+        56,
+        64
+      ],
+      "depth": 1,
+      "export_wall_s": 0.1832696619676426,
+      "package_bytes": 613664
+    },
+    {
+      "radius_ticks": [
+        56,
+        64
+      ],
+      "depth": 2,
+      "export_wall_s": 0.2267329299938865,
+      "package_bytes": 924549
+    }
+  ],
+  "d4_complex_generation_wall_s": 0.04631891299504787,
+  "limits": [
+    "GF(2) homology is a diagnostic, not a general proof over all coefficient fields."
+  ]
+}

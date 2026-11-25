@@ -39,7 +39,7 @@ void main() {
 const SURFACE_COLOR = [0.78, 0.67, 0.52];
 const SECTION_COLOR = [0.20, 0.48, 0.46];
 const DEFAULT_CAMERA = { yaw: 0.72, pitch: 0.5, distance: 2 };
-const CAMERA_FILL = 0.64;
+const CAMERA_FILL = 0.85;
 const GRID = 12;
 const CAP_GRID = 12;
 const FACE_SIDES = [

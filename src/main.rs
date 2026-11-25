@@ -49,12 +49,12 @@ fn publish(target: &Path, contents: &str) -> std::io::Result<()> {
     }
 }
 
-const COMMANDS_AND_EVALUATORS: &str = r#"{"commands":["build","audit","evaluate","capabilities","export-step","certify-map","export-analysis","export-adaptive","inspect-travel","solve-job","import-solidcraft","export-field-vtu"],"evaluators":{"rational_bezier_tensor":{"degrees":[[1,1,1],[1,1,2],[1,2,1],[1,2,2],[2,1,1],[2,1,2],[2,2,1],[2,2,2]],"domain":[[0,1],[0,1],[0,1]]}}}"#;
+const COMMANDS_AND_EVALUATORS: &str = r#"{"commands":["build","audit","evaluate","capabilities","export-step","certify-map","export-analysis","export-adaptive","inspect-travel","solve-job","differentiate-job","import-solidcraft","export-field-vtu"],"evaluators":{"rational_bezier_tensor":{"degrees":[[1,1,1],[1,1,2],[1,2,1],[1,2,2],[2,1,1],[2,1,2],[2,2,1],[2,2,2]],"domain":[[0,1],[0,1],[0,1]]}}}"#;
 
 fn capabilities() -> Result<Json,String> {
     let mut result = parse(COMMANDS_AND_EVALUATORS)?;
     let Json::Object(fields) = &mut result else {return Err("invalid capabilities".into())};
-    let families = ["affine_pair_v1", "annular_pair_v1", "filleted_bracket_v1", "movable_bore_v1", "pocket_depth_v1", "exact_bore_v1", "row_bores_v1", "overlap_bore_v1", "axial_boolean_v1", "crescent_pocket_v1", "parameterized_bracket_v1","travelling_bore_v1","travelling_bore_bounded_v1","ruled_section_sweep_v1","coaxial_feature_program_v1","circular_bend_v1","orthogonal_feature_program_v1","polygon_prism_v1","polygonal_perforated_prism_v1"]
+    let families = ["affine_pair_v1", "annular_pair_v1", "filleted_bracket_v1", "movable_bore_v1", "pocket_depth_v1", "exact_bore_v1", "row_bores_v1", "overlap_bore_v1", "axial_boolean_v1", "crescent_pocket_v1", "parameterized_bracket_v1","travelling_bore_v1","travelling_bore_bounded_v1","ruled_section_sweep_v1","coaxial_feature_program_v1","circular_bend_v1","orthogonal_feature_program_v1","polygon_prism_v1","polygonal_perforated_prism_v1","affine_image_v1"]
         .into_iter().chain(SECTION_FAMILIES).map(|s| Json::String(s.to_owned())).collect();
     fields.insert("families".into(), Json::Array(families));
     Ok(result)
@@ -158,6 +158,11 @@ fn run(args: &[String]) -> Result<Json, String> {
             publish(Path::new(target),&model.to_string()).map_err(|e|e.to_string())?;
             Ok(report)
         }
+        [cmd,model,job,direction,target] if cmd=="differentiate-job"=>{
+            let result=solidcraft_trivariate::mechanical_job::differentiate_job(&read(model)?,&read(job)?,&read(direction)?)?;
+            publish(Path::new(target),&result.to_string()).map_err(|e|e.to_string())?;
+            Ok(object([("status",Json::String("evaluated".into())),("schema",result.field("schema")?.clone())]))
+        }
         [cmd,model,job,target] if cmd=="solve-job"=>{
             let solution=solidcraft_trivariate::mechanical_job::solve_job(&read(model)?,&read(job)?)?;
             publish(Path::new(target),&solution.to_string()).map_err(|e|e.to_string())?;
@@ -200,7 +205,7 @@ fn run(args: &[String]) -> Result<Json, String> {
             Ok(object([("status",Json::String("evaluated".into())),("position",vector(res.position)),
                 ("jacobian_columns",Json::Array(res.jacobian_columns.into_iter().map(vector).collect()))]))
         }
-        _=>Err("usage: solidcraft-trivariate capabilities | build RECIPE OUTPUT | audit MODEL | evaluate MAP U V W | export-step MODEL OUTPUT | certify-map MAP MAX_LEAVES MAX_DEPTH | export-analysis MODEL GAUSS_ORDER OUTPUT | export-adaptive MODEL PLAN GAUSS_ORDER OUTPUT | import-solidcraft SCRIPT OUTPUT | solve-job MODEL JOB OUTPUT | export-field-vtu RESULT SUBDIVISIONS OUTPUT | inspect-travel CENTER_X_UM".into()),
+        _=>Err("usage: solidcraft-trivariate capabilities | build RECIPE OUTPUT | audit MODEL | evaluate MAP U V W | export-step MODEL OUTPUT | certify-map MAP MAX_LEAVES MAX_DEPTH | export-analysis MODEL GAUSS_ORDER OUTPUT | export-adaptive MODEL PLAN GAUSS_ORDER OUTPUT | import-solidcraft SCRIPT OUTPUT | solve-job MODEL JOB OUTPUT | differentiate-job MODEL JOB DIRECTION OUTPUT | export-field-vtu RESULT SUBDIVISIONS OUTPUT | inspect-travel CENTER_X_UM".into()),
     }
 }
 

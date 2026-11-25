@@ -158,14 +158,26 @@ pub fn import_script(script: &Json) -> Result<Json, &'static str> {
             .items()?
             .first()
             .ok_or("empty SolidCraft timeline")?;
-        if first
+        let first_type = first
             .field("params")?
             .field("feature")?
             .field("type")?
-            .text()?
-            == "box"
-        {
-            return crate::solidcraft_box_timeline::import_box_timeline(script);
+            .text()?;
+        match first_type {
+            "box" => return crate::solidcraft_box_timeline::import_box_timeline(script),
+            "sketch" => {
+                let commands = script.field("commands")?.items()?;
+                let second_type = commands
+                    .get(1)
+                    .and_then(|step| step.field("params").ok())
+                    .and_then(|params| params.field("feature").ok())
+                    .and_then(|feature| feature.field("type").ok())
+                    .and_then(|value| value.text().ok());
+                if commands.len() == 2 && second_type == Some("extrude") {
+                    return crate::solidcraft_polygon::import_polygon_timeline(script);
+                }
+            }
+            _ => {}
         }
         return crate::solidcraft_timeline::translate_timeline(script);
     }

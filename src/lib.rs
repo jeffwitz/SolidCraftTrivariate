@@ -97,3 +97,6 @@ pub mod solidcraft_box_timeline;
 pub mod perforated_prism;
 pub mod perforated_prism_audit;
 mod polygon_json;
+mod affine_image;
+pub mod solidcraft_polygon;
+mod affine_job_sensitivity;

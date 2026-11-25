@@ -205,6 +205,7 @@ fn audit_affine(m: &Json) -> Result<Json, &'static str> {
 
 pub fn build(recipe: &Json) -> Result<Json, &'static str> {
     match recipe.field("family")?.text()? {
+        super::affine_image::FAMILY => super::affine_image::build(recipe),
         "ruled_section_sweep_v1" => super::ruled_json::build(recipe),
         super::coaxial_json::FAMILY => super::coaxial_json::build(recipe),
         super::circular_bend_json::FAMILY => super::circular_bend_json::build(recipe),
@@ -234,6 +235,7 @@ pub fn build(recipe: &Json) -> Result<Json, &'static str> {
 
 pub fn audit(model: &Json) -> Result<Json, &'static str> {
     match model.field("schema")?.text()? {
+        super::affine_image::FAMILY => super::affine_image::audit(model),
         "ruled_section_sweep_v1" => super::ruled_json::audit(model),
         super::coaxial_json::FAMILY => super::coaxial_json::audit(model),
         super::circular_bend_json::FAMILY => super::circular_bend_json::audit(model),

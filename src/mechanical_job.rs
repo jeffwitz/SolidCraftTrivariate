@@ -35,7 +35,7 @@ fn finite(x: &Json) -> Result<f64, &'static str> {
         Err("nonfinite mechanical job scalar")
     }
 }
-fn vector(x: &Json) -> Result<Vector, &'static str> {
+pub(crate) fn vector(x: &Json) -> Result<Vector, &'static str> {
     let [a, b, c] = x.items()? else {
         return Err("expected mechanical vector of length three");
     };
@@ -224,6 +224,34 @@ fn mounting_rank(points: &[Vector], fixed: &[BTreeMap<usize, Ratio>; 3]) -> usiz
 /// Build the effective space, apply essential conditions, solve,
 /// and return a reproducible result document. Publication is the caller's job.
 pub fn solve_job(model: &Json, job: &Json) -> Result<Json, &'static str> {
+    run_job(model, job, None)
+}
+
+/// Differentiate a fixed material selection and homogeneous mounting with respect
+/// to a global affine deformation of the audited configuration.
+pub fn differentiate_job(model: &Json, job: &Json, direction: &Json) -> Result<Json, &'static str> {
+    let velocity = crate::affine_job_sensitivity::Velocity::parse(direction)?;
+    if job.field("formulation")?.text()? != "displacement" {
+        return Err("shape derivative requires displacement formulation");
+    }
+    for group in ["loads", "supports"] {
+        for entry in job.field(group)?.items()? {
+            if entry.field("select")?.field("plane").is_ok() {
+                return Err("spatial plane selection requires event analysis");
+            }
+            if entry.field("affine_mm").is_ok() {
+                return Err("prescribed motion derivative unavailable");
+            }
+        }
+    }
+    run_job(model, job, Some(&velocity))
+}
+
+fn run_job(
+    model: &Json,
+    job: &Json,
+    velocity: Option<&crate::affine_job_sensitivity::Velocity>,
+) -> Result<Json, &'static str> {
     job.keys(&[
         "schema",
         "material",
@@ -249,6 +277,7 @@ pub fn solve_job(model: &Json, job: &Json) -> Result<Json, &'static str> {
                 | "certified_orthogonal_feature_program"
                 | "certified_polygon_prism"
                 | "certified_perforated_polygon_prism"
+                | crate::affine_image::METHOD
                 | "certified_parameterized_bracket"
         )
     {
@@ -427,6 +456,7 @@ pub fn solve_job(model: &Json, job: &Json) -> Result<Json, &'static str> {
     let mut moment = [0.; 3];
     let mut scale = 0.;
     let mut loads = Vec::new();
+    let mut force_rate = velocity.map(|_| vec![0.; 3 * space.ndof]);
     for specification in job.field("loads")?.items()? {
         let law = Traction::parse(specification)?;
         let selected = select(specification.field("select")?, &faces)?;
@@ -438,6 +468,18 @@ pub fn solve_job(model: &Json, job: &Json) -> Result<Json, &'static str> {
             patches.push(LoadPatch::whole(f.side.clone()));
         }
         let load = integrate_traction(space, &exterior, &patches, order, |_, n| law.value(n))?;
+        if let (Some(velocity), Some(rhs)) = (velocity, &mut force_rate) {
+            let rate = integrate_traction(space, &exterior, &patches, order, |_, normal| {
+                let oriented = velocity.oriented_area_rate(normal);
+                match &law {
+                    Traction::Vector(v) => v.map(|value| value * dot(normal, oriented)),
+                    Traction::Pressure(_) | Traction::Stress(_) => law.value(oriented),
+                }
+            })?;
+            for (a, b) in rhs.iter_mut().zip(rate.nodal_force_n) {
+                *a += b;
+            }
+        }
         add(&mut applied, load.resultant_n);
         add(&mut moment, load.moment_n_mm);
         scale += load.area_mm2 * law.magnitude_bound();
@@ -459,6 +501,28 @@ pub fn solve_job(model: &Json, job: &Json) -> Result<Json, &'static str> {
         .any(|prescribed| prescribed.values().any(|&v| v != Ratio::zero()));
     if !scale.is_finite() || (scale <= 0. && !moving) {
         return Err("mechanical job needs a finite nonzero load scale");
+    }
+    if let (Some(velocity), Some(rate)) = (velocity, force_rate) {
+        use crate::{
+            affine_job_sensitivity::{self, SensitivityJob},
+            elasticity_sensitivity::MaterialJet,
+        };
+        return affine_job_sensitivity::solve(
+            velocity,
+            SensitivityJob {
+                space,
+                force: &force,
+                force_rate: &rate,
+                lifts: [&lifts[0], &lifts[1], &lifts[2]],
+                material: MaterialJet {
+                    young_mpa: young,
+                    poisson,
+                    d_young_mpa: 0.,
+                    d_poisson: 0.,
+                },
+                order,
+            },
+        );
     }
     let formulation = job.field("formulation")?.text()?;
     let (full, projected) = match formulation {

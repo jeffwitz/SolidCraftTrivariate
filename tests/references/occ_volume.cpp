@@ -7,16 +7,18 @@
 #include <cmath>
 #include <iomanip>
 #include <iostream>
+#include <string_view>
 
 int main(int argc, char** argv) {
-    if (argc != 2) return 2;
+    const bool centroid = argc == 3 && std::string_view(argv[2]) == "--centroid";
+    if (argc != 2 && !centroid) return 2;
     BRep_Builder builder;
     TopoDS_Shape shape;
     if (!BRepTools::Read(shape, argv[1], builder) || shape.IsNull()) return 3;
     std::cout << std::setprecision(17) << "[";
     for (const double eps : {1.e-9, 1.e-12}) {
         GProp_GProps props;
-        const double error = BRepGProp::VolumePropertiesGK(shape, props, eps, true, true);
+        const double error = BRepGProp::VolumePropertiesGK(shape, props, eps, true, true, centroid);
         if (!std::isfinite(error) || error < 0 || !std::isfinite(props.Mass())) return 4;
         GProp_GProps surface;
         const double area_error = BRepGProp::SurfaceProperties(shape, surface, eps);
@@ -24,7 +26,12 @@ int main(int argc, char** argv) {
         if (eps == 1.e-12) std::cout << ",";
         std::cout << "{\"tolerance\":" << eps << ",\"volume_mm3\":" << props.Mass()
                   << ",\"estimated_error\":" << error << ",\"surface_mm2\":" << surface.Mass()
-                  << ",\"surface_estimated_error\":" << area_error << "}";
+                  << ",\"surface_estimated_error\":" << area_error;
+        if (centroid) {
+            const auto c = props.CentreOfMass();
+            std::cout << ",\"centroid_mm\":[" << c.X() << "," << c.Y() << "," << c.Z() << "]";
+        }
+        std::cout << "}";
     }
     std::cout << "]\n";
 }

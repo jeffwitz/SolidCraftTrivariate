@@ -90,12 +90,8 @@ fn reachable(start: usize, adjacent: &BTreeMap<usize, Vec<usize>>) -> BTreeSet<u
     visited
 }
 
-/// Load a canonically audited model and construct its exterior shell, proving
-/// exact trace identity before identifying two curves with common endpoints.
-pub fn boundary_shell(model: &Json) -> Result<BoundaryShell, &'static str> {
-    let report = audit(model)?;
-    let method = report.field("method")?.text()?;
-    if !matches!(
+pub(crate) fn supports_source_method(method: &str) -> bool {
+    matches!(
         method,
         "certified_fixed_extrusion_partition"
             | "certified_ruled_similarity_sweep"
@@ -104,7 +100,15 @@ pub fn boundary_shell(model: &Json) -> Result<BoundaryShell, &'static str> {
             | "certified_orthogonal_feature_program"
             | "certified_polygon_prism"
             | "certified_perforated_polygon_prism"
-    ) {
+    )
+}
+
+/// Load a canonically audited model and construct its exterior shell, proving
+/// exact trace identity before identifying two curves with common endpoints.
+pub fn boundary_shell(model: &Json) -> Result<BoundaryShell, &'static str> {
+    let report = audit(model)?;
+    let method = report.field("method")?.text()?;
+    if !supports_source_method(method) && method != crate::affine_image::METHOD {
         return Err("unsupported_boundary_model_family");
     }
     let blocks: BTreeMap<_, _> = decode_blocks(model)?
@@ -215,7 +219,8 @@ pub fn boundary_shell(model: &Json) -> Result<BoundaryShell, &'static str> {
     }
     let expected_voids = if matches!(
         method,
-        "certified_coaxial_feature_program"
+        crate::affine_image::METHOD
+            | "certified_coaxial_feature_program"
             | "certified_circular_bend"
             | "certified_orthogonal_feature_program"
     ) {
@@ -252,8 +257,18 @@ pub fn boundary_shell(model: &Json) -> Result<BoundaryShell, &'static str> {
         } else {
             10
         };
+        // Design face order is checked against the source during affine audit.
+        let source_anchor = if method == crate::affine_image::METHOD {
+            let original = boundary_shell(model.field("source_model")?)?;
+            Some(original.components[0][0])
+        } else {
+            None
+        };
         let mut outer = components.iter().enumerate().filter(|(_, component)| {
             component.iter().any(|&f| {
+                if let Some(anchor) = source_anchor {
+                    return f == anchor;
+                }
                 if let Some(tag) = bend_anchor {
                     return faces[f].feature == tag;
                 }

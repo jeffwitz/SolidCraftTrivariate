@@ -18,14 +18,24 @@ for `[40,80]`, 1800.12 s for `[80,40]`, and 1800.10 s for `[50,74]`. The
 791.31 s, 9,135 iterations); that partial state did not qualify. The GNU time
 resource files for these attempts are empty, so no peak RSS value is claimed.
 
-The `[51,74] from_h2` slot must not be classified as unstarted: PID 2117636 was
-directly observed running `local_fillet_cost --path 51 74 from_h2` at about
-20m27s elapsed. No final output or resource line remains. The report therefore
-records `launched_termination_unconfirmed`; final completion, termination
-time, and final RSS are unknown. A final process check found no active J4d
-process, but cannot recover the missing terminal record. Thus the campaign
-has four complete h1 ladders, three measured h2 timeout attempts (one with a
-partial first state), and one launched h2 run with unconfirmed termination.
+The `[51,74] from_h2` slot was directly observed running as PID 2117636 at
+about 20m27s elapsed. Its later retained wrapper record reports
+`timeout_1800s` at 1800.10 s, resolving the earlier in-progress observation.
+Its GNU time resource file is empty, so final RSS is unavailable. Thus all
+four h2 paths have timeout records; the `[50,74]` timeout retains one
+nonqualified first state, and the other three retain no final JSON output.
+A final process check found no active J4d process.
 
 The report was reconstructed from retained JSON and resource files without
 rerunning the expensive paths. Rebuild commands are recorded in the JSON.
+
+The terminal record for the final `[51,74] from_h2` timeout is preserved in
+[`j4d_terminal_records.json`](../../tests/references/j4d_terminal_records.json).
+It ties the run to the 8d197a8 J4d manifest, 51/74 sixteenth-mm radii, the
+`from_h2` depth-two / three-round path, target roots and chart coordinates,
+and the 1,800-second Python wrapper. The runner source matches revision
+d7d764a. The release binary was built at 07:28 local, before that commit at
+07:50; its review-time SHA-256 is recorded, but no build metadata identifies
+the exact source revision, so the report leaves that field unknown. The
+preserved timeout diagnostic and elapsed time prove termination by the
+wrapper; the empty GNU time file supplies no RSS result.

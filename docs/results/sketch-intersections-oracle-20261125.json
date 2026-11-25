@@ -1,0 +1,1654 @@
+{
+  "schema": "p7_sketch_intersections_oracle_v1",
+  "provenance": {
+    "source_baseline": "7b61094+ff2c36f",
+    "checkout_revision": "4d5ae4c156eeacc0706bbbb188f2001a87d056e7",
+    "python": "3.12.3",
+    "protocol": "docs/lot-p6b-oracle.md",
+    "commands": [
+      "rtk python3 tests/references/sketch_intersections_oracle.py",
+      "rtk cargo build --release --locked --offline --example p6b_oracle_probe",
+      "rtk cargo test --locked --offline sketch_intersections"
+    ]
+  },
+  "native_probe_case_count": 21,
+  "native_reference_comparison": "passed",
+  "max_native_reference_absolute_errors": {
+    "point_mm": 4.576200529626817e-14,
+    "jet_mm_per_mm": 1.727193594291112e-10,
+    "condition": 1.1900169738510158e-10,
+    "tangent_point_mm": 0.0
+  },
+  "acceptance": {
+    "ordinary_constraint_residual_mm2_max": 2e-12,
+    "implicit_jet_residual_mm_max": 2e-11,
+    "centered_fd_jet_error_mm_per_mm_max": 3e-06,
+    "taylor_ratio_target": 4.0,
+    "taylor_ratio_tolerance": 0.15
+  },
+  "case_count": 21,
+  "accepted_transverse_count": 7,
+  "max_constraint_residual_mm2": 2.3283064365386963e-10,
+  "max_centered_fd_jet_error_mm_per_mm": 1.2212503786024342e-08,
+  "max_constraint_residual_relative_to_radius2": 4.263256414560601e-16,
+  "max_implicit_jet_residual_mm": 1.1368683772161603e-13,
+  "rotation_covariance_error_mm": 0.0,
+  "translation_covariance_error_mm": 0.0,
+  "reflection_covariance_error_mm": 0.0,
+  "swapped_order_error_mm": 0.0,
+  "taylor_remainder_mm": [
+    0.0010973110814897294,
+    0.004404550105597998
+  ],
+  "taylor_ratio": 4.013948441692853,
+  "near_coincident_condition": 1999999.99999975,
+  "cases": [
+    {
+      "case": "transverse_axis",
+      "first": [
+        0,
+        0,
+        5000
+      ],
+      "second": [
+        6000,
+        0,
+        5000
+      ],
+      "accepted": true,
+      "relation": "Transverse",
+      "cardinality": "Two",
+      "count": 2,
+      "rank": 2,
+      "points": [
+        {
+          "point_mm": [
+            3.0,
+            4.0
+          ],
+          "jet_mm_per_mm": [
+            [
+              0.5,
+              0.375
+            ],
+            [
+              0.6666666666666666,
+              0.5
+            ],
+            [
+              0.8333333333333334,
+              0.625
+            ],
+            [
+              0.5,
+              -0.375
+            ],
+            [
+              -0.6666666666666666,
+              0.5
+            ],
+            [
+              -0.8333333333333334,
+              0.625
+            ]
+          ],
+          "constraint_residual_mm2": 0.0,
+          "constraint_residual_relative_to_radius2": 0.0,
+          "implicit_condition": 1.3333333333333335,
+          "implicit_jet_residual_mm": 0.0,
+          "fd_jet_error_max_mm_per_mm": null
+        },
+        {
+          "point_mm": [
+            3.0,
+            -4.0
+          ],
+          "jet_mm_per_mm": [
+            [
+              0.5,
+              -0.375
+            ],
+            [
+              -0.6666666666666666,
+              0.5
+            ],
+            [
+              0.8333333333333334,
+              -0.625
+            ],
+            [
+              0.5,
+              0.375
+            ],
+            [
+              0.6666666666666666,
+              0.5
+            ],
+            [
+              -0.8333333333333334,
+              -0.625
+            ]
+          ],
+          "constraint_residual_mm2": 0.0,
+          "constraint_residual_relative_to_radius2": 0.0,
+          "implicit_condition": 1.3333333333333335,
+          "implicit_jet_residual_mm": 0.0,
+          "fd_jet_error_max_mm_per_mm": null
+        }
+      ],
+      "tangent_point_mm": null,
+      "rust": {
+        "accepted": true,
+        "cardinality": "Two",
+        "case": "transverse_axis",
+        "count": 2,
+        "derivative_unavailable": null,
+        "points": [
+          {
+            "condition": 1.3333333333333333,
+            "constraint_residual_mm2": 0,
+            "jet_mm_per_mm": [
+              [
+                0.5,
+                0.3749999999999999
+              ],
+              [
+                0.6666666666666666,
+                0.5
+              ],
+              [
+                0.8333333333333334,
+                0.625
+              ],
+              [
+                0.5,
+                -0.3749999999999999
+              ],
+              [
+                -0.6666666666666666,
+                0.5
+              ],
+              [
+                -0.8333333333333334,
+                0.625
+              ]
+            ],
+            "point_mm": [
+              3,
+              4
+            ]
+          },
+          {
+            "condition": 1.3333333333333333,
+            "constraint_residual_mm2": 0,
+            "jet_mm_per_mm": [
+              [
+                0.5,
+                -0.3749999999999999
+              ],
+              [
+                -0.6666666666666666,
+                0.5
+              ],
+              [
+                0.8333333333333334,
+                -0.625
+              ],
+              [
+                0.5,
+                0.3749999999999999
+              ],
+              [
+                0.6666666666666666,
+                0.5
+              ],
+              [
+                -0.8333333333333334,
+                -0.625
+              ]
+            ],
+            "point_mm": [
+              3,
+              -4
+            ]
+          }
+        ],
+        "rank": 2,
+        "relation": "Transverse",
+        "tangent_point_mm": null
+      }
+    },
+    {
+      "case": "transverse_oblique",
+      "first": [
+        0,
+        0,
+        5000
+      ],
+      "second": [
+        6000,
+        1000,
+        5000
+      ],
+      "accepted": true,
+      "relation": "Transverse",
+      "cardinality": "Two",
+      "count": 2,
+      "rank": 2,
+      "points": [
+        {
+          "point_mm": [
+            2.34756174569874,
+            4.414629525807561
+          ],
+          "jet_mm_per_mm": [
+            [
+              0.33206222540508107,
+              0.3551883932682535
+            ],
+            [
+              0.624448625202107,
+              0.667937774594919
+            ],
+            [
+              0.7072491831439442,
+              0.7565049011363351
+            ],
+            [
+              0.667937774594919,
+              -0.3551883932682535
+            ],
+            [
+              -0.624448625202107,
+              0.33206222540508107
+            ],
+            [
+              -0.9143724384776776,
+              0.4862346308660649
+            ]
+          ],
+          "constraint_residual_mm2": 3.552713678800501e-15,
+          "constraint_residual_relative_to_radius2": 1.4210854715202004e-16,
+          "implicit_condition": 1.3048765086025202,
+          "implicit_jet_residual_mm": 1.7763568394002505e-15,
+          "fd_jet_error_max_mm_per_mm": null
+        },
+        {
+          "point_mm": [
+            3.65243825430126,
+            -3.4146295258075603
+          ],
+          "jet_mm_per_mm": [
+            [
+              0.667937774594919,
+              -0.3551883932682535
+            ],
+            [
+              -0.624448625202107,
+              0.33206222540508107
+            ],
+            [
+              0.9143724384776776,
+              -0.4862346308660649
+            ],
+            [
+              0.33206222540508107,
+              0.3551883932682535
+            ],
+            [
+              0.624448625202107,
+              0.667937774594919
+            ],
+            [
+              -0.7072491831439441,
+              -0.7565049011363351
+            ]
+          ],
+          "constraint_residual_mm2": 3.552713678800501e-15,
+          "constraint_residual_relative_to_radius2": 1.4210854715202004e-16,
+          "implicit_condition": 1.3048765086025196,
+          "implicit_jet_residual_mm": 8.881784197001252e-16,
+          "fd_jet_error_max_mm_per_mm": null
+        }
+      ],
+      "tangent_point_mm": null,
+      "rust": {
+        "accepted": true,
+        "cardinality": "Two",
+        "case": "transverse_oblique",
+        "count": 2,
+        "derivative_unavailable": null,
+        "points": [
+          {
+            "condition": 1.3048765086025202,
+            "constraint_residual_mm2": 3.552713678800501e-15,
+            "jet_mm_per_mm": [
+              [
+                0.3320622254050811,
+                0.35518839326825347
+              ],
+              [
+                0.6244486252021069,
+                0.6679377745949189
+              ],
+              [
+                0.7072491831439442,
+                0.7565049011363352
+              ],
+              [
+                0.6679377745949189,
+                -0.35518839326825347
+              ],
+              [
+                -0.6244486252021069,
+                0.3320622254050811
+              ],
+              [
+                -0.9143724384776775,
+                0.48623463086606483
+              ]
+            ],
+            "point_mm": [
+              2.34756174569874,
+              4.41462952580756
+            ]
+          },
+          {
+            "condition": 1.3048765086025202,
+            "constraint_residual_mm2": 3.552713678800501e-15,
+            "jet_mm_per_mm": [
+              [
+                0.6679377745949189,
+                -0.35518839326825347
+              ],
+              [
+                -0.6244486252021069,
+                0.3320622254050811
+              ],
+              [
+                0.9143724384776775,
+                -0.48623463086606483
+              ],
+              [
+                0.3320622254050811,
+                0.35518839326825347
+              ],
+              [
+                0.6244486252021069,
+                0.6679377745949189
+              ],
+              [
+                -0.7072491831439442,
+                -0.7565049011363352
+              ]
+            ],
+            "point_mm": [
+              3.65243825430126,
+              -3.41462952580756
+            ]
+          }
+        ],
+        "rank": 2,
+        "relation": "Transverse",
+        "tangent_point_mm": null
+      }
+    },
+    {
+      "case": "external_tangent",
+      "first": [
+        0,
+        0,
+        5000
+      ],
+      "second": [
+        10000,
+        0,
+        5000
+      ],
+      "accepted": true,
+      "relation": "TangentExternal",
+      "cardinality": "One",
+      "count": 1,
+      "rank": 1,
+      "points": [],
+      "tangent_point_mm": [
+        5.0,
+        0.0
+      ],
+      "derivatives": null,
+      "rust": {
+        "accepted": true,
+        "cardinality": "One",
+        "case": "external_tangent",
+        "count": 1,
+        "derivative_unavailable": "tangent constraints have rank one; branch derivative is singular",
+        "points": [],
+        "rank": 1,
+        "relation": "TangentExternal",
+        "tangent_point_mm": [
+          5,
+          0
+        ]
+      }
+    },
+    {
+      "case": "external_1um_inside",
+      "first": [
+        0,
+        0,
+        5000
+      ],
+      "second": [
+        9999,
+        0,
+        5000
+      ],
+      "accepted": true,
+      "relation": "Transverse",
+      "cardinality": "Two",
+      "count": 2,
+      "rank": 2,
+      "points": [
+        {
+          "point_mm": [
+            4.9995,
+            0.07070891032960415
+          ],
+          "jet_mm_per_mm": [
+            [
+              0.5,
+              35.35268735365328
+            ],
+            [
+              0.007071598192779693,
+              0.5
+            ],
+            [
+              0.5000500050005,
+              35.35622297595087
+            ],
+            [
+              0.5,
+              -35.35268735365328
+            ],
+            [
+              -0.007071598192779693,
+              0.5
+            ],
+            [
+              -0.5000500050005,
+              35.35622297595087
+            ]
+          ],
+          "constraint_residual_mm2": 3.552713678800501e-15,
+          "constraint_residual_relative_to_radius2": 1.4210854715202004e-16,
+          "implicit_condition": 70.70537470730656,
+          "implicit_jet_residual_mm": 1.7763568394002505e-15,
+          "fd_jet_error_max_mm_per_mm": null
+        },
+        {
+          "point_mm": [
+            4.9995,
+            -0.07070891032960415
+          ],
+          "jet_mm_per_mm": [
+            [
+              0.5,
+              -35.35268735365328
+            ],
+            [
+              -0.007071598192779693,
+              0.5
+            ],
+            [
+              0.5000500050005,
+              -35.35622297595087
+            ],
+            [
+              0.5,
+              35.35268735365328
+            ],
+            [
+              0.007071598192779693,
+              0.5
+            ],
+            [
+              -0.5000500050005,
+              -35.35622297595087
+            ]
+          ],
+          "constraint_residual_mm2": 3.552713678800501e-15,
+          "constraint_residual_relative_to_radius2": 1.4210854715202004e-16,
+          "implicit_condition": 70.70537470730656,
+          "implicit_jet_residual_mm": 1.7763568394002505e-15,
+          "fd_jet_error_max_mm_per_mm": null
+        }
+      ],
+      "tangent_point_mm": null,
+      "rust": {
+        "accepted": true,
+        "cardinality": "Two",
+        "case": "external_1um_inside",
+        "count": 2,
+        "derivative_unavailable": null,
+        "points": [
+          {
+            "condition": 70.70537470730656,
+            "constraint_residual_mm2": 3.552713678800501e-15,
+            "jet_mm_per_mm": [
+              [
+                0.5,
+                35.35268735365328
+              ],
+              [
+                0.0070715981927796925,
+                0.5
+              ],
+              [
+                0.5000500050005,
+                35.35622297595087
+              ],
+              [
+                0.5,
+                -35.35268735365328
+              ],
+              [
+                -0.0070715981927796925,
+                0.5
+              ],
+              [
+                -0.5000500050005,
+                35.35622297595087
+              ]
+            ],
+            "point_mm": [
+              4.9995,
+              0.07070891032960415
+            ]
+          },
+          {
+            "condition": 70.70537470730656,
+            "constraint_residual_mm2": 3.552713678800501e-15,
+            "jet_mm_per_mm": [
+              [
+                0.5,
+                -35.35268735365328
+              ],
+              [
+                -0.0070715981927796925,
+                0.5
+              ],
+              [
+                0.5000500050005,
+                -35.35622297595087
+              ],
+              [
+                0.5,
+                35.35268735365328
+              ],
+              [
+                0.0070715981927796925,
+                0.5
+              ],
+              [
+                -0.5000500050005,
+                -35.35622297595087
+              ]
+            ],
+            "point_mm": [
+              4.9995,
+              -0.07070891032960415
+            ]
+          }
+        ],
+        "rank": 2,
+        "relation": "Transverse",
+        "tangent_point_mm": null
+      }
+    },
+    {
+      "case": "external_1um_outside",
+      "first": [
+        0,
+        0,
+        5000
+      ],
+      "second": [
+        10001,
+        0,
+        5000
+      ],
+      "accepted": true,
+      "relation": "Disjoint",
+      "cardinality": "Zero",
+      "count": 0,
+      "rank": null,
+      "points": [],
+      "tangent_point_mm": null,
+      "rust": {
+        "accepted": true,
+        "cardinality": "Zero",
+        "case": "external_1um_outside",
+        "count": 0,
+        "derivative_unavailable": "circles have no real intersection",
+        "points": [],
+        "rank": null,
+        "relation": "Disjoint",
+        "tangent_point_mm": null
+      }
+    },
+    {
+      "case": "internal_tangent",
+      "first": [
+        0,
+        0,
+        5000
+      ],
+      "second": [
+        4000,
+        0,
+        1000
+      ],
+      "accepted": true,
+      "relation": "TangentInternal",
+      "cardinality": "One",
+      "count": 1,
+      "rank": 1,
+      "points": [],
+      "tangent_point_mm": [
+        5.0,
+        0.0
+      ],
+      "derivatives": null,
+      "rust": {
+        "accepted": true,
+        "cardinality": "One",
+        "case": "internal_tangent",
+        "count": 1,
+        "derivative_unavailable": "tangent constraints have rank one; branch derivative is singular",
+        "points": [],
+        "rank": 1,
+        "relation": "TangentInternal",
+        "tangent_point_mm": [
+          5,
+          0
+        ]
+      }
+    },
+    {
+      "case": "internal_1um_inside",
+      "first": [
+        0,
+        0,
+        5000
+      ],
+      "second": [
+        3999,
+        0,
+        1000
+      ],
+      "accepted": true,
+      "relation": "StrictContainment",
+      "cardinality": "Zero",
+      "count": 0,
+      "rank": null,
+      "points": [],
+      "tangent_point_mm": null,
+      "rust": {
+        "accepted": true,
+        "cardinality": "Zero",
+        "case": "internal_1um_inside",
+        "count": 0,
+        "derivative_unavailable": "strictly contained circles have no intersection",
+        "points": [],
+        "rank": null,
+        "relation": "StrictContainment",
+        "tangent_point_mm": null
+      }
+    },
+    {
+      "case": "internal_1um_outside",
+      "first": [
+        0,
+        0,
+        5000
+      ],
+      "second": [
+        4001,
+        0,
+        1000
+      ],
+      "accepted": true,
+      "relation": "Transverse",
+      "cardinality": "Two",
+      "count": 2,
+      "rank": 2,
+      "points": [
+        {
+          "point_mm": [
+            4.999750187453137,
+            0.049980626870106834
+          ],
+          "jet_mm_per_mm": [
+            [
+              1.2496251405781396,
+              -24.970942174097257
+            ],
+            [
+              0.012492033709099432,
+              -0.24962514057813961
+            ],
+            [
+              1.2496875781054735,
+              -24.972189847366558
+            ],
+            [
+              -0.24962514057813961,
+              24.970942174097257
+            ],
+            [
+              -0.012492033709099432,
+              1.2496251405781396
+            ],
+            [
+              -0.24993751562109467,
+              25.002190225139696
+            ]
+          ],
+          "constraint_residual_mm2": 1.0658141036401503e-14,
+          "constraint_residual_relative_to_radius2": 4.263256414560601e-16,
+          "implicit_condition": 130.01019348595915,
+          "implicit_jet_residual_mm": 4.440892098500626e-16,
+          "fd_jet_error_max_mm_per_mm": null
+        },
+        {
+          "point_mm": [
+            4.999750187453137,
+            -0.049980626870106834
+          ],
+          "jet_mm_per_mm": [
+            [
+              1.2496251405781396,
+              24.970942174097257
+            ],
+            [
+              -0.012492033709099432,
+              -0.24962514057813961
+            ],
+            [
+              1.2496875781054735,
+              24.972189847366558
+            ],
+            [
+              -0.24962514057813961,
+              -24.970942174097257
+            ],
+            [
+              0.012492033709099432,
+              1.2496251405781396
+            ],
+            [
+              -0.24993751562109467,
+              -25.002190225139696
+            ]
+          ],
+          "constraint_residual_mm2": 1.0658141036401503e-14,
+          "constraint_residual_relative_to_radius2": 4.263256414560601e-16,
+          "implicit_condition": 130.01019348595915,
+          "implicit_jet_residual_mm": 4.440892098500626e-16,
+          "fd_jet_error_max_mm_per_mm": null
+        }
+      ],
+      "tangent_point_mm": null,
+      "rust": {
+        "accepted": true,
+        "cardinality": "Two",
+        "case": "internal_1um_outside",
+        "count": 2,
+        "derivative_unavailable": null,
+        "points": [
+          {
+            "condition": 130.01019348607815,
+            "constraint_residual_mm2": 3.552713678800501e-15,
+            "jet_mm_per_mm": [
+              [
+                1.2496251405781393,
+                -24.97094217412012
+              ],
+              [
+                0.012492033709087995,
+                -0.24962514057813934
+              ],
+              [
+                1.2496875781054735,
+                -24.97218984738942
+              ],
+              [
+                -0.24962514057813956,
+                24.97094217412012
+              ],
+              [
+                -0.012492033709087995,
+                1.2496251405781393
+              ],
+              [
+                -0.2499375156210947,
+                25.002190225162586
+              ]
+            ],
+            "point_mm": [
+              4.999750187453136,
+              0.04998062687006107
+            ]
+          },
+          {
+            "condition": 130.01019348607815,
+            "constraint_residual_mm2": 3.552713678800501e-15,
+            "jet_mm_per_mm": [
+              [
+                1.2496251405781393,
+                24.97094217412012
+              ],
+              [
+                -0.012492033709087995,
+                -0.24962514057813934
+              ],
+              [
+                1.2496875781054735,
+                24.97218984738942
+              ],
+              [
+                -0.24962514057813956,
+                -24.97094217412012
+              ],
+              [
+                0.012492033709087995,
+                1.2496251405781393
+              ],
+              [
+                -0.2499375156210947,
+                -25.002190225162586
+              ]
+            ],
+            "point_mm": [
+              4.999750187453136,
+              -0.04998062687006107
+            ]
+          }
+        ],
+        "rank": 2,
+        "relation": "Transverse",
+        "tangent_point_mm": null
+      }
+    },
+    {
+      "case": "disjoint",
+      "first": [
+        0,
+        0,
+        5000
+      ],
+      "second": [
+        11000,
+        0,
+        5000
+      ],
+      "accepted": true,
+      "relation": "Disjoint",
+      "cardinality": "Zero",
+      "count": 0,
+      "rank": null,
+      "points": [],
+      "tangent_point_mm": null,
+      "rust": {
+        "accepted": true,
+        "cardinality": "Zero",
+        "case": "disjoint",
+        "count": 0,
+        "derivative_unavailable": "circles have no real intersection",
+        "points": [],
+        "rank": null,
+        "relation": "Disjoint",
+        "tangent_point_mm": null
+      }
+    },
+    {
+      "case": "strict_containment",
+      "first": [
+        0,
+        0,
+        5000
+      ],
+      "second": [
+        2000,
+        0,
+        1000
+      ],
+      "accepted": true,
+      "relation": "StrictContainment",
+      "cardinality": "Zero",
+      "count": 0,
+      "rank": null,
+      "points": [],
+      "tangent_point_mm": null,
+      "rust": {
+        "accepted": true,
+        "cardinality": "Zero",
+        "case": "strict_containment",
+        "count": 0,
+        "derivative_unavailable": "strictly contained circles have no intersection",
+        "points": [],
+        "rank": null,
+        "relation": "StrictContainment",
+        "tangent_point_mm": null
+      }
+    },
+    {
+      "case": "concentric_disjoint",
+      "first": [
+        0,
+        0,
+        5000
+      ],
+      "second": [
+        0,
+        0,
+        4000
+      ],
+      "accepted": true,
+      "relation": "ConcentricDisjoint",
+      "cardinality": "Zero",
+      "count": 0,
+      "rank": null,
+      "points": [],
+      "tangent_point_mm": null,
+      "rust": {
+        "accepted": true,
+        "cardinality": "Zero",
+        "case": "concentric_disjoint",
+        "count": 0,
+        "derivative_unavailable": "concentric circles have no isolated solution",
+        "points": [],
+        "rank": null,
+        "relation": "ConcentricDisjoint",
+        "tangent_point_mm": null
+      }
+    },
+    {
+      "case": "coincident",
+      "first": [
+        0,
+        0,
+        5000
+      ],
+      "second": [
+        0,
+        0,
+        5000
+      ],
+      "accepted": true,
+      "relation": "Coincident",
+      "cardinality": "Infinite",
+      "count": 0,
+      "rank": null,
+      "points": [],
+      "tangent_point_mm": null,
+      "rust": {
+        "accepted": true,
+        "cardinality": "Infinite",
+        "case": "coincident",
+        "count": 0,
+        "derivative_unavailable": "coincident circles form a continuum of solutions",
+        "points": [],
+        "rank": null,
+        "relation": "Coincident",
+        "tangent_point_mm": null
+      }
+    },
+    {
+      "case": "near_coincident_1um",
+      "first": [
+        0,
+        0,
+        1000000
+      ],
+      "second": [
+        1,
+        0,
+        1000000
+      ],
+      "accepted": true,
+      "relation": "Transverse",
+      "cardinality": "Two",
+      "count": 2,
+      "rank": 2,
+      "points": [
+        {
+          "point_mm": [
+            0.0005,
+            999.999999999875
+          ],
+          "jet_mm_per_mm": [
+            [
+              0.5,
+              2.500000000000312e-07
+            ],
+            [
+              999999.999999875,
+              0.5
+            ],
+            [
+              1000000.0,
+              0.5000000000000625
+            ],
+            [
+              0.5,
+              -2.500000000000312e-07
+            ],
+            [
+              -999999.999999875,
+              0.5
+            ],
+            [
+              -1000000.0,
+              0.5000000000000625
+            ]
+          ],
+          "constraint_residual_mm2": 1.1641532182693481e-10,
+          "constraint_residual_relative_to_radius2": 1.164153218269348e-16,
+          "implicit_condition": 1999999.99999975,
+          "implicit_jet_residual_mm": 1.0842021724855044e-19,
+          "fd_jet_error_max_mm_per_mm": null
+        },
+        {
+          "point_mm": [
+            0.0005,
+            -999.999999999875
+          ],
+          "jet_mm_per_mm": [
+            [
+              0.5,
+              -2.500000000000312e-07
+            ],
+            [
+              -999999.999999875,
+              0.5
+            ],
+            [
+              1000000.0,
+              -0.5000000000000625
+            ],
+            [
+              0.5,
+              2.500000000000312e-07
+            ],
+            [
+              999999.999999875,
+              0.5
+            ],
+            [
+              -1000000.0,
+              -0.5000000000000625
+            ]
+          ],
+          "constraint_residual_mm2": 1.1641532182693481e-10,
+          "constraint_residual_relative_to_radius2": 1.164153218269348e-16,
+          "implicit_condition": 1999999.99999975,
+          "implicit_jet_residual_mm": 1.0842021724855044e-19,
+          "fd_jet_error_max_mm_per_mm": null
+        }
+      ],
+      "tangent_point_mm": null,
+      "rust": {
+        "accepted": true,
+        "cardinality": "Two",
+        "case": "near_coincident_1um",
+        "count": 2,
+        "derivative_unavailable": null,
+        "points": [
+          {
+            "condition": 1999999.99999975,
+            "constraint_residual_mm2": 1.1641532182693481e-10,
+            "jet_mm_per_mm": [
+              [
+                0.5,
+                2.498272806406021e-07
+              ],
+              [
+                999999.999999875,
+                0.5
+              ],
+              [
+                1000000,
+                0.5000000000000625
+              ],
+              [
+                0.5,
+                -2.498272806406021e-07
+              ],
+              [
+                -999999.999999875,
+                0.5
+              ],
+              [
+                -1000000,
+                0.5000000000000625
+              ]
+            ],
+            "point_mm": [
+              0.0005,
+              999.999999999875
+            ]
+          },
+          {
+            "condition": 1999999.99999975,
+            "constraint_residual_mm2": 1.1641532182693481e-10,
+            "jet_mm_per_mm": [
+              [
+                0.5,
+                -2.498272806406021e-07
+              ],
+              [
+                -999999.999999875,
+                0.5
+              ],
+              [
+                1000000,
+                -0.5000000000000625
+              ],
+              [
+                0.5,
+                2.498272806406021e-07
+              ],
+              [
+                999999.999999875,
+                0.5
+              ],
+              [
+                -1000000,
+                -0.5000000000000625
+              ]
+            ],
+            "point_mm": [
+              0.0005,
+              -999.999999999875
+            ]
+          }
+        ],
+        "rank": 2,
+        "relation": "Transverse",
+        "tangent_point_mm": null
+      }
+    },
+    {
+      "case": "at_center_bound",
+      "first": [
+        1000000,
+        0,
+        1000000
+      ],
+      "second": [
+        994000,
+        0,
+        1000000
+      ],
+      "accepted": true,
+      "relation": "Transverse",
+      "cardinality": "Two",
+      "count": 2,
+      "rank": 2,
+      "points": [
+        {
+          "point_mm": [
+            997.0,
+            -999.995499989875
+          ],
+          "jet_mm_per_mm": [
+            [
+              0.5,
+              0.0015000067500455627
+            ],
+            [
+              166.6659166649792,
+              0.5
+            ],
+            [
+              -166.66666666666666,
+              -0.5000022500151876
+            ],
+            [
+              0.5,
+              -0.0015000067500455627
+            ],
+            [
+              -166.6659166649792,
+              0.5
+            ],
+            [
+              166.66666666666666,
+              -0.5000022500151876
+            ]
+          ],
+          "constraint_residual_mm2": 2.3283064365386963e-10,
+          "constraint_residual_relative_to_radius2": 2.328306436538696e-16,
+          "implicit_condition": 333.3318333299584,
+          "implicit_jet_residual_mm": 1.1368683772161603e-13,
+          "fd_jet_error_max_mm_per_mm": null
+        },
+        {
+          "point_mm": [
+            997.0,
+            999.995499989875
+          ],
+          "jet_mm_per_mm": [
+            [
+              0.5,
+              -0.0015000067500455627
+            ],
+            [
+              -166.6659166649792,
+              0.5
+            ],
+            [
+              -166.66666666666666,
+              0.5000022500151876
+            ],
+            [
+              0.5,
+              0.0015000067500455627
+            ],
+            [
+              166.6659166649792,
+              0.5
+            ],
+            [
+              166.66666666666666,
+              0.5000022500151876
+            ]
+          ],
+          "constraint_residual_mm2": 2.3283064365386963e-10,
+          "constraint_residual_relative_to_radius2": 2.328306436538696e-16,
+          "implicit_condition": 333.3318333299584,
+          "implicit_jet_residual_mm": 1.1368683772161603e-13,
+          "fd_jet_error_max_mm_per_mm": null
+        }
+      ],
+      "tangent_point_mm": null,
+      "rust": {
+        "accepted": true,
+        "cardinality": "Two",
+        "case": "at_center_bound",
+        "count": 2,
+        "derivative_unavailable": null,
+        "points": [
+          {
+            "condition": 333.33183332995833,
+            "constraint_residual_mm2": 2.3283064365386963e-10,
+            "jet_mm_per_mm": [
+              [
+                0.5,
+                0.001500006750063676
+              ],
+              [
+                166.66591666497916,
+                0.5
+              ],
+              [
+                -166.66666666666669,
+                -0.5000022500151876
+              ],
+              [
+                0.5,
+                -0.001500006750063676
+              ],
+              [
+                -166.66591666497916,
+                0.5
+              ],
+              [
+                166.66666666666669,
+                -0.5000022500151876
+              ]
+            ],
+            "point_mm": [
+              997,
+              -999.995499989875
+            ]
+          },
+          {
+            "condition": 333.33183332995833,
+            "constraint_residual_mm2": 2.3283064365386963e-10,
+            "jet_mm_per_mm": [
+              [
+                0.5,
+                -0.001500006750063676
+              ],
+              [
+                -166.66591666497916,
+                0.5
+              ],
+              [
+                -166.66666666666669,
+                0.5000022500151876
+              ],
+              [
+                0.5,
+                0.001500006750063676
+              ],
+              [
+                166.66591666497916,
+                0.5
+              ],
+              [
+                166.66666666666669,
+                0.5000022500151876
+              ]
+            ],
+            "point_mm": [
+              997,
+              999.995499989875
+            ]
+          }
+        ],
+        "rank": 2,
+        "relation": "Transverse",
+        "tangent_point_mm": null
+      }
+    },
+    {
+      "case": "at_radius_bound",
+      "first": [
+        0,
+        0,
+        1000000
+      ],
+      "second": [
+        1000000,
+        0,
+        1000000
+      ],
+      "accepted": true,
+      "relation": "Transverse",
+      "cardinality": "Two",
+      "count": 2,
+      "rank": 2,
+      "points": [
+        {
+          "point_mm": [
+            500.0,
+            866.0254037844386
+          ],
+          "jet_mm_per_mm": [
+            [
+              0.5,
+              0.28867513459481287
+            ],
+            [
+              0.8660254037844385,
+              0.5
+            ],
+            [
+              1.0,
+              0.5773502691896257
+            ],
+            [
+              0.5,
+              -0.28867513459481287
+            ],
+            [
+              -0.8660254037844385,
+              0.5
+            ],
+            [
+              -1.0,
+              0.5773502691896257
+            ]
+          ],
+          "constraint_residual_mm2": 1.1641532182693481e-10,
+          "constraint_residual_relative_to_radius2": 1.164153218269348e-16,
+          "implicit_condition": 1.7320508075688772,
+          "implicit_jet_residual_mm": 1.1368683772161603e-13,
+          "fd_jet_error_max_mm_per_mm": null
+        },
+        {
+          "point_mm": [
+            500.0,
+            -866.0254037844386
+          ],
+          "jet_mm_per_mm": [
+            [
+              0.5,
+              -0.28867513459481287
+            ],
+            [
+              -0.8660254037844385,
+              0.5
+            ],
+            [
+              1.0,
+              -0.5773502691896257
+            ],
+            [
+              0.5,
+              0.28867513459481287
+            ],
+            [
+              0.8660254037844385,
+              0.5
+            ],
+            [
+              -1.0,
+              -0.5773502691896257
+            ]
+          ],
+          "constraint_residual_mm2": 1.1641532182693481e-10,
+          "constraint_residual_relative_to_radius2": 1.164153218269348e-16,
+          "implicit_condition": 1.7320508075688772,
+          "implicit_jet_residual_mm": 1.1368683772161603e-13,
+          "fd_jet_error_max_mm_per_mm": null
+        }
+      ],
+      "tangent_point_mm": null,
+      "rust": {
+        "accepted": true,
+        "cardinality": "Two",
+        "case": "at_radius_bound",
+        "count": 2,
+        "derivative_unavailable": null,
+        "points": [
+          {
+            "condition": 1.7320508075688774,
+            "constraint_residual_mm2": 1.1641532182693481e-10,
+            "jet_mm_per_mm": [
+              [
+                0.5,
+                0.28867513459481287
+              ],
+              [
+                0.8660254037844386,
+                0.5
+              ],
+              [
+                1,
+                0.5773502691896257
+              ],
+              [
+                0.5,
+                -0.28867513459481287
+              ],
+              [
+                -0.8660254037844386,
+                0.5
+              ],
+              [
+                -1,
+                0.5773502691896257
+              ]
+            ],
+            "point_mm": [
+              500,
+              866.0254037844386
+            ]
+          },
+          {
+            "condition": 1.7320508075688774,
+            "constraint_residual_mm2": 1.1641532182693481e-10,
+            "jet_mm_per_mm": [
+              [
+                0.5,
+                -0.28867513459481287
+              ],
+              [
+                -0.8660254037844386,
+                0.5
+              ],
+              [
+                1,
+                -0.5773502691896257
+              ],
+              [
+                0.5,
+                0.28867513459481287
+              ],
+              [
+                0.8660254037844386,
+                0.5
+              ],
+              [
+                -1,
+                -0.5773502691896257
+              ]
+            ],
+            "point_mm": [
+              500,
+              -866.0254037844386
+            ]
+          }
+        ],
+        "rank": 2,
+        "relation": "Transverse",
+        "tangent_point_mm": null
+      }
+    },
+    {
+      "case": "beyond_center_bound",
+      "first": [
+        1000001,
+        0,
+        1000
+      ],
+      "second": [
+        0,
+        0,
+        1000
+      ],
+      "accepted": false,
+      "reason": "outside supported circle domain",
+      "rust": {
+        "accepted": false,
+        "case": "beyond_center_bound",
+        "error": "circle coordinates or radius are outside the supported domain"
+      }
+    },
+    {
+      "case": "zero_radius",
+      "first": [
+        0,
+        0,
+        0
+      ],
+      "second": [
+        1,
+        0,
+        1
+      ],
+      "accepted": false,
+      "reason": "outside supported circle domain",
+      "rust": {
+        "accepted": false,
+        "case": "zero_radius",
+        "error": "circle coordinates or radius are outside the supported domain"
+      }
+    },
+    {
+      "case": "negative_radius",
+      "first": [
+        0,
+        0,
+        -1
+      ],
+      "second": [
+        1,
+        0,
+        1
+      ],
+      "accepted": false,
+      "reason": "outside supported circle domain",
+      "rust": {
+        "accepted": false,
+        "case": "negative_radius",
+        "error": "circle coordinates or radius are outside the supported domain"
+      }
+    },
+    {
+      "case": "beyond_radius_bound",
+      "first": [
+        0,
+        0,
+        1000001
+      ],
+      "second": [
+        1,
+        0,
+        1
+      ],
+      "accepted": false,
+      "reason": "outside supported circle domain",
+      "rust": {
+        "accepted": false,
+        "case": "beyond_radius_bound",
+        "error": "circle coordinates or radius are outside the supported domain"
+      }
+    },
+    {
+      "case": "i64_min_center",
+      "first": [
+        -9223372036854775808,
+        0,
+        1
+      ],
+      "second": [
+        0,
+        0,
+        1
+      ],
+      "accepted": false,
+      "reason": "outside supported circle domain",
+      "rust": {
+        "accepted": false,
+        "case": "i64_min_center",
+        "error": "circle coordinates or radius are outside the supported domain"
+      }
+    },
+    {
+      "case": "i64_max_radius",
+      "first": [
+        0,
+        0,
+        9223372036854775807
+      ],
+      "second": [
+        1,
+        0,
+        1
+      ],
+      "accepted": false,
+      "reason": "outside supported circle domain",
+      "rust": {
+        "accepted": false,
+        "case": "i64_max_radius",
+        "error": "circle coordinates or radius are outside the supported domain"
+      }
+    }
+  ]
+}

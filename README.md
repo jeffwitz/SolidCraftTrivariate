@@ -39,6 +39,25 @@ python3 -c 'import json; print(json.dumps(json.load(open("tests/references/mecha
 
 Le fichier VTU s’ouvre dans ParaView. Il conserve les valeurs de contrainte propres à chaque bloc aux interfaces. Le résultat JSON conserve les coefficients homogènes Q2, les contraintes cinématiques, les charges nodales, les déplacements en mm, les réactions et le bilan travail-énergie. Le solveur traite l’élasticité linéaire isotrope en petites déformations. Chaque famille possède son propre domaine géométrique et ses contrôles. Les mesures de convergence, les comparaisons aux solveurs indépendants et les cas refusés figurent dans le [journal de campagne](docs/campagne-20261125.md).
 
+## Modifier la profondeur d’un perçage
+
+Le document SolidCraft de boîte percée sous `tests/references/solidcraft-blind-bore/` accompagne un historique exporté par l’hôte. L’exemple suivant part de la recette polygonale du corpus pour suivre une cavité fermée qui débouche sur la face de départ. Les coordonnées axiales sont en millimètres.
+
+```sh
+mkdir -p build/demo
+cli=target/release/solidcraft-trivariate
+python3 -c 'import json; print(json.dumps(next(r["recipe"] for r in json.load(open("tests/references/interval_bores_corpus.json")) if r["id"]=="closed")))' > build/demo/cavity.recipe.json
+"$cli" build build/demo/cavity.recipe.json build/demo/cavity.json
+cat > build/demo/edits.json <<'JSON'
+{"schema":"interval_bore_edits_v1","steps":[{"bore":"pilot","z_interval_mm":[0,9],"require_features":["bore/pilot/upper"]}]}
+JSON
+"$cli" edit-bore-intervals build/demo/cavity.json build/demo/edits.json build/demo/blind.json
+"$cli" audit build/demo/blind.json
+"$cli" export-step build/demo/blind.json build/demo/blind.step
+```
+
+Le fond supérieur reste sélectionnable par son nom. Le rapport d’édition indique la disparition de la face inférieure, le changement de volume en multiples de π et les couches réutilisées. Une séquence contenant une sélection exigée qui disparaît échoue avant publication du fichier cible. [Oracle des éditions](tests/references/interval_bore_edits.py)
+
 ## Vérifier le noyau Rust
 
 ```sh

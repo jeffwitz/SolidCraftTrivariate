@@ -1,0 +1,58 @@
+{
+  "schema": "j4d_terminal_records_v1",
+  "evidence_kind": "preserved report row plus reproduced wrapper/source provenance",
+  "provenance": {
+    "manifest_base_revision": "8d197a8",
+    "baseline_summary_revision": "3d40313e3c376bb7ff2ecb3187b9959c16ea17b7",
+    "runner_source_revision": "d7d764affcb9db12c87e37e7e0b1ff026a336818",
+    "runner_source_path": "tests/references/local_fillet_cost.py",
+    "terminal_record_source": "docs/results/local-fillet-cost-20261125.json radius_runs[7]",
+    "binary_path": "target/release/examples/local_fillet_cost",
+    "binary_sha256_at_review": "cafc40ba5543bff568367399f6213260a66a86ab06d94e081cbafd43dda75ebe",
+    "binary_mtime_local": "2026-11-25 07:28:46.008952114 +0100",
+    "nearest_source_commit_time_local": "2026-11-25 07:50:38 +0100",
+    "exact_binary_source_revision": null,
+    "source_revision_limit": "The retained binary predates the nearest commit; its checkout SHA/build metadata was not recorded. The report's tested source state is therefore attributable to the d7d764a source snapshot, but the exact binary build revision cannot be proven."
+  },
+  "geometry": {
+    "family": "parameterized_bracket_v1",
+    "radii_ticks_sixteenths_mm": [51, 74],
+    "radii_mm": [3.1875, 4.625],
+    "build": "build_bracket_parameters(51, 74), followed by audit_bracket_parameters and parameterized_bracket_space",
+    "fillet_targets": [
+      {"root": "elbow_east_z10_30", "uvw": [0, 1, 0.5]},
+      {"root": "elbow_north_z10_30", "uvw": [1, 1, 0.5]}
+    ],
+    "target_derivation": "The selected physical location is (14-6/sqrt(2),14-6/sqrt(2),20) mm, found by stress::fillet_limits; target chart preimages are also present in the completed from_h1 report for this same radius pair."
+  },
+  "path": {
+    "name": "from_h2",
+    "uniform_depth": 2,
+    "local_refinement_rounds": 3,
+    "state_quadratures": [6, 8],
+    "linear_solver_tolerance": 1e-11,
+    "initial_partition_limits": {"max_depth": 7, "max_leaves": 12000},
+    "refinement": "Refine active leaves incident to the two target points and neighboring leaves across their interfaces, then apply partition balancing."
+  },
+  "runner": {
+    "command": [
+      "/usr/bin/time", "-f", "%e %M", "-o",
+      "/home/jeff/Code/SolidCraftTrivariate/build/bracket-cost/local-fillet/x51-y74/from_h2-resources.txt",
+      "/home/jeff/Code/SolidCraftTrivariate/target/release/examples/local_fillet_cost",
+      "--path", "51", "74", "from_h2",
+      "/home/jeff/Code/SolidCraftTrivariate/build/bracket-cost/local-fillet/x51-y74/from_h2.json"
+    ],
+    "wrapper": "subprocess.run(..., timeout=1800) in tests/references/local_fillet_cost.py; monotonic elapsed timer around the wrapper",
+    "threads_environment": {"OMP_NUM_THREADS": "2", "OPENBLAS_NUM_THREADS": "1"}
+  },
+  "terminal": {
+    "status": "timeout_1800s",
+    "wall_s": 1800.101325331023,
+    "diagnostic": "Command '['/usr/bin/time', '-f', '%e %M', '-o', '/home/jeff/Code/SolidCraftTrivariate/build/bracket-cost/local-fillet/x51-y74/from_h2-resources.txt', '/home/jeff/Code/SolidCraftTrivariate/target/release/examples/local_fillet_cost', '--path', '51', '74', 'from_h2', '/home/jeff/Code/SolidCraftTrivariate/build/bracket-cost/local-fillet/x51-y74/from_h2.json']' timed out after 1800 seconds",
+    "output_json_exists": false,
+    "gnu_time_resource_file": "build/bracket-cost/local-fillet/x51-y74/from_h2-resources.txt",
+    "gnu_time_resource_contents": "",
+    "peak_rss_kib": null,
+    "interpretation": "The timeout is established by the preserved wrapper terminal diagnostic and elapsed time. No raw Rust stdout/stderr or GNU time RSS line survived; no memory peak is inferred."
+  }
+}

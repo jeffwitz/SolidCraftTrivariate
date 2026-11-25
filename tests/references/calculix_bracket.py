@@ -110,7 +110,10 @@ def run(args):
         stream.write("*STEP\n*STATIC\n*BOUNDARY\nCLAMP,1,3\n*CLOAD\n")
         for i,w in sorted(weights.items()):
             stream.write(f"{i},2,{-1000*w/area:.17g}\n")
-        stream.write("*NODE PRINT,NSET=TIP\nU\n*NODE PRINT,NSET=CLAMP\nRF\n*END STEP\n")
+        stream.write("*NODE PRINT,NSET=TIP\nU\n*NODE PRINT,NSET=CLAMP\nRF\n")
+        if args.store_displacements:
+            stream.write("*NODE PRINT,NSET=Nall\nU\n")
+        stream.write("*END STEP\n")
     mesh_seconds=time.monotonic()-begin
     with (root/"ccx.log").open("w") as log:
         subprocess.run([args.ccx,"-i","bracket"],cwd=root,stdout=log,stderr=subprocess.STDOUT,check=True)
@@ -133,6 +136,7 @@ def run(args):
 
 if __name__=="__main__":
     parser=argparse.ArgumentParser()
+    parser.add_argument("--store-displacements",action="store_true")
     parser.add_argument("--size",type=float,required=True)
     parser.add_argument("--ccx",required=True)
     parser.add_argument("directory",type=Path)

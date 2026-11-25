@@ -308,9 +308,15 @@ fn pcg(
             return Err("PCG residual became nonfinite");
         }
         if relative <= PCG_TOLERANCE {
-            let actual_product = apply_restricted(stiffness, ndof, free, &solution)?;
-            for index in 0..residual.len() {
-                residual[index] = rhs[index] - actual_product[index];
+            let mut full_u=vec![0.;3*ndof];
+            let mut full_f=vec![0.;3*ndof];
+            for (local,&global) in free.iter().enumerate() {
+                full_u[3*global..3*global+3].copy_from_slice(&solution[3*local..3*local+3]);
+                full_f[3*global..3*global+3].copy_from_slice(&rhs[3*local..3*local+3]);
+            }
+            let actual=stiffness.equilibrium_residual(&full_u,&full_f)?;
+            for (local,&global) in free.iter().enumerate() {
+                residual[3*local..3*local+3].copy_from_slice(&actual[3*global..3*global+3]);
             }
             let actual_relative = dot(&residual, &residual).sqrt() / rhs_norm;
             if actual_relative <= PCG_TOLERANCE {

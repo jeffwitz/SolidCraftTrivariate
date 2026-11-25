@@ -1,0 +1,589 @@
+{
+  "cases": {
+    "pair_1": {
+      "build_returncode": 1,
+      "build_status": {
+        "reason": "row_bore_pair_overlap",
+        "status": "error"
+      },
+      "build_wall_ms": 2.16655,
+      "expected_state": "overlapping",
+      "status": "refused",
+      "stderr": ""
+    },
+    "pair_2": {
+      "build_returncode": 1,
+      "build_status": {
+        "reason": "row_bore_pair_tangent",
+        "status": "error"
+      },
+      "build_wall_ms": 3.390983,
+      "expected_state": "tangent",
+      "status": "refused",
+      "stderr": ""
+    },
+    "pair_2.5": {
+      "block_count": 8,
+      "boundary_euler_expected": -2,
+      "boundary_euler_sampled": -2,
+      "cli": {
+        "audit_returncode": 0,
+        "audit_status": {
+          "blocks": 8,
+          "determinant_lower_bound_mm3": 9.656854249491944,
+          "exterior_sides": 30,
+          "ideal_volume_mm3": 2998.938070170253,
+          "method": "certified_fixed_extrusion_partition",
+          "radial_error_upper_bound_mm": 2.1000000000000002e-15,
+          "shared_faces": 9,
+          "status": "valid"
+        },
+        "audit_stderr": "",
+        "audit_wall_ms": 3.650244,
+        "build_returncode": 0,
+        "build_status": {
+          "blocks": 8,
+          "determinant_lower_bound_mm3": 9.656854249491944,
+          "exterior_sides": 30,
+          "ideal_volume_mm3": 2998.938070170253,
+          "method": "certified_fixed_extrusion_partition",
+          "radial_error_upper_bound_mm": 2.1000000000000002e-15,
+          "shared_faces": 9,
+          "status": "valid"
+        },
+        "build_wall_ms": 50.177367,
+        "stderr": ""
+      },
+      "expected_block_count": 8,
+      "exterior_faces": 30,
+      "exterior_faces_expected": 30,
+      "geometry_state_manifest": "disjoint",
+      "ids_in_left_to_right_sector_order": true,
+      "interfaces": 9,
+      "interfaces_expected": 9,
+      "nonmanifold_faces": 0,
+      "orientation": {
+        "minimum_sampled_det_mm3": 31.85958703506159,
+        "nonpositive_samples": [],
+        "sample_count": 216
+      },
+      "quadrature_delta_12_16_mm3": 5.184119800105691e-11,
+      "qualified_by_oracle": true,
+      "radial_error": {
+        "max_error_mm": 8.881784197001252e-16,
+        "missing_blocks": 0,
+        "samples": 40
+      },
+      "schema": "row_bores_v1",
+      "status": "measured",
+      "topology_matches": true,
+      "volume_analytic_mm3": 2998.938070170253,
+      "volume_by_gauss_order_mm3": {
+        "12": 2998.938070170253,
+        "16": 2998.938070170305,
+        "4": 2998.971704163624,
+        "8": 2998.938070327951
+      },
+      "volume_error_order16_mm3": 5.184119800105691e-11
+    },
+    "pair_3": {
+      "block_count": 8,
+      "boundary_euler_expected": -2,
+      "boundary_euler_sampled": -2,
+      "cli": {
+        "audit_returncode": 0,
+        "audit_status": {
+          "blocks": 8,
+          "determinant_lower_bound_mm3": 19.313708498984234,
+          "exterior_sides": 30,
+          "ideal_volume_mm3": 2998.938070170253,
+          "method": "certified_fixed_extrusion_partition",
+          "radial_error_upper_bound_mm": 2.1000000000000002e-15,
+          "shared_faces": 9,
+          "status": "valid"
+        },
+        "audit_stderr": "",
+        "audit_wall_ms": 4.799796,
+        "build_returncode": 0,
+        "build_status": {
+          "blocks": 8,
+          "determinant_lower_bound_mm3": 19.313708498984234,
+          "exterior_sides": 30,
+          "ideal_volume_mm3": 2998.938070170253,
+          "method": "certified_fixed_extrusion_partition",
+          "radial_error_upper_bound_mm": 2.1000000000000002e-15,
+          "shared_faces": 9,
+          "status": "valid"
+        },
+        "build_wall_ms": 49.702005,
+        "stderr": ""
+      },
+      "expected_block_count": 8,
+      "exterior_faces": 30,
+      "exterior_faces_expected": 30,
+      "geometry_state_manifest": "disjoint",
+      "ids_in_left_to_right_sector_order": true,
+      "interfaces": 9,
+      "interfaces_expected": 9,
+      "nonmanifold_faces": 0,
+      "orientation": {
+        "minimum_sampled_det_mm3": 63.71917407012321,
+        "nonpositive_samples": [],
+        "sample_count": 216
+      },
+      "quadrature_delta_12_16_mm3": 1.1368683772161603e-11,
+      "qualified_by_oracle": true,
+      "radial_error": {
+        "max_error_mm": 8.881784197001252e-16,
+        "missing_blocks": 0,
+        "samples": 40
+      },
+      "schema": "row_bores_v1",
+      "status": "measured",
+      "topology_matches": true,
+      "volume_analytic_mm3": 2998.938070170253,
+      "volume_by_gauss_order_mm3": {
+        "12": 2998.938070170255,
+        "16": 2998.9380701702435,
+        "4": 2998.971704163626,
+        "8": 2998.9380703279585
+      },
+      "volume_error_order16_mm3": 9.549694368615746e-12
+    },
+    "pair_4": {
+      "block_count": 8,
+      "boundary_euler_expected": -2,
+      "boundary_euler_sampled": -2,
+      "cli": {
+        "audit_returncode": 0,
+        "audit_status": {
+          "blocks": 8,
+          "determinant_lower_bound_mm3": 10.603867196750643,
+          "exterior_sides": 30,
+          "ideal_volume_mm3": 2998.938070170253,
+          "method": "certified_fixed_extrusion_partition",
+          "radial_error_upper_bound_mm": 2.1000000000000002e-15,
+          "shared_faces": 9,
+          "status": "valid"
+        },
+        "audit_stderr": "",
+        "audit_wall_ms": 3.160234,
+        "build_returncode": 0,
+        "build_status": {
+          "blocks": 8,
+          "determinant_lower_bound_mm3": 10.603867196750643,
+          "exterior_sides": 30,
+          "ideal_volume_mm3": 2998.938070170253,
+          "method": "certified_fixed_extrusion_partition",
+          "radial_error_upper_bound_mm": 2.1000000000000002e-15,
+          "shared_faces": 9,
+          "status": "valid"
+        },
+        "build_wall_ms": 47.815338,
+        "stderr": ""
+      },
+      "expected_block_count": 8,
+      "exterior_faces": 30,
+      "exterior_faces_expected": 30,
+      "geometry_state_manifest": "disjoint",
+      "ids_in_left_to_right_sector_order": true,
+      "interfaces": 9,
+      "interfaces_expected": 9,
+      "nonmanifold_faces": 0,
+      "orientation": {
+        "minimum_sampled_det_mm3": 127.43834814024642,
+        "nonpositive_samples": [],
+        "sample_count": 216
+      },
+      "quadrature_delta_12_16_mm3": 1.2278178473934531e-11,
+      "qualified_by_oracle": true,
+      "radial_error": {
+        "max_error_mm": 8.881784197001252e-16,
+        "missing_blocks": 0,
+        "samples": 40
+      },
+      "schema": "row_bores_v1",
+      "status": "measured",
+      "topology_matches": true,
+      "volume_analytic_mm3": 2998.938070170253,
+      "volume_by_gauss_order_mm3": {
+        "12": 2998.938070170277,
+        "16": 2998.938070170265,
+        "4": 2998.9717041636245,
+        "8": 2998.9380703279253
+      },
+      "volume_error_order16_mm3": 1.1823431123048067e-11
+    },
+    "row_1": {
+      "block_count": 4,
+      "boundary_euler_expected": 0,
+      "boundary_euler_sampled": 0,
+      "cli": {
+        "audit_returncode": 0,
+        "audit_status": {
+          "blocks": 4,
+          "determinant_lower_bound_mm3": 30.580317395532344,
+          "exterior_sides": 16,
+          "ideal_volume_mm3": 1499.4690350851265,
+          "method": "certified_fixed_extrusion_partition",
+          "radial_error_upper_bound_mm": 2.1000000000000002e-15,
+          "shared_faces": 4,
+          "status": "valid"
+        },
+        "audit_stderr": "",
+        "audit_wall_ms": 3.225756,
+        "build_returncode": 0,
+        "build_status": {
+          "blocks": 4,
+          "determinant_lower_bound_mm3": 30.580317395532344,
+          "exterior_sides": 16,
+          "ideal_volume_mm3": 1499.4690350851265,
+          "method": "certified_fixed_extrusion_partition",
+          "radial_error_upper_bound_mm": 2.1000000000000002e-15,
+          "shared_faces": 4,
+          "status": "valid"
+        },
+        "build_wall_ms": 46.612873,
+        "stderr": ""
+      },
+      "expected_block_count": 4,
+      "exterior_faces": 16,
+      "exterior_faces_expected": 16,
+      "geometry_state_manifest": "disjoint",
+      "ids_in_left_to_right_sector_order": true,
+      "interfaces": 4,
+      "interfaces_expected": 4,
+      "nonmanifold_faces": 0,
+      "orientation": {
+        "minimum_sampled_det_mm3": 191.1575222103696,
+        "nonpositive_samples": [],
+        "sample_count": 108
+      },
+      "quadrature_delta_12_16_mm3": 2.9558577807620168e-12,
+      "qualified_by_oracle": true,
+      "radial_error": {
+        "max_error_mm": 4.440892098500626e-16,
+        "missing_blocks": 0,
+        "samples": 20
+      },
+      "schema": "row_bores_v1",
+      "status": "measured",
+      "topology_matches": true,
+      "volume_analytic_mm3": 1499.4690350851265,
+      "volume_by_gauss_order_mm3": {
+        "12": 1499.4690350851245,
+        "16": 1499.4690350851215,
+        "4": 1499.485852081812,
+        "8": 1499.4690351639654
+      },
+      "volume_error_order16_mm3": 5.002220859751105e-12
+    },
+    "row_16": {
+      "block_count": 64,
+      "boundary_euler_expected": -30,
+      "boundary_euler_sampled": -30,
+      "cli": {
+        "audit_returncode": 0,
+        "audit_status": {
+          "blocks": 64,
+          "determinant_lower_bound_mm3": 30.58031739552071,
+          "exterior_sides": 226,
+          "ideal_volume_mm3": 23991.504561362024,
+          "method": "certified_fixed_extrusion_partition",
+          "radial_error_upper_bound_mm": 2.1000000000000002e-15,
+          "shared_faces": 79,
+          "status": "valid"
+        },
+        "audit_stderr": "",
+        "audit_wall_ms": 12.827929,
+        "build_returncode": 0,
+        "build_status": {
+          "blocks": 64,
+          "determinant_lower_bound_mm3": 30.58031739552071,
+          "exterior_sides": 226,
+          "ideal_volume_mm3": 23991.504561362024,
+          "method": "certified_fixed_extrusion_partition",
+          "radial_error_upper_bound_mm": 2.1000000000000002e-15,
+          "shared_faces": 79,
+          "status": "valid"
+        },
+        "build_wall_ms": 94.793498,
+        "stderr": ""
+      },
+      "expected_block_count": 64,
+      "exterior_faces": 226,
+      "exterior_faces_expected": 226,
+      "geometry_state_manifest": "disjoint",
+      "ids_in_left_to_right_sector_order": true,
+      "interfaces": 79,
+      "interfaces_expected": 79,
+      "nonmanifold_faces": 0,
+      "orientation": {
+        "minimum_sampled_det_mm3": 191.15752221036902,
+        "nonpositive_samples": [],
+        "sample_count": 1728
+      },
+      "quadrature_delta_12_16_mm3": 1.7280399333685637e-09,
+      "qualified_by_oracle": true,
+      "radial_error": {
+        "max_error_mm": 1.4210854715202004e-14,
+        "missing_blocks": 0,
+        "samples": 320
+      },
+      "schema": "row_bores_v1",
+      "status": "measured",
+      "topology_matches": true,
+      "volume_analytic_mm3": 23991.504561362024,
+      "volume_by_gauss_order_mm3": {
+        "12": 23991.504561363283,
+        "16": 23991.50456136501,
+        "4": 23991.77363330899,
+        "8": 23991.50456262426
+      },
+      "volume_error_order16_mm3": 2.9867806006222963e-09
+    },
+    "row_2": {
+      "block_count": 8,
+      "boundary_euler_expected": -2,
+      "boundary_euler_sampled": -2,
+      "cli": {
+        "audit_returncode": 0,
+        "audit_status": {
+          "blocks": 8,
+          "determinant_lower_bound_mm3": 30.580317395531722,
+          "exterior_sides": 30,
+          "ideal_volume_mm3": 2998.938070170253,
+          "method": "certified_fixed_extrusion_partition",
+          "radial_error_upper_bound_mm": 2.1000000000000002e-15,
+          "shared_faces": 9,
+          "status": "valid"
+        },
+        "audit_stderr": "",
+        "audit_wall_ms": 3.515547,
+        "build_returncode": 0,
+        "build_status": {
+          "blocks": 8,
+          "determinant_lower_bound_mm3": 30.580317395531722,
+          "exterior_sides": 30,
+          "ideal_volume_mm3": 2998.938070170253,
+          "method": "certified_fixed_extrusion_partition",
+          "radial_error_upper_bound_mm": 2.1000000000000002e-15,
+          "shared_faces": 9,
+          "status": "valid"
+        },
+        "build_wall_ms": 46.958475,
+        "stderr": ""
+      },
+      "expected_block_count": 8,
+      "exterior_faces": 30,
+      "exterior_faces_expected": 30,
+      "geometry_state_manifest": "disjoint",
+      "ids_in_left_to_right_sector_order": true,
+      "interfaces": 9,
+      "interfaces_expected": 9,
+      "nonmanifold_faces": 0,
+      "orientation": {
+        "minimum_sampled_det_mm3": 191.15752221036962,
+        "nonpositive_samples": [],
+        "sample_count": 216
+      },
+      "quadrature_delta_12_16_mm3": 3.5925040720030665e-11,
+      "qualified_by_oracle": true,
+      "radial_error": {
+        "max_error_mm": 8.881784197001252e-16,
+        "missing_blocks": 0,
+        "samples": 40
+      },
+      "schema": "row_bores_v1",
+      "status": "measured",
+      "topology_matches": true,
+      "volume_analytic_mm3": 2998.938070170253,
+      "volume_by_gauss_order_mm3": {
+        "12": 2998.9380701702153,
+        "16": 2998.938070170251,
+        "4": 2998.9717041636236,
+        "8": 2998.9380703279485
+      },
+      "volume_error_order16_mm3": 1.8189894035458565e-12
+    },
+    "row_4": {
+      "block_count": 16,
+      "boundary_euler_expected": -6,
+      "boundary_euler_sampled": -6,
+      "cli": {
+        "audit_returncode": 0,
+        "audit_status": {
+          "blocks": 16,
+          "determinant_lower_bound_mm3": 30.58031739553016,
+          "exterior_sides": 58,
+          "ideal_volume_mm3": 5997.876140340506,
+          "method": "certified_fixed_extrusion_partition",
+          "radial_error_upper_bound_mm": 2.1000000000000002e-15,
+          "shared_faces": 19,
+          "status": "valid"
+        },
+        "audit_stderr": "",
+        "audit_wall_ms": 4.367834,
+        "build_returncode": 0,
+        "build_status": {
+          "blocks": 16,
+          "determinant_lower_bound_mm3": 30.58031739553016,
+          "exterior_sides": 58,
+          "ideal_volume_mm3": 5997.876140340506,
+          "method": "certified_fixed_extrusion_partition",
+          "radial_error_upper_bound_mm": 2.1000000000000002e-15,
+          "shared_faces": 19,
+          "status": "valid"
+        },
+        "build_wall_ms": 21.765427,
+        "stderr": ""
+      },
+      "expected_block_count": 16,
+      "exterior_faces": 58,
+      "exterior_faces_expected": 58,
+      "geometry_state_manifest": "disjoint",
+      "ids_in_left_to_right_sector_order": true,
+      "interfaces": 19,
+      "interfaces_expected": 19,
+      "nonmanifold_faces": 0,
+      "orientation": {
+        "minimum_sampled_det_mm3": 191.15752221036962,
+        "nonpositive_samples": [],
+        "sample_count": 432
+      },
+      "quadrature_delta_12_16_mm3": 1.2187229003757238e-10,
+      "qualified_by_oracle": true,
+      "radial_error": {
+        "max_error_mm": 2.6645352591003757e-15,
+        "missing_blocks": 0,
+        "samples": 80
+      },
+      "schema": "row_bores_v1",
+      "status": "measured",
+      "topology_matches": true,
+      "volume_analytic_mm3": 5997.876140340506,
+      "volume_by_gauss_order_mm3": {
+        "12": 5997.876140340499,
+        "16": 5997.876140340377,
+        "4": 5997.943408327229,
+        "8": 5997.876140655886
+      },
+      "volume_error_order16_mm3": 1.291482476517558e-10
+    },
+    "row_8": {
+      "block_count": 32,
+      "boundary_euler_expected": -14,
+      "boundary_euler_sampled": -14,
+      "cli": {
+        "audit_returncode": 0,
+        "audit_status": {
+          "blocks": 32,
+          "determinant_lower_bound_mm3": 30.58031739552699,
+          "exterior_sides": 114,
+          "ideal_volume_mm3": 11995.752280681012,
+          "method": "certified_fixed_extrusion_partition",
+          "radial_error_upper_bound_mm": 2.1000000000000002e-15,
+          "shared_faces": 39,
+          "status": "valid"
+        },
+        "audit_stderr": "",
+        "audit_wall_ms": 6.070201,
+        "build_returncode": 0,
+        "build_status": {
+          "blocks": 32,
+          "determinant_lower_bound_mm3": 30.58031739552699,
+          "exterior_sides": 114,
+          "ideal_volume_mm3": 11995.752280681012,
+          "method": "certified_fixed_extrusion_partition",
+          "radial_error_upper_bound_mm": 2.1000000000000002e-15,
+          "shared_faces": 39,
+          "status": "valid"
+        },
+        "build_wall_ms": 63.717049,
+        "stderr": ""
+      },
+      "expected_block_count": 32,
+      "exterior_faces": 114,
+      "exterior_faces_expected": 114,
+      "geometry_state_manifest": "disjoint",
+      "ids_in_left_to_right_sector_order": true,
+      "interfaces": 39,
+      "interfaces_expected": 39,
+      "nonmanifold_faces": 0,
+      "orientation": {
+        "minimum_sampled_det_mm3": 191.15752221036962,
+        "nonpositive_samples": [],
+        "sample_count": 864
+      },
+      "quadrature_delta_12_16_mm3": 1.0732037480920553e-10,
+      "qualified_by_oracle": true,
+      "radial_error": {
+        "max_error_mm": 5.329070518200751e-15,
+        "missing_blocks": 0,
+        "samples": 160
+      },
+      "schema": "row_bores_v1",
+      "status": "measured",
+      "topology_matches": true,
+      "volume_analytic_mm3": 11995.752280681012,
+      "volume_by_gauss_order_mm3": {
+        "12": 11995.75228068121,
+        "16": 11995.752280681103,
+        "4": 11995.886816654445,
+        "8": 11995.75228131164
+      },
+      "volume_error_order16_mm3": 9.094947017729282e-11
+    }
+  },
+  "coverage": {
+    "measured": 8,
+    "qualified_by_oracle": 8,
+    "refused": 2,
+    "required": 10
+  },
+  "families": {
+    "interacting_pair": [
+      "pair_4",
+      "pair_3",
+      "pair_2.5",
+      "pair_2",
+      "pair_1"
+    ],
+    "regular_rows": [
+      "row_1",
+      "row_2",
+      "row_4",
+      "row_8",
+      "row_16"
+    ]
+  },
+  "frozen_base": "ff2c36f",
+  "local_radius_perturbation": {
+    "audit_wall_ms": 5.85013,
+    "build_wall_ms": 53.187193,
+    "changed_block_ids": [
+      "row_bore_cell_00_sector_east_z0_8",
+      "row_bore_cell_00_sector_north_z0_8",
+      "row_bore_cell_00_sector_south_z0_8",
+      "row_bore_cell_00_sector_west_z0_8"
+    ],
+    "expected_changed_block_ids": [
+      "row_bore_cell_00_sector_east_z0_8",
+      "row_bore_cell_00_sector_north_z0_8",
+      "row_bore_cell_00_sector_south_z0_8",
+      "row_bore_cell_00_sector_west_z0_8"
+    ],
+    "only_four_networks_changed": true,
+    "status": "measured"
+  },
+  "manifest_version": "row_bore_patterns_20261125_v1",
+  "regular_series_block_counts": [
+    4,
+    8,
+    16,
+    32,
+    64
+  ],
+  "regular_series_scales_with_n": true,
+  "unit_conversion": "manifest mm to exact half-mm integer recipe ticks"
+}

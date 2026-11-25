@@ -242,3 +242,18 @@ fn bracket_affine_field_has_analytic_energy_quadrature_convergence_and_symmetric
         "quadrature variation {relative_quadrature_delta:e}"
     );
 }
+
+#[test]
+fn final_equilibrium_residual_recovers_small_terms_and_product_roundoff() {
+    use solidcraft_trivariate::elasticity::Stiffness;
+    let unit=2_f64.powi(-27);
+    let mut entries=[[[0.;3];3];2];
+    entries[0][0]=[1e16,1.,-1e16];
+    entries[1][1]=[1.+unit,0.,0.];
+    let k=Stiffness{offsets:vec![0,2,2],columns:vec![0,1],values:entries.to_vec(),integrated_volume:1.};
+    let u=[1.,1.,1.,1.-unit,0.,0.];
+    let f=[0.,1.,0.,0.,0.,0.];
+    let r=k.equilibrium_residual(&u,&f).unwrap();
+    assert_eq!(r[0],-1.);
+    assert_eq!(r[1],unit*unit);
+}

@@ -82,14 +82,168 @@ fn certify(
     ))
 }
 
-pub(crate) fn build(family: &str) -> Result<Json, &'static str> {
-    let blocks = if family == "filleted_bracket_v1" {
-        bracket_blocks()?
-    } else {
-        crate::sections::section_blocks(family)?
+pub(crate) const PARAMETRIC_FAMILIES: [&str; 4] = [
+    "movable_bore_v1",
+    "pocket_depth_v1",
+    "exact_bore_v1",
+    "row_bores_v1",
+];
+
+fn parameters(family: &str) -> &'static [&'static str] {
+    match family {
+        "movable_bore_v1" => &["center_half_mm", "radius_half_mm"],
+        "row_bores_v1" => &["half_widths_half_mm", "centers_half_mm", "radii_half_mm"],
+        "exact_bore_v1" => &["center_um", "radius_um"],
+        "pocket_depth_v1" => &["depth_half_mm"],
+        _ => &[],
+    }
+}
+
+fn bore_parameters(input: &Json, fields: &[&str]) -> Result<([i32; 2], i32), &'static str> {
+    let [cx, cy] = input.field(fields[0])?.items()? else {
+        return Err("invalid bore center");
     };
-    let (cert, _) = certify(family, &blocks)?;
-    Ok(encode(family, blocks, &cert))
+    Ok((
+        [cx.number()?, cy.number()?],
+        input.field(fields[1])?.number()?,
+    ))
+}
+
+struct RowParameters {
+    extents: [i32; 2],
+    centers: Vec<[i32; 2]>,
+    radii: Vec<i32>,
+}
+
+fn row_parameters(input: &Json) -> Result<RowParameters, &'static str> {
+    fn pair(value: &Json) -> Result<[i32; 2], &'static str> {
+        let [x, y] = value.items()? else {
+            return Err("expected two half-mm coordinates");
+        };
+        Ok([x.number()?, y.number()?])
+    }
+    Ok(RowParameters {
+        extents: pair(input.field("half_widths_half_mm")?)?,
+        centers: input
+            .field("centers_half_mm")?
+            .items()?
+            .iter()
+            .map(pair)
+            .collect::<Result<_, _>>()?,
+        radii: input
+            .field("radii_half_mm")?
+            .items()?
+            .iter()
+            .map(Json::number)
+            .collect::<Result<_, _>>()?,
+    })
+}
+
+fn audit_template(
+    input: &Json,
+    family: &str,
+    blocks: &[BracketBlock],
+) -> Result<(BracketCertificate, Option<f64>), &'static str> {
+    match family {
+        "row_bores_v1" => {
+            let row = row_parameters(input)?;
+            let cert =
+                crate::row_bores_audit::audit_row(row.extents, &row.centers, &row.radii, blocks)?;
+            let disk_area = std::f64::consts::PI
+                * row
+                    .radii
+                    .iter()
+                    .map(|r| (f64::from(*r) / 2.).powi(2))
+                    .sum::<f64>();
+            let area = f64::from(row.extents[0]) * f64::from(row.extents[1]);
+            Ok((cert, Some(8. * (area - disk_area))))
+        }
+        "movable_bore_v1" | "exact_bore_v1" => {
+            let (center, ticks) = bore_parameters(input, parameters(family))?;
+            let (cert, radius) = if family == "exact_bore_v1" {
+                (
+                    crate::exact_bore_audit::audit_exact_bore(center, ticks, blocks)?,
+                    f64::from(ticks) / 1000.,
+                )
+            } else {
+                (
+                    crate::movable_bore_audit::audit_bore(center, ticks, blocks)?,
+                    f64::from(ticks) / 2.,
+                )
+            };
+            Ok((
+                cert,
+                Some(8. * (400. - std::f64::consts::PI * radius * radius)),
+            ))
+        }
+        "pocket_depth_v1" => {
+            let ticks = input.field("depth_half_mm")?.number::<i32>()?;
+            let cert = crate::pocket_depth_audit::audit_depth(ticks, blocks)?;
+            Ok((
+                cert,
+                Some(3200. - 8. * std::f64::consts::PI * f64::from(ticks.min(16))),
+            ))
+        }
+        _ => certify(family, blocks),
+    }
+}
+
+pub(crate) fn build(recipe: &Json) -> Result<Json, &'static str> {
+    let family = recipe.field("family")?.text()?;
+    let fields = parameters(family);
+    let mut keys = vec!["family"];
+    keys.extend(fields);
+    recipe.keys(&keys)?;
+    let blocks = match family {
+        "filleted_bracket_v1" => bracket_blocks()?,
+        "row_bores_v1" => {
+            use crate::row_bores::{build_row_bores, RowBoresError::*};
+            let row = row_parameters(recipe)?;
+            build_row_bores(row.extents[0], row.extents[1], &row.centers, &row.radii)
+                .map_err(|error| match error {
+                    InvalidInput => "row_bore_invalid_input",
+                    NonRepresentableBand => "row_bore_nonrepresentable_band",
+                    DiskOutsideBand { .. } => "row_bore_outside_band",
+                    DiskTangentToBoundary { .. } => "row_bore_boundary_contact",
+                    DisksTangent { .. } => "row_bore_pair_tangent",
+                    DisksIntersect { .. } => "row_bore_pair_overlap",
+                    NumericalRange => "row_bore_numerical_range",
+                })?
+                .blocks
+        }
+        "movable_bore_v1" => {
+            let ([x, y], r) = bore_parameters(recipe, fields)?;
+            crate::movable_bore::build_movable_bore(x, y, r)
+                .map_err(|_| "invalid movable bore parameters")?
+                .blocks
+                .into_iter()
+                .map(|b| b.block)
+                .collect()
+        }
+        "exact_bore_v1" => {
+            let ([x, y], r) = bore_parameters(recipe, fields)?;
+            crate::exact_bore::build_exact_bore(x, y, r)
+                .map_err(|_| "invalid exact bore parameters")?
+                .blocks
+        }
+        "pocket_depth_v1" => {
+            crate::pocket_depth::build_pocket_depth(recipe.field("depth_half_mm")?.number()?)
+                .map_err(|_| "invalid pocket depth")?
+                .blocks
+                .into_iter()
+                .map(|b| b.block)
+                .collect()
+        }
+        _ => crate::sections::section_blocks(family)?,
+    };
+    let (cert, _) = audit_template(recipe, family, &blocks)?;
+    let mut model = encode(family, blocks, &cert);
+    if let Json::Object(object) = &mut model {
+        for &key in fields {
+            object.insert(key.into(), recipe.field(key)?.clone());
+        }
+    }
+    Ok(model)
 }
 
 fn encode(family: &str, blocks: Vec<BracketBlock>, cert: &BracketCertificate) -> Json {
@@ -122,70 +276,11 @@ fn encode(family: &str, blocks: Vec<BracketBlock>, cert: &BracketCertificate) ->
     ])
 }
 
-fn bore_parameters(input: &Json) -> Result<([i32; 2], i32), &'static str> {
-    let [cx, cy] = input.field("center_half_mm")?.items()? else {
-        return Err("invalid bore center");
-    };
-    Ok((
-        [cx.number()?, cy.number()?],
-        input.field("radius_half_mm")?.number()?,
-    ))
-}
-
-pub(crate) fn build_bore(recipe: &Json) -> Result<Json, &'static str> {
-    recipe.keys(&["family", "center_half_mm", "radius_half_mm"])?;
-    let (center, radius) = bore_parameters(recipe)?;
-    let candidate = crate::movable_bore::build_movable_bore(center[0], center[1], radius)
-        .map_err(|_| "invalid movable bore parameters")?;
-    let blocks: Vec<_> = candidate.blocks.into_iter().map(|b| b.block).collect();
-    let cert = crate::movable_bore_audit::audit_bore(center, radius, &blocks)?;
-    let mut model = encode("movable_bore_v1", blocks, &cert);
-    if let Json::Object(fields) = &mut model {
-        fields.insert(
-            "center_half_mm".into(),
-            Json::Array(center.into_iter().map(number).collect()),
-        );
-        fields.insert("radius_half_mm".into(), number(radius));
-    }
-    Ok(model)
-}
-
-pub(crate) fn build_depth(recipe: &Json) -> Result<Json, &'static str> {
-    recipe.keys(&["family", "depth_half_mm"])?;
-    let depth = recipe.field("depth_half_mm")?.number::<i32>()?;
-    let candidate =
-        crate::pocket_depth::build_pocket_depth(depth).map_err(|_| "invalid pocket depth")?;
-    let blocks: Vec<_> = candidate.blocks.into_iter().map(|b| b.block).collect();
-    let cert = crate::pocket_depth_audit::audit_depth(depth, &blocks)?;
-    let mut model = encode("pocket_depth_v1", blocks, &cert);
-    if let Json::Object(fields) = &mut model {
-        fields.insert("depth_half_mm".into(), number(depth));
-    }
-    Ok(model)
-}
-
 pub(crate) fn audit(model: &Json) -> Result<Json, &'static str> {
     let family = model.field("schema")?.text()?;
-    if family == "pocket_depth_v1" {
-        model.keys(&[
-            "schema",
-            "blocks",
-            "topology",
-            "design_faces",
-            "depth_half_mm",
-        ])?;
-    } else if family == "movable_bore_v1" {
-        model.keys(&[
-            "schema",
-            "blocks",
-            "topology",
-            "design_faces",
-            "center_half_mm",
-            "radius_half_mm",
-        ])?;
-    } else {
-        model.keys(&["schema", "blocks", "topology", "design_faces"])?;
-    }
+    let mut keys = vec!["schema", "blocks", "topology", "design_faces"];
+    keys.extend(parameters(family));
+    model.keys(&keys)?;
     let mut blocks = Vec::new();
     for b in model.field("blocks")?.items()? {
         b.keys(&["id", "degrees", "controls"])?;
@@ -214,24 +309,7 @@ pub(crate) fn audit(model: &Json) -> Result<Json, &'static str> {
             controls,
         });
     }
-    let (certificate, ideal_volume) = if family == "movable_bore_v1" {
-        let (center, ticks) = bore_parameters(model)?;
-        let radius = f64::from(ticks) * 0.5;
-        (
-            crate::movable_bore_audit::audit_bore(center, ticks, &blocks)?,
-            Some(8. * (400. - std::f64::consts::PI * radius * radius)),
-        )
-    } else if family == "pocket_depth_v1" {
-        let ticks = model.field("depth_half_mm")?.number::<i32>()?;
-        let certificate = crate::pocket_depth_audit::audit_depth(ticks, &blocks)?;
-        let depth = 0.5 * f64::from(ticks.min(16));
-        (
-            certificate,
-            Some(3200. - 16. * std::f64::consts::PI * depth),
-        )
-    } else {
-        certify(family, &blocks)?
-    };
+    let (certificate, ideal_volume) = audit_template(model, family, &blocks)?;
     if model.field("topology")? != &topology(&certificate) {
         return Err("incidence_mismatch");
     }

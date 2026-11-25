@@ -19,6 +19,12 @@ def recipe(case):
     if op=="square_minus_disk":
         if case["height"]!=8 or case["square_half_width"]!=10:
             return None,"outside fixed plate dimensions"
+        if any(ticks(x)!=int(ticks(x)) for x in [*case["center"],case["radius"]]):
+            values=[Decimal(str(x))*1000 for x in [*case["center"],case["radius"]]]
+            if not all(x==x.to_integral_value() for x in values):
+                return None,"coordinates outside available micrometre precision"
+            return {"family":"exact_bore_v1","center_um":[int(values[0]),int(values[1])],
+                    "radius_um":int(values[2])},None
         return {"family":"movable_bore_v1","center_half_mm":list(map(ticks,case["center"])),
                 "radius_half_mm":ticks(case["radius"])},None
     if op=="square_minus_blind_cylinder":
@@ -26,8 +32,11 @@ def recipe(case):
             return None,"outside fixed pocket dimensions"
         return {"family":"pocket_depth_v1","depth_half_mm":ticks(case["depth"])},None
     if op=="square_minus_disks":
-        return {"family":"square_minus_disks_v1","square_half_width":case["square_half_width"],
-                "height":case["height"],"centers":case["centers"],"radii":case["radii"]},None
+        if case["height"]!=8:
+            return None,"outside row height"
+        return {"family":"row_bores_v1","half_widths_half_mm":[ticks(case["square_half_width"])]*2,
+                "centers_half_mm":[list(map(ticks,c)) for c in case["centers"]],
+                "radii_half_mm":list(map(ticks,case["radii"]))},None
     return None,"unsupported operation"
 
 

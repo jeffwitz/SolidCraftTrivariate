@@ -150,6 +150,37 @@ impl Stiffness {
         }
         Ok(())
     }
+    /// Evaluate f-Ku with compensated products and additions. This is intended
+    /// for the final residual check, where internal forces nearly cancel.
+    pub fn equilibrium_residual(&self, u:&[f64], f:&[f64]) -> Result<Vec<f64>, &'static str> {
+        self.validate()?;
+        if u.len()!=self.size() || f.len()!=u.len() || u.iter().chain(f).any(|x|!x.is_finite()) {
+            return Err("invalid equilibrium vectors");
+        }
+        let mut residual=f.to_vec();
+        for (i,components) in residual.as_chunks_mut::<3>().0.iter_mut().enumerate() {
+            for (c,out) in components.iter_mut().enumerate() {
+                let mut sum=*out;
+                let mut correction=0.;
+                for k in self.offsets[i]..self.offsets[i+1] {
+                    let j=3*self.columns[k];
+                    for a in 0..3 {
+                        let coefficient=-self.values[k][c][a];
+                        let term=coefficient*u[j+a];
+                        let product_error=coefficient.mul_add(u[j+a],-term);
+                        let next=sum+term;
+                        let addition_error=if sum.abs()>=term.abs() {(sum-next)+term} else {(term-next)+sum};
+                        correction+=addition_error+product_error;
+                        sum=next;
+                    }
+                }
+                *out=sum+correction;
+                if !out.is_finite() {return Err("nonfinite equilibrium residual")}
+            }
+        }
+        Ok(residual)
+    }
+
     pub fn apply(&self, x: &[f64]) -> Result<Vec<f64>, &'static str> {
         if x.len() != self.size() {
             return Err("wrong displacement vector length");

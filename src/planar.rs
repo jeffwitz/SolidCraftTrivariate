@@ -216,6 +216,65 @@ impl Bernstein {
         }
     }
 
+    /// Restrict a scalar polynomial along one axis, preserving its values
+    /// in parent coordinates (no derivative rescaling).
+    fn bisect(&self, axis: usize) -> [Self; 2] {
+        let mut children = [
+            Self::constant_zero(self.degrees),
+            Self::constant_zero(self.degrees),
+        ];
+        let degree = self.degrees[axis];
+        for line in 0..=self.degrees[1 - axis] {
+            let index = |k| {
+                if axis == 0 {
+                    k * (self.degrees[1] + 1) + line
+                } else {
+                    line * (self.degrees[1] + 1) + k
+                }
+            };
+            let mut work: Vec<_> = (0..=degree).map(|k| self.values[index(k)]).collect();
+            for depth in 0..=degree {
+                children[0].values[index(depth)] = work[0];
+                children[1].values[index(degree - depth)] = work[degree - depth];
+                for k in 0..degree - depth {
+                    work[k] = work[k].add(work[k + 1]).mul(Interval::exact(0.5));
+                }
+            }
+        }
+        children
+    }
+
+    fn positive_lower(&self, remaining: u8, axis: usize) -> Result<f64, PlanarError> {
+        let [u, v] = self.degrees;
+        if [(0, 0), (u, 0), (0, v), (u, v)]
+            .iter()
+            .any(|&(i, j)| self.at(i, j).hi <= 0.)
+        {
+            return Err(PlanarError::Invalid);
+        }
+        let lower = self
+            .values
+            .iter()
+            .map(|p| p.lo)
+            .fold(f64::INFINITY, f64::min);
+        if lower > 0. {
+            return Ok(lower);
+        }
+        if remaining == 0 {
+            return Err(PlanarError::Indeterminate);
+        }
+        let [a, b] = self.bisect(axis);
+        let left = a.positive_lower(remaining - 1, 1 - axis);
+        if left == Err(PlanarError::Invalid) {
+            return left;
+        }
+        match (left, b.positive_lower(remaining - 1, 1 - axis)) {
+            (Ok(x), Ok(y)) => Ok(x.min(y)),
+            (_, Err(PlanarError::Invalid)) => Err(PlanarError::Invalid),
+            _ => Err(PlanarError::Indeterminate),
+        }
+    }
+
     fn product(&self, rhs: &Self) -> Self {
         let [am, an] = self.degrees;
         let [bm, bn] = rhs.degrees;
@@ -287,6 +346,23 @@ fn determinant_numerator(degrees: [usize; 2], controls: &[[i64; 3]]) -> Bernstei
 /// physical determinant `det(H_u,H_v,H)/W^3`; errors deliberately distinguish
 /// invalid input or a nonpositive corner from an inconclusive interior bound.
 pub fn certify_planar(degrees: [usize; 2], controls: &[[i64; 3]]) -> Result<f64, PlanarError> {
+    certify_planar_with_depth(degrees, controls, 0)
+}
+
+/// Refine inconclusive Bernstein envelopes on the closed parameter square.
+/// A depth budget bounds the number of successive binary cuts on any path.
+pub fn certify_planar_refined(
+    degrees: [usize; 2],
+    controls: &[[i64; 3]],
+) -> Result<f64, PlanarError> {
+    certify_planar_with_depth(degrees, controls, 12)
+}
+
+fn certify_planar_with_depth(
+    degrees: [usize; 2],
+    controls: &[[i64; 3]],
+    depth: u8,
+) -> Result<f64, PlanarError> {
     let [du, dv] = degrees;
     if !matches!(degrees, [1, 1] | [2, 1])
         || controls.len() != (du + 1) * (dv + 1)
@@ -299,25 +375,7 @@ pub fn certify_planar(degrees: [usize; 2], controls: &[[i64; 3]]) -> Result<f64,
         return Err(PlanarError::Indeterminate);
     }
 
-    let [nu, nv] = numerator.degrees;
-    let corners = [
-        numerator.at(0, 0),
-        numerator.at(0, nv),
-        numerator.at(nu, 0),
-        numerator.at(nu, nv),
-    ];
-    if corners.iter().any(|corner| corner.hi <= 0.0) {
-        return Err(PlanarError::Invalid);
-    }
-
-    let numerator_lower = numerator
-        .values
-        .iter()
-        .map(|value| value.lo)
-        .fold(f64::INFINITY, f64::min);
-    if numerator_lower <= 0.0 {
-        return Err(PlanarError::Indeterminate);
-    }
+    let numerator_lower = numerator.positive_lower(depth, 0)?;
     let weight_upper = controls
         .iter()
         .map(|point| Interval::from_i64_scaled(point[2]).hi)
@@ -336,6 +394,30 @@ pub fn certify_planar(degrees: [usize; 2], controls: &[[i64; 3]]) -> Result<f64,
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn subdivision_resolves_both_a_positive_minimum_and_a_negative_midpoint() {
+        // Quadratic Bernstein controls (1,c,1) have exact extremum
+        // (1+c)/2 at 1/2. These polynomials are constant along the second axis.
+        let polynomial = |c| Bernstein {
+            degrees: [2, 1],
+            values: [1., 1., c, c, 1., 1.].map(Interval::exact).into(),
+        };
+        assert_eq!(
+            polynomial(-0.75).positive_lower(0, 0),
+            Err(PlanarError::Indeterminate)
+        );
+        let bound = polynomial(-0.75).positive_lower(1, 0).unwrap();
+        assert!(bound > 0.124999 && bound <= 0.125);
+        assert_eq!(
+            polynomial(-2.).positive_lower(1, 0),
+            Err(PlanarError::Invalid)
+        );
+        assert_eq!(
+            polynomial(-1.).positive_lower(4, 0),
+            Err(PlanarError::Indeterminate)
+        );
+    }
 
     #[test]
     fn affine_map_has_positive_exact_enclosure() {

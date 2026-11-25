@@ -248,6 +248,14 @@ pub fn bore_analysis_space(
     from_certified_faces(blocks, &certificate.incidence, &certificate.design_faces)
 }
 
+/// Build a conforming Q2 space on the certified row of pierced cells.
+pub fn row_analysis_space(
+    half_widths: [i32; 2], centers: &[[i32; 2]], radii: &[i32], blocks: &[BracketBlock],
+) -> Result<AnalysisSpace, &'static str> {
+    let certificate = crate::row_bores_audit::audit_row(half_widths, centers, radii, blocks)?;
+    from_certified_faces(blocks, &certificate.incidence, &certificate.design_faces)
+}
+
 // Callers must establish model-wide validity before numbering the space.
 pub(crate) fn from_certified_faces(
     blocks: &[BracketBlock],

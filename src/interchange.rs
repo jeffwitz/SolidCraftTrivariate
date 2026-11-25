@@ -205,11 +205,12 @@ fn audit_affine(m: &Json) -> Result<Json, &'static str> {
 
 pub fn build(recipe: &Json) -> Result<Json, &'static str> {
     match recipe.field("family")?.text()? {
-        "movable_bore_v1" => super::bracket_json::build_bore(recipe),
-        "pocket_depth_v1" => super::bracket_json::build_depth(recipe),
-        family if family == "filleted_bracket_v1" || SECTION_FAMILIES.contains(&family) => {
-            recipe.keys(&["family"])?;
-            super::bracket_json::build(family)
+        family
+            if family == "filleted_bracket_v1"
+                || SECTION_FAMILIES.contains(&family)
+                || super::bracket_json::PARAMETRIC_FAMILIES.contains(&family) =>
+        {
+            super::bracket_json::build(recipe)
         }
         "affine_pair_v1" => {
             recipe.keys(&["family", "widths_mm"])?;
@@ -227,8 +228,11 @@ pub fn build(recipe: &Json) -> Result<Json, &'static str> {
 
 pub fn audit(model: &Json) -> Result<Json, &'static str> {
     match model.field("schema")?.text()? {
-        "movable_bore_v1" | "pocket_depth_v1" => super::bracket_json::audit(model),
-        family if family == "filleted_bracket_v1" || SECTION_FAMILIES.contains(&family) => {
+        family
+            if family == "filleted_bracket_v1"
+                || SECTION_FAMILIES.contains(&family)
+                || super::bracket_json::PARAMETRIC_FAMILIES.contains(&family) =>
+        {
             super::bracket_json::audit(model)
         }
         "affine_pair_v1" => audit_affine(model),

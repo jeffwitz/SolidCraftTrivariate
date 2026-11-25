@@ -53,7 +53,7 @@ const COMMANDS_AND_EVALUATORS: &str = r#"{"commands":["build","audit","evaluate"
 fn capabilities() -> Result<Json,String> {
     let mut result = parse(COMMANDS_AND_EVALUATORS)?;
     let Json::Object(fields) = &mut result else {return Err("invalid capabilities".into())};
-    let families = ["affine_pair_v1", "annular_pair_v1", "filleted_bracket_v1", "movable_bore_v1", "pocket_depth_v1"]
+    let families = ["affine_pair_v1", "annular_pair_v1", "filleted_bracket_v1", "movable_bore_v1", "pocket_depth_v1", "exact_bore_v1", "row_bores_v1"]
         .into_iter().chain(SECTION_FAMILIES).map(|s| Json::String(s.to_owned())).collect();
     fields.insert("families".into(), Json::Array(families));
     Ok(result)
@@ -69,7 +69,7 @@ fn diagnostic(status: &str, reason: &str) -> Json {
 fn run(args: &[String]) -> Result<Json, String> {
     match args {
         [cmd] if cmd=="capabilities"=>capabilities(),
-        [cmd,path] if cmd=="audit"=>Ok(audit(&read(path)?).unwrap_or_else(|reason| diagnostic("invalid",reason))),
+        [cmd,path] if cmd=="audit"=>Ok(audit(&read(path)?).unwrap_or_else(|reason| diagnostic(if reason.ends_with("_indeterminate_bernstein") {"indeterminate"} else {"invalid"},reason))),
         [cmd,recipe,target] if cmd=="build"=>{
             let model=build(&read(recipe)?)?;
             let report=audit(&model)?;
@@ -104,7 +104,7 @@ fn main() -> ExitCode {
     let args: Vec<_> = env::args().skip(1).collect();
     let report = run(&args).unwrap_or_else(|e| {
         object([
-            ("status", Json::String("error".into())),
+            ("status", Json::String(if e.ends_with("_indeterminate_bernstein") {"indeterminate"} else {"error"}.into())),
             ("reason", Json::String(e)),
         ])
     });

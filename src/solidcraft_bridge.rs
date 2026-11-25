@@ -174,7 +174,14 @@ pub fn import_script(script: &Json) -> Result<Json, &'static str> {
                     .and_then(|feature| feature.field("type").ok())
                     .and_then(|value| value.text().ok());
                 if commands.len() == 2 && second_type == Some("extrude") {
-                    let sketch = first.field("params")?.field("feature")?.field("sketch")?;
+                    let feature = first.field("params")?.field("feature")?;
+                    let plane = feature.field("plane")?;
+                    if plane.field("type").and_then(Json::text) != Ok("origin")
+                        || plane.field("name").and_then(Json::text) != Ok("XY")
+                    {
+                        return crate::solidcraft_oriented_plane::import_oriented_plane_timeline(script);
+                    }
+                    let sketch = feature.field("sketch")?;
                     if sketch.field("curves")?.items()?.iter().any(|curve| {
                         curve.field("type").and_then(Json::text) == Ok("circle")
                     }) {

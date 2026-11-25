@@ -1,0 +1,346 @@
+{
+  "budget_trials": [
+    {
+      "diagnostic": "adaptive surface quadrature panel budget exceeded",
+      "id": "oblique_circle_stress",
+      "max_depth": 8,
+      "max_panels": 65536,
+      "relative_tolerance": 1e-09,
+      "status": "refused"
+    },
+    {
+      "diagnostic": "adaptive surface quadrature panel budget exceeded",
+      "id": "extreme_shear_circle_pressure",
+      "max_depth": 8,
+      "max_panels": 65536,
+      "relative_tolerance": 1e-09,
+      "status": "refused"
+    },
+    {
+      "diagnostic": "adaptive surface quadrature panel budget exceeded",
+      "id": "extreme_shear_circle_vector",
+      "max_depth": 8,
+      "max_panels": 65536,
+      "relative_tolerance": 1e-09,
+      "status": "refused"
+    }
+  ],
+  "cases": [
+    {
+      "area_reference_q128_mm2": 226.19467105846564,
+      "area_relative_error": 2.220446049250313e-15,
+      "area_rust_mm2": 226.19467105846513,
+      "cells": 32,
+      "command_status": "solved",
+      "diagnostic": "{\"relative_residual\":0.00000000008910624204131541,\"schema\":\"solidcraft_mechanical_result_v1\",\"status\":\"solved\"}\n",
+      "faces": 8,
+      "full_nodal_force_relative_error": 4.294591997602021e-14,
+      "id": "right_circle_pressure",
+      "independent_q96_q128_force_delta": 1.4284900832186048e-15,
+      "independent_traction_work_n_mm": 0.0020923677727011465,
+      "load": {
+        "pressure_mpa": 0.05,
+        "select": "bore/pilot"
+      },
+      "moment_relative_error": 1.445334539349022e-17,
+      "qualified": true,
+      "recipe": "one_round",
+      "relative_force_balance": 1.499877473954057e-11,
+      "relative_moment_balance": 2.9772543643345296e-13,
+      "relative_residual": 8.910624204131541e-11,
+      "resultant_relative_error": 1.9789681626329607e-17,
+      "rust_quadrature": {
+        "deepest": 3,
+        "maximum_estimated_relative_error": 1.0257049047060679e-10,
+        "panels": 680
+      },
+      "scalar_dofs": 432,
+      "traction_work_relative_error": 1.474514954580286e-17,
+      "wall_s": 0.11079870205139741
+    },
+    {
+      "area_reference_q128_mm2": 226.19467105846564,
+      "area_relative_error": 2.220446049250313e-15,
+      "area_rust_mm2": 226.19467105846513,
+      "cells": 32,
+      "command_status": "solved",
+      "diagnostic": "{\"relative_residual\":0.00000000007647655040593002,\"schema\":\"solidcraft_mechanical_result_v1\",\"status\":\"solved\"}\n",
+      "faces": 8,
+      "full_nodal_force_relative_error": 7.501244925273776e-15,
+      "id": "right_circle_vector",
+      "independent_q96_q128_force_delta": 1.7584114415600293e-15,
+      "independent_traction_work_n_mm": 0.8609706167614894,
+      "load": {
+        "select": "bore/pilot",
+        "vector_mpa": [
+          0.2,
+          -0.4,
+          0.7
+        ]
+      },
+      "moment_relative_error": 1.0075649605082373e-15,
+      "qualified": true,
+      "recipe": "one_round",
+      "relative_force_balance": 1.243717617709464e-11,
+      "relative_moment_balance": 3.1621788957072936e-12,
+      "relative_residual": 7.647655040593002e-11,
+      "resultant_relative_error": 1.4454677192004863e-15,
+      "rust_quadrature": {
+        "deepest": 3,
+        "maximum_estimated_relative_error": 1.7029697064221703e-11,
+        "panels": 680
+      },
+      "scalar_dofs": 432,
+      "traction_work_relative_error": 1.1102230246251565e-16,
+      "wall_s": 0.07815074501559138
+    },
+    {
+      "area_reference_q128_mm2": 164.58942710065514,
+      "area_relative_error": 3.3306690738754696e-16,
+      "area_rust_mm2": 164.5894271006551,
+      "cells": 67,
+      "command_status": "solved",
+      "diagnostic": "{\"relative_residual\":0.00000000008986951071988969,\"schema\":\"solidcraft_mechanical_result_v1\",\"status\":\"solved\"}\n",
+      "faces": 8,
+      "full_nodal_force_relative_error": 4.1038953266944333e-14,
+      "id": "oblique_circle_stress",
+      "independent_q96_q128_force_delta": 1.2456676012492226e-15,
+      "independent_traction_work_n_mm": 0.08897714585589087,
+      "load": {
+        "select": "bore/left",
+        "stress_mpa": [
+          [
+            0.0,
+            0.3,
+            0.1
+          ],
+          [
+            0.3,
+            0.0,
+            -0.2
+          ],
+          [
+            0.1,
+            -0.2,
+            0.0
+          ]
+        ]
+      },
+      "moment_relative_error": 3.6990617994052263e-16,
+      "qualified": true,
+      "recipe": "oblique_profile",
+      "relative_force_balance": 1.1378470581527205e-11,
+      "relative_moment_balance": 9.334997608722517e-12,
+      "relative_residual": 8.986951071988969e-11,
+      "resultant_relative_error": 1.1186535931113003e-16,
+      "rust_quadrature": {
+        "deepest": 3,
+        "maximum_estimated_relative_error": 1.0257030201426599e-10,
+        "panels": 680
+      },
+      "scalar_dofs": 891,
+      "traction_work_relative_error": 4.718447854656915e-16,
+      "wall_s": 0.17999620002228767
+    },
+    {
+      "area_reference_q128_mm2": 181.2711690754823,
+      "area_relative_error": 1.212363542890671e-13,
+      "area_rust_mm2": 181.27116907546034,
+      "cells": 32,
+      "command_status": "solved",
+      "diagnostic": "{\"relative_residual\":0.00000000009511148079746795,\"schema\":\"solidcraft_mechanical_result_v1\",\"status\":\"solved\"}\n",
+      "faces": 8,
+      "full_nodal_force_relative_error": 1.098027100517605e-15,
+      "id": "extreme_shear_circle_pressure",
+      "independent_q96_q128_force_delta": 1.5009532797655916e-15,
+      "independent_traction_work_n_mm": 4.252436261673636e-05,
+      "load": {
+        "pressure_mpa": 0.05,
+        "select": "bore/micro"
+      },
+      "moment_relative_error": 3.1026666759352887e-15,
+      "qualified": true,
+      "recipe": "extreme_shear",
+      "relative_force_balance": 7.808824741490612e-12,
+      "relative_moment_balance": 1.9769762624016453e-12,
+      "relative_residual": 9.511148079746795e-11,
+      "resultant_relative_error": 1.228127831410088e-16,
+      "rust_quadrature": {
+        "deepest": 7,
+        "maximum_estimated_relative_error": 7.72723869039971e-10,
+        "panels": 76456
+      },
+      "scalar_dofs": 432,
+      "traction_work_relative_error": 9.486769009248164e-20,
+      "wall_s": 2.3087268450181
+    },
+    {
+      "area_reference_q128_mm2": 181.2711690754823,
+      "area_relative_error": 1.2279066652354231e-13,
+      "area_rust_mm2": 181.27116907546005,
+      "cells": 32,
+      "command_status": "solved",
+      "diagnostic": "{\"relative_residual\":0.00000000009244351996497027,\"schema\":\"solidcraft_mechanical_result_v1\",\"status\":\"solved\"}\n",
+      "faces": 8,
+      "full_nodal_force_relative_error": 3.4917643592465444e-14,
+      "id": "extreme_shear_circle_vector",
+      "independent_q96_q128_force_delta": 1.3643731032183028e-11,
+      "independent_traction_work_n_mm": 0.09945684705444921,
+      "load": {
+        "select": "bore/micro",
+        "vector_mpa": [
+          0.2,
+          -0.4,
+          0.7
+        ]
+      },
+      "moment_relative_error": 1.240489928735413e-13,
+      "qualified": true,
+      "recipe": "extreme_shear",
+      "relative_force_balance": 6.266599213642684e-12,
+      "relative_moment_balance": 2.1941200801454847e-12,
+      "relative_residual": 9.244351996497027e-11,
+      "resultant_relative_error": 1.1600135872507417e-13,
+      "rust_quadrature": {
+        "deepest": 7,
+        "maximum_estimated_relative_error": 7.334279760137776e-10,
+        "panels": 68264
+      },
+      "scalar_dofs": 432,
+      "traction_work_relative_error": 1.1657341758564144e-14,
+      "wall_s": 2.051844807981979
+    },
+    {
+      "area_reference_q128_mm2": 181.2711690754823,
+      "area_relative_error": 1.9173551635276453e-13,
+      "area_rust_mm2": 181.27116907544755,
+      "cells": 32,
+      "command_status": "solved",
+      "diagnostic": "{\"relative_residual\":0.00000000007167173728494643,\"schema\":\"solidcraft_mechanical_result_v1\",\"status\":\"solved\"}\n",
+      "faces": 8,
+      "full_nodal_force_relative_error": 3.635877682991407e-14,
+      "id": "extreme_shear_circle_stress",
+      "independent_q96_q128_force_delta": 1.853101769870526e-15,
+      "independent_traction_work_n_mm": 0.00261743433020072,
+      "load": {
+        "select": "bore/micro",
+        "stress_mpa": [
+          [
+            0.0,
+            0.3,
+            0.1
+          ],
+          [
+            0.3,
+            0.0,
+            -0.2
+          ],
+          [
+            0.1,
+            -0.2,
+            0.0
+          ]
+        ]
+      },
+      "moment_relative_error": 7.528175120840201e-16,
+      "qualified": true,
+      "recipe": "extreme_shear",
+      "relative_force_balance": 1.3710402000634434e-12,
+      "relative_moment_balance": 8.28471211438e-13,
+      "relative_residual": 7.167173728494643e-11,
+      "resultant_relative_error": 1.7890923828649247e-16,
+      "rust_quadrature": {
+        "deepest": 7,
+        "maximum_estimated_relative_error": 9.092351891699098e-11,
+        "panels": 44712
+      },
+      "scalar_dofs": 432,
+      "traction_work_relative_error": 8.543513119185775e-17,
+      "wall_s": 1.4830938520026393
+    },
+    {
+      "area_reference_q128_mm2": 1536.749816983875,
+      "area_relative_error": 5.329070518200751e-15,
+      "area_rust_mm2": 1536.7498169838832,
+      "cells": 32,
+      "command_status": "solved",
+      "diagnostic": "{\"relative_residual\":0.00000000009608354259354267,\"schema\":\"solidcraft_mechanical_result_v1\",\"status\":\"solved\"}\n",
+      "faces": 2,
+      "full_nodal_force_relative_error": 2.755525326939323e-15,
+      "id": "extreme_shear_rectangle_vector",
+      "independent_q96_q128_force_delta": 3.719721988257729e-15,
+      "independent_traction_work_n_mm": 43.02810558548843,
+      "load": {
+        "select": "edge/outer/v00/v01",
+        "vector_mpa": [
+          0.2,
+          0.4,
+          -0.1
+        ]
+      },
+      "moment_relative_error": 1.0587382054843425e-15,
+      "qualified": true,
+      "recipe": "extreme_shear",
+      "relative_force_balance": 3.905198694781334e-13,
+      "relative_moment_balance": 1.0218978451039213e-13,
+      "relative_residual": 9.608354259354267e-11,
+      "resultant_relative_error": 1.8494688671045928e-15,
+      "rust_quadrature": {
+        "deepest": 1,
+        "maximum_estimated_relative_error": 3.6989377342092213e-16,
+        "panels": 10
+      },
+      "scalar_dofs": 432,
+      "traction_work_relative_error": 5.4494405368363e-15,
+      "wall_s": 0.19035304599674419
+    }
+  ],
+  "commands": [
+    "rtk ./target/release/solidcraft-trivariate build",
+    "rtk ./target/release/solidcraft-trivariate solve-job",
+    "rtk python3 tests/references/adaptive_surface_load.py"
+  ],
+  "independent_reference": {
+    "area_q128_mm2": 181.27116907548225,
+    "area_q12_mm2": 181.2799954801985,
+    "area_q24_mm2": 181.26981798803234,
+    "area_q48_mm2": 181.27118698819686,
+    "area_q64_mm2": 181.2711682934231,
+    "area_q96_mm2": 181.27116908316617,
+    "case": "G20 extreme_shear",
+    "face_count": 8,
+    "feature": "bore/micro",
+    "q128_q96_relative": 4.2389092236305714e-11,
+    "q12_relative_to_q128": 4.8691718386617566e-05,
+    "q96_relative_to_q128": 4.238920325860818e-11,
+    "quadrature_order": 12,
+    "reference_method": "independent rational Bernstein surface Jacobian, tensor Gauss-Legendre",
+    "reference_wall_s": 34.012293650012
+  },
+  "limits": [
+    "surface quadrature convergence is an estimator, not a mathematical error bound",
+    "the q96/q128 difference is the numerical reference diagnostic, not a certified bound"
+  ],
+  "protocol": "M11 adaptive surface load oracle v1",
+  "refusals": [
+    {
+      "diagnostic": "{\"reason\":\"adaptive surface quadrature panel budget exceeded\",\"status\":\"error\"}",
+      "exit_code": 1,
+      "id": "panel_budget",
+      "previous_output_preserved": true
+    },
+    {
+      "diagnostic": "{\"reason\":\"invalid adaptive surface quadrature configuration\",\"status\":\"error\"}",
+      "exit_code": 1,
+      "id": "invalid_budget",
+      "previous_output_preserved": true
+    },
+    {
+      "diagnostic": "{\"reason\":\"shape derivative requires a fixed surface quadrature plan\",\"status\":\"error\"}",
+      "exit_code": 1,
+      "id": "shape_derivative_fixed_plan",
+      "previous_output_preserved": true
+    }
+  ],
+  "status": "qualified"
+}

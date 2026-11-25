@@ -1,0 +1,426 @@
+{
+  "schema": "geometry_vtu_independent_oracle_v1",
+  "vtk": "9.1.0",
+  "cases": [
+    {
+      "model": "affine_pair",
+      "subdivisions": 1,
+      "blocks": 2,
+      "points": 16,
+      "cells": 2,
+      "maximum_errors": {
+        "position_mm": 0.0,
+        "singular_values_mm": 0.0,
+        "condition_number": 0.0,
+        "scaled_jacobian": 2.220446049250313e-16,
+        "jacobian_determinant_mm3": 1.1102230246251565e-16
+      },
+      "condition_range": [
+        2.0,
+        3.0
+      ],
+      "passed": true
+    },
+    {
+      "model": "affine_pair",
+      "subdivisions": 3,
+      "blocks": 2,
+      "points": 128,
+      "cells": 54,
+      "maximum_errors": {
+        "position_mm": 0.0,
+        "singular_values_mm": 2.220446049250313e-16,
+        "condition_number": 2.220446049250313e-16,
+        "scaled_jacobian": 2.220446049250313e-16,
+        "jacobian_determinant_mm3": 3.3306690738754696e-16
+      },
+      "condition_range": [
+        1.9999999999999996,
+        3.000000000000001
+      ],
+      "passed": true
+    },
+    {
+      "model": "affine_pair",
+      "subdivisions": 6,
+      "blocks": 2,
+      "points": 686,
+      "cells": 432,
+      "maximum_errors": {
+        "position_mm": 8.881784197001252e-16,
+        "singular_values_mm": 2.220446049250313e-16,
+        "condition_number": 3.3306690738754696e-16,
+        "scaled_jacobian": 2.220446049250313e-16,
+        "jacobian_determinant_mm3": 4.440892098500626e-16
+      },
+      "condition_range": [
+        1.9999999999999993,
+        3.000000000000001
+      ],
+      "passed": true
+    },
+    {
+      "model": "annular_pair",
+      "subdivisions": 1,
+      "blocks": 2,
+      "points": 16,
+      "cells": 2,
+      "maximum_errors": {
+        "position_mm": 0.0,
+        "singular_values_mm": 2.220446049250313e-16,
+        "condition_number": 2.220446049250313e-16,
+        "scaled_jacobian": 2.220446049250313e-16,
+        "jacobian_determinant_mm3": 1.1102230246251565e-16
+      },
+      "condition_range": [
+        1.4142135623730951,
+        2.8284271247461903
+      ],
+      "passed": true
+    },
+    {
+      "model": "annular_pair",
+      "subdivisions": 3,
+      "blocks": 2,
+      "points": 128,
+      "cells": 54,
+      "maximum_errors": {
+        "position_mm": 4.440892098500626e-16,
+        "singular_values_mm": 4.440892098500626e-16,
+        "condition_number": 6.661338147750939e-16,
+        "scaled_jacobian": 4.440892098500626e-16,
+        "jacobian_determinant_mm3": 4.440892098500626e-16
+      },
+      "condition_range": [
+        1.4142135623730951,
+        3.2517188596222684
+      ],
+      "passed": true
+    },
+    {
+      "model": "annular_pair",
+      "subdivisions": 6,
+      "blocks": 2,
+      "points": 686,
+      "cells": 432,
+      "maximum_errors": {
+        "position_mm": 8.881784197001252e-16,
+        "singular_values_mm": 6.661338147750939e-16,
+        "condition_number": 8.881784197001252e-16,
+        "scaled_jacobian": 7.771561172376096e-16,
+        "jacobian_determinant_mm3": 1.2212453270876722e-15
+      },
+      "condition_range": [
+        1.4142135623730951,
+        3.3137084989847607
+      ],
+      "passed": true
+    },
+    {
+      "model": "bracket",
+      "subdivisions": 1,
+      "blocks": 36,
+      "points": 288,
+      "cells": 36,
+      "maximum_errors": {
+        "position_mm": 0.0,
+        "singular_values_mm": 4.440892098500626e-16,
+        "condition_number": 3.3306690738754696e-16,
+        "scaled_jacobian": 1.1102230246251565e-15,
+        "jacobian_determinant_mm3": 1.1102230246251565e-15
+      },
+      "condition_range": [
+        1.25,
+        10.0
+      ],
+      "passed": true
+    },
+    {
+      "model": "bracket",
+      "subdivisions": 3,
+      "blocks": 36,
+      "points": 2304,
+      "cells": 972,
+      "maximum_errors": {
+        "position_mm": 1.4210854715202004e-14,
+        "singular_values_mm": 2.220446049250313e-15,
+        "condition_number": 2.3314683517128287e-15,
+        "scaled_jacobian": 1.3322676295501878e-15,
+        "jacobian_determinant_mm3": 2.886579864025407e-15
+      },
+      "condition_range": [
+        1.2435689981511844,
+        10.000000000000002
+      ],
+      "passed": true
+    },
+    {
+      "model": "bracket",
+      "subdivisions": 6,
+      "blocks": 36,
+      "points": 12348,
+      "cells": 7776,
+      "maximum_errors": {
+        "position_mm": 2.1316282072803006e-14,
+        "singular_values_mm": 4.440892098500626e-15,
+        "condition_number": 4.3298697960381105e-15,
+        "scaled_jacobian": 1.9984014443252818e-15,
+        "jacobian_determinant_mm3": 3.9968028886505635e-15
+      },
+      "condition_range": [
+        1.207106781186545,
+        10.000000000000021
+      ],
+      "passed": true
+    },
+    {
+      "model": "two_tunnels",
+      "subdivisions": 1,
+      "blocks": 42,
+      "points": 336,
+      "cells": 42,
+      "maximum_errors": {
+        "position_mm": 0.0,
+        "singular_values_mm": 2.3314683517128287e-15,
+        "condition_number": 2.55351295663786e-15,
+        "scaled_jacobian": 8.881784197001252e-16,
+        "jacobian_determinant_mm3": 7.771561172376096e-16
+      },
+      "condition_range": [
+        5.228940593102777,
+        54.93901204442621
+      ],
+      "passed": true
+    },
+    {
+      "model": "two_tunnels",
+      "subdivisions": 3,
+      "blocks": 42,
+      "points": 2688,
+      "cells": 1134,
+      "maximum_errors": {
+        "position_mm": 8.881784197001252e-15,
+        "singular_values_mm": 5.329070518200751e-15,
+        "condition_number": 4.884981308350689e-15,
+        "scaled_jacobian": 3.3306690738754696e-15,
+        "jacobian_determinant_mm3": 2.886579864025407e-15
+      },
+      "condition_range": [
+        5.228940593102777,
+        54.93901204442634
+      ],
+      "passed": true
+    },
+    {
+      "model": "two_tunnels",
+      "subdivisions": 6,
+      "blocks": 42,
+      "points": 14406,
+      "cells": 9072,
+      "maximum_errors": {
+        "position_mm": 1.0658141036401503e-14,
+        "singular_values_mm": 5.329070518200751e-15,
+        "condition_number": 4.884981308350689e-15,
+        "scaled_jacobian": 3.3306690738754696e-15,
+        "jacobian_determinant_mm3": 3.552713678800501e-15
+      },
+      "condition_range": [
+        5.228940593102777,
+        54.93901204442634
+      ],
+      "passed": true
+    },
+    {
+      "model": "anisotropic",
+      "subdivisions": 1,
+      "blocks": 1,
+      "points": 8,
+      "cells": 1,
+      "maximum_errors": {
+        "position_mm": 0.0,
+        "singular_values_mm": 0.0,
+        "condition_number": 0.0,
+        "scaled_jacobian": 2.220446049250313e-16,
+        "jacobian_determinant_mm3": 2.220446049250313e-16
+      },
+      "condition_range": [
+        81.89344093875926,
+        81.89344093875926
+      ],
+      "passed": true
+    },
+    {
+      "model": "anisotropic",
+      "subdivisions": 3,
+      "blocks": 1,
+      "points": 64,
+      "cells": 27,
+      "maximum_errors": {
+        "position_mm": 2.842170943040401e-14,
+        "singular_values_mm": 2.220446049250313e-16,
+        "condition_number": 3.3306690738754696e-16,
+        "scaled_jacobian": 7.771561172376096e-16,
+        "jacobian_determinant_mm3": 8.881784197001252e-16
+      },
+      "condition_range": [
+        81.89344093875924,
+        81.89344093875927
+      ],
+      "passed": true
+    },
+    {
+      "model": "anisotropic",
+      "subdivisions": 6,
+      "blocks": 1,
+      "points": 343,
+      "cells": 216,
+      "maximum_errors": {
+        "position_mm": 2.842170943040401e-14,
+        "singular_values_mm": 2.220446049250313e-16,
+        "condition_number": 4.440892098500626e-16,
+        "scaled_jacobian": 9.992007221626409e-16,
+        "jacobian_determinant_mm3": 8.881784197001252e-16
+      },
+      "condition_range": [
+        81.89344093875923,
+        81.89344093875928
+      ],
+      "passed": true
+    },
+    {
+      "model": "torus",
+      "subdivisions": 1,
+      "blocks": 16,
+      "points": 128,
+      "cells": 16,
+      "maximum_errors": {
+        "position_mm": 0.0,
+        "singular_values_mm": 2.220446049250313e-16,
+        "condition_number": 2.220446049250313e-16,
+        "scaled_jacobian": 4.440892098500626e-16,
+        "jacobian_determinant_mm3": 4.440892098500626e-16
+      },
+      "condition_range": [
+        6.585786437626907,
+        18.828427124746188
+      ],
+      "passed": true
+    },
+    {
+      "model": "torus",
+      "subdivisions": 3,
+      "blocks": 16,
+      "points": 1024,
+      "cells": 432,
+      "maximum_errors": {
+        "position_mm": 7.105427357601002e-15,
+        "singular_values_mm": 2.4424906541753444e-15,
+        "condition_number": 1.7763568394002505e-15,
+        "scaled_jacobian": 1.1102230246251565e-15,
+        "jacobian_determinant_mm3": 2.6645352591003757e-15
+      },
+      "condition_range": [
+        6.074828114037775,
+        19.850343771924454
+      ],
+      "passed": true
+    },
+    {
+      "model": "torus",
+      "subdivisions": 6,
+      "blocks": 16,
+      "points": 5488,
+      "cells": 3456,
+      "maximum_errors": {
+        "position_mm": 7.105427357601002e-15,
+        "singular_values_mm": 2.4424906541753444e-15,
+        "condition_number": 2.6645352591003757e-15,
+        "scaled_jacobian": 1.2212453270876722e-15,
+        "jacobian_determinant_mm3": 3.3306690738754696e-15
+      },
+      "condition_range": [
+        6.000000000000001,
+        19.999999999999975
+      ],
+      "passed": true
+    },
+    {
+      "model": "inclined_bores",
+      "subdivisions": 1,
+      "blocks": 32,
+      "points": 256,
+      "cells": 32,
+      "maximum_errors": {
+        "position_mm": 0.0,
+        "singular_values_mm": 9.769962616701378e-15,
+        "condition_number": 9.547918011776346e-15,
+        "scaled_jacobian": 1.5543122344752192e-15,
+        "jacobian_determinant_mm3": 8.881784197001252e-16
+      },
+      "condition_range": [
+        148.35724907710298,
+        6403.547338524394
+      ],
+      "passed": true
+    },
+    {
+      "model": "inclined_bores",
+      "subdivisions": 3,
+      "blocks": 32,
+      "points": 2048,
+      "cells": 864,
+      "maximum_errors": {
+        "position_mm": 1.4210854715202004e-14,
+        "singular_values_mm": 2.5757174171303632e-14,
+        "condition_number": 2.275957200481571e-14,
+        "scaled_jacobian": 1.4210854715202004e-14,
+        "jacobian_determinant_mm3": 2.5091040356528538e-14
+      },
+      "condition_range": [
+        148.35724907710298,
+        6403.547338524438
+      ],
+      "passed": true
+    },
+    {
+      "model": "inclined_bores",
+      "subdivisions": 6,
+      "blocks": 32,
+      "points": 10976,
+      "cells": 6912,
+      "maximum_errors": {
+        "position_mm": 2.1316282072803006e-14,
+        "singular_values_mm": 3.752553823233029e-14,
+        "condition_number": 3.708144902248023e-14,
+        "scaled_jacobian": 2.0095036745715333e-14,
+        "jacobian_determinant_mm3": 3.275157922644212e-14
+      },
+      "condition_range": [
+        148.35724907710298,
+        6403.5473385244395
+      ],
+      "passed": true
+    }
+  ],
+  "refusals": [
+    {
+      "case": "altered",
+      "refused": true,
+      "preserved": true,
+      "diagnostic": "{\"reason\":\"circular_polygon_altered_bore_block\",\"status\":\"error\"}"
+    },
+    {
+      "case": "budget",
+      "refused": true,
+      "preserved": true,
+      "diagnostic": "{\"reason\":\"geometry sample budget exceeded\",\"status\":\"error\"}"
+    },
+    {
+      "case": "out_of_range",
+      "refused": true,
+      "preserved": true,
+      "diagnostic": "{\"reason\":\"invalid geometry subdivision count\",\"status\":\"error\"}"
+    }
+  ],
+  "qualified": true
+}

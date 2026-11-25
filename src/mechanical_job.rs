@@ -239,7 +239,7 @@ pub fn differentiate_job(model: &Json, job: &Json, direction: &Json) -> Result<J
             if entry.field("select")?.field("plane").is_ok() {
                 return Err("spatial plane selection requires event analysis");
             }
-            if entry.field("affine_mm").is_ok() {
+            if entry.field("affine_mm").is_ok() && velocity.exact.is_none() {
                 return Err("prescribed motion derivative unavailable");
             }
         }
@@ -262,7 +262,26 @@ fn run_job(
         "supports",
         "loads",
     ];
-    let supports_body = version == "solidcraft_mechanical_job_v4";
+    let adaptive_surface = version == "solidcraft_mechanical_job_v5";
+    let supports_body = version == "solidcraft_mechanical_job_v4"
+        || (adaptive_surface && job.field("body_load").is_ok());
+    let mut quadrature = if adaptive_surface {
+        if velocity.is_some() {
+            return Err("shape derivative requires a fixed surface quadrature plan");
+        }
+        fields.push("surface_quadrature");
+        let q = job.field("surface_quadrature")?;
+        q.keys(&["relative_tolerance", "max_depth", "max_panels"])?;
+        let config = crate::adaptive_traction::SurfaceQuadrature {
+            relative_tolerance: finite(q.field("relative_tolerance")?)?,
+            max_depth: q.field("max_depth")?.number()?,
+            max_panels: q.field("max_panels")?.number()?,
+        };
+        config.validate()?;
+        Some(config)
+    } else {
+        None
+    };
     if supports_body {
         fields.push("body_load");
     }
@@ -274,13 +293,16 @@ fn run_job(
     };
     let eliminate_supports = matches!(
         version,
-        "solidcraft_mechanical_job_v3" | "solidcraft_mechanical_job_v4"
+        "solidcraft_mechanical_job_v3"
+            | "solidcraft_mechanical_job_v4"
+            | "solidcraft_mechanical_job_v5"
     );
     let version_two = match version {
         "solidcraft_mechanical_job_v1" => false,
         "solidcraft_mechanical_job_v2"
         | "solidcraft_mechanical_job_v3"
-        | "solidcraft_mechanical_job_v4" => true,
+        | "solidcraft_mechanical_job_v4"
+        | "solidcraft_mechanical_job_v5" => true,
         _ => return Err("unknown mechanical job schema"),
     };
     let audit = interchange::audit(model)?;
@@ -294,7 +316,7 @@ fn run_job(
                 | "certified_orthogonal_feature_program"
                 | "certified_polygon_prism"
                 | "certified_perforated_polygon_prism"
-            | crate::circular_polygon_json::METHOD
+                | crate::circular_polygon_json::METHOD
                 | crate::affine_image::METHOD
                 | "certified_parameterized_bracket"
         )
@@ -381,6 +403,8 @@ fn run_job(
         });
     }
     let mut fixed: [BTreeMap<usize, Ratio>; 3] = Default::default();
+    let exact_velocity = velocity.and_then(|v| v.exact);
+    let mut fixed_rates: [BTreeMap<usize, Ratio>; 3] = Default::default();
     let mut frame_motion = Motion::zero();
     let mut frame_rows = [false; 3];
     let hom = homogeneous_nodes(space);
@@ -419,11 +443,21 @@ fn run_job(
             }
         }
         let selected = select(support.field("select")?, &faces)?;
+        let support_rate = exact_velocity.map(|v| motion.along(v)).transpose()?;
         for f in &selected {
             for &c in &components {
                 for i in face_indices(&f.side) {
                     let id = f.block.dofs[i];
                     let value = motion.value(c, hom[id])?;
+                    if let Some(rate) = support_rate {
+                        let derivative = rate.value(c, hom[id])?;
+                        if fixed_rates[c]
+                            .insert(id, derivative)
+                            .is_some_and(|old| old != derivative)
+                        {
+                            return Err("incompatible material derivatives on shared support");
+                        }
+                    }
                     if fixed[c].insert(id, value).is_some_and(|old| old != value) {
                         return Err("conflicting displacement on shared mechanical support");
                     }
@@ -442,9 +476,11 @@ fn run_job(
     if rank != 6 {
         return Err("mechanical mounting leaves a rigid mode");
     }
-    let make_lifts = |frame: &Motion| -> Result<_, &'static str> {
+    let make_lifts = |values_by_component: &[BTreeMap<usize, Ratio>; 3],
+                      frame: &Motion|
+     -> Result<_, &'static str> {
         let mut lifts = Vec::with_capacity(3);
-        for (c, values) in fixed.iter().enumerate() {
+        for (c, values) in values_by_component.iter().enumerate() {
             let prescribed = values
                 .iter()
                 .map(|(&id, &value)| {
@@ -465,8 +501,11 @@ fn run_job(
         .any(|v| *v)
         .then(|| frame_motion.rigid_part())
         .transpose()?;
-    let physical_lifts = make_lifts(&Motion::zero())?;
-    let relative_lifts = rigid_frame.as_ref().map(make_lifts).transpose()?;
+    let physical_lifts = make_lifts(&fixed, &Motion::zero())?;
+    let relative_lifts = rigid_frame
+        .as_ref()
+        .map(|frame| make_lifts(&fixed, frame))
+        .transpose()?;
     let lifts = relative_lifts.as_ref().unwrap_or(&physical_lifts);
     let exterior = faces
         .iter()
@@ -489,7 +528,36 @@ fn run_job(
             }
             patches.push(LoadPatch::whole(f.side.clone()));
         }
-        let load = integrate_traction(space, &exterior, &patches, order, |_, n| law.value(n))?;
+        let (load, integration) = if let Some(config) = &mut quadrature {
+            let out = crate::adaptive_traction::integrate_adaptive_traction(
+                space,
+                &exterior,
+                &patches,
+                order,
+                *config,
+                |_, normal| law.value(normal),
+            )?;
+            config.max_panels = config
+                .max_panels
+                .checked_sub(out.panels)
+                .ok_or("adaptive surface quadrature panel budget exceeded")?;
+            let info = object([
+                ("panels", n(out.panels)),
+                ("deepest", n(out.deepest)),
+                (
+                    "maximum_estimated_relative_error",
+                    n(out.maximum_estimated_relative_error),
+                ),
+            ]);
+            (out.load, Some(info))
+        } else {
+            (
+                integrate_traction(space, &exterior, &patches, order, |_, normal| {
+                    law.value(normal)
+                })?,
+                None,
+            )
+        };
         if let (Some(velocity), Some(rhs)) = (velocity, &mut force_rate) {
             let rate = integrate_traction(space, &exterior, &patches, order, |_, normal| {
                 let oriented = velocity.oriented_area_rate(normal);
@@ -508,7 +576,7 @@ fn run_job(
         for (f, v) in force.iter_mut().zip(load.nodal_force_n) {
             *f += v;
         }
-        loads.push(object([
+        let mut record = object([
             (
                 "faces",
                 Json::Array(patches.iter().map(|p| side_json(&p.side)).collect()),
@@ -516,7 +584,11 @@ fn run_job(
             ("area_mm2", n(load.area_mm2)),
             ("resultant_n", numbers(load.resultant_n)),
             ("moment_n_mm", numbers(load.moment_n_mm)),
-        ]));
+        ]);
+        if let (Some(info), Json::Object(fields)) = (integration, &mut record) {
+            fields.insert("integration".into(), info);
+        }
+        loads.push(record);
     }
     let body = density
         .map(|d| d.integrate(space, order, velocity))
@@ -546,6 +618,29 @@ fn run_job(
             affine_job_sensitivity::{self, SensitivityJob},
             elasticity_sensitivity::MaterialJet,
         };
+        let support_rates = if velocity.exact.is_some() {
+            let derivative_lifts = make_lifts(&fixed_rates, &Motion::zero())?;
+            let mut rates: [Vec<crate::mechanical_sensitivity::LiftRate>; 3] = Default::default();
+            for c in 0..3 {
+                let derivative = &derivative_lifts[c];
+                let primal = &physical_lifts[c];
+                if derivative.free_roots != primal.free_roots {
+                    return Err("material support derivative changes free roots");
+                }
+                for (a, b) in derivative.lines.iter().zip(&primal.lines) {
+                    if a.dof != b.dof || a.terms != b.terms {
+                        return Err("material support derivative changes trace weights");
+                    }
+                    rates[c].push(crate::mechanical_sensitivity::LiftRate {
+                        terms: Vec::new(),
+                        offset: a.offset.numerator() as f64 / a.offset.denominator() as f64,
+                    });
+                }
+            }
+            Some(rates)
+        } else {
+            None
+        };
         return affine_job_sensitivity::solve(
             velocity,
             SensitivityJob {
@@ -553,7 +648,8 @@ fn run_job(
                 force: &force,
                 force_rate: &rate,
                 includes_body_load: supports_body,
-                lifts: [&lifts[0], &lifts[1], &lifts[2]],
+                support_rates,
+                lifts: [&physical_lifts[0], &physical_lifts[1], &physical_lifts[2]],
                 material: MaterialJet {
                     young_mpa: young,
                     poisson,

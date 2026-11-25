@@ -1,0 +1,338 @@
+{
+  "schema": "prescribed_motion_material_derivative_oracle_v1",
+  "cases": [
+    {
+      "name": "translated_bar",
+      "scalar_dofs": 27,
+      "baseline_work": [
+        3.1999999999995015,
+        0.0,
+        1.5999999999995014
+      ],
+      "rates": [
+        0.15999999999999764,
+        -0.16000000000000195,
+        -2.1579960041555397e-15
+      ],
+      "applied_and_strain_adjoint_errors": [
+        1.2212453270876722e-15,
+        2.1857515797711686e-15
+      ],
+      "base_work_errors": [
+        4.840572387365683e-13,
+        1.3032908053377208e-14,
+        4.851674617611934e-13
+      ],
+      "work_rate_closure": 1.3877787888597758e-17,
+      "independent_exact": {
+        "max_displacement_mm": 7.110790594838072e-16,
+        "strain_energy_rate": 2.1579960041555397e-15
+      },
+      "centered_history": [
+        {
+          "step": 0.125,
+          "centered": {
+            "displacement_norm_mm": 1.6606790896990122e-12,
+            "displacement_relative": 3.195978398251065e-10,
+            "work_errors_n_mm": [
+              3.2781000136594685e-12,
+              -4.413136522884997e-15,
+              3.281312721537018e-12
+            ],
+            "tolerance_fraction": 0.003281312721537018
+          }
+        },
+        {
+          "step": 0.0625,
+          "centered": {
+            "displacement_norm_mm": 2.3255074568441118e-12,
+            "displacement_relative": 4.4754411873714903e-10,
+            "work_errors_n_mm": [
+              1.5905610162292305e-12,
+              2.917110997202599e-14,
+              1.5848919399097787e-12
+            ],
+            "tolerance_fraction": 0.0015848919399097786
+          },
+          "fourth": {
+            "displacement_norm_mm": 2.8387378405328945e-12,
+            "displacement_relative": 5.463153521301548e-10,
+            "work_errors_n_mm": [
+              1.0280387652272793e-12,
+              4.035660694512444e-14,
+              1.0194183460340322e-12
+            ],
+            "tolerance_fraction": 0.0010194183460340322
+          }
+        },
+        {
+          "step": 0.03125,
+          "centered": {
+            "displacement_norm_mm": 2.6646804480648636e-12,
+            "displacement_relative": 5.128179913315338e-10,
+            "work_errors_n_mm": [
+              -3.0350721935690217e-12,
+              3.1280533718813786e-14,
+              -3.0247540583338713e-12
+            ],
+            "tolerance_fraction": 0.003024754058333871
+          },
+          "fourth": {
+            "displacement_norm_mm": 3.940290002869491e-12,
+            "displacement_relative": 7.583091646139737e-10,
+            "work_errors_n_mm": [
+              -4.576949930168439e-12,
+              3.197442310920451e-14,
+              -4.561302724415088e-12
+            ],
+            "tolerance_fraction": 0.0045613027244150875
+          },
+          "sixth": {
+            "displacement_norm_mm": 4.29824504847862e-12,
+            "displacement_relative": 8.271976452607129e-10,
+            "work_errors_n_mm": [
+              -4.9505954891060355e-12,
+              3.141931159689193e-14,
+              -4.9333507957783624e-12
+            ],
+            "tolerance_fraction": 0.004933350795778362
+          }
+        }
+      ],
+      "relative_residuals": [
+        9.053359100772122e-12,
+        7.7823204814478e-12,
+        9.053359100772122e-12
+      ],
+      "passed": true
+    },
+    {
+      "name": "prescribed_shear",
+      "scalar_dofs": 27,
+      "baseline_work": [
+        0.0,
+        6.3999999999999995,
+        3.2000000000000015
+      ],
+      "rates": [
+        0.0,
+        6.4,
+        3.1999999999999997
+      ],
+      "applied_and_strain_adjoint_errors": [
+        0.0,
+        0.0
+      ],
+      "base_work_errors": [
+        0.0,
+        0.0,
+        1.7763568394002505e-15
+      ],
+      "work_rate_closure": 8.881784197001252e-16,
+      "independent_exact": {
+        "max_displacement_mm": 3.469446951953614e-18,
+        "strain_energy_rate": 1.7763568394002505e-15
+      },
+      "centered_history": [
+        {
+          "step": 0.125,
+          "centered": {
+            "displacement_norm_mm": 3.6976691475711024e-17,
+            "displacement_relative": 4.325424942961215e-16,
+            "work_errors_n_mm": [
+              0.0,
+              -1.2434497875801753e-14,
+              -4.440892098500626e-16
+            ],
+            "tolerance_fraction": 1.9428902930940237e-10
+          }
+        },
+        {
+          "step": 0.0625,
+          "centered": {
+            "displacement_norm_mm": 9.038871967899979e-17,
+            "displacement_relative": 1.057340738336993e-15,
+            "work_errors_n_mm": [
+              0.0,
+              1.2434497875801753e-14,
+              -4.440892098500626e-16
+            ],
+            "tolerance_fraction": 1.9428902930940237e-10
+          },
+          "fourth": {
+            "displacement_norm_mm": 1.087498663256792e-16,
+            "displacement_relative": 1.272124047814761e-15,
+            "work_errors_n_mm": [
+              0.0,
+              2.042810365310288e-14,
+              -4.440892098500626e-16
+            ],
+            "tolerance_fraction": 3.1918911957973245e-10
+          }
+        },
+        {
+          "step": 0.03125,
+          "centered": {
+            "displacement_norm_mm": 1.1438108627883062e-16,
+            "displacement_relative": 1.3379964075975765e-15,
+            "work_errors_n_mm": [
+              0.0,
+              4.796163466380676e-14,
+              1.7319479184152442e-14
+            ],
+            "tolerance_fraction": 7.494005416219806e-10
+          },
+          "fourth": {
+            "displacement_norm_mm": 1.3151349410804513e-16,
+            "displacement_relative": 1.5384062906887826e-15,
+            "work_errors_n_mm": [
+              0.0,
+              5.950795411990839e-14,
+              2.3092638912203256e-14
+            ],
+            "tolerance_fraction": 9.298117831235685e-10
+          },
+          "sixth": {
+            "displacement_norm_mm": 1.368438612714363e-16,
+            "displacement_relative": 1.6007593627553262e-15,
+            "work_errors_n_mm": [
+              0.0,
+              6.217248937900877e-14,
+              2.4868995751603507e-14
+            ],
+            "tolerance_fraction": 9.714451465470118e-10
+          }
+        }
+      ],
+      "relative_residuals": [
+        1.3799249378951514e-17,
+        1.1185247215690547e-16,
+        0
+      ],
+      "passed": true
+    },
+    {
+      "name": "hanging_bend_body",
+      "scalar_dofs": 148,
+      "baseline_work": [
+        80.05616200588153,
+        0.040768391739821636,
+        40.048465198798354
+      ],
+      "rates": [
+        0.5053708785380451,
+        0.04021238598663606,
+        0.27279163226234004
+      ],
+      "applied_and_strain_adjoint_errors": [
+        2.0763835095749528e-11,
+        3.236899637215629e-11
+      ],
+      "base_work_errors": [
+        9.143263923760969e-11,
+        6.674826663610745e-11,
+        9.141132295553689e-11
+      ],
+      "work_rate_closure": 9.992007221626409e-16,
+      "independent_exact": {},
+      "centered_history": [
+        {
+          "step": 0.125,
+          "centered": {
+            "displacement_norm_mm": 0.004303259431270317,
+            "displacement_relative": 0.017076195283407532,
+            "work_errors_n_mm": [
+              -0.014029895302783757,
+              -3.59333278410201e-10,
+              -0.007014947517973269
+            ],
+            "tolerance_fraction": 2776.158243104537
+          }
+        },
+        {
+          "step": 0.0625,
+          "centered": {
+            "displacement_norm_mm": 0.0010758715932049578,
+            "displacement_relative": 0.004269273958232008,
+            "work_errors_n_mm": [
+              -0.003486631251305994,
+              4.518663915265009e-11,
+              -0.0017433151173804617
+            ],
+            "tolerance_fraction": 689.9153471985258
+          },
+          "fourth": {
+            "displacement_norm_mm": 3.953655288630163e-06,
+            "displacement_relative": 1.5688896026423342e-05,
+            "work_errors_n_mm": [
+              2.779009918663089e-05,
+              1.8002661167360046e-10,
+              1.3895682817122168e-05
+            ],
+            "tolerance_fraction": 5.498951436818655
+          }
+        },
+        {
+          "step": 0.03125,
+          "centered": {
+            "displacement_norm_mm": 0.0002689713763632916,
+            "displacement_relative": 0.001067332291204814,
+            "work_errors_n_mm": [
+              -0.0008703600485233665,
+              -7.809082755438901e-10,
+              -0.00043518073874793117
+            ],
+            "tolerance_fraction": 172.22204236246753
+          },
+          "fourth": {
+            "displacement_norm_mm": 2.493877822676981e-07,
+            "displacement_relative": 9.89620667616128e-07,
+            "work_errors_n_mm": [
+              1.7303524041389906e-06,
+              -1.0562732494223681e-09,
+              8.640541295790172e-07
+            ],
+            "tolerance_fraction": 0.34239258287786895
+          },
+          "sixth": {
+            "displacement_norm_mm": 3.1945609576885425e-09,
+            "displacement_relative": 1.2676657689247327e-08,
+            "work_errors_n_mm": [
+              -6.964048004931556e-09,
+              -1.1386932369239489e-09,
+              -4.721116220185451e-09
+            ],
+            "tolerance_fraction": 0.0028316977691957277
+          }
+        }
+      ],
+      "relative_residuals": [
+        7.839403082273012e-12,
+        7.772207395185276e-12,
+        9.334219287549364e-12
+      ],
+      "passed": true
+    }
+  ],
+  "refusals": [
+    {
+      "name": "support_velocity_conflict",
+      "refused": true,
+      "preserved": true,
+      "diagnostic": "{\"reason\":\"incompatible material derivatives on shared support\",\"status\":\"error\"}"
+    },
+    {
+      "name": "v1_nonhomogeneous",
+      "refused": true,
+      "preserved": true,
+      "diagnostic": "{\"reason\":\"prescribed motion derivative unavailable\",\"status\":\"error\"}"
+    },
+    {
+      "name": "zero_velocity_denominator",
+      "refused": true,
+      "preserved": true,
+      "diagnostic": "{\"reason\":\"nonpositive affine motion denominator\",\"status\":\"error\"}"
+    }
+  ],
+  "passed": true
+}

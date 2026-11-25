@@ -1,0 +1,36 @@
+{
+  "schema": "solidcraft_oriented_plane_corpus_v1",
+  "host": "SolidCraft CLI 0.48.1 / solidcraft/66",
+  "source_profile_local_xy_mm": [[10, 10], [22, 10], [22, 28], [10, 20]],
+  "profile_area_mm2": 168,
+  "extrusion_distance_mm": 6,
+  "positive_basis": {
+    "XZ": {
+      "world_map": ["x=u", "y=w", "z=-v"],
+      "bounds_mm": [10, 22, 0, 6, -28, -10],
+      "source_revision": "solidcraft-oriented-plane/xz_polygon.sc"
+    },
+    "YZ": {
+      "world_map": ["x=w", "y=u", "z=v"],
+      "bounds_mm": [0, 6, 10, 22, 10, 28],
+      "source_revision": "solidcraft-oriented-plane/yz_polygon.sc"
+    }
+  },
+  "valid_cases": [
+    {"id": "xz_polygon", "history": "solidcraft-oriented-plane/xz_polygon.history.json", "design": "solidcraft-oriented-plane/xz_polygon.sc", "holes": 0, "volume_mm3": 1008},
+    {"id": "yz_polygon", "history": "solidcraft-oriented-plane/yz_polygon.history.json", "design": "solidcraft-oriented-plane/yz_polygon.sc", "holes": 0, "volume_mm3": 1008},
+    {"id": "xz_hole", "history": "solidcraft-oriented-plane/xz_hole.history.json", "design": "solidcraft-oriented-plane/xz_hole.sc", "holes": 1, "center_local_mm": [15, 18], "radius_mm": 1, "volume_mm3": 989.1504440784612, "volume_expression": "1008 - 6*pi"},
+    {"id": "yz_hole", "history": "solidcraft-oriented-plane/yz_hole.history.json", "design": "solidcraft-oriented-plane/yz_hole.sc", "holes": 1, "center_local_mm": [15, 18], "radius_mm": 1, "volume_mm3": 989.1504440784612, "volume_expression": "1008 - 6*pi"}
+  ],
+  "refusal_cases": [
+    {"id": "xz_negative", "history": "solidcraft-oriented-plane/xz_negative.history.json", "design": "solidcraft-oriented-plane/xz_negative.sc", "host_accepts": true, "recorded_extent": {"direction": "positive", "distance": "-6"}, "native_refusal": "negative distance is outside the supported positive-extrusion subset"},
+    {"id": "xz_offset", "history": "solidcraft-oriented-plane/xz_offset.history.json", "design": "solidcraft-oriented-plane/xz_offset.sc", "host_accepts": true, "native_refusal": "custom/offset plane is outside the origin XZ/YZ subset"}
+  ],
+  "oracle_thresholds": {
+    "volume_error_mm3": 1e-8,
+    "surface_area_error_mm2": 1e-8,
+    "centroid_error_mm": 1e-9,
+    "symmetric_difference_volume_mm3": 1e-8,
+    "bounding_box_error_mm": 1e-8
+  }
+}

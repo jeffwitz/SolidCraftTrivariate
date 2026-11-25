@@ -1,0 +1,99 @@
+{
+  "lot": "SC7",
+  "starting_revision": "8aaf73c8a0c9cb58141bed1436c2c38c341c5a99",
+  "host": {
+    "solidcraft_cli": "0.48.1",
+    "history_format": "solidcraft/66",
+    "step_oracle": "FreeCAD 26.3.0devR48429 / Part re-open and boolean comparison"
+  },
+  "commands": [
+    "rtk cargo check --locked --offline",
+    "rtk cargo test --locked --offline --test solidcraft_oriented_plane -- --nocapture",
+    "rtk cargo clippy --locked --offline --test solidcraft_oriented_plane -- -D warnings",
+    "rtk cargo test --locked --offline --test solidcraft_polygon -- --nocapture",
+    "rtk python3 tests/references/solidcraft_timeline.py"
+  ],
+  "transforms": {
+    "XZ": {"matrix": [[1,0,0],[0,0,1],[0,-1,0]], "translation": [0,0,0], "denominator": 1, "determinant": 1, "observed_positive_extrusion": "+Y"},
+    "YZ": {"matrix": [[0,0,1],[1,0,0],[0,1,0]], "translation": [0,0,0], "denominator": 1, "determinant": 1, "observed_positive_extrusion": "+X"}
+  },
+  "cases": [
+    {
+      "id": "xz_polygon",
+      "design": "tests/references/solidcraft-oriented-plane/xz_polygon.sc",
+      "world_bounds_mm": [10,22,0,6,-28,-10],
+      "analytic_volume_mm3": 1008,
+      "host_native_volume_difference_mm3": 0,
+      "host_native_area_difference_mm2": 0,
+      "centroid_difference_mm": 3.552713678800501e-15,
+      "host_minus_native_mm3": 0,
+      "native_minus_host_mm3": 0,
+      "classifications": 4,
+      "result": "pass"
+    },
+    {
+      "id": "yz_polygon",
+      "design": "tests/references/solidcraft-oriented-plane/yz_polygon.sc",
+      "world_bounds_mm": [0,6,10,22,10,28],
+      "analytic_volume_mm3": 1008,
+      "host_native_volume_difference_mm3": 0,
+      "host_native_area_difference_mm2": 0,
+      "centroid_difference_mm": 3.552713678800501e-15,
+      "host_minus_native_mm3": 0,
+      "native_minus_host_mm3": 0,
+      "classifications": 4,
+      "result": "pass"
+    },
+    {
+      "id": "xz_hole",
+      "design": "tests/references/solidcraft-oriented-plane/xz_hole.sc",
+      "world_bounds_mm": [10,22,0,6,-28,-10],
+      "analytic_volume_mm3": 989.1504440784612,
+      "host_native_volume_difference_mm3": 6.161826604511589e-11,
+      "host_native_area_difference_mm2": 6.139089236967266e-11,
+      "centroid_difference_mm": 1.0845964142784046e-13,
+      "host_minus_native_mm3": 0,
+      "native_minus_host_mm3": 0,
+      "classifications": 4,
+      "result": "pass"
+    },
+    {
+      "id": "yz_hole",
+      "design": "tests/references/solidcraft-oriented-plane/yz_hole.sc",
+      "world_bounds_mm": [0,6,10,22,10,28],
+      "analytic_volume_mm3": 989.1504440784612,
+      "host_native_volume_difference_mm3": 6.161826604511589e-11,
+      "host_native_area_difference_mm2": 6.139089236967266e-11,
+      "centroid_difference_mm": 1.0845964142784046e-13,
+      "host_minus_native_mm3": 0,
+      "native_minus_host_mm3": 0,
+      "classifications": 4,
+      "result": "pass"
+    }
+  ],
+  "refusals": [
+    {
+      "id": "xz_negative",
+      "solidcraft_host_accepts": true,
+      "host_extent": {"direction": "positive", "distance": "-6"},
+      "native_reason": "SolidCraft extrusion height outside native range",
+      "atomic_output_preserved": true
+    },
+    {
+      "id": "xz_offset",
+      "solidcraft_host_accepts": true,
+      "host_plane_type": "custom",
+      "native_reason": "SC7 supports origin planes only",
+      "atomic_output_preserved": true
+    }
+  ],
+  "legacy_replay": {
+    "sc2": {"accepted_cases": 5, "invalid_cases": 7, "byte_parity": "pass", "elapsed_s": 0.28752722800709307},
+    "sc5": {"real_host_step_cases": 3, "cargo_test": "5 passed"}
+  },
+  "limits": [
+    "Only origin-plane XZ/YZ variants of the already supported SC5/SC6 sketch-extrude subset are accepted.",
+    "No attached, offset, flipped, tapered, symmetric, negative-distance or Boolean extrusion is imported.",
+    "The geometric placement is an exact right-handed G19 image; STEP comparisons validate these fixtures, while source family certificates retain their existing scope."
+  ]
+}

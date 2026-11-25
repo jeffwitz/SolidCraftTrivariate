@@ -24,7 +24,10 @@ cli=target/release/solidcraft-trivariate
 "$cli" import-solidcraft upstream/fieldcraft/tests/oracle/filleted-bracket-fillet-stress/design.json build/demo/bracket.json
 "$cli" audit build/demo/bracket.json
 "$cli" export-step build/demo/bracket.json build/demo/bracket.step
+"$cli" export-geometry-vtu build/demo/bracket.json 6 build/demo/bracket-geometry.vtu
 ```
+
+Le VTU géométrique contient les coordonnées paramétriques, les trois valeurs singulières du jacobien, son déterminant signé et son conditionnement à chaque point affiché. L’index de cellule renvoie au bloc dans le modèle JSON. Ces valeurs sont échantillonnées.
 
 Le calcul suivant applique une traction de 1 000 N à l’équerre. Il utilise le modèle importé, un raffinement local et le fichier de conditions aux limites de l’oracle. L’extraction de l’entrée de calcul requiert Python 3.
 

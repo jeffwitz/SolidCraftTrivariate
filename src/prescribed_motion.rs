@@ -40,6 +40,28 @@ impl Motion {
         self.coefficients[c] = from.coefficients[c];
     }
 
+    pub(crate) fn as_f64(self) -> [[f64; 4]; 3] {
+        self.coefficients
+            .map(|row| row.map(|v| v.numerator() as f64 / v.denominator() as f64))
+    }
+
+    /// Material derivative of this spatial support law along an affine velocity:
+    /// the constant term drops out and the gradient multiplies all four velocity coefficients.
+    pub(crate) fn along(self, velocity: Self) -> Result<Self, &'static str> {
+        let mut out = Self::zero();
+        for (component, row) in out.coefficients.iter_mut().enumerate() {
+            for (j, slot) in row.iter_mut().enumerate() {
+                for k in 0..3 {
+                    *slot = slot.checked_add(
+                        self.coefficients[component][k + 1]
+                            .checked_mul(velocity.coefficients[k][j])?,
+                    )?;
+                }
+            }
+        }
+        Ok(out)
+    }
+
     /// Extract translation and infinitesimal rotation, which have zero linear strain.
     pub(crate) fn rigid_part(self) -> Result<Self, &'static str> {
         let mut r = Self::zero();

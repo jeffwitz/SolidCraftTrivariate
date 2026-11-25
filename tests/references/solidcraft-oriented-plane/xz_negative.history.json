@@ -1,0 +1,138 @@
+{
+  "about": {
+    "design": "xz_negative",
+    "format": "solidcraft/66",
+    "replay": "solidcraft-cli eval script.json (timeline.add steps need a build that reads this design format)",
+    "version": "0.48.1"
+  },
+  "commands": [
+    {
+      "command": "timeline.add",
+      "params": {
+        "feature": {
+          "id": 1,
+          "name": "xz_negative",
+          "plane": {
+            "name": "XZ",
+            "type": "origin"
+          },
+          "sketch": {
+            "constraints": [],
+            "counters": {
+              "l": 4
+            },
+            "curves": [
+              {
+                "a": 1,
+                "b": 2,
+                "construction": false,
+                "id": "l1",
+                "type": "line"
+              },
+              {
+                "a": 2,
+                "b": 3,
+                "construction": false,
+                "id": "l2",
+                "type": "line"
+              },
+              {
+                "a": 3,
+                "b": 4,
+                "construction": false,
+                "id": "l3",
+                "type": "line"
+              },
+              {
+                "a": 4,
+                "b": 1,
+                "construction": false,
+                "id": "l4",
+                "type": "line"
+              }
+            ],
+            "points": [
+              {
+                "fixed": true,
+                "id": "origin",
+                "pos": [
+                  0.0,
+                  0.0
+                ]
+              },
+              {
+                "fixed": false,
+                "id": "l1.start",
+                "pos": [
+                  10.0,
+                  10.0
+                ]
+              },
+              {
+                "fixed": false,
+                "id": "l1.end",
+                "pos": [
+                  22.0,
+                  10.0
+                ]
+              },
+              {
+                "fixed": false,
+                "id": "l2.end",
+                "pos": [
+                  22.0,
+                  28.0
+                ]
+              },
+              {
+                "fixed": false,
+                "id": "l3.end",
+                "pos": [
+                  10.0,
+                  20.0
+                ]
+              }
+            ]
+          },
+          "suppressed": false,
+          "type": "sketch"
+        }
+      }
+    },
+    {
+      "command": "timeline.add",
+      "params": {
+        "feature": {
+          "body_names": [
+            "xz_negative"
+          ],
+          "extent": {
+            "convention": "total_distance",
+            "direction": "positive",
+            "distance": "-6"
+          },
+          "id": 2,
+          "name": "Extrude1",
+          "operation": "new_body",
+          "param_names": [
+            "d1"
+          ],
+          "profiles": {
+            "loops": [
+              [
+                "l1",
+                "l2",
+                "l3",
+                "l4"
+              ]
+            ],
+            "type": "curves"
+          },
+          "sketch": 1,
+          "suppressed": false,
+          "type": "extrude"
+        }
+      }
+    }
+  ]
+}

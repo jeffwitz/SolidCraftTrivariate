@@ -11,10 +11,21 @@ use crate::{
 pub(crate) struct Velocity {
     linear: [Vector; 3],
     offset: Vector,
+    pub(crate) exact: Option<crate::prescribed_motion::Motion>,
 }
 
 impl Velocity {
     pub(crate) fn parse(spec: &Json) -> Result<Self, &'static str> {
+        if spec.field("schema")?.text()? == "solidcraft_affine_velocity_v2" {
+            spec.keys(&["schema", "affine_mm"])?;
+            let map = crate::prescribed_motion::Motion::parse(spec.field("affine_mm")?)?;
+            let coefficients = map.as_f64();
+            return Ok(Self {
+                linear: coefficients.map(|r| [r[1], r[2], r[3]]),
+                offset: coefficients.map(|r| r[0]),
+                exact: Some(map),
+            });
+        }
         spec.keys(&["schema", "linear", "offset_mm"])?;
         if spec.field("schema")?.text()? != "solidcraft_affine_velocity_v1" {
             return Err("unknown mechanical velocity schema");
@@ -26,6 +37,7 @@ impl Velocity {
         Ok(Self {
             linear: [row(a)?, row(b)?, row(c)?],
             offset: row(spec.field("offset_mm")?)?,
+            exact: None,
         })
     }
 
@@ -58,6 +70,7 @@ pub(crate) struct SensitivityJob<'a> {
     pub force_rate: &'a [f64],
     pub includes_body_load: bool,
     pub lifts: [&'a Lift; 3],
+    pub support_rates: Option<[Vec<LiftRate>; 3]>,
     pub material: MaterialJet,
     pub order: usize,
 }
@@ -80,6 +93,12 @@ pub(crate) fn solve(velocity: &Velocity, data: SensitivityJob<'_>) -> Result<Jso
     }
     let k = assemble_sensitivity(space, &jets, data.material, data.order)?;
     let zero = vec![LiftRate::default(); space.ndof];
+    let rates = data
+        .support_rates
+        .as_ref()
+        .map_or([zero.as_slice(); 3], |rates| {
+            rates.each_ref().map(Vec::as_slice)
+        });
     let result = differentiate(
         MechanicalDerivative {
             stiffness: &k.stiffness,
@@ -87,7 +106,7 @@ pub(crate) fn solve(velocity: &Velocity, data: SensitivityJob<'_>) -> Result<Jso
             force: data.force,
             force_rate: data.force_rate,
             lifts: data.lifts,
-            lift_rates: [&zero; 3],
+            lift_rates: rates,
             objective_gradient: data.force,
             objective_partial: 0.,
             fixed_regime: true,
@@ -102,7 +121,7 @@ pub(crate) fn solve(velocity: &Velocity, data: SensitivityJob<'_>) -> Result<Jso
     let numbers = |v: &[f64]| Json::Array(v.iter().copied().map(num).collect());
     let resultant =
         std::array::from_fn::<_, 3, _>(|c| data.force_rate.iter().skip(c).step_by(3).sum());
-    Ok(object([
+    let mut report = object([
         (
             "schema",
             Json::String("solidcraft_affine_job_derivative_v1".into()),
@@ -149,5 +168,61 @@ pub(crate) fn solve(velocity: &Velocity, data: SensitivityJob<'_>) -> Result<Jso
                 result.adjoint_relative_residual,
             ]),
         ),
-    ]))
+    ]);
+    if let (Some(_), Json::Object(fields)) = (velocity.exact, &mut report) {
+        let u = &result.primal.displacement_mm;
+        let du = &result.physical_tangent;
+        let ku = k.stiffness.apply(u)?;
+        let dku = k.derivative.apply(u)?;
+        let kdu = k.stiffness.apply(du)?;
+        let reaction: Vec<_> = ku.iter().zip(data.force).map(|(a, b)| a - b).collect();
+        let reaction_rate: Vec<_> = dku
+            .iter()
+            .zip(kdu)
+            .zip(data.force_rate)
+            .map(|((a, b), c)| a + b - c)
+            .collect();
+        let energy_shape = 0.5 * dot(u, &dku);
+        let reaction_lift_work: f64 = reaction
+            .as_chunks::<3>()
+            .0
+            .iter()
+            .enumerate()
+            .map(|(i, r)| (0..3).map(|c| r[c] * rates[c][i].offset).sum::<f64>())
+            .sum();
+        let strain_rate = energy_shape + dot(&ku, du);
+        let adjoint_strain_rate = energy_shape + result.objective_adjoint + reaction_lift_work;
+        let support_rate = dot(&reaction_rate, u) + dot(&reaction, du);
+        let applied_rate = result.objective_tangent + explicit;
+        fields.insert(
+            "schema".into(),
+            Json::String("solidcraft_affine_job_derivative_v2".into()),
+        );
+        fields.remove("compliance_n_mm");
+        fields.remove("compliance_rate_tangent_n_mm");
+        fields.remove("compliance_rate_adjoint_n_mm");
+        for (key, value) in [
+            ("applied_work_n_mm", compliance),
+            ("applied_work_rate_tangent_n_mm", applied_rate),
+            (
+                "applied_work_rate_adjoint_n_mm",
+                result.objective_adjoint + explicit,
+            ),
+            ("strain_energy_n_mm", result.primal.strain_energy_n_mm),
+            ("strain_energy_rate_tangent_n_mm", strain_rate),
+            ("strain_energy_rate_adjoint_n_mm", adjoint_strain_rate),
+            ("support_work_n_mm", dot(&reaction, u)),
+            ("support_work_rate_n_mm", support_rate),
+            (
+                "work_rate_closure_n_mm",
+                applied_rate + support_rate - 2. * strain_rate,
+            ),
+        ] {
+            if !value.is_finite() {
+                return Err("nonfinite material work derivative");
+            }
+            fields.insert(key.into(), num(value));
+        }
+    }
+    Ok(report)
 }

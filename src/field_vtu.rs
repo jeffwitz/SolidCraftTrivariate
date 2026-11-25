@@ -66,7 +66,10 @@ struct ChartData {
     mises: String,
     params: String,
 }
-fn row<const N: usize>(storage: &mut String, values: [f64; N]) -> Result<(), &'static str> {
+pub(crate) fn row<const N: usize>(
+    storage: &mut String,
+    values: [f64; N],
+) -> Result<(), &'static str> {
     for x in values {
         if !x.is_finite() {
             return Err("nonfinite sampled field");
@@ -101,7 +104,9 @@ fn sample_chart(
                     for a in 0..3 {
                         let ua = u[3 * id + a];
                         displacement[a] += ua * sample.values[local];
-                        for (component, derivative) in grad[a].iter_mut().zip(sample.gradients[local]) {
+                        for (component, derivative) in
+                            grad[a].iter_mut().zip(sample.gradients[local])
+                        {
                             *component += ua * derivative;
                         }
                     }
@@ -134,7 +139,7 @@ fn sample_chart(
     }
     Ok(data)
 }
-fn array(out: &mut String, name: &str, ty: &str, n: usize, content: &str) {
+pub(crate) fn array(out: &mut String, name: &str, ty: &str, n: usize, content: &str) {
     writeln!(
         out,
         r#"<DataArray type="{ty}" Name="{name}" NumberOfComponents="{n}" format="ascii">"#
@@ -165,7 +170,13 @@ fn write_piece(out: &mut String, data: ChartData, n: usize, chart: usize) {
         writeln!(ids, "{chart}").unwrap();
     }
     array(out, "analysis_block_index", "Int32", 1, &ids);
-    out.push_str("</CellData>\n<Cells>\n");
+    out.push_str("</CellData>\n");
+    write_cells(out, n);
+}
+
+pub(crate) fn write_cells(out: &mut String, n: usize) {
+    let stride = n + 1;
+    out.push_str("<Cells>\n");
     let mut conn = String::new();
     let offsets = [
         [0, 0, 0],
@@ -188,7 +199,7 @@ fn write_piece(out: &mut String, data: ChartData, n: usize, chart: usize) {
         }
     }
     array(out, "connectivity", "Int64", 1, &conn);
-    ids.clear();
+    let mut ids = String::new();
     for i in 1..=n.pow(3) {
         writeln!(ids, "{}", 8 * i).unwrap();
     }

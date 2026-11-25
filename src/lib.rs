@@ -105,3 +105,6 @@ mod volume_load;
 pub mod circular_polygon_audit;
 mod circular_polygon_json;
 pub mod solidcraft_circular_polygon;
+pub mod solidcraft_oriented_plane;
+pub mod adaptive_traction;
+pub mod geometry_vtu;

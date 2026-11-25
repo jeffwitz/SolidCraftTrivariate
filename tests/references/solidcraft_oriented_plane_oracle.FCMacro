@@ -1,0 +1,48 @@
+import FreeCAD as App
+import Part
+import json
+import math
+import os
+
+host = Part.read(os.environ['SC7_HOST_STEP'])
+native = Part.read(os.environ['SC7_NATIVE_STEP'])
+assert host.isValid() and native.isValid()
+assert len(host.Solids) == len(native.Solids) == 1
+expected_volume = float(os.environ['SC7_EXPECTED_VOLUME'])
+expected_bounds = json.loads(os.environ['SC7_EXPECTED_BOUNDS'])
+actual_bounds = [host.BoundBox.XMin, host.BoundBox.XMax,
+                 host.BoundBox.YMin, host.BoundBox.YMax,
+                 host.BoundBox.ZMin, host.BoundBox.ZMax]
+assert max(abs(a-b) for a,b in zip(actual_bounds, expected_bounds)) < 1e-8
+volume_error = abs(host.Volume - expected_volume)
+volume_difference = abs(host.Volume - native.Volume)
+area_difference = abs(host.Area - native.Area)
+centroid_difference = math.dist(
+    (host.Solids[0].CenterOfMass.x, host.Solids[0].CenterOfMass.y, host.Solids[0].CenterOfMass.z),
+    (native.Solids[0].CenterOfMass.x, native.Solids[0].CenterOfMass.y, native.Solids[0].CenterOfMass.z))
+host_minus_native = host.cut(native).Volume
+native_minus_host = native.cut(host).Volume
+assert volume_error < 1e-8 and volume_difference < 1e-8
+assert area_difference < 1e-8 and centroid_difference < 1e-9
+assert host_minus_native < 1e-8 and native_minus_host < 1e-8
+probes = json.loads(os.environ['SC7_PROBES'])
+for x,y,z,expected_inside in probes:
+    p = App.Vector(x,y,z)
+    assert host.isInside(p, 1e-8, False) == expected_inside
+    assert native.isInside(p, 1e-8, False) == expected_inside
+metrics = {
+    'valid': True,
+    'volume_mm3': host.Volume,
+    'expected_volume_mm3': expected_volume,
+    'volume_error_mm3': volume_error,
+    'volume_difference_mm3': volume_difference,
+    'area_difference_mm2': area_difference,
+    'centroid_difference_mm': centroid_difference,
+    'host_minus_native_mm3': host_minus_native,
+    'native_minus_host_mm3': native_minus_host,
+    'bbox_mm': actual_bounds,
+    'classifications': len(probes),
+}
+with open(os.environ['SC7_METRICS'], 'w') as out:
+    json.dump(metrics, out, sort_keys=True)
+print(json.dumps(metrics, sort_keys=True))

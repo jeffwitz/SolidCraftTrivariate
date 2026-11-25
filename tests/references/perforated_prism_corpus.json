@@ -1,0 +1,2529 @@
+[
+  {
+    "id": "no_hole",
+    "recipe": {
+      "family": "polygonal_perforated_prism_v1",
+      "outer": {
+        "id": "outer",
+        "vertices": [
+          {
+            "id": "outer0",
+            "xy_mm": [
+              -16,
+              -12
+            ]
+          },
+          {
+            "id": "outer1",
+            "xy_mm": [
+              16,
+              -12
+            ]
+          },
+          {
+            "id": "outer2",
+            "xy_mm": [
+              16,
+              12
+            ]
+          },
+          {
+            "id": "outer3",
+            "xy_mm": [
+              -16,
+              12
+            ]
+          }
+        ]
+      },
+      "holes": [],
+      "height_mm": 8,
+      "top_shift_mm": [
+        0,
+        0
+      ]
+    },
+    "expected": true
+  },
+  {
+    "id": "no_hole_reorder",
+    "recipe": {
+      "family": "polygonal_perforated_prism_v1",
+      "outer": {
+        "id": "outer",
+        "vertices": [
+          {
+            "id": "outer2",
+            "xy_mm": [
+              16,
+              12
+            ]
+          },
+          {
+            "id": "outer1",
+            "xy_mm": [
+              16,
+              -12
+            ]
+          },
+          {
+            "id": "outer0",
+            "xy_mm": [
+              -16,
+              -12
+            ]
+          },
+          {
+            "id": "outer3",
+            "xy_mm": [
+              -16,
+              12
+            ]
+          }
+        ]
+      },
+      "holes": [],
+      "height_mm": 8,
+      "top_shift_mm": [
+        0,
+        0
+      ]
+    },
+    "expected": true,
+    "equivalent_to": "no_hole"
+  },
+  {
+    "id": "single_square",
+    "recipe": {
+      "family": "polygonal_perforated_prism_v1",
+      "outer": {
+        "id": "outer",
+        "vertices": [
+          {
+            "id": "outer0",
+            "xy_mm": [
+              -16,
+              -12
+            ]
+          },
+          {
+            "id": "outer1",
+            "xy_mm": [
+              16,
+              -12
+            ]
+          },
+          {
+            "id": "outer2",
+            "xy_mm": [
+              16,
+              12
+            ]
+          },
+          {
+            "id": "outer3",
+            "xy_mm": [
+              -16,
+              12
+            ]
+          }
+        ]
+      },
+      "holes": [
+        {
+          "id": "hole0",
+          "vertices": [
+            {
+              "id": "hole00",
+              "xy_mm": [
+                -4,
+                -3
+              ]
+            },
+            {
+              "id": "hole01",
+              "xy_mm": [
+                4,
+                -3
+              ]
+            },
+            {
+              "id": "hole02",
+              "xy_mm": [
+                4,
+                3
+              ]
+            },
+            {
+              "id": "hole03",
+              "xy_mm": [
+                -4,
+                3
+              ]
+            }
+          ]
+        }
+      ],
+      "height_mm": 11,
+      "top_shift_mm": [
+        3,
+        -5
+      ]
+    },
+    "expected": true
+  },
+  {
+    "id": "single_square_reorder",
+    "recipe": {
+      "family": "polygonal_perforated_prism_v1",
+      "outer": {
+        "id": "outer",
+        "vertices": [
+          {
+            "id": "outer2",
+            "xy_mm": [
+              16,
+              12
+            ]
+          },
+          {
+            "id": "outer1",
+            "xy_mm": [
+              16,
+              -12
+            ]
+          },
+          {
+            "id": "outer0",
+            "xy_mm": [
+              -16,
+              -12
+            ]
+          },
+          {
+            "id": "outer3",
+            "xy_mm": [
+              -16,
+              12
+            ]
+          }
+        ]
+      },
+      "holes": [
+        {
+          "id": "hole0",
+          "vertices": [
+            {
+              "id": "hole02",
+              "xy_mm": [
+                4,
+                3
+              ]
+            },
+            {
+              "id": "hole01",
+              "xy_mm": [
+                4,
+                -3
+              ]
+            },
+            {
+              "id": "hole00",
+              "xy_mm": [
+                -4,
+                -3
+              ]
+            },
+            {
+              "id": "hole03",
+              "xy_mm": [
+                -4,
+                3
+              ]
+            }
+          ]
+        }
+      ],
+      "height_mm": 11,
+      "top_shift_mm": [
+        3,
+        -5
+      ]
+    },
+    "expected": true,
+    "equivalent_to": "single_square"
+  },
+  {
+    "id": "two_staggered",
+    "recipe": {
+      "family": "polygonal_perforated_prism_v1",
+      "outer": {
+        "id": "outer",
+        "vertices": [
+          {
+            "id": "outer0",
+            "xy_mm": [
+              -16,
+              -12
+            ]
+          },
+          {
+            "id": "outer1",
+            "xy_mm": [
+              16,
+              -12
+            ]
+          },
+          {
+            "id": "outer2",
+            "xy_mm": [
+              16,
+              12
+            ]
+          },
+          {
+            "id": "outer3",
+            "xy_mm": [
+              -16,
+              12
+            ]
+          }
+        ]
+      },
+      "holes": [
+        {
+          "id": "hole0",
+          "vertices": [
+            {
+              "id": "hole00",
+              "xy_mm": [
+                -11,
+                -7
+              ]
+            },
+            {
+              "id": "hole01",
+              "xy_mm": [
+                -6,
+                -7
+              ]
+            },
+            {
+              "id": "hole02",
+              "xy_mm": [
+                -6,
+                2
+              ]
+            },
+            {
+              "id": "hole03",
+              "xy_mm": [
+                -11,
+                2
+              ]
+            }
+          ]
+        },
+        {
+          "id": "hole1",
+          "vertices": [
+            {
+              "id": "hole10",
+              "xy_mm": [
+                4,
+                -1
+              ]
+            },
+            {
+              "id": "hole11",
+              "xy_mm": [
+                11,
+                -1
+              ]
+            },
+            {
+              "id": "hole12",
+              "xy_mm": [
+                11,
+                8
+              ]
+            },
+            {
+              "id": "hole13",
+              "xy_mm": [
+                4,
+                8
+              ]
+            }
+          ]
+        }
+      ],
+      "height_mm": 5,
+      "top_shift_mm": [
+        -9,
+        7
+      ]
+    },
+    "expected": true
+  },
+  {
+    "id": "two_staggered_reorder",
+    "recipe": {
+      "family": "polygonal_perforated_prism_v1",
+      "outer": {
+        "id": "outer",
+        "vertices": [
+          {
+            "id": "outer2",
+            "xy_mm": [
+              16,
+              12
+            ]
+          },
+          {
+            "id": "outer1",
+            "xy_mm": [
+              16,
+              -12
+            ]
+          },
+          {
+            "id": "outer0",
+            "xy_mm": [
+              -16,
+              -12
+            ]
+          },
+          {
+            "id": "outer3",
+            "xy_mm": [
+              -16,
+              12
+            ]
+          }
+        ]
+      },
+      "holes": [
+        {
+          "id": "hole1",
+          "vertices": [
+            {
+              "id": "hole12",
+              "xy_mm": [
+                11,
+                8
+              ]
+            },
+            {
+              "id": "hole11",
+              "xy_mm": [
+                11,
+                -1
+              ]
+            },
+            {
+              "id": "hole10",
+              "xy_mm": [
+                4,
+                -1
+              ]
+            },
+            {
+              "id": "hole13",
+              "xy_mm": [
+                4,
+                8
+              ]
+            }
+          ]
+        },
+        {
+          "id": "hole0",
+          "vertices": [
+            {
+              "id": "hole02",
+              "xy_mm": [
+                -6,
+                2
+              ]
+            },
+            {
+              "id": "hole01",
+              "xy_mm": [
+                -6,
+                -7
+              ]
+            },
+            {
+              "id": "hole00",
+              "xy_mm": [
+                -11,
+                -7
+              ]
+            },
+            {
+              "id": "hole03",
+              "xy_mm": [
+                -11,
+                2
+              ]
+            }
+          ]
+        }
+      ],
+      "height_mm": 5,
+      "top_shift_mm": [
+        -9,
+        7
+      ]
+    },
+    "expected": true,
+    "equivalent_to": "two_staggered"
+  },
+  {
+    "id": "four_aligned",
+    "recipe": {
+      "family": "polygonal_perforated_prism_v1",
+      "outer": {
+        "id": "outer",
+        "vertices": [
+          {
+            "id": "outer0",
+            "xy_mm": [
+              -16,
+              -12
+            ]
+          },
+          {
+            "id": "outer1",
+            "xy_mm": [
+              16,
+              -12
+            ]
+          },
+          {
+            "id": "outer2",
+            "xy_mm": [
+              16,
+              12
+            ]
+          },
+          {
+            "id": "outer3",
+            "xy_mm": [
+              -16,
+              12
+            ]
+          }
+        ]
+      },
+      "holes": [
+        {
+          "id": "hole0",
+          "vertices": [
+            {
+              "id": "hole00",
+              "xy_mm": [
+                -13,
+                -6
+              ]
+            },
+            {
+              "id": "hole01",
+              "xy_mm": [
+                -9,
+                -6
+              ]
+            },
+            {
+              "id": "hole02",
+              "xy_mm": [
+                -9,
+                1
+              ]
+            },
+            {
+              "id": "hole03",
+              "xy_mm": [
+                -13,
+                1
+              ]
+            }
+          ]
+        },
+        {
+          "id": "hole1",
+          "vertices": [
+            {
+              "id": "hole10",
+              "xy_mm": [
+                -6,
+                -6
+              ]
+            },
+            {
+              "id": "hole11",
+              "xy_mm": [
+                -2,
+                -6
+              ]
+            },
+            {
+              "id": "hole12",
+              "xy_mm": [
+                -2,
+                1
+              ]
+            },
+            {
+              "id": "hole13",
+              "xy_mm": [
+                -6,
+                1
+              ]
+            }
+          ]
+        },
+        {
+          "id": "hole2",
+          "vertices": [
+            {
+              "id": "hole20",
+              "xy_mm": [
+                1,
+                -6
+              ]
+            },
+            {
+              "id": "hole21",
+              "xy_mm": [
+                5,
+                -6
+              ]
+            },
+            {
+              "id": "hole22",
+              "xy_mm": [
+                5,
+                1
+              ]
+            },
+            {
+              "id": "hole23",
+              "xy_mm": [
+                1,
+                1
+              ]
+            }
+          ]
+        },
+        {
+          "id": "hole3",
+          "vertices": [
+            {
+              "id": "hole30",
+              "xy_mm": [
+                8,
+                -6
+              ]
+            },
+            {
+              "id": "hole31",
+              "xy_mm": [
+                12,
+                -6
+              ]
+            },
+            {
+              "id": "hole32",
+              "xy_mm": [
+                12,
+                1
+              ]
+            },
+            {
+              "id": "hole33",
+              "xy_mm": [
+                8,
+                1
+              ]
+            }
+          ]
+        }
+      ],
+      "height_mm": 8,
+      "top_shift_mm": [
+        0,
+        0
+      ]
+    },
+    "expected": true
+  },
+  {
+    "id": "four_aligned_reorder",
+    "recipe": {
+      "family": "polygonal_perforated_prism_v1",
+      "outer": {
+        "id": "outer",
+        "vertices": [
+          {
+            "id": "outer2",
+            "xy_mm": [
+              16,
+              12
+            ]
+          },
+          {
+            "id": "outer1",
+            "xy_mm": [
+              16,
+              -12
+            ]
+          },
+          {
+            "id": "outer0",
+            "xy_mm": [
+              -16,
+              -12
+            ]
+          },
+          {
+            "id": "outer3",
+            "xy_mm": [
+              -16,
+              12
+            ]
+          }
+        ]
+      },
+      "holes": [
+        {
+          "id": "hole3",
+          "vertices": [
+            {
+              "id": "hole32",
+              "xy_mm": [
+                12,
+                1
+              ]
+            },
+            {
+              "id": "hole31",
+              "xy_mm": [
+                12,
+                -6
+              ]
+            },
+            {
+              "id": "hole30",
+              "xy_mm": [
+                8,
+                -6
+              ]
+            },
+            {
+              "id": "hole33",
+              "xy_mm": [
+                8,
+                1
+              ]
+            }
+          ]
+        },
+        {
+          "id": "hole2",
+          "vertices": [
+            {
+              "id": "hole22",
+              "xy_mm": [
+                5,
+                1
+              ]
+            },
+            {
+              "id": "hole21",
+              "xy_mm": [
+                5,
+                -6
+              ]
+            },
+            {
+              "id": "hole20",
+              "xy_mm": [
+                1,
+                -6
+              ]
+            },
+            {
+              "id": "hole23",
+              "xy_mm": [
+                1,
+                1
+              ]
+            }
+          ]
+        },
+        {
+          "id": "hole1",
+          "vertices": [
+            {
+              "id": "hole12",
+              "xy_mm": [
+                -2,
+                1
+              ]
+            },
+            {
+              "id": "hole11",
+              "xy_mm": [
+                -2,
+                -6
+              ]
+            },
+            {
+              "id": "hole10",
+              "xy_mm": [
+                -6,
+                -6
+              ]
+            },
+            {
+              "id": "hole13",
+              "xy_mm": [
+                -6,
+                1
+              ]
+            }
+          ]
+        },
+        {
+          "id": "hole0",
+          "vertices": [
+            {
+              "id": "hole02",
+              "xy_mm": [
+                -9,
+                1
+              ]
+            },
+            {
+              "id": "hole01",
+              "xy_mm": [
+                -9,
+                -6
+              ]
+            },
+            {
+              "id": "hole00",
+              "xy_mm": [
+                -13,
+                -6
+              ]
+            },
+            {
+              "id": "hole03",
+              "xy_mm": [
+                -13,
+                1
+              ]
+            }
+          ]
+        }
+      ],
+      "height_mm": 8,
+      "top_shift_mm": [
+        0,
+        0
+      ]
+    },
+    "expected": true,
+    "equivalent_to": "four_aligned"
+  },
+  {
+    "id": "oblique_triangles",
+    "recipe": {
+      "family": "polygonal_perforated_prism_v1",
+      "outer": {
+        "id": "outer",
+        "vertices": [
+          {
+            "id": "outer0",
+            "xy_mm": [
+              -12,
+              -7
+            ]
+          },
+          {
+            "id": "outer1",
+            "xy_mm": [
+              -3,
+              -12
+            ]
+          },
+          {
+            "id": "outer2",
+            "xy_mm": [
+              15,
+              -8
+            ]
+          },
+          {
+            "id": "outer3",
+            "xy_mm": [
+              17,
+              9
+            ]
+          },
+          {
+            "id": "outer4",
+            "xy_mm": [
+              2,
+              16
+            ]
+          },
+          {
+            "id": "outer5",
+            "xy_mm": [
+              -15,
+              11
+            ]
+          }
+        ]
+      },
+      "holes": [
+        {
+          "id": "hole0",
+          "vertices": [
+            {
+              "id": "hole00",
+              "xy_mm": [
+                -9,
+                3
+              ]
+            },
+            {
+              "id": "hole01",
+              "xy_mm": [
+                -5,
+                -4
+              ]
+            },
+            {
+              "id": "hole02",
+              "xy_mm": [
+                -2,
+                4
+              ]
+            }
+          ]
+        },
+        {
+          "id": "hole1",
+          "vertices": [
+            {
+              "id": "hole10",
+              "xy_mm": [
+                2,
+                1
+              ]
+            },
+            {
+              "id": "hole11",
+              "xy_mm": [
+                11,
+                -4
+              ]
+            },
+            {
+              "id": "hole12",
+              "xy_mm": [
+                9,
+                6
+              ]
+            }
+          ]
+        }
+      ],
+      "height_mm": 11,
+      "top_shift_mm": [
+        3,
+        -5
+      ]
+    },
+    "expected": true
+  },
+  {
+    "id": "oblique_triangles_reorder",
+    "recipe": {
+      "family": "polygonal_perforated_prism_v1",
+      "outer": {
+        "id": "outer",
+        "vertices": [
+          {
+            "id": "outer4",
+            "xy_mm": [
+              2,
+              16
+            ]
+          },
+          {
+            "id": "outer3",
+            "xy_mm": [
+              17,
+              9
+            ]
+          },
+          {
+            "id": "outer2",
+            "xy_mm": [
+              15,
+              -8
+            ]
+          },
+          {
+            "id": "outer1",
+            "xy_mm": [
+              -3,
+              -12
+            ]
+          },
+          {
+            "id": "outer0",
+            "xy_mm": [
+              -12,
+              -7
+            ]
+          },
+          {
+            "id": "outer5",
+            "xy_mm": [
+              -15,
+              11
+            ]
+          }
+        ]
+      },
+      "holes": [
+        {
+          "id": "hole1",
+          "vertices": [
+            {
+              "id": "hole11",
+              "xy_mm": [
+                11,
+                -4
+              ]
+            },
+            {
+              "id": "hole10",
+              "xy_mm": [
+                2,
+                1
+              ]
+            },
+            {
+              "id": "hole12",
+              "xy_mm": [
+                9,
+                6
+              ]
+            }
+          ]
+        },
+        {
+          "id": "hole0",
+          "vertices": [
+            {
+              "id": "hole01",
+              "xy_mm": [
+                -5,
+                -4
+              ]
+            },
+            {
+              "id": "hole00",
+              "xy_mm": [
+                -9,
+                3
+              ]
+            },
+            {
+              "id": "hole02",
+              "xy_mm": [
+                -2,
+                4
+              ]
+            }
+          ]
+        }
+      ],
+      "height_mm": 11,
+      "top_shift_mm": [
+        3,
+        -5
+      ]
+    },
+    "expected": true,
+    "equivalent_to": "oblique_triangles"
+  },
+  {
+    "id": "thin_ligament",
+    "recipe": {
+      "family": "polygonal_perforated_prism_v1",
+      "outer": {
+        "id": "outer",
+        "vertices": [
+          {
+            "id": "outer0",
+            "xy_mm": [
+              0,
+              0
+            ]
+          },
+          {
+            "id": "outer1",
+            "xy_mm": [
+              20,
+              0
+            ]
+          },
+          {
+            "id": "outer2",
+            "xy_mm": [
+              20,
+              15
+            ]
+          },
+          {
+            "id": "outer3",
+            "xy_mm": [
+              0,
+              15
+            ]
+          }
+        ]
+      },
+      "holes": [
+        {
+          "id": "hole0",
+          "vertices": [
+            {
+              "id": "hole00",
+              "xy_mm": [
+                1,
+                1
+              ]
+            },
+            {
+              "id": "hole01",
+              "xy_mm": [
+                9,
+                1
+              ]
+            },
+            {
+              "id": "hole02",
+              "xy_mm": [
+                9,
+                14
+              ]
+            },
+            {
+              "id": "hole03",
+              "xy_mm": [
+                1,
+                14
+              ]
+            }
+          ]
+        },
+        {
+          "id": "hole1",
+          "vertices": [
+            {
+              "id": "hole10",
+              "xy_mm": [
+                10,
+                1
+              ]
+            },
+            {
+              "id": "hole11",
+              "xy_mm": [
+                19,
+                1
+              ]
+            },
+            {
+              "id": "hole12",
+              "xy_mm": [
+                19,
+                14
+              ]
+            },
+            {
+              "id": "hole13",
+              "xy_mm": [
+                10,
+                14
+              ]
+            }
+          ]
+        }
+      ],
+      "height_mm": 5,
+      "top_shift_mm": [
+        -9,
+        7
+      ]
+    },
+    "expected": true
+  },
+  {
+    "id": "thin_ligament_reorder",
+    "recipe": {
+      "family": "polygonal_perforated_prism_v1",
+      "outer": {
+        "id": "outer",
+        "vertices": [
+          {
+            "id": "outer2",
+            "xy_mm": [
+              20,
+              15
+            ]
+          },
+          {
+            "id": "outer1",
+            "xy_mm": [
+              20,
+              0
+            ]
+          },
+          {
+            "id": "outer0",
+            "xy_mm": [
+              0,
+              0
+            ]
+          },
+          {
+            "id": "outer3",
+            "xy_mm": [
+              0,
+              15
+            ]
+          }
+        ]
+      },
+      "holes": [
+        {
+          "id": "hole1",
+          "vertices": [
+            {
+              "id": "hole12",
+              "xy_mm": [
+                19,
+                14
+              ]
+            },
+            {
+              "id": "hole11",
+              "xy_mm": [
+                19,
+                1
+              ]
+            },
+            {
+              "id": "hole10",
+              "xy_mm": [
+                10,
+                1
+              ]
+            },
+            {
+              "id": "hole13",
+              "xy_mm": [
+                10,
+                14
+              ]
+            }
+          ]
+        },
+        {
+          "id": "hole0",
+          "vertices": [
+            {
+              "id": "hole02",
+              "xy_mm": [
+                9,
+                14
+              ]
+            },
+            {
+              "id": "hole01",
+              "xy_mm": [
+                9,
+                1
+              ]
+            },
+            {
+              "id": "hole00",
+              "xy_mm": [
+                1,
+                1
+              ]
+            },
+            {
+              "id": "hole03",
+              "xy_mm": [
+                1,
+                14
+              ]
+            }
+          ]
+        }
+      ],
+      "height_mm": 5,
+      "top_shift_mm": [
+        -9,
+        7
+      ]
+    },
+    "expected": true,
+    "equivalent_to": "thin_ligament"
+  },
+  {
+    "id": "concave_outer",
+    "recipe": {
+      "family": "polygonal_perforated_prism_v1",
+      "outer": {
+        "id": "outer",
+        "vertices": [
+          {
+            "id": "outer0",
+            "xy_mm": [
+              0,
+              0
+            ]
+          },
+          {
+            "id": "outer1",
+            "xy_mm": [
+              20,
+              0
+            ]
+          },
+          {
+            "id": "outer2",
+            "xy_mm": [
+              20,
+              18
+            ]
+          },
+          {
+            "id": "outer3",
+            "xy_mm": [
+              14,
+              18
+            ]
+          },
+          {
+            "id": "outer4",
+            "xy_mm": [
+              14,
+              6
+            ]
+          },
+          {
+            "id": "outer5",
+            "xy_mm": [
+              6,
+              6
+            ]
+          },
+          {
+            "id": "outer6",
+            "xy_mm": [
+              6,
+              18
+            ]
+          },
+          {
+            "id": "outer7",
+            "xy_mm": [
+              0,
+              18
+            ]
+          }
+        ]
+      },
+      "holes": [
+        {
+          "id": "hole0",
+          "vertices": [
+            {
+              "id": "hole00",
+              "xy_mm": [
+                1,
+                7
+              ]
+            },
+            {
+              "id": "hole01",
+              "xy_mm": [
+                5,
+                7
+              ]
+            },
+            {
+              "id": "hole02",
+              "xy_mm": [
+                5,
+                16
+              ]
+            },
+            {
+              "id": "hole03",
+              "xy_mm": [
+                1,
+                16
+              ]
+            }
+          ]
+        },
+        {
+          "id": "hole1",
+          "vertices": [
+            {
+              "id": "hole10",
+              "xy_mm": [
+                15,
+                7
+              ]
+            },
+            {
+              "id": "hole11",
+              "xy_mm": [
+                19,
+                7
+              ]
+            },
+            {
+              "id": "hole12",
+              "xy_mm": [
+                19,
+                16
+              ]
+            },
+            {
+              "id": "hole13",
+              "xy_mm": [
+                15,
+                16
+              ]
+            }
+          ]
+        }
+      ],
+      "height_mm": 8,
+      "top_shift_mm": [
+        0,
+        0
+      ]
+    },
+    "expected": true
+  },
+  {
+    "id": "concave_outer_reorder",
+    "recipe": {
+      "family": "polygonal_perforated_prism_v1",
+      "outer": {
+        "id": "outer",
+        "vertices": [
+          {
+            "id": "outer6",
+            "xy_mm": [
+              6,
+              18
+            ]
+          },
+          {
+            "id": "outer5",
+            "xy_mm": [
+              6,
+              6
+            ]
+          },
+          {
+            "id": "outer4",
+            "xy_mm": [
+              14,
+              6
+            ]
+          },
+          {
+            "id": "outer3",
+            "xy_mm": [
+              14,
+              18
+            ]
+          },
+          {
+            "id": "outer2",
+            "xy_mm": [
+              20,
+              18
+            ]
+          },
+          {
+            "id": "outer1",
+            "xy_mm": [
+              20,
+              0
+            ]
+          },
+          {
+            "id": "outer0",
+            "xy_mm": [
+              0,
+              0
+            ]
+          },
+          {
+            "id": "outer7",
+            "xy_mm": [
+              0,
+              18
+            ]
+          }
+        ]
+      },
+      "holes": [
+        {
+          "id": "hole1",
+          "vertices": [
+            {
+              "id": "hole12",
+              "xy_mm": [
+                19,
+                16
+              ]
+            },
+            {
+              "id": "hole11",
+              "xy_mm": [
+                19,
+                7
+              ]
+            },
+            {
+              "id": "hole10",
+              "xy_mm": [
+                15,
+                7
+              ]
+            },
+            {
+              "id": "hole13",
+              "xy_mm": [
+                15,
+                16
+              ]
+            }
+          ]
+        },
+        {
+          "id": "hole0",
+          "vertices": [
+            {
+              "id": "hole02",
+              "xy_mm": [
+                5,
+                16
+              ]
+            },
+            {
+              "id": "hole01",
+              "xy_mm": [
+                5,
+                7
+              ]
+            },
+            {
+              "id": "hole00",
+              "xy_mm": [
+                1,
+                7
+              ]
+            },
+            {
+              "id": "hole03",
+              "xy_mm": [
+                1,
+                16
+              ]
+            }
+          ]
+        }
+      ],
+      "height_mm": 8,
+      "top_shift_mm": [
+        0,
+        0
+      ]
+    },
+    "expected": true,
+    "equivalent_to": "concave_outer"
+  },
+  {
+    "id": "concave_hole",
+    "recipe": {
+      "family": "polygonal_perforated_prism_v1",
+      "outer": {
+        "id": "outer",
+        "vertices": [
+          {
+            "id": "outer0",
+            "xy_mm": [
+              -16,
+              -12
+            ]
+          },
+          {
+            "id": "outer1",
+            "xy_mm": [
+              16,
+              -12
+            ]
+          },
+          {
+            "id": "outer2",
+            "xy_mm": [
+              16,
+              12
+            ]
+          },
+          {
+            "id": "outer3",
+            "xy_mm": [
+              -16,
+              12
+            ]
+          }
+        ]
+      },
+      "holes": [
+        {
+          "id": "hole0",
+          "vertices": [
+            {
+              "id": "hole00",
+              "xy_mm": [
+                -8,
+                -5
+              ]
+            },
+            {
+              "id": "hole01",
+              "xy_mm": [
+                8,
+                -5
+              ]
+            },
+            {
+              "id": "hole02",
+              "xy_mm": [
+                8,
+                5
+              ]
+            },
+            {
+              "id": "hole03",
+              "xy_mm": [
+                3,
+                5
+              ]
+            },
+            {
+              "id": "hole04",
+              "xy_mm": [
+                3,
+                -1
+              ]
+            },
+            {
+              "id": "hole05",
+              "xy_mm": [
+                -3,
+                -1
+              ]
+            },
+            {
+              "id": "hole06",
+              "xy_mm": [
+                -3,
+                5
+              ]
+            },
+            {
+              "id": "hole07",
+              "xy_mm": [
+                -8,
+                5
+              ]
+            }
+          ]
+        }
+      ],
+      "height_mm": 11,
+      "top_shift_mm": [
+        3,
+        -5
+      ]
+    },
+    "expected": true
+  },
+  {
+    "id": "concave_hole_reorder",
+    "recipe": {
+      "family": "polygonal_perforated_prism_v1",
+      "outer": {
+        "id": "outer",
+        "vertices": [
+          {
+            "id": "outer2",
+            "xy_mm": [
+              16,
+              12
+            ]
+          },
+          {
+            "id": "outer1",
+            "xy_mm": [
+              16,
+              -12
+            ]
+          },
+          {
+            "id": "outer0",
+            "xy_mm": [
+              -16,
+              -12
+            ]
+          },
+          {
+            "id": "outer3",
+            "xy_mm": [
+              -16,
+              12
+            ]
+          }
+        ]
+      },
+      "holes": [
+        {
+          "id": "hole0",
+          "vertices": [
+            {
+              "id": "hole06",
+              "xy_mm": [
+                -3,
+                5
+              ]
+            },
+            {
+              "id": "hole05",
+              "xy_mm": [
+                -3,
+                -1
+              ]
+            },
+            {
+              "id": "hole04",
+              "xy_mm": [
+                3,
+                -1
+              ]
+            },
+            {
+              "id": "hole03",
+              "xy_mm": [
+                3,
+                5
+              ]
+            },
+            {
+              "id": "hole02",
+              "xy_mm": [
+                8,
+                5
+              ]
+            },
+            {
+              "id": "hole01",
+              "xy_mm": [
+                8,
+                -5
+              ]
+            },
+            {
+              "id": "hole00",
+              "xy_mm": [
+                -8,
+                -5
+              ]
+            },
+            {
+              "id": "hole07",
+              "xy_mm": [
+                -8,
+                5
+              ]
+            }
+          ]
+        }
+      ],
+      "height_mm": 11,
+      "top_shift_mm": [
+        3,
+        -5
+      ]
+    },
+    "expected": true,
+    "equivalent_to": "concave_hole"
+  },
+  {
+    "id": "nested",
+    "recipe": {
+      "family": "polygonal_perforated_prism_v1",
+      "outer": {
+        "id": "outer",
+        "vertices": [
+          {
+            "id": "outer0",
+            "xy_mm": [
+              -16,
+              -12
+            ]
+          },
+          {
+            "id": "outer1",
+            "xy_mm": [
+              16,
+              -12
+            ]
+          },
+          {
+            "id": "outer2",
+            "xy_mm": [
+              16,
+              12
+            ]
+          },
+          {
+            "id": "outer3",
+            "xy_mm": [
+              -16,
+              12
+            ]
+          }
+        ]
+      },
+      "holes": [
+        {
+          "id": "hole0",
+          "vertices": [
+            {
+              "id": "hole00",
+              "xy_mm": [
+                -8,
+                -8
+              ]
+            },
+            {
+              "id": "hole01",
+              "xy_mm": [
+                8,
+                -8
+              ]
+            },
+            {
+              "id": "hole02",
+              "xy_mm": [
+                8,
+                8
+              ]
+            },
+            {
+              "id": "hole03",
+              "xy_mm": [
+                -8,
+                8
+              ]
+            }
+          ]
+        },
+        {
+          "id": "hole1",
+          "vertices": [
+            {
+              "id": "hole10",
+              "xy_mm": [
+                -3,
+                -3
+              ]
+            },
+            {
+              "id": "hole11",
+              "xy_mm": [
+                3,
+                -3
+              ]
+            },
+            {
+              "id": "hole12",
+              "xy_mm": [
+                3,
+                3
+              ]
+            },
+            {
+              "id": "hole13",
+              "xy_mm": [
+                -3,
+                3
+              ]
+            }
+          ]
+        }
+      ],
+      "height_mm": 5,
+      "top_shift_mm": [
+        -9,
+        7
+      ]
+    },
+    "expected": false
+  },
+  {
+    "id": "outside",
+    "recipe": {
+      "family": "polygonal_perforated_prism_v1",
+      "outer": {
+        "id": "outer",
+        "vertices": [
+          {
+            "id": "outer0",
+            "xy_mm": [
+              -16,
+              -12
+            ]
+          },
+          {
+            "id": "outer1",
+            "xy_mm": [
+              16,
+              -12
+            ]
+          },
+          {
+            "id": "outer2",
+            "xy_mm": [
+              16,
+              12
+            ]
+          },
+          {
+            "id": "outer3",
+            "xy_mm": [
+              -16,
+              12
+            ]
+          }
+        ]
+      },
+      "holes": [
+        {
+          "id": "hole0",
+          "vertices": [
+            {
+              "id": "hole00",
+              "xy_mm": [
+                14,
+                10
+              ]
+            },
+            {
+              "id": "hole01",
+              "xy_mm": [
+                17,
+                10
+              ]
+            },
+            {
+              "id": "hole02",
+              "xy_mm": [
+                17,
+                13
+              ]
+            },
+            {
+              "id": "hole03",
+              "xy_mm": [
+                14,
+                13
+              ]
+            }
+          ]
+        }
+      ],
+      "height_mm": 8,
+      "top_shift_mm": [
+        0,
+        0
+      ]
+    },
+    "expected": false
+  },
+  {
+    "id": "contact_outer",
+    "recipe": {
+      "family": "polygonal_perforated_prism_v1",
+      "outer": {
+        "id": "outer",
+        "vertices": [
+          {
+            "id": "outer0",
+            "xy_mm": [
+              -16,
+              -12
+            ]
+          },
+          {
+            "id": "outer1",
+            "xy_mm": [
+              16,
+              -12
+            ]
+          },
+          {
+            "id": "outer2",
+            "xy_mm": [
+              16,
+              12
+            ]
+          },
+          {
+            "id": "outer3",
+            "xy_mm": [
+              -16,
+              12
+            ]
+          }
+        ]
+      },
+      "holes": [
+        {
+          "id": "hole0",
+          "vertices": [
+            {
+              "id": "hole00",
+              "xy_mm": [
+                -16,
+                1
+              ]
+            },
+            {
+              "id": "hole01",
+              "xy_mm": [
+                -9,
+                1
+              ]
+            },
+            {
+              "id": "hole02",
+              "xy_mm": [
+                -9,
+                7
+              ]
+            },
+            {
+              "id": "hole03",
+              "xy_mm": [
+                -16,
+                7
+              ]
+            }
+          ]
+        }
+      ],
+      "height_mm": 11,
+      "top_shift_mm": [
+        3,
+        -5
+      ]
+    },
+    "expected": false
+  },
+  {
+    "id": "point_touch",
+    "recipe": {
+      "family": "polygonal_perforated_prism_v1",
+      "outer": {
+        "id": "outer",
+        "vertices": [
+          {
+            "id": "outer0",
+            "xy_mm": [
+              -16,
+              -12
+            ]
+          },
+          {
+            "id": "outer1",
+            "xy_mm": [
+              16,
+              -12
+            ]
+          },
+          {
+            "id": "outer2",
+            "xy_mm": [
+              16,
+              12
+            ]
+          },
+          {
+            "id": "outer3",
+            "xy_mm": [
+              -16,
+              12
+            ]
+          }
+        ]
+      },
+      "holes": [
+        {
+          "id": "hole0",
+          "vertices": [
+            {
+              "id": "hole00",
+              "xy_mm": [
+                -8,
+                -8
+              ]
+            },
+            {
+              "id": "hole01",
+              "xy_mm": [
+                0,
+                -8
+              ]
+            },
+            {
+              "id": "hole02",
+              "xy_mm": [
+                0,
+                0
+              ]
+            },
+            {
+              "id": "hole03",
+              "xy_mm": [
+                -8,
+                0
+              ]
+            }
+          ]
+        },
+        {
+          "id": "hole1",
+          "vertices": [
+            {
+              "id": "hole10",
+              "xy_mm": [
+                0,
+                0
+              ]
+            },
+            {
+              "id": "hole11",
+              "xy_mm": [
+                8,
+                0
+              ]
+            },
+            {
+              "id": "hole12",
+              "xy_mm": [
+                8,
+                8
+              ]
+            },
+            {
+              "id": "hole13",
+              "xy_mm": [
+                0,
+                8
+              ]
+            }
+          ]
+        }
+      ],
+      "height_mm": 5,
+      "top_shift_mm": [
+        -9,
+        7
+      ]
+    },
+    "expected": false
+  },
+  {
+    "id": "overlap",
+    "recipe": {
+      "family": "polygonal_perforated_prism_v1",
+      "outer": {
+        "id": "outer",
+        "vertices": [
+          {
+            "id": "outer0",
+            "xy_mm": [
+              -16,
+              -12
+            ]
+          },
+          {
+            "id": "outer1",
+            "xy_mm": [
+              16,
+              -12
+            ]
+          },
+          {
+            "id": "outer2",
+            "xy_mm": [
+              16,
+              12
+            ]
+          },
+          {
+            "id": "outer3",
+            "xy_mm": [
+              -16,
+              12
+            ]
+          }
+        ]
+      },
+      "holes": [
+        {
+          "id": "hole0",
+          "vertices": [
+            {
+              "id": "hole00",
+              "xy_mm": [
+                -8,
+                -4
+              ]
+            },
+            {
+              "id": "hole01",
+              "xy_mm": [
+                3,
+                -4
+              ]
+            },
+            {
+              "id": "hole02",
+              "xy_mm": [
+                3,
+                3
+              ]
+            },
+            {
+              "id": "hole03",
+              "xy_mm": [
+                -8,
+                3
+              ]
+            }
+          ]
+        },
+        {
+          "id": "hole1",
+          "vertices": [
+            {
+              "id": "hole10",
+              "xy_mm": [
+                -1,
+                0
+              ]
+            },
+            {
+              "id": "hole11",
+              "xy_mm": [
+                9,
+                0
+              ]
+            },
+            {
+              "id": "hole12",
+              "xy_mm": [
+                9,
+                8
+              ]
+            },
+            {
+              "id": "hole13",
+              "xy_mm": [
+                -1,
+                8
+              ]
+            }
+          ]
+        }
+      ],
+      "height_mm": 8,
+      "top_shift_mm": [
+        0,
+        0
+      ]
+    },
+    "expected": false
+  },
+  {
+    "id": "outer_bowtie",
+    "recipe": {
+      "family": "polygonal_perforated_prism_v1",
+      "outer": {
+        "id": "outer",
+        "vertices": [
+          {
+            "id": "outer0",
+            "xy_mm": [
+              0,
+              0
+            ]
+          },
+          {
+            "id": "outer1",
+            "xy_mm": [
+              10,
+              8
+            ]
+          },
+          {
+            "id": "outer2",
+            "xy_mm": [
+              0,
+              8
+            ]
+          },
+          {
+            "id": "outer3",
+            "xy_mm": [
+              10,
+              0
+            ]
+          }
+        ]
+      },
+      "holes": [],
+      "height_mm": 11,
+      "top_shift_mm": [
+        3,
+        -5
+      ]
+    },
+    "expected": false
+  },
+  {
+    "id": "hole_self_cross",
+    "recipe": {
+      "family": "polygonal_perforated_prism_v1",
+      "outer": {
+        "id": "outer",
+        "vertices": [
+          {
+            "id": "outer0",
+            "xy_mm": [
+              -16,
+              -12
+            ]
+          },
+          {
+            "id": "outer1",
+            "xy_mm": [
+              16,
+              -12
+            ]
+          },
+          {
+            "id": "outer2",
+            "xy_mm": [
+              16,
+              12
+            ]
+          },
+          {
+            "id": "outer3",
+            "xy_mm": [
+              -16,
+              12
+            ]
+          }
+        ]
+      },
+      "holes": [
+        {
+          "id": "hole0",
+          "vertices": [
+            {
+              "id": "hole00",
+              "xy_mm": [
+                -3,
+                -3
+              ]
+            },
+            {
+              "id": "hole01",
+              "xy_mm": [
+                4,
+                3
+              ]
+            },
+            {
+              "id": "hole02",
+              "xy_mm": [
+                -2,
+                3
+              ]
+            },
+            {
+              "id": "hole03",
+              "xy_mm": [
+                4,
+                -3
+              ]
+            }
+          ]
+        }
+      ],
+      "height_mm": 5,
+      "top_shift_mm": [
+        -9,
+        7
+      ]
+    },
+    "expected": false
+  },
+  {
+    "id": "outside_in_notch",
+    "recipe": {
+      "family": "polygonal_perforated_prism_v1",
+      "outer": {
+        "id": "outer",
+        "vertices": [
+          {
+            "id": "outer0",
+            "xy_mm": [
+              0,
+              0
+            ]
+          },
+          {
+            "id": "outer1",
+            "xy_mm": [
+              20,
+              0
+            ]
+          },
+          {
+            "id": "outer2",
+            "xy_mm": [
+              20,
+              18
+            ]
+          },
+          {
+            "id": "outer3",
+            "xy_mm": [
+              14,
+              18
+            ]
+          },
+          {
+            "id": "outer4",
+            "xy_mm": [
+              14,
+              6
+            ]
+          },
+          {
+            "id": "outer5",
+            "xy_mm": [
+              6,
+              6
+            ]
+          },
+          {
+            "id": "outer6",
+            "xy_mm": [
+              6,
+              18
+            ]
+          },
+          {
+            "id": "outer7",
+            "xy_mm": [
+              0,
+              18
+            ]
+          }
+        ]
+      },
+      "holes": [
+        {
+          "id": "hole0",
+          "vertices": [
+            {
+              "id": "hole00",
+              "xy_mm": [
+                7,
+                9
+              ]
+            },
+            {
+              "id": "hole01",
+              "xy_mm": [
+                11,
+                9
+              ]
+            },
+            {
+              "id": "hole02",
+              "xy_mm": [
+                11,
+                14
+              ]
+            },
+            {
+              "id": "hole03",
+              "xy_mm": [
+                7,
+                14
+              ]
+            }
+          ]
+        }
+      ],
+      "height_mm": 8,
+      "top_shift_mm": [
+        0,
+        0
+      ]
+    },
+    "expected": false
+  }
+]

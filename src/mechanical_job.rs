@@ -247,7 +247,8 @@ pub fn solve_job(model: &Json, job: &Json) -> Result<Json, &'static str> {
                 | "certified_coaxial_feature_program"
                 | "certified_circular_bend"
                 | "certified_orthogonal_feature_program"
-            | "certified_polygon_prism"
+                | "certified_polygon_prism"
+                | "certified_perforated_polygon_prism"
                 | "certified_parameterized_bracket"
         )
     {

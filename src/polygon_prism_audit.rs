@@ -15,19 +15,49 @@ pub struct PolygonCertificate{
 }
 
 #[derive(Clone,Copy)]
-struct Tri { ids:[usize;3] }
+pub(crate) struct Tri { pub(crate) ids:[usize;3] }
 
-fn cross(a:[i32;2],b:[i32;2],c:[i32;2])->i64{
+pub(crate) type DirectedBoundary = BTreeMap<(usize,usize),((usize,usize),String)>;
+
+/// Shared exact coverage proof for constrained triangle meshes, independent
+/// of the triangulation algorithm and reusable by perforated profiles.
+pub(crate) fn validate_triangle_coverage(
+    triangles:&[Tri],vertices:&[Vertex],expected_count:usize,expected_area2:i64,boundary:&DirectedBoundary,
+)->Result<(),&'static str>{
+    if triangles.len()!=expected_count{return Err("polygon_section_coverage")}
+    let mut area_sum=0_i64;
+    let mut edge_uses=BTreeMap::<(usize,usize),Vec<(usize,usize)>>::new();
+    for tri in triangles{
+        let [a,b,c]=tri.ids;
+        let area=cross(vertices[a].xy_mm,vertices[b].xy_mm,vertices[c].xy_mm);
+        if area<=0{return Err("polygon_triangle_orientation")}
+        area_sum=area_sum.checked_add(area).ok_or("polygon_area_overflow")?;
+        for i in 0..3{let a=tri.ids[i];let b=tri.ids[(i+1)%3];edge_uses.entry(edge_key(a,b)).or_default().push((a,b));}
+    }
+    if area_sum!=expected_area2{return Err("polygon_section_coverage")}
+    validate_triangle_intersections(triangles,vertices)?;
+    for (edge,uses) in &edge_uses{
+        if let Some((directed,_))=boundary.get(edge){
+            if uses.len()!=1||uses[0]!=*directed{return Err("polygon_boundary_incidence")}
+        }else if uses.len()!=2||uses[0].0!=uses[1].1||uses[0].1!=uses[1].0{
+            return Err("polygon_internal_incidence")
+        }
+    }
+    if boundary.keys().any(|edge|!edge_uses.contains_key(edge)){return Err("polygon_section_coverage")}
+    Ok(())
+}
+
+pub(crate) fn cross(a:[i32;2],b:[i32;2],c:[i32;2])->i64{
     i64::from(b[0]-a[0])*i64::from(c[1]-a[1])-i64::from(b[1]-a[1])*i64::from(c[0]-a[0])
 }
-fn on_segment(a:[i32;2],b:[i32;2],p:[i32;2])->bool{
+pub(crate) fn on_segment(a:[i32;2],b:[i32;2],p:[i32;2])->bool{
     cross(a,b,p)==0&&(0..2).all(|d|(a[d].min(b[d])..=a[d].max(b[d])).contains(&p[d]))
 }
-fn segments_contact(a:[i32;2],b:[i32;2],c:[i32;2],d:[i32;2])->bool{
+pub(crate) fn segments_contact(a:[i32;2],b:[i32;2],c:[i32;2],d:[i32;2])->bool{
     let (x,y,z,w)=(cross(a,b,c),cross(a,b,d),cross(c,d,a),cross(c,d,b));
     (x.signum()!=y.signum()&&z.signum()!=w.signum())||on_segment(a,b,c)||on_segment(a,b,d)||on_segment(c,d,a)||on_segment(c,d,b)
 }
-fn inside_triangle(p:[i32;2],t:[[i32;2];3])->bool{cross(t[0],t[1],p)>0&&cross(t[1],t[2],p)>0&&cross(t[2],t[0],p)>0}
+pub(crate) fn inside_triangle(p:[i32;2],t:[[i32;2];3])->bool{cross(t[0],t[1],p)>0&&cross(t[1],t[2],p)>0&&cross(t[2],t[0],p)>0}
 fn validate_contour(recipe:&PolygonPrism)->Result<(Vec<usize>,i64),&'static str>{
     let n=recipe.vertices.len();
     if !(3..=24).contains(&n)||!(1..=64).contains(&recipe.height_mm)||recipe.top_shift_mm.iter().any(|x|!(-32..=32).contains(x)){return Err("polygon_prism_range")}
@@ -53,14 +83,14 @@ fn validate_contour(recipe:&PolygonPrism)->Result<(Vec<usize>,i64),&'static str>
     order.rotate_left(first);
     Ok((order,area2))
 }
-fn parse_triangle_id(id:&str,ids:&BTreeMap<&str,usize>)->Result<([usize;3],usize),&'static str>{
+pub(crate) fn parse_triangle_id(id:&str,ids:&BTreeMap<&str,usize>)->Result<([usize;3],usize),&'static str>{
     let fields=id.split('/').collect::<Vec<_>>();if fields.len()!=5||fields[0]!="tri"{return Err("polygon_block_id")}
     let a=*ids.get(fields[1]).ok_or("polygon_block_vertex")?;let b=*ids.get(fields[2]).ok_or("polygon_block_vertex")?;let c=*ids.get(fields[3]).ok_or("polygon_block_vertex")?;let at=*ids.get(fields[4]).ok_or("polygon_block_vertex")?;
     if a==b||b==c||c==a{return Err("polygon_block_id")}
     Ok(([a,b,c],at))
 }
-fn fields_for_index<'a>(ids:&'a BTreeMap<&'a str,usize>,index:usize)->&'a str{ids.iter().find(|(_,i)|**i==index).unwrap().0}
-fn expected_controls(tri:[usize;3],at:usize,vertices:&[Vertex],height:i32,shift:[i32;2])->Option<Vec<[i64;4]>>{
+pub(crate) fn fields_for_index<'a>(ids:&'a BTreeMap<&'a str,usize>,index:usize)->&'a str{ids.iter().find(|(_,i)|**i==index).unwrap().0}
+pub(crate) fn expected_controls(tri:[usize;3],at:usize,vertices:&[Vertex],height:i32,shift:[i32;2])->Option<Vec<[i64;4]>>{
     let place=tri.iter().position(|x|*x==at)?;let v=tri[place];let prev=tri[(place+2)%3];let next=tri[(place+1)%3];
     let a=vertices[v].xy_mm;let p=vertices[prev].xy_mm;let n=vertices[next].xy_mm;
     let centroid=[2_i64*(i64::from(a[0])+i64::from(p[0])+i64::from(n[0])),2_i64*(i64::from(a[1])+i64::from(p[1])+i64::from(n[1]))];
@@ -77,7 +107,7 @@ fn expected_controls(tri:[usize;3],at:usize,vertices:&[Vertex],height:i32,shift:
     }).collect())
 }
 fn block_corner_xy(block:&BracketBlock,index:usize)->[i64;2]{[block.controls[2*index][0],block.controls[2*index][1]]}
-fn check_quad_jacobian(block:&BracketBlock)->Result<i128,&'static str>{
+pub(crate) fn check_quad_jacobian(block:&BracketBlock)->Result<i128,&'static str>{
     let p00=block_corner_xy(block,0);let p01=block_corner_xy(block,1);let p10=block_corner_xy(block,2);let p11=block_corner_xy(block,3);
     let a=[p10[0]-p00[0],p10[1]-p00[1]];let b=[p01[0]-p00[0],p01[1]-p00[1]];
     let c=[p11[0]-p10[0]-p01[0]+p00[0],p11[1]-p10[1]-p01[1]+p00[1]];
@@ -85,8 +115,8 @@ fn check_quad_jacobian(block:&BracketBlock)->Result<i128,&'static str>{
     let values=[det(a,b),det(a,[b[0]+c[0],b[1]+c[1]]),det([a[0]+c[0],a[1]+c[1]],b),det([a[0]+c[0],a[1]+c[1]],[b[0]+c[0],b[1]+c[1]])];
     let min=*values.iter().min().unwrap();if min<=0{return Err("polygon_nonpositive_jacobian")};Ok(min)
 }
-fn edge_key(a:usize,b:usize)->(usize,usize){if a<b{(a,b)}else{(b,a)}}
-fn validate_triangle_intersections(tris:&[Tri],vertices:&[Vertex])->Result<(),&'static str>{
+pub(crate) fn edge_key(a:usize,b:usize)->(usize,usize){if a<b{(a,b)}else{(b,a)}}
+pub(crate) fn validate_triangle_intersections(tris:&[Tri],vertices:&[Vertex])->Result<(),&'static str>{
     for i in 0..tris.len(){for j in i+1..tris.len(){
         let a=tris[i].ids;let b=tris[j].ids;
         for x in 0..3{for y in 0..3{
@@ -128,26 +158,19 @@ pub fn audit_polygon_prism(recipe:&PolygonPrism,blocks:&[BracketBlock])->Result<
         min_det=min_det.min(check_quad_jacobian(block)?);
         if groups.entry(triangle).or_default().insert(at,block).is_some(){return Err("polygon_duplicate_corner_patch")}
     }
-    let mut triangles=Vec::new();let mut triangle_area_sum=0_i64;let mut edge_uses=BTreeMap::<(usize,usize),Vec<(usize,usize)>>::new();
+    let mut triangles=Vec::new();
     for (ids,patches) in groups{
         if patches.len()!=3||ids.iter().any(|id|!patches.contains_key(id)){return Err("polygon_missing_corner_patch")}
-        let area=cross(recipe.vertices[ids[0]].xy_mm,recipe.vertices[ids[1]].xy_mm,recipe.vertices[ids[2]].xy_mm);
-        if area<=0{return Err("polygon_triangle_orientation")}
-        triangle_area_sum=triangle_area_sum.checked_add(area).ok_or("polygon_area_overflow")?;
-        for k in 0..3{let a=ids[k];let b=ids[(k+1)%3];edge_uses.entry(edge_key(a,b)).or_default().push((a,b));}
         triangles.push(Tri{ids});
     }
-    if triangles.len()!=recipe.vertices.len()-2||triangle_area_sum!=area2{return Err("polygon_section_coverage")}
-    validate_triangle_intersections(&triangles,&recipe.vertices)?;
-    let boundary=(0..contour.len()).map(|i|edge_key(contour[i],contour[(i+1)%contour.len()])).collect::<BTreeSet<_>>();
-    for (edge,uses) in &edge_uses{
-        if boundary.contains(edge){if uses.len()!=1||uses[0] != contour.iter().copied().zip(contour.iter().copied().cycle().skip(1)).find(|(a,b)|edge_key(*a,*b)==*edge).unwrap(){return Err("polygon_boundary_incidence")}}
-        else if uses.len()!=2||uses[0].0!=uses[1].1||uses[0].1!=uses[1].0{return Err("polygon_internal_incidence")}
+    let mut boundary=DirectedBoundary::new();
+    for i in 0..contour.len(){
+        let a=contour[i];let b=contour[(i+1)%contour.len()];
+        let (lo,hi)=if recipe.vertices[a].id<recipe.vertices[b].id{(&recipe.vertices[a].id,&recipe.vertices[b].id)}else{(&recipe.vertices[b].id,&recipe.vertices[a].id)};
+        boundary.insert(edge_key(a,b),((a,b),format!("edge/{lo}/{hi}")));
     }
-    if edge_uses.keys().filter(|e|boundary.contains(e)).count()!=boundary.len(){return Err("polygon_section_coverage")}
-
+    validate_triangle_coverage(&triangles,&recipe.vertices,recipe.vertices.len()-2,area2,&boundary)?;
     let incidence:Incidence=enumerate_faces(blocks)?;
-    let vertex_id=recipe.vertices.iter().map(|v|(v.xy_mm,v.id.as_str())).collect::<BTreeMap<_,_>>();
     let mut design_faces=Vec::with_capacity(incidence.exterior.len());
     for side in &incidence.exterior{
         let parts=side.block.split('/').collect::<Vec<_>>();if parts.len()!=5||parts[0]!="tri"{return Err("polygon_boundary_provenance")}
@@ -156,8 +179,8 @@ pub fn audit_polygon_prism(recipe:&PolygonPrism,blocks:&[BracketBlock])->Result<
         let prev=tri[(place+2)%3];let next=tri[(place+1)%3];
         let tag=match (side.axis,side.upper){
             (2,false)=>"start".to_owned(),(2,true)=>"end".to_owned(),
-            (0,false)=>edge_tag(prev,at,&boundary,&recipe.vertices,&vertex_id)?,
-            (1,false)=>edge_tag(at,next,&boundary,&recipe.vertices,&vertex_id)?,
+            (0,false)=>boundary.get(&edge_key(prev,at)).map(|x|x.1.clone()).ok_or("polygon_internal_face_exterior")?,
+            (1,false)=>boundary.get(&edge_key(at,next)).map(|x|x.1.clone()).ok_or("polygon_internal_face_exterior")?,
             _=>return Err("polygon_internal_face_exterior"),
         };
         design_faces.push((side.clone(),tag));
@@ -170,15 +193,9 @@ pub fn audit_polygon_prism(recipe:&PolygonPrism,blocks:&[BracketBlock])->Result<
     Ok(PolygonCertificate{certificate:cert,volume_sixths_mm3:volume,projected_area_twice_mm2:area2})
 }
 
-fn next_down(value:f64)->f64{
+pub(crate) fn next_down(value:f64)->f64{
     if value.is_nan()||value==f64::NEG_INFINITY{return value}
     if value==0.0{return -f64::from_bits(1)}
     let bits=value.to_bits();
     f64::from_bits(if value>0.0{bits-1}else{bits+1})
-}
-
-fn edge_tag(a:usize,b:usize,boundary:&BTreeSet<(usize,usize)>,vertices:&[Vertex],ids:&BTreeMap<[i32;2],&str>)->Result<String,&'static str>{
-    if !boundary.contains(&edge_key(a,b)){return Err("polygon_internal_face_exterior")}
-    let x=ids.get(&vertices[a].xy_mm).ok_or("polygon_boundary_provenance")?;let y=ids.get(&vertices[b].xy_mm).ok_or("polygon_boundary_provenance")?;
-    let (lo,hi)=if x<y{(x,y)}else{(y,x)};Ok(format!("edge/{lo}/{hi}"))
 }

@@ -94,4 +94,6 @@ pub mod solidcraft_boxes;
 pub mod polygon_prism;
 pub mod polygon_prism_audit;
 pub mod solidcraft_box_timeline;
+pub mod perforated_prism;
+pub mod perforated_prism_audit;
 mod polygon_json;

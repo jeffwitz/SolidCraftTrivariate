@@ -105,7 +105,11 @@ fn ear(polygon: &[&Vertex], i: usize) -> bool {
         })
 }
 
-pub(crate) fn append_triangle(mut t: [&Vertex; 3], recipe: &PolygonPrism, blocks: &mut Vec<BracketBlock>) {
+pub(crate) fn append_triangle(
+    mut t: [&Vertex; 3],
+    recipe: &PolygonPrism,
+    blocks: &mut Vec<BracketBlock>,
+) {
     let first = (0..3).min_by_key(|&i| &t[i].id).unwrap();
     t.rotate_left(first);
     let centroid: [i64; 2] =

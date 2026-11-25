@@ -107,6 +107,7 @@ pub(crate) fn supports_source_method(method: &str) -> bool {
             | crate::counterbores_json::METHOD
             | crate::countersinks_json::METHOD
             | crate::sketch_layers_json::METHOD
+            | crate::nurbs_multiloop_json::METHOD
             | crate::nurbs_sketch_json::METHOD
             | crate::orthogonal_sketch_json::METHOD
             | crate::interval_bores_json::METHOD
@@ -237,6 +238,7 @@ pub fn boundary_shell(model: &Json) -> Result<BoundaryShell, &'static str> {
             | crate::counterbores_json::METHOD
             | crate::countersinks_json::METHOD
             | crate::sketch_layers_json::METHOD
+            | crate::nurbs_multiloop_json::METHOD
             | crate::nurbs_sketch_json::METHOD
             | crate::orthogonal_sketch_json::METHOD
             | crate::interval_bores_json::METHOD
@@ -294,6 +296,9 @@ pub fn boundary_shell(model: &Json) -> Result<BoundaryShell, &'static str> {
                     crate::interval_bores_json::METHOD | crate::sketch_layers_json::METHOD
                 ) {
                     return faces[f].feature == "start";
+                }
+                if method == crate::nurbs_multiloop_json::METHOD {
+                    return faces[f].feature == "stock:xmin";
                 }
                 if let Some(tag) = bend_anchor {
                     return faces[f].feature == tag;

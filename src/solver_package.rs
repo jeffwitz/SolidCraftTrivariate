@@ -268,7 +268,8 @@ pub fn export_analysis(model: &Json, order: usize) -> Result<Json, &'static str>
     let schema = model.field("schema")?.text()?;
     if matches!(
         schema,
-        "nurbs_sketch_strip_v1"
+        "nurbs_multiloop_v1"
+            | "nurbs_sketch_strip_v1"
             | "nurbs_cross_bores_v1"
             | "nurbs_cross_bores_bounded_v1"
             | "nurbs_cross_oval_v1"

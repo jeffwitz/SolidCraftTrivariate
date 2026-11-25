@@ -155,3 +155,6 @@ pub mod nurbs_curve;
 pub mod nurbs_extrusion;
 mod nurbs_sketch_json;
 pub mod nurbs_space;
+
+pub mod nurbs_multiloop;
+mod nurbs_multiloop_json;

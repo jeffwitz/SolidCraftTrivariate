@@ -340,6 +340,11 @@ fn f64_lower_bound(value: Ratio) -> Result<f64, &'static str> {
 /// admitted extrusion block. Exact sign proof is performed with rational
 /// Bernstein bounds; an underflowed numeric bound is reported as zero.
 pub fn determinant_bound(block: &BracketBlock) -> Result<f64, &'static str> {
+    determinant_bound_at(block, 0)
+}
+
+/// Certify a strip extruded from the specified integer altitude.
+pub(crate) fn determinant_bound_at(block: &BracketBlock, bottom: i64) -> Result<f64, &'static str> {
     if block.degrees[1..] != [1, 1] || !(1..=3).contains(&block.degrees[0]) {
         return Err("not a supported NURBS extrusion block");
     }
@@ -351,7 +356,7 @@ pub fn determinant_bound(block: &BracketBlock) -> Result<f64, &'static str> {
     let mut common_height = None;
     for u in 0..=p {
         let base = block.controls[index(u, 0, 0)];
-        if base[3] <= 0 || base[2] != 0 {
+        if base[3] <= 0 || i128::from(base[2]) != i128::from(bottom) * i128::from(base[3]) {
             return Err("invalid bottom extrusion control");
         }
         for v in 0..=1 {
@@ -364,8 +369,8 @@ pub fn determinant_bound(block: &BracketBlock) -> Result<f64, &'static str> {
                     return Err("extrusion x-map or weights vary across the strip");
                 }
                 if w == 0 {
-                    if point[2] != 0 {
-                        return Err("extrusion bottom is not at z=0");
+                    if i128::from(point[2]) != i128::from(bottom) * i128::from(point[3]) {
+                        return Err("inconsistent bottom extrusion altitude");
                     }
                 } else {
                     let weight = i128::from(point[3]);
@@ -373,7 +378,7 @@ pub fn determinant_bound(block: &BracketBlock) -> Result<f64, &'static str> {
                     if weight <= 0 || z % weight != 0 {
                         return Err("nonintegral extrusion height");
                     }
-                    let height = z / weight;
+                    let height = z / weight - i128::from(bottom);
                     if height <= 0 || common_height.is_some_and(|expected| expected != height) {
                         return Err("extrusion height is not positive and constant");
                     }

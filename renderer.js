@@ -1,4 +1,5 @@
 /* Native WebGL renderer for rational trivariate model JSON. */
+import { surfaceMesh } from './triangle-surface.js';
 
 const VERTEX_SHADER = `
 attribute vec3 aPosition;
@@ -117,6 +118,31 @@ function basis(degree, t) {
   throw new TypeError(`Unsupported Bézier degree ${degree}`);
 }
 
+function splineBasisVector(degree, parameter, knots, count) {
+  const low = knots[degree];
+  const high = knots[count];
+  const value = low + (high - low) * parameter;
+  const memo = new Map();
+  function recurse(i, p) {
+    const key = `${i}:${p}`;
+    if (memo.has(key)) return memo.get(key);
+    let result;
+    if (p === 0) {
+      result = (value >= knots[i] && value < knots[i + 1])
+        || (parameter === 1 && i === count - 1 && value === high) ? 1 : 0;
+    } else {
+      const leftDenominator = knots[i + p] - knots[i];
+      const rightDenominator = knots[i + p + 1] - knots[i + 1];
+      const left = leftDenominator ? ((value - knots[i]) / leftDenominator) * recurse(i, p - 1) : 0;
+      const right = rightDenominator ? ((knots[i + p + 1] - value) / rightDenominator) * recurse(i + 1, p - 1) : 0;
+      result = left + right;
+    }
+    memo.set(key, result);
+    return result;
+  }
+  return Array.from({ length: count }, (_, index) => recurse(index, degree));
+}
+
 function blockColor(identifier) {
   let hash = 2166136261;
   for (let index = 0; index < identifier.length; index++) {
@@ -138,6 +164,15 @@ function blockColor(identifier) {
 }
 
 function validateModel(model) {
+  if (model && Array.isArray(model.vertices) && Array.isArray(model.triangles)) {
+    if (model.vertices.length % 3 || model.triangles.length % 3
+      || model.vertices.some(value => !Number.isFinite(value))
+      || model.triangles.some(index => !Number.isInteger(index) || index < 0 || index >= model.vertices.length / 3)) {
+      throw new TypeError('Triangle surface has invalid vertices or triangle indices');
+    }
+    return;
+  }
+  model = normalizeTrivariateModel(model);
   if (!model || typeof model !== 'object' || !Array.isArray(model.blocks) || model.blocks.length === 0) {
     throw new TypeError('Expected a trivariate model JSON object with a non-empty blocks array');
   }
@@ -151,9 +186,17 @@ function validateModel(model) {
       || block.degrees.some(degree => !Number.isInteger(degree) || degree < 1 || degree > 3)) {
       throw new TypeError(`Block ${block.id} has unsupported degrees; supported degrees are 1 through 3`);
     }
-    const expected = block.degrees.reduce((product, degree) => product * (degree + 1), 1);
+    const dimensions = block.shape || block.degrees.map(value => value + 1);
+    const expected = dimensions.reduce((product, value) => product * value, 1);
     if (!Array.isArray(block.controls) || block.controls.length !== expected) {
       throw new TypeError(`Block ${block.id} has an invalid control count`);
+    }
+    if (block.knots && (!Array.isArray(block.knots) || block.knots.length !== 3
+      || block.knots.some((knots, axis) => !Array.isArray(knots)
+        || knots.length !== dimensions[axis] + block.degrees[axis] + 1
+        || knots.some((value, index) => !Number.isFinite(value) || (index > 0 && value < knots[index - 1]))
+        || !(knots[block.degrees[axis]] < knots[dimensions[axis]])))) {
+      throw new TypeError(`Block ${block.id} has invalid knot vectors`);
     }
     for (const control of block.controls) {
       if (!Array.isArray(control) || control.length !== 4
@@ -173,16 +216,76 @@ function validateModel(model) {
   }
 }
 
+function normalizeTrivariateModel(model) {
+  if (!model || typeof model !== 'object') return model;
+  if (Array.isArray(model.blocks) && model.blocks.every(block => Array.isArray(block.controls))) return model;
+  if (Array.isArray(model.blocks) && Array.isArray(model.degrees) && Array.isArray(model.knots)) {
+    return { ...model, blocks: model.blocks.map(block => ({
+      ...block, degrees: model.degrees, knots: model.knots,
+      shape: model.knots.map((knots, axis) => knots.length - model.degrees[axis] - 1),
+      controls: block.xyzw,
+    })) };
+  }
+  if (Array.isArray(model.charts)) {
+    return { ...model, blocks: model.charts.map(chart => ({
+      ...chart, controls: chart.xyzw,
+    })) };
+  }
+  return model;
+}
+
+function isTriangleModel(model) {
+  return Boolean(model && Array.isArray(model.vertices) && Array.isArray(model.triangles));
+}
+
+function parameterStations(block, axis, minimumDivisions = GRID) {
+  if (!block.knots) return Array.from({ length: minimumDivisions + 1 }, (_, index) => index / minimumDivisions);
+  const degree = block.degrees[axis];
+  const count = (block.shape || block.degrees.map(value => value + 1))[axis];
+  const knots = block.knots[axis];
+  const low = knots[degree];
+  const high = knots[count];
+  const spans = [...new Set(knots.filter(value => value >= low && value <= high))].sort((a, b) => a - b);
+  const minimumPerSpan = axis < 2 ? 16 : 6;
+  const divisionsPerSpan = Math.max(minimumPerSpan, Math.ceil(minimumDivisions / Math.max(1, spans.length - 1)));
+  const stations = [0];
+  for (let span = 0; span < spans.length - 1; span++) {
+    for (let step = 1; step <= divisionsPerSpan; step++) {
+      stations.push((spans[span] + (spans[span + 1] - spans[span]) * step / divisionsPerSpan - low) / (high - low));
+    }
+  }
+  return stations;
+}
+
 function boundsOf(model) {
   const low = [Infinity, Infinity, Infinity];
   const high = [-Infinity, -Infinity, -Infinity];
+  function include(point) {
+    for (let axis = 0; axis < 3; axis++) {
+      low[axis] = Math.min(low[axis], point[axis]);
+      high[axis] = Math.max(high[axis], point[axis]);
+    }
+  }
   for (const block of model.blocks) {
-    for (const control of block.controls) {
-      for (let axis = 0; axis < 3; axis++) {
-        const coordinate = control[axis] / control[3];
-        low[axis] = Math.min(low[axis], coordinate);
-        high[axis] = Math.max(high[axis], coordinate);
+    if (block.knots) {
+      const evaluate = makeEvaluator(block);
+      const axes = [0, 1, 2].map(axis => parameterStations(block, axis, GRID));
+      for (let fixedAxis = 0; fixedAxis < 3; fixedAxis++) {
+        const otherAxes = [0, 1, 2].filter(axis => axis !== fixedAxis);
+        for (const side of [0, 1]) {
+          for (const first of axes[otherAxes[0]]) for (const second of axes[otherAxes[1]]) {
+            const parameters = [0, 0, 0];
+            parameters[fixedAxis] = side;
+            parameters[otherAxes[0]] = first;
+            parameters[otherAxes[1]] = second;
+            include(evaluate(...parameters));
+          }
+        }
       }
+      continue;
+    }
+    for (const control of block.controls) {
+      include(control.slice(0, 3).map(value => value / control[3]));
     }
   }
   return [low, high];
@@ -190,12 +293,14 @@ function boundsOf(model) {
 
 function makeEvaluator(block) {
   const degree = block.degrees;
-  const dimensions = degree.map(value => value + 1);
+  const dimensions = block.shape || degree.map(value => value + 1);
   const controls = block.controls;
   return (u, v, w) => {
-    const bu = basis(degree[0], u);
-    const bv = basis(degree[1], v);
-    const bw = basis(degree[2], w);
+    const parameters = [u, v, w];
+    const weights = degree.map((value, axis) => block.knots
+      ? splineBasisVector(value, parameters[axis], block.knots[axis], dimensions[axis])
+      : basis(value, parameters[axis]));
+    const [bu, bv, bw] = weights;
     const h = [0, 0, 0, 0];
     let index = 0;
     for (let i = 0; i < dimensions[0]; i++) {
@@ -227,24 +332,28 @@ function appendTriangle(output, a, b, c, color) {
   appendVertex(output, c, normal, color);
 }
 
-function buildBlockGrid(evaluate, divisions) {
-  const side = divisions + 1;
-  const grid = new Array(side * side * side);
-  const index = (i, j, k) => (i * side + j) * side + k;
-  for (let i = 0; i <= divisions; i++) {
-    for (let j = 0; j <= divisions; j++) {
-      for (let k = 0; k <= divisions; k++) {
-        grid[index(i, j, k)] = evaluate(i / divisions, j / divisions, k / divisions);
+function buildBlockGrid(evaluate, divisions, block = null) {
+  const axes = block?.knots
+    ? [0, 1, 2].map(axis => parameterStations(block, axis, divisions))
+    : [0, 1, 2].map(() => Array.from({ length: divisions + 1 }, (_, index) => index / divisions));
+  const sizes = axes.map(axis => axis.length);
+  const grid = new Array(sizes[0] * sizes[1] * sizes[2]);
+  const index = (i, j, k) => (i * sizes[1] + j) * sizes[2] + k;
+  for (let i = 0; i < sizes[0]; i++) {
+    for (let j = 0; j < sizes[1]; j++) {
+      for (let k = 0; k < sizes[2]; k++) {
+        grid[index(i, j, k)] = evaluate(axes[0][i], axes[1][j], axes[2][k]);
       }
     }
   }
-  return { grid, index, divisions };
+  return { grid, index, divisions: sizes.map(size => size - 1), axes };
 }
 
 function buildSurfaceMeshes(model, mode) {
+  const interfaces = model.topology?.interfaces || inferChartInterfaces(model);
   const hiddenSides = new Map();
   const duplicateSides = new Map();
-  for (const item of model.topology?.interfaces || []) {
+  for (const item of interfaces) {
     for (const [id, side] of [item.first, item.second]) {
       if (!hiddenSides.has(id)) hiddenSides.set(id, new Set());
       hiddenSides.get(id).add(side);
@@ -257,31 +366,30 @@ function buildSurfaceMeshes(model, mode) {
   const meshes = [];
   for (const block of model.blocks) {
     const evaluate = makeEvaluator(block);
-    const { grid, index, divisions } = buildBlockGrid(evaluate, GRID);
+    const axes = block.knots
+      ? [0, 1, 2].map(axis => parameterStations(block, axis, GRID))
+      : [0, 1, 2].map(() => Array.from({ length: GRID + 1 }, (_, index) => index / GRID));
     const color = mode === 'surface' ? SURFACE_COLOR : blockColor(block.id);
     const skip = mode === 'surface'
       ? hiddenSides.get(block.id) || new Set()
       : duplicateSides.get(block.id) || new Set();
     const output = [];
-    const point = (u, v, w) => grid[index(u, v, w)];
 
     for (const [name, axis, side] of FACE_SIDES) {
       if (skip.has(name)) continue;
-      for (let i = 0; i < divisions; i++) {
-        for (let j = 0; j < divisions; j++) {
-          let corners;
-          if (axis === 0) corners = [
-            point(side * divisions, i, j), point(side * divisions, i + 1, j),
-            point(side * divisions, i + 1, j + 1), point(side * divisions, i, j + 1),
-          ];
-          else if (axis === 1) corners = [
-            point(i, side * divisions, j), point(i + 1, side * divisions, j),
-            point(i + 1, side * divisions, j + 1), point(i, side * divisions, j + 1),
-          ];
-          else corners = [
-            point(i, j, side * divisions), point(i + 1, j, side * divisions),
-            point(i + 1, j + 1, side * divisions), point(i, j + 1, side * divisions),
-          ];
+      const otherAxes = [0, 1, 2].filter(value => value !== axis);
+      const first = axes[otherAxes[0]];
+      const second = axes[otherAxes[1]];
+      const faceGrid = first.map(a => second.map(b => {
+        const parameters = [0, 0, 0];
+        parameters[axis] = side;
+        parameters[otherAxes[0]] = a;
+        parameters[otherAxes[1]] = b;
+        return evaluate(...parameters);
+      }));
+      for (let i = 0; i < first.length - 1; i++) {
+        for (let j = 0; j < second.length - 1; j++) {
+          let corners = [faceGrid[i][j], faceGrid[i + 1][j], faceGrid[i + 1][j + 1], faceGrid[i][j + 1]];
 
           const reverse = (axis === 0 && side === 0) || (axis === 1 && side === 1) || (axis === 2 && side === 0);
           if (reverse) corners = [corners[0], corners[3], corners[2], corners[1]];
@@ -293,6 +401,76 @@ function buildSurfaceMeshes(model, mode) {
     if (output.length) meshes.push({ id: block.id, values: new Float32Array(output), count: output.length / 9 });
   }
   return meshes;
+}
+
+function facePoint(evaluate, sideName, a, b) {
+  const axis = 'uvw'.indexOf(sideName[0]);
+  const parameters = [0.5, 0.5, 0.5];
+  parameters[axis] = Number(sideName[1]);
+  const other = [0, 1, 2].filter(index => index !== axis);
+  parameters[other[0]] = a;
+  parameters[other[1]] = b;
+  return evaluate(...parameters);
+}
+
+function inferChartInterfaces(model) {
+  if (!model.blocks?.some(block => block.shape)) return [];
+  const sample = [0, 0.5, 1];
+  const transforms = [
+    (a, b) => [a, b], (a, b) => [1 - a, b], (a, b) => [a, 1 - b], (a, b) => [1 - a, 1 - b],
+    (a, b) => [b, a], (a, b) => [1 - b, a], (a, b) => [b, 1 - a], (a, b) => [1 - b, 1 - a],
+  ];
+  const sides = ['u0', 'u1', 'v0', 'v1', 'w0', 'w1'];
+  const descriptors = model.blocks.map(block => ({ block, evaluate: makeEvaluator(block) }));
+  const sampleIndex = value => sample.indexOf(value);
+  const maps = transforms.map(transform => sample.flatMap(a => sample.map(b => {
+    const [x, y] = transform(a, b);
+    return sampleIndex(x) * sample.length + sampleIndex(y);
+  })));
+  for (const descriptor of descriptors) {
+    descriptor.faceSamples = Object.fromEntries(sides.map(side => [
+      side, sample.flatMap(a => sample.map(b => facePoint(descriptor.evaluate, side, a, b))),
+    ]));
+  }
+  const interfaces = [];
+  const claimed = new Set();
+  const scale = Math.max(1, ...boundsOf(model).flat().map(Math.abs));
+  const close = 2e-9 * scale;
+  for (let firstIndex = 0; firstIndex < descriptors.length; firstIndex++) {
+    for (let firstSideIndex = 0; firstSideIndex < sides.length; firstSideIndex++) {
+      const first = descriptors[firstIndex];
+      const firstSide = sides[firstSideIndex];
+      const key = `${first.block.id}:${firstSide}`;
+      if (claimed.has(key)) continue;
+      const firstPoints = first.faceSamples[firstSide];
+      let found = null;
+      for (let secondIndex = firstIndex; secondIndex < descriptors.length && !found; secondIndex++) {
+        for (let secondSideIndex = 0; secondSideIndex < sides.length && !found; secondSideIndex++) {
+          if (secondIndex === firstIndex && secondSideIndex <= firstSideIndex) continue;
+          const second = descriptors[secondIndex];
+          const secondSide = sides[secondSideIndex];
+          if (first.block.id === second.block.id) continue;
+          const secondKey = `${second.block.id}:${secondSide}`;
+          if (claimed.has(secondKey)) continue;
+          for (const mapping of maps) {
+            let matches = true;
+            outer: for (let pointIndex = 0; pointIndex < firstPoints.length; pointIndex++) {
+              const point = firstPoints[pointIndex];
+              const other = second.faceSamples[secondSide][mapping[pointIndex]];
+              if (Math.hypot(...subtract(point, other)) > close) { matches = false; break outer; }
+            }
+            if (matches) { found = { second, secondSide, secondKey }; break; }
+          }
+        }
+      }
+      if (found) {
+        claimed.add(key);
+        claimed.add(found.secondKey);
+        interfaces.push({ first: [first.block.id, firstSide], second: [found.second.block.id, found.secondSide] });
+      }
+    }
+  }
+  return interfaces;
 }
 
 function intersectTetrahedron(points, axis, plane) {
@@ -344,11 +522,13 @@ function zExtrusionLevels(block) {
   const [degreeU, degreeV, degreeW] = block.degrees;
   if (degreeW !== 1) return null;
   const close = (a, b) => Math.abs(a - b) <= 1e-12 * Math.max(1, Math.abs(a), Math.abs(b));
-  const countV = degreeV + 1;
+  const dimensions = block.shape || block.degrees.map(value => value + 1);
+  if (dimensions[2] !== 2) return null;
+  const countV = dimensions[1];
   let z0 = null;
   let z1 = null;
-  for (let i = 0; i <= degreeU; i++) {
-    for (let j = 0; j <= degreeV; j++) {
+  for (let i = 0; i < dimensions[0]; i++) {
+    for (let j = 0; j < dimensions[1]; j++) {
       const first = block.controls[(i * countV + j) * 2];
       const last = block.controls[(i * countV + j) * 2 + 1];
       if (!close(first[3], last[3])) return null;
@@ -405,11 +585,11 @@ function buildCapMeshes(model, axis, fraction, bounds, mode) {
       const w = (plane - z0) / (z1 - z0);
       if (w < -1e-12 || w > 1 + 1e-12) continue;
       const capParameter = clamp(w, 0, 1);
-      const points = Array.from({ length: GRID + 1 }, (_, i) => (
-        Array.from({ length: GRID + 1 }, (_, j) => evaluate(i / GRID, j / GRID, capParameter))
-      ));
-      for (let i = 0; i < GRID; i++) {
-        for (let j = 0; j < GRID; j++) {
+      const axisU = parameterStations(block, 0, GRID);
+      const axisV = parameterStations(block, 1, GRID);
+      const points = axisU.map(u => axisV.map(v => evaluate(u, v, capParameter)));
+      for (let i = 0; i < axisU.length - 1; i++) {
+        for (let j = 0; j < axisV.length - 1; j++) {
           const p00 = points[i][j];
           const p10 = points[i + 1][j];
           const p11 = points[i + 1][j + 1];
@@ -422,11 +602,11 @@ function buildCapMeshes(model, axis, fraction, bounds, mode) {
       continue;
     }
 
-    const { grid, index, divisions } = buildBlockGrid(evaluate, CAP_GRID);
+    const { grid, index, divisions } = buildBlockGrid(evaluate, CAP_GRID, block);
     const point = (u, v, w) => grid[index(u, v, w)];
-    for (let i = 0; i < divisions; i++) {
-      for (let j = 0; j < divisions; j++) {
-        for (let k = 0; k < divisions; k++) {
+    for (let i = 0; i < divisions[0]; i++) {
+      for (let j = 0; j < divisions[1]; j++) {
+        for (let k = 0; k < divisions[2]; k++) {
           const base = [i, j, k];
           const corners = CUBE_CORNERS.map(offset => point(
             base[0] + offset[0], base[1] + offset[1], base[2] + offset[2],
@@ -497,6 +677,7 @@ export function createViewer(canvas) {
   let frame = 0;
   let surfaceMeshes = [];
   let capMeshes = [];
+  let triangleMesh = null;
   const activePointers = new Map();
   let pinchDistance = null;
 
@@ -581,12 +762,16 @@ export function createViewer(canvas) {
 
   function rebuildSurfaces() {
     deleteMeshes(surfaceMeshes);
-    surfaceMeshes = uploadMeshes(buildSurfaceMeshes(model, mode));
+    if (isTriangleModel(model)) {
+      surfaceMeshes = uploadMeshes([{ values: triangleMesh.values, count: triangleMesh.count }]);
+    } else {
+      surfaceMeshes = uploadMeshes(buildSurfaceMeshes(model, mode));
+    }
   }
 
   function rebuildCaps() {
     deleteMeshes(capMeshes);
-    capMeshes = uploadMeshes(buildCapMeshes(model, clipAxis, clipFraction, bounds, mode));
+    capMeshes = uploadMeshes(isTriangleModel(model) ? [] : buildCapMeshes(model, clipAxis, clipFraction, bounds, mode));
   }
 
   function fittedDistance(width, height) {
@@ -688,8 +873,12 @@ export function createViewer(canvas) {
   return {
     setModel(value) {
       validateModel(value);
-      model = value;
-      bounds = boundsOf(model);
+      model = isTriangleModel(value) ? value : normalizeTrivariateModel(value);
+      if (!isTriangleModel(model) && !model.topology && model.blocks?.some(block => block.shape)) {
+        model = { ...model, topology: { interfaces: inferChartInterfaces(model) } };
+      }
+      triangleMesh = isTriangleModel(model) ? surfaceMesh(model) : null;
+      bounds = triangleMesh ? triangleMesh.bounds : boundsOf(model);
       center = bounds[0].map((coordinate, axis) => (coordinate + bounds[1][axis]) / 2);
       scale = Math.max(...bounds[0].map((coordinate, axis) => bounds[1][axis] - coordinate)) || 1;
       rebuildSurfaces();
@@ -701,6 +890,7 @@ export function createViewer(canvas) {
     },
     setMode(value) {
       if (value !== 'surface' && value !== 'blocks') throw new TypeError("Mode must be 'surface' or 'blocks'");
+      if (isTriangleModel(model) && value !== 'surface') throw new TypeError('Triangle surfaces have no logical block color mode');
       if (mode === value) return;
       mode = value;
       if (model) {

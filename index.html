@@ -18,7 +18,7 @@
   <main>
     <section class="intro" aria-labelledby="page-title">
       <h1 id="page-title">Esquisses et volumes NURBS</h1>
-      <p class="lede">Parcourez les modèles trivariés, leurs partitions et les mesures de validation.</p>
+      <p class="lede">Explorez les partitions NURBS, les congés et les chanfreins. Comparez les volumes aux solides de référence B-Rep.</p>
     </section>
 
     <section class="workspace" aria-label="Explorateur de modèles">
@@ -28,7 +28,7 @@
           <span class="view-coordinate">X&nbsp;·&nbsp;Y&nbsp;·&nbsp;Z <span class="dot" aria-hidden="true"></span> mm</span>
         </div>
         <div class="canvas-wrap" id="canvas-wrap">
-          <canvas id="model-canvas" tabindex="0" aria-label="Modèle trivarié interactif. Flèches pour tourner, plus et moins pour zoomer." aria-describedby="viewport-caption"></canvas>
+          <canvas id="model-canvas" tabindex="0" aria-label="Modèle 3D interactif. Flèches pour tourner, plus et moins pour zoomer." aria-describedby="viewport-caption"></canvas>
           <div class="canvas-state" id="canvas-state" role="status">Chargement des expériences…</div>
           <div class="axis-key" aria-hidden="true"><span><i class="axis-x"></i>X</span><span><i class="axis-y"></i>Y</span><span><i class="axis-z"></i>Z</span></div>
           <div class="viewport-caption" id="viewport-caption">Glisser pour tourner · Molette ou +/− pour zoomer · Flèches au clavier</div>
@@ -55,7 +55,7 @@
         <div class="experiment-head"><p class="eyebrow">Collection</p><label for="experiment-select">Expérience</label><select id="experiment-select" disabled><option>Chargement…</option></select></div>
         <div class="experiment-copy"><p id="experiment-description"></p></div>
         <div class="metrics-section"><div class="section-rule"><span>Mesures publiées</span><span class="rule-line"></span></div><dl id="metrics-list" class="metrics-list"><div class="metric-empty">En attente des données.</div></dl></div>
-        <nav class="source-links" aria-label="Fichiers de l’expérience"><a id="source-link" href="#" hidden><span>Recette source</span><span aria-hidden="true">↗</span></a><a id="step-link" href="#" hidden><span>Modèle STEP</span><span aria-hidden="true">↗</span></a><a id="hex8-link" href="#" hidden><span>Maillage HEX8 (VTK)</span><span aria-hidden="true">↗</span></a><a id="audit-link" href="#" hidden><span>Audit du modèle</span><span aria-hidden="true">↗</span></a><a id="figure-link" href="#" hidden><span>Figure annotée</span><span aria-hidden="true">↗</span></a><a class="campaign-link" href="https://github.com/jeffwitz/SolidCraftTrivariate/blob/campagne-nurbs-multiboucles/docs/cycle-nurbs-multiboucles.md" target="_blank" rel="noopener noreferrer">Journal de campagne <span aria-hidden="true">↗</span></a></nav>
+        <nav class="source-links" aria-label="Fichiers de l’expérience"><a id="model-link" href="#" hidden><span>Modèle trivarié (JSON)</span><span aria-hidden="true">↗</span></a><a id="source-link" href="#" hidden><span>Recette source</span><span aria-hidden="true">↗</span></a><a id="step-link" href="#" hidden><span>Modèle STEP</span><span aria-hidden="true">↗</span></a><a id="hex8-link" href="#" hidden><span>Maillage HEX8 (VTK)</span><span aria-hidden="true">↗</span></a><a id="audit-link" href="#" hidden><span>Audit du modèle</span><span aria-hidden="true">↗</span></a><a id="figure-link" href="#" hidden><span>Figure annotée</span><span aria-hidden="true">↗</span></a><a id="fillet-step" href="#" hidden><span>Congés · référence STEP</span><span aria-hidden="true">↗</span></a><a id="chamfer-step" href="#" hidden><span>Chanfreins · référence STEP</span><span aria-hidden="true">↗</span></a><a class="campaign-link" href="https://github.com/jeffwitz/SolidCraftTrivariate/blob/campagne-nurbs-multiboucles/docs/cycle-nurbs-multiboucles.md" target="_blank" rel="noopener noreferrer">Journal de campagne <span aria-hidden="true">↗</span></a></nav>
       </aside>
     </section>
 

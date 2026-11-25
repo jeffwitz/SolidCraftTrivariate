@@ -2,15 +2,17 @@ const byId = (id) => document.getElementById(id);
 const ui = {
   canvas: byId('model-canvas'), state: byId('canvas-state'), wrap: byId('canvas-wrap'),
   selector: byId('experiment-select'), description: byId('experiment-description'),
-  viewTitle: byId('view-title'), metrics: byId('metrics-list'), source: byId('source-link'), step: byId('step-link'), hex8: byId('hex8-link'), audit: byId('audit-link'), figure: byId('figure-link'),
+  viewTitle: byId('view-title'), metrics: byId('metrics-list'), model: byId('model-link'), source: byId('source-link'), step: byId('step-link'), hex8: byId('hex8-link'), audit: byId('audit-link'), figure: byId('figure-link'),
   axis: byId('clip-axis'), fraction: byId('clip-fraction'), value: byId('clip-value'), reset: byId('reset-view'),
   sectionButton: byId('s3-face-pocket'),
+  fillet: byId('fillet-step'), chamfer: byId('chamfer-step'),
 };
 
 let experiments = [];
 let viewer = null;
 let mode = 'surface';
 let selectionVersion = 0;
+let modelReady = false;
 let viewerError = 'Le moteur de visualisation n’est pas disponible.';
 
 function showState(message, kind = 'info') {
@@ -82,15 +84,31 @@ async function selectExperiment(id) {
   const experiment = experiments.find((item) => item.id === id);
   if (!experiment) return;
   const version = ++selectionVersion;
+  modelReady = false;
   ui.selector.value = experiment.id;
   ui.viewTitle.textContent = experiment.title || experiment.id;
   ui.description.textContent = experiment.description || '';
   renderMetrics(experiment.metrics);
+  const boundary = experiment.representation === 'boundary';
+  const blockButton = document.querySelector('[data-mode="blocks"]');
+  blockButton.disabled = boundary;
+  ui.axis.disabled = boundary;
+  if (boundary) {
+    ui.axis.value = '';
+    if (mode === 'blocks') document.querySelector('[data-mode="surface"]').click();
+  }
+  applyClip();
+  ui.source.firstElementChild.textContent = experiment.sourceLabel || 'Recette source';
+  ui.step.firstElementChild.textContent = experiment.stepLabel || 'Modèle STEP';
+  ui.model.firstElementChild.textContent = boundary ? 'Surface triangulée (JSON)' : 'Modèle trivarié (JSON)';
+  setLink(ui.model, experiment.model === experiment.source ? null : experiment.model);
   setLink(ui.source, experiment.source);
   setLink(ui.step, experiment.step);
   setLink(ui.hex8, experiment.hex8);
   setLink(ui.audit, experiment.audit);
   setLink(ui.figure, experiment.figure);
+  setLink(ui.fillet, experiment.filletStep);
+  setLink(ui.chamfer, experiment.chamferStep);
   const section = experiment.section;
   const hasSection = section && ['x', 'y', 'z'].includes(section.axis) && Number.isFinite(section.fraction) && section.fraction >= 0 && section.fraction <= 1;
   ui.sectionButton.hidden = !hasSection;
@@ -105,6 +123,8 @@ async function selectExperiment(id) {
     const model = await readModel(experiment);
     if (version !== selectionVersion) return;
     viewer.setModel(model);
+    viewer.setMode(mode);
+    modelReady = true;
     applyClip();
     hideState();
   } catch (error) {
@@ -118,11 +138,17 @@ function applyClip() {
   const fraction = Number(ui.fraction.value) / 100;
   ui.fraction.disabled = !axis;
   ui.value.textContent = `${ui.fraction.value} %`;
-  viewer?.setClip(axis, fraction);
+  if (modelReady) viewer.setClip(axis, fraction);
 }
 
 function initControls() {
-  ui.selector.addEventListener('change', () => selectExperiment(ui.selector.value));
+  ui.selector.addEventListener('change', () => {
+    const url = new URL(location.href);
+    url.searchParams.set('model', ui.selector.value);
+    url.hash = '';
+    history.replaceState(null, '', url);
+    selectExperiment(ui.selector.value);
+  });
   ui.axis.addEventListener('change', applyClip);
   ui.fraction.addEventListener('input', applyClip);
   ui.reset.addEventListener('click', () => {
@@ -146,7 +172,7 @@ function initControls() {
       candidate.classList.toggle('is-active', selected);
       candidate.setAttribute('aria-pressed', String(selected));
     });
-    viewer?.setMode(mode);
+    if (modelReady) viewer.setMode(mode);
   }));
 }
 
@@ -162,11 +188,19 @@ async function start() {
     experiments = data.filter((item) => item && typeof item.id === 'string' && typeof item.model === 'string');
     if (experiments.length === 0) throw new Error('Aucune expérience ne contient de modèle exploitable.');
     ui.selector.replaceChildren();
+    const groups = new Map();
     for (const experiment of experiments) {
       const option = document.createElement('option');
       option.value = experiment.id;
       option.textContent = experiment.title || experiment.id;
-      ui.selector.append(option);
+      const group = experiment.group || 'Modèles';
+      if (!groups.has(group)) {
+        const container = document.createElement('optgroup');
+        container.label = group;
+        groups.set(group, container);
+        ui.selector.append(container);
+      }
+      groups.get(group).append(option);
     }
     ui.selector.disabled = false;
     try {
@@ -178,7 +212,9 @@ async function start() {
       viewerError = /webgl|context|gpu/i.test(error.message) ? 'WebGL n’est pas disponible dans ce navigateur.' : `Moteur WebGL indisponible : ${error.message}`;
       showState(`${viewerError} Les mesures et les liens de source restent accessibles.`, 'error');
     }
-    await selectExperiment(experiments[0].id);
+    const requested = new URL(location.href).searchParams.get('model');
+    const initial = experiments.find(entry => entry.id === requested) || experiments[0];
+    await selectExperiment(initial.id);
   } catch (error) {
     showState(`${error.message} Le catalogue attendu est ./experiments.json.`, 'error');
     ui.viewTitle.textContent = 'Aucun modèle chargé';

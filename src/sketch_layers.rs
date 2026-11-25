@@ -22,6 +22,8 @@ pub struct SketchLayers {
     pub guides: Vec<Segment>,
     pub height: i32,
     pub force_triangulation: bool,
+    /// Ordered add (true) / remove (false) operations, if the recipe carries Boolean history.
+    pub operations: Option<Vec<bool>>,
     pub shift: [i32; 2],
 }
 pub struct Partition {
@@ -29,6 +31,7 @@ pub struct Partition {
     pub certificate: BracketCertificate,
     pub volume: Ratio,
     pub planar_faces: usize,
+    pub cavities: usize,
     pub rectangular_grid: bool,
     pub layer_counts: Vec<([i32; 2], usize)>,
     pub generated_levels: Vec<i32>,
@@ -106,6 +109,13 @@ pub(crate) fn valid_point(p: [i32; 2]) -> bool {
     p.iter().all(|v| (-4096..=4096).contains(v))
 }
 pub(crate) fn validate(job: &SketchLayers) -> Result<(), &'static str> {
+    if job
+        .operations
+        .as_ref()
+        .is_some_and(|ops| ops.len() != job.cuts.len())
+    {
+        return Err("invalid_boolean_sketch_operations");
+    }
     if !(1..=4096).contains(&job.height)
         || !valid_point(job.shift)
         || job.cuts.len() > 12
@@ -154,7 +164,7 @@ pub(crate) fn validate(job: &SketchLayers) -> Result<(), &'static str> {
         if i > 0 && !inside(&job.outer, l.vertices[0].map(ratio))? {
             return Err("cut_outside_outer_sketch");
         }
-        if i > 1 {
+        if i > 1 && job.operations.is_none() {
             for other in &loops[1..i] {
                 if inside(other, l.vertices[0].map(ratio))?
                     || inside(l, other.vertices[0].map(ratio))?
@@ -325,6 +335,109 @@ fn graph(
     Ok((arrange(&lines)?, levels.into_iter().collect(), rectangular))
 }
 
+/// Resolve ordered material history on a single open slab.
+fn material(job: &SketchLayers, membership: &[usize], layer: [i32; 2]) -> bool {
+    membership
+        .iter()
+        .rev()
+        .find(|&&i| job.cuts[i].1[0] <= layer[0] && layer[1] <= job.cuts[i].1[1])
+        .is_none_or(|&i| job.operations.as_ref().is_some_and(|ops| ops[i]))
+}
+
+/// Exclusive areas of contour regions, independent of the quadrangulation.
+fn zones(job: &SketchLayers) -> Result<Vec<(i64, Vec<usize>)>, &'static str> {
+    let mut regions = vec![(area2(&job.outer), Vec::new())];
+    for (i, (l, _)) in job.cuts.iter().enumerate() {
+        let mut path = Vec::new();
+        for (j, (other, _)) in job.cuts.iter().enumerate() {
+            if i == j || inside(other, l.vertices[0].map(ratio))? {
+                path.push(j);
+            }
+        }
+        regions.push((area2(l), path));
+    }
+    for i in 0..job.cuts.len() {
+        let parent = regions[i + 1]
+            .1
+            .iter()
+            .filter(|&&k| k != i)
+            .min_by_key(|&&k| area2(&job.cuts[k].0))
+            .map_or(0, |&k| k + 1);
+        regions[parent].0 -= area2(&job.cuts[i].0);
+    }
+    Ok(regions)
+}
+
+/// Flood both material and air in the common conforming footprint.
+fn connected_voids(
+    quads: &[(Quad, Vec<usize>)],
+    layers: &[Vec<bool>],
+) -> Result<usize, &'static str> {
+    let n = quads.len();
+    if n == 0 || layers.is_empty() {
+        return Err("empty_sketch_material");
+    }
+    let mut neighbors = vec![Vec::new(); n];
+    let mut edges = BTreeMap::new();
+    for (i, (q, _)) in quads.iter().enumerate() {
+        for k in 0..4 {
+            let (a, b) = (q[k], q[(k + 1) % 4]);
+            let edge = if a < b { (a, b) } else { (b, a) };
+            if let Some(j) = edges.insert(edge, i) {
+                neighbors[i].push(j);
+                neighbors[j].push(i);
+            }
+        }
+    }
+    for pair in layers.windows(2) {
+        for (i, row) in neighbors.iter().enumerate() {
+            for &j in row {
+                if pair[0][i] != pair[0][j] && pair[0][i] == pair[1][j] && pair[0][j] == pair[1][i]
+                {
+                    return Err("nonmanifold_sketch_layer_transition");
+                }
+            }
+        }
+    }
+    let mut seen = vec![false; n * layers.len()];
+    let mut solids = 0;
+    let mut cavities = 0;
+    for root in 0..seen.len() {
+        if seen[root] {
+            continue;
+        }
+        let state = layers[root / n][root % n];
+        let mut exterior = false;
+        let mut work = vec![root];
+        seen[root] = true;
+        while let Some(v) = work.pop() {
+            let l = v / n;
+            let i = v % n;
+            exterior |= l == 0 || l + 1 == layers.len();
+            for t in neighbors[i]
+                .iter()
+                .map(|&j| l * n + j)
+                .chain((l > 0).then(|| v - n))
+                .chain((l + 1 < layers.len()).then(|| v + n))
+            {
+                if !seen[t] && layers[t / n][t % n] == state {
+                    seen[t] = true;
+                    work.push(t);
+                }
+            }
+        }
+        if state {
+            solids += 1;
+        } else if !exterior {
+            cavities += 1;
+        }
+    }
+    if solids != 1 {
+        return Err("sketch_disconnected_material_components");
+    }
+    Ok(cavities)
+}
+
 pub fn partition(job: &SketchLayers) -> Result<Partition, &'static str> {
     validate(job)?;
     let (graph, levels, rectangular_grid) = graph(job)?;
@@ -359,11 +472,10 @@ pub fn partition(job: &SketchLayers) -> Result<Partition, &'static str> {
             }
             let start = q.iter().enumerate().min_by_key(|(_, p)| *p).unwrap().0;
             q.rotate_left(start);
-            let mut cut = None;
+            let mut cut = Vec::new();
             for (i, (l, _)) in job.cuts.iter().enumerate() {
                 if inside(l, c)? {
-                    cut = Some(i);
-                    break;
+                    cut.push(i);
                 }
             }
             quads.push((q, cut));
@@ -378,6 +490,8 @@ pub fn partition(job: &SketchLayers) -> Result<Partition, &'static str> {
         .collect::<BTreeSet<_>>()
         .into_iter()
         .collect();
+    let regions = zones(job)?;
+    let mut states = Vec::new();
     let mut count = Vec::new();
     let mut blocks = Vec::new();
     let mut locations = BTreeMap::new();
@@ -388,8 +502,12 @@ pub fn partition(job: &SketchLayers) -> Result<Partition, &'static str> {
         let dz = layer[1] - layer[0];
         let begin = blocks.len();
         let mut layer_area = Ratio::zero();
-        for (i, (q, cut)) in quads.iter().enumerate() {
-            if cut.is_some_and(|j| job.cuts[j].1[0] <= layer[0] && layer[1] <= job.cuts[j].1[1]) {
+        let state: Vec<_> = quads
+            .iter()
+            .map(|(_, path)| material(job, path, layer))
+            .collect();
+        for (i, (q, _)) in quads.iter().enumerate() {
+            if !state[i] {
                 continue;
             }
             for k in 0..4 {
@@ -414,19 +532,24 @@ pub fn partition(job: &SketchLayers) -> Result<Partition, &'static str> {
                 return Err("sketch_partition_block_budget");
             }
         }
-        let target = area2(&job.outer)
-            - job
-                .cuts
-                .iter()
-                .filter(|(_, z)| z[0] <= layer[0] && layer[1] <= z[1])
-                .map(|(l, _)| area2(l))
-                .sum::<i64>();
+        let target = regions
+            .iter()
+            .filter(|(_, path)| material(job, path, layer))
+            .map(|(a, _)| *a)
+            .sum::<i64>();
+        states.push(state);
         if layer_area != Ratio::new(i128::from(target), 2)? {
             return Err("sketch_layer_area_mismatch");
         }
         volume = volume.checked_add(layer_area.checked_mul(ratio(dz))?)?;
         count.push((layer, blocks.len() - begin));
     }
+    let cavities = connected_voids(&quads, &states)?;
+    let prefix = if job.operations.is_some() {
+        "feature"
+    } else {
+        "cut"
+    };
     let incidence = enumerate_faces(&blocks)?;
     let mut tags = Vec::new();
     for side in &incidence.exterior {
@@ -439,15 +562,14 @@ pub fn partition(job: &SketchLayers) -> Result<Partition, &'static str> {
             } else if h == job.height {
                 "end".into()
             } else {
-                let j = cut.ok_or("unclassified_internal_sketch_cap")?;
-                let (l, interval) = &job.cuts[j];
-                if side.upper && h == interval[0] {
-                    format!("cut/{}/lower", l.id)
-                } else if !side.upper && h == interval[1] {
-                    format!("cut/{}/upper", l.id)
-                } else {
-                    return Err("unexpected_sketch_cap");
-                }
+                let j = cut
+                    .iter()
+                    .rev()
+                    .find(|&&j| job.cuts[j].1.contains(&h))
+                    .ok_or("unclassified_internal_sketch_cap")?;
+                let (l, interval) = &job.cuts[*j];
+                let end = if h == interval[0] { "lower" } else { "upper" };
+                format!("{prefix}/{}/{end}", l.id)
             }
         } else {
             let (a, b) = match (side.axis, side.upper) {
@@ -464,7 +586,7 @@ pub fn partition(job: &SketchLayers) -> Result<Partition, &'static str> {
                 let mut label = None;
                 for (l, interval) in &job.cuts {
                     if interval[0] <= z[0] && z[1] <= interval[1] && on_edge(l, midpoint)? {
-                        label = Some(format!("cut/{}/wall", l.id));
+                        label = Some(format!("{prefix}/{}/wall", l.id));
                         break;
                     }
                 }
@@ -484,6 +606,7 @@ pub fn partition(job: &SketchLayers) -> Result<Partition, &'static str> {
         },
         volume,
         planar_faces,
+        cavities,
         layer_counts: count,
         generated_levels: levels,
         rectangular_grid,

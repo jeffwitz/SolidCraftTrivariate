@@ -8,6 +8,7 @@ use crate::{
     sketch_layers::{partition, Partition, SketchLayers, SketchLoop},
 };
 pub(crate) const FAMILY: &str = "sketch_layer_partition_v1";
+pub(crate) const BOOLEAN_FAMILY: &str = "sketch_boolean_layers_v1";
 pub(crate) const METHOD: &str = "certified_sketch_layer_partition";
 fn n<T: ToString>(x: T) -> Json {
     Json::Number(x.to_string())
@@ -27,7 +28,10 @@ fn curve(j: &Json) -> Result<SketchLoop, &'static str> {
     })
 }
 fn parse(j: &Json, model: bool) -> Result<SketchLayers, &'static str> {
-    let mut keys = vec!["outer", "cuts", "construction", "height_mm"];
+    let boolean = j.field(if model { "schema" } else { "family" })?.text()? == BOOLEAN_FAMILY;
+    let features = if boolean { "operations" } else { "cuts" };
+    let mut operations = boolean.then(Vec::new);
+    let mut keys = vec!["outer", features, "construction", "height_mm"];
     if j.field("top_shift_mm").is_ok() {
         keys.push("top_shift_mm");
     }
@@ -56,8 +60,17 @@ fn parse(j: &Json, model: bool) -> Result<SketchLayers, &'static str> {
     let outer = j.field("outer")?;
     outer.keys(&["id", "vertices"])?;
     let mut cuts = Vec::new();
-    for c in j.field("cuts")?.items()? {
-        c.keys(&["id", "vertices", "z_interval_mm"])?;
+    for c in j.field(features)?.items()? {
+        if let Some(ops) = &mut operations {
+            c.keys(&["id", "vertices", "z_interval_mm", "operation"])?;
+            ops.push(match c.field("operation")?.text()? {
+                "add" => true,
+                "remove" => false,
+                _ => return Err("invalid_sketch_material_operation"),
+            });
+        } else {
+            c.keys(&["id", "vertices", "z_interval_mm"])?;
+        }
         cuts.push((curve(c)?, pair(c.field("z_interval_mm")?)?));
     }
     let mut guides = Vec::new();
@@ -73,6 +86,7 @@ fn parse(j: &Json, model: bool) -> Result<SketchLayers, &'static str> {
     Ok(SketchLayers {
         outer: curve(outer)?,
         force_triangulation,
+        operations,
         cuts,
         guides,
         height: j.field("height_mm")?.number()?,
@@ -176,11 +190,12 @@ fn plan(p: &Partition) -> Json {
 pub(crate) fn build(recipe: &Json) -> Result<Json, &'static str> {
     let p = partition(&parse(recipe, false)?)?;
     let ledger = plan(&p);
-    let mut model = encode(FAMILY, p.blocks, &p.certificate);
+    let mut model = encode(recipe.field("family")?.text()?, p.blocks, &p.certificate);
     if let Json::Object(fields) = &mut model {
         for k in [
             "outer",
             "cuts",
+            "operations",
             "construction",
             "height_mm",
             "top_shift_mm",
@@ -196,11 +211,6 @@ pub(crate) fn build(recipe: &Json) -> Result<Json, &'static str> {
 }
 pub(crate) fn audit(model: &Json) -> Result<Json, &'static str> {
     let job = parse(model, true)?;
-    let cavities = job
-        .cuts
-        .iter()
-        .filter(|(_, z)| z[0] > 0 && z[1] < job.height)
-        .count();
     let p = partition(&job)?;
     if decode_blocks(model)? != p.blocks
         || model.field("topology")? != &topology(&p.certificate.incidence)
@@ -221,7 +231,7 @@ pub(crate) fn audit(model: &Json) -> Result<Json, &'static str> {
         ),
         ("volume_exact_mm3", fraction(p.volume)),
         ("bounded_sketch_faces", n(p.planar_faces)),
-        ("cavities", n(cavities)),
+        ("cavities", n(p.cavities)),
         ("hausdorff_error_upper_bound_mm", n(0)),
     ]))
 }

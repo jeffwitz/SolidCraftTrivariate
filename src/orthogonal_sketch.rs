@@ -45,6 +45,7 @@ pub struct SweepPartition {
     pub certificate: BracketCertificate,
     pub twice_constant: i64,
     pub four_pi: i64,
+    pub junction: Option<([i32; 3], [usize; 2], i32, i32)>,
     pub planes: [Vec<i32>; 3],
     pub guards: Vec<(String, Bounds)>,
 }
@@ -279,6 +280,7 @@ pub fn build(j: &OrthogonalSketch) -> Result<SweepPartition, &'static str> {
         cuts: Vec::new(),
         guides: Vec::new(),
         force_triangulation: false,
+        operations: None,
     })?;
     if edges(&j.outer).any(|(a, b)| a[0] != b[0] && a[1] != b[1])
         || j.bores.len() > 8
@@ -297,6 +299,9 @@ pub fn build(j: &OrthogonalSketch) -> Result<SweepPartition, &'static str> {
         if !valid_name(id) || !names.insert(id) {
             return Err("invalid_sketch_feature_identity");
         }
+    }
+    if let Some(p) = crate::steinmetz_partition::try_build(j)? {
+        return Ok(p);
     }
     let mut levels: [BTreeSet<i32>; 3] = std::array::from_fn(|k| {
         if k == 2 {
@@ -462,6 +467,7 @@ pub fn build(j: &OrthogonalSketch) -> Result<SweepPartition, &'static str> {
             radial_error_upper_mm: 0.,
         },
         twice_constant: i64::try_from(twice_constant).map_err(|_| "sketch_volume_range")?,
+        junction: None,
         four_pi: i64::try_from(four_pi).map_err(|_| "sketch_volume_range")?,
         planes,
         guards,

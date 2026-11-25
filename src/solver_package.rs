@@ -455,3 +455,257 @@ pub fn export_analysis(model: &Json, order: usize) -> Result<Json, &'static str>
         ("derivatives", derivatives),
     ]))
 }
+
+fn side_from_json(value: &Json) -> Result<crate::incidence::BlockSide, &'static str> {
+    let side = value.field("side")?.text()?;
+    let (axis, upper) = match side {
+        "u0" => (0, false),
+        "u1" => (0, true),
+        "v0" => (1, false),
+        "v1" => (1, true),
+        "w0" => (2, false),
+        "w1" => (2, true),
+        _ => return Err("unknown sketch face side"),
+    };
+    Ok(crate::incidence::BlockSide {
+        block: value.field("block")?.text()?.to_owned(),
+        axis,
+        upper,
+    })
+}
+
+fn sketch_design_faces(
+    model: &Json,
+) -> Result<Vec<(crate::incidence::BlockSide, String)>, &'static str> {
+    model
+        .field("design_faces")?
+        .items()?
+        .iter()
+        .map(|face| {
+            Ok((
+                side_from_json(face)?,
+                face.field("feature")?.text()?.to_owned(),
+            ))
+        })
+        .collect()
+}
+
+fn control_positions(space: &AnalysisSpace) -> Result<Vec<[f64; 3]>, &'static str> {
+    let mut positions: Vec<Option<[f64; 3]>> = vec![None; space.ndof];
+    for block in &space.blocks {
+        for (&dof, control) in block.dofs.iter().zip(&block.controls) {
+            if dof >= space.ndof || control[3] <= 0 {
+                return Err("invalid sketch analysis control mapping");
+            }
+            let point = std::array::from_fn(|axis| control[axis] as f64 / control[3] as f64);
+            if let Some(previous) = positions[dof] {
+                if (0..3).any(|axis| (previous[axis] - point[axis]).abs() > 1e-12) {
+                    return Err("shared sketch Q2 control positions disagree");
+                }
+            } else {
+                positions[dof] = Some(point);
+            }
+        }
+    }
+    positions
+        .into_iter()
+        .map(|point| point.ok_or("unreferenced sketch analysis control"))
+        .collect()
+}
+
+fn vector_norm(vector: &[f64]) -> f64 {
+    vector
+        .iter()
+        .fold(0.0_f64, |norm, value| norm.hypot(*value))
+}
+
+fn dot_vector(left: &[f64], right: &[f64]) -> f64 {
+    left.iter().zip(right).map(|(a, b)| a * b).sum()
+}
+
+fn analysis_diagnostics(space: &AnalysisSpace) -> Result<Json, &'static str> {
+    let positions = control_positions(space)?;
+    let mut max_condition = 0.0_f64;
+    let mut min_scaled_determinant = f64::INFINITY;
+    let grid = [0.0, 0.5, 1.0];
+    let mut samples = 0usize;
+    for block in &space.blocks {
+        for &u in &grid {
+            for &v in &grid {
+                for &w in &grid {
+                    let sample = crate::elasticity::basis_geometry(block, [u, v, w])?;
+                    let quality = crate::quality::at_jacobian(sample.jacobian_columns)?;
+                    max_condition = max_condition.max(quality.condition_number);
+                    min_scaled_determinant = min_scaled_determinant.min(quality.scaled_determinant);
+                    samples += 1;
+                }
+            }
+        }
+    }
+
+    // Use the public production assembler on the actual mounted Q2 space. The
+    // small order is a patch/mode diagnostic, not a convergence study.
+    let quadrature_order = 2;
+    let young = 1.0;
+    let poisson = 0.25;
+    let stiffness = crate::elasticity::assemble(space, young, poisson, quadrature_order)?;
+    let mut gradient = [[0.0; 3]; 3];
+    gradient[0] = [0.013, -0.004, 0.002];
+    gradient[1] = [0.001, 0.009, -0.003];
+    gradient[2] = [-0.002, 0.005, 0.006];
+    let offset = [0.7, -0.2, 0.3];
+    let mut affine = vec![0.0; 3 * space.ndof];
+    for (node, point) in positions.iter().enumerate() {
+        for component in 0..3 {
+            affine[3 * node + component] = offset[component]
+                + (0..3)
+                    .map(|axis| gradient[component][axis] * point[axis])
+                    .sum::<f64>();
+        }
+    }
+    let force = stiffness.apply(&affine)?;
+    let energy = 0.5 * dot_vector(&affine, &force);
+    let strain: [[f64; 3]; 3] =
+        std::array::from_fn(|i| std::array::from_fn(|j| 0.5 * (gradient[i][j] + gradient[j][i])));
+    let strain_norm2: f64 = strain.iter().flatten().map(|x| x * x).sum();
+    let trace = strain[0][0] + strain[1][1] + strain[2][2];
+    let mu = young / (2.0 * (1.0 + poisson));
+    let lambda = young * poisson / ((1.0 + poisson) * (1.0 - 2.0 * poisson));
+    let energy_density = mu * strain_norm2 + 0.5 * lambda * trace * trace;
+    let expected_energy = energy_density * stiffness.integrated_volume;
+    let energy_error = (energy - expected_energy).abs() / expected_energy.abs().max(1e-30);
+
+    let mut rigid_residuals = Vec::with_capacity(6);
+    for mode in 0..6 {
+        let mut displacement = vec![0.0; 3 * space.ndof];
+        for (node, [x, y, z]) in positions.iter().copied().enumerate() {
+            let value = match mode {
+                0 => [1.0, 0.0, 0.0],
+                1 => [0.0, 1.0, 0.0],
+                2 => [0.0, 0.0, 1.0],
+                3 => [0.0, -z, y],
+                4 => [z, 0.0, -x],
+                _ => [-y, x, 0.0],
+            };
+            displacement[3 * node..3 * node + 3].copy_from_slice(&value);
+        }
+        let residual = stiffness.apply(&displacement)?;
+        let denominator =
+            vector_norm(&displacement).max(1.0) * young * stiffness.integrated_volume.max(1.0);
+        rigid_residuals.push(vector_norm(&residual) / denominator);
+    }
+    Ok(object([
+        (
+            "geometry_grid",
+            object([
+                ("axis_nodes", numeric_array(grid)),
+                ("evaluations", number(samples)),
+                ("max_condition_number", number(max_condition)),
+                ("min_scaled_determinant", number(min_scaled_determinant)),
+            ]),
+        ),
+        (
+            "mounted_q2",
+            object([
+                ("assembler", text("elasticity::assemble")),
+                ("quadrature_order", number(quadrature_order)),
+                (
+                    "material",
+                    object([("young_mpa", number(young)), ("poisson", number(poisson))]),
+                ),
+                ("integrated_volume_mm3", number(stiffness.integrated_volume)),
+                (
+                    "affine_field_energy",
+                    object([
+                        (
+                            "gradient",
+                            Json::Array(gradient.into_iter().map(f64_array).collect()),
+                        ),
+                        ("offset_mm", f64_array(offset)),
+                        ("assembled_n_mm", number(energy)),
+                        ("constant_strain_expected_n_mm", number(expected_energy)),
+                        ("relative_error", number(energy_error)),
+                    ]),
+                ),
+                ("rigid_mode_relative_residuals", f64_array(rigid_residuals)),
+            ]),
+        ),
+    ]))
+}
+
+/// Export PA3/PA5 geometry to the same production Q2 numbering and assembly
+/// APIs, without attaching the legacy bracket-specific load and clamp.
+/// Build a geometry-only Q2 package for PA3/PA5 sketches or bracket baselines.
+/// The separate package schema leaves legacy solver packages unchanged.
+pub fn export_sketch_analysis(model: &Json, order: usize) -> Result<Json, &'static str> {
+    let schema = model.field("schema")?.text()?;
+    if !matches!(
+        schema,
+        "sketch_layer_partition_v1"
+            | "orthogonal_sketch_features_v1"
+            | "filleted_bracket_v1"
+            | "parameterized_bracket_v1"
+    ) {
+        return Err("unsupported model family for sketch analysis package");
+    }
+    if !(1..=16).contains(&order) {
+        return Err("sketch analysis quadrature order must be in 1..=16");
+    }
+    let audit = interchange::audit(model)?;
+    if audit.field("status")?.text()? != "valid" {
+        return Err("sketch model is not certified valid");
+    }
+    let blocks = crate::bracket_json::decode_blocks(model)?;
+    let incidence = crate::incidence::enumerate_faces(&blocks)?;
+    let design_faces = sketch_design_faces(model)?;
+    let space = analysis_space::from_certified_faces(&blocks, &incidence, &design_faces)?;
+    let volume = integrate_volume(&space, order)?;
+    let skeleton = encode_skeleton(&space)?;
+    let audit_determinant = audit
+        .field("determinant_lower_bound_mm3")
+        .map_or(Json::Null, Clone::clone);
+    let analysis = object([
+        ("scalar_ndof", number(space.ndof)),
+        (
+            "vector_ndof",
+            number(
+                space
+                    .ndof
+                    .checked_mul(3)
+                    .ok_or("vector DOF count overflow")?,
+            ),
+        ),
+        ("ordering", text("scalar_node_major_xyz")),
+        ("block_control_order", text("u-major,v-major,w-fast")),
+        ("blocks", arr(&space.blocks, analysis_block_json)),
+        (
+            "boundary_dofs",
+            Json::Object(
+                space
+                    .boundary_dofs
+                    .iter()
+                    .map(|(name, dofs)| (name.clone(), numeric_array(dofs)))
+                    .collect(),
+            ),
+        ),
+    ]);
+    Ok(object([
+        ("schema", text("solidcraft_sketch_analysis_package_v1")),
+        ("source_schema", text(schema)),
+        ("source_model", model.clone()),
+        ("audit", audit),
+        ("topology", model.field("topology")?.clone()),
+        ("design_faces", model.field("design_faces")?.clone()),
+        ("skeleton", skeleton),
+        ("analysis_space", analysis),
+        ("quadrature", gauss_json(order)?),
+        (
+            "measures",
+            object([
+                ("integrated_volume_mm3", number(volume)),
+                ("audit_determinant_lower_bound_mm3", audit_determinant),
+            ]),
+        ),
+        ("analysis_diagnostics", analysis_diagnostics(&space)?),
+    ]))
+}

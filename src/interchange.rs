@@ -213,11 +213,15 @@ pub fn build(recipe: &Json) -> Result<Json, &'static str> {
         super::rational_sector_json::FAMILY => super::rational_sector_json::build(recipe),
         super::counterbores_json::FAMILY => super::counterbores_json::build(recipe),
         super::countersinks_json::FAMILY => super::countersinks_json::build(recipe),
-        super::sketch_layers_json::FAMILY => super::sketch_layers_json::build(recipe),
+        super::sketch_layers_json::FAMILY | super::sketch_layers_json::BOOLEAN_FAMILY => {
+            super::sketch_layers_json::build(recipe)
+        }
         super::orthogonal_sketch_json::FAMILY => super::orthogonal_sketch_json::build(recipe),
         super::interval_bores_json::FAMILY => super::interval_bores_json::build(recipe),
         super::circular_polygon_json::FAMILY => super::circular_polygon_json::build(recipe),
-        super::polygon_json::FAMILY | super::polygon_json::PERFORATED => super::polygon_json::build(recipe),
+        super::polygon_json::FAMILY | super::polygon_json::PERFORATED => {
+            super::polygon_json::build(recipe)
+        }
         "axial_boolean_v1" => super::axial_json::build(recipe),
         family
             if family == "filleted_bracket_v1"
@@ -250,11 +254,15 @@ pub fn audit(model: &Json) -> Result<Json, &'static str> {
         super::rational_sector_json::FAMILY => super::rational_sector_json::audit(model),
         super::counterbores_json::FAMILY => super::counterbores_json::audit(model),
         super::countersinks_json::FAMILY => super::countersinks_json::audit(model),
-        super::sketch_layers_json::FAMILY => super::sketch_layers_json::audit(model),
+        super::sketch_layers_json::FAMILY | super::sketch_layers_json::BOOLEAN_FAMILY => {
+            super::sketch_layers_json::audit(model)
+        }
         super::orthogonal_sketch_json::FAMILY => super::orthogonal_sketch_json::audit(model),
         super::interval_bores_json::FAMILY => super::interval_bores_json::audit(model),
         super::circular_polygon_json::FAMILY => super::circular_polygon_json::audit(model),
-        super::polygon_json::FAMILY | super::polygon_json::PERFORATED => super::polygon_json::audit(model),
+        super::polygon_json::FAMILY | super::polygon_json::PERFORATED => {
+            super::polygon_json::audit(model)
+        }
         "axial_boolean_v1" => super::axial_json::audit(model),
         family
             if family == "filleted_bracket_v1"

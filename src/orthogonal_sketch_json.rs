@@ -60,7 +60,7 @@ fn parse(j: &Json) -> Result<OrthogonalSketch, &'static str> {
     })
 }
 fn plan(p: &SweepPartition) -> Json {
-    object([
+    let mut out = object([
         (
             "method",
             Json::String("axis_planes_and_disjoint_local_sweeps".into()),
@@ -95,8 +95,26 @@ fn plan(p: &SweepPartition) -> Json {
                     .collect(),
             ),
         ),
-    ])
+    ]);
+    if let (Some((center, axes, r, g)), Json::Object(f)) = (p.junction, &mut out) {
+        f.insert(
+            "method".into(),
+            Json::String("equal_radius_intersecting_axis_sweeps".into()),
+        );
+        f.insert(
+            "axis_intersection_mm".into(),
+            Json::Array(center.iter().map(n).collect()),
+        );
+        f.insert(
+            "bore_axes".into(),
+            Json::Array(axes.iter().map(n).collect()),
+        );
+        f.insert("radius_mm".into(), n(r));
+        f.insert("guard_mm".into(), n(g));
+    }
+    out
 }
+
 pub(crate) fn build(recipe: &Json) -> Result<Json, &'static str> {
     recipe.keys(&[&["family"][..], &PARAMETERS].concat())?;
     let p = orthogonal_sketch::build(&parse(recipe)?)?;
@@ -133,6 +151,22 @@ pub(crate) fn audit(model: &Json) -> Result<Json, &'static str> {
     {
         return Err("orthogonal_feature_partition_replay_mismatch");
     }
+    let mut volume = object([
+        ("twice_rational_part_mm3", n(p.twice_constant)),
+        ("pi_coefficient_mm3", Json::Array(vec![n(p.four_pi), n(4)])),
+    ]);
+    if let (Some((_, _, r, _)), Json::Object(v)) = (p.junction, &mut volume) {
+        let thirds = 3 * (p.twice_constant / 2) + 16 * i64::from(r).pow(3);
+        v.insert(
+            "rational_part_mm3".into(),
+            Json::Array(vec![n(thirds), n(3)]),
+        );
+        if thirds % 3 == 0 {
+            v.insert("twice_rational_part_mm3".into(), n(2 * (thirds / 3)));
+        } else {
+            v.remove("twice_rational_part_mm3");
+        }
+    }
     Ok(object([
         ("status", Json::String("valid".into())),
         ("method", Json::String(METHOD.into())),
@@ -146,12 +180,6 @@ pub(crate) fn audit(model: &Json) -> Result<Json, &'static str> {
             n(p.certificate.determinant_lower_bound_mm3),
         ),
         ("hausdorff_error_upper_bound_mm", n(0)),
-        (
-            "volume_exact",
-            object([
-                ("twice_rational_part_mm3", n(p.twice_constant)),
-                ("pi_coefficient_mm3", Json::Array(vec![n(p.four_pi), n(4)])),
-            ]),
-        ),
+        ("volume_exact", volume),
     ]))
 }

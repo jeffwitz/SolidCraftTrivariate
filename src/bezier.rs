@@ -51,7 +51,7 @@ impl RationalBezierMap {
         {
             return Err(MapError::InvalidControl);
         }
-        if !matches!(degrees, [1, 1, 1] | [2, 1, 1]) {
+        if !matches!(degrees, [1, 1, 1] | [2, 1, 1] | [2, 2, 1]) {
             return Err(MapError::UnsupportedDegrees);
         }
         Ok(Self { degrees, controls })
@@ -61,25 +61,18 @@ impl RationalBezierMap {
         if [u, v, w].iter().any(|x| !(0.0..=1.0).contains(x)) {
             return Err(MapError::OutsideDomain);
         }
-        let a = 1.0 - u;
-        let (bu, du) = if self.degrees[0] == 1 {
-            ([a, u, 0.0], [-1.0, 1.0, 0.0])
-        } else {
-            (
-                [a * a, 2.0 * a * u, u * u],
-                [-2.0 * a, 2.0 * (a - u), 2.0 * u],
-            )
-        };
+        let (bu, du) = basis(self.degrees[0], u);
+        let (bv, dv) = basis(self.degrees[1], v);
+        let (bw, dw) = basis(1, w);
+        let v_count = self.degrees[1] + 1;
         let mut h = [[0.0; 4]; 4];
         for (index, p) in self.controls.iter().enumerate() {
-            let (i, j, k) = (index / 4, (index / 2) % 2, index % 2);
-            let bv = [1.0 - v, v][j];
-            let bw = [1.0 - w, w][k];
+            let (i, j, k) = (index / (2 * v_count), (index / 2) % v_count, index % 2);
             let factors = [
-                bu[i] * bv * bw,
-                du[i] * bv * bw,
-                bu[i] * [-1.0, 1.0][j] * bw,
-                bu[i] * bv * [-1.0, 1.0][k],
+                bu[i] * bv[j] * bw[k],
+                du[i] * bv[j] * bw[k],
+                bu[i] * dv[j] * bw[k],
+                bu[i] * bv[j] * dw[k],
             ];
             for (row, factor) in h.iter_mut().zip(factors) {
                 for (sum, coord) in row.iter_mut().zip(p) {
@@ -107,5 +100,14 @@ impl RationalBezierMap {
             position,
             jacobian_columns,
         })
+    }
+}
+
+fn basis(degree: usize, t: f64) -> ([f64; 3], [f64; 3]) {
+    let a = 1. - t;
+    if degree == 1 {
+        ([a, t, 0.], [-1., 1., 0.])
+    } else {
+        ([a * a, 2. * a * t, t * t], [-2. * a, 2. * (a - t), 2. * t])
     }
 }

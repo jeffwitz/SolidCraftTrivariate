@@ -78,3 +78,40 @@ fn affine_and_rejections() {
         MapError::UnsupportedDegrees
     );
 }
+
+#[test]
+fn biquadratic_rational_chart_matches_separable_quotients_and_product_rule() {
+    let mut controls = Vec::new();
+    for (i, wu) in [1., 2., 1.].into_iter().enumerate() {
+        for (j, wv) in [1., 3., 1.].into_iter().enumerate() {
+            for k in 0..2 {
+                let (x, y, weight) = (i as f64 / 2., j as f64 / 2., wu * wv);
+                controls.push([
+                    x * weight,
+                    y * weight,
+                    (k as f64 + 0.25 * x * y) * weight,
+                    weight,
+                ]);
+            }
+        }
+    }
+    let map = RationalBezierMap::new([2, 2, 1], controls).unwrap();
+    fn coordinate(t: f64, weight: f64) -> (f64, f64) {
+        let n = t * (weight + (1. - weight) * t);
+        let d = 1. + 2. * (weight - 1.) * t * (1. - t);
+        let dn = weight + 2. * (1. - weight) * t;
+        let dd = 2. * (weight - 1.) * (1. - 2. * t);
+        (n / d, (dn * d - n * dd) / (d * d))
+    }
+    for u in [0., 0.125, 0.5, 1.] {
+        for v in [0., 0.375, 0.75, 1.] {
+            let (x, dx) = coordinate(u, 2.);
+            let (y, dy) = coordinate(v, 3.);
+            let eval = map.evaluate([u, v, 0.625]).unwrap();
+            close(eval.position, [x, y, 0.625 + 0.25 * x * y]);
+            close(eval.jacobian_columns[0], [dx, 0., 0.25 * dx * y]);
+            close(eval.jacobian_columns[1], [0., dy, 0.25 * x * dy]);
+            close(eval.jacobian_columns[2], [0., 0., 1.]);
+        }
+    }
+}

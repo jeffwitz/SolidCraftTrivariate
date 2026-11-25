@@ -14,13 +14,12 @@ fn number(value: impl ToString) -> Json {
 fn side_name(side: &BlockSide) -> String {
     format!("{}{}", ["u", "v", "w"][side.axis], u8::from(side.upper))
 }
-fn side_json(side: &BlockSide) -> Json {
+pub(super) fn side_json(side: &BlockSide) -> Json {
     Json::Array(vec![text(&side.block), text(&side_name(side))])
 }
 
-fn topology(cert: &BracketCertificate) -> Json {
-    let interfaces = cert
-        .incidence
+pub(super) fn topology(incidence: &crate::incidence::Incidence) -> Json {
+    let interfaces = incidence
         .interfaces
         .iter()
         .map(|face| {
@@ -43,7 +42,7 @@ fn topology(cert: &BracketCertificate) -> Json {
         ("interfaces", Json::Array(interfaces)),
         (
             "exterior",
-            Json::Array(cert.incidence.exterior.iter().map(side_json).collect()),
+            Json::Array(incidence.exterior.iter().map(side_json).collect()),
         ),
     ])
 }
@@ -82,11 +81,12 @@ fn certify(
     ))
 }
 
-pub(crate) const PARAMETRIC_FAMILIES: [&str; 4] = [
+pub(crate) const PARAMETRIC_FAMILIES: [&str; 5] = [
     "movable_bore_v1",
     "pocket_depth_v1",
     "exact_bore_v1",
     "row_bores_v1",
+    "overlap_bore_v1",
 ];
 
 fn parameters(family: &str) -> &'static [&'static str] {
@@ -145,6 +145,11 @@ fn audit_template(
     blocks: &[BracketBlock],
 ) -> Result<(BracketCertificate, Option<f64>), &'static str> {
     match family {
+        "overlap_bore_v1" => {
+            let cert = crate::overlap_bore_audit::audit_overlap(blocks)?;
+            let ideal = 8. * (400. - 16. * std::f64::consts::PI / 3. - 2. * 3_f64.sqrt());
+            Ok((cert, Some(ideal)))
+        }
         "row_bores_v1" => {
             let row = row_parameters(input)?;
             let cert =
@@ -196,6 +201,7 @@ pub(crate) fn build(recipe: &Json) -> Result<Json, &'static str> {
     recipe.keys(&keys)?;
     let blocks = match family {
         "filleted_bracket_v1" => bracket_blocks()?,
+        "overlap_bore_v1" => crate::overlap_bore::overlap_blocks()?,
         "row_bores_v1" => {
             use crate::row_bores::{build_row_bores, RowBoresError::*};
             let row = row_parameters(recipe)?;
@@ -246,7 +252,7 @@ pub(crate) fn build(recipe: &Json) -> Result<Json, &'static str> {
     Ok(model)
 }
 
-fn encode(family: &str, blocks: Vec<BracketBlock>, cert: &BracketCertificate) -> Json {
+pub(super) fn encode_blocks(blocks: Vec<BracketBlock>) -> Json {
     let blocks = blocks
         .into_iter()
         .map(|b| {
@@ -268,19 +274,19 @@ fn encode(family: &str, blocks: Vec<BracketBlock>, cert: &BracketCertificate) ->
             ])
         })
         .collect();
+    Json::Array(blocks)
+}
+
+fn encode(family: &str, blocks: Vec<BracketBlock>, cert: &BracketCertificate) -> Json {
     object([
         ("schema", text(family)),
-        ("blocks", Json::Array(blocks)),
-        ("topology", topology(cert)),
+        ("blocks", encode_blocks(blocks)),
+        ("topology", topology(&cert.incidence)),
         ("design_faces", design(cert)),
     ])
 }
 
-pub(crate) fn audit(model: &Json) -> Result<Json, &'static str> {
-    let family = model.field("schema")?.text()?;
-    let mut keys = vec!["schema", "blocks", "topology", "design_faces"];
-    keys.extend(parameters(family));
-    model.keys(&keys)?;
+pub(super) fn decode_blocks(model: &Json) -> Result<Vec<BracketBlock>, &'static str> {
     let mut blocks = Vec::new();
     for b in model.field("blocks")?.items()? {
         b.keys(&["id", "degrees", "controls"])?;
@@ -309,8 +315,17 @@ pub(crate) fn audit(model: &Json) -> Result<Json, &'static str> {
             controls,
         });
     }
+    Ok(blocks)
+}
+
+pub(crate) fn audit(model: &Json) -> Result<Json, &'static str> {
+    let family = model.field("schema")?.text()?;
+    let mut keys = vec!["schema", "blocks", "topology", "design_faces"];
+    keys.extend(parameters(family));
+    model.keys(&keys)?;
+    let blocks = decode_blocks(model)?;
     let (certificate, ideal_volume) = audit_template(model, family, &blocks)?;
-    if model.field("topology")? != &topology(&certificate) {
+    if model.field("topology")? != &topology(&certificate.incidence) {
         return Err("incidence_mismatch");
     }
     if model.field("design_faces")? != &design(&certificate) {

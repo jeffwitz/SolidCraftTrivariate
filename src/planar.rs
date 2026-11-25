@@ -1,6 +1,6 @@
 //! Outward-rounded local regularity certificate for small rational Bézier patches.
 //!
-//! The supported degree families are `(1,1)` and `(2,1)`. Homogeneous integer
+//! The supported degree families are `(1,1)`, `(2,1)`, and `(2,2)`. Homogeneous integer
 //! controls are scaled by the exact power of two `2^-63` before conversion.
 //! Every converted endpoint encloses the exact integer; every arithmetic
 //! operation expands its result by one binary64 value on each side. This
@@ -29,20 +29,20 @@ impl std::fmt::Display for PlanarError {
 impl std::error::Error for PlanarError {}
 
 #[derive(Clone, Copy, Debug)]
-struct Interval {
-    lo: f64,
-    hi: f64,
+pub(crate) struct Interval {
+    pub(crate) lo: f64,
+    pub(crate) hi: f64,
 }
 
 impl Interval {
-    fn exact(value: f64) -> Self {
+    pub(crate) fn exact(value: f64) -> Self {
         Self {
             lo: value,
             hi: value,
         }
     }
 
-    fn from_i64_scaled(value: i64) -> Self {
+    pub(crate) fn from_i64_scaled(value: i64) -> Self {
         // 2^-63 is exact, and all scaled i64 values remain normal binary64.
         let scale = f64::from_bits((960u64) << 52);
         let rounded = (value as f64) * scale;
@@ -52,21 +52,21 @@ impl Interval {
         }
     }
 
-    fn add(self, rhs: Self) -> Self {
+    pub(crate) fn add(self, rhs: Self) -> Self {
         Self {
             lo: next_down(self.lo + rhs.lo),
             hi: next_up(self.hi + rhs.hi),
         }
     }
 
-    fn sub(self, rhs: Self) -> Self {
+    pub(crate) fn sub(self, rhs: Self) -> Self {
         Self {
             lo: next_down(self.lo - rhs.hi),
             hi: next_up(self.hi - rhs.lo),
         }
     }
 
-    fn mul(self, rhs: Self) -> Self {
+    pub(crate) fn mul(self, rhs: Self) -> Self {
         let products = [
             self.lo * rhs.lo,
             self.lo * rhs.hi,
@@ -85,7 +85,7 @@ impl Interval {
         }
     }
 
-    fn div(self, rhs: Self) -> Self {
+    pub(crate) fn div(self, rhs: Self) -> Self {
         if rhs.lo <= 0.0 || !rhs.lo.is_finite() || !rhs.hi.is_finite() {
             return Self {
                 lo: f64::NEG_INFINITY,
@@ -110,7 +110,7 @@ impl Interval {
         }
     }
 
-    fn finite(self) -> bool {
+    pub(crate) fn finite(self) -> bool {
         self.lo.is_finite() && self.hi.is_finite() && self.lo <= self.hi
     }
 }
@@ -310,7 +310,7 @@ fn binomial(n: usize, k: usize) -> u64 {
     result
 }
 
-fn binomial_ratio(m: usize, i: usize, n: usize, j: usize) -> Interval {
+pub(crate) fn binomial_ratio(m: usize, i: usize, n: usize, j: usize) -> Interval {
     let numerator = (binomial(m, i) * binomial(n, j)) as f64;
     let denominator = binomial(m + n, i + j) as f64;
     Interval::exact(numerator).div(Interval::exact(denominator))
@@ -364,7 +364,7 @@ fn certify_planar_with_depth(
     depth: u8,
 ) -> Result<f64, PlanarError> {
     let [du, dv] = degrees;
-    if !matches!(degrees, [1, 1] | [2, 1])
+    if !matches!(degrees, [1, 1] | [2, 1] | [2, 2])
         || controls.len() != (du + 1) * (dv + 1)
         || controls.iter().any(|point| point[2] <= 0)
     {

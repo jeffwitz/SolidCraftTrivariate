@@ -205,6 +205,7 @@ fn audit_affine(m: &Json) -> Result<Json, &'static str> {
 
 pub fn build(recipe: &Json) -> Result<Json, &'static str> {
     match recipe.field("family")?.text()? {
+        "axial_boolean_v1" => super::axial_json::build(recipe),
         family
             if family == "filleted_bracket_v1"
                 || SECTION_FAMILIES.contains(&family)
@@ -228,6 +229,7 @@ pub fn build(recipe: &Json) -> Result<Json, &'static str> {
 
 pub fn audit(model: &Json) -> Result<Json, &'static str> {
     match model.field("schema")?.text()? {
+        "axial_boolean_v1" => super::axial_json::audit(model),
         family
             if family == "filleted_bracket_v1"
                 || SECTION_FAMILIES.contains(&family)

@@ -1,0 +1,10 @@
+{
+  "description": "Anisotropic boxes meet only at the origin. All three supporting planes must agree on dimension zero.",
+  "unit": "um",
+  "first_min": [-1,-1,-1],
+  "first_max": [0,0,0],
+  "second_min": [0,0,0],
+  "second_max": [1,1,2],
+  "expected": {"relation":"boundary_contact","dimension":0},
+  "first_observation": "The first supporting-polygon implementation returned Indeterminate in the exhaustive oracle."
+}

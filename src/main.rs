@@ -14,7 +14,7 @@ fn read(path: &str) -> Result<Json, String> {
     parse(&fs::read_to_string(path).map_err(|e| e.to_string())?).map_err(str::to_owned)
 }
 
-fn publish(target: &Path, model: &Json) -> std::io::Result<()> {
+fn publish(target: &Path, contents: &str) -> std::io::Result<()> {
     static NEXT: AtomicUsize = AtomicUsize::new(0);
     let dir = target
         .parent()
@@ -36,7 +36,8 @@ fn publish(target: &Path, model: &Json) -> std::io::Result<()> {
             other => other?,
         };
         let result = (|| {
-            writeln!(file, "{model}")?;
+            file.write_all(contents.as_bytes())?;
+            if !contents.ends_with('\n') { file.write_all(b"\n")?; }
             file.sync_all()?;
             drop(file);
             fs::rename(&temp, target)
@@ -48,12 +49,12 @@ fn publish(target: &Path, model: &Json) -> std::io::Result<()> {
     }
 }
 
-const COMMANDS_AND_EVALUATORS: &str = r#"{"commands":["build","audit","evaluate","capabilities"],"evaluators":{"rational_bezier_tensor":{"degrees":[[1,1,1],[2,1,1]],"domain":[[0,1],[0,1],[0,1]]}}}"#;
+const COMMANDS_AND_EVALUATORS: &str = r#"{"commands":["build","audit","evaluate","capabilities","export-step"],"evaluators":{"rational_bezier_tensor":{"degrees":[[1,1,1],[2,1,1],[2,2,1]],"domain":[[0,1],[0,1],[0,1]]}}}"#;
 
 fn capabilities() -> Result<Json,String> {
     let mut result = parse(COMMANDS_AND_EVALUATORS)?;
     let Json::Object(fields) = &mut result else {return Err("invalid capabilities".into())};
-    let families = ["affine_pair_v1", "annular_pair_v1", "filleted_bracket_v1", "movable_bore_v1", "pocket_depth_v1", "exact_bore_v1", "row_bores_v1"]
+    let families = ["affine_pair_v1", "annular_pair_v1", "filleted_bracket_v1", "movable_bore_v1", "pocket_depth_v1", "exact_bore_v1", "row_bores_v1", "overlap_bore_v1", "axial_boolean_v1"]
         .into_iter().chain(SECTION_FAMILIES).map(|s| Json::String(s.to_owned())).collect();
     fields.insert("families".into(), Json::Array(families));
     Ok(result)
@@ -73,8 +74,14 @@ fn run(args: &[String]) -> Result<Json, String> {
         [cmd,recipe,target] if cmd=="build"=>{
             let model=build(&read(recipe)?)?;
             let report=audit(&model)?;
-            if report.field("status")?.text()?=="valid" {publish(Path::new(target),&model).map_err(|e|e.to_string())?;}
+            if report.field("status")?.text()?=="valid" {publish(Path::new(target),&model.to_string()).map_err(|e|e.to_string())?;}
             Ok(report)
+        }
+        [cmd,path,target] if cmd=="export-step"=>{
+            let model=read(path)?;
+            let step=solidcraft_trivariate::step_boundary::export_step(&model)?;
+            publish(Path::new(target), &step).map_err(|e|e.to_string())?;
+            Ok(object([("status",Json::String("exported".into())),("format",Json::String("STEP AP214 boundary".into()))]))
         }
         [cmd,path,u,v,w] if cmd=="evaluate"=>{
             let m=read(path)?;m.keys(&["degrees","controls"])?;
@@ -96,7 +103,7 @@ fn run(args: &[String]) -> Result<Json, String> {
             Ok(object([("status",Json::String("evaluated".into())),("position",vector(res.position)),
                 ("jacobian_columns",Json::Array(res.jacobian_columns.into_iter().map(vector).collect()))]))
         }
-        _=>Err("usage: solidcraft-trivariate capabilities | build RECIPE OUTPUT | audit MODEL | evaluate MAP U V W".into()),
+        _=>Err("usage: solidcraft-trivariate capabilities | build RECIPE OUTPUT | audit MODEL | evaluate MAP U V W | export-step MODEL OUTPUT".into()),
     }
 }
 
@@ -110,7 +117,7 @@ fn main() -> ExitCode {
     });
     println!("{report}");
     match report.field("status").and_then(Json::text) {
-        Ok("valid" | "evaluated") | Err(_) => ExitCode::SUCCESS,
+        Ok("valid" | "evaluated" | "exported") | Err(_) => ExitCode::SUCCESS,
         _ => ExitCode::FAILURE,
     }
 }

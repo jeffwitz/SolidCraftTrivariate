@@ -115,7 +115,7 @@ pub fn bound_block(
     block: &BracketBlock,
     determinant_lower: f64,
 ) -> Result<QualityBounds, &'static str> {
-    if !matches!(block.degrees, [1, 1, 1] | [2, 1, 1])
+    if !matches!(block.degrees, [1, 1, 1] | [2, 1, 1] | [2, 2, 1])
         || !determinant_lower.is_finite()
         || determinant_lower <= 0.
     {

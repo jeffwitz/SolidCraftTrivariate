@@ -1,0 +1,166 @@
+{
+  "version": "j4_pilot_20261125_v1",
+  "exploratory": [
+    {
+      "id": "offset_supported",
+      "recipe": {
+        "family": "movable_bore_v1",
+        "center_half_mm": [
+          2,
+          -2
+        ],
+        "radius_half_mm": 7
+      },
+      "status": "qualified",
+      "certificate": {
+        "blocks": 4,
+        "determinant_lower_bound_mm3": 138.79191898578492,
+        "exterior_sides": 16,
+        "ideal_volume_mm3": 2892.1239199482,
+        "method": "certified_fixed_extrusion_partition",
+        "radial_error_upper_bound_mm": 5.25e-15,
+        "shared_faces": 4,
+        "status": "valid"
+      },
+      "elapsed_s": 0.04815427598077804
+    },
+    {
+      "id": "near_tangency",
+      "recipe": {
+        "family": "exact_bore_v1",
+        "center_um": [
+          5999,
+          0
+        ],
+        "radius_um": 4000
+      },
+      "status": "qualified",
+      "certificate": {
+        "blocks": 8,
+        "determinant_lower_bound_mm3": 0.012799999999526966,
+        "exterior_sides": 32,
+        "ideal_volume_mm3": 2797.8761403405065,
+        "method": "certified_fixed_extrusion_partition",
+        "radial_error_upper_bound_mm": 0,
+        "shared_faces": 8,
+        "status": "valid"
+      },
+      "elapsed_s": 0.016526945983059704
+    },
+    {
+      "id": "blind_deep",
+      "recipe": {
+        "family": "pocket_depth_v1",
+        "depth_half_mm": 15
+      },
+      "status": "qualified",
+      "certificate": {
+        "blocks": 13,
+        "determinant_lower_bound_mm3": 1.8284271247461803,
+        "exterior_sides": 30,
+        "ideal_volume_mm3": 2823.0088815692247,
+        "method": "certified_fixed_extrusion_partition",
+        "radial_error_upper_bound_mm": 4.2e-15,
+        "shared_faces": 24,
+        "status": "valid"
+      },
+      "elapsed_s": 0.027689306007232517
+    },
+    {
+      "id": "breakthrough",
+      "recipe": {
+        "family": "pocket_depth_v1",
+        "depth_half_mm": 16
+      },
+      "status": "qualified",
+      "certificate": {
+        "blocks": 4,
+        "determinant_lower_bound_mm3": 186.32126958212984,
+        "exterior_sides": 16,
+        "ideal_volume_mm3": 2797.8761403405065,
+        "method": "certified_fixed_extrusion_partition",
+        "radial_error_upper_bound_mm": 4.2e-15,
+        "shared_faces": 4,
+        "status": "valid"
+      },
+      "elapsed_s": 0.01413459301693365
+    },
+    {
+      "id": "two_disjoint",
+      "recipe": {
+        "family": "row_bores_v1",
+        "half_widths_half_mm": [
+          20,
+          20
+        ],
+        "centers_half_mm": [
+          [
+            -8,
+            0
+          ],
+          [
+            8,
+            0
+          ]
+        ],
+        "radii_half_mm": [
+          4,
+          4
+        ]
+      },
+      "status": "qualified",
+      "certificate": {
+        "blocks": 8,
+        "determinant_lower_bound_mm3": 10.603867196750643,
+        "exterior_sides": 30,
+        "ideal_volume_mm3": 2998.938070170253,
+        "method": "certified_fixed_extrusion_partition",
+        "radial_error_upper_bound_mm": 2.1000000000000002e-15,
+        "shared_faces": 9,
+        "status": "valid"
+      },
+      "elapsed_s": 0.01924285397399217
+    },
+    {
+      "id": "two_overlapping",
+      "recipe": {
+        "family": "overlap_bore_v1"
+      },
+      "status": "qualified",
+      "certificate": {
+        "blocks": 8,
+        "determinant_lower_bound_mm3": 11.454890085287145,
+        "exterior_sides": 32,
+        "ideal_volume_mm3": 3038.2459005257338,
+        "method": "certified_fixed_extrusion_partition",
+        "radial_error_upper_bound_mm": 7e-16,
+        "shared_faces": 8,
+        "status": "valid"
+      },
+      "elapsed_s": 0.01748837501509115
+    }
+  ],
+  "invalid_controls": [
+    {
+      "id": "negative_radius",
+      "recipe": {
+        "family": "movable_bore_v1",
+        "center_half_mm": [
+          0,
+          0
+        ],
+        "radius_half_mm": -2
+      },
+      "status": "refused",
+      "reason": "invalid movable bore parameters",
+      "elapsed_s": 0.003981734975241125
+    },
+    {
+      "id": "zero_height",
+      "recipe": null,
+      "status": "refused",
+      "reason": "outside fixed plate dimensions",
+      "elapsed_s": 5.7460274547338486e-06
+    }
+  ]
+}

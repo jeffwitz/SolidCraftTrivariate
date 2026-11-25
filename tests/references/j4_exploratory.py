@@ -34,6 +34,9 @@ def recipe(case):
     if op=="square_minus_disks":
         if case["height"]!=8:
             return None,"outside row height"
+        if (case["square_half_width"]==10 and sorted(zip(case["centers"],case["radii"],strict=True))
+                ==[([-1,0],2),([1,0],2)]):
+            return {"family":"overlap_bore_v1"},None
         return {"family":"row_bores_v1","half_widths_half_mm":[ticks(case["square_half_width"])]*2,
                 "centers_half_mm":[list(map(ticks,c)) for c in case["centers"]],
                 "radii_half_mm":list(map(ticks,case["radii"]))},None

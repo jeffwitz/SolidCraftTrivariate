@@ -134,7 +134,7 @@ async function readComparisonIds() {
 function configurePartitionControls(experiment, model, representation) {
   const assembled = (Array.isArray(representation?.patches) && representation.patches.length > 0)
     || (Array.isArray(model?.nurbs_patches) && model.nurbs_patches.length > 0);
-  mode = 'surface';
+  mode = assembled ? 'patches' : 'surface';
   const patchButton = document.querySelector('[data-mode="patches"]');
   const blockButton = document.querySelector('[data-mode="blocks"]');
   patchButton.hidden = !assembled;

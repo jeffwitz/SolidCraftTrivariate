@@ -616,13 +616,15 @@ async function runBrowserChecks() {
     if (state.id !== experiment.id || !state.stateHidden) {
       throw new Error(`Direct model URL ${experiment.id} did not render: ${JSON.stringify(state)}`);
     }
-    if (experiment.id.startsWith('bench_poly_')) {
+    if (experiment.representationPatchCount > 0 || experiment.nativeNurbsPatchCount > 0) {
       const merged = await evaluate(`({
         active: document.querySelector('[data-mode="patches"]').getAttribute('aria-pressed') === 'true',
         compare: new URL(document.querySelector('.comparison-link').href).searchParams.get('model'),
         count: document.querySelector('#metrics-list').textContent.includes('NURBS volumes')
       })`);
-      if (!merged.active || !merged.count || merged.compare !== experiment.id) throw new Error('Missing NURBS view for ' + experiment.id);
+      if (!merged.active || !merged.count || (experiment.hasComparison && merged.compare !== experiment.id)) {
+        throw new Error('Missing default NURBS view for ' + experiment.id + ': ' + JSON.stringify(merged));
+      }
       if (experiment.id === 'bench_poly_seeded_convex_14') {
         const macro = await capture('seeded-14-volumes', await canvasRegion());
         await evaluate(injectedExpressions.blocksMode);

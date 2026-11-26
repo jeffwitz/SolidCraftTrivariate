@@ -185,3 +185,8 @@ pub mod primitive_template;
 mod primitive_template_json;
 mod g2_cross_plate_json;
 mod nurbs_multiloop_json;
+pub mod s3_offset_rail;
+pub mod s3_stock_rim;
+pub mod bracket_edge_edit;
+pub mod fieldcraft_rims;
+mod fixed_span_topology;

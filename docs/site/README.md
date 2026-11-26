@@ -1,4 +1,8 @@
-# Gallery asset regeneration
+# Geometry audit gallery
+
+The [home page](index.html) opens four collections: [Shapes](shapes.html), [Compare](compare.html), [Fillets and chamfers](edges.html), and [Boolean operations](booleans.html). Existing gallery URLs with a `model` query still open the chosen shape.
+
+## Gallery asset regeneration
 
 Run from the repository root after building the current release CLI:
 

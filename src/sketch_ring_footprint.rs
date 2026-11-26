@@ -9,6 +9,8 @@ use crate::{
 };
 type Point = [Ratio; 2];
 type Quad = [Point; 4];
+type HostPlan = Vec<Vec<Point>>;
+type HostPlanner = fn(&[Point], &[Vec<Point>]) -> Vec<HostPlan>;
 
 fn ccw(contour: &SketchLoop) -> Option<Vec<Point>> {
     let v = &contour.vertices;
@@ -61,6 +63,22 @@ fn cap(poly: &[Point]) -> Option<Vec<Quad>> {
 }
 
 pub(super) fn visit(job: &SketchLayers, mut consider: impl FnMut(Arrangement)) {
+    visit_with(job, host_candidates, &mut consider)
+}
+
+pub(super) fn visit_lookahead(job: &SketchLayers, mut consider: impl FnMut(Arrangement)) {
+    visit_with(
+        job,
+        crate::sketch_convex_hosts::host_candidates_lookahead,
+        &mut consider,
+    )
+}
+
+fn visit_with(
+    job: &SketchLayers,
+    host_candidates: HostPlanner,
+    consider: &mut impl FnMut(Arrangement),
+) {
     if job.force_triangulation
         || !job.guides.is_empty()
         || job.operations.is_some()

@@ -16,6 +16,14 @@ pub struct SketchLoop {
     pub id: String,
     pub vertices: Vec<[i32; 2]>,
 }
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
+pub enum PlannerStrategy {
+    #[default]
+    Automatic,
+    Triangulate,
+    RingPlanarRerank,
+    RingPlanarLookahead,
+}
 #[derive(Clone)]
 pub struct SketchLayers {
     pub outer: SketchLoop,
@@ -26,6 +34,8 @@ pub struct SketchLayers {
     /// Ordered add (true) / remove (false) operations, if the recipe carries Boolean history.
     pub operations: Option<Vec<bool>>,
     pub shift: [i32; 2],
+    /// Opt-in planner variant. `Automatic` preserves the historical policy.
+    pub strategy: PlannerStrategy,
 }
 pub struct Partition {
     pub blocks: Vec<BracketBlock>,
@@ -588,6 +598,16 @@ fn pre_ring_candidates(job: &SketchLayers) -> Result<Partition, &'static str> {
 }
 
 pub fn partition(job: &SketchLayers) -> Result<Partition, &'static str> {
+    if job.strategy == PlannerStrategy::RingPlanarLookahead {
+        return partition_ring_planar_lookahead(job);
+    }
+    if job.strategy == PlannerStrategy::RingPlanarRerank {
+        return partition_ring_planar_rerank(job);
+    }
+    partition_automatic(job)
+}
+
+fn partition_automatic(job: &SketchLayers) -> Result<Partition, &'static str> {
     validate(job)?;
     let mut best = pre_ring_candidates(job);
     crate::sketch_ring_footprint::visit(job, |graph| {
@@ -603,6 +623,282 @@ pub fn partition(job: &SketchLayers) -> Result<Partition, &'static str> {
         }
     });
     best
+}
+
+/// Experimental opt-in selector that scores bounded host-separator/ring
+/// candidates by their planar quadrilateral quality. Block count remains the
+/// primary objective; all accepted candidates pass the same exact partition
+/// construction and certificate path as [`partition`].
+pub fn partition_ring_planar_lookahead(job: &SketchLayers) -> Result<Partition, &'static str> {
+    partition_ring_planar_select(job, true)
+}
+
+/// Ablation that re-ranks only the default bounded separation proposals.
+pub fn partition_ring_planar_rerank(job: &SketchLayers) -> Result<Partition, &'static str> {
+    partition_ring_planar_select(job, false)
+}
+
+fn partition_ring_planar_select(
+    job: &SketchLayers,
+    expanded_endpoints: bool,
+) -> Result<Partition, &'static str> {
+    validate(job)?;
+    let mut best = partition_automatic(job)?;
+    let mut best_quality = planar_quality_score(job, &best)?;
+    let mut consider_graph =
+        |graph| consider_planar_candidate(job, &mut best, &mut best_quality, graph);
+    if expanded_endpoints {
+        crate::sketch_ring_footprint::visit_lookahead(job, &mut consider_graph);
+    } else {
+        crate::sketch_ring_footprint::visit(job, &mut consider_graph);
+    }
+    drop(consider_graph);
+    if expanded_endpoints && best.rectangular_grid {
+        let graph = best.graph.clone();
+        if let Ok(slides) = slide_graphs(job, &graph, 128) {
+            for slide in slides {
+                consider_planar_candidate(job, &mut best, &mut best_quality, slide);
+            }
+        }
+    }
+    Ok(best)
+}
+
+fn consider_planar_candidate(
+    job: &SketchLayers,
+    best: &mut Partition,
+    best_quality: &mut f64,
+    graph: crate::sketch_arrangement::Arrangement,
+) {
+    let Ok(candidate) = partition_from_graph(job, Some((graph, "separated_convex_quad_rings")))
+    else {
+        return;
+    };
+    let Ok(candidate_quality) = planar_quality_score(job, &candidate) else {
+        return;
+    };
+    let replace = match candidate.blocks.len().cmp(&best.blocks.len()) {
+        std::cmp::Ordering::Less => true,
+        std::cmp::Ordering::Greater => false,
+        std::cmp::Ordering::Equal => candidate_quality < *best_quality * (1.0 - 1e-12),
+    };
+    if replace {
+        *best = candidate;
+        *best_quality = candidate_quality;
+    }
+}
+
+fn point_on_segment(a: Point, b: Point, p: Point) -> Result<bool, &'static str> {
+    if cross(a, b, p)? != Ratio::zero() {
+        return Ok(false);
+    }
+    for k in 0..2 {
+        let (lo, hi) = if a[k].cmp_value(&b[k]).is_le() {
+            (a[k], b[k])
+        } else {
+            (b[k], a[k])
+        };
+        if p[k].cmp_value(&lo).is_lt() || p[k].cmp_value(&hi).is_gt() {
+            return Ok(false);
+        }
+    }
+    Ok(true)
+}
+
+fn source_segments(job: &SketchLayers) -> Vec<(Point, Point)> {
+    let graph_point = |point: [i32; 2]| {
+        point.map(|value| Ratio::new(i128::from(value) * 2, 1).expect("bounded sketch point"))
+    };
+    let mut segments = Vec::new();
+    for contour in std::iter::once(&job.outer).chain(job.cuts.iter().map(|(loop_, _)| loop_)) {
+        segments.extend(edges(contour).map(|(a, b)| (graph_point(a), graph_point(b))));
+    }
+    segments.extend(
+        job.guides
+            .iter()
+            .map(|guide| (graph_point(guide.a), graph_point(guide.b))),
+    );
+    segments
+}
+
+fn slid_graph_is_valid(
+    graph: &crate::sketch_arrangement::Arrangement,
+) -> Result<bool, &'static str> {
+    for face in &graph.faces {
+        if face.vertices.len() != face.edges.len() || face.vertices.len() < 3 {
+            return Ok(false);
+        }
+        let mut twice_area = Ratio::zero();
+        for i in 0..face.vertices.len() {
+            let a = graph.vertices[face.vertices[i]];
+            let b = graph.vertices[face.vertices[(i + 1) % face.vertices.len()]];
+            let edge = graph
+                .edges
+                .get(face.edges[i].edge)
+                .ok_or("unknown_arrangement_edge")?;
+            let pair = edge.vertices;
+            let expected = [
+                face.vertices[i],
+                face.vertices[(i + 1) % face.vertices.len()],
+            ];
+            if pair != expected && pair != [expected[1], expected[0]] {
+                return Ok(false);
+            }
+            twice_area = twice_area.checked_add(
+                a[0].checked_mul(b[1])?
+                    .checked_sub(a[1].checked_mul(b[0])?)?,
+            )?;
+        }
+        if twice_area.numerator() <= 0 {
+            return Ok(false);
+        }
+    }
+    Ok(true)
+}
+
+/// Make bounded exact alternatives by sliding unpinned straight-through
+/// arrangement junctions. Every incident face shares the same moved vertex.
+fn slide_graphs(
+    job: &SketchLayers,
+    graph: &crate::sketch_arrangement::Arrangement,
+    budget: usize,
+) -> Result<Vec<crate::sketch_arrangement::Arrangement>, &'static str> {
+    let segments = source_segments(job);
+    let graph_point = |point: [i32; 2]| {
+        point.map(|value| Ratio::new(i128::from(value) * 2, 1).expect("bounded sketch point"))
+    };
+    let pinned: Vec<Point> = std::iter::once(&job.outer)
+        .chain(job.cuts.iter().map(|(loop_, _)| loop_))
+        .flat_map(|loop_| loop_.vertices.iter().map(|p| graph_point(*p)))
+        .chain(
+            job.guides
+                .iter()
+                .flat_map(|guide| [graph_point(guide.a), graph_point(guide.b)]),
+        )
+        .collect();
+    let mut neighbors = vec![BTreeSet::new(); graph.vertices.len()];
+    for edge in &graph.edges {
+        let [a, b] = edge.vertices;
+        neighbors[a].insert(b);
+        neighbors[b].insert(a);
+    }
+    let fractions = [
+        Ratio::new(1, 16)?,
+        Ratio::new(1, 8)?,
+        Ratio::new(1, 4)?,
+        Ratio::new(1, 2)?,
+    ];
+    let mut variants = Vec::new();
+    let mut seen = Vec::<(usize, Point)>::new();
+    for (vertex, &point) in graph.vertices.iter().enumerate() {
+        if pinned.contains(&point) {
+            continue;
+        }
+        let incident: Vec<_> = neighbors[vertex].iter().copied().collect();
+        for i in 0..incident.len() {
+            for j in i + 1..incident.len() {
+                let (a, b) = (graph.vertices[incident[i]], graph.vertices[incident[j]]);
+                if a == b || point == a || point == b || !point_on_segment(a, b, point)? {
+                    continue;
+                }
+                for target in [a, b] {
+                    for fraction in fractions {
+                        let moved = [
+                            point[0].checked_add(
+                                target[0].checked_sub(point[0])?.checked_mul(fraction)?,
+                            )?,
+                            point[1].checked_add(
+                                target[1].checked_sub(point[1])?.checked_mul(fraction)?,
+                            )?,
+                        ];
+                        if moved == point
+                            || graph.vertices.contains(&moved)
+                            || seen.contains(&(vertex, moved))
+                        {
+                            continue;
+                        }
+                        let mut preserves_sources = true;
+                        for &(start, end) in &segments {
+                            if point_on_segment(start, end, point)?
+                                && !point_on_segment(start, end, moved)?
+                            {
+                                preserves_sources = false;
+                                break;
+                            }
+                        }
+                        if !preserves_sources {
+                            continue;
+                        }
+                        seen.push((vertex, moved));
+                        let mut candidate = graph.clone();
+                        candidate.vertices[vertex] = moved;
+                        if !slid_graph_is_valid(&candidate)? {
+                            continue;
+                        }
+                        variants.push(candidate);
+                        if variants.len() >= budget {
+                            return Ok(variants);
+                        }
+                    }
+                }
+            }
+        }
+    }
+    Ok(variants)
+}
+
+pub fn planar_quality_score(
+    job: &SketchLayers,
+    partition: &Partition,
+) -> Result<f64, &'static str> {
+    let half = Ratio::new(1, 2)?;
+    let mut worst: f64 = 1.0;
+    let mut count = 0usize;
+    for face in &partition.graph.faces {
+        let mut ring = face
+            .vertices
+            .iter()
+            .map(|&i| partition.graph.vertices[i])
+            .map(|p| Ok([p[0].checked_mul(half)?, p[1].checked_mul(half)?]))
+            .collect::<Result<Vec<_>, &'static str>>()?;
+        let cells = if partition.rectangular_grid {
+            vec![ring
+                .as_slice()
+                .try_into()
+                .map_err(|_| "nonquadrilateral_ring_face")?]
+        } else {
+            let first = ring
+                .iter()
+                .enumerate()
+                .min_by_key(|(_, p)| *p)
+                .ok_or("empty_ring_face")?
+                .0;
+            ring.rotate_left(first);
+            quadrangulate(&ring)?
+        };
+        for q in cells {
+            let center = mean(&q)?;
+            if !inside(&job.outer, center)? {
+                continue;
+            }
+            let mut through_void = false;
+            for (cut, interval) in &job.cuts {
+                if *interval == [0, job.height] && inside(cut, center)? {
+                    through_void = true;
+                    break;
+                }
+            }
+            if through_void {
+                continue;
+            }
+            worst = worst.max(crate::sketch_convex_rings::quality(q));
+            count += 1;
+        }
+    }
+    if count == 0 {
+        return Err("empty_planar_quality_domain");
+    }
+    Ok(worst)
 }
 
 pub(crate) fn partition_classic(job: &SketchLayers) -> Result<Partition, &'static str> {

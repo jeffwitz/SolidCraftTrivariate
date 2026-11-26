@@ -176,7 +176,7 @@ pub fn export_step(model: &Json) -> Result<String, &'static str> {
     write_shell(shell, compact)
 }
 
-fn write_shell(shell: BoundaryShell, compact: bool) -> Result<String, &'static str> {
+pub(crate) fn write_shell(shell: BoundaryShell, compact: bool) -> Result<String, &'static str> {
     let mut w = Writer {
         next: 11,
         data: String::new(),
@@ -317,4 +317,40 @@ fn write_shell(shell: BoundaryShell, compact: bool) -> Result<String, &'static s
     output.push_str(&w.data);
     output.push_str("ENDSEC;\nEND-ISO-10303-21;\n");
     Ok(output)
+}
+
+/// Sew the exact exterior span faces using their original chart-side provenance.
+pub(crate) fn export_span_boundary(
+    cells: Vec<crate::bracket::BracketBlock>,
+    parent: &Json,
+    recognize_cylinders: bool,
+) -> Result<String, &'static str> {
+    use crate::json::object;
+    let design = parent.field("design_faces")?.items()?;
+    let mut faces = Vec::new();
+    for face in crate::incidence::enumerate_faces(&cells)?.exterior {
+        let side = format!("{}{}", ["u", "v", "w"][face.axis], u8::from(face.upper));
+        let (owner, _) = face.block.rsplit_once('#').ok_or("missing chart ID")?;
+        let feature = design
+            .iter()
+            .find(|f| {
+                f.field("block").and_then(Json::text) == Ok(owner)
+                    && f.field("side").and_then(Json::text) == Ok(side.as_str())
+            })
+            .ok_or("missing parent design face")?
+            .field("feature")?
+            .clone();
+        faces.push(object([
+            ("block", Json::String(face.block)),
+            ("side", Json::String(side)),
+            ("feature", feature),
+        ]));
+    }
+    let shell_input = object([
+        ("blocks", crate::bracket_json::encode_blocks(cells)),
+        ("design_faces", Json::Array(faces)),
+    ]);
+    let shell =
+        crate::boundary_shell::shell_from_faces(&shell_input, &Json::Null, "fixed_partition_rims")?;
+    write_shell(shell, recognize_cylinders)
 }

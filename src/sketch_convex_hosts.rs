@@ -138,6 +138,7 @@ fn candidate_lines(
     host: &[Point],
     holes: &[Vec<Point>],
     ids: &[usize],
+    lookahead: bool,
 ) -> Result<Vec<(Point, Point)>, &'static str> {
     let mut lines = Vec::new();
     // Existing host vertices provide robust, exact separator directions.
@@ -273,7 +274,11 @@ fn candidate_lines(
                 };
                 // Mid-gap and one-third offsets retain exact positive clearance
                 // from both convex group hulls and create distinct viable chords.
-                for weight in [Ratio::new(1, 3)?, Ratio::new(1, 2)?, Ratio::new(2, 3)?] {
+                let mut weights = vec![Ratio::new(1, 3)?, Ratio::new(1, 2)?, Ratio::new(2, 3)?];
+                if lookahead {
+                    weights.extend([Ratio::new(1, 4)?, Ratio::new(3, 4)?]);
+                }
+                for weight in weights {
                     let offset = add(lo, mul(sub(hi, lo)?, weight)?)?;
                     let anchor = if sign(normal[0]) != 0 {
                         [div(offset, normal[0])?, Ratio::zero()]
@@ -350,9 +355,10 @@ fn split(
     work: &Work,
     holes: &[Vec<Point>],
     rank_clearance: bool,
+    lookahead: bool,
 ) -> Result<Vec<SplitCandidate>, &'static str> {
     let mut candidates = Vec::new();
-    for (la, lb) in candidate_lines(&work.host, holes, &work.hole_ids)? {
+    for (la, lb) in candidate_lines(&work.host, holes, &work.hole_ids, lookahead)? {
         let Some((a, b)) = line_chord(&work.host, la, lb)? else {
             continue;
         };
@@ -483,12 +489,12 @@ fn split(
                 result.push(candidate);
             }
         }
-        if result.len() >= 4 {
+        if result.len() >= if lookahead { 16 } else { 4 } {
             break;
         }
     }
     for candidate in rejected_parallel {
-        if result.len() >= 4 {
+        if result.len() >= if lookahead { 16 } else { 4 } {
             break;
         }
         result.push(candidate);
@@ -500,6 +506,7 @@ fn recurse(
     work: Work,
     holes: &[Vec<Point>],
     rank_clearance: bool,
+    lookahead: bool,
     budget: &mut usize,
 ) -> Result<HostPlanAlternatives, &'static str> {
     if work.hole_ids.len() == 1 {
@@ -509,19 +516,19 @@ fn recurse(
         return Ok(Vec::new());
     }
     *budget -= 1;
-    let splits = split(&work, holes, rank_clearance)?;
+    let splits = split(&work, holes, rank_clearance, lookahead)?;
     if splits.is_empty() {
         return Err("no separating chord for convex hosts");
     }
     let mut plans = Vec::new();
     for (a, b, _chord) in splits {
-        let Ok(left) = recurse(a, holes, rank_clearance, budget) else {
+        let Ok(left) = recurse(a, holes, rank_clearance, lookahead, budget) else {
             continue;
         };
         if left.is_empty() {
             continue;
         }
-        let Ok(right) = recurse(b, holes, rank_clearance, budget) else {
+        let Ok(right) = recurse(b, holes, rank_clearance, lookahead, budget) else {
             continue;
         };
         for l in &left {
@@ -531,11 +538,11 @@ fn recurse(
                 if plans.iter().all(|p: &HostPlan| p != &plan) {
                     plans.push(plan);
                 }
-                if plans.len() >= 4 {
+                if plans.len() >= if lookahead { 8 } else { 4 } {
                     break;
                 }
             }
-            if plans.len() >= 4 {
+            if plans.len() >= if lookahead { 8 } else { 4 } {
                 break;
             }
         }
@@ -576,6 +583,23 @@ fn close_host(poly: &[Point], special: &BTreeSet<Point>) -> Result<Vec<Point>, &
 /// Return bounded alternative recursive convex-host partitions.
 /// Each alternative is indexed by input hole and contains its CCW host polygon.
 pub(super) fn host_candidates(stock: &[Point], holes: &[Vec<Point>]) -> Vec<Vec<Vec<Point>>> {
+    host_candidates_mode(stock, holes, false)
+}
+
+/// Wider deterministic search used only by the opt-in planar ring lookahead.
+/// The added exact support offsets produce previously unseen chord endpoints.
+pub(super) fn host_candidates_lookahead(
+    stock: &[Point],
+    holes: &[Vec<Point>],
+) -> Vec<Vec<Vec<Point>>> {
+    host_candidates_mode(stock, holes, true)
+}
+
+fn host_candidates_mode(
+    stock: &[Point],
+    holes: &[Vec<Point>],
+    lookahead: bool,
+) -> Vec<Vec<Vec<Point>>> {
     if stock.len() < 3 || holes.is_empty() || holes.iter().any(|h| h.len() < 3) {
         return Vec::new();
     }
@@ -583,11 +607,18 @@ pub(super) fn host_candidates(stock: &[Point], holes: &[Vec<Point>]) -> Vec<Vec<
         host: stock.to_vec(),
         hole_ids: (0..holes.len()).collect(),
     };
-    let mut plans = recurse(start.clone(), holes, false, &mut 64).unwrap_or_default();
+    let plan_limit = if lookahead { 8 } else { 4 };
+    let mut budget = if lookahead { 128 } else { 64 };
+    let mut plans =
+        recurse(start.clone(), holes, false, lookahead, &mut budget).unwrap_or_default();
     if (2..=6).contains(&holes.len()) {
-        for plan in recurse(start, holes, true, &mut 64).unwrap_or_default() {
+        let mut budget = if lookahead { 128 } else { 64 };
+        for plan in recurse(start, holes, true, lookahead, &mut budget).unwrap_or_default() {
             if !plans.contains(&plan) {
                 plans.push(plan)
+            }
+            if lookahead && plans.len() >= plan_limit {
+                break;
             }
         }
     }

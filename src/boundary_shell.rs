@@ -129,6 +129,15 @@ pub fn boundary_shell(model: &Json) -> Result<BoundaryShell, &'static str> {
     if !supports_source_method(method) && method != crate::affine_image::METHOD {
         return Err("unsupported_boundary_model_family");
     }
+    shell_from_faces(model, &report, method)
+}
+
+/// Sew the exterior traces of a complex whose incidence was already validated.
+pub(crate) fn shell_from_faces(
+    model: &Json,
+    report: &Json,
+    method: &str,
+) -> Result<BoundaryShell, &'static str> {
     let blocks: BTreeMap<_, _> = decode_blocks(model)?
         .into_iter()
         .map(|b| (b.id.clone(), b))

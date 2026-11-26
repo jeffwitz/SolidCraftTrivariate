@@ -33,6 +33,91 @@ const MIME_TYPES = {
 };
 
 const injectedExpressions = {
+  portalState: `(() => ({
+    title: document.title,
+    heading: document.querySelector('h1')?.textContent.trim() || '',
+    path: location.pathname,
+    homeLinks: [...document.querySelectorAll('a[href]')].filter(link => {
+      const url = new URL(link.href, location.href);
+      return url.origin === location.origin && (url.pathname === '/' || url.pathname.endsWith('/index.html'));
+    }).length,
+    pageLinks: [...document.querySelectorAll('a[href]')].map(link => new URL(link.href, location.href).pathname),
+  }))()`,
+  edgeViewerReady: `(async () => {
+    const canvas = document.querySelector('#edge-model-canvas');
+    const partition = document.querySelector('#edge-partition-select');
+    const select = document.querySelector('#edge-state-select');
+    const status = document.querySelector('#edge-view-state');
+    if (!canvas || !partition || !select || !status || !document.querySelector('#edge-reset-view')) return false;
+    for (const family of ['four', 'ten']) for (const state of ['sharp', 'chamfer', 'fillet']) {
+      partition.value = family;
+      select.value = state;
+      partition.dispatchEvent(new Event('change'));
+      let loaded = false;
+      for (let attempt = 0; attempt < 200; attempt++) {
+        const expected = family === 'four' ? 'four-sector' : 'prepared';
+        const volumes = family === 'four' ? 4 : 10;
+        const cells = family === 'four' ? 12 : 128;
+        if (canvas.dataset.ready === family + '-' + state
+          && status.textContent.includes('Loaded ' + expected + ' ' + state + ' annulus · ' + volumes + ' volumes · ' + cells + ' Bézier cells')) { loaded = true; break; }
+        await new Promise(resolve => setTimeout(resolve, 50));
+      }
+      if (!loaded) return false;
+    }
+    return true;
+  })()`,
+  booleanViewerReady: `(async () => {
+    const section = document.querySelector('#boolean-section');
+    const operation = document.querySelector('#boolean-operation');
+    const status = document.querySelector('#boolean-status');
+    if (!section || !operation || !status || !document.querySelector('#operand-a')
+      || !document.querySelector('#operand-b') || !document.querySelector('#boolean-result')) return false;
+    if (!['pierced_square', 'reference_rectangle'].every(value => [...section.options].some(option => option.value === value))
+      || !['difference', 'union', 'intersection'].every(value => [...operation.options].some(option => option.value === value))) return false;
+    for (const sectionValue of ['pierced_square', 'reference_rectangle']) for (const operationValue of ['difference', 'union', 'intersection']) {
+      section.value = sectionValue;
+      operation.value = operationValue;
+      section.dispatchEvent(new Event('change'));
+      let loaded = false;
+      for (let attempt = 0; attempt < 200; attempt++) {
+        if (status.dataset.kind === 'ready'
+          && status.textContent === 'Audited model loaded · operands and result are native trivariate models.'
+          && [...document.querySelectorAll('#boolean-artifacts a')].length === 3) { loaded = true; break; }
+        await new Promise(resolve => setTimeout(resolve, 50));
+      }
+      if (!loaded) return false;
+    }
+    return true;
+  })()`,
+  crossedViewerSweep: `(async () => {
+    const canvas = document.querySelector('#crossed-model');
+    const status = document.querySelector('#model-state');
+    const operation = document.querySelector('#operation');
+    const rise = document.querySelector('#rise');
+    const modelFile = document.querySelector('#model-file');
+    const counts = document.querySelector('#counts');
+    if (!canvas || !status || !operation || !rise || !modelFile || !counts) return false;
+    const operations = ['intersection', 'union', 'a-minus-b', 'b-minus-a'];
+    const rises = ['-3', '0', '3'];
+    if (!operations.every(value => [...operation.options].some(option => option.value === value))
+      || !rises.every(value => [...rise.options].some(option => option.value === value))) return false;
+    const expectedCounts = { intersection: 2, union: 10, 'a-minus-b': 8, 'b-minus-a': 4 };
+    for (const riseValue of rises) for (const operationValue of operations) {
+      rise.value = riseValue;
+      operation.value = operationValue;
+      operation.dispatchEvent(new Event('change'));
+      let loaded = false;
+      for (let attempt = 0; attempt < 200; attempt++) {
+        const expectedPath = './crossed-tools/' + operationValue + '-' + riseValue + '.json';
+        if (status.hidden && modelFile.getAttribute('href') === expectedPath
+          && counts.textContent.startsWith(expectedCounts[operationValue] + ' volume charts ·')) { loaded = true; break; }
+        await new Promise(resolve => setTimeout(resolve, 50));
+      }
+      if (!loaded) return false;
+    }
+    const rect = canvas.getBoundingClientRect();
+    return rect.width > 1 && rect.height > 1 && status.hidden;
+  })()`,
   galleryReady: `(() => {
     const status = document.querySelector('#canvas-state');
     const select = document.querySelector('#experiment-select');
@@ -223,6 +308,10 @@ const injectedExpressions = {
 
 function validateInjectedExpressions() {
   const expressions = [
+    ['portalState', injectedExpressions.portalState],
+    ['edgeViewerReady', injectedExpressions.edgeViewerReady],
+    ['booleanViewerReady', injectedExpressions.booleanViewerReady],
+    ['crossedViewerSweep', injectedExpressions.crossedViewerSweep],
     ['galleryReady', injectedExpressions.galleryReady],
     ['bodySummary', injectedExpressions.bodySummary],
     ['publicUiLocale', injectedExpressions.publicUiLocale],
@@ -468,6 +557,53 @@ async function runBrowserChecks() {
     const summary = await evaluate(injectedExpressions.bodySummary);
     throw new Error(`Gallery did not become ready: ${summary}`);
   };
+  const waitForDocument = async expectedPath => {
+    for (let attempt = 0; attempt < 200; attempt++) {
+      const state = await evaluate(`({ready:document.readyState, path:location.pathname})`);
+      if (state.ready === 'complete' && state.path.endsWith(expectedPath)) return;
+      await pause(50);
+    }
+    throw new Error(`Page did not load: ${expectedPath}`);
+  };
+  const checkPageCanReturnHome = async (page, readyExpression) => {
+    await command('Page.navigate', { url: serverUrl + page });
+    await waitForDocument(page);
+    let viewerReady = false;
+    const maxAttempts = [injectedExpressions.edgeViewerReady, injectedExpressions.booleanViewerReady, injectedExpressions.crossedViewerSweep].includes(readyExpression) ? 2 : 200;
+    for (let attempt = 0; attempt < maxAttempts; attempt++) {
+      if (await evaluate(readyExpression)) { viewerReady = true; break; }
+      await pause(50);
+    }
+    const state = await evaluate(injectedExpressions.portalState);
+    state.status = await evaluate("document.querySelector('[role=status]')?.textContent");
+    if (!viewerReady || !state.heading || state.homeLinks < 1) {
+      throw new Error(`${page} lacks a loaded view or a link back home: ${JSON.stringify(state)}`);
+    }
+    if (page === 'booleans-crossed.html') {
+      const region = await evaluate(`(() => {
+        const r = document.querySelector('#crossed-model').getBoundingClientRect();
+        return {x:r.left,y:r.top,width:r.width,height:r.height,scale:1};
+      })()`);
+      const rendered = await capture('crossed-boolean-view', region, true, false);
+      if (rendered.paintedPixels < 250) {
+        throw new Error(`Crossed Boolean result canvas appears blank: ${JSON.stringify(rendered)}`);
+      }
+    }
+    await evaluate(`(() => {
+      const link = [...document.querySelectorAll('a[href]')].find(item => {
+        const url = new URL(item.href, location.href);
+        return url.origin === location.origin && (url.pathname === '/' || url.pathname.endsWith('/index.html'));
+      });
+      if (!link) throw new Error('No home navigation link');
+      link.click();
+    })()`);
+    await waitForDocument('/');
+    const home = await evaluate(injectedExpressions.portalState);
+    if (home.path !== '/' || home.heading !== 'Geometry audit gallery'
+      || !['shapes.html','compare.html','edges.html','booleans.html'].every(file => home.pageLinks.some(link => link.endsWith('/' + file)))) {
+      throw new Error(`Home navigation from ${page} did not return to the four-page index: ${JSON.stringify(home)}`);
+    }
+  };
   const capture = async (name, region, analyze = false, persist = true) => {
     const result = await command('Page.captureScreenshot', {
       format: 'png',
@@ -499,8 +635,32 @@ async function runBrowserChecks() {
   const oldId = await evaluate("fetch('./experiments.json').then(r => r.json()).then(rows => rows[0].id)");
   if (oldId !== 'g2-cross-plate') throw new Error('Historical catalog was not primed');
   const landingId = await evaluate("fetch('./experiments.json?catalog=qa').then(r => r.json()).then(rows => rows[0].id)");
-  await command('Page.navigate', { url: serverUrl + '?model=retired-curved-catalog-id' });
+  await command('Page.navigate', { url: serverUrl });
+  await waitForDocument('/');
+  const homeState = await evaluate(injectedExpressions.portalState);
+  if (!['shapes.html','compare.html','edges.html','booleans.html'].every(file => homeState.pageLinks.some(link => link.endsWith('/' + file)))) {
+    throw new Error(`Home page is missing a required viewer link: ${JSON.stringify(homeState)}`);
+  }
+  await checkPageCanReturnHome('compare.html', `(() => !document.querySelector('.comparison')?.hidden
+    && document.querySelector('#sketch')?.options.length > 0
+    && document.querySelector('#assemble-stats')?.textContent.length > 0
+    && document.querySelector('#optimize-stats')?.textContent.length > 0)()`);
+  await checkPageCanReturnHome('edges.html', injectedExpressions.edgeViewerReady);
+  await checkPageCanReturnHome('booleans.html', injectedExpressions.booleanViewerReady);
+  await checkPageCanReturnHome('booleans-crossed.html', injectedExpressions.crossedViewerSweep);
+  await checkPageCanReturnHome('shapes.html', injectedExpressions.galleryReady);
+  await command('Page.navigate', { url: serverUrl + '?model=retired-curved-catalog-id&campaign=route-qa#preserve-me' });
   await waitForGallery(landingId);
+  const legacyRoute = await evaluate(`({
+    path: location.pathname,
+    model: new URL(location.href).searchParams.get('model'),
+    campaign: new URL(location.href).searchParams.get('campaign'),
+    hash: location.hash,
+  })`);
+  if (!legacyRoute.path.endsWith('/shapes.html') || legacyRoute.model !== landingId
+    || legacyRoute.campaign !== 'route-qa' || legacyRoute.hash !== '#preserve-me') {
+    throw new Error(`Legacy model URL did not route to shapes.html: ${await evaluate('location.href')}`);
+  }
   const publicUiLocale = await evaluate(injectedExpressions.publicUiLocale);
   if (publicUiLocale.lang !== 'en' || publicUiLocale.heading !== 'Sketch partitions in 3D'
     || !publicUiLocale.canvasLabel.startsWith('Interactive 3D model')
@@ -610,7 +770,7 @@ async function runBrowserChecks() {
     'bench-bracket-unequal-transverse-bores',
   ]);
   for (const experiment of resources) {
-    await command('Page.navigate', { url: `${serverUrl}?model=${encodeURIComponent(experiment.id)}` });
+    await command('Page.navigate', { url: `${serverUrl}shapes.html?model=${encodeURIComponent(experiment.id)}` });
     await waitForGallery(experiment.id);
     const state = await evaluate(injectedExpressions.selectedState);
     if (state.id !== experiment.id || !state.stateHidden) {

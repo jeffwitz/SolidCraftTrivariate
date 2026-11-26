@@ -5,7 +5,7 @@ use crate::{
     json::{object, Json},
     polygon_json::pair,
     sketch_arrangement::{Role, Segment},
-    sketch_layers::{partition, Partition, SketchLayers, SketchLoop},
+    sketch_layers::{partition, Partition, PlannerStrategy, SketchLayers, SketchLoop},
 };
 pub(crate) const FAMILY: &str = "sketch_layer_partition_v1";
 pub(crate) const BOOLEAN_FAMILY: &str = "sketch_boolean_layers_v1";
@@ -38,15 +38,17 @@ fn parse(j: &Json, model: bool) -> Result<SketchLayers, &'static str> {
     if j.field("top_shift_mm").is_ok() {
         keys.push("top_shift_mm");
     }
-    let force_triangulation = if let Ok(v) = j.field("partition_strategy") {
+    let strategy = if let Ok(v) = j.field("partition_strategy") {
         keys.push("partition_strategy");
         match v.text()? {
-            "automatic" => false,
-            "triangulate" => true,
+            "automatic" => PlannerStrategy::Automatic,
+            "triangulate" => PlannerStrategy::Triangulate,
+            "ring_planar_rerank" => PlannerStrategy::RingPlanarRerank,
+            "ring_planar_lookahead" => PlannerStrategy::RingPlanarLookahead,
             _ => return Err("unknown_sketch_partition_strategy"),
         }
     } else {
-        false
+        PlannerStrategy::Automatic
     };
     if nurbs_mode(j)?.is_some() {
         keys.push("nurbs_partition");
@@ -100,7 +102,7 @@ fn parse(j: &Json, model: bool) -> Result<SketchLayers, &'static str> {
     }
     Ok(SketchLayers {
         outer: curve(outer)?,
-        force_triangulation,
+        force_triangulation: strategy == PlannerStrategy::Triangulate,
         operations,
         cuts,
         guides,
@@ -111,6 +113,7 @@ fn parse(j: &Json, model: bool) -> Result<SketchLayers, &'static str> {
             .map(pair)
             .transpose()?
             .unwrap_or([0, 0]),
+        strategy,
     })
 }
 fn plan(p: &Partition) -> Json {

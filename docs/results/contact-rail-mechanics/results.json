@@ -1,0 +1,189 @@
+{
+  "refinement": [
+    {
+      "method": "FEM",
+      "n": 2,
+      "quadrature": 10,
+      "affine": false,
+      "free_dofs": 10,
+      "condition": 62.08286644216339,
+      "energy": 0.9354243713733679,
+      "residual": 9.092293182491318e-16,
+      "relative_L2": 0.006959382009040174,
+      "relative_energy_norm": 0.03498953026922784,
+      "reference_energy": 0.9365709845368666
+    },
+    {
+      "method": "FEM",
+      "n": 4,
+      "quadrature": 10,
+      "affine": false,
+      "free_dofs": 36,
+      "condition": 193.92591778173505,
+      "energy": 0.9364865630071192,
+      "residual": 4.799876239176221e-15,
+      "relative_L2": 0.0009496064536683993,
+      "relative_energy_norm": 0.009494153722109515,
+      "reference_energy": 0.9365709845368667
+    },
+    {
+      "method": "FEM",
+      "n": 8,
+      "quadrature": 10,
+      "affine": false,
+      "free_dofs": 136,
+      "condition": 668.8862883284763,
+      "energy": 0.9365654267869411,
+      "residual": 1.0517312538770838e-14,
+      "relative_L2": 0.00012204883942307092,
+      "relative_energy_norm": 0.0024360104643627897,
+      "reference_energy": 0.9365709845368668
+    },
+    {
+      "method": "FEM",
+      "n": 16,
+      "quadrature": 10,
+      "affine": false,
+      "free_dofs": 528,
+      "condition": 2449.9133724516014,
+      "energy": 0.9365706305115377,
+      "residual": 4.186414725581623e-14,
+      "relative_L2": 1.542929416104857e-05,
+      "relative_energy_norm": 0.0006148182353532663,
+      "reference_energy": 0.9365709845368668
+    },
+    {
+      "method": "IGA",
+      "n": 2,
+      "quadrature": 10,
+      "affine": false,
+      "free_dofs": 12,
+      "condition": 100.88894690176303,
+      "energy": 0.9359724303129691,
+      "residual": 1.5552055554526658e-15,
+      "relative_L2": 0.0042012298911407115,
+      "relative_energy_norm": 0.025280252096887616,
+      "reference_energy": 0.9365709845368654
+    },
+    {
+      "method": "IGA",
+      "n": 4,
+      "quadrature": 10,
+      "affine": false,
+      "free_dofs": 30,
+      "condition": 418.426114200063,
+      "energy": 0.9365343095813426,
+      "residual": 4.041989928587492e-15,
+      "relative_L2": 0.0004931171613965959,
+      "relative_energy_norm": 0.006257695815322794,
+      "reference_energy": 0.936570984536866
+    },
+    {
+      "method": "IGA",
+      "n": 8,
+      "quadrature": 10,
+      "affine": false,
+      "free_dofs": 90,
+      "condition": 2159.8179776233737,
+      "energy": 0.9365687060920409,
+      "residual": 1.0280716426166392e-14,
+      "shear_near_rail": [
+        {
+          "x": 0.0,
+          "y": 0.0001,
+          "shear": -0.5992808006068329,
+          "exact": -0.6000640020800384
+        },
+        {
+          "x": 0.0,
+          "y": 1e-06,
+          "shear": -0.604481749445912,
+          "exact": -0.6000006400002079
+        },
+        {
+          "x": 0.0,
+          "y": 1e-08,
+          "shear": -0.6673846224963809,
+          "exact": -0.6000000064000001
+        }
+      ],
+      "relative_L2": 6.035563410336314e-05,
+      "relative_energy_norm": 0.0015597281454568929,
+      "reference_energy": 0.9365709845368662
+    },
+    {
+      "method": "IGA",
+      "n": 16,
+      "quadrature": 10,
+      "affine": false,
+      "free_dofs": 306,
+      "condition": 13431.931505202596,
+      "energy": 0.9365708423121735,
+      "residual": 6.468133037935272e-14,
+      "relative_L2": 7.495032122169318e-06,
+      "relative_energy_norm": 0.0003896881185963108,
+      "reference_energy": 0.9365709845368659
+    }
+  ],
+  "affine_patch": [
+    {
+      "method": "FEM",
+      "n": 4,
+      "quadrature": 10,
+      "affine": true,
+      "free_dofs": 36,
+      "condition": 193.92591778173505,
+      "energy": 0.9999999999999827,
+      "residual": 4.734074511478225e-15,
+      "relative_L2": 1.850835451719632e-14,
+      "relative_energy_norm": 1.700003965894378e-14,
+      "reference_energy": 1.0000000000000002
+    },
+    {
+      "method": "IGA",
+      "n": 4,
+      "quadrature": 10,
+      "affine": true,
+      "free_dofs": 30,
+      "condition": 418.426114200063,
+      "energy": 0.9999999999999971,
+      "residual": 1.0126135424022429e-14,
+      "relative_L2": 2.4002773058483612e-15,
+      "relative_energy_norm": 6.861592266514865e-15,
+      "reference_energy": 1.0
+    }
+  ],
+  "quadrature_check": {
+    "method": "IGA",
+    "n": 8,
+    "quadrature": 18,
+    "affine": false,
+    "free_dofs": 90,
+    "condition": 2159.817977623464,
+    "energy": 0.9365687060920492,
+    "residual": 9.181280933396387e-15,
+    "shear_near_rail": [
+      {
+        "x": 0.0,
+        "y": 0.0001,
+        "shear": -0.5992808006078348,
+        "exact": -0.6000640020800384
+      },
+      {
+        "x": 0.0,
+        "y": 1e-06,
+        "shear": -0.6044817494672561,
+        "exact": -0.6000006400002079
+      },
+      {
+        "x": 0.0,
+        "y": 1e-08,
+        "shear": -0.6673846227342461,
+        "exact": -0.6000000064000001
+      }
+    ],
+    "relative_L2": 6.035563410402151e-05,
+    "relative_energy_norm": 0.0015597281454568992,
+    "reference_energy": 0.9365709845368662
+  }
+}

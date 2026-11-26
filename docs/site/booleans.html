@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Inspect audited union, intersection and difference models built from exact axial operands in SolidCraft Trivariate.">
+  <title>Boolean operations · SolidCraft Trivariate</title>
+  <link rel="stylesheet" href="./style.css?v=4c80dc8c8d5c"><link rel="stylesheet" href="./hub.css?v=00a2f3124805"><link rel="stylesheet" href="./booleans.css?v=c3d9b704cca4">
+  <script type="module" src="./booleans-viewer.js?v=d898b4a323b7"></script>
+</head>
+<body>
+  <header class="topbar"><a class="wordmark" href="./"><span class="mark" aria-hidden="true">S</span>SolidCraft <span class="wordmark-light">/ Trivariate</span></a><nav class="site-nav" aria-label="Gallery navigation"><a href="./">Home</a><a href="./shapes.html">Shapes</a><a href="./compare.html">Compare</a><a href="./edges.html">Fillets &amp; chamfers</a><a aria-current="page" href="./booleans.html">Boolean operations</a></nav></header>
+  <main class="bool-page">
+    <section class="bool-hero">
+      <div><h1>Boolean operations</h1><p class="lede">Change the operation and cross-section below. Operand A, operand B and the native result are built from the same tested recipe family and rendered as trivariate solids.</p></div>
+      <aside class="hero-note"><strong>Axial products</strong><p>The two operands share a fixed planar section and differ by their exact Z intervals. This supported case makes union, intersection and subtraction directly comparable.</p><a href="./booleans-crossed.html">Explore crossed sketch tools ↗</a></aside>
+    </section>
+
+    <section class="boolean-workbench" aria-labelledby="workbench-title">
+      <div class="workbench-heading"><div><p class="eyebrow">Native Boolean builder</p><h2 id="workbench-title">Inspect both operands and the result</h2></div><div class="workbench-controls">
+        <label>Cross-section<select id="boolean-section"><option value="pierced_square">Pierced square</option><option value="reference_rectangle">Reference rectangle</option></select></label>
+        <label>Operation<select id="boolean-operation"><option value="difference">A − B · difference</option><option value="union">A ∪ B · union</option><option value="intersection">A ∩ B · intersection</option></select></label>
+      </div></div>
+      <p class="operation-equation"><span>Operand A</span><b>− / ∪ / ∩</b><span>Operand B</span><i>→</i><strong id="result-name">Difference · A − B</strong></p>
+      <p id="boolean-status" class="boolean-status" role="status" aria-live="polite">Loading audited Boolean models…</p>
+      <div class="boolean-views">
+        <article class="boolean-view"><header><div><span class="view-kicker">INPUT A</span><h3>Lower interval</h3></div><span class="view-range">−8 ≤ z ≤ 2 mm</span></header><canvas id="operand-a" aria-label="WebGL view of operand A" tabindex="0"></canvas><p class="view-audit" id="audit-a">Loading input audit…</p></article>
+        <article class="boolean-view"><header><div><span class="view-kicker">INPUT B</span><h3>Upper interval</h3></div><span class="view-range">−2 ≤ z ≤ 8 mm</span></header><canvas id="operand-b" aria-label="WebGL view of operand B" tabindex="0"></canvas><p class="view-audit" id="audit-b">Loading input audit…</p></article>
+        <article class="boolean-view result-view"><header><div><span class="view-kicker">NATIVE RESULT</span><h3 id="result-title">Difference · A − B</h3></div><span class="view-range" id="result-volume">Volume —</span></header><canvas id="boolean-result" aria-label="WebGL view of the audited Boolean result" tabindex="0"></canvas><p class="view-audit" id="result-audit">Loading result audit…</p></article>
+      </div>
+      <div class="boolean-tools"><label class="check"><input type="checkbox" id="section-toggle"> Section result at mid-height</label><button type="button" id="reset-views" class="reset-button">Reset views</button><span>Drag to rotate · scroll to zoom · section uses the shared renderer</span></div>
+      <div class="boolean-artifacts" id="boolean-artifacts"><span>Recipe, native model and audit JSON load with the selected case.</span></div>
+    </section>
+
+    <section class="audit-principles"><div><p class="eyebrow">What the audit establishes</p><h2>Exact interval logic, explicit limits</h2></div><div class="principle-grid">
+      <article><h3>Exact selection</h3><p>The recipe gives integer-millimetre axial intervals. Each open interval is selected by the requested operation; boundary caps retain their source operand and orientation.</p></article>
+      <article><h3>Topology and measure</h3><p>The audit checks the canonical model, selected intervals, cell incidence, component count and volume against the analytic section area.</p></article>
+      <article><h3>Declared scope</h3><p>This axial constructor accepts two operands with the same supported section and axis. It does not claim a general 3D CSG engine or export these axial models to STEP.</p></article>
+    </div></section>
+    <section class="other-cases"><div><p class="eyebrow">Related operation families</p><h2>Other audited Boolean constructions</h2></div><div class="related-grid">
+      <a href="./booleans-crossed.html"><span>SKETCH · REAL INTERSECTIONS</span><strong>Crossed sketch tools</strong><p>Union, intersection, both directed differences and the common void are handled on a shared planar arrangement.</p><b>Open interactive case ↗</b></a>
+      <article><span>SKETCH · ORDERED HISTORY</span><strong>Blind pocket and additive island</strong><p>A pocket removes 256&nbsp;mm³, then an island adds back 48&nbsp;mm³. The resulting 3,448&nbsp;mm³ agrees with both the independent Fraction-grid oracle and OCCT volume.</p><nav><a href="https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/tests/references/sketch_boolean_blind_pocket.recipe.json">Recipe ↗</a><a href="https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/sketch-boolean-20261125.json">Oracle and OCCT report ↗</a></nav></article>
+      <a href="https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/steinmetz-partition-20261125.json"><span>CYLINDERS · EXACT CUTS</span><strong>Intersecting through-bores</strong><p>The Steinmetz family records the intersection of two orthogonal through-bores with exact cylindrical boundary checks, an independent partition oracle and separate provenance.</p><b>Corpus record and method ↗</b></a>
+    </div></section>
+    <section class="axial-provenance"><p>Axial implementation and regression protocol: <a href="https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/src/axial_boolean.rs">constructor</a> · <a href="https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/src/axial_boolean_audit.rs">audit</a> · <a href="https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/tests/axial_boolean.rs">tests</a>. Current three-dimensional boundary STEP export is outside the axial product family.</p></section>
+    <footer class="page-footer"><span>SolidCraft Trivariate</span><span></span><a href="https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/architecture.md">Architecture and contracts ↗</a></footer>
+  </main>
+</body>
+</html>

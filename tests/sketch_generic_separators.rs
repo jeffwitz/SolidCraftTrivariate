@@ -15,6 +15,7 @@ fn job(outer: SketchLoop, cuts: Vec<(SketchLoop, [i32; 2])>, height: i32) -> Ske
         guides: Vec::<Segment>::new(),
         height,
         shift: [0, 0],
+        strategy: solidcraft_trivariate::sketch_layers::PlannerStrategy::Automatic,
         force_triangulation: false,
         operations: None,
     }
@@ -41,6 +42,39 @@ fn even_convex_polygon_hole_uses_conforming_ring_and_exact_partition() {
     assert_eq!(result.volume.numerator(), 77_000);
     assert_eq!(result.volume.denominator(), 1);
     assert!(result.certificate.determinant_lower_bound_mm3 > 0.0);
+}
+
+#[test]
+fn planar_ring_lookahead_keeps_count_primary_and_certificate_gates() {
+    use solidcraft_trivariate::sketch_layers::{planar_quality_score, PlannerStrategy};
+
+    let input = job(
+        contour("stock", &[[0, 0], [120, 0], [120, 80], [0, 80]]),
+        vec![
+            (
+                contour("left", &[[22, 24], [32, 20], [38, 30], [30, 38]]),
+                [0, 10],
+            ),
+            (
+                contour("right", &[[82, 18], [94, 24], [90, 38], [78, 32]]),
+                [0, 10],
+            ),
+        ],
+        10,
+    );
+    let baseline = partition(&input).expect("automatic exact partition");
+    let mut experimental = input.clone();
+    experimental.strategy = PlannerStrategy::RingPlanarLookahead;
+    let candidate = partition(&experimental).expect("lookahead exact partition");
+
+    assert!(candidate.blocks.len() <= baseline.blocks.len());
+    assert_eq!(candidate.volume, baseline.volume);
+    assert!(candidate.certificate.determinant_lower_bound_mm3 > 0.0);
+    if candidate.blocks.len() == baseline.blocks.len() {
+        let old_quality = planar_quality_score(&input, &baseline).unwrap();
+        let new_quality = planar_quality_score(&experimental, &candidate).unwrap();
+        assert!(new_quality <= old_quality * (1.0 + 1e-12));
+    }
 }
 
 #[test]

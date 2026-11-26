@@ -1,5 +1,10 @@
 # S3 native edge-treatment feasibility at 0.25 mm
 
+Subsequent work constructed a [certified cubic approximation of the named
+contact rail](s3-offset-rail.md) and [treated the two outside stock
+perimeters on the original 93 volumes](s3-stock-rim.md). The exact obstruction
+below still applies to the internal curved lip.
+
 ## Scope and conclusion
 
 This note concerns the delivered S3 pocket model and its existing 93-block

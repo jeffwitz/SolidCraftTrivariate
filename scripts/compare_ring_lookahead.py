@@ -79,8 +79,12 @@ def baseline_inputs(ledger, corpus_path):
 
 def load_model_metrics(path):
     path = Path(path)
-    return {**planar.summarize_model(json.loads(path.read_text())),
-            "model_path": str(path), "model_sha256": sha256(path)}
+    model = json.loads(path.read_text())
+    block_maps = sorted(({"degrees": b["degrees"], "controls": b["controls"]} for b in model["blocks"]),
+                        key=lambda item: json.dumps(item, sort_keys=True, separators=(",", ":")))
+    map_digest = hashlib.sha256(json.dumps(block_maps, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
+    return {**planar.summarize_model(model), "model_path": str(path), "model_sha256": sha256(path),
+            "block_map_set_sha256": map_digest}
 
 
 def metric_pair(base, candidate):
@@ -136,6 +140,10 @@ def make_case_rows(inputs, baseline_rows, baseline_models, candidate_rows, candi
             "same_block_count": bcount == ccount if bcount is not None and ccount is not None else None,
             "baseline_model_sha256": base_metric.get("model_sha256") if base_metric else None,
             "candidate_model_sha256": cand_metric.get("model_sha256") if cand_metric else None,
+            "baseline_block_map_set_sha256": base_metric.get("block_map_set_sha256") if base_metric else None,
+            "candidate_block_map_set_sha256": cand_metric.get("block_map_set_sha256") if cand_metric else None,
+            "same_block_map_set": (base_metric.get("block_map_set_sha256") == cand_metric.get("block_map_set_sha256")
+                                   if base_metric and cand_metric else None),
             "original_recipe_sha256": hashlib.sha256(json.dumps(item["recipe"], sort_keys=True, separators=(",", ":")).encode()).hexdigest(),
             "baseline_build_audit_s": elapsed_b,
             "candidate_build_audit_s": elapsed_c,
@@ -164,9 +172,15 @@ def summarize(rows):
             worsened = [r["id"] for r in compared if r["quality"]["worsened"]["minimum_corner_sine"]]
         else:
             worsened = [r["id"] for r in compared if r["quality"]["worsened"][field]]
+        improved = [r["id"] for r in compared
+                    if r["quality"]["candidate_over_baseline_ratio"][field] < 1.0 - 1e-10]
+        unchanged = [r["id"] for r in compared
+                     if abs(r["quality"]["candidate_over_baseline_ratio"][field] - 1.0) <= 1e-10]
         quality_summary[field] = {"n": len(adverse), "median_worsening_ratio": statistics.median(adverse) if adverse else None,
                                   "p95_worsening_ratio": nearest_rank(adverse, .95),
                                   "max_worsening_ratio": max(adverse) if adverse else None,
+                                  "improved_case_ids": improved,
+                                  "unchanged_case_ids": unchanged,
                                   "worsened_case_ids": worsened}
     for family in sorted({r["family"] for r in rows}):
         group = [r for r in rows if r["family"] == family]
@@ -181,11 +195,14 @@ def summarize(rows):
         "case_count": len(rows),
         "geometry_passes": geometry_passes,
         "geometry_regressions": [r["id"] for r in rows if r["geometry_regression"]],
+        "candidate_exact_volume_matches": sum(r["volume_match_candidate"] is True for r in rows),
         "block_count_comparison": {"n": len(block_deltas), "equal": sum(r["same_block_count"] is True for r in rows),
                                    "increased": sum(d > 0 for d in block_deltas), "decreased": sum(d < 0 for d in block_deltas),
                                    "baseline_total": sum(r["baseline_blocks"] or 0 for r in rows),
                                    "candidate_total": sum(r["candidate_blocks"] or 0 for r in rows),
-                                   "delta_total": sum(block_deltas), "delta_median": statistics.median(block_deltas) if block_deltas else None},
+                                   "delta_total": sum(block_deltas), "delta_median": statistics.median(block_deltas) if block_deltas else None,
+                                   "same_block_map_set": sum(r["same_block_map_set"] is True for r in rows),
+                                   "changed_block_map_set": sum(r["same_block_map_set"] is False for r in rows)},
         "quality_worsening": quality_summary,
         "cost_common_success_s": {"n": len(common_success), "baseline_median": statistics.median(timings_b) if timings_b else None,
                                    "candidate_median": statistics.median(timings_c) if timings_c else None,
@@ -202,7 +219,8 @@ def render_report(result):
         "# Paired evaluation: planar ring lookahead",
         "",
         f"Candidate source revision: `{result['candidate'].get('source_revision')}`; binary SHA-256: `{result['candidate']['cli_sha256']}`.",
-        f"Baseline ledger SHA-256: `{result['baseline_provenance']['ledger_sha256']}`.",
+        f"Baseline source revision: `{result['baseline_provenance']['baseline_source_revision']}`; binary SHA-256: `{result['baseline_provenance']['baseline_binary_sha256']}`.",
+        f"Baseline ledger SHA-256: `{result['baseline_provenance']['ledger_sha256']}`; evaluator SHA-256: `{result['baseline_provenance']['baseline_evaluator_script_sha256']}`.",
         "",
         "## Cohort and geometric gate",
         "",
@@ -210,21 +228,42 @@ def render_report(result):
         "",
         f"Geometry passes: baseline {summary['geometry_passes']['baseline']}/{summary['case_count']}; candidate {summary['geometry_passes']['candidate']}/{summary['case_count']}.",
         f"Block counts: {blocks['equal']} equal, {blocks['decreased']} decreased, {blocks['increased']} increased; total {blocks['baseline_total']} → {blocks['candidate_total']} (delta {blocks['delta_total']}).",
+        f"Block-map sets: {blocks['changed_block_map_set']} changed and {blocks['same_block_map_set']} unchanged (comparison ignores IDs and partition-plan metadata; it hashes sorted degrees and homogeneous controls).",
         f"Common-success build+audit cost: median {costs['baseline_median']:.4f} s baseline / {costs['candidate_median']:.4f} s candidate; cohort sums {costs['baseline_total']:.3f} s / {costs['candidate_total']:.3f} s. These are descriptive single-run timings.",
         "",
         "## Independent quality comparison",
         "",
         "All ratios are adverse-direction ratios where values above 1 mean worse: candidate/baseline for condition numbers and thickness aspect, baseline/candidate for minimum corner sine. Metrics use the independent planar evaluator; extrema are sampled, not continuous bounds. A relative change must exceed 1e−10 to be counted as worsening.",
         "",
-        "| Metric | Paired n | Median adverse ratio | p95 | Maximum | Cases worsened |",
-        "| --- | ---: | ---: | ---: | ---: | ---: |",
+        "| Metric | Paired n | Median adverse ratio | p95 | Maximum | Improved | Unchanged | Worsened |",
+        "| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |",
     ]
     for field, label in (("planar_spectral_kappa", "Planar spectral κ"),
                          ("thickness_direction_aspect", "Normal thickness aspect"),
                          ("max_3d_spectral_kappa", "Full 3D spectral κ"),
                          ("corner_sine_worsening_ratio", "Minimum corner sine")):
         row = summary["quality_worsening"][field]
-        lines.append(f"| {label} | {row['n']} | {row['median_worsening_ratio']:.6g} | {row['p95_worsening_ratio']:.6g} | {row['max_worsening_ratio']:.6g} | {len(row['worsened_case_ids'])} |")
+        lines.append(f"| {label} | {row['n']} | {row['median_worsening_ratio']:.6g} | {row['p95_worsening_ratio']:.6g} | {row['max_worsening_ratio']:.6g} | {len(row['improved_case_ids'])} | {len(row['unchanged_case_ids'])} | {len(row['worsened_case_ids'])} |")
+    compared = [r for r in result["cases"] if r["quality"]]
+    worst_thickness = max(compared, key=lambda r: r["quality"]["candidate_over_baseline_ratio"]["thickness_direction_aspect"])
+    worst_3d = max(compared, key=lambda r: r["quality"]["candidate_over_baseline_ratio"]["max_3d_spectral_kappa"])
+    worst_sine = max(compared, key=lambda r: r["quality"]["candidate_over_baseline_ratio"]["corner_sine_worsening_ratio"])
+    best_planar = min(compared, key=lambda r: r["quality"]["candidate_over_baseline_ratio"]["planar_spectral_kappa"])
+    def metric_witness(row, metric):
+        quality = row["quality"]
+        base, cand = quality["baseline"], quality["candidate"]
+        witness_key = {"planar_spectral_kappa": "planar_spectral_kappa_witness",
+                       "thickness_direction_aspect": "thickness_direction_aspect_witness",
+                       "max_3d_spectral_kappa": "max_3d_spectral_kappa_witness",
+                       "minimum_corner_sine": "minimum_corner_sine_witness"}[metric]
+        ratio_key = "corner_sine_worsening_ratio" if metric == "minimum_corner_sine" else metric
+        ratio = quality["candidate_over_baseline_ratio"][ratio_key]
+        return f"- `{row['id']}`: {base[metric]:.6g} → {cand[metric]:.6g} (adverse ratio {ratio:.6g}); candidate witness block `{cand[witness_key]['block']}`, parameter `{cand[witness_key]['param']}`."
+    lines += ["", "### Extreme witnesses", "",
+              metric_witness(worst_thickness, "thickness_direction_aspect"),
+              metric_witness(worst_3d, "max_3d_spectral_kappa"),
+              metric_witness(worst_sine, "minimum_corner_sine"),
+              metric_witness(best_planar, "planar_spectral_kappa"), ""]
     regressions = summary["geometry_regressions"]
     lines += ["", f"Geometry regression cases: {', '.join(regressions) if regressions else 'none'}.", "",
               "## Per-family counts", "", "| Family | n | Geometry baseline/candidate | Equal blocks | Block delta |", "| --- | ---: | ---: | ---: | ---: |"]
@@ -263,6 +302,8 @@ def main():
     parser.add_argument("--output-dir", required=True, type=Path)
     parser.add_argument("--timeout", type=float, default=60)
     parser.add_argument("--strategy", default="ring_planar_lookahead")
+    parser.add_argument("--reuse-candidate-ledger", type=Path,
+                        help="postprocess an existing one-time candidate run without rebuilding cases")
     args = parser.parse_args()
     args.work.mkdir(parents=True, exist_ok=True)
     args.output_dir.mkdir(parents=True, exist_ok=True)
@@ -273,22 +314,32 @@ def main():
     supplemental_input_path.write_text(json.dumps({"description": "Frozen supplemental case recipes from the baseline review ledger; unchanged for candidate build except the explicit strategy selector.",
                                                    "recipe_set_sha256": baseline_ledger["supplemental_fresh_cases"]["recipe_set_sha256"],
                                                    "cases": supplemental_inputs}, indent=2, sort_keys=True) + "\n")
-    candidate_rows = []
-    for index, item in enumerate(inputs, start=1):
-        candidate_item = {**item, "recipe": dict(item["recipe"])}
-        candidate_item["recipe"]["partition_strategy"] = args.strategy
-        row = runner.eval_one(args.cli.resolve(), candidate_item, args.work, args.timeout)
-        row["strategy"] = args.strategy
-        row["original_recipe_sha256"] = hashlib.sha256(json.dumps(item["recipe"], sort_keys=True, separators=(",", ":")).encode()).hexdigest()
-        model_path = args.work / f"{item['id']}.model.json"
-        row["model_sha256"] = sha256(model_path) if model_path.is_file() else None
-        candidate_rows.append(row)
-        print(f"[{index}/57] {item['id']}: {row.get('outcome')} blocks={row.get('block_count')}", flush=True)
-    candidate_ledger = {"tag": args.strategy, "cli": str(args.cli.resolve()), "cli_sha256": sha256(args.cli),
-                        "source_revision": source_revision(args.cli), "recipe_strategy": args.strategy,
-                        "timeout_s_per_build_or_audit": args.timeout, "cases": candidate_rows}
-    raw_path = args.work / "candidate-run-ledger.json"
-    raw_path.write_text(json.dumps(candidate_ledger, indent=2, sort_keys=True) + "\n")
+    raw_path = args.reuse_candidate_ledger or (args.work / "candidate-run-ledger.json")
+    if args.reuse_candidate_ledger:
+        candidate_ledger = json.loads(raw_path.read_text())
+        if candidate_ledger.get("cli_sha256") != sha256(args.cli):
+            raise ValueError("reuse ledger binary SHA does not match --cli")
+        if candidate_ledger.get("recipe_strategy") != args.strategy:
+            raise ValueError("reuse ledger strategy does not match --strategy")
+        candidate_rows = candidate_ledger["cases"]
+        if len(candidate_rows) != 57 or {r["id"] for r in candidate_rows} != {x["id"] for x in inputs}:
+            raise ValueError("reuse candidate ledger does not contain this exact 57-case cohort")
+    else:
+        candidate_rows = []
+        for index, item in enumerate(inputs, start=1):
+            candidate_item = {**item, "recipe": dict(item["recipe"])}
+            candidate_item["recipe"]["partition_strategy"] = args.strategy
+            row = runner.eval_one(args.cli.resolve(), candidate_item, args.work, args.timeout)
+            row["strategy"] = args.strategy
+            row["original_recipe_sha256"] = hashlib.sha256(json.dumps(item["recipe"], sort_keys=True, separators=(",", ":")).encode()).hexdigest()
+            model_path = args.work / f"{item['id']}.model.json"
+            row["model_sha256"] = sha256(model_path) if model_path.is_file() else None
+            candidate_rows.append(row)
+            print(f"[{index}/57] {item['id']}: {row.get('outcome')} blocks={row.get('block_count')}", flush=True)
+        candidate_ledger = {"tag": args.strategy, "cli": str(args.cli.resolve()), "cli_sha256": sha256(args.cli),
+                            "source_revision": source_revision(args.cli), "recipe_strategy": args.strategy,
+                            "timeout_s_per_build_or_audit": args.timeout, "cases": candidate_rows}
+        raw_path.write_text(json.dumps(candidate_ledger, indent=2, sort_keys=True) + "\n")
 
     base_rows = {**baseline_main, **baseline_supp}
     baseline_metrics = {}
@@ -324,6 +375,7 @@ def main():
         "baseline_provenance": {"ledger_sha256": sha256(args.baseline_ledger),
                                 "baseline_model_root": str(args.baseline_models),
                                 "baseline_source_revision": baseline_ledger.get("latest_release", {}).get("source_checkout_head"),
+                                "baseline_binary_sha256": baseline_ledger.get("latest_release", {}).get("binary_sha256_after"),
                                 "baseline_evaluator_script_sha256": baseline_ledger.get("latest_release", {}).get("evaluator_script_sha256"),
                                 "frozen_eval_one_sha256": sha256(RUN_PATH),
                                 "supplemental_recipe_set_sha256": baseline_ledger.get("supplemental_fresh_cases", {}).get("recipe_set_sha256"),

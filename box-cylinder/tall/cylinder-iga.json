@@ -1,0 +1,100 @@
+{
+  "schema": "tall_cylinder_independent_iga_poisson_v1",
+  "status": "verified",
+  "method": "SciPy rational tensor-product NURBS/B\u00e9zier scalar H1 Galerkin assembly and sparse direct solve",
+  "problem": {
+    "operator": "integral grad(N_i) dot grad(u) dV",
+    "source": "1 + 0.25*x/5 + 0.15*y/5 + 0.1*(z-zmin)/height",
+    "boundary": "homogeneous Dirichlet on both end disks; natural Neumann on cylindrical wall",
+    "units": "dimensionless"
+  },
+  "inputs": {
+    "source_model": "docs/site/box-cylinder/tall/cylinder.model.json",
+    "source_model_sha256": "bbfcbab2719c58c079cba2b29dcf554ae500e1c19dbfb7c901e256280a88a591",
+    "two_patch_controls": "docs/site/box-cylinder/tall/cylinder-2.patches.json",
+    "two_patch_sha256": "0ef8d710d18101aa12dc38900de1468bcc8e57a18e3dfd21ce07d10d31a67692",
+    "three_patch_controls": "docs/site/box-cylinder/tall/cylinder-3.patches.json",
+    "three_patch_sha256": "d89276b0cb1cfb52dd1d8eed53dbb9df215cc7e676b424db87b1fb3bd6dfd287"
+  },
+  "quadrature": {
+    "gauss_points_per_nonzero_knot_span_axis": 5,
+    "same tensor rule used for all representations": true
+  },
+  "cases": {
+    "15_bezier_cells": {
+      "patch_count": 15,
+      "dofs": 68,
+      "free_dofs": 34,
+      "stiffness_nnz": 1770,
+      "quadratic_form_uTKu": 1906926.4407404826,
+      "strain_energy_half_uTKu": 953463.2203702413,
+      "load_work_uTf": 1906926.4407404803,
+      "relative_stiffness_frobenius_difference_vs_15_cell": 0.0,
+      "relative_rhs_l2_difference_vs_15_cell": 0.0,
+      "relative_energy_difference_vs_15_cell": 0.0,
+      "relative_energy_work_gap": 1.2209733877488146e-15,
+      "free_residual_linf": 2.1316282072803006e-12,
+      "common_control_value_max_abs_vs_15_cell": 0.0,
+      "common_control_values_compared": 68
+    },
+    "3_nurbs_patches": {
+      "patch_count": 3,
+      "dofs": 68,
+      "free_dofs": 34,
+      "stiffness_nnz": 1770,
+      "quadratic_form_uTKu": 1906926.4407404873,
+      "strain_energy_half_uTKu": 953463.2203702437,
+      "load_work_uTf": 1906926.4407404861,
+      "relative_stiffness_frobenius_difference_vs_15_cell": 6.820241318229382e-16,
+      "relative_rhs_l2_difference_vs_15_cell": 7.428378036400532e-16,
+      "relative_energy_difference_vs_15_cell": 2.441946775497629e-15,
+      "relative_energy_work_gap": 6.104866938744058e-16,
+      "free_residual_linf": 1.8758328224066645e-12,
+      "common_control_value_max_abs_vs_15_cell": 1.5916157281026244e-12,
+      "common_control_values_compared": 68
+    },
+    "2_nurbs_patches": {
+      "patch_count": 2,
+      "dofs": 68,
+      "free_dofs": 34,
+      "stiffness_nnz": 1770,
+      "quadratic_form_uTKu": 1906926.4407404868,
+      "strain_energy_half_uTKu": 953463.2203702434,
+      "load_work_uTf": 1906926.440740485,
+      "relative_stiffness_frobenius_difference_vs_15_cell": 7.557116478910914e-16,
+      "relative_rhs_l2_difference_vs_15_cell": 7.163408439189019e-16,
+      "relative_energy_difference_vs_15_cell": 2.1977520979478662e-15,
+      "relative_energy_work_gap": 9.767787101990496e-16,
+      "free_residual_linf": 2.0747847884194925e-12,
+      "common_control_value_max_abs_vs_15_cell": 1.1368683772161603e-12,
+      "common_control_values_compared": 68
+    }
+  },
+  "seam_open_negative_control": {
+    "periodic_seam_tied": false,
+    "physical_trace_sample_count": 81,
+    "max_abs_physical_trace_jump": 2.7675732417689574,
+    "l2_physical_trace_jump": 13.552916999533187,
+    "quadratic_form_uTKu": 1906963.6213545592,
+    "strain_energy_half_uTKu": 953481.8106772796,
+    "relative_energy_change_vs_tied": 1.949766560367481e-05,
+    "free_residual_linf": 1.7337242752546445e-12
+  },
+  "closed_seam_positive_control": {
+    "max_abs_physical_trace_jump": 0.0,
+    "l2_physical_trace_jump": 0.0,
+    "sample_count": 81
+  },
+  "criteria": {
+    "max_relative_energy_difference_vs_15_cells": 1e-08,
+    "max_common_control_value_difference": 2e-08,
+    "max_free_residual_linf": 2e-09,
+    "negative_control_seam_jump_min": 1e-05
+  },
+  "limitations": [
+    "floating-point quadrature and solve are numerical evidence, not exact integration or a proof of global injectivity",
+    "coordinate-key trace identification is independent of production interface numbering but uses a 1e-9 mm geometric key",
+    "the manufactured scalar Poisson field tests H1 trace assembly; it is not a calibrated elasticity or stress analysis"
+  ],
+  "errors": []
+}

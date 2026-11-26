@@ -1,4 +1,4 @@
-import { createViewer } from './renderer.js?v=758bdf44b4a0';
+import { createViewer } from './renderer.js?v=509b5502f556';
 
 const byId = id => document.getElementById(id);
 const status = byId('box-cylinder-status');
@@ -11,6 +11,8 @@ let tallManifest;
 let tallMode = 'bezier';
 let tallView = 'volume';
 let tallLoadSerial = 0;
+let previousTallState = 'union';
+let tallCameraInitialized = false;
 
 async function readModel(name) {
   const response = await fetch(`./box-cylinder/${name}.model.json`);
@@ -61,14 +63,24 @@ function setTallView(next) {
 function setTallMode(next) {
   tallMode = next;
   if (tallViewer && tallViewer.getSurfaceStats() !== null) {
-    tallViewer.setMode(next === 'nurbs' ? 'patches' : 'blocks');
+    tallViewer.setMode(next === 'bezier' ? 'blocks' : 'patches');
   }
-  byId('tall-mode-bezier').setAttribute('aria-pressed', String(next === 'bezier'));
-  byId('tall-mode-nurbs').setAttribute('aria-pressed', String(next === 'nurbs'));
+  for (const mode of ['bezier', 'nurbs', 'nurbs2', 'nurbs3']) {
+    const button = byId(`tall-mode-${mode}`);
+    button.setAttribute('aria-pressed', String(next === mode));
+  }
   byId('tall-model-view').dataset.mode = next;
-  byId('tall-mode-note').textContent = next === 'nurbs'
-    ? 'Showing the merged NURBS patch maps from the selected state’s exact patch file.'
-    : 'Showing the actual Bézier cell maps from the selected trivariate model.';
+  const notes = {
+    bezier: 'Showing the actual Bézier cell maps from the selected trivariate model.',
+    nurbs: 'Showing the selected state’s exact NURBS patch map.',
+    nurbs2: 'One square core and one exact annular NURBS volume. The two angular end traces of the annulus share field coefficients.',
+    nurbs3: 'Showing three exact NURBS volumes with two half-ring patches and their shared patch boundaries.',
+  };
+  byId('tall-mode-note').textContent = notes[next];
+  const isCylinder = byId('tall-state').value === 'cylinder';
+  byId('tall-iga-scope').hidden = !isCylinder;
+  byId('tall-iga-file').hidden = !isCylinder;
+  byId('tall-torsion-file').hidden = !isCylinder;
 }
 
 async function readTallJson(path) {
@@ -77,33 +89,54 @@ async function readTallJson(path) {
   return response.json();
 }
 
+async function readTallModel(path) {
+  const response = await fetch(path);
+  if (!response.ok) throw new Error(`Could not load ${path} (${response.status}).`);
+  const bytes = await response.arrayBuffer();
+  const digest = await crypto.subtle.digest('SHA-256', bytes);
+  const sha256 = [...new Uint8Array(digest)].map(byte => byte.toString(16).padStart(2, '0')).join('');
+  return { model: JSON.parse(new TextDecoder().decode(bytes)), sha256 };
+}
+
 async function loadTallState() {
   const serial = ++tallLoadSerial;
   const stateId = byId('tall-state').value;
   const state = tallManifest.states.find(item => item.id === stateId);
   const modelPath = `./box-cylinder/tall/${stateId}.model.json`;
-  const patchesPath = `./box-cylinder/tall/${stateId}.patches.json`;
+  const patchName = stateId === 'cylinder' && tallMode === 'nurbs2' ? 'cylinder-2'
+    : stateId === 'cylinder' && tallMode === 'nurbs3' ? 'cylinder-3' : stateId;
+  const patchesPath = `./box-cylinder/tall/${patchName}.patches.json`;
   const tallStatus = byId('tall-status');
   tallStatus.dataset.kind = 'loading';
   tallStatus.textContent = `Loading ${stateId} model and patch map…`;
   try {
-    const [model, patches] = await Promise.all([readTallJson(modelPath), readTallJson(patchesPath)]);
+    const [{ model, sha256 }, patches] = await Promise.all([readTallModel(modelPath), readTallJson(patchesPath)]);
     if (serial !== tallLoadSerial) return;
-    if (!state || model.blocks?.length !== state.bezier_cells || patches.patches?.length !== state.nurbs_volumes) {
+    if (!state || model.blocks?.length !== state.bezier_cells
+      || (stateId !== 'cylinder' && patches.patches?.length !== state.nurbs_volumes)
+      || (stateId === 'cylinder' && tallMode === 'nurbs2' && patches.patches?.length !== 2)
+      || (stateId === 'cylinder' && tallMode === 'nurbs3' && patches.patches?.length !== 3)) {
       throw new Error(`The ${stateId} model, patch map and manifest counts disagree.`);
     }
     if (patches.schema !== 'gallery_exact_patch_map_v1') throw new Error(`The ${stateId} patch map has an unsupported schema.`);
+    if (patches.source_model && patches.source_model !== `${stateId}.model.json`) {
+      throw new Error(`The ${patchName} patch map references a different source model.`);
+    }
+    if (patches.source_model_sha256 && patches.source_model_sha256 !== sha256) {
+      throw new Error(`The ${patchName} patch map does not match its source model fingerprint.`);
+    }
+    const savedCamera = tallCameraInitialized ? tallViewer.getCamera() : null;
     tallViewer.setModel(model, patches);
-    tallViewer.setMode(tallMode === 'nurbs' ? 'patches' : 'blocks');
+    tallViewer.setMode(tallMode === 'bezier' ? 'blocks' : 'patches');
     const camera = tallViewer.getCamera();
-    tallViewer.setCamera({
-      ...camera,
-      yaw: tallView === 'top' ? 0 : 0.72,
+    tallViewer.setCamera(savedCamera || {
+      ...camera, yaw: tallView === 'top' ? 0 : 0.72,
       pitch: tallView === 'top' ? Math.PI / 2 - 1e-7 : 0.5,
     });
+    tallCameraInitialized = true;
     byId('tall-state-title').textContent = stateId.replaceAll('-', ' ').replace(/\b\w/g, char => char.toUpperCase());
     byId('tall-bezier-count').textContent = String(state.bezier_cells);
-    byId('tall-nurbs-count').textContent = String(state.nurbs_volumes);
+    byId('tall-nurbs-count').textContent = String(patches.patches.length);
     byId('tall-component-count').textContent = String(state.components);
     byId('tall-volume').textContent = `${Number(state.volume_mm3).toLocaleString('en-US', { maximumFractionDigits: 6 })} mm³`;
     const constant = state.volume_constant_mm3;
@@ -115,11 +148,13 @@ async function loadTallState() {
     byId('tall-audit-file').href = `./box-cylinder/tall/${stateId}.audit.json`;
     byId('tall-model-file').href = modelPath;
     byId('tall-patches-file').href = patchesPath;
+    byId('tall-patches-file').textContent = stateId === 'cylinder' && tallMode === 'nurbs2' ? 'NURBS 2 patch map'
+      : stateId === 'cylinder' && tallMode === 'nurbs3' ? 'NURBS 3 patch map' : 'NURBS patch map';
     byId('tall-recipe-file').href = `./box-cylinder/tall/${stateId}.recipe.json`;
     byId('tall-model-view').dataset.state = stateId;
     byId('tall-model-view').dataset.mode = tallMode;
     byId('tall-contact-note').hidden = stateId !== 'xor';
-    tallStatus.textContent = `Loaded ${stateId} · ${state.bezier_cells} Bézier cells · ${state.nurbs_volumes} NURBS volumes.`;
+    tallStatus.textContent = `Loaded ${stateId} · ${state.bezier_cells} Bézier cells · ${patches.patches.length} NURBS volumes in this map.`;
     tallStatus.dataset.kind = 'ready';
   } catch (error) {
     if (serial !== tallLoadSerial) return;
@@ -127,6 +162,7 @@ async function loadTallState() {
     tallStatus.dataset.kind = 'error';
   }
 }
+
 
 async function start() {
   viewers.result = createViewer(byId('result-view'), camera => {
@@ -202,9 +238,30 @@ async function start() {
   if (!Array.isArray(tallManifest.states) || expectedStateIds.some(id => !tallManifest.states.some(state => state.id === id))) {
     throw new Error('The tall-cylinder manifest does not contain all seven Boolean states.');
   }
-  byId('tall-state').addEventListener('change', loadTallState);
-  byId('tall-mode-bezier').addEventListener('click', () => setTallMode('bezier'));
-  byId('tall-mode-nurbs').addEventListener('click', () => setTallMode('nurbs'));
+  const stateFromUrl = new URLSearchParams(location.search).get('state');
+  if (expectedStateIds.includes(stateFromUrl)) byId('tall-state').value = stateFromUrl;
+  previousTallState = byId('tall-state').value;
+  if (previousTallState === 'cylinder') tallMode = 'nurbs2';
+  const updateTallModeOptions = () => {
+    const cylinder = byId('tall-state').value === 'cylinder';
+    byId('tall-mode-nurbs').hidden = cylinder;
+    byId('tall-mode-nurbs2').hidden = !cylinder;
+    byId('tall-mode-nurbs3').hidden = !cylinder;
+    setTallMode(tallMode);
+  };
+  updateTallModeOptions();
+  byId('tall-state').addEventListener('change', () => {
+    const nextState = byId('tall-state').value;
+    if (nextState === 'cylinder' && previousTallState !== 'cylinder') tallMode = 'nurbs2';
+    else if (nextState !== 'cylinder' && previousTallState === 'cylinder') tallMode = 'bezier';
+    previousTallState = nextState;
+    updateTallModeOptions();
+    loadTallState();
+  });
+  byId('tall-mode-bezier').addEventListener('click', () => { setTallMode('bezier'); loadTallState(); });
+  byId('tall-mode-nurbs').addEventListener('click', () => { setTallMode('nurbs'); loadTallState(); });
+  byId('tall-mode-nurbs2').addEventListener('click', () => { setTallMode('nurbs2'); loadTallState(); });
+  byId('tall-mode-nurbs3').addEventListener('click', () => { setTallMode('nurbs3'); loadTallState(); });
   byId('tall-view-top').addEventListener('click', () => setTallView('top'));
   byId('tall-view-volume').addEventListener('click', () => setTallView('volume'));
   const setTallSection = () => {

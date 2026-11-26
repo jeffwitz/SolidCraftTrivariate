@@ -204,7 +204,7 @@ def assemble(nets, ids, q, fitted=False):
     return block_diag(*matrices), np.ravel(boundary_load), traction.ravel(), volume
 
 
-def matching_reference(nets, ids, rise, q):
+def matching_reference(nets, ids, rise, q, forces=None):
     # Extend both inclined planes throughout the central profile, including
     # the bands outside the transverse tool. All shared faces now match.
     fitted = []
@@ -268,6 +268,12 @@ def matching_reference(nets, ids, rise, q):
     K, t, V = assemble(fitted, locations, q, fitted=True)
     kr = T.T @ K @ T
     u = T @ solve(kr, T.T @ t, assume_a="pos")
+    if forces is not None:
+        from nodal_forces import traction_forces
+
+        forces["matching_faces"] = traction_forces(
+            fitted, locations, u.reshape(-1, 16, 3), q, True, basis, points, MU, LAMBDA
+        )
     return dict(
         fitted_charts=len(fitted),
         fitted_scalar_dofs=len(unique),
@@ -276,7 +282,7 @@ def matching_reference(nets, ids, rise, q):
     )
 
 
-def run(model, q, rise):
+def run(model, q, rise, forces=None):
     blocks = model["blocks"]
     assert all(abs(c) < 2**53 for b in blocks for h in b["controls"] for c in h)
     nets = [np.asarray(b["controls"], float) for b in blocks]
@@ -358,7 +364,20 @@ def run(model, q, rise):
     if rise:
         assert metrics["four_node_defect"] > 1e-5
     assert abs(exchange + force) < 1e-7
-    metrics.update(matching_reference(nets, ids, rise, q))
+    if forces is not None:
+        from nodal_forces import residual_forces, traction_forces
+
+        forces["equilibrium"] = residual_forces(ids, internal - t, Zbc[::3, ::3])
+        forces["partial_faces"] = traction_forces(
+            nets, ids, u.reshape(-1, 16, 3), q, False, basis, points, MU, LAMBDA
+        )
+        affine = traction_forces(
+            nets, ids, exact.reshape(-1, 16, 3), q, False, basis, points, MU, LAMBDA
+        )
+        forces["affine_max_gap_N"] = max(row["max_gap_N"] for row in affine)
+        assert forces["affine_max_gap_N"] < 1e-10
+        assert forces["equilibrium"]["max_gap_N"] < 1e-8
+    metrics.update(matching_reference(nets, ids, rise, q, forces))
     assert abs(metrics["fitted_volume_mm3"] - V) < 1e-7
     metrics["relative_compliance_difference"] = (
         metrics["loaded_end_mean_ux_mm"] / metrics["fitted_mean_ux_mm"] - 1
@@ -370,11 +389,13 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("binary", type=Path)
     ap.add_argument("output", type=Path)
+    ap.add_argument("--nodal-forces", type=Path)
     args = ap.parse_args()
     pair = json.loads(
         (ROOT / "tests/references/g2_cross_sketches.recipe.json").read_text()
     )
     rows = []
+    force_results = []
     with tempfile.TemporaryDirectory() as directory:
         inp, out = [Path(directory) / n for n in ["in.json", "charts.json"]]
         for rise in [-3, 0, 3]:
@@ -393,13 +414,18 @@ def main():
                 capture_output=True,
             )
             for q in [8, 14]:
+                forces = dict(rise_mm=rise, order=q) if args.nodal_forces else None
                 rows.append(
                     dict(
                         rise_mm=rise,
                         order=q,
-                        **run(json.loads(out.read_text()), q, rise),
+                        **run(json.loads(out.read_text()), q, rise, forces),
                     )
                 )
+                if forces is not None:
+                    force_results.append(forces)
+    if args.nodal_forces:
+        args.nodal_forces.write_text(json.dumps(force_results, indent=2) + "\n")
     args.output.write_text(json.dumps(rows, indent=2) + "\n")
 
 

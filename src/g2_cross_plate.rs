@@ -978,3 +978,6 @@ pub(crate) fn construct_partition(parameters: &Json) -> Result<Construction, Err
     }
     Ok((blocks, faces))
 }
+
+#[path = "crossed_tool_boolean.rs"]
+pub mod boolean;

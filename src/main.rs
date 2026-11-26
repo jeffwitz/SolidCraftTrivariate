@@ -51,7 +51,7 @@ fn publish(target: &Path, contents: &str) -> std::io::Result<()> {
     }
 }
 
-const COMMANDS_AND_EVALUATORS: &str = r#"{"commands":["build","audit","plan-sketch","evaluate","capabilities","export-step","certify-map","export-analysis","export-sketch-analysis","export-nurbs-space","export-adaptive","inspect-travel","solve-job","differentiate-job","import-solidcraft","import-solidcraft-sketch","export-field-vtu","export-geometry-vtu","edit-bore-intervals","edit-s3-stock-rim","edit-fieldcraft-bore-rims"],"evaluators":{"rational_bezier_tensor":{"degrees":[[1,1,1],[1,1,2],[1,1,3],[1,2,1],[1,2,2],[1,2,3],[1,3,1],[1,3,2],[1,3,3],[2,1,1],[2,1,2],[2,1,3],[2,2,1],[2,2,2],[2,2,3],[2,3,1],[2,3,2],[2,3,3],[3,1,1],[3,1,2],[3,1,3],[3,2,1],[3,2,2],[3,2,3],[3,3,1],[3,3,2],[3,3,3]],"domain":[[0,1],[0,1],[0,1]]}}}"#;
+const COMMANDS_AND_EVALUATORS: &str = r#"{"commands":["build","audit","plan-sketch","crossed-boolean","evaluate","capabilities","export-step","certify-map","export-analysis","export-sketch-analysis","export-nurbs-space","export-adaptive","inspect-travel","solve-job","differentiate-job","import-solidcraft","import-solidcraft-sketch","export-field-vtu","export-geometry-vtu","edit-bore-intervals","edit-s3-stock-rim","edit-fieldcraft-bore-rims"],"evaluators":{"rational_bezier_tensor":{"degrees":[[1,1,1],[1,1,2],[1,1,3],[1,2,1],[1,2,2],[1,2,3],[1,3,1],[1,3,2],[1,3,3],[2,1,1],[2,1,2],[2,1,3],[2,2,1],[2,2,2],[2,2,3],[2,3,1],[2,3,2],[2,3,3],[3,1,1],[3,1,2],[3,1,3],[3,2,1],[3,2,2],[3,2,3],[3,3,1],[3,3,2],[3,3,3]],"domain":[[0,1],[0,1],[0,1]]}}}"#;
 
 fn capabilities() -> Result<Json, String> {
     let mut result = parse(COMMANDS_AND_EVALUATORS)?;
@@ -309,6 +309,11 @@ fn run(args: &[String]) -> Result<Json, String> {
             publish(path,&contents).map_err(|e|e.to_string())?;
             Ok(object([("status",Json::String("exported".into())),("rim_state",Json::String(state.to_owned()))]))
         }
+        [cmd,path,op,target] if cmd=="crossed-boolean"=>{
+            let model=solidcraft_trivariate::g2_cross_plate::boolean::report(&read(path)?,op)?;
+            publish(Path::new(target),&model.to_string()).map_err(|e|e.to_string())?;
+            Ok(object([("status",Json::String("exported".into())),("blocks",Json::Number(model.field("blocks")?.items()?.len().to_string()))]))
+        }
         [cmd,path] if cmd=="plan-sketch"=>Ok(solidcraft_trivariate::interchange::plan_sketch(&read(path)?)?),
         [cmd,center] if cmd=="inspect-travel"=>Ok(inspect_travel(center)?),
         [cmd,path,target] if cmd=="export-nurbs-space"=>{
@@ -397,7 +402,7 @@ fn run(args: &[String]) -> Result<Json, String> {
             Ok(object([("status",Json::String("evaluated".into())),("position",vector(res.position)),
                 ("jacobian_columns",Json::Array(res.jacobian_columns.into_iter().map(vector).collect()))]))
         }
-        _=>Err("usage: solidcraft-trivariate capabilities | plan-sketch RECIPE | build RECIPE OUTPUT | audit MODEL | evaluate MAP U V W | export-step MODEL OUTPUT | certify-map MAP MAX_LEAVES MAX_DEPTH | export-analysis MODEL GAUSS_ORDER OUTPUT | export-sketch-analysis MODEL GAUSS_ORDER OUTPUT | export-nurbs-space MODEL OUTPUT | export-adaptive MODEL PLAN GAUSS_ORDER OUTPUT | import-solidcraft SCRIPT OUTPUT | import-solidcraft-sketch TIMELINE OUTPUT | solve-job MODEL JOB OUTPUT | differentiate-job MODEL JOB DIRECTION OUTPUT | export-field-vtu RESULT SUBDIVISIONS OUTPUT | export-geometry-vtu MODEL SUBDIVISIONS OUTPUT | edit-bore-intervals MODEL EDITS OUTPUT | edit-s3-stock-rim MODEL sharp|chamfer|fillet OUTPUT.json|OUTPUT.step | edit-fieldcraft-bore-rims MODEL STATE OUTPUT.json|OUTPUT.step | inspect-travel CENTER_X_UM".into()),
+        _=>Err("usage: solidcraft-trivariate capabilities | crossed-boolean RECIPE OP OUTPUT | plan-sketch RECIPE | build RECIPE OUTPUT | audit MODEL | evaluate MAP U V W | export-step MODEL OUTPUT | certify-map MAP MAX_LEAVES MAX_DEPTH | export-analysis MODEL GAUSS_ORDER OUTPUT | export-sketch-analysis MODEL GAUSS_ORDER OUTPUT | export-nurbs-space MODEL OUTPUT | export-adaptive MODEL PLAN GAUSS_ORDER OUTPUT | import-solidcraft SCRIPT OUTPUT | import-solidcraft-sketch TIMELINE OUTPUT | solve-job MODEL JOB OUTPUT | differentiate-job MODEL JOB DIRECTION OUTPUT | export-field-vtu RESULT SUBDIVISIONS OUTPUT | export-geometry-vtu MODEL SUBDIVISIONS OUTPUT | edit-bore-intervals MODEL EDITS OUTPUT | edit-s3-stock-rim MODEL sharp|chamfer|fillet OUTPUT.json|OUTPUT.step | edit-fieldcraft-bore-rims MODEL STATE OUTPUT.json|OUTPUT.step | inspect-travel CENTER_X_UM".into()),
     }
 }
 

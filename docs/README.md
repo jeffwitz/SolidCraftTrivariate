@@ -6,6 +6,7 @@ Start with the [project README](../README.md) to build the Rust CLI and run a sk
 
 | Question | Where to look |
 | --- | --- |
+| Which original chart partitions support edge treatments? | [FieldCraft and S3 fixed-partition rim experiments, qualification and STEP files](results/fixed-rims/README.md) |
 | What are the requirements and acceptance criteria? | [Kernel specification](kernel-requirements.md) |
 | How does a sketch become a volumetric model? | [Architecture](architecture.md), [partitioning from construction lines](partition-esquisses.md), [prepartitioning NURBS sketches](prepartition-esquisse-nurbs.md) |
 | Which native profiles and imported curves are supported? | [Primitive templates](gabarits-primitives-nurbs.md), [NURBS strip extrusion](nurbs-sketch.md), [crossed NURBS profiles](nurbs-cross.md), [intersecting cylinders](steinmetz.md) |

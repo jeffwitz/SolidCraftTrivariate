@@ -299,6 +299,8 @@ pub fn certify_spatial(
             | [1, 2, 2]
             | [2, 2, 2]
             | [3, 1, 1]
+            | [3, 1, 2]
+            | [2, 1, 2]
             | [1, 3, 1]
     );
     if !supported {
@@ -317,28 +319,7 @@ pub fn certify_spatial(
         return indeterminate("invalid search budget", 0, 0);
     }
 
-    let components: [TensorBernstein; 4] = std::array::from_fn(|c| TensorBernstein {
-        degrees,
-        values: controls
-            .iter()
-            .map(|point| Interval::from_i64_scaled(point[c]))
-            .collect(),
-    });
-    let derivatives: [[TensorBernstein; 3]; 4] = std::array::from_fn(|component| {
-        std::array::from_fn(|axis| components[component].derivative(axis))
-    });
-    // Matrix rows are homogeneous components (X,Y,Z,W), columns are
-    // (H_u,H_v,H_w,H), whose determinant equals W^4 det(DX).
-    let matrix: [[TensorBernstein; 4]; 4] = std::array::from_fn(|row| {
-        [
-            derivatives[row][0].clone(),
-            derivatives[row][1].clone(),
-            derivatives[row][2].clone(),
-            components[row].clone(),
-        ]
-    });
-    let numerator = determinant(&matrix);
-    let w = &components[3];
+    let (numerator, w) = homogeneous_jacobian(degrees, controls);
     let w_lower = w.values.iter().map(|x| x.lo).fold(f64::INFINITY, f64::min);
     let w_upper = w
         .values
@@ -482,6 +463,89 @@ pub fn certify_spatial(
         max_depth_reached: max_depth,
         reason: None,
     }
+}
+
+fn homogeneous_jacobian(
+    degrees: [usize; 3],
+    controls: &[[i64; 4]],
+) -> (TensorBernstein, TensorBernstein) {
+    let components: [TensorBernstein; 4] = std::array::from_fn(|c| TensorBernstein {
+        degrees,
+        values: controls
+            .iter()
+            .map(|point| Interval::from_i64_scaled(point[c]))
+            .collect(),
+    });
+    let derivatives: [[TensorBernstein; 3]; 4] = std::array::from_fn(|component| {
+        std::array::from_fn(|axis| components[component].derivative(axis))
+    });
+    // Matrix rows are homogeneous components (X,Y,Z,W), columns are
+    // (H_u,H_v,H_w,H), whose determinant equals W^4 det(DX).
+    let matrix: [[TensorBernstein; 4]; 4] = std::array::from_fn(|row| {
+        [
+            derivatives[row][0].clone(),
+            derivatives[row][1].clone(),
+            derivatives[row][2].clone(),
+            components[row].clone(),
+        ]
+    });
+    let [_, _, _, w] = components;
+    (determinant(&matrix), w)
+}
+
+/// Certify strict positive determinant everywhere except a named v/w edge,
+/// where the determinant vanishes identically. All cap controls and the first
+/// adjacent wall row must lie in one physical coordinate plane. Their exact
+/// homogeneous equalities establish the zero polynomial on the edge.
+/// All other numerator coefficients must have strictly positive lower bounds.
+pub fn certify_cap_contact(
+    degrees: [usize; 3],
+    controls: &[[i64; 4]],
+    wall_upper: bool,
+    cap_upper: bool,
+    physical_axis: usize,
+) -> Result<(), &'static str> {
+    let [p, q, r] = degrees;
+    if !matches!(degrees, [2, 1, 2] | [3, 1, 2])
+        || physical_axis >= 3
+        || controls.len() != (p + 1) * (q + 1) * (r + 1)
+        || controls.iter().any(|h| h[3] <= 0)
+    {
+        return Err("unsupported cap contact tensor");
+    }
+    let wall = if wall_upper { q } else { 0 };
+    let cap = if cap_upper { r } else { 0 };
+    let point = |i, j, k| controls[(i * (q + 1) + j) * (r + 1) + k];
+    let base: [i64; 4] = point(0, wall, cap);
+    let on_cap = |h: [i64; 4]| {
+        i128::from(h[physical_axis]) * i128::from(base[3])
+            == i128::from(base[physical_axis]) * i128::from(h[3])
+    };
+    for i in 0..=p {
+        for j in 0..=q {
+            if !on_cap(point(i, j, cap)) {
+                return Err("nonplanar contact cap");
+            }
+        }
+        if !on_cap(point(i, wall, 1)) {
+            return Err("wall is not tangent to cap");
+        }
+    }
+    let (num, _) = homogeneous_jacobian(degrees, controls);
+    let [nu, nv, nw] = num.degrees;
+    for i in 0..=nu {
+        for j in 0..=nv {
+            for k in 0..=nw {
+                let b = num.get([i, j, k]);
+                let zero =
+                    j == (if wall_upper { nv } else { 0 }) && k == (if cap_upper { nw } else { 0 });
+                if !b.finite() || (zero && (b.lo > 0.0 || b.hi < 0.0)) || (!zero && b.lo <= 0.0) {
+                    return Err("indeterminate contact-rail Bernstein coefficient");
+                }
+            }
+        }
+    }
+    Ok(())
 }
 
 fn determinant(matrix: &[[TensorBernstein; 4]; 4]) -> TensorBernstein {
@@ -692,6 +756,25 @@ mod tests {
         assert_eq!(limited.status, CertificateStatus::Indeterminate);
         assert!(limited.leaves_used <= 2);
         assert!(limited.determinant_lower_bound_mm3.is_none());
+    }
+
+    #[test]
+    fn certifies_a_single_contact_rail_and_rejects_a_reversed_map() {
+        // F(u,v,w)=(u,v,w²+vw) has determinant 2w+v.
+        let mut poles = Vec::new();
+        for i in 0..=2 {
+            for j in 0..=1 {
+                for z in [0, j, 2 + 2 * j] {
+                    poles.push([i, 2 * j, z, 2]);
+                }
+            }
+        }
+        assert!(certify_cap_contact([2, 1, 2], &poles, false, false, 2).is_ok());
+        assert!(certify_cap_contact([2, 1, 2], &poles, true, false, 2).is_err());
+        for h in &mut poles {
+            h[0] = -h[0];
+        }
+        assert!(certify_cap_contact([2, 1, 2], &poles, false, false, 2).is_err());
     }
 
     #[test]

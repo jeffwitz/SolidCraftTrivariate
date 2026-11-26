@@ -1,10 +1,95 @@
 {
-  "case": "unequal_width_two_transverse_bores",
+  "schema": "bracket_propagation_gallery_audit_v1",
+  "case": "unequal_transverse_bores",
+  "independent_reference_validation": {
+    "scope": "Frozen benchmark record for its original candidate and STEP; it does not describe the regenerated gallery STEP.",
+    "record": {
+      "case": "unequal_width_two_transverse_bores",
+      "historical_benchmark_model_audit": {
+        "blocks": 10,
+        "determinant_lower_bound_mm3": 12.321428571419117,
+        "historical_reference_blocks": 48,
+        "historical_reference_interfaces": 74,
+        "shared_faces": 11,
+        "status": "valid",
+        "through_bores": 2,
+        "volume_exact": {
+          "pi_coefficient_mm3": [
+            -704,
+            4
+          ],
+          "twice_rational_part_mm3": 61824
+        }
+      },
+      "independent_reference_validation": {
+        "analytic_volume": "30912 - 176*pi mm^3",
+        "record": {
+          "adaptive_occt_volume_mm3": 30359.079692968182,
+          "adaptive_surface_mm2": 9778.123859565998,
+          "adaptive_surface_relative_error_estimate": 3.7382621474498725e-16,
+          "adaptive_volume_relative_error_estimate": 1.9445507028404943e-10,
+          "brep": "build/orthogonal-step-brep/unequal_fillet_cross_bores.brep",
+          "case": "unequal_fillet_cross_bores",
+          "closed_solid_count": 1,
+          "default_shape_volume_mm3": 30359.079691341878,
+          "expected_volume_mm3": 30359.079692968196,
+          "face_count": 38,
+          "is_valid": true,
+          "relative_volume_error": 4.793266256927209e-16,
+          "shell_count": 1,
+          "solid_count": 1,
+          "step": "build/unequal-fillet-cross-bores.step",
+          "volume_matches": true
+        },
+        "scope": "Frozen FreeCAD/OCCT readback for its original candidate STEP; it does not validate the regenerated gallery STEP."
+      },
+      "kernel_rebuild": {
+        "blocks": 10,
+        "cavities": 0,
+        "determinant_lower_bound_mm3": 12.321428571419117,
+        "exterior_sides": 38,
+        "hausdorff_error_upper_bound_mm": 0,
+        "method": "certified_orthogonal_sketch_features",
+        "shared_faces": 11,
+        "status": "valid",
+        "through_bores": 2,
+        "volume_exact": {
+          "pi_coefficient_mm3": [
+            -704,
+            4
+          ],
+          "twice_rational_part_mm3": 61824
+        }
+      },
+      "model_audit": {
+        "blocks": 10,
+        "cavities": 0,
+        "determinant_lower_bound_mm3": 12.321428571419117,
+        "exterior_sides": 38,
+        "hausdorff_error_upper_bound_mm": 0,
+        "method": "certified_orthogonal_sketch_features",
+        "shared_faces": 11,
+        "status": "valid",
+        "through_bores": 2,
+        "volume_exact": {
+          "pi_coefficient_mm3": [
+            -704,
+            4
+          ],
+          "twice_rational_part_mm3": 61824
+        }
+      },
+      "recipe_family": "orthogonal_sketch_features_v1",
+      "schema": "bracket_propagation_gallery_audit_v1"
+    }
+  },
   "model_audit": {
     "blocks": 10,
+    "cavities": 0,
     "determinant_lower_bound_mm3": 12.321428571419117,
-    "historical_reference_blocks": 48,
-    "historical_reference_interfaces": 74,
+    "exterior_sides": 38,
+    "hausdorff_error_upper_bound_mm": 0,
+    "method": "certified_orthogonal_sketch_features",
     "shared_faces": 11,
     "status": "valid",
     "through_bores": 2,
@@ -16,25 +101,36 @@
       "twice_rational_part_mm3": 61824
     }
   },
-  "oracle": "FreeCAD Part/OCCT adaptive STEP readback; analytic volume 30912 - 176*pi mm^3",
-  "recipe_family": "orthogonal_sketch_features_v1",
-  "schema": "bracket_propagation_gallery_audit_v1",
-  "step_readback": {
-    "adaptive_occt_volume_mm3": 30359.079692968182,
-    "adaptive_surface_mm2": 9778.123859565998,
-    "adaptive_surface_relative_error_estimate": 3.7382621474498725e-16,
-    "adaptive_volume_relative_error_estimate": 1.9445507028404943e-10,
-    "brep": "build/orthogonal-step-brep/unequal_fillet_cross_bores.brep",
-    "case": "unequal_fillet_cross_bores",
-    "closed_solid_count": 1,
-    "default_shape_volume_mm3": 30359.079691341878,
-    "expected_volume_mm3": 30359.079692968196,
-    "face_count": 38,
-    "is_valid": true,
-    "relative_volume_error": 4.793266256927209e-16,
-    "shell_count": 1,
-    "solid_count": 1,
-    "step": "build/unequal-fillet-cross-bores.step",
-    "volume_matches": true
+  "kernel_rebuild": {
+    "command": "build recipe.json model.json; audit model.json; export-step model.json reference.step",
+    "kernel_revision": "7d37353900e86345ed8ef176fc2c987bf06a8d5b",
+    "kernel_binary_sha256": "0690e67c5077228d880f3002d2fef06d081dd612aba500855264599f20e8ef38",
+    "recipe_sha256": "f226b982c8195f54d6de9a1c0578e65321544a4db64bae23152e233f24f70724",
+    "model_sha256": "60aba12ab25640e4f4db1291115606234aac936b06455689313ccbddd51fc3f8",
+    "step_sha256": "2e115119fc46a8b05478c20d1626f0dda1753707461f9ee9eb10f03869219763",
+    "build_report": {
+      "blocks": 10,
+      "cavities": 0,
+      "determinant_lower_bound_mm3": 12.321428571419117,
+      "exterior_sides": 38,
+      "hausdorff_error_upper_bound_mm": 0,
+      "method": "certified_orthogonal_sketch_features",
+      "shared_faces": 11,
+      "status": "valid",
+      "through_bores": 2,
+      "volume_exact": {
+        "pi_coefficient_mm3": [
+          -704,
+          4
+        ],
+        "twice_rational_part_mm3": 61824
+      }
+    },
+    "sampled_condition": {
+      "method": "maximum spectral Jacobian condition number on the closed 5x5x5 parameter grid per block; diagnostic only",
+      "points_per_block": 125,
+      "sample_count": 1250,
+      "maximum_condition_2": 21.253387272993695
+    }
   }
 }

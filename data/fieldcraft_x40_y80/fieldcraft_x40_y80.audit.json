@@ -1,31 +1,84 @@
 {
-  "blocks": 10,
-  "cavities": 0,
-  "determinant_denominator": 4096,
-  "determinant_lower_bound_mm3": 47.91666666666197,
-  "determinant_numerator": 1,
-  "exterior_sides": 38,
-  "hausdorff_error_upper_bound_mm": 0,
-  "linear_operator_norm_upper": 0.06250000000000003,
-  "method": "certified_rational_affine_image",
-  "shared_faces": 11,
-  "source_certificate": {
+  "schema": "gallery_kernel_rebuild_audit_v1",
+  "case": "fieldcraft_x40_y80",
+  "independent_reference_validation": {
+    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/fieldcraft-compact-current-oracle.json",
+    "scope": "Independent host B-rep comparison for the five FieldCraft reference geometries."
+  },
+  "model_audit": {
     "blocks": 10,
     "cavities": 0,
-    "determinant_lower_bound_mm3": 196266.66666664748,
+    "determinant_denominator": 4096,
+    "determinant_lower_bound_mm3": 47.91666666666197,
+    "determinant_numerator": 1,
     "exterior_sides": 38,
     "hausdorff_error_upper_bound_mm": 0,
-    "method": "certified_orthogonal_sketch_features",
+    "linear_operator_norm_upper": 0.06250000000000003,
+    "method": "certified_rational_affine_image",
     "shared_faces": 11,
-    "status": "valid",
-    "through_bores": 2,
-    "volume_exact": {
-      "pi_coefficient_mm3": [
-        -9994240,
-        4
-      ],
-      "twice_rational_part_mm3": 279183360
-    }
+    "source_certificate": {
+      "blocks": 10,
+      "cavities": 0,
+      "determinant_lower_bound_mm3": 196266.66666664748,
+      "exterior_sides": 38,
+      "hausdorff_error_upper_bound_mm": 0,
+      "method": "certified_orthogonal_sketch_features",
+      "shared_faces": 11,
+      "status": "valid",
+      "through_bores": 2,
+      "volume_exact": {
+        "pi_coefficient_mm3": [
+          -9994240,
+          4
+        ],
+        "twice_rational_part_mm3": 279183360
+      }
+    },
+    "status": "valid"
   },
-  "status": "valid"
+  "kernel_rebuild": {
+    "command": "build recipe.json model.json; audit model.json; export-step model.json reference.step",
+    "kernel_revision": "7d37353900e86345ed8ef176fc2c987bf06a8d5b",
+    "kernel_binary_sha256": "0690e67c5077228d880f3002d2fef06d081dd612aba500855264599f20e8ef38",
+    "recipe_sha256": "7cd26167c2354110dd867709e80a97bb472a8220d54f8a4a51a2c16ee44be2cb",
+    "model_sha256": "ea1b7b4c23f053824dbaf50624a7d4842f6333181806bba2ca8e99f5383faa08",
+    "step_sha256": "26ce52b0c5d24c81488217db515f414431ff49ae499b3e03733886adf3a3e930",
+    "build_report": {
+      "blocks": 10,
+      "cavities": 0,
+      "determinant_denominator": 4096,
+      "determinant_lower_bound_mm3": 47.91666666666197,
+      "determinant_numerator": 1,
+      "exterior_sides": 38,
+      "hausdorff_error_upper_bound_mm": 0,
+      "linear_operator_norm_upper": 0.06250000000000003,
+      "method": "certified_rational_affine_image",
+      "shared_faces": 11,
+      "source_certificate": {
+        "blocks": 10,
+        "cavities": 0,
+        "determinant_lower_bound_mm3": 196266.66666664748,
+        "exterior_sides": 38,
+        "hausdorff_error_upper_bound_mm": 0,
+        "method": "certified_orthogonal_sketch_features",
+        "shared_faces": 11,
+        "status": "valid",
+        "through_bores": 2,
+        "volume_exact": {
+          "pi_coefficient_mm3": [
+            -9994240,
+            4
+          ],
+          "twice_rational_part_mm3": 279183360
+        }
+      },
+      "status": "valid"
+    },
+    "sampled_condition": {
+      "method": "maximum spectral Jacobian condition number on the closed 5x5x5 parameter grid per block; diagnostic only",
+      "points_per_block": 125,
+      "sample_count": 1250,
+      "maximum_condition_2": 13.333333333333334
+    }
+  }
 }

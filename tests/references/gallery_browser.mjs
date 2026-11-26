@@ -629,6 +629,43 @@ async function runBrowserChecks() {
     if (screenshotIds.has(experiment.id)) mobileScreens.push({ id: experiment.id, ...mobileScreen });
   }
 
+  await command('Emulation.setDeviceMetricsOverride', {width: 1400, height: 960, deviceScaleFactor: 1, mobile: false});
+  await command('Page.navigate', {url: serverUrl + 'compare.html?model=bench_poly_through_octagon_high_aspect'});
+  for (let i = 0; i < 200 && !await evaluate("document.querySelector('#assemble-stats')?.textContent.includes('4 NURBS volumes')"); i++) await pause(50);
+  if (!await evaluate("document.querySelector('#sketch')?.options.length === 46 && document.querySelector('#optimize-stats').textContent.includes('8 Bézier cells')")) {
+    throw new Error('Octagon comparison did not load');
+  }
+  const regions = await evaluate(`['assemble','optimize'].map(id => {
+    const r=document.getElementById(id).getBoundingClientRect();
+    return {x:r.left,y:r.top,width:r.width,height:r.height,scale:1};
+  })`);
+  const views = async () => {
+    await pause(120);
+    const hashes = [];
+    for (const r of regions) hashes.push((await capture('compare-view', r, true, false)).hash);
+    return hashes;
+  };
+  const moveCamera = async key => {
+    await evaluate(`document.getElementById('assemble').dispatchEvent(new KeyboardEvent('keydown', ${JSON.stringify(key)}))`);
+  };
+  let before = await views();
+  for (const event of [{key:'ArrowLeft'},{key:'ArrowUp',shiftKey:true},{key:'+'}]) {
+    await moveCamera(event);
+    const after = await views();
+    if (after.some((v,i)=>v===before[i])) throw new Error('Synchronized camera failed: '+JSON.stringify(event));
+    before = after;
+  }
+  await evaluate("document.getElementById('sync').click()");
+  await moveCamera({key:'ArrowRight'});
+  const unlocked = await views();
+  if (unlocked[0]===before[0] || unlocked[1]!==before[1]) throw new Error('Independent cameras failed');
+  await evaluate("document.getElementById('sync').click()");
+  if ((await views())[1] === unlocked[1]) throw new Error('Relinking views failed');
+  await evaluate("document.getElementById('sketch').value='bench_poly_blind_two_levels';document.getElementById('sketch').dispatchEvent(new Event('change'))");
+  if (!await evaluate("document.getElementById('optimize-stats').textContent.includes('24 NURBS volumes · 96 Bézier cells')")) throw new Error('Wrong two-depth pocket');
+  await pause(150);
+  await capture('nurbs-comparison-desktop', null, false, true);
+
   if (runtimeErrors.length) throw new Error(`Browser JavaScript errors: ${runtimeErrors.join('\n')}`);
   const result = {
     url: serverUrl,

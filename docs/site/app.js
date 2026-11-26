@@ -308,7 +308,7 @@ async function start() {
     }
     ui.selector.disabled = false;
     try {
-      const { createViewer } = await import('./renderer.js?v=845dddec1aca');
+      const { createViewer } = await import('./renderer.js?v=e5860fed8412');
       viewer = createViewer(ui.canvas);
       if (!viewer || typeof viewer.setModel !== 'function') throw new Error('The viewer API is incomplete.');
       hideState();

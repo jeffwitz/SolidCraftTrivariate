@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>NURBS partition comparison · SolidCraft</title>
+  <link rel="stylesheet" href="./style.css?v=4c80dc8c8d5c"><link rel="stylesheet" href="./compare.css?v=10bd0f5e1bc0">
+  <script type="module" src="./compare.js?v=44ccde684f3c"></script>
+</head>
+<body>
+  <header class="topbar"><a class="wordmark" href="./"><span class="mark">S</span>SolidCraft <span class="wordmark-light">/ Trivariate</span></a><a href="./">Geometry gallery ↗</a></header>
+  <main>
+    <section class="intro"><h1>NURBS partitions</h1><p class="lede">Compare two ways to partition the same sketch. Each colour follows one volume through the solid.</p></section>
+    <div class="compare-controls">
+      <label>Sketch<select id="sketch"></select></label>
+      <label>Colour by<select id="colour"><option value="patch">NURBS volume</option><option value="cell">Bézier cell</option></select></label>
+      <label>Drag to<select id="tool"><option value="orbit">Rotate</option><option value="pan">Pan</option></select></label>
+      <label class="check"><input type="checkbox" id="sync" checked> Sync views</label>
+      <button class="reset-button" id="reset">Reset views</button>
+    </div>
+    <p id="status" role="status">Loading models…</p>
+    <div class="comparison">
+      <section class="viewport-panel"><div class="viewport-head"><h2>Assembled</h2><span>Existing partition</span></div><canvas id="assemble" tabindex="0" aria-label="Assembled partition" aria-describedby="gestures"></canvas><p id="assemble-stats"></p></section>
+      <section class="viewport-panel"><div class="viewport-head"><h2>Optimized</h2><span>Reselected separators</span></div><canvas id="optimize" tabindex="0" aria-label="Optimized partition" aria-describedby="gestures"></canvas><p id="optimize-stats"></p></section>
+    </div>
+    <div class="compare-controls"><label class="check"><input type="checkbox" id="cut"> Z section</label><input type="range" id="fraction" min="1" max="99" value="50" disabled aria-label="Section height"><output id="height">50%</output></div>
+    <p class="instructions" id="gestures">Drag to rotate. Shift-drag or right-drag to pan. Scroll to zoom. On touchscreens, use two fingers to pan and pinch. With a view focused, use arrows to rotate, Shift + arrows to pan, and + / − to zoom.</p>
+    <footer class="page-footer"><a href="https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/sketch-nurbs-partition.md">Method and validation ↗</a></footer>
+  </main>
+</body></html>

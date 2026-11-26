@@ -1,0 +1,14 @@
+.comparison { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px }
+.comparison canvas {height:clamp(260px,33vw,490px);background:#efeade;cursor:grab}
+.comparison canvas:active {cursor:grabbing}
+.comparison .viewport-head {min-height:55px;gap:12px}
+.comparison .viewport-head span,.instructions,.comparison p {color:#55635a;font-size:14px}
+.comparison p {margin:13px 20px}
+.compare-controls {display:flex;align-items:end;gap:16px;flex-wrap:wrap;margin:16px 0}
+.compare-controls label:not(.check) {display:grid;gap:4px;font-size:12px;color:#45554a}
+.compare-controls select,.compare-controls button {font-size:14px;min-height:38px;margin:0}
+.compare-controls .check {display:flex;align-items:center;gap:6px;align-self:center;font-size:14px}
+.compare-controls input[type=checkbox] {accent-color:#245a49}
+#fraction,#height {align-self:center} #status:empty {display:none}
+.instructions {line-height:1.5}.comparison-link {color:#245a49;font-weight:600}
+@media(max-width:760px){.comparison{grid-template-columns:1fr}.comparison canvas{height:32vh;min-height:195px}.compare-controls label:first-child{max-width:100%}.compare-controls select{max-width:100%}.compare-controls{gap:10px}}

@@ -411,6 +411,8 @@ def main() -> None:
     removed = remove_unreferenced_data(entries)
     write_json(MANIFEST, entries)
     version_modules("app.js", ["renderer.js"])
+    version_modules("compare.js", ["renderer.js", "comparison-data.json"])
+    version_modules("compare.html", ["compare.js", "style.css", "compare.css"])
     version_modules("index.html", ["app.js", "experiments.json", "style.css"])
     print(f"Regenerated {len(entries)} gallery bundles from tracked recipes with {args.cli}; removed {removed} unreferenced assets")
 

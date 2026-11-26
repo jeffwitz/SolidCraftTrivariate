@@ -156,7 +156,7 @@ def run(source_path: Path, result_path: Path):
     source_bytes = source_path.read_bytes()
     source = json.loads(source_bytes)
     result = json.loads(result_path.read_text())
-    assert result["schema"] == "fixed_partition_bore_chamfer_v1"
+    assert result["schema"] == "fixed_partition_bore_edge_v1" and result["state"] == "chamfer"
     source_blocks = {b["id"]: b for b in source["blocks"]}
     assert result["source_model"] == str(source_path.relative_to(ROOT))
     assert result["source_audit_status"] == "valid"
@@ -165,7 +165,7 @@ def run(source_path: Path, result_path: Path):
     assert len(result["elements"]) == 30
     assert result["interfaces"] == 53
 
-    bore_configs = {b["chart_prefix"]: b for b in result["chamfers"]}
+    bore_configs = {b["chart_prefix"]: b for b in result["bores"]}
     assert set(bore_configs) == {"wing_east_", "wing_north_"}
     all_elements = result["elements"]
     by_id = {}
@@ -180,7 +180,7 @@ def run(source_path: Path, result_path: Path):
     for prefix, cfg in bore_configs.items():
         assert cfg["both_axial_ends"]
         radius = F(cfg["radius_quarters"], TICKS_PER_MM)
-        width = F(cfg["width_quarters"], TICKS_PER_MM)
+        width = F(result["edge_parameter_quarters"], TICKS_PER_MM)
         axis = int(cfg["axis"])
         center = [F(x, TICKS_PER_MM) for x in cfg["center_quarters"]]
         transverse = [(axis + 1) % 3, (axis + 2) % 3]
@@ -199,9 +199,9 @@ def run(source_path: Path, result_path: Path):
         loq, hiq = lo * TICKS_PER_MM, hi * TICKS_PER_MM
         assert loq.denominator == hiq.denominator == 1
         loq, hiq = int(loq), int(hiq)
-        expected = [[loq, loq + int(cfg["width_quarters"])],
-                    [loq + int(cfg["width_quarters"]), hiq - int(cfg["width_quarters"])],
-                    [hiq - int(cfg["width_quarters"]), hiq]]
+        expected = [[loq, loq + int(result["edge_parameter_quarters"])],
+                    [loq + int(result["edge_parameter_quarters"]), hiq - int(result["edge_parameter_quarters"])],
+                    [hiq - int(result["edge_parameter_quarters"]), hiq]]
         assert expected[1][0] < expected[1][1]
 
         for chart_id in chart_ids:
@@ -302,7 +302,7 @@ def run(source_path: Path, result_path: Path):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--source", type=Path, default=SOURCE)
-    parser.add_argument("--result", type=Path, default=ROOT / "build/bracket-edge-edit.json")
+    parser.add_argument("--result", type=Path, default=ROOT / "build/bracket-edge-edit-chamfer.json")
     parser.add_argument("--output", type=Path, default=ROOT / "build/bracket-edge-edit-independent.json")
     args = parser.parse_args()
     report = run(args.source, args.result)

@@ -25,10 +25,10 @@ The oracle also independently certifies the tensor Bernstein determinant of all 
 From the repository root:
 
 ```sh
-cargo run --offline --example bracket_edge_edit
+cargo run --offline --example bracket_edge_edit -- chamfer
 python3 tests/references/bracket_edge_edit_oracle.py
 ```
 
-The first command writes `build/bracket-edge-edit.json`. The Python oracle independently reads the source `docs/site/data/fieldcraft_x64_y64/fieldcraft_x64_y64.model.json` and that output, then writes `build/bracket-edge-edit-independent.json`. The source SHA-256 is `82fb0d3f7a0977a47c705886d13632900dc62429be572231fc4f152a38688e09`; the output SHA-256 audited here is `406dfdcfe8913bba52863e8a1b564dd43321505a517a1165f8b7a77493e8b7b5`.
+The first command writes `build/bracket-edge-edit-chamfer.json`. The Python oracle independently reads the source `docs/site/data/fieldcraft_x64_y64/fieldcraft_x64_y64.model.json` and that output, then writes `build/bracket-edge-edit-independent.json`. The source SHA-256 is `82fb0d3f7a0977a47c705886d13632900dc62429be572231fc4f152a38688e09`; the output SHA-256 audited here is `8cfe950328537dcbbf513f768b4a9927b15720383858d95149d6d7499c83c35c`.
 
 The derivative certificate reuses the independent exact integer Bernstein implementation in `tests/references/s3_stock_rim.py`. Radius identities, seam restrictions, and the analytic volume calculation are implemented directly in `tests/references/bracket_edge_edit_oracle.py` with Python `Fraction` arithmetic. The fixed-radius result applies to this exact source model and these two 0.25 mm end chamfers; it does not qualify a round fillet or a different topology.

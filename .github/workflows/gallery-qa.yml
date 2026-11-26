@@ -17,7 +17,7 @@ permissions:
 jobs:
   gallery-browser:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -29,6 +29,8 @@ jobs:
           echo "CHROME_BIN=$(command -v google-chrome)" >> "$GITHUB_ENV"
 
       - name: Run engineering gallery browser QA
+        env:
+          GALLERY_EXPECTED_ENTRY_COUNT: '68'
         run: node tests/references/gallery_browser.mjs build/gallery-qa
 
       - name: Upload screenshots and browser report

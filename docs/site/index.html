@@ -4,11 +4,11 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#f5f4ef">
-  <meta name="description" content="Explore six historical models and five FieldCraft brackets as 3D solids or cross-sections.">
+  <meta name="description" content="Explore sketch partitions, pierced brackets and curved parts as interactive 3D solids.">
   <title>Trivariate parts · SolidCraft</title>
-  <link rel="stylesheet" href="./style.css?v=5e63da9c6524">
-  <link id="catalog-url" rel="alternate" type="application/json" href="./experiments.json?v=052e2a8df703">
-  <script type="module" src="./app.js?v=57dd3f788350"></script>
+  <link rel="stylesheet" href="./style.css?v=4c80dc8c8d5c">
+  <link id="catalog-url" rel="alternate" type="application/json" href="./experiments.json?v=3033271c3b86">
+  <script type="module" src="./app.js?v=c14f8fb75e6a"></script>
 </head>
 <body>
   <header class="topbar">
@@ -18,8 +18,8 @@
 
   <main>
     <section class="intro" aria-labelledby="page-title">
-      <h1 id="page-title">Trivariate models and FieldCraft brackets</h1>
-      <p class="lede">Explore six curved-profile parts and five FieldCraft brackets as 3D solids or cross-sections.</p>
+      <h1 id="page-title">Sketch partitions in 3D</h1>
+      <p class="lede">Inspect the bore stacks, polygonal holes and blind pockets. Switch between the outer surface and the individual blocks, or take a section through the solid.</p>
     </section>
 
     <section class="workspace" aria-label="Model explorer">
@@ -54,6 +54,7 @@
 
       <aside class="side-panel" aria-label="Experiments and measurements">
         <div class="experiment-head"><label for="experiment-select">Experiment</label><select id="experiment-select" disabled><option>Loading…</option></select></div>
+        <nav class="model-navigation" aria-label="Browse models"><button id="previous-model" type="button" disabled>← Previous</button><output id="model-position" aria-live="polite"></output><button id="next-model" type="button" disabled>Next →</button></nav>
         <div class="experiment-copy"><p id="experiment-description"></p></div>
         <figure class="profile-card" id="profile-card" hidden aria-label="Actual hole profiles"></figure>
         <div class="metrics-section"><div class="section-rule"><span>Model data</span><span class="rule-line"></span></div><dl id="metrics-list" class="metrics-list"><div class="metric-empty">Waiting for data.</div></dl></div>
@@ -62,8 +63,8 @@
     </section>
 
     <details class="proof"><summary>How should I read these values?</summary>
-      <p>The block and interface counts describe the graph supplied for each configuration. For the six historical models, any minimality claim applies only to the prescribed arc junctions and the class of layer-aligned partitions. The five FieldCraft brackets are reference models, with no minimality claim.</p>
-      <p>Sections provide a visual preview of the trivariate model; they are not a geometric certificate. The associated recipe and audit document the data and their scope.</p>
+      <p>The block and interface counts describe the graph supplied for each configuration. For the six historical models, any minimality claim applies only to the prescribed arc junctions and the class of layer-aligned partitions. For the benchmark pieces, reference counts come from the earlier kernel. A lower count can coincide with a higher sampled condition number.</p>
+      <p>The viewer draws the candidate volume maps. Its sections are visual previews. Each model includes its recipe, audit and STEP export.</p>
     </details>
     <footer class="page-footer"><span>SolidCraft Trivariate</span><span></span><a href="https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/architecture.md" target="_blank" rel="noopener noreferrer">Project architecture ↗</a></footer>
   </main>

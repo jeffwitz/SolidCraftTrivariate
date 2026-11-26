@@ -173,6 +173,11 @@ async function selectExperiment(id) {
   ui.axis.value = preset.axis;
   ui.fraction.value = String(Math.round(preset.fraction * 100));
   ui.selector.value = experiment.id;
+  const index = experiments.indexOf(experiment);
+  byId('model-position').textContent = `${index + 1} / ${experiments.length}`;
+  byId('previous-model').disabled = index === 0;
+  byId('next-model').disabled = index === experiments.length - 1;
+  setLink(document.querySelector('.campaign-link'), experiment.report || 'https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/galerie-esquisses-courbes.md');
   ui.viewTitle.textContent = experiment.title || experiment.id;
   ui.description.textContent = experiment.description || '';
   renderMetrics(experiment.metrics);
@@ -229,6 +234,14 @@ function applyClip() {
 }
 
 function initControls() {
+  for (const [id, offset] of [['previous-model', -1], ['next-model', 1]]) {
+    byId(id).addEventListener('click', () => {
+      const target = experiments[experiments.indexOf(activeExperiment()) + offset];
+      if (!target) return;
+      ui.selector.value = target.id;
+      ui.selector.dispatchEvent(new Event('change'));
+    });
+  }
   ui.selector.addEventListener('change', () => {
     const url = new URL(location.href);
     url.searchParams.set('model', ui.selector.value);
@@ -295,7 +308,7 @@ async function start() {
     }
     ui.selector.disabled = false;
     try {
-      const { createViewer } = await import('./renderer.js?v=f83018bd1004');
+      const { createViewer } = await import('./renderer.js?v=845dddec1aca');
       viewer = createViewer(ui.canvas);
       if (!viewer || typeof viewer.setModel !== 'function') throw new Error('The viewer API is incomplete.');
       hideState();

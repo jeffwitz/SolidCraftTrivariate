@@ -22,6 +22,7 @@ const REPO_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..
 const SITE_ROOT = path.resolve(process.env.GALLERY_SITE_ROOT || path.join(REPO_ROOT, 'docs/site'));
 const OUTPUT_DIR = path.resolve(process.argv[2] || path.join(REPO_ROOT, 'build/gallery-qa'));
 const CHROME_BIN = process.env.CHROME_BIN || '/usr/bin/google-chrome';
+const EXPECTED_ENTRY_COUNT = Number(process.env.GALLERY_EXPECTED_ENTRY_COUNT || 68);
 const HOST = '127.0.0.1';
 const MIME_TYPES = {
   '.css': 'text/css; charset=utf-8',
@@ -103,8 +104,9 @@ const injectedExpressions = {
         figure: Boolean(experiment.figure),
       },
       assets: await Promise.all(assets.map(async asset => {
-        const response = await fetch(asset.path, { method: 'HEAD' });
-        return { ...asset, status: response.status };
+        const response = await fetch(asset.path);
+        const bytes = await response.arrayBuffer();
+        return { ...asset, status: response.status, bytes: bytes.byteLength };
       })),
       curvedBlockCount: curvedBlocks.length,
       profileCount: (audit?.g1_oval_arcs || []).filter(item => Array.isArray(item.quadratic_arcs_mm)
@@ -412,13 +414,13 @@ async function runBrowserChecks() {
     const summary = await evaluate(injectedExpressions.bodySummary);
     throw new Error(`Gallery did not become ready: ${summary}`);
   };
-  const capture = async (name, region, analyze = false) => {
+  const capture = async (name, region, analyze = false, persist = true) => {
     const result = await command('Page.captureScreenshot', {
       format: 'png',
       ...(region ? { clip: region } : {}),
     });
     const bytes = Buffer.from(result.data, 'base64');
-    await writeFile(path.join(OUTPUT_DIR, `${name}.png`), bytes);
+    if (persist) await writeFile(path.join(OUTPUT_DIR, `${name}.png`), bytes);
     const hash = createHash('sha256').update(bytes).digest('hex');
     return analyze ? { hash, ...inspectPng(bytes) } : hash;
   };
@@ -442,20 +444,21 @@ async function runBrowserChecks() {
   for (let i = 0; i < 100 && !(await evaluate("document.title === 'Old gallery'")); i++) await pause(50);
   const oldId = await evaluate("fetch('./experiments.json').then(r => r.json()).then(rows => rows[0].id)");
   if (oldId !== 'g2-cross-plate') throw new Error('Historical catalog was not primed');
+  const landingId = await evaluate("fetch('./experiments.json?catalog=qa').then(r => r.json()).then(rows => rows[0].id)");
   await command('Page.navigate', { url: serverUrl + '?model=retired-curved-catalog-id' });
-  await waitForGallery('plate_blind_pocket');
+  await waitForGallery(landingId);
   const publicUiLocale = await evaluate(injectedExpressions.publicUiLocale);
-  if (publicUiLocale.lang !== 'en' || !publicUiLocale.heading.includes('FieldCraft brackets')
+  if (publicUiLocale.lang !== 'en' || publicUiLocale.heading !== 'Sketch partitions in 3D'
     || !publicUiLocale.canvasLabel.startsWith('Interactive 3D model')
     || !publicUiLocale.resetLabel.endsWith('Reset view') || publicUiLocale.experimentLabel !== 'Experiment') {
     throw new Error(`Public gallery UI is not consistently in English: ${JSON.stringify(publicUiLocale)}`);
   }
-  if (await evaluate("new URL(location.href).searchParams.get('model')") !== 'plate_blind_pocket') {
+  if (await evaluate("new URL(location.href).searchParams.get('model')") !== landingId) {
     throw new Error('Retired model permalink was not corrected');
   }
 
   const resources = await evaluate(injectedExpressions.resources);
-  const expected = [
+  const historicalIds = [
     "plate_blind_pocket",
     "rectangle_internal_rectangle",
     "rectangle_offset_pocket",
@@ -468,19 +471,33 @@ async function runBrowserChecks() {
     "fieldcraft_x64_y64",
     "fieldcraft_x80_y40",
   ];
-  if (JSON.stringify(resources.map(item => item.id)) !== JSON.stringify(expected)) {
-    throw new Error('Unexpected qualified gallery catalog');
+  const ids = resources.map(item => item.id);
+  const polyIds = ids.filter(id => id.startsWith('bench_poly_'));
+  const bracketIds = ids.filter(id => id.startsWith('bench-bracket-'));
+  const bracketCases = [
+    'bench-bracket-original', 'bench-bracket-in-plane', 'bench-bracket-east-stack',
+    'bench-bracket-north-stack', 'bench-bracket-east-offset-stack', 'bench-bracket-diagonal',
+    'bench-bracket-three-levels', 'bench-bracket-both-stacked', 'bench-bracket-axial-z',
+    'bench-bracket-unequal-stack', 'bench-bracket-unequal-transverse-bores',
+  ];
+  if (resources.length !== EXPECTED_ENTRY_COUNT || new Set(ids).size !== ids.length
+    || polyIds.length !== 46 || bracketIds.length !== 11
+    || historicalIds.some(id => !ids.includes(id))
+    || !ids.includes('bench_poly_projection_diamonds')
+    || bracketCases.some(id => !ids.includes(id))
+    || ids[0] !== 'bench-bracket-east-stack') {
+    throw new Error(`Unexpected gallery catalog: count=${resources.length}, poly=${polyIds.length}, brackets=${bracketIds.length}, first=${ids[0]}`);
   }
   if (resources.some(experiment => experiment.assets.length === 0
-    || experiment.assets.some(asset => asset.status !== 200))) {
+    || experiment.assets.some(asset => asset.status !== 200 || asset.bytes < 1))) {
     throw new Error(`Gallery resource requests failed: ${JSON.stringify(resources)}`);
   }
   if (resources.some(experiment => experiment.assets.some(asset => !/[?&]v=[^&#]+/.test(asset.path)))) {
     throw new Error('A model, recipe, audit, STEP, or figure URL is missing the current cache version');
   }
-  const legacyCurvedIds = new Set(expected.slice(0, 6));
-  if (resources.some(experiment => experiment.curvedBlockCount < 1)) {
-    throw new Error(`Expected actual non-linear geometry in every model: ${JSON.stringify(resources.map(({ id, curvedBlockCount }) => ({ id, curvedBlockCount })))}`);
+  const legacyCurvedIds = new Set(historicalIds.slice(0, 6));
+  if (resources.some(experiment => legacyCurvedIds.has(experiment.id) && experiment.curvedBlockCount < 1)) {
+    throw new Error(`Historical curved geometry is missing: ${JSON.stringify(resources.filter(({ id }) => legacyCurvedIds.has(id)).map(({ id, curvedBlockCount }) => ({ id, curvedBlockCount })))}`);
   }
   if (resources.some(experiment => legacyCurvedIds.has(experiment.id) && experiment.profileCount < 1)) {
     throw new Error(`A curved-profile source audit has no four-arc profile data: ${JSON.stringify(resources.map(({ id, profileCount }) => ({ id, profileCount })))}`);
@@ -511,6 +528,12 @@ async function runBrowserChecks() {
   const experimentChecks = [];
   const modelScreens = [];
   const curvedSectionHashes = [];
+  const screenshotIds = new Set([
+    resources[0].id,
+    'bench_poly_projection_diamonds',
+    'bench-bracket-east-stack',
+    'bench-bracket-unequal-transverse-bores',
+  ]);
   for (const experiment of resources) {
     await command('Page.navigate', { url: `${serverUrl}?model=${encodeURIComponent(experiment.id)}` });
     await waitForGallery(experiment.id);
@@ -547,14 +570,19 @@ async function runBrowserChecks() {
     if (activeClip.axis !== section.axis || Math.abs(activeClip.fraction / 100 - section.fraction) > 0.011) {
       throw new Error(`Experiment ${experiment.id} did not apply its prescribed curved section: ${JSON.stringify({ activeClip, section })}`);
     }
-    const modelScreen = await capture(`model-${experiment.id.replace(/[^a-z0-9_-]/gi, '-')}`, await canvasRegion(), true);
+    const modelScreen = await capture(
+      `model-${experiment.id.replace(/[^a-z0-9_-]/gi, '-')}`,
+      await canvasRegion(), true, screenshotIds.has(experiment.id),
+    );
     if (modelScreen.paintedPixels < 250) {
       throw new Error(`Experiment ${experiment.id} canvas appears blank: ${JSON.stringify(modelScreen)}`);
     }
     modelScreens.push({ id: experiment.id, representation: experiment.representation || 'trivariate', ...modelScreen, visibleLinks, controls, state });
-    const cutScreen = await capture(`curved-section-${experiment.id.replace(/[^a-z0-9_-]/gi, '-')}`, await canvasRegion(), true);
-    if (cutScreen.paintedPixels < 250) throw new Error(`Curved section ${experiment.id} rendered blank: ${JSON.stringify(cutScreen)}`);
-    if (experiment.profileCount > 0) curvedSectionHashes.push(cutScreen.hash);
+    if (screenshotIds.has(experiment.id)) {
+      const cutScreen = await capture(`curved-section-${experiment.id.replace(/[^a-z0-9_-]/gi, '-')}`, await canvasRegion(), true, true);
+      if (cutScreen.paintedPixels < 250) throw new Error(`Curved section ${experiment.id} rendered blank: ${JSON.stringify(cutScreen)}`);
+      if (experiment.profileCount > 0) curvedSectionHashes.push(cutScreen.hash);
+    }
     experimentChecks.push(experiment.id);
   }
   if (new Set(modelScreens.map(item => item.hash)).size < 2) {
@@ -566,22 +594,26 @@ async function runBrowserChecks() {
 
   // Re-select the first entry after traversing the full catalog to verify recovery from
   // repeated model replacement and to leave a known model active for the mobile pass.
-  await command('Page.navigate', { url: serverUrl + '?model=c_section_lower_hole_x_plus_1' });
-  await waitForGallery('c_section_lower_hole_x_plus_1');
-  await selectExperiment(selectedExperiment.id);
   await command('Emulation.setDeviceMetricsOverride', {
     width: 390, height: 844, deviceScaleFactor: 1, mobile: true,
   });
-  await command('Page.navigate', { url: `${serverUrl}?model=${encodeURIComponent(selectedExperiment.id)}` });
-  await waitForGallery(selectedExperiment.id);
-  await pause(500);
-  const mobileMetrics = await evaluate(injectedExpressions.mobileMetrics);
-  if (mobileMetrics.documentWidth > mobileMetrics.viewportWidth + 1
-    || mobileMetrics.canvas.width < 1 || mobileMetrics.canvas.height < 1) {
-    throw new Error(`Mobile layout failed: ${JSON.stringify(mobileMetrics)}`);
+  let mobileMetrics;
+  const mobileScreens = [];
+  for (const experiment of resources) {
+    await selectExperiment(experiment.id);
+    await pause(100);
+    mobileMetrics = await evaluate(injectedExpressions.mobileMetrics);
+    if (mobileMetrics.documentWidth > mobileMetrics.viewportWidth + 1
+      || mobileMetrics.canvas.width < 1 || mobileMetrics.canvas.height < 1) {
+      throw new Error(`Mobile layout failed for ${experiment.id}: ${JSON.stringify(mobileMetrics)}`);
+    }
+    const mobileScreen = await capture(`mobile-${experiment.id.replace(/[^a-z0-9_-]/gi, '-')}`,
+      await canvasRegion(), true, screenshotIds.has(experiment.id));
+    if (mobileScreen.paintedPixels < 250) {
+      throw new Error(`Mobile WebGL canvas for ${experiment.id} appears blank: ${JSON.stringify(mobileScreen)}`);
+    }
+    if (screenshotIds.has(experiment.id)) mobileScreens.push({ id: experiment.id, ...mobileScreen });
   }
-  const mobileHash = await capture('mobile');
-  await capture('mobile-canvas', await canvasRegion());
 
   if (runtimeErrors.length) throw new Error(`Browser JavaScript errors: ${runtimeErrors.join('\n')}`);
   const result = {
@@ -589,9 +621,10 @@ async function runBrowserChecks() {
     chrome: { product: version.product, userAgent: version.userAgent },
     experiments: experimentChecks,
     modelScreens,
+    mobileScreens,
     selectedExperiment: selectedExperiment.id,
     cutPercent,
-    screenshotHashes: { desktop: desktopHash, surface: surfaceHash, blocks: blocksHash, blocksCut: blocksCutHash, cut: cutHash, mobile: mobileHash },
+    screenshotHashes: { desktop: desktopHash, surface: surfaceHash, blocks: blocksHash, blocksCut: blocksCutHash, cut: cutHash },
     mobile: mobileMetrics,
     runtimeErrors,
   };

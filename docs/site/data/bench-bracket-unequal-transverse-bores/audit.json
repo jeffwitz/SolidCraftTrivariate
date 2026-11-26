@@ -1,0 +1,40 @@
+{
+  "case": "unequal_width_two_transverse_bores",
+  "model_audit": {
+    "blocks": 10,
+    "determinant_lower_bound_mm3": 12.321428571419117,
+    "historical_reference_blocks": 48,
+    "historical_reference_interfaces": 74,
+    "shared_faces": 11,
+    "status": "valid",
+    "through_bores": 2,
+    "volume_exact": {
+      "pi_coefficient_mm3": [
+        -704,
+        4
+      ],
+      "twice_rational_part_mm3": 61824
+    }
+  },
+  "oracle": "FreeCAD Part/OCCT adaptive STEP readback; analytic volume 30912 - 176*pi mm^3",
+  "recipe_family": "orthogonal_sketch_features_v1",
+  "schema": "bracket_propagation_gallery_audit_v1",
+  "step_readback": {
+    "adaptive_occt_volume_mm3": 30359.079692968182,
+    "adaptive_surface_mm2": 9778.123859565998,
+    "adaptive_surface_relative_error_estimate": 3.7382621474498725e-16,
+    "adaptive_volume_relative_error_estimate": 1.9445507028404943e-10,
+    "brep": "build/orthogonal-step-brep/unequal_fillet_cross_bores.brep",
+    "case": "unequal_fillet_cross_bores",
+    "closed_solid_count": 1,
+    "default_shape_volume_mm3": 30359.079691341878,
+    "expected_volume_mm3": 30359.079692968196,
+    "face_count": 38,
+    "is_valid": true,
+    "relative_volume_error": 4.793266256927209e-16,
+    "shell_count": 1,
+    "solid_count": 1,
+    "step": "build/unequal-fillet-cross-bores.step",
+    "volume_matches": true
+  }
+}

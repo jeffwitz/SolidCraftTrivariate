@@ -1,0 +1,229 @@
+{
+  "schema": "polygon_gallery_case_audit_v1",
+  "case": {
+    "id": "blind_hex_deep",
+    "family": "convex_blind_pockets",
+    "paired_outcome": "common_success",
+    "baseline_admitted": true,
+    "candidate_admitted": true,
+    "baseline_geometry_pass": true,
+    "candidate_geometry_pass": true,
+    "baseline_method": "rectangular_hosts_y",
+    "candidate_method": "rectangular_hosts_y",
+    "baseline_blocks": 14,
+    "candidate_blocks": 14,
+    "baseline_input_vertex_euler_gap": 8,
+    "candidate_input_vertex_euler_gap": 8,
+    "block_delta_candidate_minus_baseline": 0,
+    "baseline_build_s": 0.020462855987716466,
+    "candidate_build_s": 0.06166770902927965,
+    "baseline_total_s": 0.03151064901612699,
+    "candidate_total_s": 0.1030919820186682,
+    "baseline_condition_max": 42.259314393342336,
+    "candidate_condition_max": 42.259314393342336,
+    "cut_count": 1
+  },
+  "candidate": {
+    "id": "blind_hex_deep",
+    "family": "convex_blind_pockets",
+    "build_elapsed_s": 0.06166770902927965,
+    "build_stdout": "{\"blocks\":14,\"bounded_sketch_faces\":8,\"cavities\":0,\"determinant_lower_bound_mm3\":167.99999999999991,\"exterior_sides\":34,\"hausdorff_error_upper_bound_mm\":0,\"method\":\"certified_sketch_layer_partition\",\"shared_faces\":25,\"status\":\"valid\",\"volume_exact_mm3\":[69084,1]}",
+    "build_stderr": "",
+    "admitted": true,
+    "geometry_pass": true,
+    "construction_method": "rectangular_hosts_y",
+    "block_count": 14,
+    "condition_grid_5cube_per_block": [
+      {
+        "block_id": "quad_-36d1_-24d1_-36d1_0d1_-5d1_3d1_3d1_-12d1_z0_4",
+        "max_condition_2": 10.420406297315205
+      },
+      {
+        "block_id": "quad_-36d1_-24d1_3d1_-12d1_13d1_-10d1_36d1_-24d1_z0_4",
+        "max_condition_2": 42.15108847169485
+      },
+      {
+        "block_id": "quad_-36d1_0d1_-36d1_24d1_-5d1_3d1_2d1_12d1_z0_4",
+        "max_condition_2": 10.202759339848843
+      },
+      {
+        "block_id": "quad_-36d1_24d1_2d1_12d1_14d1_10d1_36d1_24d1_z0_4",
+        "max_condition_2": 25.73426716474603
+      },
+      {
+        "block_id": "quad_-5d1_3d1_3d1_-12d1_13d1_-10d1_19d1_-1d1_z0_4",
+        "max_condition_2": 6.78465536772409
+      },
+      {
+        "block_id": "quad_-5d1_3d1_2d1_12d1_14d1_10d1_19d1_-1d1_z0_4",
+        "max_condition_2": 6.365549656100268
+      },
+      {
+        "block_id": "quad_13d1_-10d1_19d1_-1d1_36d1_-24d1_36d1_0d1_z0_4",
+        "max_condition_2": 7.890390448948851
+      },
+      {
+        "block_id": "quad_14d1_10d1_19d1_-1d1_36d1_0d1_36d1_24d1_z0_4",
+        "max_condition_2": 7.782116010203098
+      },
+      {
+        "block_id": "quad_-36d1_-24d1_-36d1_0d1_-5d1_3d1_3d1_-12d1_z4_22",
+        "max_condition_2": 2.4922876228169937
+      },
+      {
+        "block_id": "quad_-36d1_-24d1_3d1_-12d1_13d1_-10d1_36d1_-24d1_z4_22",
+        "max_condition_2": 42.259314393342336
+      },
+      {
+        "block_id": "quad_-36d1_0d1_-36d1_24d1_-5d1_3d1_2d1_12d1_z4_22",
+        "max_condition_2": 4.046202256370222
+      },
+      {
+        "block_id": "quad_-36d1_24d1_2d1_12d1_14d1_10d1_36d1_24d1_z4_22",
+        "max_condition_2": 25.72718592704942
+      },
+      {
+        "block_id": "quad_13d1_-10d1_19d1_-1d1_36d1_-24d1_36d1_0d1_z4_22",
+        "max_condition_2": 2.5389950010708495
+      },
+      {
+        "block_id": "quad_14d1_10d1_19d1_-1d1_36d1_0d1_36d1_24d1_z4_22",
+        "max_condition_2": 2.216854904607503
+      }
+    ],
+    "reported_method": "certified_sketch_layer_partition",
+    "audit_elapsed_s": 0.041424272989388555,
+    "closed_domain_certificate": {
+      "status": "valid",
+      "method": "certified_sketch_layer_partition",
+      "determinant_lower_bound_mm3": 167.99999999999991,
+      "hausdorff_error_upper_bound_mm": 0
+    },
+    "volume_exact_expected_mm3": [
+      69084,
+      1
+    ],
+    "volume_exact_cli_mm3": [
+      69084,
+      1
+    ],
+    "volume_match": true,
+    "input_vertex_lower_bound_total_blocks": 6,
+    "layers": [
+      {
+        "cells": 8,
+        "vertices": 12,
+        "edges": 19,
+        "euler": 1,
+        "boundary_edges": 6,
+        "internal_edges": 13,
+        "area_exact_mm2": [
+          3456,
+          1
+        ],
+        "area_sum_mm2": 3456.0,
+        "pairwise_overlap_pairs": 0,
+        "z_interval_mm": [
+          0.0,
+          4.0
+        ],
+        "expected_area_exact_mm2": [
+          3456,
+          1
+        ],
+        "area_gap_exact_mm2": [
+          0,
+          1
+        ],
+        "contained_in_expected_material": true,
+        "expected_euler_characteristic": 1,
+        "active_hole_count": 0,
+        "quadrilateral_lower_bounds": {
+          "assumption": "one connected conforming quadrilateral section; all input contour corners mandatory",
+          "input_vertex_count": 4,
+          "input_only_bound_blocks": 1,
+          "actual_boundary_vertex_count": 6,
+          "actual_interior_vertex_count": 6,
+          "with_inserted_host_vertices_bound_blocks": "8",
+          "observed_quads": 8,
+          "attains_conditional_bound": true
+        }
+      },
+      {
+        "cells": 6,
+        "vertices": 12,
+        "edges": 18,
+        "euler": 0,
+        "boundary_edges": 12,
+        "internal_edges": 6,
+        "area_exact_mm2": [
+          3070,
+          1
+        ],
+        "area_sum_mm2": 3070.0,
+        "pairwise_overlap_pairs": 0,
+        "z_interval_mm": [
+          4.0,
+          22.0
+        ],
+        "expected_area_exact_mm2": [
+          3070,
+          1
+        ],
+        "area_gap_exact_mm2": [
+          0,
+          1
+        ],
+        "contained_in_expected_material": true,
+        "expected_euler_characteristic": 0,
+        "active_hole_count": 1,
+        "quadrilateral_lower_bounds": {
+          "assumption": "one connected conforming quadrilateral section; all input contour corners mandatory",
+          "input_vertex_count": 10,
+          "input_only_bound_blocks": 5,
+          "actual_boundary_vertex_count": 12,
+          "actual_interior_vertex_count": 0,
+          "with_inserted_host_vertices_bound_blocks": "6",
+          "observed_quads": 6,
+          "attains_conditional_bound": true
+        }
+      }
+    ],
+    "outcome": "valid_model"
+  },
+  "rebuild": {
+    "blocks": 14,
+    "bounded_sketch_faces": 8,
+    "cavities": 0,
+    "determinant_lower_bound_mm3": 167.99999999999991,
+    "exterior_sides": 34,
+    "hausdorff_error_upper_bound_mm": 0,
+    "method": "certified_sketch_layer_partition",
+    "shared_faces": 25,
+    "status": "valid",
+    "volume_exact_mm3": [
+      69084,
+      1
+    ]
+  },
+  "model_audit": {
+    "blocks": 14,
+    "bounded_sketch_faces": 8,
+    "cavities": 0,
+    "determinant_lower_bound_mm3": 167.99999999999991,
+    "exterior_sides": 34,
+    "hausdorff_error_upper_bound_mm": 0,
+    "method": "certified_sketch_layer_partition",
+    "shared_faces": 25,
+    "status": "valid",
+    "volume_exact_mm3": [
+      69084,
+      1
+    ]
+  },
+  "provenance": {
+    "recipe_sha256": "77d6b79fd77d3a1c2e701a21a59d7c0bbb57066a3a96628fa02c231d2fe4de32",
+    "model_sha256": "e5c4b6fffffa815f51ed7cea1a26a3e88f15094abfbd981433c4960f50040b18",
+    "step_sha256": "783e2aed6e5996ed1b1dd087f2734c5034adeec2579196a3500751bbe6d1af9f"
+  }
+}

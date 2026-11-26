@@ -11,6 +11,7 @@ face, and surviving interface.
 from __future__ import annotations
 
 import argparse
+import copy
 import hashlib
 import json
 import math
@@ -396,6 +397,96 @@ def publish_cylinder(root, outdir, check):
             )
 
 
+def assemble_native(root: Path, state: str, layout_payload: dict) -> dict:
+    """Build the coefficient nets with the release CLI from model and layout."""
+    from check_gallery_patch_maps import verify_patch_samples, verify_patch_topology
+
+    model_path = root / "docs/site/box-cylinder/tall" / f"{state}.model.json"
+    model = json.loads(model_path.read_bytes())
+    layout = copy.deepcopy(layout_payload)
+    for patch in layout["patches"]:
+        for key in (
+            "controls_homogeneous",
+            "control_shape",
+            "knots",
+            "homogeneous_common_scale_denominator",
+        ):
+            patch.pop(key, None)
+
+    cli = root / "target/release/solidcraft-trivariate"
+    if not cli.is_file():
+        raise FileNotFoundError(f"release CLI is required for native patch assembly: {cli}")
+    with tempfile.TemporaryDirectory() as temporary:
+        temporary = Path(temporary)
+        layout_path = temporary / f"{state}.layout.json"
+        result_path = temporary / f"{state}.patches.json"
+        layout_path.write_text(json.dumps(layout))
+        subprocess.run(
+            [cli, "assemble-patches", model_path, layout_path, result_path],
+            check=True,
+            stdout=subprocess.DEVNULL,
+        )
+        result = json.loads(result_path.read_bytes())
+
+    verify_patch_samples(result["patches"], model)
+    verify_patch_topology(result, model)
+    _preserve_existing_normalization(layout_payload, result)
+    return result
+
+
+def _preserve_existing_normalization(planned: dict, assembled: dict) -> None:
+    """Require complete net equality before restoring legacy homogeneous scale metadata."""
+    if {key: value for key, value in planned.items() if key != "patches"} != {
+        key: value for key, value in assembled.items() if key != "patches"
+    }:
+        raise ValueError("Native patch assembly changed cover-level layout metadata")
+    reference_patches = {patch["id"]: patch for patch in planned["patches"]}
+    result_patches = {patch["id"]: patch for patch in assembled["patches"]}
+    if reference_patches.keys() != result_patches.keys():
+        raise ValueError("Native patch assembly changed patch identities")
+
+    geometry_keys = {
+        "controls_homogeneous",
+        "control_shape",
+        "knots",
+        "homogeneous_common_scale_denominator",
+    }
+    for patch_id, reference in reference_patches.items():
+        result = result_patches[patch_id]
+        if {k: v for k, v in reference.items() if k not in geometry_keys} != {
+            k: v for k, v in result.items() if k not in geometry_keys
+        }:
+            raise ValueError(f"Native assembly changed layout metadata for {patch_id}")
+        for key in ("control_shape", "knots"):
+            if result.get(key) != reference.get(key):
+                raise ValueError(f"Native assembly changed {key} for {patch_id}")
+
+        native_net = result["controls_homogeneous"]
+        previous_net = reference["controls_homogeneous"]
+        if native_net != previous_net:
+            # The first positive weight fixes the only admissible global scale.
+            ratio = Fraction(previous_net[0][3], native_net[0][3])
+            if ratio <= 0:
+                raise ValueError(f"Nonpositive homogeneous scale for {patch_id}")
+            if any(
+                Fraction(native_value) * ratio != old_value
+                for native_point, old_point in zip(native_net, previous_net, strict=True)
+                for native_value, old_value in zip(native_point, old_point, strict=True)
+            ):
+                raise ValueError(f"Native homogeneous net differs beyond a common scale: {patch_id}")
+            # Restore the published integer normalization only after the whole net passed.
+            result["controls_homogeneous"] = [
+                [int(value * ratio) for value in point] for point in native_net
+            ]
+
+        if "homogeneous_common_scale_denominator" in reference:
+            result["homogeneous_common_scale_denominator"] = reference[
+                "homogeneous_common_scale_denominator"
+            ]
+        else:
+            result.pop("homogeneous_common_scale_denominator", None)
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--root", type=Path, default=Path("."))
@@ -414,7 +505,8 @@ def main() -> None:
         if state == "cylinder":
             publish_cylinder(root, outdir, args.check)
             continue
-        payload = build_one(root, state)
+        layout = build_one(root, state)
+        payload = assemble_native(root, state, layout)
         path = outdir / f"{state}.patches.json"
         encoded = json.dumps(payload, separators=(",", ":"), sort_keys=True) + "\n"
         if args.check:

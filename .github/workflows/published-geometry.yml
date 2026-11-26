@@ -8,12 +8,14 @@ on:
       - 'Cargo.*'
       - 'Makefile'
       - 'examples/**'
+      - 'tests/composed_axial.rs'
       - 'tests/references/**'
       - 'tests/regressions/**'
       - 'docs/site/**'
       - 'docs/results/**'
       - 'scripts/build_box_cylinder_tall_patches.py'
       - 'scripts/check_tall_booleans.py'
+      - 'scripts/check_axial_knot_reduction.py'
       - 'scripts/check_*geometry.py'
       - 'scripts/gallery_catalog.py'
       - 'scripts/gallery_curved_patches.py'
@@ -26,12 +28,14 @@ on:
       - 'Cargo.*'
       - 'Makefile'
       - 'examples/**'
+      - 'tests/composed_axial.rs'
       - 'tests/references/**'
       - 'tests/regressions/**'
       - 'docs/site/**'
       - 'docs/results/**'
       - 'scripts/build_box_cylinder_tall_patches.py'
       - 'scripts/check_tall_booleans.py'
+      - 'scripts/check_axial_knot_reduction.py'
       - 'scripts/check_*geometry.py'
       - 'scripts/gallery_catalog.py'
       - 'scripts/gallery_curved_patches.py'
@@ -49,6 +53,8 @@ jobs:
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
+      - run: cargo test --locked --offline --lib nurbs_
+      - run: cargo test --locked --offline --test composed_axial
       - run: make check-published-geometry
       - uses: actions/setup-python@v5
         with:

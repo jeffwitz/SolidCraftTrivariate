@@ -1,0 +1,46 @@
+{
+  "acceptance_thresholds": {
+    "displacement_relative_l2": 2e-10,
+    "energy_relative": 2e-10,
+    "rhs_relative_l2": 2e-10,
+    "stiffness_relative_frobenius": 2e-10
+  },
+  "analysis": "3D linear elasticity Saint-Venant torsion on the unchanged cylinder-2 field basis and trace DOFs",
+  "baseline": {
+    "displacement_relative_error": 7.695885119447917e-13,
+    "energy_N_mm": 0.017671458676533615,
+    "energy_relative_error": 5.151212789655801e-12,
+    "free_residual": 4.506081154928946e-14,
+    "torque_N_mm": 0.9817477042518732,
+    "torque_relative_error": 5.156763904778927e-12
+  },
+  "compact": {
+    "displacement_relative_error": 7.728591434280932e-13,
+    "energy_N_mm": 0.017671458676533545,
+    "energy_relative_error": 5.147215986767151e-12,
+    "free_residual": 4.4898409874438826e-14,
+    "torque_N_mm": 0.9817477042518732,
+    "torque_relative_error": 5.156763904778927e-12
+  },
+  "compact_geometry": "cylinder-2.json",
+  "compact_geometry_sha256": "2895ff876acfdeb9b30bdd161aab8863e67879de5dfae0630f221695002dff08",
+  "comparison": {
+    "displacement_relative_l2": 5.3693642392327504e-14,
+    "energy_relative": 3.885780586188048e-15,
+    "rhs_relative_l2": 0.0,
+    "stiffness_relative_frobenius": 2.5834605386573913e-16
+  },
+  "field_cell_count": 15,
+  "field_patch_count": 2,
+  "free_vector_dofs": 153,
+  "gauss_order": 16,
+  "limitations": [
+    "Quadrature and floating-point assembly are numerical checks, not a proof of equality of the geometric maps.",
+    "Geometry reduction is evaluated only for this cylinder-2 torsion load case."
+  ],
+  "schema": "gallery_axial_knot_reduction_torsion_v1",
+  "shear_modulus_MPa": 1,
+  "source_cover_sha256": "0ef8d710d18101aa12dc38900de1468bcc8e57a18e3dfd21ce07d10d31a67692",
+  "twist_per_mm": 0.001,
+  "vector_dofs": 204
+}

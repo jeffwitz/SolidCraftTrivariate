@@ -21,8 +21,12 @@ demo:
 	cargo run --quiet --locked --offline -- build tests/references/annular_pair.json build/annular_pair.json
 	python3 -m trivariate audit build/annular_pair.json
 demo: demo-native
-check-published-geometry:
+.PHONY: check-axial-knot-reduction
+check-axial-knot-reduction:
 	cargo build --locked --offline --release
+	python3 scripts/check_axial_knot_reduction.py
+
+check-published-geometry: check-axial-knot-reduction
 	cargo build --locked --offline --release --example annulus_four_block_chamfer --example annulus_original_edges --example annulus_prepared_volumes --example cylinder_tensor_covers
 	python3 scripts/check_operation_geometry.py
 	python3 scripts/build_box_cylinder_tall_patches.py --check
@@ -34,6 +38,7 @@ check: test demo check-published-geometry
 check-strict: refs check
 
 .PHONY: check-cylinder-iga
-check-cylinder-iga:
+check-cylinder-iga: check-axial-knot-reduction
 	python3 tests/references/cylinder_torsion.py
 	python3 tests/references/tall_cylinder_iga.py --check
+	python3 tests/references/axial_knot_torsion.py --check

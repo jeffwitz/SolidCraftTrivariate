@@ -1,0 +1,21 @@
+{
+  "family": "reference_rectangle_v1",
+  "axis": "Z",
+  "section_bounds_mm": {
+    "x": [-10, 10],
+    "y": [-10, 10]
+  },
+  "operation_tree": "(A union B) minus C",
+  "cases": [
+    {"a_z_mm": [0, 8], "b_z_mm": [4, 12], "c_z_mm": [5, 9], "expected_volume_mm3": 3200},
+    {"a_z_mm": [-2, 5], "b_z_mm": [2, 10], "c_z_mm": [-1, 1], "expected_volume_mm3": 4000},
+    {"a_z_mm": [0, 6], "b_z_mm": [6, 12], "c_z_mm": [4, 8], "expected_volume_mm3": 3200},
+    {"a_z_mm": [-8, 2], "b_z_mm": [-4, 6], "c_z_mm": [1, 4], "expected_volume_mm3": 4400}
+  ],
+  "rejected_case": {
+    "a_z_mm": [0, 2],
+    "b_z_mm": [5, 8],
+    "c_z_mm": [1, 6],
+    "reason": "The first result has two disconnected axial components; AxialOperand accepts one interval."
+  }
+}

@@ -114,6 +114,7 @@ pub mod solidcraft_circular_polygon;
 pub mod solidcraft_oriented_plane;
 pub mod adaptive_traction;
 pub mod geometry_vtu;
+pub mod nurbs_knot_reduction;
 
 pub mod rational_sector;
 pub mod rational_sector_audit;
@@ -170,6 +171,7 @@ pub mod nurbs_graph_approx;
 mod steinmetz_partition;
 
 pub mod nurbs_curve;
+pub mod nurbs_tensor_assembly;
 pub mod nurbs_extrusion;
 mod nurbs_sketch_json;
 pub mod nurbs_space;

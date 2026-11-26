@@ -3,7 +3,7 @@
   "case": {
     "id": "seeded_convex_26",
     "family": "seeded_convex_through_holes",
-    "build_elapsed_s": 6.7892612789873965,
+    "build_elapsed_s": 6.64916751801502,
     "build_stdout": "{\"blocks\":33,\"bounded_sketch_faces\":33,\"cavities\":0,\"determinant_lower_bound_mm3\":22986.388888888876,\"exterior_sides\":114,\"hausdorff_error_upper_bound_mm\":0,\"method\":\"certified_sketch_layer_partition\",\"shared_faces\":42,\"status\":\"valid\",\"volume_exact_mm3\":[39260760,1]}",
     "build_stderr": "",
     "admitted": true,
@@ -145,7 +145,7 @@
       }
     ],
     "reported_method": "certified_sketch_layer_partition",
-    "audit_elapsed_s": 3.4649598249816336,
+    "audit_elapsed_s": 3.359446051006671,
     "closed_domain_certificate": {
       "status": "valid",
       "method": "certified_sketch_layer_partition",
@@ -252,5 +252,74 @@
   "measurement_release": {
     "tag": "latest-release",
     "cli_sha256": "8f33eeba801e38e56fbe52ad6ccb96a68a28d2f20187a7d67df869af0c0f9ac2"
+  },
+  "extrusion_quality": {
+    "block_count": 33,
+    "planar_spectral_kappa": 126.54236924760964,
+    "planar_spectral_kappa_witness": {
+      "block": "quad_-2216d1_1123d1_-1896d1_753d1_-1020d1_501d1_-836d1_393d1_z0_15",
+      "param": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "sigma_max_mm": 1364.8090252210432,
+      "sigma_min_mm": 10.785391749307903
+    },
+    "minimum_corner_sine": 0.05117918550741636,
+    "minimum_corner_sine_witness": {
+      "block": "quad_-2216d1_1123d1_-1896d1_753d1_-1020d1_501d1_-836d1_393d1_z0_15",
+      "param": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "du_mm": [
+        184.0,
+        -108.0,
+        0.0
+      ],
+      "dv_mm": [
+        1196.0,
+        -622.0,
+        0.0
+      ]
+    },
+    "thickness_direction_aspect": 116.4029888582109,
+    "thickness_direction_aspect_witness": {
+      "block": "quad_-22012d27_143d1_264d1_-327d1_464d1_-107d1_712d1_-215d1_z0_15",
+      "param": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "planar_sigma_max_mm": 1746.0448328731636,
+      "normal_thickness_per_parameter_mm": 15.0,
+      "thickness_tangent_3d_mm": 15.165750888103101
+    },
+    "max_3d_spectral_kappa": 126.54339749995286,
+    "max_3d_spectral_kappa_witness": {
+      "block": "quad_-2216d1_1123d1_-1896d1_753d1_-1020d1_501d1_-836d1_393d1_z0_15",
+      "param": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "singular_values_mm": [
+        1364.8108566589644,
+        15.000081629070316,
+        10.785318583369573
+      ]
+    },
+    "minimum_sampled_jacobian_determinant_mm3": 22986.388888888898,
+    "minimum_sampled_jacobian_determinant_mm3_witness": {
+      "block": "quad_-212d1_195d1_-202d1_241d1_-20519d108_143d1_848d9_143d1_z0_15",
+      "param": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "determinant_mm3": 22986.388888888898
+    }
   }
 }

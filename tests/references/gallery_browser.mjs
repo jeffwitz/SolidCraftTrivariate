@@ -643,7 +643,7 @@ async function runBrowserChecks() {
   const waitForGallery = async expectedId => {
     for (let attempt = 0; attempt < 300; attempt++) {
       const ready = await evaluate(injectedExpressions.galleryReady);
-      const selected = expectedId
+      const selected = ready && expectedId
         ? await evaluate(injectedExpressions.selectedId) === expectedId
         : true;
       if (ready && selected) {

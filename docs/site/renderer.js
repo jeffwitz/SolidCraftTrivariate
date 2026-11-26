@@ -483,12 +483,90 @@ function buildSurfaceMeshes(model, mode) {
     }
     if (output.length) meshes.push({ id: block.id, values: new Float32Array(output), count: output.length / 9 });
   }
+  if (mode === 'patches' && model.nurbs_representation?.representation_kind === 'exact_disk_cylinder_tensor_nurbs_cover') {
+    const representation = model.nurbs_representation;
+    const seamRecords = [
+      ...(representation.self_seams || []),
+      ...(representation.interfaces || []),
+    ].filter(item => item.status === 'exact_match');
+    const limits = boundsOf(model);
+    const center = limits[0].map((value, axis) => (value + limits[1][axis]) / 2);
+    const extent = Math.max(...limits[0].map((value, axis) => limits[1][axis] - value)) || 1;
+    const halfWidth = extent * 0.0016;
+    const offset = extent * 0.00018;
+    const seamColor = [0.10, 0.18, 0.15];
+    const lineValues = [];
+    const emitted = new Set();
+    let boundaryCurveCount = 0;
+    const appendBoundary = endpoint => {
+      const blockId = endpoint.patch_id;
+      const sideName = endpoint.patch_side;
+      const block = model.blocks.find(item => item.id === blockId);
+      if (!block || typeof sideName !== 'string') return;
+      const evaluate = makeEvaluator(block);
+      const axis = 'uvw'.indexOf(sideName[0]);
+      if (axis < 0 || (sideName[1] !== '0' && sideName[1] !== '1')) return;
+      const other = [0, 1, 2].filter(value => value !== axis);
+      const intervals = endpoint.parameter_intervals || [[0, 1], [0, 1], [0, 1]];
+      const domains = block.knots.map((knots, direction) => {
+        const degree = block.degrees[direction];
+        const count = block.shape[direction];
+        return [knots[degree], knots[count]];
+      });
+      const normalizeParameter = (value, direction) => (value - domains[direction][0]) / (domains[direction][1] - domains[direction][0]);
+      const curves = [];
+      for (const freeAxis of other) for (const fixed of [0, 1]) {
+        const variableAxis = other.find(value => value !== freeAxis);
+        const [start, end] = intervals[freeAxis];
+        const fixedValue = intervals[variableAxis][fixed];
+        if (!domains[variableAxis].includes(fixedValue)) continue;
+        const divisions = 32;
+        const curve = [];
+        for (let step = 0; step <= divisions; step++) {
+          const parameters = [0, 0, 0];
+          parameters[axis] = Number(sideName[1]);
+          parameters[variableAxis] = normalizeParameter(fixedValue, variableAxis);
+          parameters[freeAxis] = normalizeParameter(start + (end - start) * step / divisions, freeAxis);
+          curve.push(evaluate(...parameters));
+        }
+        curves.push(curve);
+      }
+      for (const curve of curves) {
+        const key = curve.map(point => point.map(value => Math.round(value * 1e8)).join(',')).join(';');
+        const reverseKey = [...curve].reverse().map(point => point.map(value => Math.round(value * 1e8)).join(',')).join(';');
+        if (emitted.has(key) || emitted.has(reverseKey)) continue;
+        emitted.add(key);
+        boundaryCurveCount++;
+        for (let index = 0; index < curve.length - 1; index++) {
+          const first = curve[index];
+          const second = curve[index + 1];
+          const tangent = normalize(subtract(second, first));
+          const radial = normalize(subtract(first, center));
+          let widthDirection = normalize(cross(tangent, radial));
+          if (Math.hypot(...widthDirection) < 0.5) widthDirection = normalize(cross(tangent, [0, 0, 1]));
+          const shift = point => point.map((value, axisIndex) => value + radial[axisIndex] * offset);
+          const p0 = shift(first).map((value, axisIndex) => value + widthDirection[axisIndex] * halfWidth);
+          const p1 = shift(first).map((value, axisIndex) => value - widthDirection[axisIndex] * halfWidth);
+          const p2 = shift(second).map((value, axisIndex) => value - widthDirection[axisIndex] * halfWidth);
+          const p3 = shift(second).map((value, axisIndex) => value + widthDirection[axisIndex] * halfWidth);
+          appendTriangle(lineValues, p0, p1, p2, seamColor);
+          appendTriangle(lineValues, p0, p2, p3, seamColor);
+        }
+      }
+    };
+    for (const seam of seamRecords) for (const endpoint of [seam.first, seam.second]) {
+      appendBoundary(endpoint);
+    }
+    if (lineValues.length) meshes.push({ id: 'exact-patch-boundaries', values: new Float32Array(lineValues), count: lineValues.length / 9 });
+    meshes.boundaryCurveCount = boundaryCurveCount;
+  }
   meshes.boundaryStats = {
     renderedFaces: mode === 'surface' ? renderedBoundaryFaces : null,
     exteriorFaceCount: exteriorKeys?.size ?? null,
     excludedFaceCount: mode === 'surface' ? model.blocks.length * FACE_SIDES.length - renderedBoundaryFaces : null,
     source: exteriorKeys ? (model.boundary_faces || model.topology?.boundary_faces ? 'boundary_faces' : 'topology.exterior') : 'interfaces',
     faceKeys: renderedFaceKeys,
+    patchBoundaryCurves: meshes.boundaryCurveCount ?? 0,
   };
   return meshes;
 }
@@ -757,6 +835,7 @@ export function createViewer(canvas, onCameraChange = () => {}) {
   };
 
   let model = null;
+  let patchVisualizationModel = null;
   let bounds = null;
   let mode = 'surface';
   let clipAxis = null;
@@ -862,7 +941,8 @@ export function createViewer(canvas, onCameraChange = () => {}) {
     if (isTriangleModel(model)) {
       surfaceMeshes = uploadMeshes([{ values: triangleMesh.values, count: triangleMesh.count }]);
     } else {
-      const generated = buildSurfaceMeshes(model, mode);
+      const visibleModel = mode === 'patches' && patchVisualizationModel ? patchVisualizationModel : model;
+      const generated = buildSurfaceMeshes(visibleModel, mode);
       surfaceStats = generated.boundaryStats;
       surfaceMeshes = uploadMeshes(generated);
     }
@@ -871,11 +951,21 @@ export function createViewer(canvas, onCameraChange = () => {}) {
     canvas.dataset.excludedInternalFaceCount = surfaceStats?.excludedFaceCount == null ? '' : String(surfaceStats.excludedFaceCount);
     canvas.dataset.boundarySource = surfaceStats?.source || (isTriangleModel(model) ? 'triangulated-surface' : '');
     canvas.dataset.boundaryFaceKeys = JSON.stringify(surfaceStats?.faceKeys || []);
+    canvas.dataset.patchBoundaryCurves = String(surfaceStats?.patchBoundaryCurves ?? 0);
+    canvas.dataset.patchRenderSource = patchVisualizationModel ? 'exact-patch-net' : '';
+    const multispanAxes = patchVisualizationModel ? [0, 1, 2].filter(axis => patchVisualizationModel.blocks.some(block => {
+      const degree = block.degrees[axis];
+      const count = block.shape[axis];
+      return new Set(block.knots[axis].filter(value => value >= block.knots[axis][degree]
+        && value <= block.knots[axis][count])).size > 2;
+    })) : [];
+    canvas.dataset.patchMultispanAxes = JSON.stringify(multispanAxes);
   }
 
   function rebuildCaps() {
     deleteMeshes(capMeshes);
-    capMeshes = uploadMeshes(isTriangleModel(model) ? [] : buildCapMeshes(model, clipAxis, clipFraction, bounds, mode));
+    const visibleModel = mode === 'patches' && patchVisualizationModel ? patchVisualizationModel : model;
+    capMeshes = uploadMeshes(isTriangleModel(visibleModel) ? [] : buildCapMeshes(visibleModel, clipAxis, clipFraction, bounds, mode));
   }
 
   function fittedDistance(width, height) {
@@ -994,6 +1084,7 @@ export function createViewer(canvas, onCameraChange = () => {}) {
     setModel(value, representation = null) {
       validateModel(value);
       model = isTriangleModel(value) ? value : normalizeTrivariateModel(value);
+      patchVisualizationModel = null;
       if (!isTriangleModel(model) && !model.topology && model.blocks?.some(block => block.shape)) {
         model = { ...model, topology: { interfaces: inferChartInterfaces(model) } };
       }
@@ -1105,6 +1196,28 @@ export function createViewer(canvas, onCameraChange = () => {}) {
         const colors = new Map();
         patchRecords.forEach((patch, index) => patch.cells.forEach(id => colors.set(id, partitionColour(index))));
         model = { ...model, blocks: model.blocks.map(block => ({ ...block, patchColor: colors.get(block.id) })) };
+        if (representation.representation_kind === 'exact_disk_cylinder_tensor_nurbs_cover') {
+          const patchBlocks = representation.patches.map((patch, index) => ({
+            id: patch.id,
+            degrees: patch.degrees,
+            shape: patch.control_shape,
+            knots: patch.knots,
+            controls: patch.controls_homogeneous,
+            displayColor: partitionColour(index),
+          }));
+          const patchEndpoint = endpoint => Array.isArray(endpoint)
+            ? endpoint : [endpoint.patch_id, endpoint.patch_side];
+          const patchInterfaces = [...(representation.interfaces || []), ...(representation.self_seams || [])]
+            .filter(item => item.status === 'exact_match')
+            .map(item => ({ first: patchEndpoint(item.first), second: patchEndpoint(item.second) }));
+          patchVisualizationModel = {
+            blocks: patchBlocks,
+            topology: { interfaces: patchInterfaces },
+            nurbs_patches: patchBlocks.map(block => ({ id: block.id, cells: [block.id] })),
+            nurbs_representation: representation,
+          };
+          validateModel(patchVisualizationModel);
+        }
       }
       triangleMesh = isTriangleModel(model) ? surfaceMesh(model) : null;
       bounds = triangleMesh ? triangleMesh.bounds : boundsOf(model);

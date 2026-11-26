@@ -184,11 +184,53 @@ const injectedExpressions = {
       if (new URL(recipeLink.href).pathname !== new URL(recipePath, location.href).pathname) return false;
       const recipeResponse = await fetch(recipePath);
       if (!recipeResponse.ok || (await recipeResponse.arrayBuffer()).byteLength < 1) return false;
-      for (const mode of ['bezier', 'nurbs']) {
+      const modes = id === 'cylinder' ? ['bezier', 'nurbs2', 'nurbs3'] : ['bezier', 'nurbs'];
+      for (const mode of modes) {
         document.querySelector('#tall-mode-' + mode).click();
-        if (canvas.dataset.mode !== mode
+        for (let attempt = 0; attempt < 200; attempt++) {
+          const expectedPatchName = id === 'cylinder' && mode === 'nurbs2' ? 'cylinder-2'
+            : id === 'cylinder' && mode === 'nurbs3' ? 'cylinder-3' : id;
+          if (status.dataset.kind === 'ready' && canvas.dataset.mode === mode
+            && new URL(document.querySelector('#tall-patches-file').href).pathname.endsWith('/' + expectedPatchName + '.patches.json')) break;
+          await new Promise(resolve => setTimeout(resolve, 50));
+        }
+        const expectedPatchName = id === 'cylinder' && mode === 'nurbs2' ? 'cylinder-2'
+          : id === 'cylinder' && mode === 'nurbs3' ? 'cylinder-3' : id;
+        if (canvas.dataset.mode !== mode || status.dataset.kind !== 'ready'
+          || !new URL(document.querySelector('#tall-patches-file').href).pathname.endsWith('/' + expectedPatchName + '.patches.json')
           || document.querySelector('#tall-mode-' + mode).getAttribute('aria-pressed') !== 'true'
-          || (mode === 'nurbs' && !document.querySelector('#tall-mode-note').textContent.includes('exact patch file'))) return false;
+          || (mode !== 'bezier' && !document.querySelector('#tall-mode-note').textContent.includes('exact'))) return false;
+        if (id === 'cylinder' && mode !== 'bezier') {
+          const expectedCount = mode === 'nurbs2' ? 2 : 3;
+          const patchResponse = await fetch('./box-cylinder/tall/' + expectedPatchName + '.patches.json');
+          if (!patchResponse.ok) return false;
+          const patches = await patchResponse.json();
+          if (patches.patches?.length !== expectedCount || !Array.isArray(patches.patches)
+            || patches.patches.some(patch => !Array.isArray(patch.degrees) || patch.degrees.length !== 3
+              || !Array.isArray(patch.control_shape) || patch.control_shape.length !== 3
+              || !Array.isArray(patch.knots) || patch.knots.length !== 3
+              || !Array.isArray(patch.controls_homogeneous)
+              || !Array.isArray(patch.spans) || patch.spans.length === 0
+              || patch.spans.some(span => !Array.isArray(span.parameter_intervals)
+                || span.parameter_intervals.length !== 3
+                || span.parameter_intervals.some(interval => !Array.isArray(interval) || interval.length !== 2 || !(interval[0] < interval[1]))))) return false;
+          if (mode === 'nurbs2' && (!Array.isArray(patches.self_seams) || patches.self_seams.length !== 3
+            || patches.self_seams.some(seam => seam.status !== 'exact_match'))) return false;
+          if (mode === 'nurbs3' && (patches.self_seams?.length || 0) !== 0) return false;
+          if (document.querySelector('#tall-nurbs-count').textContent !== String(expectedCount)
+            || document.querySelector('#tall-iga-file').hidden
+            || !document.querySelector('#tall-iga-scope').textContent.includes('Scalar H¹')) return false;
+          const report = await fetch('./box-cylinder/tall/cylinder-iga.json');
+          if (!report.ok || !(await report.json()).limitations?.some(text => text.includes('not a calibrated elasticity'))) return false;
+          const torsionReport = await fetch('./box-cylinder/tall/cylinder-torsion.json');
+          const torsion = await torsionReport.json();
+          if (!torsionReport.ok || torsion.covers?.nurbs_2?.vector_dofs !== 204
+            || !(torsion.negative_control_opened_seam?.energy_relative_error > 0.1)
+            || document.querySelector('#tall-torsion-file').hidden) return false;
+          if (canvas.dataset.patchRenderSource !== 'exact-patch-net'
+            || JSON.parse(canvas.dataset.patchMultispanAxes || '[]').length < 2
+            || Number(canvas.dataset.patchBoundaryCurves) < 1) return false;
+        }
       }
     }
     for (const id of ['box', 'cylinder', 'union', 'xor']) {
@@ -212,7 +254,8 @@ const injectedExpressions = {
     document.querySelector('#tall-mode-bezier').click();
     return document.querySelector('#tall-view-volume').getAttribute('aria-pressed') === 'true'
       && canvas.dataset.state === 'xor' && canvas.dataset.mode === 'bezier'
-      && canvas.dataset.sectionAxis === 'x' && canvas.dataset.sectionFraction === '0.5';
+      && canvas.dataset.sectionAxis === 'x' && canvas.dataset.sectionFraction === '0.5'
+      && document.querySelector('#cylinder-deep-link')?.getAttribute('href') === './box-cylinder.html?state=cylinder#tall-cylinder';
   })()`,
   galleryReady: `(() => {
     const status = document.querySelector('#canvas-state');
@@ -745,13 +788,40 @@ async function runBrowserChecks() {
           return {x:r.left + scrollX,y:r.top + scrollY,width:r.width,height:r.height,scale:1};
         })()`);
         const bezierImage = await capture(`tall-${stateId}-bezier`, tallRegion, true, false);
-        await evaluate("document.querySelector('#tall-mode-nurbs').click()");
-        await pause(250);
-        const nurbsImage = await capture(`tall-${stateId}-nurbs`, tallRegion, true, false);
-        if (bezierImage.paintedPixels < 250 || nurbsImage.paintedPixels < 250
-          || bezierImage.hash === nurbsImage.hash) {
-          throw new Error(`Bézier and NURBS views are not visibly distinct for ${stateId}: ${JSON.stringify({ bezier: bezierImage, nurbs: nurbsImage })}`);
+        const modes = stateId === 'cylinder' ? ['nurbs2', 'nurbs3'] : ['nurbs'];
+        const nurbsImages = [];
+        for (const mode of modes) {
+          await evaluate(`document.querySelector('#tall-mode-${mode}').click()`);
+          await pause(250);
+          nurbsImages.push(await capture(`tall-${stateId}-${mode}`, tallRegion, true, false));
         }
+        if (bezierImage.paintedPixels < 250 || nurbsImages.some(image => image.paintedPixels < 250)
+          || nurbsImages.some(image => image.hash === bezierImage.hash)
+          || (stateId === 'cylinder' && nurbsImages[0].hash === nurbsImages[1].hash)) {
+          throw new Error(`Bézier and NURBS views are not visibly distinct for ${stateId}: ${JSON.stringify({ bezier: bezierImage, nurbs: nurbsImages })}`);
+        }
+      }
+      await command('Page.navigate', { url: serverUrl + 'box-cylinder.html?state=cylinder#tall-cylinder' });
+      await waitForDocument('/box-cylinder.html');
+      const directCylinder = await evaluate(`(async () => {
+        const canvas = document.querySelector('#tall-model-view');
+        const status = document.querySelector('#tall-status');
+        for (let attempt = 0; attempt < 200; attempt++) {
+          if (canvas.dataset.state === 'cylinder' && canvas.dataset.mode === 'nurbs2' && status.dataset.kind === 'ready') break;
+          await new Promise(resolve => setTimeout(resolve, 50));
+        }
+        return {query:new URL(location.href).searchParams.get('state'),hash:location.hash,
+          state:document.querySelector('#tall-state').value,mode:canvas.dataset.mode,
+          patches:document.querySelector('#tall-patches-file').getAttribute('href'),
+          headingTop:document.querySelector('#tall-cylinder').getBoundingClientRect().top,
+          target:canvas.dataset.patchRenderSource};
+      })()`);
+      if (directCylinder.query !== 'cylinder' || directCylinder.hash !== '#tall-cylinder'
+        || directCylinder.state !== 'cylinder' || directCylinder.mode !== 'nurbs2'
+        || !directCylinder.patches.endsWith('cylinder-2.patches.json')
+        || directCylinder.target !== 'exact-patch-net'
+        || directCylinder.headingTop < -100 || directCylinder.headingTop > await evaluate('innerHeight')) {
+        throw new Error(`Cylinder direct route did not open its default two-patch map: ${JSON.stringify(directCylinder)}`);
       }
     }
     await evaluate(`(() => {

@@ -7,8 +7,8 @@
   <title>Box minus cylinder · SolidCraft</title>
   <link rel="stylesheet" href="./style.css?v=4c80dc8c8d5c">
   <link rel="stylesheet" href="./hub.css?v=00a2f3124805">
-  <link rel="stylesheet" href="./box-cylinder.css?v=779bd9901ddc">
-  <script type="module" src="./box-cylinder.js?v=f5f616e720c4"></script>
+  <link rel="stylesheet" href="./box-cylinder.css?v=4021bc793128">
+  <script type="module" src="./box-cylinder.js?v=ff95f440add1"></script>
 </head>
 <body>
   <header class="topbar">
@@ -51,13 +51,13 @@
     </section>
 
     <section class="bc-tall-suite" id="tall-cylinder" aria-labelledby="tall-title">
-      <div class="bc-tall-heading"><div><p class="eyebrow">Tall cylinder · Boolean states</p><h2 id="tall-title">Box and tall cylinder</h2><p>A is the 40 × 40 × 12 mm box. B is a radius-5 mm cylinder extending 12 mm beyond each end of the box.</p></div><div class="bc-tall-controls">
+      <div class="bc-tall-heading"><div><p class="eyebrow">Tall cylinder · Boolean states</p><h2 id="tall-title">Box and tall cylinder</h2><p>A is the 40 × 40 × 12 mm box. B is a radius-5 mm cylinder extending 12 mm beyond each end of the box. <a id="cylinder-deep-link" href="./box-cylinder.html?state=cylinder#tall-cylinder">Open the cylinder map variants</a></p></div><div class="bc-tall-controls">
         <label for="tall-state">State</label><select id="tall-state">
           <option value="box">A · Box</option><option value="cylinder">B · Cylinder</option><option value="union" selected>Union · A ∪ B</option>
           <option value="intersection">Intersection</option><option value="a-minus-b">A minus B</option>
           <option value="b-minus-a">B minus A</option><option value="xor">Symmetric difference</option>
         </select>
-        <div class="bc-toggle" aria-label="Chart representation"><button id="tall-mode-bezier" type="button" aria-pressed="true">Bézier cells</button><button id="tall-mode-nurbs" type="button" aria-pressed="false">NURBS volumes</button></div>
+        <div class="bc-toggle" aria-label="Chart representation"><button id="tall-mode-bezier" type="button" aria-pressed="true">Bézier cells</button><button id="tall-mode-nurbs" type="button" aria-pressed="false">NURBS volumes</button><button id="tall-mode-nurbs2" type="button" aria-pressed="false" hidden>NURBS 2 · closed ring</button><button id="tall-mode-nurbs3" type="button" aria-pressed="false" hidden>NURBS 3 · half rings</button></div>
         <div class="bc-toggle" aria-label="Camera view"><button id="tall-view-volume" type="button" aria-pressed="true">Volume</button><button id="tall-view-top" type="button" aria-pressed="false">Top</button></div>
         <button id="tall-reset" class="reset-button" type="button">Reset view</button>
       </div></div>
@@ -65,7 +65,7 @@
       <div class="bc-section-controls"><label for="tall-section-axis">Vertical section</label><select id="tall-section-axis"><option value="x" selected>X · through the middle</option><option value="y">Y · through the middle</option><option value="">Off</option></select><label for="tall-section-position" class="sr-only">Section position</label><input id="tall-section-position" type="range" min="5" max="95" value="50"><output id="tall-section-value" for="tall-section-position">50%</output></div>
       <div class="bc-tall-view">
         <canvas id="tall-model-view" tabindex="0" aria-label="Interactive tall-cylinder Boolean model. Drag to rotate; scroll to zoom."></canvas>
-        <aside class="bc-tall-info"><h3 id="tall-state-title">Union</h3><dl><div><dt>Bézier cells</dt><dd id="tall-bezier-count">—</dd></div><div><dt>NURBS volumes</dt><dd id="tall-nurbs-count">—</dd></div><div><dt>Face-connected parts</dt><dd id="tall-component-count">—</dd></div><div><dt>Exact volume</dt><dd><span id="tall-volume-exact">—</span><small id="tall-volume">—</small></dd></div></dl><p id="tall-mode-note">Showing the actual Bézier cell maps.</p><p id="tall-contact-note" hidden>The XOR includes two circular contact boundaries. The part count follows face connectivity.</p><nav class="bc-tall-files" aria-label="Selected Boolean state files"><a id="tall-model-file" href="./box-cylinder/tall/box.model.json">Model JSON</a><a id="tall-patches-file" href="./box-cylinder/tall/box.patches.json">NURBS patch map</a><a id="tall-recipe-file" href="./box-cylinder/tall/box.recipe.json">Recipe</a><a href="./box-cylinder/tall/manifest.json">All state metrics</a><a id="tall-audit-file" href="./box-cylinder/tall/union.audit.json">Native audit</a></nav></aside>
+        <aside class="bc-tall-info"><h3 id="tall-state-title">Union</h3><dl><div><dt>Bézier cells</dt><dd id="tall-bezier-count">—</dd></div><div><dt>NURBS volumes</dt><dd id="tall-nurbs-count">—</dd></div><div><dt>Face-connected parts</dt><dd id="tall-component-count">—</dd></div><div><dt>Exact volume</dt><dd><span id="tall-volume-exact">—</span><small id="tall-volume">—</small></dd></div></dl><p id="tall-mode-note">Showing the actual Bézier cell maps.</p><p id="tall-iga-scope" hidden>Scalar H¹ Poisson study; the report states the space, boundary conditions, numerical checks, and limitations.</p><p id="tall-contact-note" hidden>The XOR includes two circular contact boundaries. The part count follows face connectivity.</p><nav class="bc-tall-files" aria-label="Selected Boolean state files"><a id="tall-model-file" href="./box-cylinder/tall/box.model.json">Model JSON</a><a id="tall-patches-file" href="./box-cylinder/tall/box.patches.json">NURBS patch map</a><a id="tall-recipe-file" href="./box-cylinder/tall/box.recipe.json">Recipe</a><a id="tall-iga-file" href="./box-cylinder/tall/cylinder-iga.json" hidden>Scalar H¹ Poisson report</a><a id="tall-torsion-file" href="./box-cylinder/tall/cylinder-torsion.json" hidden>3D linear-elastic torsion report</a><a href="./box-cylinder/tall/manifest.json">All state metrics</a><a id="tall-audit-file" href="./box-cylinder/tall/union.audit.json">Native audit</a></nav></aside>
       </div>
     </section>
 

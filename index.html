@@ -7,8 +7,8 @@
   <meta name="description" content="Explore sketch partitions, pierced brackets and curved parts as interactive 3D solids.">
   <title>Trivariate parts · SolidCraft</title>
   <link rel="stylesheet" href="./style.css?v=4c80dc8c8d5c">
-  <link id="catalog-url" rel="alternate" type="application/json" href="./experiments.json?v=ba3258c739b7">
-  <script type="module" src="./app.js?v=f0a8483ed693"></script>
+  <link id="catalog-url" rel="alternate" type="application/json" href="./experiments.json?v=686fe6d7c056">
+  <script type="module" src="./app.js?v=b6b734cc1213"></script>
 </head>
 <body>
   <header class="topbar">
@@ -20,7 +20,7 @@
     <section class="intro" aria-labelledby="page-title">
       <h1 id="page-title">Sketch partitions in 3D</h1>
       <p class="lede">Inspect the bore stacks, polygonal holes and blind pockets. Switch between the outer surface and the individual blocks, or take a section through the solid.</p>
-      <p><a class="comparison-link" href="./compare.html">Compare NURBS partitions side by side →</a></p>
+      <p><a class="comparison-link" href="./compare.html" hidden>Compare both partitions of this sketch →</a><span class="comparison-status" aria-live="polite"></span></p>
     </section>
 
     <section class="workspace" aria-label="Model explorer">
@@ -39,6 +39,7 @@
           <fieldset class="segmented">
             <legend>Display</legend>
             <button type="button" class="segment" data-mode="surface" aria-pressed="false">Surface</button>
+            <button type="button" class="segment" data-mode="patches" hidden aria-pressed="false">NURBS volumes</button>
             <button type="button" class="segment is-active" data-mode="blocks" aria-pressed="true">Blocks</button>
           </fieldset>
           <div class="clip-control">
@@ -59,13 +60,13 @@
         <div class="experiment-copy"><p id="experiment-description"></p></div>
         <figure class="profile-card" id="profile-card" hidden aria-label="Actual hole profiles"></figure>
         <div class="metrics-section"><div class="section-rule"><span>Model data</span><span class="rule-line"></span></div><dl id="metrics-list" class="metrics-list"><div class="metric-empty">Waiting for data.</div></dl></div>
-        <nav class="source-links" aria-label="Experiment files"><a id="model-link" href="#" hidden><span>Trivariate model (JSON)</span><span aria-hidden="true">↗</span></a><a id="source-link" href="#" hidden><span>Source recipe</span><span aria-hidden="true">↗</span></a><a id="step-link" href="#" hidden><span>STEP model</span><span aria-hidden="true">↗</span></a><a id="audit-link" href="#" hidden><span>Model audit</span><span aria-hidden="true">↗</span></a><a id="figure-link" href="#" hidden><span>Annotated figure</span><span aria-hidden="true">↗</span></a><a class="campaign-link" href="https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/galerie-esquisses-courbes.md" target="_blank" rel="noopener noreferrer">Protocol and results <span aria-hidden="true">↗</span></a></nav>
+        <nav class="source-links" aria-label="Experiment files"><a id="model-link" href="#" hidden><span>Native trivariate model (JSON)</span><span aria-hidden="true">↗</span></a><a id="representation-link" href="#" hidden><span>Exact NURBS cover supplement (JSON)</span><span aria-hidden="true">↗</span></a><a id="source-link" href="#" hidden><span>Source recipe</span><span aria-hidden="true">↗</span></a><a id="step-link" href="#" hidden><span>STEP model</span><span aria-hidden="true">↗</span></a><a id="audit-link" href="#" hidden><span>Model audit</span><span aria-hidden="true">↗</span></a><a id="figure-link" href="#" hidden><span>Annotated figure</span><span aria-hidden="true">↗</span></a><a class="campaign-link" href="https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/galerie-esquisses-courbes.md" target="_blank" rel="noopener noreferrer">Protocol and results <span aria-hidden="true">↗</span></a></nav>
       </aside>
     </section>
 
     <details class="proof"><summary>How should I read these values?</summary>
       <p>Block and interface counts describe the downloadable trivariate model. For the six curved profiles, the minimum block counts apply to layer-aligned partitions with the prescribed arc junctions. The sampled condition number measures map distortion. A lower block count can coincide with higher distortion.</p>
-      <p>The viewer draws the candidate volume maps. Its sections are visual previews. Each model includes its recipe, audit and STEP export.</p>
+      <p>The surface view draws only the model’s recorded exterior cell faces. The exact NURBS cover groups those source cells and records their extracted controls and joins; this documents extraction fidelity without claiming a new global shape proof. Section caps are visual previews. Counts distinguish merged NURBS cover patches from their Bézier cells; paired comparisons appear only where two candidates are published.</p>
     </details>
     <footer class="page-footer"><span>SolidCraft Trivariate</span><span></span><a href="https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/architecture.md" target="_blank" rel="noopener noreferrer">Project architecture ↗</a></footer>
   </main>

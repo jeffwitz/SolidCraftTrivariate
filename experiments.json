@@ -1,17 +1,25 @@
 [
   {
-    "audit": "data/bench-bracket-east-stack/audit.json?v=1c4adf344f52",
-    "description": "Two vertically separated bores occupy the east arm. Their cuts propagate through the bend and the opposite wing; the mid-height preset crosses the central level. The linked STEP is exported from this same native model; independent benchmark checks are scoped separately in the audit.",
+    "audit": "data/bench-bracket-east-stack/audit.json?v=5b8e1fdadaaf",
+    "description": "The displayed NURBS representation groups 17 Bézier cells into 9 volumes. Two vertically separated bores occupy the east arm. Their cuts propagate through the bend and the opposite wing; the mid-height preset crosses the central level. The linked STEP is exported from this same native model; independent benchmark checks are scoped separately in the audit. The separate exact NURBS cover has 9 volumes across 17 source Bézier cells; download the representation for its controls and joins.",
     "group": "Bracket cut propagation benchmark",
     "id": "bench-bracket-east-stack",
     "metrics": [
       {
-        "label": "Partition method",
-        "value": "propagated_isoparametric_cuts"
+        "label": "NURBS volumes",
+        "value": 9
       },
       {
-        "label": "Rust model blocks",
+        "label": "Bézier cells",
         "value": 17
+      },
+      {
+        "label": "Native NURBS volumes before assembly",
+        "value": 17
+      },
+      {
+        "label": "Partition method",
+        "value": "propagated_isoparametric_cuts"
       },
       {
         "label": "Rust shared interfaces",
@@ -44,21 +52,30 @@
     "step": "data/bench-bracket-east-stack/reference.step?v=61547447a8e5",
     "stepLabel": "OCCT-checked boundary export (STEP)",
     "title": "Two-level east-arm stack",
-    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/propagated-bores.md"
+    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/propagated-bores.md",
+    "representation": "data/bench-bracket-east-stack/model.representation.json?v=659310fb553b"
   },
   {
-    "audit": "data/bench-bracket-original/audit.json?v=f33adae3ef44",
-    "description": "The baseline 60 × 50 × 40 mm filleted L carries one through-bore in each arm. The mid-height cut passes through both bore axes. The linked STEP is exported from this same native model; independent benchmark checks are scoped separately in the audit.",
+    "audit": "data/bench-bracket-original/audit.json?v=275ad40447ef",
+    "description": "The displayed NURBS representation groups 10 Bézier cells into 5 volumes. The baseline 60 × 50 × 40 mm filleted L carries one through-bore in each arm. The mid-height cut passes through both bore axes. The linked STEP is exported from this same native model; independent benchmark checks are scoped separately in the audit. The separate exact NURBS cover has 5 volumes across 10 source Bézier cells; download the representation for its controls and joins.",
     "group": "Bracket cut propagation benchmark",
     "id": "bench-bracket-original",
     "metrics": [
       {
-        "label": "Partition method",
-        "value": "four_sector_local_sweeps"
+        "label": "NURBS volumes",
+        "value": 5
       },
       {
-        "label": "Rust model blocks",
+        "label": "Bézier cells",
         "value": 10
+      },
+      {
+        "label": "Native NURBS volumes before assembly",
+        "value": 10
+      },
+      {
+        "label": "Partition method",
+        "value": "four_sector_local_sweeps"
       },
       {
         "label": "Rust shared interfaces",
@@ -91,21 +108,30 @@
     "step": "data/bench-bracket-original/reference.step?v=64dfd3f2e841",
     "stepLabel": "OCCT-checked boundary export (STEP)",
     "title": "Original two-bore bracket",
-    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/propagated-bores.md"
+    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/propagated-bores.md",
+    "representation": "data/bench-bracket-original/model.representation.json?v=5279abb272bf"
   },
   {
-    "audit": "data/bench-bracket-in-plane/audit.json?v=e9023e627c1c",
-    "description": "A third bore lies in the same arm plane as the original east-arm bore. This control retains the uncoupled local partition. The linked STEP is exported from this same native model; independent benchmark checks are scoped separately in the audit.",
+    "audit": "data/bench-bracket-in-plane/audit.json?v=33f2582c81b2",
+    "description": "The displayed NURBS representation groups 14 Bézier cells into 7 volumes. A third bore lies in the same arm plane as the original east-arm bore. This control retains the uncoupled local partition. The linked STEP is exported from this same native model; independent benchmark checks are scoped separately in the audit. The separate exact NURBS cover has 7 volumes across 14 source Bézier cells; download the representation for its controls and joins.",
     "group": "Bracket cut propagation benchmark",
     "id": "bench-bracket-in-plane",
     "metrics": [
       {
-        "label": "Partition method",
-        "value": "four_sector_local_sweeps"
+        "label": "NURBS volumes",
+        "value": 7
       },
       {
-        "label": "Rust model blocks",
+        "label": "Bézier cells",
         "value": 14
+      },
+      {
+        "label": "Native NURBS volumes before assembly",
+        "value": 14
+      },
+      {
+        "label": "Partition method",
+        "value": "four_sector_local_sweeps"
       },
       {
         "label": "Rust shared interfaces",
@@ -138,21 +164,30 @@
     "step": "data/bench-bracket-in-plane/reference.step?v=205000d1e56e",
     "stepLabel": "OCCT-checked boundary export (STEP)",
     "title": "Two coplanar bores in one wing",
-    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/propagated-bores.md"
+    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/propagated-bores.md",
+    "representation": "data/bench-bracket-in-plane/model.representation.json?v=0f9fcb94bca2"
   },
   {
-    "audit": "data/bench-bracket-north-stack/audit.json?v=92f6341d4dbb",
-    "description": "The two-level stack is rotated into the north arm. It checks propagation when the host arm changes. The linked STEP is exported from this same native model; independent benchmark checks are scoped separately in the audit.",
+    "audit": "data/bench-bracket-north-stack/audit.json?v=776965034b3f",
+    "description": "The displayed NURBS representation groups 17 Bézier cells into 9 volumes. The two-level stack is rotated into the north arm. It checks propagation when the host arm changes. The linked STEP is exported from this same native model; independent benchmark checks are scoped separately in the audit. The separate exact NURBS cover has 9 volumes across 17 source Bézier cells; download the representation for its controls and joins.",
     "group": "Bracket cut propagation benchmark",
     "id": "bench-bracket-north-stack",
     "metrics": [
       {
-        "label": "Partition method",
-        "value": "propagated_isoparametric_cuts"
+        "label": "NURBS volumes",
+        "value": 9
       },
       {
-        "label": "Rust model blocks",
+        "label": "Bézier cells",
         "value": 17
+      },
+      {
+        "label": "Native NURBS volumes before assembly",
+        "value": 17
+      },
+      {
+        "label": "Partition method",
+        "value": "propagated_isoparametric_cuts"
       },
       {
         "label": "Rust shared interfaces",
@@ -185,21 +220,30 @@
     "step": "data/bench-bracket-north-stack/reference.step?v=f7808fc3d301",
     "stepLabel": "OCCT-checked boundary export (STEP)",
     "title": "Rotated two-level stack",
-    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/propagated-bores.md"
+    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/propagated-bores.md",
+    "representation": "data/bench-bracket-north-stack/model.representation.json?v=368cf13b69f1"
   },
   {
-    "audit": "data/bench-bracket-east-offset-stack/audit.json?v=bd1ce8d11f07",
-    "description": "Two offset bores in the east arm require a propagated cut layout. The historical reference refused this valid placement. The linked STEP is exported from this same native model; independent benchmark checks are scoped separately in the audit.",
+    "audit": "data/bench-bracket-east-offset-stack/audit.json?v=f0f7c6279bf5",
+    "description": "The displayed NURBS representation groups 17 Bézier cells into 9 volumes. Two offset bores in the east arm require a propagated cut layout. The historical reference refused this valid placement. The linked STEP is exported from this same native model; independent benchmark checks are scoped separately in the audit. The separate exact NURBS cover has 9 volumes across 17 source Bézier cells; download the representation for its controls and joins.",
     "group": "Bracket cut propagation benchmark",
     "id": "bench-bracket-east-offset-stack",
     "metrics": [
       {
-        "label": "Partition method",
-        "value": "propagated_isoparametric_cuts"
+        "label": "NURBS volumes",
+        "value": 9
       },
       {
-        "label": "Rust model blocks",
+        "label": "Bézier cells",
         "value": 17
+      },
+      {
+        "label": "Native NURBS volumes before assembly",
+        "value": 17
+      },
+      {
+        "label": "Partition method",
+        "value": "propagated_isoparametric_cuts"
       },
       {
         "label": "Rust shared interfaces",
@@ -232,21 +276,30 @@
     "step": "data/bench-bracket-east-offset-stack/reference.step?v=4d8ba3f229bd",
     "stepLabel": "OCCT-checked boundary export (STEP)",
     "title": "Offset east-arm stack",
-    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/propagated-bores.md"
+    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/propagated-bores.md",
+    "representation": "data/bench-bracket-east-offset-stack/model.representation.json?v=4ee2ad5702ba"
   },
   {
-    "audit": "data/bench-bracket-diagonal/audit.json?v=bedafa37f03c",
-    "description": "The two bores occupy different positions and elevations. The local-host construction keeps the separator inside its wing. The linked STEP is exported from this same native model; independent benchmark checks are scoped separately in the audit.",
+    "audit": "data/bench-bracket-diagonal/audit.json?v=19c277723e07",
+    "description": "The displayed NURBS representation groups 14 Bézier cells into 7 volumes. The two bores occupy different positions and elevations. The local-host construction keeps the separator inside its wing. The linked STEP is exported from this same native model; independent benchmark checks are scoped separately in the audit. The separate exact NURBS cover has 7 volumes across 14 source Bézier cells; download the representation for its controls and joins.",
     "group": "Bracket cut propagation benchmark",
     "id": "bench-bracket-diagonal",
     "metrics": [
       {
-        "label": "Partition method",
-        "value": "local_bore_hosts"
+        "label": "NURBS volumes",
+        "value": 7
       },
       {
-        "label": "Rust model blocks",
+        "label": "Bézier cells",
         "value": 14
+      },
+      {
+        "label": "Native NURBS volumes before assembly",
+        "value": 14
+      },
+      {
+        "label": "Partition method",
+        "value": "local_bore_hosts"
       },
       {
         "label": "Rust shared interfaces",
@@ -279,21 +332,30 @@
     "step": "data/bench-bracket-diagonal/reference.step?v=17ec17697c29",
     "stepLabel": "OCCT-checked boundary export (STEP)",
     "title": "Diagonal pair of bores",
-    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/propagated-bores.md"
+    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/propagated-bores.md",
+    "representation": "data/bench-bracket-diagonal/model.representation.json?v=95dab1c6f780"
   },
   {
-    "audit": "data/bench-bracket-three-levels/audit.json?v=1d2ffee7fcb7",
-    "description": "Three separated bore levels in one arm induce six closure cuts. The mid-height preset crosses the central bore. The linked STEP is exported from this same native model; independent benchmark checks are scoped separately in the audit.",
+    "audit": "data/bench-bracket-three-levels/audit.json?v=2352562493fd",
+    "description": "The displayed NURBS representation groups 24 Bézier cells into 12 volumes. Three separated bore levels in one arm induce six closure cuts. The mid-height preset crosses the central bore. The linked STEP is exported from this same native model; independent benchmark checks are scoped separately in the audit. The separate exact NURBS cover has 12 volumes across 24 source Bézier cells; download the representation for its controls and joins.",
     "group": "Bracket cut propagation benchmark",
     "id": "bench-bracket-three-levels",
     "metrics": [
       {
-        "label": "Partition method",
-        "value": "propagated_isoparametric_cuts"
+        "label": "NURBS volumes",
+        "value": 12
       },
       {
-        "label": "Rust model blocks",
+        "label": "Bézier cells",
         "value": 24
+      },
+      {
+        "label": "Native NURBS volumes before assembly",
+        "value": 24
+      },
+      {
+        "label": "Partition method",
+        "value": "propagated_isoparametric_cuts"
       },
       {
         "label": "Rust shared interfaces",
@@ -326,21 +388,30 @@
     "step": "data/bench-bracket-three-levels/reference.step?v=d6bb550f6857",
     "stepLabel": "OCCT-checked boundary export (STEP)",
     "title": "Three bore elevations",
-    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/propagated-bores.md"
+    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/propagated-bores.md",
+    "representation": "data/bench-bracket-three-levels/model.representation.json?v=08f9da287731"
   },
   {
-    "audit": "data/bench-bracket-both-stacked/audit.json?v=e7b6e0a37940",
-    "description": "Each arm carries a two-level bore stack. The shared bend must close both propagated cut requests. The linked STEP is exported from this same native model; independent benchmark checks are scoped separately in the audit.",
+    "audit": "data/bench-bracket-both-stacked/audit.json?v=3eba8a21b12e",
+    "description": "The displayed NURBS representation groups 20 Bézier cells into 10 volumes. Each arm carries a two-level bore stack. The shared bend must close both propagated cut requests. The linked STEP is exported from this same native model; independent benchmark checks are scoped separately in the audit. The separate exact NURBS cover has 10 volumes across 20 source Bézier cells; download the representation for its controls and joins.",
     "group": "Bracket cut propagation benchmark",
     "id": "bench-bracket-both-stacked",
     "metrics": [
       {
-        "label": "Partition method",
-        "value": "propagated_isoparametric_cuts"
+        "label": "NURBS volumes",
+        "value": 10
       },
       {
-        "label": "Rust model blocks",
+        "label": "Bézier cells",
         "value": 20
+      },
+      {
+        "label": "Native NURBS volumes before assembly",
+        "value": 20
+      },
+      {
+        "label": "Partition method",
+        "value": "propagated_isoparametric_cuts"
       },
       {
         "label": "Rust shared interfaces",
@@ -373,21 +444,30 @@
     "step": "data/bench-bracket-both-stacked/reference.step?v=f82d5600c9f2",
     "stepLabel": "OCCT-checked boundary export (STEP)",
     "title": "Stacks in both bracket arms",
-    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/propagated-bores.md"
+    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/propagated-bores.md",
+    "representation": "data/bench-bracket-both-stacked/model.representation.json?v=267eb6e7c292"
   },
   {
-    "audit": "data/bench-bracket-axial-z/audit.json?v=7d4e65de75fa",
-    "description": "A bore along the bracket height intersects the two arm bores. The mid-height cut crosses the axial bore. The linked STEP is exported from this same native model; independent benchmark checks are scoped separately in the audit.",
+    "audit": "data/bench-bracket-axial-z/audit.json?v=846cda1f644c",
+    "description": "The displayed NURBS representation groups 39 Bézier cells into 21 volumes. A bore along the bracket height intersects the two arm bores. The mid-height cut crosses the axial bore. The linked STEP is exported from this same native model; independent benchmark checks are scoped separately in the audit. The separate exact NURBS cover has 21 volumes across 39 source Bézier cells; download the representation for its controls and joins.",
     "group": "Bracket cut propagation benchmark",
     "id": "bench-bracket-axial-z",
     "metrics": [
       {
-        "label": "Partition method",
-        "value": "propagated_isoparametric_cuts"
+        "label": "NURBS volumes",
+        "value": 21
       },
       {
-        "label": "Rust model blocks",
+        "label": "Bézier cells",
         "value": 39
+      },
+      {
+        "label": "Native NURBS volumes before assembly",
+        "value": 39
+      },
+      {
+        "label": "Partition method",
+        "value": "propagated_isoparametric_cuts"
       },
       {
         "label": "Rust shared interfaces",
@@ -420,21 +500,30 @@
     "step": "data/bench-bracket-axial-z/reference.step?v=8f6f2278cee2",
     "stepLabel": "OCCT-checked boundary export (STEP)",
     "title": "Axial bore with transverse bores",
-    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/propagated-bores.md"
+    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/propagated-bores.md",
+    "representation": "data/bench-bracket-axial-z/model.representation.json?v=9826ede97436"
   },
   {
-    "audit": "data/bench-bracket-unequal-stack/audit.json?v=8c35c3b4141b",
-    "description": "The 12 mm and 20 mm arms carry a two-level stack. This checks cut propagation with a rectangular bend chart. The linked STEP is exported from this same native model; independent benchmark checks are scoped separately in the audit.",
+    "audit": "data/bench-bracket-unequal-stack/audit.json?v=7ff336076243",
+    "description": "The displayed NURBS representation groups 17 Bézier cells into 9 volumes. The 12 mm and 20 mm arms carry a two-level stack. This checks cut propagation with a rectangular bend chart. The linked STEP is exported from this same native model; independent benchmark checks are scoped separately in the audit. The separate exact NURBS cover has 9 volumes across 17 source Bézier cells; download the representation for its controls and joins.",
     "group": "Bracket cut propagation benchmark",
     "id": "bench-bracket-unequal-stack",
     "metrics": [
       {
-        "label": "Partition method",
-        "value": "propagated_isoparametric_cuts"
+        "label": "NURBS volumes",
+        "value": 9
       },
       {
-        "label": "Rust model blocks",
+        "label": "Bézier cells",
         "value": 17
+      },
+      {
+        "label": "Native NURBS volumes before assembly",
+        "value": 17
+      },
+      {
+        "label": "Partition method",
+        "value": "propagated_isoparametric_cuts"
       },
       {
         "label": "Rust shared interfaces",
@@ -467,21 +556,30 @@
     "step": "data/bench-bracket-unequal-stack/reference.step?v=8177b04eab4d",
     "stepLabel": "OCCT-checked boundary export (STEP)",
     "title": "Unequal-width bracket stack",
-    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/propagated-bores.md"
+    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/propagated-bores.md",
+    "representation": "data/bench-bracket-unequal-stack/model.representation.json?v=b0fa440273db"
   },
   {
-    "audit": "data/bench-bracket-unequal-transverse-bores/audit.json?v=f223ee6a798a",
-    "description": "A 12 mm × 20 mm unequal-width filleted L bracket with an R4 bend and two orthogonal R2 through-bores. The mid-height cut crosses both bore axes. The linked STEP is exported from this same native model; independent benchmark checks are scoped separately in the audit.",
+    "audit": "data/bench-bracket-unequal-transverse-bores/audit.json?v=3f8d04cf034f",
+    "description": "The displayed NURBS representation groups 10 Bézier cells into 5 volumes. A 12 mm × 20 mm unequal-width filleted L bracket with an R4 bend and two orthogonal R2 through-bores. The mid-height cut crosses both bore axes. The linked STEP is exported from this same native model; independent benchmark checks are scoped separately in the audit. The separate exact NURBS cover has 5 volumes across 10 source Bézier cells; download the representation for its controls and joins.",
     "group": "Bracket cut propagation benchmark",
     "id": "bench-bracket-unequal-transverse-bores",
     "metrics": [
       {
-        "label": "Partition method",
-        "value": "local_bore_hosts"
+        "label": "NURBS volumes",
+        "value": 5
       },
       {
-        "label": "Rust model blocks",
+        "label": "Bézier cells",
         "value": 10
+      },
+      {
+        "label": "Native NURBS volumes before assembly",
+        "value": 10
+      },
+      {
+        "label": "Partition method",
+        "value": "local_bore_hosts"
       },
       {
         "label": "Rust shared interfaces",
@@ -510,28 +608,37 @@
     "step": "data/bench-bracket-unequal-transverse-bores/reference.step?v=2e115119fc46",
     "stepLabel": "OCCT-checked boundary export (STEP)",
     "title": "Unequal-width bracket with two transverse bores",
-    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/propagated-bores.md"
+    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/propagated-bores.md",
+    "representation": "data/bench-bracket-unequal-transverse-bores/model.representation.json?v=ab5d1dfe719b"
   },
   {
     "id": "bench_poly_through_diamond_center",
     "title": "Through diamond center",
-    "description": "24 mm extrusion of the benchmark sketch, with 6 blocks and 6 shared interfaces.",
-    "source": "data/bench-poly-through_diamond_center/bench_poly_through_diamond_center.recipe.json?v=c2c424c59b60",
-    "model": "data/bench-poly-through_diamond_center/bench_poly_through_diamond_center.model.json?v=5d353b1c1765",
-    "audit": "data/bench-poly-through_diamond_center/bench_poly_through_diamond_center.audit.json?v=5efe4bb15b6a",
+    "description": "24 mm extrusion. The displayed NURBS representation groups 6 Bézier cells into 2 volumes.",
+    "source": "data/bench-poly-through_diamond_center/bench_poly_through_diamond_center.recipe.json?v=3c6ec063410e",
+    "model": "data/bench-poly-through_diamond_center/bench_poly_through_diamond_center.model.json?v=7e6f9a9bab0b",
+    "audit": "data/bench-poly-through_diamond_center/bench_poly_through_diamond_center.audit.json?v=ffd07818085f",
     "step": "data/bench-poly-through_diamond_center/bench_poly_through_diamond_center.step?v=14dcc15a2dbd",
     "metrics": [
+      {
+        "label": "NURBS volumes",
+        "value": 2
+      },
+      {
+        "label": "Bézier cells",
+        "value": 6
+      },
       {
         "label": "Stock thickness",
         "value": "24 mm"
       },
       {
-        "label": "Partition method",
-        "value": "separated_convex_quad_rings"
+        "label": "NURBS partition choice",
+        "value": "assemble"
       },
       {
-        "label": "Rust model blocks",
-        "value": 6
+        "label": "Partition method",
+        "value": "separated_convex_quad_rings"
       },
       {
         "label": "Rust shared interfaces",
@@ -573,23 +680,31 @@
   {
     "id": "bench_poly_through_hex_offset",
     "title": "Through hex offset",
-    "description": "30 mm extrusion of the benchmark sketch, with 6 blocks and 6 shared interfaces.",
-    "source": "data/bench-poly-through_hex_offset/bench_poly_through_hex_offset.recipe.json?v=d231850eefdf",
-    "model": "data/bench-poly-through_hex_offset/bench_poly_through_hex_offset.model.json?v=c921f1b00944",
-    "audit": "data/bench-poly-through_hex_offset/bench_poly_through_hex_offset.audit.json?v=5a68ae7e25c9",
+    "description": "30 mm extrusion. The displayed NURBS representation groups 6 Bézier cells into 4 volumes.",
+    "source": "data/bench-poly-through_hex_offset/bench_poly_through_hex_offset.recipe.json?v=6c3b02dc981f",
+    "model": "data/bench-poly-through_hex_offset/bench_poly_through_hex_offset.model.json?v=47ae63572870",
+    "audit": "data/bench-poly-through_hex_offset/bench_poly_through_hex_offset.audit.json?v=1b04c0f57ede",
     "step": "data/bench-poly-through_hex_offset/bench_poly_through_hex_offset.step?v=e93892956e85",
     "metrics": [
+      {
+        "label": "NURBS volumes",
+        "value": 4
+      },
+      {
+        "label": "Bézier cells",
+        "value": 6
+      },
       {
         "label": "Stock thickness",
         "value": "30 mm"
       },
       {
-        "label": "Partition method",
-        "value": "separated_convex_quad_rings"
+        "label": "NURBS partition choice",
+        "value": "assemble"
       },
       {
-        "label": "Rust model blocks",
-        "value": 6
+        "label": "Partition method",
+        "value": "separated_convex_quad_rings"
       },
       {
         "label": "Rust shared interfaces",
@@ -631,23 +746,31 @@
   {
     "id": "bench_poly_through_pentagon_tight_clearance",
     "title": "Through pentagon tight clearance",
-    "description": "18 mm extrusion of the benchmark sketch, with 6 blocks and 6 shared interfaces.",
-    "source": "data/bench-poly-through_pentagon_tight_clearance/bench_poly_through_pentagon_tight_clearance.recipe.json?v=f56a35ffe311",
-    "model": "data/bench-poly-through_pentagon_tight_clearance/bench_poly_through_pentagon_tight_clearance.model.json?v=f2bddd5d135f",
-    "audit": "data/bench-poly-through_pentagon_tight_clearance/bench_poly_through_pentagon_tight_clearance.audit.json?v=4007f538f29f",
+    "description": "18 mm extrusion. The displayed NURBS representation groups 6 Bézier cells into 3 volumes.",
+    "source": "data/bench-poly-through_pentagon_tight_clearance/bench_poly_through_pentagon_tight_clearance.recipe.json?v=392ae84282b5",
+    "model": "data/bench-poly-through_pentagon_tight_clearance/bench_poly_through_pentagon_tight_clearance.model.json?v=cc18436427dc",
+    "audit": "data/bench-poly-through_pentagon_tight_clearance/bench_poly_through_pentagon_tight_clearance.audit.json?v=678e325b2e02",
     "step": "data/bench-poly-through_pentagon_tight_clearance/bench_poly_through_pentagon_tight_clearance.step?v=0f9f51424837",
     "metrics": [
+      {
+        "label": "NURBS volumes",
+        "value": 3
+      },
+      {
+        "label": "Bézier cells",
+        "value": 6
+      },
       {
         "label": "Stock thickness",
         "value": "18 mm"
       },
       {
-        "label": "Partition method",
-        "value": "separated_convex_quad_rings"
+        "label": "NURBS partition choice",
+        "value": "assemble"
       },
       {
-        "label": "Rust model blocks",
-        "value": 6
+        "label": "Partition method",
+        "value": "separated_convex_quad_rings"
       },
       {
         "label": "Rust shared interfaces",
@@ -689,23 +812,35 @@
   {
     "id": "bench_poly_through_two_rectangles",
     "title": "Through two rectangles",
-    "description": "36 mm extrusion of the benchmark sketch, with 8 blocks and 9 shared interfaces.",
-    "source": "data/bench-poly-through_two_rectangles/bench_poly_through_two_rectangles.recipe.json?v=6ac4940534c1",
-    "model": "data/bench-poly-through_two_rectangles/bench_poly_through_two_rectangles.model.json?v=327b70f3739d",
-    "audit": "data/bench-poly-through_two_rectangles/bench_poly_through_two_rectangles.audit.json?v=77eaaa414f21",
+    "description": "36 mm extrusion. The displayed NURBS representation groups 8 Bézier cells into 4 volumes.",
+    "source": "data/bench-poly-through_two_rectangles/bench_poly_through_two_rectangles.recipe.json?v=9aabe76eea2f",
+    "model": "data/bench-poly-through_two_rectangles/bench_poly_through_two_rectangles.model.json?v=60e4d3e9e168",
+    "audit": "data/bench-poly-through_two_rectangles/bench_poly_through_two_rectangles.audit.json?v=5c89581a90fb",
     "step": "data/bench-poly-through_two_rectangles/bench_poly_through_two_rectangles.step?v=cdbfd1c200e6",
     "metrics": [
+      {
+        "label": "NURBS volumes",
+        "value": 4
+      },
+      {
+        "label": "Bézier cells",
+        "value": 8
+      },
+      {
+        "label": "Native NURBS volumes before assembly",
+        "value": 8
+      },
       {
         "label": "Stock thickness",
         "value": "36 mm"
       },
       {
-        "label": "Partition method",
-        "value": "separated_convex_quad_rings"
+        "label": "NURBS partition choice",
+        "value": "assemble"
       },
       {
-        "label": "Rust model blocks",
-        "value": 8
+        "label": "Partition method",
+        "value": "separated_convex_quad_rings"
       },
       {
         "label": "Rust shared interfaces",
@@ -742,28 +877,37 @@
     },
     "group": "Polygon benchmark · through-holes",
     "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/sketch-planner-polygon-evaluation/README.md",
-    "stepLabel": "OCCT-checked boundary export (STEP)"
+    "stepLabel": "OCCT-checked boundary export (STEP)",
+    "representation": "data/bench-poly-through_two_rectangles/bench_poly_through_two_rectangles.model.representation.json?v=679de172da2e"
   },
   {
     "id": "bench_poly_through_octagon_high_aspect",
     "title": "Through octagon high aspect",
-    "description": "20 mm extrusion of the benchmark sketch, with 8 blocks and 8 shared interfaces.",
-    "source": "data/bench-poly-through_octagon_high_aspect/bench_poly_through_octagon_high_aspect.recipe.json?v=e56df9d6cb22",
-    "model": "data/bench-poly-through_octagon_high_aspect/bench_poly_through_octagon_high_aspect.model.json?v=4999ae0fd6f0",
-    "audit": "data/bench-poly-through_octagon_high_aspect/bench_poly_through_octagon_high_aspect.audit.json?v=a65ab5373ca2",
+    "description": "20 mm extrusion. The displayed NURBS representation groups 8 Bézier cells into 4 volumes.",
+    "source": "data/bench-poly-through_octagon_high_aspect/bench_poly_through_octagon_high_aspect.recipe.json?v=9107d86b0c65",
+    "model": "data/bench-poly-through_octagon_high_aspect/bench_poly_through_octagon_high_aspect.model.json?v=1cde20bb8857",
+    "audit": "data/bench-poly-through_octagon_high_aspect/bench_poly_through_octagon_high_aspect.audit.json?v=9d37c29cb752",
     "step": "data/bench-poly-through_octagon_high_aspect/bench_poly_through_octagon_high_aspect.step?v=546100d15324",
     "metrics": [
+      {
+        "label": "NURBS volumes",
+        "value": 4
+      },
+      {
+        "label": "Bézier cells",
+        "value": 8
+      },
       {
         "label": "Stock thickness",
         "value": "20 mm"
       },
       {
-        "label": "Partition method",
-        "value": "separated_convex_quad_rings"
+        "label": "NURBS partition choice",
+        "value": "assemble"
       },
       {
-        "label": "Rust model blocks",
-        "value": 8
+        "label": "Partition method",
+        "value": "separated_convex_quad_rings"
       },
       {
         "label": "Rust shared interfaces",
@@ -805,23 +949,31 @@
   {
     "id": "bench_poly_blind_rotated_quad",
     "title": "Blind rotated quad",
-    "description": "40 mm extrusion of the benchmark sketch, with 11 blocks and 19 shared interfaces.",
-    "source": "data/bench-poly-blind_rotated_quad/bench_poly_blind_rotated_quad.recipe.json?v=d2f23ecb614b",
-    "model": "data/bench-poly-blind_rotated_quad/bench_poly_blind_rotated_quad.model.json?v=3139ea79ae1a",
-    "audit": "data/bench-poly-blind_rotated_quad/bench_poly_blind_rotated_quad.audit.json?v=3830583b5fca",
+    "description": "40 mm extrusion. The displayed NURBS representation groups 11 Bézier cells into 7 volumes.",
+    "source": "data/bench-poly-blind_rotated_quad/bench_poly_blind_rotated_quad.recipe.json?v=03a6073d1894",
+    "model": "data/bench-poly-blind_rotated_quad/bench_poly_blind_rotated_quad.model.json?v=e2b93cf28493",
+    "audit": "data/bench-poly-blind_rotated_quad/bench_poly_blind_rotated_quad.audit.json?v=d34229e5f48c",
     "step": "data/bench-poly-blind_rotated_quad/bench_poly_blind_rotated_quad.step?v=ee65cc00385e",
     "metrics": [
+      {
+        "label": "NURBS volumes",
+        "value": 7
+      },
+      {
+        "label": "Bézier cells",
+        "value": 11
+      },
       {
         "label": "Stock thickness",
         "value": "40 mm"
       },
       {
-        "label": "Partition method",
-        "value": "separated_convex_quad_rings"
+        "label": "NURBS partition choice",
+        "value": "assemble"
       },
       {
-        "label": "Rust model blocks",
-        "value": 11
+        "label": "Partition method",
+        "value": "separated_convex_quad_rings"
       },
       {
         "label": "Rust shared interfaces",
@@ -863,23 +1015,31 @@
   {
     "id": "bench_poly_blind_triangle_shallow",
     "title": "Blind triangle shallow",
-    "description": "32 mm extrusion of the benchmark sketch, with 15 blocks and 27 shared interfaces.",
-    "source": "data/bench-poly-blind_triangle_shallow/bench_poly_blind_triangle_shallow.recipe.json?v=9828c00f09d4",
-    "model": "data/bench-poly-blind_triangle_shallow/bench_poly_blind_triangle_shallow.model.json?v=a4e3771417d5",
-    "audit": "data/bench-poly-blind_triangle_shallow/bench_poly_blind_triangle_shallow.audit.json?v=cfb2562e5353",
+    "description": "32 mm extrusion. The displayed NURBS representation groups 15 Bézier cells into 8 volumes.",
+    "source": "data/bench-poly-blind_triangle_shallow/bench_poly_blind_triangle_shallow.recipe.json?v=fe8197e16b8d",
+    "model": "data/bench-poly-blind_triangle_shallow/bench_poly_blind_triangle_shallow.model.json?v=b04ae2827e16",
+    "audit": "data/bench-poly-blind_triangle_shallow/bench_poly_blind_triangle_shallow.audit.json?v=a5d7cb14ae8c",
     "step": "data/bench-poly-blind_triangle_shallow/bench_poly_blind_triangle_shallow.step?v=965e890f9812",
     "metrics": [
+      {
+        "label": "NURBS volumes",
+        "value": 8
+      },
+      {
+        "label": "Bézier cells",
+        "value": 15
+      },
       {
         "label": "Stock thickness",
         "value": "32 mm"
       },
       {
-        "label": "Partition method",
-        "value": "separated_convex_quad_rings"
+        "label": "NURBS partition choice",
+        "value": "assemble"
       },
       {
-        "label": "Rust model blocks",
-        "value": 15
+        "label": "Partition method",
+        "value": "separated_convex_quad_rings"
       },
       {
         "label": "Rust shared interfaces",
@@ -921,23 +1081,31 @@
   {
     "id": "bench_poly_blind_hex_deep",
     "title": "Blind hex deep",
-    "description": "44 mm extrusion of the benchmark sketch, with 14 blocks and 25 shared interfaces.",
-    "source": "data/bench-poly-blind_hex_deep/bench_poly_blind_hex_deep.recipe.json?v=21b9fcaa5e91",
-    "model": "data/bench-poly-blind_hex_deep/bench_poly_blind_hex_deep.model.json?v=6b394f590d37",
-    "audit": "data/bench-poly-blind_hex_deep/bench_poly_blind_hex_deep.audit.json?v=89f258b694e1",
+    "description": "44 mm extrusion. The displayed NURBS representation groups 14 Bézier cells into 10 volumes.",
+    "source": "data/bench-poly-blind_hex_deep/bench_poly_blind_hex_deep.recipe.json?v=12fd5dbfe15b",
+    "model": "data/bench-poly-blind_hex_deep/bench_poly_blind_hex_deep.model.json?v=a58d9d3758ce",
+    "audit": "data/bench-poly-blind_hex_deep/bench_poly_blind_hex_deep.audit.json?v=86c52b39403e",
     "step": "data/bench-poly-blind_hex_deep/bench_poly_blind_hex_deep.step?v=bb4f893709bf",
     "metrics": [
+      {
+        "label": "NURBS volumes",
+        "value": 10
+      },
+      {
+        "label": "Bézier cells",
+        "value": 14
+      },
       {
         "label": "Stock thickness",
         "value": "44 mm"
       },
       {
-        "label": "Partition method",
-        "value": "separated_convex_quad_rings"
+        "label": "NURBS partition choice",
+        "value": "assemble"
       },
       {
-        "label": "Rust model blocks",
-        "value": 14
+        "label": "Partition method",
+        "value": "separated_convex_quad_rings"
       },
       {
         "label": "Rust shared interfaces",
@@ -979,35 +1147,43 @@
   {
     "id": "bench_poly_blind_two_levels",
     "title": "Blind two levels",
-    "description": "48 mm extrusion of the benchmark sketch, with 36 blocks and 77 shared interfaces.",
-    "source": "data/bench-poly-blind_two_levels/bench_poly_blind_two_levels.recipe.json?v=5cef7552ad2d",
-    "model": "data/bench-poly-blind_two_levels/bench_poly_blind_two_levels.model.json?v=c35813d48205",
-    "audit": "data/bench-poly-blind_two_levels/bench_poly_blind_two_levels.audit.json?v=498cd92528b2",
-    "step": "data/bench-poly-blind_two_levels/bench_poly_blind_two_levels.step?v=c4a8b64f869e",
+    "description": "48 mm extrusion. The displayed NURBS representation groups 96 Bézier cells into 24 volumes.",
+    "source": "data/bench-poly-blind_two_levels/bench_poly_blind_two_levels.recipe.json?v=b6cb3e0ee838",
+    "model": "data/bench-poly-blind_two_levels/bench_poly_blind_two_levels.model.json?v=5c8ee08e3b81",
+    "audit": "data/bench-poly-blind_two_levels/bench_poly_blind_two_levels.audit.json?v=259cec7aa895",
+    "step": "data/bench-poly-blind_two_levels/bench_poly_blind_two_levels.step?v=d3597db7bf44",
     "metrics": [
+      {
+        "label": "NURBS volumes",
+        "value": 24
+      },
+      {
+        "label": "Bézier cells",
+        "value": 96
+      },
       {
         "label": "Stock thickness",
         "value": "48 mm"
       },
       {
-        "label": "Partition method",
-        "value": "separated_convex_quad_rings"
+        "label": "NURBS partition choice",
+        "value": "optimize"
       },
       {
-        "label": "Rust model blocks",
-        "value": 36
+        "label": "Partition method",
+        "value": "orthogonal_feature_footprint"
       },
       {
         "label": "Rust shared interfaces",
-        "value": 77
+        "value": 214
       },
       {
         "label": "Sampled 3D κ₂ max",
-        "value": "6.58633"
+        "value": "15.5"
       },
       {
         "label": "Certified determinant lower bound",
-        "value": "1440 mm³"
+        "value": "240 mm³"
       },
       {
         "label": "Exact volume",
@@ -1015,15 +1191,15 @@
       },
       {
         "label": "Sampled in-plane κ₂ max",
-        "value": "6.58633"
+        "value": "15.5"
       },
       {
         "label": "Minimum corner sine",
-        "value": "0.447214"
+        "value": "1"
       },
       {
         "label": "Maximum in-plane span / normal thickness",
-        "value": "5.61487"
+        "value": "3.1"
       }
     ],
     "section": {
@@ -1037,23 +1213,31 @@
   {
     "id": "bench_poly_blind_close_to_boundary",
     "title": "Blind close to boundary",
-    "description": "28 mm extrusion of the benchmark sketch, with 11 blocks and 19 shared interfaces.",
-    "source": "data/bench-poly-blind_close_to_boundary/bench_poly_blind_close_to_boundary.recipe.json?v=13297652fad6",
-    "model": "data/bench-poly-blind_close_to_boundary/bench_poly_blind_close_to_boundary.model.json?v=2ba8e9ce725f",
-    "audit": "data/bench-poly-blind_close_to_boundary/bench_poly_blind_close_to_boundary.audit.json?v=2d93e1cc7a7f",
+    "description": "28 mm extrusion. The displayed NURBS representation groups 11 Bézier cells into 7 volumes.",
+    "source": "data/bench-poly-blind_close_to_boundary/bench_poly_blind_close_to_boundary.recipe.json?v=a3ca49ca8965",
+    "model": "data/bench-poly-blind_close_to_boundary/bench_poly_blind_close_to_boundary.model.json?v=d893ad2d5b5d",
+    "audit": "data/bench-poly-blind_close_to_boundary/bench_poly_blind_close_to_boundary.audit.json?v=5a6f5cd72457",
     "step": "data/bench-poly-blind_close_to_boundary/bench_poly_blind_close_to_boundary.step?v=d6deffa5ed1d",
     "metrics": [
+      {
+        "label": "NURBS volumes",
+        "value": 7
+      },
+      {
+        "label": "Bézier cells",
+        "value": 11
+      },
       {
         "label": "Stock thickness",
         "value": "28 mm"
       },
       {
-        "label": "Partition method",
-        "value": "separated_convex_quad_rings"
+        "label": "NURBS partition choice",
+        "value": "assemble"
       },
       {
-        "label": "Rust model blocks",
-        "value": 11
+        "label": "Partition method",
+        "value": "separated_convex_quad_rings"
       },
       {
         "label": "Rust shared interfaces",
@@ -1095,23 +1279,31 @@
   {
     "id": "bench_poly_concave_c_stock_two_holes",
     "title": "Concave c stock two holes",
-    "description": "26 mm extrusion of the benchmark sketch, with 21 blocks and 24 shared interfaces.",
-    "source": "data/bench-poly-concave_c_stock_two_holes/bench_poly_concave_c_stock_two_holes.recipe.json?v=3540372affce",
-    "model": "data/bench-poly-concave_c_stock_two_holes/bench_poly_concave_c_stock_two_holes.model.json?v=00ad96c607f9",
-    "audit": "data/bench-poly-concave_c_stock_two_holes/bench_poly_concave_c_stock_two_holes.audit.json?v=b899eac9be78",
+    "description": "26 mm extrusion. The displayed NURBS representation groups 21 Bézier cells into 7 volumes.",
+    "source": "data/bench-poly-concave_c_stock_two_holes/bench_poly_concave_c_stock_two_holes.recipe.json?v=87848f7d23c8",
+    "model": "data/bench-poly-concave_c_stock_two_holes/bench_poly_concave_c_stock_two_holes.model.json?v=fc2193374188",
+    "audit": "data/bench-poly-concave_c_stock_two_holes/bench_poly_concave_c_stock_two_holes.audit.json?v=77869451b714",
     "step": "data/bench-poly-concave_c_stock_two_holes/bench_poly_concave_c_stock_two_holes.step?v=331ef69ece35",
     "metrics": [
+      {
+        "label": "NURBS volumes",
+        "value": 7
+      },
+      {
+        "label": "Bézier cells",
+        "value": 21
+      },
       {
         "label": "Stock thickness",
         "value": "26 mm"
       },
       {
-        "label": "Partition method",
-        "value": "orthogonal_feature_footprint"
+        "label": "NURBS partition choice",
+        "value": "assemble"
       },
       {
-        "label": "Rust model blocks",
-        "value": 21
+        "label": "Partition method",
+        "value": "orthogonal_feature_footprint"
       },
       {
         "label": "Rust shared interfaces",
@@ -1153,23 +1345,31 @@
   {
     "id": "bench_poly_concave_l_stock_pocket",
     "title": "Concave l stock pocket",
-    "description": "34 mm extrusion of the benchmark sketch, with 39 blocks and 72 shared interfaces.",
-    "source": "data/bench-poly-concave_l_stock_pocket/bench_poly_concave_l_stock_pocket.recipe.json?v=43ee4c58dec7",
-    "model": "data/bench-poly-concave_l_stock_pocket/bench_poly_concave_l_stock_pocket.model.json?v=f02f8e990d8d",
-    "audit": "data/bench-poly-concave_l_stock_pocket/bench_poly_concave_l_stock_pocket.audit.json?v=b71a53893826",
+    "description": "34 mm extrusion. The displayed NURBS representation groups 39 Bézier cells into 12 volumes.",
+    "source": "data/bench-poly-concave_l_stock_pocket/bench_poly_concave_l_stock_pocket.recipe.json?v=94671d3c0bc7",
+    "model": "data/bench-poly-concave_l_stock_pocket/bench_poly_concave_l_stock_pocket.model.json?v=bea56570e094",
+    "audit": "data/bench-poly-concave_l_stock_pocket/bench_poly_concave_l_stock_pocket.audit.json?v=817099251b01",
     "step": "data/bench-poly-concave_l_stock_pocket/bench_poly_concave_l_stock_pocket.step?v=8e4592750410",
     "metrics": [
+      {
+        "label": "NURBS volumes",
+        "value": 12
+      },
+      {
+        "label": "Bézier cells",
+        "value": 39
+      },
       {
         "label": "Stock thickness",
         "value": "34 mm"
       },
       {
-        "label": "Partition method",
-        "value": "orthogonal_feature_footprint"
+        "label": "NURBS partition choice",
+        "value": "assemble"
       },
       {
-        "label": "Rust model blocks",
-        "value": 39
+        "label": "Partition method",
+        "value": "orthogonal_feature_footprint"
       },
       {
         "label": "Rust shared interfaces",
@@ -1211,23 +1411,31 @@
   {
     "id": "bench_poly_concave_cut_in_rectangle",
     "title": "Concave cut in rectangle",
-    "description": "22 mm extrusion of the benchmark sketch, with 45 blocks and 88 shared interfaces.",
-    "source": "data/bench-poly-concave_cut_in_rectangle/bench_poly_concave_cut_in_rectangle.recipe.json?v=6481c0d450b1",
-    "model": "data/bench-poly-concave_cut_in_rectangle/bench_poly_concave_cut_in_rectangle.model.json?v=5027a5efb1f8",
-    "audit": "data/bench-poly-concave_cut_in_rectangle/bench_poly_concave_cut_in_rectangle.audit.json?v=884c4ed1f9c2",
+    "description": "22 mm extrusion. The displayed NURBS representation groups 45 Bézier cells into 14 volumes.",
+    "source": "data/bench-poly-concave_cut_in_rectangle/bench_poly_concave_cut_in_rectangle.recipe.json?v=c1fd81b1fa07",
+    "model": "data/bench-poly-concave_cut_in_rectangle/bench_poly_concave_cut_in_rectangle.model.json?v=104517433088",
+    "audit": "data/bench-poly-concave_cut_in_rectangle/bench_poly_concave_cut_in_rectangle.audit.json?v=e3e9823958ee",
     "step": "data/bench-poly-concave_cut_in_rectangle/bench_poly_concave_cut_in_rectangle.step?v=3f332f67689c",
     "metrics": [
+      {
+        "label": "NURBS volumes",
+        "value": 14
+      },
+      {
+        "label": "Bézier cells",
+        "value": 45
+      },
       {
         "label": "Stock thickness",
         "value": "22 mm"
       },
       {
-        "label": "Partition method",
-        "value": "orthogonal_feature_footprint"
+        "label": "NURBS partition choice",
+        "value": "assemble"
       },
       {
-        "label": "Rust model blocks",
-        "value": 45
+        "label": "Partition method",
+        "value": "orthogonal_feature_footprint"
       },
       {
         "label": "Rust shared interfaces",
@@ -1269,23 +1477,35 @@
   {
     "id": "bench_poly_concave_u_stock_offset_hole",
     "title": "Concave u stock offset hole",
-    "description": "38 mm extrusion of the benchmark sketch, with 6 blocks and 6 shared interfaces.",
-    "source": "data/bench-poly-concave_u_stock_offset_hole/bench_poly_concave_u_stock_offset_hole.recipe.json?v=c54d74b6ccea",
-    "model": "data/bench-poly-concave_u_stock_offset_hole/bench_poly_concave_u_stock_offset_hole.model.json?v=2283c8f6c02a",
-    "audit": "data/bench-poly-concave_u_stock_offset_hole/bench_poly_concave_u_stock_offset_hole.audit.json?v=a1ab4857e6ee",
+    "description": "38 mm extrusion. The displayed NURBS representation groups 6 Bézier cells into 3 volumes.",
+    "source": "data/bench-poly-concave_u_stock_offset_hole/bench_poly_concave_u_stock_offset_hole.recipe.json?v=86743a2aeb82",
+    "model": "data/bench-poly-concave_u_stock_offset_hole/bench_poly_concave_u_stock_offset_hole.model.json?v=8852b62fe2ae",
+    "audit": "data/bench-poly-concave_u_stock_offset_hole/bench_poly_concave_u_stock_offset_hole.audit.json?v=5a97ff687752",
     "step": "data/bench-poly-concave_u_stock_offset_hole/bench_poly_concave_u_stock_offset_hole.step?v=8c556743fd3b",
     "metrics": [
+      {
+        "label": "NURBS volumes",
+        "value": 3
+      },
+      {
+        "label": "Bézier cells",
+        "value": 6
+      },
+      {
+        "label": "Native NURBS volumes before assembly",
+        "value": 6
+      },
       {
         "label": "Stock thickness",
         "value": "38 mm"
       },
       {
-        "label": "Partition method",
-        "value": "guided_quad_footprint"
+        "label": "NURBS partition choice",
+        "value": "assemble"
       },
       {
-        "label": "Rust model blocks",
-        "value": 6
+        "label": "Partition method",
+        "value": "guided_quad_footprint"
       },
       {
         "label": "Rust shared interfaces",
@@ -1322,28 +1542,37 @@
     },
     "group": "Polygon benchmark · concave profiles",
     "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/sketch-planner-polygon-evaluation/README.md",
-    "stepLabel": "OCCT-checked boundary export (STEP)"
+    "stepLabel": "OCCT-checked boundary export (STEP)",
+    "representation": "data/bench-poly-concave_u_stock_offset_hole/bench_poly_concave_u_stock_offset_hole.model.representation.json?v=f513e24fbff3"
   },
   {
     "id": "bench_poly_concave_stock_blind_two_profiles",
     "title": "Concave stock blind two profiles",
-    "description": "42 mm extrusion of the benchmark sketch, with 66 blocks and 123 shared interfaces.",
-    "source": "data/bench-poly-concave_stock_blind_two_profiles/bench_poly_concave_stock_blind_two_profiles.recipe.json?v=d527602ec4df",
-    "model": "data/bench-poly-concave_stock_blind_two_profiles/bench_poly_concave_stock_blind_two_profiles.model.json?v=9d031b401adf",
-    "audit": "data/bench-poly-concave_stock_blind_two_profiles/bench_poly_concave_stock_blind_two_profiles.audit.json?v=b73569854643",
+    "description": "42 mm extrusion. The displayed NURBS representation groups 66 Bézier cells into 20 volumes.",
+    "source": "data/bench-poly-concave_stock_blind_two_profiles/bench_poly_concave_stock_blind_two_profiles.recipe.json?v=383e1ea107ab",
+    "model": "data/bench-poly-concave_stock_blind_two_profiles/bench_poly_concave_stock_blind_two_profiles.model.json?v=e1d93aba6e65",
+    "audit": "data/bench-poly-concave_stock_blind_two_profiles/bench_poly_concave_stock_blind_two_profiles.audit.json?v=29d0e54ab171",
     "step": "data/bench-poly-concave_stock_blind_two_profiles/bench_poly_concave_stock_blind_two_profiles.step?v=20cabbcd7eb7",
     "metrics": [
+      {
+        "label": "NURBS volumes",
+        "value": 20
+      },
+      {
+        "label": "Bézier cells",
+        "value": 66
+      },
       {
         "label": "Stock thickness",
         "value": "42 mm"
       },
       {
-        "label": "Partition method",
-        "value": "orthogonal_feature_footprint"
+        "label": "NURBS partition choice",
+        "value": "assemble"
       },
       {
-        "label": "Rust model blocks",
-        "value": 66
+        "label": "Partition method",
+        "value": "orthogonal_feature_footprint"
       },
       {
         "label": "Rust shared interfaces",
@@ -1385,23 +1614,35 @@
   {
     "id": "bench_poly_seeded_convex_00",
     "title": "Seeded case 00 · 12-sided stock · 1 through-hole",
-    "description": "459 mm extrusion of the benchmark sketch, with 12 blocks and 12 shared interfaces.",
-    "source": "data/bench-poly-seeded_convex_00/bench_poly_seeded_convex_00.recipe.json?v=469b0dbde6cd",
-    "model": "data/bench-poly-seeded_convex_00/bench_poly_seeded_convex_00.model.json?v=3d08a9b307f0",
-    "audit": "data/bench-poly-seeded_convex_00/bench_poly_seeded_convex_00.audit.json?v=d31110c14df2",
+    "description": "459 mm extrusion. The displayed NURBS representation groups 12 Bézier cells into 6 volumes.",
+    "source": "data/bench-poly-seeded_convex_00/bench_poly_seeded_convex_00.recipe.json?v=39fa4083223e",
+    "model": "data/bench-poly-seeded_convex_00/bench_poly_seeded_convex_00.model.json?v=6bca8bb122ef",
+    "audit": "data/bench-poly-seeded_convex_00/bench_poly_seeded_convex_00.audit.json?v=a50743328165",
     "step": "data/bench-poly-seeded_convex_00/bench_poly_seeded_convex_00.step?v=afd43825f7ba",
     "metrics": [
+      {
+        "label": "NURBS volumes",
+        "value": 6
+      },
+      {
+        "label": "Bézier cells",
+        "value": 12
+      },
+      {
+        "label": "Native NURBS volumes before assembly",
+        "value": 12
+      },
       {
         "label": "Stock thickness",
         "value": "459 mm"
       },
       {
-        "label": "Partition method",
-        "value": "radial_convex_footprint"
+        "label": "NURBS partition choice",
+        "value": "assemble"
       },
       {
-        "label": "Rust model blocks",
-        "value": 12
+        "label": "Partition method",
+        "value": "radial_convex_footprint"
       },
       {
         "label": "Rust shared interfaces",
@@ -1438,40 +1679,49 @@
     },
     "group": "Polygon benchmark · seeded through-holes",
     "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/sketch-planner-polygon-evaluation/README.md",
-    "stepLabel": "OCCT-checked boundary export (STEP)"
+    "stepLabel": "OCCT-checked boundary export (STEP)",
+    "representation": "data/bench-poly-seeded_convex_00/bench_poly_seeded_convex_00.model.representation.json?v=b877dce9206d"
   },
   {
     "id": "bench_poly_seeded_convex_02",
     "title": "Seeded case 02 · 5-sided stock · 3 through-holes",
-    "description": "704 mm extrusion of the benchmark sketch, with 17 blocks and 21 shared interfaces.",
-    "source": "data/bench-poly-seeded_convex_02/bench_poly_seeded_convex_02.recipe.json?v=30bb910cc768",
-    "model": "data/bench-poly-seeded_convex_02/bench_poly_seeded_convex_02.model.json?v=4dc56b4ef88d",
-    "audit": "data/bench-poly-seeded_convex_02/bench_poly_seeded_convex_02.audit.json?v=ccf446c1d72b",
-    "step": "data/bench-poly-seeded_convex_02/bench_poly_seeded_convex_02.step?v=36a2677f816e",
+    "description": "704 mm extrusion. The displayed NURBS representation groups 18 Bézier cells into 10 volumes.",
+    "source": "data/bench-poly-seeded_convex_02/bench_poly_seeded_convex_02.recipe.json?v=37b0e5c7b418",
+    "model": "data/bench-poly-seeded_convex_02/bench_poly_seeded_convex_02.model.json?v=937a57acb1f0",
+    "audit": "data/bench-poly-seeded_convex_02/bench_poly_seeded_convex_02.audit.json?v=667d2b1bc688",
+    "step": "data/bench-poly-seeded_convex_02/bench_poly_seeded_convex_02.step?v=b7ef554134cb",
     "metrics": [
+      {
+        "label": "NURBS volumes",
+        "value": 10
+      },
+      {
+        "label": "Bézier cells",
+        "value": 18
+      },
       {
         "label": "Stock thickness",
         "value": "704 mm"
+      },
+      {
+        "label": "NURBS partition choice",
+        "value": "optimize"
       },
       {
         "label": "Partition method",
         "value": "separated_convex_quad_rings"
       },
       {
-        "label": "Rust model blocks",
-        "value": 17
-      },
-      {
         "label": "Rust shared interfaces",
-        "value": 21
+        "value": 23
       },
       {
         "label": "Sampled 3D κ₂ max",
-        "value": "104.4"
+        "value": "56.335"
       },
       {
         "label": "Certified determinant lower bound",
-        "value": "4666934 mm³"
+        "value": "4728634.6 mm³"
       },
       {
         "label": "Exact volume",
@@ -1479,15 +1729,15 @@
       },
       {
         "label": "Sampled in-plane κ₂ max",
-        "value": "104.4"
+        "value": "44.3737"
       },
       {
         "label": "Minimum corner sine",
-        "value": "0.037475"
+        "value": "0.0768826"
       },
       {
         "label": "Maximum in-plane span / normal thickness",
-        "value": "4.35569"
+        "value": "2.62834"
       }
     ],
     "section": {
@@ -1501,35 +1751,43 @@
   {
     "id": "bench_poly_seeded_convex_04",
     "title": "Seeded case 04 · 6-sided stock · 2 through-holes",
-    "description": "754 mm extrusion of the benchmark sketch, with 12 blocks and 15 shared interfaces.",
-    "source": "data/bench-poly-seeded_convex_04/bench_poly_seeded_convex_04.recipe.json?v=da6e90672ca7",
-    "model": "data/bench-poly-seeded_convex_04/bench_poly_seeded_convex_04.model.json?v=a58059f5b41e",
-    "audit": "data/bench-poly-seeded_convex_04/bench_poly_seeded_convex_04.audit.json?v=502c6c354d24",
-    "step": "data/bench-poly-seeded_convex_04/bench_poly_seeded_convex_04.step?v=da7cf614d69c",
+    "description": "754 mm extrusion. The displayed NURBS representation groups 16 Bézier cells into 4 volumes.",
+    "source": "data/bench-poly-seeded_convex_04/bench_poly_seeded_convex_04.recipe.json?v=0d89abae2178",
+    "model": "data/bench-poly-seeded_convex_04/bench_poly_seeded_convex_04.model.json?v=deeef011ec9d",
+    "audit": "data/bench-poly-seeded_convex_04/bench_poly_seeded_convex_04.audit.json?v=f316ee6f71b6",
+    "step": "data/bench-poly-seeded_convex_04/bench_poly_seeded_convex_04.step?v=089ca6475d7e",
     "metrics": [
+      {
+        "label": "NURBS volumes",
+        "value": 4
+      },
+      {
+        "label": "Bézier cells",
+        "value": 16
+      },
       {
         "label": "Stock thickness",
         "value": "754 mm"
+      },
+      {
+        "label": "NURBS partition choice",
+        "value": "optimize"
       },
       {
         "label": "Partition method",
         "value": "separated_convex_quad_rings"
       },
       {
-        "label": "Rust model blocks",
-        "value": 12
-      },
-      {
         "label": "Rust shared interfaces",
-        "value": 15
+        "value": 22
       },
       {
         "label": "Sampled 3D κ₂ max",
-        "value": "41.1111"
+        "value": "195.996"
       },
       {
         "label": "Certified determinant lower bound",
-        "value": "6559800 mm³"
+        "value": "4373200 mm³"
       },
       {
         "label": "Exact volume",
@@ -1537,15 +1795,15 @@
       },
       {
         "label": "Sampled in-plane κ₂ max",
-        "value": "41.1111"
+        "value": "195.996"
       },
       {
         "label": "Minimum corner sine",
-        "value": "0.0662631"
+        "value": "0.0276571"
       },
       {
         "label": "Maximum in-plane span / normal thickness",
-        "value": "3.71609"
+        "value": "3.27979"
       }
     ],
     "section": {
@@ -1559,23 +1817,35 @@
   {
     "id": "bench_poly_seeded_convex_06",
     "title": "Seeded case 06 · 9-sided stock · 1 through-hole",
-    "description": "465 mm extrusion of the benchmark sketch, with 9 blocks and 9 shared interfaces.",
-    "source": "data/bench-poly-seeded_convex_06/bench_poly_seeded_convex_06.recipe.json?v=767f89404a3e",
-    "model": "data/bench-poly-seeded_convex_06/bench_poly_seeded_convex_06.model.json?v=4f39b8d0fdaf",
-    "audit": "data/bench-poly-seeded_convex_06/bench_poly_seeded_convex_06.audit.json?v=7c03a610e14c",
+    "description": "465 mm extrusion. The displayed NURBS representation groups 9 Bézier cells into 5 volumes.",
+    "source": "data/bench-poly-seeded_convex_06/bench_poly_seeded_convex_06.recipe.json?v=5b8dd4d5ae38",
+    "model": "data/bench-poly-seeded_convex_06/bench_poly_seeded_convex_06.model.json?v=b5df25200b90",
+    "audit": "data/bench-poly-seeded_convex_06/bench_poly_seeded_convex_06.audit.json?v=29dbf88847d6",
     "step": "data/bench-poly-seeded_convex_06/bench_poly_seeded_convex_06.step?v=95fcfdae6706",
     "metrics": [
+      {
+        "label": "NURBS volumes",
+        "value": 5
+      },
+      {
+        "label": "Bézier cells",
+        "value": 9
+      },
+      {
+        "label": "Native NURBS volumes before assembly",
+        "value": 9
+      },
       {
         "label": "Stock thickness",
         "value": "465 mm"
       },
       {
-        "label": "Partition method",
-        "value": "radial_convex_footprint"
+        "label": "NURBS partition choice",
+        "value": "assemble"
       },
       {
-        "label": "Rust model blocks",
-        "value": 9
+        "label": "Partition method",
+        "value": "radial_convex_footprint"
       },
       {
         "label": "Rust shared interfaces",
@@ -1612,40 +1882,49 @@
     },
     "group": "Polygon benchmark · seeded through-holes",
     "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/sketch-planner-polygon-evaluation/README.md",
-    "stepLabel": "OCCT-checked boundary export (STEP)"
+    "stepLabel": "OCCT-checked boundary export (STEP)",
+    "representation": "data/bench-poly-seeded_convex_06/bench_poly_seeded_convex_06.model.representation.json?v=bef48a82bfc7"
   },
   {
     "id": "bench_poly_seeded_convex_08",
     "title": "Seeded case 08 · 11-sided stock · 3 through-holes",
-    "description": "748 mm extrusion of the benchmark sketch, with 33 blocks and 42 shared interfaces.",
-    "source": "data/bench-poly-seeded_convex_08/bench_poly_seeded_convex_08.recipe.json?v=029ac72c8018",
-    "model": "data/bench-poly-seeded_convex_08/bench_poly_seeded_convex_08.model.json?v=ac5525541e3d",
-    "audit": "data/bench-poly-seeded_convex_08/bench_poly_seeded_convex_08.audit.json?v=ad553433c5c0",
-    "step": "data/bench-poly-seeded_convex_08/bench_poly_seeded_convex_08.step?v=6477cebcc502",
+    "description": "748 mm extrusion. The displayed NURBS representation groups 37 Bézier cells into 16 volumes.",
+    "source": "data/bench-poly-seeded_convex_08/bench_poly_seeded_convex_08.recipe.json?v=bbfc2afee015",
+    "model": "data/bench-poly-seeded_convex_08/bench_poly_seeded_convex_08.model.json?v=d45e9c1b71a7",
+    "audit": "data/bench-poly-seeded_convex_08/bench_poly_seeded_convex_08.audit.json?v=c2e18d0ffbab",
+    "step": "data/bench-poly-seeded_convex_08/bench_poly_seeded_convex_08.step?v=aee9ce4f4543",
     "metrics": [
+      {
+        "label": "NURBS volumes",
+        "value": 16
+      },
+      {
+        "label": "Bézier cells",
+        "value": 37
+      },
       {
         "label": "Stock thickness",
         "value": "748 mm"
+      },
+      {
+        "label": "NURBS partition choice",
+        "value": "optimize"
       },
       {
         "label": "Partition method",
         "value": "separated_convex_quad_rings"
       },
       {
-        "label": "Rust model blocks",
-        "value": 33
-      },
-      {
         "label": "Rust shared interfaces",
-        "value": 42
+        "value": 48
       },
       {
         "label": "Sampled 3D κ₂ max",
-        "value": "75.9429"
+        "value": "357.892"
       },
       {
         "label": "Certified determinant lower bound",
-        "value": "604965.78 mm³"
+        "value": "297410.54 mm³"
       },
       {
         "label": "Exact volume",
@@ -1653,15 +1932,15 @@
       },
       {
         "label": "Sampled in-plane κ₂ max",
-        "value": "75.9425"
+        "value": "91.0223"
       },
       {
         "label": "Minimum corner sine",
-        "value": "0.0631441"
+        "value": "0.0249069"
       },
       {
         "label": "Maximum in-plane span / normal thickness",
-        "value": "2.59745"
+        "value": "1.82312"
       }
     ],
     "section": {
@@ -1675,35 +1954,43 @@
   {
     "id": "bench_poly_seeded_convex_10",
     "title": "Seeded case 10 · 12-sided stock · 2 through-holes",
-    "description": "459 mm extrusion of the benchmark sketch, with 24 blocks and 29 shared interfaces.",
-    "source": "data/bench-poly-seeded_convex_10/bench_poly_seeded_convex_10.recipe.json?v=e2fcc11ed8b8",
-    "model": "data/bench-poly-seeded_convex_10/bench_poly_seeded_convex_10.model.json?v=837447db4c14",
-    "audit": "data/bench-poly-seeded_convex_10/bench_poly_seeded_convex_10.audit.json?v=274ae623942d",
-    "step": "data/bench-poly-seeded_convex_10/bench_poly_seeded_convex_10.step?v=4474d572c802",
+    "description": "459 mm extrusion. The displayed NURBS representation groups 24 Bézier cells into 14 volumes.",
+    "source": "data/bench-poly-seeded_convex_10/bench_poly_seeded_convex_10.recipe.json?v=8745872b8365",
+    "model": "data/bench-poly-seeded_convex_10/bench_poly_seeded_convex_10.model.json?v=29c9b4140ca2",
+    "audit": "data/bench-poly-seeded_convex_10/bench_poly_seeded_convex_10.audit.json?v=e19883bd7133",
+    "step": "data/bench-poly-seeded_convex_10/bench_poly_seeded_convex_10.step?v=aabce704a4d8",
     "metrics": [
+      {
+        "label": "NURBS volumes",
+        "value": 14
+      },
+      {
+        "label": "Bézier cells",
+        "value": 24
+      },
       {
         "label": "Stock thickness",
         "value": "459 mm"
+      },
+      {
+        "label": "NURBS partition choice",
+        "value": "optimize"
       },
       {
         "label": "Partition method",
         "value": "separated_convex_quad_rings"
       },
       {
-        "label": "Rust model blocks",
-        "value": 24
-      },
-      {
         "label": "Rust shared interfaces",
-        "value": 29
+        "value": 28
       },
       {
         "label": "Sampled 3D κ₂ max",
-        "value": "19.0878"
+        "value": "24.3404"
       },
       {
         "label": "Certified determinant lower bound",
-        "value": "2077716.4 mm³"
+        "value": "3672000 mm³"
       },
       {
         "label": "Exact volume",
@@ -1711,15 +1998,15 @@
       },
       {
         "label": "Sampled in-plane κ₂ max",
-        "value": "19.0876"
+        "value": "24.3402"
       },
       {
         "label": "Minimum corner sine",
-        "value": "0.155497"
+        "value": "0.0977824"
       },
       {
         "label": "Maximum in-plane span / normal thickness",
-        "value": "2.69473"
+        "value": "3.22456"
       }
     ],
     "section": {
@@ -1733,23 +2020,35 @@
   {
     "id": "bench_poly_seeded_convex_12",
     "title": "Seeded case 12 · 5-sided stock · 1 through-hole",
-    "description": "319 mm extrusion of the benchmark sketch, with 5 blocks and 5 shared interfaces.",
-    "source": "data/bench-poly-seeded_convex_12/bench_poly_seeded_convex_12.recipe.json?v=7bff3c044ce1",
-    "model": "data/bench-poly-seeded_convex_12/bench_poly_seeded_convex_12.model.json?v=044468dc6084",
-    "audit": "data/bench-poly-seeded_convex_12/bench_poly_seeded_convex_12.audit.json?v=864931371b72",
+    "description": "319 mm extrusion. The displayed NURBS representation groups 5 Bézier cells into 3 volumes.",
+    "source": "data/bench-poly-seeded_convex_12/bench_poly_seeded_convex_12.recipe.json?v=4622dc9c31e8",
+    "model": "data/bench-poly-seeded_convex_12/bench_poly_seeded_convex_12.model.json?v=6a4585145eb4",
+    "audit": "data/bench-poly-seeded_convex_12/bench_poly_seeded_convex_12.audit.json?v=671cf1e93360",
     "step": "data/bench-poly-seeded_convex_12/bench_poly_seeded_convex_12.step?v=83a368dfbe6b",
     "metrics": [
+      {
+        "label": "NURBS volumes",
+        "value": 3
+      },
+      {
+        "label": "Bézier cells",
+        "value": 5
+      },
+      {
+        "label": "Native NURBS volumes before assembly",
+        "value": 5
+      },
       {
         "label": "Stock thickness",
         "value": "319 mm"
       },
       {
-        "label": "Partition method",
-        "value": "radial_convex_footprint"
+        "label": "NURBS partition choice",
+        "value": "assemble"
       },
       {
-        "label": "Rust model blocks",
-        "value": 5
+        "label": "Partition method",
+        "value": "radial_convex_footprint"
       },
       {
         "label": "Rust shared interfaces",
@@ -1786,40 +2085,49 @@
     },
     "group": "Polygon benchmark · seeded through-holes",
     "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/sketch-planner-polygon-evaluation/README.md",
-    "stepLabel": "OCCT-checked boundary export (STEP)"
+    "stepLabel": "OCCT-checked boundary export (STEP)",
+    "representation": "data/bench-poly-seeded_convex_12/bench_poly_seeded_convex_12.model.representation.json?v=466d658b6d58"
   },
   {
     "id": "bench_poly_seeded_convex_14",
     "title": "Seeded case 14 · 10-sided stock · 3 through-holes",
-    "description": "468 mm extrusion of the benchmark sketch, with 30 blocks and 38 shared interfaces.",
-    "source": "data/bench-poly-seeded_convex_14/bench_poly_seeded_convex_14.recipe.json?v=e0f48464f018",
-    "model": "data/bench-poly-seeded_convex_14/bench_poly_seeded_convex_14.model.json?v=4ff9156f4ae5",
-    "audit": "data/bench-poly-seeded_convex_14/bench_poly_seeded_convex_14.audit.json?v=b93ffcc5799d",
-    "step": "data/bench-poly-seeded_convex_14/bench_poly_seeded_convex_14.step?v=e579afa49716",
+    "description": "468 mm extrusion. The displayed NURBS representation groups 34 Bézier cells into 14 volumes.",
+    "source": "data/bench-poly-seeded_convex_14/bench_poly_seeded_convex_14.recipe.json?v=1abe4533f97b",
+    "model": "data/bench-poly-seeded_convex_14/bench_poly_seeded_convex_14.model.json?v=61a144a41ff6",
+    "audit": "data/bench-poly-seeded_convex_14/bench_poly_seeded_convex_14.audit.json?v=3fa9b750d089",
+    "step": "data/bench-poly-seeded_convex_14/bench_poly_seeded_convex_14.step?v=581fe0cd35bf",
     "metrics": [
+      {
+        "label": "NURBS volumes",
+        "value": 14
+      },
+      {
+        "label": "Bézier cells",
+        "value": 34
+      },
       {
         "label": "Stock thickness",
         "value": "468 mm"
+      },
+      {
+        "label": "NURBS partition choice",
+        "value": "optimize"
       },
       {
         "label": "Partition method",
         "value": "separated_convex_quad_rings"
       },
       {
-        "label": "Rust model blocks",
-        "value": 30
-      },
-      {
         "label": "Rust shared interfaces",
-        "value": 38
+        "value": 45
       },
       {
         "label": "Sampled 3D κ₂ max",
-        "value": "245.565"
+        "value": "51.805"
       },
       {
         "label": "Certified determinant lower bound",
-        "value": "930372.81 mm³"
+        "value": "1226457.2 mm³"
       },
       {
         "label": "Exact volume",
@@ -1827,15 +2135,15 @@
       },
       {
         "label": "Sampled in-plane κ₂ max",
-        "value": "245.564"
+        "value": "32.1107"
       },
       {
         "label": "Minimum corner sine",
-        "value": "0.0282143"
+        "value": "0.0624866"
       },
       {
         "label": "Maximum in-plane span / normal thickness",
-        "value": "3.18265"
+        "value": "2.80419"
       }
     ],
     "section": {
@@ -1849,35 +2157,43 @@
   {
     "id": "bench_poly_seeded_convex_16",
     "title": "Seeded case 16 · 11-sided stock · 2 through-holes",
-    "description": "735 mm extrusion of the benchmark sketch, with 22 blocks and 26 shared interfaces.",
-    "source": "data/bench-poly-seeded_convex_16/bench_poly_seeded_convex_16.recipe.json?v=611d6d475f12",
-    "model": "data/bench-poly-seeded_convex_16/bench_poly_seeded_convex_16.model.json?v=7d10af83469a",
-    "audit": "data/bench-poly-seeded_convex_16/bench_poly_seeded_convex_16.audit.json?v=21a0e848ee15",
-    "step": "data/bench-poly-seeded_convex_16/bench_poly_seeded_convex_16.step?v=ab9e57e5de52",
+    "description": "735 mm extrusion. The displayed NURBS representation groups 23 Bézier cells into 14 volumes.",
+    "source": "data/bench-poly-seeded_convex_16/bench_poly_seeded_convex_16.recipe.json?v=c6e76d3a5f5b",
+    "model": "data/bench-poly-seeded_convex_16/bench_poly_seeded_convex_16.model.json?v=ed740c3f6ea7",
+    "audit": "data/bench-poly-seeded_convex_16/bench_poly_seeded_convex_16.audit.json?v=f8d6c8bd7922",
+    "step": "data/bench-poly-seeded_convex_16/bench_poly_seeded_convex_16.step?v=7aaf6a8294f4",
     "metrics": [
+      {
+        "label": "NURBS volumes",
+        "value": 14
+      },
+      {
+        "label": "Bézier cells",
+        "value": 23
+      },
       {
         "label": "Stock thickness",
         "value": "735 mm"
+      },
+      {
+        "label": "NURBS partition choice",
+        "value": "optimize"
       },
       {
         "label": "Partition method",
         "value": "separated_convex_quad_rings"
       },
       {
-        "label": "Rust model blocks",
-        "value": 22
-      },
-      {
         "label": "Rust shared interfaces",
-        "value": 26
+        "value": 28
       },
       {
         "label": "Sampled 3D κ₂ max",
-        "value": "51.1265"
+        "value": "41.3964"
       },
       {
         "label": "Certified determinant lower bound",
-        "value": "4445280 mm³"
+        "value": "2701325 mm³"
       },
       {
         "label": "Exact volume",
@@ -1885,15 +2201,15 @@
       },
       {
         "label": "Sampled in-plane κ₂ max",
-        "value": "51.1264"
+        "value": "41.3964"
       },
       {
         "label": "Minimum corner sine",
-        "value": "0.0399574"
+        "value": "0.0683172"
       },
       {
         "label": "Maximum in-plane span / normal thickness",
-        "value": "3.68362"
+        "value": "2.81484"
       }
     ],
     "section": {
@@ -1907,23 +2223,35 @@
   {
     "id": "bench_poly_seeded_convex_18",
     "title": "Seeded case 18 · 12-sided stock · 1 through-hole",
-    "description": "459 mm extrusion of the benchmark sketch, with 12 blocks and 12 shared interfaces.",
-    "source": "data/bench-poly-seeded_convex_18/bench_poly_seeded_convex_18.recipe.json?v=70cb967d2387",
-    "model": "data/bench-poly-seeded_convex_18/bench_poly_seeded_convex_18.model.json?v=c3c14786a170",
-    "audit": "data/bench-poly-seeded_convex_18/bench_poly_seeded_convex_18.audit.json?v=0f7a3d8d8152",
+    "description": "459 mm extrusion. The displayed NURBS representation groups 12 Bézier cells into 6 volumes.",
+    "source": "data/bench-poly-seeded_convex_18/bench_poly_seeded_convex_18.recipe.json?v=f4b2a00e1078",
+    "model": "data/bench-poly-seeded_convex_18/bench_poly_seeded_convex_18.model.json?v=08511399049b",
+    "audit": "data/bench-poly-seeded_convex_18/bench_poly_seeded_convex_18.audit.json?v=bbf0f0aa41cb",
     "step": "data/bench-poly-seeded_convex_18/bench_poly_seeded_convex_18.step?v=b6b6ea9a9f8c",
     "metrics": [
+      {
+        "label": "NURBS volumes",
+        "value": 6
+      },
+      {
+        "label": "Bézier cells",
+        "value": 12
+      },
+      {
+        "label": "Native NURBS volumes before assembly",
+        "value": 12
+      },
       {
         "label": "Stock thickness",
         "value": "459 mm"
       },
       {
-        "label": "Partition method",
-        "value": "radial_convex_footprint"
+        "label": "NURBS partition choice",
+        "value": "assemble"
       },
       {
-        "label": "Rust model blocks",
-        "value": 12
+        "label": "Partition method",
+        "value": "radial_convex_footprint"
       },
       {
         "label": "Rust shared interfaces",
@@ -1960,40 +2288,49 @@
     },
     "group": "Polygon benchmark · seeded through-holes",
     "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/sketch-planner-polygon-evaluation/README.md",
-    "stepLabel": "OCCT-checked boundary export (STEP)"
+    "stepLabel": "OCCT-checked boundary export (STEP)",
+    "representation": "data/bench-poly-seeded_convex_18/bench_poly_seeded_convex_18.model.representation.json?v=f78d40c9be8b"
   },
   {
     "id": "bench_poly_seeded_convex_20",
     "title": "Seeded case 20 · 9-sided stock · 3 through-holes",
-    "description": "468 mm extrusion of the benchmark sketch, with 27 blocks and 34 shared interfaces.",
-    "source": "data/bench-poly-seeded_convex_20/bench_poly_seeded_convex_20.recipe.json?v=f01c6204d2d0",
-    "model": "data/bench-poly-seeded_convex_20/bench_poly_seeded_convex_20.model.json?v=3f974da3ed51",
-    "audit": "data/bench-poly-seeded_convex_20/bench_poly_seeded_convex_20.audit.json?v=4a73d9e541dc",
-    "step": "data/bench-poly-seeded_convex_20/bench_poly_seeded_convex_20.step?v=9bb2d6d3256a",
+    "description": "468 mm extrusion. The displayed NURBS representation groups 30 Bézier cells into 14 volumes.",
+    "source": "data/bench-poly-seeded_convex_20/bench_poly_seeded_convex_20.recipe.json?v=12943d52dc4f",
+    "model": "data/bench-poly-seeded_convex_20/bench_poly_seeded_convex_20.model.json?v=90c37d020c61",
+    "audit": "data/bench-poly-seeded_convex_20/bench_poly_seeded_convex_20.audit.json?v=4354dc153ecc",
+    "step": "data/bench-poly-seeded_convex_20/bench_poly_seeded_convex_20.step?v=91dc1af02a31",
     "metrics": [
+      {
+        "label": "NURBS volumes",
+        "value": 14
+      },
+      {
+        "label": "Bézier cells",
+        "value": 30
+      },
       {
         "label": "Stock thickness",
         "value": "468 mm"
+      },
+      {
+        "label": "NURBS partition choice",
+        "value": "optimize"
       },
       {
         "label": "Partition method",
         "value": "separated_convex_quad_rings"
       },
       {
-        "label": "Rust model blocks",
-        "value": 27
-      },
-      {
         "label": "Rust shared interfaces",
-        "value": 34
+        "value": 40
       },
       {
         "label": "Sampled 3D κ₂ max",
-        "value": "35.3928"
+        "value": "60.4991"
       },
       {
         "label": "Certified determinant lower bound",
-        "value": "1707463.4 mm³"
+        "value": "814021.49 mm³"
       },
       {
         "label": "Exact volume",
@@ -2001,15 +2338,15 @@
       },
       {
         "label": "Sampled in-plane κ₂ max",
-        "value": "20.8655"
+        "value": "32.8182"
       },
       {
         "label": "Minimum corner sine",
-        "value": "0.0956764"
+        "value": "0.0988132"
       },
       {
         "label": "Maximum in-plane span / normal thickness",
-        "value": "3.114"
+        "value": "3.5833"
       }
     ],
     "section": {
@@ -2023,35 +2360,43 @@
   {
     "id": "bench_poly_seeded_convex_22",
     "title": "Seeded case 22 · 11-sided stock · 2 through-holes",
-    "description": "737 mm extrusion of the benchmark sketch, with 22 blocks and 26 shared interfaces.",
-    "source": "data/bench-poly-seeded_convex_22/bench_poly_seeded_convex_22.recipe.json?v=9ba6ced6702b",
-    "model": "data/bench-poly-seeded_convex_22/bench_poly_seeded_convex_22.model.json?v=d4e16b225670",
-    "audit": "data/bench-poly-seeded_convex_22/bench_poly_seeded_convex_22.audit.json?v=356ca7bfa7cd",
-    "step": "data/bench-poly-seeded_convex_22/bench_poly_seeded_convex_22.step?v=56b74c5c4528",
+    "description": "737 mm extrusion. The displayed NURBS representation groups 24 Bézier cells into 13 volumes.",
+    "source": "data/bench-poly-seeded_convex_22/bench_poly_seeded_convex_22.recipe.json?v=aaab4ca9e139",
+    "model": "data/bench-poly-seeded_convex_22/bench_poly_seeded_convex_22.model.json?v=c32ddd50e0f8",
+    "audit": "data/bench-poly-seeded_convex_22/bench_poly_seeded_convex_22.audit.json?v=902a006f321f",
+    "step": "data/bench-poly-seeded_convex_22/bench_poly_seeded_convex_22.step?v=0df2e0806e8b",
     "metrics": [
+      {
+        "label": "NURBS volumes",
+        "value": 13
+      },
+      {
+        "label": "Bézier cells",
+        "value": 24
+      },
       {
         "label": "Stock thickness",
         "value": "737 mm"
+      },
+      {
+        "label": "NURBS partition choice",
+        "value": "optimize"
       },
       {
         "label": "Partition method",
         "value": "separated_convex_quad_rings"
       },
       {
-        "label": "Rust model blocks",
-        "value": 22
-      },
-      {
         "label": "Rust shared interfaces",
-        "value": 26
+        "value": 30
       },
       {
         "label": "Sampled 3D κ₂ max",
-        "value": "46.1365"
+        "value": "103.885"
       },
       {
         "label": "Certified determinant lower bound",
-        "value": "4729860.8 mm³"
+        "value": "1854525.6 mm³"
       },
       {
         "label": "Exact volume",
@@ -2059,15 +2404,15 @@
       },
       {
         "label": "Sampled in-plane κ₂ max",
-        "value": "46.1362"
+        "value": "103.885"
       },
       {
         "label": "Minimum corner sine",
-        "value": "0.04379"
+        "value": "0.0561691"
       },
       {
         "label": "Maximum in-plane span / normal thickness",
-        "value": "2.85587"
+        "value": "2.65462"
       }
     ],
     "section": {
@@ -2081,23 +2426,35 @@
   {
     "id": "bench_poly_seeded_convex_24",
     "title": "Seeded case 24 · 9-sided stock · 1 through-hole",
-    "description": "741 mm extrusion of the benchmark sketch, with 9 blocks and 9 shared interfaces.",
-    "source": "data/bench-poly-seeded_convex_24/bench_poly_seeded_convex_24.recipe.json?v=22ce1c55b866",
-    "model": "data/bench-poly-seeded_convex_24/bench_poly_seeded_convex_24.model.json?v=d82a0efe615d",
-    "audit": "data/bench-poly-seeded_convex_24/bench_poly_seeded_convex_24.audit.json?v=d8f1b6bf9507",
+    "description": "741 mm extrusion. The displayed NURBS representation groups 9 Bézier cells into 5 volumes.",
+    "source": "data/bench-poly-seeded_convex_24/bench_poly_seeded_convex_24.recipe.json?v=cc7ceaf45a80",
+    "model": "data/bench-poly-seeded_convex_24/bench_poly_seeded_convex_24.model.json?v=132a35da23f1",
+    "audit": "data/bench-poly-seeded_convex_24/bench_poly_seeded_convex_24.audit.json?v=9e7803a9f066",
     "step": "data/bench-poly-seeded_convex_24/bench_poly_seeded_convex_24.step?v=6afe49eaa020",
     "metrics": [
+      {
+        "label": "NURBS volumes",
+        "value": 5
+      },
+      {
+        "label": "Bézier cells",
+        "value": 9
+      },
+      {
+        "label": "Native NURBS volumes before assembly",
+        "value": 9
+      },
       {
         "label": "Stock thickness",
         "value": "741 mm"
       },
       {
-        "label": "Partition method",
-        "value": "radial_convex_footprint"
+        "label": "NURBS partition choice",
+        "value": "assemble"
       },
       {
-        "label": "Rust model blocks",
-        "value": 9
+        "label": "Partition method",
+        "value": "radial_convex_footprint"
       },
       {
         "label": "Rust shared interfaces",
@@ -2134,40 +2491,49 @@
     },
     "group": "Polygon benchmark · seeded through-holes",
     "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/sketch-planner-polygon-evaluation/README.md",
-    "stepLabel": "OCCT-checked boundary export (STEP)"
+    "stepLabel": "OCCT-checked boundary export (STEP)",
+    "representation": "data/bench-poly-seeded_convex_24/bench_poly_seeded_convex_24.model.representation.json?v=f862b95a94eb"
   },
   {
     "id": "bench_poly_seeded_convex_26",
     "title": "Seeded case 26 · 11-sided stock · 3 through-holes",
-    "description": "735 mm extrusion of the benchmark sketch, with 33 blocks and 42 shared interfaces.",
-    "source": "data/bench-poly-seeded_convex_26/bench_poly_seeded_convex_26.recipe.json?v=bef868d9f2e0",
-    "model": "data/bench-poly-seeded_convex_26/bench_poly_seeded_convex_26.model.json?v=898cc955997d",
-    "audit": "data/bench-poly-seeded_convex_26/bench_poly_seeded_convex_26.audit.json?v=4a5e3d660d00",
-    "step": "data/bench-poly-seeded_convex_26/bench_poly_seeded_convex_26.step?v=f00211569e91",
+    "description": "735 mm extrusion. The displayed NURBS representation groups 37 Bézier cells into 16 volumes.",
+    "source": "data/bench-poly-seeded_convex_26/bench_poly_seeded_convex_26.recipe.json?v=33c587ddfafb",
+    "model": "data/bench-poly-seeded_convex_26/bench_poly_seeded_convex_26.model.json?v=f1852121047e",
+    "audit": "data/bench-poly-seeded_convex_26/bench_poly_seeded_convex_26.audit.json?v=9a42fb9b869d",
+    "step": "data/bench-poly-seeded_convex_26/bench_poly_seeded_convex_26.step?v=0e7a6ee5ddf6",
     "metrics": [
+      {
+        "label": "NURBS volumes",
+        "value": 16
+      },
+      {
+        "label": "Bézier cells",
+        "value": 37
+      },
       {
         "label": "Stock thickness",
         "value": "735 mm"
+      },
+      {
+        "label": "NURBS partition choice",
+        "value": "optimize"
       },
       {
         "label": "Partition method",
         "value": "separated_convex_quad_rings"
       },
       {
-        "label": "Rust model blocks",
-        "value": 33
-      },
-      {
         "label": "Rust shared interfaces",
-        "value": 42
+        "value": 48
       },
       {
         "label": "Sampled 3D κ₂ max",
-        "value": "75.9428"
+        "value": "351.671"
       },
       {
         "label": "Certified determinant lower bound",
-        "value": "594451.67 mm³"
+        "value": "292241.64 mm³"
       },
       {
         "label": "Exact volume",
@@ -2175,15 +2541,15 @@
       },
       {
         "label": "Sampled in-plane κ₂ max",
-        "value": "75.9425"
+        "value": "91.0223"
       },
       {
         "label": "Minimum corner sine",
-        "value": "0.0631441"
+        "value": "0.0249069"
       },
       {
         "label": "Maximum in-plane span / normal thickness",
-        "value": "2.64339"
+        "value": "1.85536"
       }
     ],
     "section": {
@@ -2197,23 +2563,31 @@
   {
     "id": "bench_poly_seeded_convex_28",
     "title": "Seeded case 28 · 8-sided stock · 2 through-holes",
-    "description": "476 mm extrusion of the benchmark sketch, with 16 blocks and 20 shared interfaces.",
-    "source": "data/bench-poly-seeded_convex_28/bench_poly_seeded_convex_28.recipe.json?v=a4b508d458f4",
-    "model": "data/bench-poly-seeded_convex_28/bench_poly_seeded_convex_28.model.json?v=ae329bd679d4",
-    "audit": "data/bench-poly-seeded_convex_28/bench_poly_seeded_convex_28.audit.json?v=f028db00746b",
+    "description": "476 mm extrusion. The displayed NURBS representation groups 16 Bézier cells into 10 volumes.",
+    "source": "data/bench-poly-seeded_convex_28/bench_poly_seeded_convex_28.recipe.json?v=0dc503454256",
+    "model": "data/bench-poly-seeded_convex_28/bench_poly_seeded_convex_28.model.json?v=894915111886",
+    "audit": "data/bench-poly-seeded_convex_28/bench_poly_seeded_convex_28.audit.json?v=e9b879f74924",
     "step": "data/bench-poly-seeded_convex_28/bench_poly_seeded_convex_28.step?v=6a675b1a8bdd",
     "metrics": [
+      {
+        "label": "NURBS volumes",
+        "value": 10
+      },
+      {
+        "label": "Bézier cells",
+        "value": 16
+      },
       {
         "label": "Stock thickness",
         "value": "476 mm"
       },
       {
-        "label": "Partition method",
-        "value": "separated_convex_quad_rings"
+        "label": "NURBS partition choice",
+        "value": "assemble"
       },
       {
-        "label": "Rust model blocks",
-        "value": 16
+        "label": "Partition method",
+        "value": "separated_convex_quad_rings"
       },
       {
         "label": "Rust shared interfaces",
@@ -2255,35 +2629,43 @@
   {
     "id": "bench_poly_seeded_convex_01",
     "title": "Seeded case 01 · 9-sided stock · 2 blind pockets",
-    "description": "470 mm extrusion of the benchmark sketch, with 48 blocks and 92 shared interfaces.",
-    "source": "data/bench-poly-seeded_convex_01/bench_poly_seeded_convex_01.recipe.json?v=ba5c01af39f2",
-    "model": "data/bench-poly-seeded_convex_01/bench_poly_seeded_convex_01.model.json?v=fd91bedb8033",
-    "audit": "data/bench-poly-seeded_convex_01/bench_poly_seeded_convex_01.audit.json?v=72f7571106cf",
-    "step": "data/bench-poly-seeded_convex_01/bench_poly_seeded_convex_01.step?v=15f9afacaeb9",
+    "description": "470 mm extrusion. The displayed NURBS representation groups 50 Bézier cells into 28 volumes.",
+    "source": "data/bench-poly-seeded_convex_01/bench_poly_seeded_convex_01.recipe.json?v=e4cd622d54a8",
+    "model": "data/bench-poly-seeded_convex_01/bench_poly_seeded_convex_01.model.json?v=e16622d27d34",
+    "audit": "data/bench-poly-seeded_convex_01/bench_poly_seeded_convex_01.audit.json?v=b589bc9d19d1",
+    "step": "data/bench-poly-seeded_convex_01/bench_poly_seeded_convex_01.step?v=1de545963ee7",
     "metrics": [
+      {
+        "label": "NURBS volumes",
+        "value": 28
+      },
+      {
+        "label": "Bézier cells",
+        "value": 50
+      },
       {
         "label": "Stock thickness",
         "value": "470 mm"
+      },
+      {
+        "label": "NURBS partition choice",
+        "value": "optimize"
       },
       {
         "label": "Partition method",
         "value": "separated_convex_quad_rings"
       },
       {
-        "label": "Rust model blocks",
-        "value": 48
-      },
-      {
         "label": "Rust shared interfaces",
-        "value": 92
+        "value": 99
       },
       {
         "label": "Sampled 3D κ₂ max",
-        "value": "22.3544"
+        "value": "219.008"
       },
       {
         "label": "Certified determinant lower bound",
-        "value": "620979.58 mm³"
+        "value": "52286.076 mm³"
       },
       {
         "label": "Exact volume",
@@ -2291,15 +2673,15 @@
       },
       {
         "label": "Sampled in-plane κ₂ max",
-        "value": "22.3544"
+        "value": "164.32"
       },
       {
         "label": "Minimum corner sine",
-        "value": "0.111822"
+        "value": "0.0123856"
       },
       {
         "label": "Maximum in-plane span / normal thickness",
-        "value": "10.0241"
+        "value": "10.4541"
       }
     ],
     "section": {
@@ -2313,35 +2695,43 @@
   {
     "id": "bench_poly_seeded_convex_03",
     "title": "Seeded case 03 · 5-sided stock · 1 blind pocket",
-    "description": "444 mm extrusion of the benchmark sketch, with 14 blocks and 25 shared interfaces.",
-    "source": "data/bench-poly-seeded_convex_03/bench_poly_seeded_convex_03.recipe.json?v=718083adebda",
-    "model": "data/bench-poly-seeded_convex_03/bench_poly_seeded_convex_03.model.json?v=bd8e51aa7fa2",
-    "audit": "data/bench-poly-seeded_convex_03/bench_poly_seeded_convex_03.audit.json?v=386cef0e161c",
-    "step": "data/bench-poly-seeded_convex_03/bench_poly_seeded_convex_03.step?v=5fae79c298c9",
+    "description": "444 mm extrusion. The displayed NURBS representation groups 15 Bézier cells into 10 volumes.",
+    "source": "data/bench-poly-seeded_convex_03/bench_poly_seeded_convex_03.recipe.json?v=b3ce028acb0d",
+    "model": "data/bench-poly-seeded_convex_03/bench_poly_seeded_convex_03.model.json?v=e9b6a54ba6ee",
+    "audit": "data/bench-poly-seeded_convex_03/bench_poly_seeded_convex_03.audit.json?v=2b6f03a5f777",
+    "step": "data/bench-poly-seeded_convex_03/bench_poly_seeded_convex_03.step?v=8412da9d9371",
     "metrics": [
+      {
+        "label": "NURBS volumes",
+        "value": 10
+      },
+      {
+        "label": "Bézier cells",
+        "value": 15
+      },
       {
         "label": "Stock thickness",
         "value": "444 mm"
       },
       {
-        "label": "Partition method",
-        "value": "separated_convex_quad_rings"
+        "label": "NURBS partition choice",
+        "value": "optimize"
       },
       {
-        "label": "Rust model blocks",
-        "value": 14
+        "label": "Partition method",
+        "value": "radial_convex_footprint"
       },
       {
         "label": "Rust shared interfaces",
-        "value": 25
+        "value": 27
       },
       {
         "label": "Sampled 3D κ₂ max",
-        "value": "11.4345"
+        "value": "21.0495"
       },
       {
         "label": "Certified determinant lower bound",
-        "value": "4850700 mm³"
+        "value": "3515000 mm³"
       },
       {
         "label": "Exact volume",
@@ -2349,7 +2739,7 @@
       },
       {
         "label": "Sampled in-plane κ₂ max",
-        "value": "11.4345"
+        "value": "21.0494"
       },
       {
         "label": "Minimum corner sine",
@@ -2357,7 +2747,7 @@
       },
       {
         "label": "Maximum in-plane span / normal thickness",
-        "value": "10.9719"
+        "value": "11.2055"
       }
     ],
     "section": {
@@ -2371,35 +2761,43 @@
   {
     "id": "bench_poly_seeded_convex_05",
     "title": "Seeded case 05 · 8-sided stock · 3 blind pockets",
-    "description": "476 mm extrusion of the benchmark sketch, with 57 blocks and 114 shared interfaces.",
-    "source": "data/bench-poly-seeded_convex_05/bench_poly_seeded_convex_05.recipe.json?v=9e3836b96a22",
-    "model": "data/bench-poly-seeded_convex_05/bench_poly_seeded_convex_05.model.json?v=b8e97074c5e4",
-    "audit": "data/bench-poly-seeded_convex_05/bench_poly_seeded_convex_05.audit.json?v=17216da8224f",
-    "step": "data/bench-poly-seeded_convex_05/bench_poly_seeded_convex_05.step?v=1b575e994317",
+    "description": "476 mm extrusion. The displayed NURBS representation groups 65 Bézier cells into 33 volumes.",
+    "source": "data/bench-poly-seeded_convex_05/bench_poly_seeded_convex_05.recipe.json?v=1eeff241fd76",
+    "model": "data/bench-poly-seeded_convex_05/bench_poly_seeded_convex_05.model.json?v=c9ff3e82517d",
+    "audit": "data/bench-poly-seeded_convex_05/bench_poly_seeded_convex_05.audit.json?v=2f7a1c13d827",
+    "step": "data/bench-poly-seeded_convex_05/bench_poly_seeded_convex_05.step?v=26d042d29b8e",
     "metrics": [
+      {
+        "label": "NURBS volumes",
+        "value": 33
+      },
+      {
+        "label": "Bézier cells",
+        "value": 65
+      },
       {
         "label": "Stock thickness",
         "value": "476 mm"
+      },
+      {
+        "label": "NURBS partition choice",
+        "value": "optimize"
       },
       {
         "label": "Partition method",
         "value": "separated_convex_quad_rings"
       },
       {
-        "label": "Rust model blocks",
-        "value": 57
-      },
-      {
         "label": "Rust shared interfaces",
-        "value": 114
+        "value": 132
       },
       {
         "label": "Sampled 3D κ₂ max",
-        "value": "18.9502"
+        "value": "35.2654"
       },
       {
         "label": "Certified determinant lower bound",
-        "value": "339012.31 mm³"
+        "value": "322163.08 mm³"
       },
       {
         "label": "Exact volume",
@@ -2407,15 +2805,15 @@
       },
       {
         "label": "Sampled in-plane κ₂ max",
-        "value": "15.3663"
+        "value": "32.2901"
       },
       {
         "label": "Minimum corner sine",
-        "value": "0.147394"
+        "value": "0.0733098"
       },
       {
         "label": "Maximum in-plane span / normal thickness",
-        "value": "14.6052"
+        "value": "12.0486"
       }
     ],
     "section": {
@@ -2429,35 +2827,43 @@
   {
     "id": "bench_poly_seeded_convex_07",
     "title": "Seeded case 07 · 5-sided stock · 2 blind pockets",
-    "description": "704 mm extrusion of the benchmark sketch, with 28 blocks and 54 shared interfaces.",
-    "source": "data/bench-poly-seeded_convex_07/bench_poly_seeded_convex_07.recipe.json?v=3c3410ed1f34",
-    "model": "data/bench-poly-seeded_convex_07/bench_poly_seeded_convex_07.model.json?v=60ff29dfc46f",
-    "audit": "data/bench-poly-seeded_convex_07/bench_poly_seeded_convex_07.audit.json?v=cfd96cc545aa",
-    "step": "data/bench-poly-seeded_convex_07/bench_poly_seeded_convex_07.step?v=172cca5534ad",
+    "description": "704 mm extrusion. The displayed NURBS representation groups 34 Bézier cells into 14 volumes.",
+    "source": "data/bench-poly-seeded_convex_07/bench_poly_seeded_convex_07.recipe.json?v=60a4ad157024",
+    "model": "data/bench-poly-seeded_convex_07/bench_poly_seeded_convex_07.model.json?v=c7d35e1523da",
+    "audit": "data/bench-poly-seeded_convex_07/bench_poly_seeded_convex_07.audit.json?v=5c71f5c83015",
+    "step": "data/bench-poly-seeded_convex_07/bench_poly_seeded_convex_07.step?v=688eb54ea011",
     "metrics": [
+      {
+        "label": "NURBS volumes",
+        "value": 14
+      },
+      {
+        "label": "Bézier cells",
+        "value": 34
+      },
       {
         "label": "Stock thickness",
         "value": "704 mm"
+      },
+      {
+        "label": "NURBS partition choice",
+        "value": "optimize"
       },
       {
         "label": "Partition method",
         "value": "separated_convex_quad_rings"
       },
       {
-        "label": "Rust model blocks",
-        "value": 28
-      },
-      {
         "label": "Rust shared interfaces",
-        "value": 54
+        "value": 67
       },
       {
         "label": "Sampled 3D κ₂ max",
-        "value": "102.836"
+        "value": "175.57"
       },
       {
         "label": "Certified determinant lower bound",
-        "value": "117543.51 mm³"
+        "value": "1554482.7 mm³"
       },
       {
         "label": "Exact volume",
@@ -2465,15 +2871,15 @@
       },
       {
         "label": "Sampled in-plane κ₂ max",
-        "value": "75.5582"
+        "value": "175.57"
       },
       {
         "label": "Minimum corner sine",
-        "value": "0.0411049"
+        "value": "0.0401644"
       },
       {
         "label": "Maximum in-plane span / normal thickness",
-        "value": "13.5489"
+        "value": "14.7806"
       }
     ],
     "section": {
@@ -2487,23 +2893,31 @@
   {
     "id": "bench_poly_seeded_convex_09",
     "title": "Seeded case 09 · 6-sided stock · 1 blind pocket",
-    "description": "756 mm extrusion of the benchmark sketch, with 14 blocks and 25 shared interfaces.",
-    "source": "data/bench-poly-seeded_convex_09/bench_poly_seeded_convex_09.recipe.json?v=4f9ffc63c53a",
-    "model": "data/bench-poly-seeded_convex_09/bench_poly_seeded_convex_09.model.json?v=21d86bacbe18",
-    "audit": "data/bench-poly-seeded_convex_09/bench_poly_seeded_convex_09.audit.json?v=d78e400022d9",
+    "description": "756 mm extrusion. The displayed NURBS representation groups 14 Bézier cells into 10 volumes.",
+    "source": "data/bench-poly-seeded_convex_09/bench_poly_seeded_convex_09.recipe.json?v=84f4658cd549",
+    "model": "data/bench-poly-seeded_convex_09/bench_poly_seeded_convex_09.model.json?v=33db4ce06719",
+    "audit": "data/bench-poly-seeded_convex_09/bench_poly_seeded_convex_09.audit.json?v=ea376f97f78e",
     "step": "data/bench-poly-seeded_convex_09/bench_poly_seeded_convex_09.step?v=819eee16be29",
     "metrics": [
+      {
+        "label": "NURBS volumes",
+        "value": 10
+      },
+      {
+        "label": "Bézier cells",
+        "value": 14
+      },
       {
         "label": "Stock thickness",
         "value": "756 mm"
       },
       {
-        "label": "Partition method",
-        "value": "separated_convex_quad_rings"
+        "label": "NURBS partition choice",
+        "value": "assemble"
       },
       {
-        "label": "Rust model blocks",
-        "value": 14
+        "label": "Partition method",
+        "value": "separated_convex_quad_rings"
       },
       {
         "label": "Rust shared interfaces",
@@ -2545,35 +2959,43 @@
   {
     "id": "bench_poly_seeded_convex_11",
     "title": "Seeded case 11 · 9-sided stock · 3 blind pockets",
-    "description": "470 mm extrusion of the benchmark sketch, with 74 blocks and 148 shared interfaces.",
-    "source": "data/bench-poly-seeded_convex_11/bench_poly_seeded_convex_11.recipe.json?v=ce8bb9d4df5f",
-    "model": "data/bench-poly-seeded_convex_11/bench_poly_seeded_convex_11.model.json?v=5fdc121bf0d5",
-    "audit": "data/bench-poly-seeded_convex_11/bench_poly_seeded_convex_11.audit.json?v=5ba7c3a154fa",
-    "step": "data/bench-poly-seeded_convex_11/bench_poly_seeded_convex_11.step?v=faecfbaa5466",
+    "description": "470 mm extrusion. The displayed NURBS representation groups 80 Bézier cells into 37 volumes.",
+    "source": "data/bench-poly-seeded_convex_11/bench_poly_seeded_convex_11.recipe.json?v=33098e8012fd",
+    "model": "data/bench-poly-seeded_convex_11/bench_poly_seeded_convex_11.model.json?v=bd208a809ec4",
+    "audit": "data/bench-poly-seeded_convex_11/bench_poly_seeded_convex_11.audit.json?v=9d967852e1f1",
+    "step": "data/bench-poly-seeded_convex_11/bench_poly_seeded_convex_11.step?v=c0ca2786d7de",
     "metrics": [
+      {
+        "label": "NURBS volumes",
+        "value": 37
+      },
+      {
+        "label": "Bézier cells",
+        "value": 80
+      },
       {
         "label": "Stock thickness",
         "value": "470 mm"
+      },
+      {
+        "label": "NURBS partition choice",
+        "value": "optimize"
       },
       {
         "label": "Partition method",
         "value": "separated_convex_quad_rings"
       },
       {
-        "label": "Rust model blocks",
-        "value": 74
-      },
-      {
         "label": "Rust shared interfaces",
-        "value": 148
+        "value": 163
       },
       {
         "label": "Sampled 3D κ₂ max",
-        "value": "36.2583"
+        "value": "11.6497"
       },
       {
         "label": "Certified determinant lower bound",
-        "value": "540813.33 mm³"
+        "value": "1345367.7 mm³"
       },
       {
         "label": "Exact volume",
@@ -2581,15 +3003,15 @@
       },
       {
         "label": "Sampled in-plane κ₂ max",
-        "value": "36.2578"
+        "value": "11.6495"
       },
       {
         "label": "Minimum corner sine",
-        "value": "0.0818569"
+        "value": "0.185782"
       },
       {
         "label": "Maximum in-plane span / normal thickness",
-        "value": "5.95208"
+        "value": "3.97135"
       }
     ],
     "section": {
@@ -2603,23 +3025,31 @@
   {
     "id": "bench_poly_seeded_convex_13",
     "title": "Seeded case 13 · 10-sided stock · 2 blind pockets",
-    "description": "468 mm extrusion of the benchmark sketch, with 48 blocks and 94 shared interfaces.",
-    "source": "data/bench-poly-seeded_convex_13/bench_poly_seeded_convex_13.recipe.json?v=746855999088",
-    "model": "data/bench-poly-seeded_convex_13/bench_poly_seeded_convex_13.model.json?v=183af202e28e",
-    "audit": "data/bench-poly-seeded_convex_13/bench_poly_seeded_convex_13.audit.json?v=fc0255b5664e",
+    "description": "468 mm extrusion. The displayed NURBS representation groups 48 Bézier cells into 32 volumes.",
+    "source": "data/bench-poly-seeded_convex_13/bench_poly_seeded_convex_13.recipe.json?v=b54ec3a1f6cf",
+    "model": "data/bench-poly-seeded_convex_13/bench_poly_seeded_convex_13.model.json?v=7ccfaa27c1e3",
+    "audit": "data/bench-poly-seeded_convex_13/bench_poly_seeded_convex_13.audit.json?v=dfa9c161df81",
     "step": "data/bench-poly-seeded_convex_13/bench_poly_seeded_convex_13.step?v=bf6f6cd97152",
     "metrics": [
+      {
+        "label": "NURBS volumes",
+        "value": 32
+      },
+      {
+        "label": "Bézier cells",
+        "value": 48
+      },
       {
         "label": "Stock thickness",
         "value": "468 mm"
       },
       {
-        "label": "Partition method",
-        "value": "separated_convex_quad_rings"
+        "label": "NURBS partition choice",
+        "value": "assemble"
       },
       {
-        "label": "Rust model blocks",
-        "value": 48
+        "label": "Partition method",
+        "value": "separated_convex_quad_rings"
       },
       {
         "label": "Rust shared interfaces",
@@ -2661,23 +3091,31 @@
   {
     "id": "bench_poly_seeded_convex_15",
     "title": "Seeded case 15 · 11-sided stock · 1 blind pocket",
-    "description": "476 mm extrusion of the benchmark sketch, with 29 blocks and 52 shared interfaces.",
-    "source": "data/bench-poly-seeded_convex_15/bench_poly_seeded_convex_15.recipe.json?v=4e0fb0d1b3da",
-    "model": "data/bench-poly-seeded_convex_15/bench_poly_seeded_convex_15.model.json?v=b22844f6b300",
-    "audit": "data/bench-poly-seeded_convex_15/bench_poly_seeded_convex_15.audit.json?v=be6beda8ab55",
+    "description": "476 mm extrusion. The displayed NURBS representation groups 29 Bézier cells into 26 volumes.",
+    "source": "data/bench-poly-seeded_convex_15/bench_poly_seeded_convex_15.recipe.json?v=aefdadec62f7",
+    "model": "data/bench-poly-seeded_convex_15/bench_poly_seeded_convex_15.model.json?v=336932040299",
+    "audit": "data/bench-poly-seeded_convex_15/bench_poly_seeded_convex_15.audit.json?v=6a050d3169b9",
     "step": "data/bench-poly-seeded_convex_15/bench_poly_seeded_convex_15.step?v=8684147f4121",
     "metrics": [
+      {
+        "label": "NURBS volumes",
+        "value": 26
+      },
+      {
+        "label": "Bézier cells",
+        "value": 29
+      },
       {
         "label": "Stock thickness",
         "value": "476 mm"
       },
       {
-        "label": "Partition method",
-        "value": "separated_convex_quad_rings"
+        "label": "NURBS partition choice",
+        "value": "assemble"
       },
       {
-        "label": "Rust model blocks",
-        "value": 29
+        "label": "Partition method",
+        "value": "separated_convex_quad_rings"
       },
       {
         "label": "Rust shared interfaces",
@@ -2719,35 +3157,43 @@
   {
     "id": "bench_poly_seeded_convex_17",
     "title": "Seeded case 17 · 6-sided stock · 3 blind pockets",
-    "description": "464 mm extrusion of the benchmark sketch, with 42 blocks and 83 shared interfaces.",
-    "source": "data/bench-poly-seeded_convex_17/bench_poly_seeded_convex_17.recipe.json?v=73c4e1c961fc",
-    "model": "data/bench-poly-seeded_convex_17/bench_poly_seeded_convex_17.model.json?v=0114f538beb4",
-    "audit": "data/bench-poly-seeded_convex_17/bench_poly_seeded_convex_17.audit.json?v=9723ad0c1cda",
-    "step": "data/bench-poly-seeded_convex_17/bench_poly_seeded_convex_17.step?v=e8f3f15197a3",
+    "description": "464 mm extrusion. The displayed NURBS representation groups 48 Bézier cells into 28 volumes.",
+    "source": "data/bench-poly-seeded_convex_17/bench_poly_seeded_convex_17.recipe.json?v=5986f94ada3e",
+    "model": "data/bench-poly-seeded_convex_17/bench_poly_seeded_convex_17.model.json?v=575996bee2ab",
+    "audit": "data/bench-poly-seeded_convex_17/bench_poly_seeded_convex_17.audit.json?v=eed59fe66fcd",
+    "step": "data/bench-poly-seeded_convex_17/bench_poly_seeded_convex_17.step?v=27445ffea8d8",
     "metrics": [
+      {
+        "label": "NURBS volumes",
+        "value": 28
+      },
+      {
+        "label": "Bézier cells",
+        "value": 48
+      },
       {
         "label": "Stock thickness",
         "value": "464 mm"
+      },
+      {
+        "label": "NURBS partition choice",
+        "value": "optimize"
       },
       {
         "label": "Partition method",
         "value": "separated_convex_quad_rings"
       },
       {
-        "label": "Rust model blocks",
-        "value": 42
-      },
-      {
         "label": "Rust shared interfaces",
-        "value": 83
+        "value": 94
       },
       {
         "label": "Sampled 3D κ₂ max",
-        "value": "29.5703"
+        "value": "27.3386"
       },
       {
         "label": "Certified determinant lower bound",
-        "value": "1076625 mm³"
+        "value": "806865.07 mm³"
       },
       {
         "label": "Exact volume",
@@ -2755,15 +3201,15 @@
       },
       {
         "label": "Sampled in-plane κ₂ max",
-        "value": "29.5701"
+        "value": "27.3382"
       },
       {
         "label": "Minimum corner sine",
-        "value": "0.118695"
+        "value": "0.127061"
       },
       {
         "label": "Maximum in-plane span / normal thickness",
-        "value": "20.2053"
+        "value": "15.3314"
       }
     ],
     "section": {
@@ -2777,23 +3223,31 @@
   {
     "id": "bench_poly_seeded_convex_19",
     "title": "Seeded case 19 · 10-sided stock · 2 blind pockets",
-    "description": "738 mm extrusion of the benchmark sketch, with 48 blocks and 92 shared interfaces.",
-    "source": "data/bench-poly-seeded_convex_19/bench_poly_seeded_convex_19.recipe.json?v=3297d3d1a47b",
-    "model": "data/bench-poly-seeded_convex_19/bench_poly_seeded_convex_19.model.json?v=1841276413db",
-    "audit": "data/bench-poly-seeded_convex_19/bench_poly_seeded_convex_19.audit.json?v=9afb3bc1aa07",
+    "description": "738 mm extrusion. The displayed NURBS representation groups 48 Bézier cells into 32 volumes.",
+    "source": "data/bench-poly-seeded_convex_19/bench_poly_seeded_convex_19.recipe.json?v=988d69e3adc7",
+    "model": "data/bench-poly-seeded_convex_19/bench_poly_seeded_convex_19.model.json?v=d0b414b95802",
+    "audit": "data/bench-poly-seeded_convex_19/bench_poly_seeded_convex_19.audit.json?v=7ba9e941ced3",
     "step": "data/bench-poly-seeded_convex_19/bench_poly_seeded_convex_19.step?v=676a2c2e3c31",
     "metrics": [
+      {
+        "label": "NURBS volumes",
+        "value": 32
+      },
+      {
+        "label": "Bézier cells",
+        "value": 48
+      },
       {
         "label": "Stock thickness",
         "value": "738 mm"
       },
       {
-        "label": "Partition method",
-        "value": "separated_convex_quad_rings"
+        "label": "NURBS partition choice",
+        "value": "assemble"
       },
       {
-        "label": "Rust model blocks",
-        "value": 48
+        "label": "Partition method",
+        "value": "separated_convex_quad_rings"
       },
       {
         "label": "Rust shared interfaces",
@@ -2835,23 +3289,31 @@
   {
     "id": "bench_poly_seeded_convex_21",
     "title": "Seeded case 21 · 10-sided stock · 1 blind pocket",
-    "description": "740 mm extrusion of the benchmark sketch, with 24 blocks and 43 shared interfaces.",
-    "source": "data/bench-poly-seeded_convex_21/bench_poly_seeded_convex_21.recipe.json?v=cdb377b7a4b7",
-    "model": "data/bench-poly-seeded_convex_21/bench_poly_seeded_convex_21.model.json?v=bb4e766efe2e",
-    "audit": "data/bench-poly-seeded_convex_21/bench_poly_seeded_convex_21.audit.json?v=a13d8d6b39e3",
+    "description": "740 mm extrusion. The displayed NURBS representation groups 24 Bézier cells into 20 volumes.",
+    "source": "data/bench-poly-seeded_convex_21/bench_poly_seeded_convex_21.recipe.json?v=a042f77796ef",
+    "model": "data/bench-poly-seeded_convex_21/bench_poly_seeded_convex_21.model.json?v=4832d19e18af",
+    "audit": "data/bench-poly-seeded_convex_21/bench_poly_seeded_convex_21.audit.json?v=e192a5403ffb",
     "step": "data/bench-poly-seeded_convex_21/bench_poly_seeded_convex_21.step?v=133db1892e68",
     "metrics": [
+      {
+        "label": "NURBS volumes",
+        "value": 20
+      },
+      {
+        "label": "Bézier cells",
+        "value": 24
+      },
       {
         "label": "Stock thickness",
         "value": "740 mm"
       },
       {
-        "label": "Partition method",
-        "value": "separated_convex_quad_rings"
+        "label": "NURBS partition choice",
+        "value": "assemble"
       },
       {
-        "label": "Rust model blocks",
-        "value": 24
+        "label": "Partition method",
+        "value": "separated_convex_quad_rings"
       },
       {
         "label": "Rust shared interfaces",
@@ -2893,35 +3355,43 @@
   {
     "id": "bench_poly_seeded_convex_23",
     "title": "Seeded case 23 · 10-sided stock · 3 blind pockets",
-    "description": "744 mm extrusion of the benchmark sketch, with 72 blocks and 143 shared interfaces.",
-    "source": "data/bench-poly-seeded_convex_23/bench_poly_seeded_convex_23.recipe.json?v=7287cbbb70b1",
-    "model": "data/bench-poly-seeded_convex_23/bench_poly_seeded_convex_23.model.json?v=7064f6ad41eb",
-    "audit": "data/bench-poly-seeded_convex_23/bench_poly_seeded_convex_23.audit.json?v=dc35f926efdf",
-    "step": "data/bench-poly-seeded_convex_23/bench_poly_seeded_convex_23.step?v=175844804877",
+    "description": "744 mm extrusion. The displayed NURBS representation groups 80 Bézier cells into 42 volumes.",
+    "source": "data/bench-poly-seeded_convex_23/bench_poly_seeded_convex_23.recipe.json?v=a4b23cba4469",
+    "model": "data/bench-poly-seeded_convex_23/bench_poly_seeded_convex_23.model.json?v=6869b85fa716",
+    "audit": "data/bench-poly-seeded_convex_23/bench_poly_seeded_convex_23.audit.json?v=e70bf0d2f3ef",
+    "step": "data/bench-poly-seeded_convex_23/bench_poly_seeded_convex_23.step?v=7f9dc1476a2a",
     "metrics": [
+      {
+        "label": "NURBS volumes",
+        "value": 42
+      },
+      {
+        "label": "Bézier cells",
+        "value": 80
+      },
       {
         "label": "Stock thickness",
         "value": "744 mm"
+      },
+      {
+        "label": "NURBS partition choice",
+        "value": "optimize"
       },
       {
         "label": "Partition method",
         "value": "separated_convex_quad_rings"
       },
       {
-        "label": "Rust model blocks",
-        "value": 72
-      },
-      {
         "label": "Rust shared interfaces",
-        "value": 143
+        "value": 161
       },
       {
         "label": "Sampled 3D κ₂ max",
-        "value": "44.1346"
+        "value": "116.728"
       },
       {
         "label": "Certified determinant lower bound",
-        "value": "1054516.7 mm³"
+        "value": "370234.58 mm³"
       },
       {
         "label": "Exact volume",
@@ -2929,15 +3399,15 @@
       },
       {
         "label": "Sampled in-plane κ₂ max",
-        "value": "35.5168"
+        "value": "86.3935"
       },
       {
         "label": "Minimum corner sine",
-        "value": "0.0650154"
+        "value": "0.0239338"
       },
       {
         "label": "Maximum in-plane span / normal thickness",
-        "value": "6.12653"
+        "value": "5.68512"
       }
     ],
     "section": {
@@ -2951,23 +3421,31 @@
   {
     "id": "bench_poly_seeded_convex_25",
     "title": "Seeded case 25 · 5-sided stock · 2 blind pockets",
-    "description": "322 mm extrusion of the benchmark sketch, with 28 blocks and 54 shared interfaces.",
-    "source": "data/bench-poly-seeded_convex_25/bench_poly_seeded_convex_25.recipe.json?v=f7fb0d6213cb",
-    "model": "data/bench-poly-seeded_convex_25/bench_poly_seeded_convex_25.model.json?v=506a550e46db",
-    "audit": "data/bench-poly-seeded_convex_25/bench_poly_seeded_convex_25.audit.json?v=c43433432ee4",
+    "description": "322 mm extrusion. The displayed NURBS representation groups 28 Bézier cells into 15 volumes.",
+    "source": "data/bench-poly-seeded_convex_25/bench_poly_seeded_convex_25.recipe.json?v=47a4057113b1",
+    "model": "data/bench-poly-seeded_convex_25/bench_poly_seeded_convex_25.model.json?v=6cf7d29391b3",
+    "audit": "data/bench-poly-seeded_convex_25/bench_poly_seeded_convex_25.audit.json?v=f20369736f99",
     "step": "data/bench-poly-seeded_convex_25/bench_poly_seeded_convex_25.step?v=3ee0135ecbf5",
     "metrics": [
+      {
+        "label": "NURBS volumes",
+        "value": 15
+      },
+      {
+        "label": "Bézier cells",
+        "value": 28
+      },
       {
         "label": "Stock thickness",
         "value": "322 mm"
       },
       {
-        "label": "Partition method",
-        "value": "separated_convex_quad_rings"
+        "label": "NURBS partition choice",
+        "value": "assemble"
       },
       {
-        "label": "Rust model blocks",
-        "value": 28
+        "label": "Partition method",
+        "value": "separated_convex_quad_rings"
       },
       {
         "label": "Rust shared interfaces",
@@ -3009,27 +3487,35 @@
   {
     "id": "bench_poly_seeded_convex_27",
     "title": "Seeded case 27 · 12-sided stock · 1 blind pocket",
-    "description": "752 mm extrusion of the benchmark sketch, with 29 blocks and 52 shared interfaces.",
-    "source": "data/bench-poly-seeded_convex_27/bench_poly_seeded_convex_27.recipe.json?v=92d726c02c1a",
-    "model": "data/bench-poly-seeded_convex_27/bench_poly_seeded_convex_27.model.json?v=0408e3aadb8e",
-    "audit": "data/bench-poly-seeded_convex_27/bench_poly_seeded_convex_27.audit.json?v=89901844eb9b",
-    "step": "data/bench-poly-seeded_convex_27/bench_poly_seeded_convex_27.step?v=42354ac867cf",
+    "description": "752 mm extrusion. The displayed NURBS representation groups 30 Bézier cells into 24 volumes.",
+    "source": "data/bench-poly-seeded_convex_27/bench_poly_seeded_convex_27.recipe.json?v=95db61f310c3",
+    "model": "data/bench-poly-seeded_convex_27/bench_poly_seeded_convex_27.model.json?v=1b0ed862a99d",
+    "audit": "data/bench-poly-seeded_convex_27/bench_poly_seeded_convex_27.audit.json?v=64935507b90d",
+    "step": "data/bench-poly-seeded_convex_27/bench_poly_seeded_convex_27.step?v=f2e1dbaef96a",
     "metrics": [
+      {
+        "label": "NURBS volumes",
+        "value": 24
+      },
+      {
+        "label": "Bézier cells",
+        "value": 30
+      },
       {
         "label": "Stock thickness",
         "value": "752 mm"
       },
       {
-        "label": "Partition method",
-        "value": "separated_convex_quad_rings"
+        "label": "NURBS partition choice",
+        "value": "optimize"
       },
       {
-        "label": "Rust model blocks",
-        "value": 29
+        "label": "Partition method",
+        "value": "radial_convex_footprint"
       },
       {
         "label": "Rust shared interfaces",
-        "value": 52
+        "value": 54
       },
       {
         "label": "Sampled 3D κ₂ max",
@@ -3049,7 +3535,7 @@
       },
       {
         "label": "Minimum corner sine",
-        "value": "0.257419"
+        "value": "0.0946883"
       },
       {
         "label": "Maximum in-plane span / normal thickness",
@@ -3067,35 +3553,43 @@
   {
     "id": "bench_poly_seeded_convex_29",
     "title": "Seeded case 29 · 10-sided stock · 3 blind pockets",
-    "description": "342 mm extrusion of the benchmark sketch, with 72 blocks and 145 shared interfaces.",
-    "source": "data/bench-poly-seeded_convex_29/bench_poly_seeded_convex_29.recipe.json?v=7fa26ad4ec02",
-    "model": "data/bench-poly-seeded_convex_29/bench_poly_seeded_convex_29.model.json?v=8006ab811083",
-    "audit": "data/bench-poly-seeded_convex_29/bench_poly_seeded_convex_29.audit.json?v=09fd5a5629cc",
-    "step": "data/bench-poly-seeded_convex_29/bench_poly_seeded_convex_29.step?v=ff4ee9c7989a",
+    "description": "342 mm extrusion. The displayed NURBS representation groups 76 Bézier cells into 44 volumes.",
+    "source": "data/bench-poly-seeded_convex_29/bench_poly_seeded_convex_29.recipe.json?v=02cbc8aa815c",
+    "model": "data/bench-poly-seeded_convex_29/bench_poly_seeded_convex_29.model.json?v=a8ec45d1bfa4",
+    "audit": "data/bench-poly-seeded_convex_29/bench_poly_seeded_convex_29.audit.json?v=613c5ffdcdc7",
+    "step": "data/bench-poly-seeded_convex_29/bench_poly_seeded_convex_29.step?v=e72faf4dfd86",
     "metrics": [
+      {
+        "label": "NURBS volumes",
+        "value": 44
+      },
+      {
+        "label": "Bézier cells",
+        "value": 76
+      },
       {
         "label": "Stock thickness",
         "value": "342 mm"
+      },
+      {
+        "label": "NURBS partition choice",
+        "value": "optimize"
       },
       {
         "label": "Partition method",
         "value": "separated_convex_quad_rings"
       },
       {
-        "label": "Rust model blocks",
-        "value": 72
-      },
-      {
         "label": "Rust shared interfaces",
-        "value": 145
+        "value": 155
       },
       {
         "label": "Sampled 3D κ₂ max",
-        "value": "53.4443"
+        "value": "81.3857"
       },
       {
         "label": "Certified determinant lower bound",
-        "value": "141930 mm³"
+        "value": "91929.6 mm³"
       },
       {
         "label": "Exact volume",
@@ -3103,15 +3597,15 @@
       },
       {
         "label": "Sampled in-plane κ₂ max",
-        "value": "53.4442"
+        "value": "81.3856"
       },
       {
         "label": "Minimum corner sine",
-        "value": "0.0970284"
+        "value": "0.0641866"
       },
       {
         "label": "Maximum in-plane span / normal thickness",
-        "value": "19.6315"
+        "value": "19.7771"
       }
     ],
     "section": {
@@ -3125,12 +3619,24 @@
   {
     "id": "bench_poly_projection_diamonds",
     "title": "Projection diagnostic · overlapping diamonds",
-    "description": "Two disjoint through-diamond holes overlap in both X and Y projection, while their exact planar regions and 3D voids remain separate.",
-    "source": "data/bench-poly-projection-diamonds/bench_poly_projection_diamonds.recipe.json?v=61d82fd015e3",
-    "model": "data/bench-poly-projection-diamonds/bench_poly_projection_diamonds.model.json?v=e181010bef8c",
-    "audit": "data/bench-poly-projection-diamonds/bench_poly_projection_diamonds.audit.json?v=833edddf690b",
+    "description": "24 mm extrusion. The displayed NURBS representation groups 10 Bézier cells into 4 volumes.",
+    "source": "data/bench-poly-projection-diamonds/bench_poly_projection_diamonds.recipe.json?v=f516374458b7",
+    "model": "data/bench-poly-projection-diamonds/bench_poly_projection_diamonds.model.json?v=39bc213d4761",
+    "audit": "data/bench-poly-projection-diamonds/bench_poly_projection_diamonds.audit.json?v=60491126ecec",
     "step": "data/bench-poly-projection-diamonds/bench_poly_projection_diamonds.step?v=da938ab84b99",
     "metrics": [
+      {
+        "label": "NURBS volumes",
+        "value": 4
+      },
+      {
+        "label": "Bézier cells",
+        "value": 10
+      },
+      {
+        "label": "NURBS partition choice",
+        "value": "assemble"
+      },
       {
         "label": "Stock thickness",
         "value": "24 mm"
@@ -3150,10 +3656,6 @@
       {
         "label": "Rust kernel method",
         "value": "separated_convex_quad_rings"
-      },
-      {
-        "label": "Rust model blocks",
-        "value": 10
       },
       {
         "label": "Rust shared interfaces",
@@ -3195,19 +3697,27 @@
   {
     "id": "plate_blind_pocket",
     "title": "Plate · curved-profile pocket",
-    "description": "The Z section at 85% reveals the curved profile near the pocket floor.",
+    "description": "The displayed NURBS representation groups 9 Bézier cells into 5 volumes. The Z section at 85% reveals the curved profile near the pocket floor. The separate exact NURBS cover has 5 volumes across 9 source Bézier cells; download the representation for its controls and joins.",
     "source": "data/plate_blind_pocket/plate_blind_pocket.recipe.json?v=a5e06ad1708b",
     "model": "data/plate_blind_pocket/plate_blind_pocket.model.json?v=df0b4bd7672c",
-    "audit": "data/plate_blind_pocket/plate_blind_pocket.audit.json?v=0558c069e2b7",
+    "audit": "data/plate_blind_pocket/plate_blind_pocket.audit.json?v=f4041ee8d27c",
     "step": "data/plate_blind_pocket/plate_blind_pocket.step?v=d1daecb85bbd",
     "metrics": [
       {
-        "label": "Rust kernel method",
-        "value": "curved_sketch_trace_and_bernstein"
+        "label": "NURBS volumes",
+        "value": 5
       },
       {
-        "label": "Rust model blocks",
+        "label": "Bézier cells",
         "value": 9
+      },
+      {
+        "label": "Native NURBS volumes before assembly",
+        "value": 9
+      },
+      {
+        "label": "Rust kernel method",
+        "value": "curved_sketch_trace_and_bernstein"
       },
       {
         "label": "Rust shared interfaces",
@@ -3231,24 +3741,33 @@
       "fraction": 0.85
     },
     "group": "Historical models",
-    "stepLabel": "OCCT-checked boundary export (STEP)"
+    "stepLabel": "OCCT-checked boundary export (STEP)",
+    "representation": "data/plate_blind_pocket/plate_blind_pocket.model.representation.json?v=a2af9deae4d5"
   },
   {
     "id": "rectangle_internal_rectangle",
     "title": "Centered curved cavity",
-    "description": "The mid-height Z section shows the cavity’s curved outline.",
+    "description": "The displayed NURBS representation groups 14 Bézier cells into 8 volumes. The mid-height Z section shows the cavity’s curved outline. The separate exact NURBS cover has 8 volumes across 14 source Bézier cells; download the representation for its controls and joins.",
     "source": "data/rectangle_internal_rectangle/rectangle_internal_rectangle.recipe.json?v=cc0e7a15df95",
     "model": "data/rectangle_internal_rectangle/rectangle_internal_rectangle.model.json?v=321b49344a4a",
-    "audit": "data/rectangle_internal_rectangle/rectangle_internal_rectangle.audit.json?v=bf0a22868047",
+    "audit": "data/rectangle_internal_rectangle/rectangle_internal_rectangle.audit.json?v=762419625ddb",
     "step": "data/rectangle_internal_rectangle/rectangle_internal_rectangle.step?v=399e08420b3b",
     "metrics": [
       {
-        "label": "Rust kernel method",
-        "value": "curved_sketch_trace_and_bernstein"
+        "label": "NURBS volumes",
+        "value": 8
       },
       {
-        "label": "Rust model blocks",
+        "label": "Bézier cells",
         "value": 14
+      },
+      {
+        "label": "Native NURBS volumes before assembly",
+        "value": 14
+      },
+      {
+        "label": "Rust kernel method",
+        "value": "curved_sketch_trace_and_bernstein"
       },
       {
         "label": "Rust shared interfaces",
@@ -3272,24 +3791,33 @@
       "fraction": 0.5
     },
     "group": "Historical models",
-    "stepLabel": "OCCT-checked boundary export (STEP)"
+    "stepLabel": "OCCT-checked boundary export (STEP)",
+    "representation": "data/rectangle_internal_rectangle/rectangle_internal_rectangle.model.representation.json?v=396b1a8a2dd9"
   },
   {
     "id": "rectangle_offset_pocket",
     "title": "Offset curved cavity",
-    "description": "The mid-height Z section shows the offset cavity’s curved outline.",
+    "description": "The displayed NURBS representation groups 14 Bézier cells into 8 volumes. The mid-height Z section shows the offset cavity’s curved outline. The separate exact NURBS cover has 8 volumes across 14 source Bézier cells; download the representation for its controls and joins.",
     "source": "data/rectangle_offset_pocket/rectangle_offset_pocket.recipe.json?v=520a258254c5",
     "model": "data/rectangle_offset_pocket/rectangle_offset_pocket.model.json?v=4d14b20b8968",
-    "audit": "data/rectangle_offset_pocket/rectangle_offset_pocket.audit.json?v=ab5d25ff83a8",
+    "audit": "data/rectangle_offset_pocket/rectangle_offset_pocket.audit.json?v=3cc8cec476fe",
     "step": "data/rectangle_offset_pocket/rectangle_offset_pocket.step?v=b47ec187dcb5",
     "metrics": [
       {
-        "label": "Rust kernel method",
-        "value": "curved_sketch_trace_and_bernstein"
+        "label": "NURBS volumes",
+        "value": 8
       },
       {
-        "label": "Rust model blocks",
+        "label": "Bézier cells",
         "value": 14
+      },
+      {
+        "label": "Native NURBS volumes before assembly",
+        "value": 14
+      },
+      {
+        "label": "Rust kernel method",
+        "value": "curved_sketch_trace_and_bernstein"
       },
       {
         "label": "Rust shared interfaces",
@@ -3313,24 +3841,33 @@
       "fraction": 0.5
     },
     "group": "Historical models",
-    "stepLabel": "OCCT-checked boundary export (STEP)"
+    "stepLabel": "OCCT-checked boundary export (STEP)",
+    "representation": "data/rectangle_offset_pocket/rectangle_offset_pocket.model.representation.json?v=4ee9023046ed"
   },
   {
     "id": "c_section_two_holes",
     "title": "C-section · two holes",
-    "description": "The mid-height Z section reveals the curved hole profiles.",
+    "description": "The displayed NURBS representation groups 9 Bézier cells into 5 volumes. The mid-height Z section reveals the curved hole profiles. The separate exact NURBS cover has 5 volumes across 9 source Bézier cells; download the representation for its controls and joins.",
     "source": "data/c_section_two_holes/c_section_two_holes.recipe.json?v=ccd062882f83",
     "model": "data/c_section_two_holes/c_section_two_holes.model.json?v=cbd0a898af10",
-    "audit": "data/c_section_two_holes/c_section_two_holes.audit.json?v=a938e7a511ed",
+    "audit": "data/c_section_two_holes/c_section_two_holes.audit.json?v=1ff87f2d99fa",
     "step": "data/c_section_two_holes/c_section_two_holes.step?v=1e100cd3336e",
     "metrics": [
       {
-        "label": "Rust kernel method",
-        "value": "curved_sketch_trace_and_bernstein"
+        "label": "NURBS volumes",
+        "value": 5
       },
       {
-        "label": "Rust model blocks",
+        "label": "Bézier cells",
         "value": 9
+      },
+      {
+        "label": "Native NURBS volumes before assembly",
+        "value": 9
+      },
+      {
+        "label": "Rust kernel method",
+        "value": "curved_sketch_trace_and_bernstein"
       },
       {
         "label": "Rust shared interfaces",
@@ -3354,24 +3891,33 @@
       "fraction": 0.5
     },
     "group": "Historical models",
-    "stepLabel": "OCCT-checked boundary export (STEP)"
+    "stepLabel": "OCCT-checked boundary export (STEP)",
+    "representation": "data/c_section_two_holes/c_section_two_holes.model.representation.json?v=d5854f38fd74"
   },
   {
     "id": "l_bracket_polygon_holes_and_pocket",
     "title": "L-prism · hole and pocket",
-    "description": "The mid-height Z section reveals the curved profiles inside the prism.",
+    "description": "The displayed NURBS representation groups 26 Bézier cells into 14 volumes. The mid-height Z section reveals the curved profiles inside the prism. The separate exact NURBS cover has 14 volumes across 26 source Bézier cells; download the representation for its controls and joins.",
     "source": "data/l_bracket_polygon_holes_and_pocket/l_bracket_polygon_holes_and_pocket.recipe.json?v=66e196234eda",
     "model": "data/l_bracket_polygon_holes_and_pocket/l_bracket_polygon_holes_and_pocket.model.json?v=ec9be5dc4795",
-    "audit": "data/l_bracket_polygon_holes_and_pocket/l_bracket_polygon_holes_and_pocket.audit.json?v=f0a420d08fee",
+    "audit": "data/l_bracket_polygon_holes_and_pocket/l_bracket_polygon_holes_and_pocket.audit.json?v=8ed22a2d8407",
     "step": "data/l_bracket_polygon_holes_and_pocket/l_bracket_polygon_holes_and_pocket.step?v=b0d47716c512",
     "metrics": [
       {
-        "label": "Rust kernel method",
-        "value": "curved_sketch_trace_and_bernstein"
+        "label": "NURBS volumes",
+        "value": 14
       },
       {
-        "label": "Rust model blocks",
+        "label": "Bézier cells",
         "value": 26
+      },
+      {
+        "label": "Native NURBS volumes before assembly",
+        "value": 26
+      },
+      {
+        "label": "Rust kernel method",
+        "value": "curved_sketch_trace_and_bernstein"
       },
       {
         "label": "Rust shared interfaces",
@@ -3395,24 +3941,33 @@
       "fraction": 0.5
     },
     "group": "Historical models",
-    "stepLabel": "OCCT-checked boundary export (STEP)"
+    "stepLabel": "OCCT-checked boundary export (STEP)",
+    "representation": "data/l_bracket_polygon_holes_and_pocket/l_bracket_polygon_holes_and_pocket.model.representation.json?v=e547669123e6"
   },
   {
     "id": "c_section_lower_hole_x_plus_1",
     "title": "C-section · edited hole",
-    "description": "The mid-height Z section shows the curved profile after editing.",
+    "description": "The displayed NURBS representation groups 9 Bézier cells into 5 volumes. The mid-height Z section shows the curved profile after editing. The separate exact NURBS cover has 5 volumes across 9 source Bézier cells; download the representation for its controls and joins.",
     "source": "data/c_section_lower_hole_x_plus_1/c_section_lower_hole_x_plus_1.recipe.json?v=2f6fef068093",
     "model": "data/c_section_lower_hole_x_plus_1/c_section_lower_hole_x_plus_1.model.json?v=99761a1b334b",
-    "audit": "data/c_section_lower_hole_x_plus_1/c_section_lower_hole_x_plus_1.audit.json?v=3b1a602ed934",
+    "audit": "data/c_section_lower_hole_x_plus_1/c_section_lower_hole_x_plus_1.audit.json?v=c45935629081",
     "step": "data/c_section_lower_hole_x_plus_1/c_section_lower_hole_x_plus_1.step?v=fabb5ed4cd3a",
     "metrics": [
       {
-        "label": "Rust kernel method",
-        "value": "curved_sketch_trace_and_bernstein"
+        "label": "NURBS volumes",
+        "value": 5
       },
       {
-        "label": "Rust model blocks",
+        "label": "Bézier cells",
         "value": 9
+      },
+      {
+        "label": "Native NURBS volumes before assembly",
+        "value": 9
+      },
+      {
+        "label": "Rust kernel method",
+        "value": "curved_sketch_trace_and_bernstein"
       },
       {
         "label": "Rust shared interfaces",
@@ -3436,24 +3991,33 @@
       "fraction": 0.5
     },
     "group": "Historical models",
-    "stepLabel": "OCCT-checked boundary export (STEP)"
+    "stepLabel": "OCCT-checked boundary export (STEP)",
+    "representation": "data/c_section_lower_hole_x_plus_1/c_section_lower_hole_x_plus_1.model.representation.json?v=ee72c1345ea4"
   },
   {
     "id": "fieldcraft_x40_y80",
     "title": "FieldCraft bracket · Ø5 / Ø10",
-    "description": "Two through-holes, Ø5 mm along Y, Ø10 mm along X. Four blocks surround each hole, and two blocks form the elbow.",
+    "description": "The displayed NURBS representation groups 10 Bézier cells into 5 volumes. Two through-holes, Ø5 mm along Y, Ø10 mm along X. Four blocks surround each hole, and two blocks form the elbow. The separate exact NURBS cover has 5 volumes across 10 source Bézier cells; download the representation for its controls and joins.",
     "source": "data/fieldcraft_x40_y80/fieldcraft_x40_y80.recipe.json?v=7cd26167c235",
     "model": "data/fieldcraft_x40_y80/fieldcraft_x40_y80.model.json?v=ea1b7b4c23f0",
-    "audit": "data/fieldcraft_x40_y80/fieldcraft_x40_y80.audit.json?v=35097e97a958",
+    "audit": "data/fieldcraft_x40_y80/fieldcraft_x40_y80.audit.json?v=431ccbf1663d",
     "step": "data/fieldcraft_x40_y80/fieldcraft_x40_y80.step?v=26ce52b0c5d2",
     "metrics": [
       {
-        "label": "Rust kernel method",
-        "value": "certified_rational_affine_image"
+        "label": "NURBS volumes",
+        "value": 5
       },
       {
-        "label": "Rust model blocks",
+        "label": "Bézier cells",
         "value": 10
+      },
+      {
+        "label": "Native NURBS volumes before assembly",
+        "value": 10
+      },
+      {
+        "label": "Rust kernel method",
+        "value": "certified_rational_affine_image"
       },
       {
         "label": "Rust shared interfaces",
@@ -3477,24 +4041,33 @@
       "fraction": 0.5
     },
     "group": "FieldCraft · brackets",
-    "stepLabel": "OCCT-checked boundary export (STEP)"
+    "stepLabel": "OCCT-checked boundary export (STEP)",
+    "representation": "data/fieldcraft_x40_y80/fieldcraft_x40_y80.model.representation.json?v=92d21323247b"
   },
   {
     "id": "fieldcraft_x50_y74",
     "title": "FieldCraft bracket · Ø6.25 / Ø9.25",
-    "description": "Two through-holes, Ø6.25 mm along Y, Ø9.25 mm along X. Four blocks surround each hole, and two blocks form the elbow.",
+    "description": "The displayed NURBS representation groups 10 Bézier cells into 5 volumes. Two through-holes, Ø6.25 mm along Y, Ø9.25 mm along X. Four blocks surround each hole, and two blocks form the elbow. The separate exact NURBS cover has 5 volumes across 10 source Bézier cells; download the representation for its controls and joins.",
     "source": "data/fieldcraft_x50_y74/fieldcraft_x50_y74.recipe.json?v=c60db6b35393",
     "model": "data/fieldcraft_x50_y74/fieldcraft_x50_y74.model.json?v=c30d5f13dd53",
-    "audit": "data/fieldcraft_x50_y74/fieldcraft_x50_y74.audit.json?v=e81baa834379",
+    "audit": "data/fieldcraft_x50_y74/fieldcraft_x50_y74.audit.json?v=8205a4a93800",
     "step": "data/fieldcraft_x50_y74/fieldcraft_x50_y74.step?v=b4cfdbfef555",
     "metrics": [
       {
-        "label": "Rust kernel method",
-        "value": "certified_rational_affine_image"
+        "label": "NURBS volumes",
+        "value": 5
       },
       {
-        "label": "Rust model blocks",
+        "label": "Bézier cells",
         "value": 10
+      },
+      {
+        "label": "Native NURBS volumes before assembly",
+        "value": 10
+      },
+      {
+        "label": "Rust kernel method",
+        "value": "certified_rational_affine_image"
       },
       {
         "label": "Rust shared interfaces",
@@ -3518,24 +4091,33 @@
       "fraction": 0.5
     },
     "group": "FieldCraft · brackets",
-    "stepLabel": "OCCT-checked boundary export (STEP)"
+    "stepLabel": "OCCT-checked boundary export (STEP)",
+    "representation": "data/fieldcraft_x50_y74/fieldcraft_x50_y74.model.representation.json?v=71cddf9a78d4"
   },
   {
     "id": "fieldcraft_x51_y74",
     "title": "FieldCraft bracket · Ø6.375 / Ø9.25",
-    "description": "Two through-holes, Ø6.375 mm along Y, Ø9.25 mm along X. Four blocks surround each hole, and two blocks form the elbow.",
+    "description": "The displayed NURBS representation groups 10 Bézier cells into 5 volumes. Two through-holes, Ø6.375 mm along Y, Ø9.25 mm along X. Four blocks surround each hole, and two blocks form the elbow. The separate exact NURBS cover has 5 volumes across 10 source Bézier cells; download the representation for its controls and joins.",
     "source": "data/fieldcraft_x51_y74/fieldcraft_x51_y74.recipe.json?v=b33b5b247294",
     "model": "data/fieldcraft_x51_y74/fieldcraft_x51_y74.model.json?v=a8235e58da85",
-    "audit": "data/fieldcraft_x51_y74/fieldcraft_x51_y74.audit.json?v=c8d5070fbbd5",
+    "audit": "data/fieldcraft_x51_y74/fieldcraft_x51_y74.audit.json?v=d890f02d608e",
     "step": "data/fieldcraft_x51_y74/fieldcraft_x51_y74.step?v=24866fee8b8c",
     "metrics": [
       {
-        "label": "Rust kernel method",
-        "value": "certified_rational_affine_image"
+        "label": "NURBS volumes",
+        "value": 5
       },
       {
-        "label": "Rust model blocks",
+        "label": "Bézier cells",
         "value": 10
+      },
+      {
+        "label": "Native NURBS volumes before assembly",
+        "value": 10
+      },
+      {
+        "label": "Rust kernel method",
+        "value": "certified_rational_affine_image"
       },
       {
         "label": "Rust shared interfaces",
@@ -3559,24 +4141,33 @@
       "fraction": 0.5
     },
     "group": "FieldCraft · brackets",
-    "stepLabel": "OCCT-checked boundary export (STEP)"
+    "stepLabel": "OCCT-checked boundary export (STEP)",
+    "representation": "data/fieldcraft_x51_y74/fieldcraft_x51_y74.model.representation.json?v=2ee2a20edf64"
   },
   {
     "id": "fieldcraft_x64_y64",
     "title": "FieldCraft bracket · original",
-    "description": "Two through-holes, Ø8 mm along Y, Ø8 mm along X. Four blocks surround each hole, and two blocks form the elbow.",
+    "description": "The displayed NURBS representation groups 10 Bézier cells into 5 volumes. Two through-holes, Ø8 mm along Y, Ø8 mm along X. Four blocks surround each hole, and two blocks form the elbow. The separate exact NURBS cover has 5 volumes across 10 source Bézier cells; download the representation for its controls and joins.",
     "source": "data/fieldcraft_x64_y64/fieldcraft_x64_y64.recipe.json?v=5dc34f4b0a41",
     "model": "data/fieldcraft_x64_y64/fieldcraft_x64_y64.model.json?v=82fb0d3f7a09",
-    "audit": "data/fieldcraft_x64_y64/fieldcraft_x64_y64.audit.json?v=edf563815fe7",
+    "audit": "data/fieldcraft_x64_y64/fieldcraft_x64_y64.audit.json?v=c9e769835281",
     "step": "data/fieldcraft_x64_y64/fieldcraft_x64_y64.step?v=dcecfef9fc96",
     "metrics": [
       {
-        "label": "Rust kernel method",
-        "value": "certified_rational_affine_image"
+        "label": "NURBS volumes",
+        "value": 5
       },
       {
-        "label": "Rust model blocks",
+        "label": "Bézier cells",
         "value": 10
+      },
+      {
+        "label": "Native NURBS volumes before assembly",
+        "value": 10
+      },
+      {
+        "label": "Rust kernel method",
+        "value": "certified_rational_affine_image"
       },
       {
         "label": "Rust shared interfaces",
@@ -3600,24 +4191,33 @@
       "fraction": 0.5
     },
     "group": "FieldCraft · brackets",
-    "stepLabel": "OCCT-checked boundary export (STEP)"
+    "stepLabel": "OCCT-checked boundary export (STEP)",
+    "representation": "data/fieldcraft_x64_y64/fieldcraft_x64_y64.model.representation.json?v=9f8f3b7272ab"
   },
   {
     "id": "fieldcraft_x80_y40",
     "title": "FieldCraft bracket · Ø10 / Ø5",
-    "description": "Two through-holes, Ø10 mm along Y, Ø5 mm along X. Four blocks surround each hole, and two blocks form the elbow.",
+    "description": "The displayed NURBS representation groups 10 Bézier cells into 5 volumes. Two through-holes, Ø10 mm along Y, Ø5 mm along X. Four blocks surround each hole, and two blocks form the elbow. The separate exact NURBS cover has 5 volumes across 10 source Bézier cells; download the representation for its controls and joins.",
     "source": "data/fieldcraft_x80_y40/fieldcraft_x80_y40.recipe.json?v=56b129e5557f",
     "model": "data/fieldcraft_x80_y40/fieldcraft_x80_y40.model.json?v=0550567e45d3",
-    "audit": "data/fieldcraft_x80_y40/fieldcraft_x80_y40.audit.json?v=41fc71ff2d9c",
+    "audit": "data/fieldcraft_x80_y40/fieldcraft_x80_y40.audit.json?v=faa00e881340",
     "step": "data/fieldcraft_x80_y40/fieldcraft_x80_y40.step?v=738946533995",
     "metrics": [
       {
-        "label": "Rust kernel method",
-        "value": "certified_rational_affine_image"
+        "label": "NURBS volumes",
+        "value": 5
       },
       {
-        "label": "Rust model blocks",
+        "label": "Bézier cells",
         "value": 10
+      },
+      {
+        "label": "Native NURBS volumes before assembly",
+        "value": 10
+      },
+      {
+        "label": "Rust kernel method",
+        "value": "certified_rational_affine_image"
       },
       {
         "label": "Rust shared interfaces",
@@ -3641,6 +4241,7 @@
       "fraction": 0.5
     },
     "group": "FieldCraft · brackets",
-    "stepLabel": "OCCT-checked boundary export (STEP)"
+    "stepLabel": "OCCT-checked boundary export (STEP)",
+    "representation": "data/fieldcraft_x80_y40/fieldcraft_x80_y40.model.representation.json?v=7b1274040ee1"
   }
 ]

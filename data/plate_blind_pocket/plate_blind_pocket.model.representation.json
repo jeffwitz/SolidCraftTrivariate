@@ -1,0 +1,2360 @@
+{
+  "schema": "gallery_exact_patch_map_v1",
+  "case_id": "plate_blind_pocket",
+  "representation_kind": "curved",
+  "method": "exact_homogeneous_bezier_to_clamped_nurbs",
+  "scope_note": "Final patch sets are disjoint unions of exact single-span Bezier volumes and compatible two-span clamped NURBS volumes. Exact piece extraction and interface traces are checked; no global injectivity, shape, or material coverage certificate is implied.",
+  "source_model_sha256": "df0b4bd7672c25ea98df8415c9dc4ab1e78e53438c290ad4fae39dc1aa04373f",
+  "source_recipe_sha256": "a5e06ad1708bc0631d8c37c6edd346f8d00adfaf41d7c922da86a25a7c59b6b8",
+  "source_schema": "curved_sketch_layers_v1",
+  "source_block_count": 9,
+  "native_nurbs_patch_count": 9,
+  "patch_count": 5,
+  "exact_extraction_count": 9,
+  "exact_interface_count": 16,
+  "patches": [
+    {
+      "id": "band:pocket_pocket_east_below+pocket_pocket_footprint_below",
+      "source_blocks": [
+        "pocket_pocket_east_below",
+        "pocket_pocket_footprint_below"
+      ],
+      "cells": [
+        "pocket_pocket_east_below",
+        "pocket_pocket_footprint_below"
+      ],
+      "patch_kind": "two_span_nurbs",
+      "degrees": [
+        2,
+        2,
+        1
+      ],
+      "knots": [
+        [
+          0,
+          0,
+          0,
+          1,
+          1,
+          2,
+          2,
+          2
+        ],
+        [
+          0,
+          0,
+          0,
+          1,
+          1,
+          1
+        ],
+        [
+          0,
+          0,
+          1,
+          1
+        ]
+      ],
+      "control_shape": [
+        5,
+        3,
+        2
+      ],
+      "controls_homogeneous": [
+        [
+          28800,
+          19200,
+          0,
+          480
+        ],
+        [
+          28800,
+          19200,
+          6720,
+          480
+        ],
+        [
+          28800,
+          9600,
+          0,
+          480
+        ],
+        [
+          28800,
+          9600,
+          6720,
+          480
+        ],
+        [
+          28800,
+          0,
+          0,
+          480
+        ],
+        [
+          28800,
+          0,
+          6720,
+          480
+        ],
+        [
+          23520,
+          15360,
+          0,
+          480
+        ],
+        [
+          23520,
+          15360,
+          6720,
+          480
+        ],
+        [
+          24480,
+          9600,
+          0,
+          480
+        ],
+        [
+          24480,
+          9600,
+          6720,
+          480
+        ],
+        [
+          23520,
+          3840,
+          0,
+          480
+        ],
+        [
+          23520,
+          3840,
+          6720,
+          480
+        ],
+        [
+          18240,
+          11520,
+          0,
+          480
+        ],
+        [
+          18240,
+          11520,
+          6720,
+          480
+        ],
+        [
+          20160,
+          9600,
+          0,
+          480
+        ],
+        [
+          20160,
+          9600,
+          6720,
+          480
+        ],
+        [
+          18240,
+          7680,
+          0,
+          480
+        ],
+        [
+          18240,
+          7680,
+          6720,
+          480
+        ],
+        [
+          14400,
+          12480,
+          0,
+          480
+        ],
+        [
+          14400,
+          12480,
+          6720,
+          480
+        ],
+        [
+          14400,
+          9600,
+          0,
+          480
+        ],
+        [
+          14400,
+          9600,
+          6720,
+          480
+        ],
+        [
+          14400,
+          6720,
+          0,
+          480
+        ],
+        [
+          14400,
+          6720,
+          6720,
+          480
+        ],
+        [
+          10560,
+          11520,
+          0,
+          480
+        ],
+        [
+          10560,
+          11520,
+          6720,
+          480
+        ],
+        [
+          8640,
+          9600,
+          0,
+          480
+        ],
+        [
+          8640,
+          9600,
+          6720,
+          480
+        ],
+        [
+          10560,
+          7680,
+          0,
+          480
+        ],
+        [
+          10560,
+          7680,
+          6720,
+          480
+        ]
+      ],
+      "homogeneous_common_scale_denominator": 1,
+      "spans": [
+        {
+          "source_block": "pocket_pocket_east_below",
+          "axis_map": [
+            0,
+            1,
+            2
+          ],
+          "flips": [
+            true,
+            true,
+            false
+          ],
+          "degree_elevation": [
+            0,
+            0,
+            0
+          ],
+          "parameter_interval": [
+            0,
+            1
+          ]
+        },
+        {
+          "source_block": "pocket_pocket_footprint_below",
+          "axis_map": [
+            0,
+            1,
+            2
+          ],
+          "flips": [
+            true,
+            true,
+            false
+          ],
+          "degree_elevation": [
+            0,
+            0,
+            0
+          ],
+          "parameter_interval": [
+            1,
+            2
+          ]
+        }
+      ],
+      "exact_piece_extraction_expected": true
+    },
+    {
+      "id": "band:pocket_pocket_east_beside+pocket_pocket_south_beside",
+      "source_blocks": [
+        "pocket_pocket_east_beside",
+        "pocket_pocket_south_beside"
+      ],
+      "cells": [
+        "pocket_pocket_east_beside",
+        "pocket_pocket_south_beside"
+      ],
+      "patch_kind": "two_span_nurbs",
+      "degrees": [
+        2,
+        2,
+        1
+      ],
+      "knots": [
+        [
+          0,
+          0,
+          0,
+          1,
+          1,
+          2,
+          2,
+          2
+        ],
+        [
+          0,
+          0,
+          0,
+          1,
+          1,
+          1
+        ],
+        [
+          0,
+          0,
+          1,
+          1
+        ]
+      ],
+      "control_shape": [
+        5,
+        3,
+        2
+      ],
+      "controls_homogeneous": [
+        [
+          18240,
+          11520,
+          6720,
+          480
+        ],
+        [
+          18240,
+          11520,
+          9600,
+          480
+        ],
+        [
+          23520,
+          15360,
+          6720,
+          480
+        ],
+        [
+          23520,
+          15360,
+          9600,
+          480
+        ],
+        [
+          28800,
+          19200,
+          6720,
+          480
+        ],
+        [
+          28800,
+          19200,
+          9600,
+          480
+        ],
+        [
+          20160,
+          9600,
+          6720,
+          480
+        ],
+        [
+          20160,
+          9600,
+          9600,
+          480
+        ],
+        [
+          24480,
+          9600,
+          6720,
+          480
+        ],
+        [
+          24480,
+          9600,
+          9600,
+          480
+        ],
+        [
+          28800,
+          9600,
+          6720,
+          480
+        ],
+        [
+          28800,
+          9600,
+          9600,
+          480
+        ],
+        [
+          18240,
+          7680,
+          6720,
+          480
+        ],
+        [
+          18240,
+          7680,
+          9600,
+          480
+        ],
+        [
+          23520,
+          3840,
+          6720,
+          480
+        ],
+        [
+          23520,
+          3840,
+          9600,
+          480
+        ],
+        [
+          28800,
+          0,
+          6720,
+          480
+        ],
+        [
+          28800,
+          0,
+          9600,
+          480
+        ],
+        [
+          14400,
+          6720,
+          6720,
+          480
+        ],
+        [
+          14400,
+          6720,
+          9600,
+          480
+        ],
+        [
+          14400,
+          2160,
+          6720,
+          480
+        ],
+        [
+          14400,
+          2160,
+          9600,
+          480
+        ],
+        [
+          14400,
+          -2400,
+          6720,
+          480
+        ],
+        [
+          14400,
+          -2400,
+          9600,
+          480
+        ],
+        [
+          10560,
+          7680,
+          6720,
+          480
+        ],
+        [
+          10560,
+          7680,
+          9600,
+          480
+        ],
+        [
+          5280,
+          3840,
+          6720,
+          480
+        ],
+        [
+          5280,
+          3840,
+          9600,
+          480
+        ],
+        [
+          0,
+          0,
+          6720,
+          480
+        ],
+        [
+          0,
+          0,
+          9600,
+          480
+        ]
+      ],
+      "homogeneous_common_scale_denominator": 1,
+      "spans": [
+        {
+          "source_block": "pocket_pocket_east_beside",
+          "axis_map": [
+            1,
+            0,
+            2
+          ],
+          "flips": [
+            true,
+            false,
+            false
+          ],
+          "degree_elevation": [
+            0,
+            0,
+            0
+          ],
+          "parameter_interval": [
+            0,
+            1
+          ]
+        },
+        {
+          "source_block": "pocket_pocket_south_beside",
+          "axis_map": [
+            0,
+            1,
+            2
+          ],
+          "flips": [
+            true,
+            true,
+            false
+          ],
+          "degree_elevation": [
+            0,
+            0,
+            0
+          ],
+          "parameter_interval": [
+            1,
+            2
+          ]
+        }
+      ],
+      "exact_piece_extraction_expected": true
+    },
+    {
+      "id": "band:pocket_pocket_north_below+pocket_pocket_west_below",
+      "source_blocks": [
+        "pocket_pocket_north_below",
+        "pocket_pocket_west_below"
+      ],
+      "cells": [
+        "pocket_pocket_north_below",
+        "pocket_pocket_west_below"
+      ],
+      "patch_kind": "two_span_nurbs",
+      "degrees": [
+        2,
+        2,
+        1
+      ],
+      "knots": [
+        [
+          0,
+          0,
+          0,
+          1,
+          1,
+          2,
+          2,
+          2
+        ],
+        [
+          0,
+          0,
+          0,
+          1,
+          1,
+          1
+        ],
+        [
+          0,
+          0,
+          1,
+          1
+        ]
+      ],
+      "control_shape": [
+        5,
+        3,
+        2
+      ],
+      "controls_homogeneous": [
+        [
+          28800,
+          19200,
+          0,
+          480
+        ],
+        [
+          28800,
+          19200,
+          6720,
+          480
+        ],
+        [
+          23520,
+          15360,
+          0,
+          480
+        ],
+        [
+          23520,
+          15360,
+          6720,
+          480
+        ],
+        [
+          18240,
+          11520,
+          0,
+          480
+        ],
+        [
+          18240,
+          11520,
+          6720,
+          480
+        ],
+        [
+          14400,
+          19200,
+          0,
+          480
+        ],
+        [
+          14400,
+          19200,
+          6720,
+          480
+        ],
+        [
+          14400,
+          15840,
+          0,
+          480
+        ],
+        [
+          14400,
+          15840,
+          6720,
+          480
+        ],
+        [
+          14400,
+          12480,
+          0,
+          480
+        ],
+        [
+          14400,
+          12480,
+          6720,
+          480
+        ],
+        [
+          0,
+          19200,
+          0,
+          480
+        ],
+        [
+          0,
+          19200,
+          6720,
+          480
+        ],
+        [
+          5280,
+          15360,
+          0,
+          480
+        ],
+        [
+          5280,
+          15360,
+          6720,
+          480
+        ],
+        [
+          10560,
+          11520,
+          0,
+          480
+        ],
+        [
+          10560,
+          11520,
+          6720,
+          480
+        ],
+        [
+          0,
+          9600,
+          0,
+          480
+        ],
+        [
+          0,
+          9600,
+          6720,
+          480
+        ],
+        [
+          4320,
+          9600,
+          0,
+          480
+        ],
+        [
+          4320,
+          9600,
+          6720,
+          480
+        ],
+        [
+          8640,
+          9600,
+          0,
+          480
+        ],
+        [
+          8640,
+          9600,
+          6720,
+          480
+        ],
+        [
+          0,
+          0,
+          0,
+          480
+        ],
+        [
+          0,
+          0,
+          6720,
+          480
+        ],
+        [
+          5280,
+          3840,
+          0,
+          480
+        ],
+        [
+          5280,
+          3840,
+          6720,
+          480
+        ],
+        [
+          10560,
+          7680,
+          0,
+          480
+        ],
+        [
+          10560,
+          7680,
+          6720,
+          480
+        ]
+      ],
+      "homogeneous_common_scale_denominator": 1,
+      "spans": [
+        {
+          "source_block": "pocket_pocket_north_below",
+          "axis_map": [
+            1,
+            0,
+            2
+          ],
+          "flips": [
+            true,
+            false,
+            false
+          ],
+          "degree_elevation": [
+            0,
+            0,
+            0
+          ],
+          "parameter_interval": [
+            0,
+            1
+          ]
+        },
+        {
+          "source_block": "pocket_pocket_west_below",
+          "axis_map": [
+            1,
+            0,
+            2
+          ],
+          "flips": [
+            true,
+            false,
+            false
+          ],
+          "degree_elevation": [
+            0,
+            0,
+            0
+          ],
+          "parameter_interval": [
+            1,
+            2
+          ]
+        }
+      ],
+      "exact_piece_extraction_expected": true
+    },
+    {
+      "id": "band:pocket_pocket_north_beside+pocket_pocket_west_beside",
+      "source_blocks": [
+        "pocket_pocket_north_beside",
+        "pocket_pocket_west_beside"
+      ],
+      "cells": [
+        "pocket_pocket_north_beside",
+        "pocket_pocket_west_beside"
+      ],
+      "patch_kind": "two_span_nurbs",
+      "degrees": [
+        2,
+        2,
+        1
+      ],
+      "knots": [
+        [
+          0,
+          0,
+          0,
+          1,
+          1,
+          2,
+          2,
+          2
+        ],
+        [
+          0,
+          0,
+          0,
+          1,
+          1,
+          1
+        ],
+        [
+          0,
+          0,
+          1,
+          1
+        ]
+      ],
+      "control_shape": [
+        5,
+        3,
+        2
+      ],
+      "controls_homogeneous": [
+        [
+          28800,
+          19200,
+          6720,
+          480
+        ],
+        [
+          28800,
+          19200,
+          9600,
+          480
+        ],
+        [
+          23520,
+          15360,
+          6720,
+          480
+        ],
+        [
+          23520,
+          15360,
+          9600,
+          480
+        ],
+        [
+          18240,
+          11520,
+          6720,
+          480
+        ],
+        [
+          18240,
+          11520,
+          9600,
+          480
+        ],
+        [
+          14400,
+          19200,
+          6720,
+          480
+        ],
+        [
+          14400,
+          19200,
+          9600,
+          480
+        ],
+        [
+          14400,
+          15840,
+          6720,
+          480
+        ],
+        [
+          14400,
+          15840,
+          9600,
+          480
+        ],
+        [
+          14400,
+          12480,
+          6720,
+          480
+        ],
+        [
+          14400,
+          12480,
+          9600,
+          480
+        ],
+        [
+          0,
+          19200,
+          6720,
+          480
+        ],
+        [
+          0,
+          19200,
+          9600,
+          480
+        ],
+        [
+          5280,
+          15360,
+          6720,
+          480
+        ],
+        [
+          5280,
+          15360,
+          9600,
+          480
+        ],
+        [
+          10560,
+          11520,
+          6720,
+          480
+        ],
+        [
+          10560,
+          11520,
+          9600,
+          480
+        ],
+        [
+          0,
+          9600,
+          6720,
+          480
+        ],
+        [
+          0,
+          9600,
+          9600,
+          480
+        ],
+        [
+          4320,
+          9600,
+          6720,
+          480
+        ],
+        [
+          4320,
+          9600,
+          9600,
+          480
+        ],
+        [
+          8640,
+          9600,
+          6720,
+          480
+        ],
+        [
+          8640,
+          9600,
+          9600,
+          480
+        ],
+        [
+          0,
+          0,
+          6720,
+          480
+        ],
+        [
+          0,
+          0,
+          9600,
+          480
+        ],
+        [
+          5280,
+          3840,
+          6720,
+          480
+        ],
+        [
+          5280,
+          3840,
+          9600,
+          480
+        ],
+        [
+          10560,
+          7680,
+          6720,
+          480
+        ],
+        [
+          10560,
+          7680,
+          9600,
+          480
+        ]
+      ],
+      "homogeneous_common_scale_denominator": 1,
+      "spans": [
+        {
+          "source_block": "pocket_pocket_north_beside",
+          "axis_map": [
+            1,
+            0,
+            2
+          ],
+          "flips": [
+            true,
+            false,
+            false
+          ],
+          "degree_elevation": [
+            0,
+            0,
+            0
+          ],
+          "parameter_interval": [
+            0,
+            1
+          ]
+        },
+        {
+          "source_block": "pocket_pocket_west_beside",
+          "axis_map": [
+            1,
+            0,
+            2
+          ],
+          "flips": [
+            true,
+            false,
+            false
+          ],
+          "degree_elevation": [
+            0,
+            0,
+            0
+          ],
+          "parameter_interval": [
+            1,
+            2
+          ]
+        }
+      ],
+      "exact_piece_extraction_expected": true
+    },
+    {
+      "id": "pocket_pocket_south_below",
+      "degrees": [
+        2,
+        2,
+        1
+      ],
+      "knots": [
+        [
+          0,
+          0,
+          0,
+          1,
+          1,
+          1
+        ],
+        [
+          0,
+          0,
+          0,
+          1,
+          1,
+          1
+        ],
+        [
+          0,
+          0,
+          1,
+          1
+        ]
+      ],
+      "controls_homogeneous": [
+        [
+          0,
+          0,
+          0,
+          480
+        ],
+        [
+          0,
+          0,
+          6720,
+          480
+        ],
+        [
+          5280,
+          3840,
+          0,
+          480
+        ],
+        [
+          5280,
+          3840,
+          6720,
+          480
+        ],
+        [
+          10560,
+          7680,
+          0,
+          480
+        ],
+        [
+          10560,
+          7680,
+          6720,
+          480
+        ],
+        [
+          14400,
+          -2400,
+          0,
+          480
+        ],
+        [
+          14400,
+          -2400,
+          6720,
+          480
+        ],
+        [
+          14400,
+          2160,
+          0,
+          480
+        ],
+        [
+          14400,
+          2160,
+          6720,
+          480
+        ],
+        [
+          14400,
+          6720,
+          0,
+          480
+        ],
+        [
+          14400,
+          6720,
+          6720,
+          480
+        ],
+        [
+          28800,
+          0,
+          0,
+          480
+        ],
+        [
+          28800,
+          0,
+          6720,
+          480
+        ],
+        [
+          23520,
+          3840,
+          0,
+          480
+        ],
+        [
+          23520,
+          3840,
+          6720,
+          480
+        ],
+        [
+          18240,
+          7680,
+          0,
+          480
+        ],
+        [
+          18240,
+          7680,
+          6720,
+          480
+        ]
+      ],
+      "source_blocks": [
+        "pocket_pocket_south_below"
+      ],
+      "cells": [
+        "pocket_pocket_south_below"
+      ],
+      "patch_kind": "single_bezier",
+      "control_shape": [
+        3,
+        3,
+        2
+      ],
+      "spans": [
+        {
+          "source_block": "pocket_pocket_south_below",
+          "axis_map": [
+            0,
+            1,
+            2
+          ],
+          "flips": [
+            false,
+            false,
+            false
+          ],
+          "degree_elevation": [
+            0,
+            0,
+            0
+          ],
+          "parameter_interval": [
+            0,
+            1
+          ]
+        }
+      ]
+    }
+  ],
+  "interfaces": [
+    {
+      "first": {
+        "patch_id": "band:pocket_pocket_east_below+pocket_pocket_footprint_below",
+        "source_block": "pocket_pocket_east_below",
+        "side": "v0",
+        "patch_side": "v1",
+        "axis_map": [
+          0,
+          1,
+          2
+        ],
+        "flips": [
+          true,
+          true,
+          false
+        ],
+        "parameter_interval": [
+          0,
+          1
+        ]
+      },
+      "second": {
+        "patch_id": "pocket_pocket_south_below",
+        "source_block": "pocket_pocket_south_below",
+        "side": "u1",
+        "patch_side": "u1",
+        "axis_map": [
+          0,
+          1,
+          2
+        ],
+        "flips": [
+          false,
+          false,
+          false
+        ],
+        "parameter_interval": [
+          0,
+          1
+        ]
+      },
+      "orientation": {
+        "flip_first": true,
+        "flip_second": false,
+        "swap": false
+      },
+      "status": "exact_match"
+    },
+    {
+      "first": {
+        "patch_id": "band:pocket_pocket_east_below+pocket_pocket_footprint_below",
+        "source_block": "pocket_pocket_east_below",
+        "side": "v1",
+        "patch_side": "v0",
+        "axis_map": [
+          0,
+          1,
+          2
+        ],
+        "flips": [
+          true,
+          true,
+          false
+        ],
+        "parameter_interval": [
+          0,
+          1
+        ]
+      },
+      "second": {
+        "patch_id": "band:pocket_pocket_north_below+pocket_pocket_west_below",
+        "source_block": "pocket_pocket_north_below",
+        "side": "v1",
+        "patch_side": "u0",
+        "axis_map": [
+          1,
+          0,
+          2
+        ],
+        "flips": [
+          true,
+          false,
+          false
+        ],
+        "parameter_interval": [
+          0,
+          1
+        ]
+      },
+      "orientation": {
+        "flip_first": true,
+        "flip_second": false,
+        "swap": false
+      },
+      "status": "exact_match"
+    },
+    {
+      "first": {
+        "patch_id": "band:pocket_pocket_east_below+pocket_pocket_footprint_below",
+        "source_block": "pocket_pocket_east_below",
+        "side": "w1",
+        "patch_side": "w1",
+        "axis_map": [
+          0,
+          1,
+          2
+        ],
+        "flips": [
+          true,
+          true,
+          false
+        ],
+        "parameter_interval": [
+          0,
+          1
+        ]
+      },
+      "second": {
+        "patch_id": "band:pocket_pocket_east_beside+pocket_pocket_south_beside",
+        "source_block": "pocket_pocket_east_beside",
+        "side": "w0",
+        "patch_side": "w0",
+        "axis_map": [
+          1,
+          0,
+          2
+        ],
+        "flips": [
+          true,
+          false,
+          false
+        ],
+        "parameter_interval": [
+          0,
+          1
+        ]
+      },
+      "orientation": {
+        "flip_first": false,
+        "flip_second": false,
+        "swap": false
+      },
+      "status": "exact_match"
+    },
+    {
+      "first": {
+        "patch_id": "band:pocket_pocket_east_beside+pocket_pocket_south_beside",
+        "source_block": "pocket_pocket_east_beside",
+        "side": "v1",
+        "patch_side": "u0",
+        "axis_map": [
+          1,
+          0,
+          2
+        ],
+        "flips": [
+          true,
+          false,
+          false
+        ],
+        "parameter_interval": [
+          0,
+          1
+        ]
+      },
+      "second": {
+        "patch_id": "band:pocket_pocket_north_beside+pocket_pocket_west_beside",
+        "source_block": "pocket_pocket_north_beside",
+        "side": "v1",
+        "patch_side": "u0",
+        "axis_map": [
+          1,
+          0,
+          2
+        ],
+        "flips": [
+          true,
+          false,
+          false
+        ],
+        "parameter_interval": [
+          0,
+          1
+        ]
+      },
+      "orientation": {
+        "flip_first": true,
+        "flip_second": false,
+        "swap": false
+      },
+      "status": "exact_match"
+    },
+    {
+      "first": {
+        "patch_id": "band:pocket_pocket_east_below+pocket_pocket_footprint_below",
+        "source_block": "pocket_pocket_footprint_below",
+        "side": "u0",
+        "patch_side": "u1",
+        "axis_map": [
+          0,
+          1,
+          2
+        ],
+        "flips": [
+          true,
+          true,
+          false
+        ],
+        "parameter_interval": [
+          1,
+          2
+        ]
+      },
+      "second": {
+        "patch_id": "band:pocket_pocket_north_below+pocket_pocket_west_below",
+        "source_block": "pocket_pocket_west_below",
+        "side": "u1",
+        "patch_side": "v1",
+        "axis_map": [
+          1,
+          0,
+          2
+        ],
+        "flips": [
+          true,
+          false,
+          false
+        ],
+        "parameter_interval": [
+          1,
+          2
+        ]
+      },
+      "orientation": {
+        "flip_first": false,
+        "flip_second": false,
+        "swap": false
+      },
+      "status": "exact_match"
+    },
+    {
+      "first": {
+        "patch_id": "band:pocket_pocket_east_below+pocket_pocket_footprint_below",
+        "source_block": "pocket_pocket_footprint_below",
+        "side": "v0",
+        "patch_side": "v1",
+        "axis_map": [
+          0,
+          1,
+          2
+        ],
+        "flips": [
+          true,
+          true,
+          false
+        ],
+        "parameter_interval": [
+          1,
+          2
+        ]
+      },
+      "second": {
+        "patch_id": "pocket_pocket_south_below",
+        "source_block": "pocket_pocket_south_below",
+        "side": "v1",
+        "patch_side": "v1",
+        "axis_map": [
+          0,
+          1,
+          2
+        ],
+        "flips": [
+          false,
+          false,
+          false
+        ],
+        "parameter_interval": [
+          0,
+          1
+        ]
+      },
+      "orientation": {
+        "flip_first": false,
+        "flip_second": false,
+        "swap": false
+      },
+      "status": "exact_match"
+    },
+    {
+      "first": {
+        "patch_id": "band:pocket_pocket_east_below+pocket_pocket_footprint_below",
+        "source_block": "pocket_pocket_footprint_below",
+        "side": "v1",
+        "patch_side": "v0",
+        "axis_map": [
+          0,
+          1,
+          2
+        ],
+        "flips": [
+          true,
+          true,
+          false
+        ],
+        "parameter_interval": [
+          1,
+          2
+        ]
+      },
+      "second": {
+        "patch_id": "band:pocket_pocket_north_below+pocket_pocket_west_below",
+        "source_block": "pocket_pocket_north_below",
+        "side": "u1",
+        "patch_side": "v1",
+        "axis_map": [
+          1,
+          0,
+          2
+        ],
+        "flips": [
+          true,
+          false,
+          false
+        ],
+        "parameter_interval": [
+          0,
+          1
+        ]
+      },
+      "orientation": {
+        "flip_first": false,
+        "flip_second": false,
+        "swap": false
+      },
+      "status": "exact_match"
+    },
+    {
+      "first": {
+        "patch_id": "band:pocket_pocket_north_below+pocket_pocket_west_below",
+        "source_block": "pocket_pocket_north_below",
+        "side": "w1",
+        "patch_side": "w1",
+        "axis_map": [
+          1,
+          0,
+          2
+        ],
+        "flips": [
+          true,
+          false,
+          false
+        ],
+        "parameter_interval": [
+          0,
+          1
+        ]
+      },
+      "second": {
+        "patch_id": "band:pocket_pocket_north_beside+pocket_pocket_west_beside",
+        "source_block": "pocket_pocket_north_beside",
+        "side": "w0",
+        "patch_side": "w0",
+        "axis_map": [
+          1,
+          0,
+          2
+        ],
+        "flips": [
+          true,
+          false,
+          false
+        ],
+        "parameter_interval": [
+          0,
+          1
+        ]
+      },
+      "orientation": {
+        "flip_first": false,
+        "flip_second": false,
+        "swap": false
+      },
+      "status": "exact_match"
+    },
+    {
+      "first": {
+        "patch_id": "pocket_pocket_south_below",
+        "source_block": "pocket_pocket_south_below",
+        "side": "u0",
+        "patch_side": "u0",
+        "axis_map": [
+          0,
+          1,
+          2
+        ],
+        "flips": [
+          false,
+          false,
+          false
+        ],
+        "parameter_interval": [
+          0,
+          1
+        ]
+      },
+      "second": {
+        "patch_id": "band:pocket_pocket_north_below+pocket_pocket_west_below",
+        "source_block": "pocket_pocket_west_below",
+        "side": "v0",
+        "patch_side": "u1",
+        "axis_map": [
+          1,
+          0,
+          2
+        ],
+        "flips": [
+          true,
+          false,
+          false
+        ],
+        "parameter_interval": [
+          1,
+          2
+        ]
+      },
+      "orientation": {
+        "flip_first": false,
+        "flip_second": false,
+        "swap": false
+      },
+      "status": "exact_match"
+    },
+    {
+      "first": {
+        "patch_id": "pocket_pocket_south_below",
+        "source_block": "pocket_pocket_south_below",
+        "side": "w1",
+        "patch_side": "w1",
+        "axis_map": [
+          0,
+          1,
+          2
+        ],
+        "flips": [
+          false,
+          false,
+          false
+        ],
+        "parameter_interval": [
+          0,
+          1
+        ]
+      },
+      "second": {
+        "patch_id": "band:pocket_pocket_east_beside+pocket_pocket_south_beside",
+        "source_block": "pocket_pocket_south_beside",
+        "side": "w0",
+        "patch_side": "w0",
+        "axis_map": [
+          0,
+          1,
+          2
+        ],
+        "flips": [
+          true,
+          true,
+          false
+        ],
+        "parameter_interval": [
+          1,
+          2
+        ]
+      },
+      "orientation": {
+        "flip_first": false,
+        "flip_second": false,
+        "swap": false
+      },
+      "status": "exact_match"
+    },
+    {
+      "first": {
+        "patch_id": "band:pocket_pocket_east_beside+pocket_pocket_south_beside",
+        "source_block": "pocket_pocket_south_beside",
+        "side": "u0",
+        "patch_side": "u1",
+        "axis_map": [
+          0,
+          1,
+          2
+        ],
+        "flips": [
+          true,
+          true,
+          false
+        ],
+        "parameter_interval": [
+          1,
+          2
+        ]
+      },
+      "second": {
+        "patch_id": "band:pocket_pocket_north_beside+pocket_pocket_west_beside",
+        "source_block": "pocket_pocket_west_beside",
+        "side": "v0",
+        "patch_side": "u1",
+        "axis_map": [
+          1,
+          0,
+          2
+        ],
+        "flips": [
+          true,
+          false,
+          false
+        ],
+        "parameter_interval": [
+          1,
+          2
+        ]
+      },
+      "orientation": {
+        "flip_first": false,
+        "flip_second": false,
+        "swap": false
+      },
+      "status": "exact_match"
+    },
+    {
+      "first": {
+        "patch_id": "band:pocket_pocket_north_below+pocket_pocket_west_below",
+        "source_block": "pocket_pocket_west_below",
+        "side": "w1",
+        "patch_side": "w1",
+        "axis_map": [
+          1,
+          0,
+          2
+        ],
+        "flips": [
+          true,
+          false,
+          false
+        ],
+        "parameter_interval": [
+          1,
+          2
+        ]
+      },
+      "second": {
+        "patch_id": "band:pocket_pocket_north_beside+pocket_pocket_west_beside",
+        "source_block": "pocket_pocket_west_beside",
+        "side": "w0",
+        "patch_side": "w0",
+        "axis_map": [
+          1,
+          0,
+          2
+        ],
+        "flips": [
+          true,
+          false,
+          false
+        ],
+        "parameter_interval": [
+          1,
+          2
+        ]
+      },
+      "orientation": {
+        "flip_first": false,
+        "flip_second": false,
+        "swap": false
+      },
+      "status": "exact_match"
+    }
+  ],
+  "boundary_faces": [
+    {
+      "patch_id": "band:pocket_pocket_east_below+pocket_pocket_footprint_below",
+      "source_block": "pocket_pocket_east_below",
+      "side": "u1",
+      "patch_side": "u0",
+      "axis_map": [
+        0,
+        1,
+        2
+      ],
+      "flips": [
+        true,
+        true,
+        false
+      ],
+      "parameter_interval": [
+        0,
+        1
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:pocket_pocket_east_below+pocket_pocket_footprint_below",
+      "source_block": "pocket_pocket_east_below",
+      "side": "w0",
+      "patch_side": "w0",
+      "axis_map": [
+        0,
+        1,
+        2
+      ],
+      "flips": [
+        true,
+        true,
+        false
+      ],
+      "parameter_interval": [
+        0,
+        1
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:pocket_pocket_east_beside+pocket_pocket_south_beside",
+      "source_block": "pocket_pocket_east_beside",
+      "side": "u0",
+      "patch_side": "v0",
+      "axis_map": [
+        1,
+        0,
+        2
+      ],
+      "flips": [
+        true,
+        false,
+        false
+      ],
+      "parameter_interval": [
+        0,
+        1
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:pocket_pocket_east_beside+pocket_pocket_south_beside",
+      "source_block": "pocket_pocket_east_beside",
+      "side": "u1",
+      "patch_side": "v1",
+      "axis_map": [
+        1,
+        0,
+        2
+      ],
+      "flips": [
+        true,
+        false,
+        false
+      ],
+      "parameter_interval": [
+        0,
+        1
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:pocket_pocket_east_beside+pocket_pocket_south_beside",
+      "source_block": "pocket_pocket_east_beside",
+      "side": "w1",
+      "patch_side": "w1",
+      "axis_map": [
+        1,
+        0,
+        2
+      ],
+      "flips": [
+        true,
+        false,
+        false
+      ],
+      "parameter_interval": [
+        0,
+        1
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:pocket_pocket_east_below+pocket_pocket_footprint_below",
+      "source_block": "pocket_pocket_footprint_below",
+      "side": "w0",
+      "patch_side": "w0",
+      "axis_map": [
+        0,
+        1,
+        2
+      ],
+      "flips": [
+        true,
+        true,
+        false
+      ],
+      "parameter_interval": [
+        1,
+        2
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:pocket_pocket_east_below+pocket_pocket_footprint_below",
+      "source_block": "pocket_pocket_footprint_below",
+      "side": "w1",
+      "patch_side": "w1",
+      "axis_map": [
+        0,
+        1,
+        2
+      ],
+      "flips": [
+        true,
+        true,
+        false
+      ],
+      "parameter_interval": [
+        1,
+        2
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:pocket_pocket_north_below+pocket_pocket_west_below",
+      "source_block": "pocket_pocket_north_below",
+      "side": "u0",
+      "patch_side": "v0",
+      "axis_map": [
+        1,
+        0,
+        2
+      ],
+      "flips": [
+        true,
+        false,
+        false
+      ],
+      "parameter_interval": [
+        0,
+        1
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:pocket_pocket_north_below+pocket_pocket_west_below",
+      "source_block": "pocket_pocket_north_below",
+      "side": "w0",
+      "patch_side": "w0",
+      "axis_map": [
+        1,
+        0,
+        2
+      ],
+      "flips": [
+        true,
+        false,
+        false
+      ],
+      "parameter_interval": [
+        0,
+        1
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:pocket_pocket_north_beside+pocket_pocket_west_beside",
+      "source_block": "pocket_pocket_north_beside",
+      "side": "u0",
+      "patch_side": "v0",
+      "axis_map": [
+        1,
+        0,
+        2
+      ],
+      "flips": [
+        true,
+        false,
+        false
+      ],
+      "parameter_interval": [
+        0,
+        1
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:pocket_pocket_north_beside+pocket_pocket_west_beside",
+      "source_block": "pocket_pocket_north_beside",
+      "side": "u1",
+      "patch_side": "v1",
+      "axis_map": [
+        1,
+        0,
+        2
+      ],
+      "flips": [
+        true,
+        false,
+        false
+      ],
+      "parameter_interval": [
+        0,
+        1
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:pocket_pocket_north_beside+pocket_pocket_west_beside",
+      "source_block": "pocket_pocket_north_beside",
+      "side": "w1",
+      "patch_side": "w1",
+      "axis_map": [
+        1,
+        0,
+        2
+      ],
+      "flips": [
+        true,
+        false,
+        false
+      ],
+      "parameter_interval": [
+        0,
+        1
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "pocket_pocket_south_below",
+      "source_block": "pocket_pocket_south_below",
+      "side": "v0",
+      "patch_side": "v0",
+      "axis_map": [
+        0,
+        1,
+        2
+      ],
+      "flips": [
+        false,
+        false,
+        false
+      ],
+      "parameter_interval": [
+        0,
+        1
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "pocket_pocket_south_below",
+      "source_block": "pocket_pocket_south_below",
+      "side": "w0",
+      "patch_side": "w0",
+      "axis_map": [
+        0,
+        1,
+        2
+      ],
+      "flips": [
+        false,
+        false,
+        false
+      ],
+      "parameter_interval": [
+        0,
+        1
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:pocket_pocket_east_beside+pocket_pocket_south_beside",
+      "source_block": "pocket_pocket_south_beside",
+      "side": "v0",
+      "patch_side": "v1",
+      "axis_map": [
+        0,
+        1,
+        2
+      ],
+      "flips": [
+        true,
+        true,
+        false
+      ],
+      "parameter_interval": [
+        1,
+        2
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:pocket_pocket_east_beside+pocket_pocket_south_beside",
+      "source_block": "pocket_pocket_south_beside",
+      "side": "v1",
+      "patch_side": "v0",
+      "axis_map": [
+        0,
+        1,
+        2
+      ],
+      "flips": [
+        true,
+        true,
+        false
+      ],
+      "parameter_interval": [
+        1,
+        2
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:pocket_pocket_east_beside+pocket_pocket_south_beside",
+      "source_block": "pocket_pocket_south_beside",
+      "side": "w1",
+      "patch_side": "w1",
+      "axis_map": [
+        0,
+        1,
+        2
+      ],
+      "flips": [
+        true,
+        true,
+        false
+      ],
+      "parameter_interval": [
+        1,
+        2
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:pocket_pocket_north_below+pocket_pocket_west_below",
+      "source_block": "pocket_pocket_west_below",
+      "side": "u0",
+      "patch_side": "v0",
+      "axis_map": [
+        1,
+        0,
+        2
+      ],
+      "flips": [
+        true,
+        false,
+        false
+      ],
+      "parameter_interval": [
+        1,
+        2
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:pocket_pocket_north_below+pocket_pocket_west_below",
+      "source_block": "pocket_pocket_west_below",
+      "side": "w0",
+      "patch_side": "w0",
+      "axis_map": [
+        1,
+        0,
+        2
+      ],
+      "flips": [
+        true,
+        false,
+        false
+      ],
+      "parameter_interval": [
+        1,
+        2
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:pocket_pocket_north_beside+pocket_pocket_west_beside",
+      "source_block": "pocket_pocket_west_beside",
+      "side": "u0",
+      "patch_side": "v0",
+      "axis_map": [
+        1,
+        0,
+        2
+      ],
+      "flips": [
+        true,
+        false,
+        false
+      ],
+      "parameter_interval": [
+        1,
+        2
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:pocket_pocket_north_beside+pocket_pocket_west_beside",
+      "source_block": "pocket_pocket_west_beside",
+      "side": "u1",
+      "patch_side": "v1",
+      "axis_map": [
+        1,
+        0,
+        2
+      ],
+      "flips": [
+        true,
+        false,
+        false
+      ],
+      "parameter_interval": [
+        1,
+        2
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:pocket_pocket_north_beside+pocket_pocket_west_beside",
+      "source_block": "pocket_pocket_west_beside",
+      "side": "w1",
+      "patch_side": "w1",
+      "axis_map": [
+        1,
+        0,
+        2
+      ],
+      "flips": [
+        true,
+        false,
+        false
+      ],
+      "parameter_interval": [
+        1,
+        2
+      ],
+      "status": "extracted_exactly_from_model"
+    }
+  ],
+  "merged_source_blocks": [
+    "pocket_pocket_east_below",
+    "pocket_pocket_east_beside",
+    "pocket_pocket_footprint_below",
+    "pocket_pocket_north_below",
+    "pocket_pocket_north_beside",
+    "pocket_pocket_south_beside",
+    "pocket_pocket_west_below",
+    "pocket_pocket_west_beside"
+  ],
+  "errors": []
+}

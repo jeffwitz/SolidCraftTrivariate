@@ -2,13 +2,14 @@ const byId = (id) => document.getElementById(id);
 const ui = {
   canvas: byId('model-canvas'), state: byId('canvas-state'), wrap: byId('canvas-wrap'),
   selector: byId('experiment-select'), description: byId('experiment-description'),
-  viewTitle: byId('view-title'), metrics: byId('metrics-list'), model: byId('model-link'), source: byId('source-link'), step: byId('step-link'), audit: byId('audit-link'), figure: byId('figure-link'),
+  viewTitle: byId('view-title'), metrics: byId('metrics-list'), model: byId('model-link'), representation: byId('representation-link'), source: byId('source-link'), step: byId('step-link'), audit: byId('audit-link'), figure: byId('figure-link'),
   axis: byId('clip-axis'), fraction: byId('clip-fraction'), value: byId('clip-value'), reset: byId('reset-view'),
   sectionButton: byId('s3-face-pocket'),
   profile: byId('profile-card'),
 };
 
 let experiments = [];
+let comparisonIds = new Set();
 let viewer = null;
 let mode = 'blocks';
 let selectionVersion = 0;
@@ -51,16 +52,37 @@ function setLink(link, path) {
   link.hidden = false;
 }
 
-function renderMetrics(metrics) {
+function renderMetrics(metrics, model = null, representation = null) {
   ui.metrics.replaceChildren();
-  if (!Array.isArray(metrics) || metrics.length === 0) {
+  const rows = Array.isArray(metrics) ? [...metrics] : [];
+  const patchRecords = Array.isArray(model?.nurbs_patches) ? model.nurbs_patches : null;
+  const coverPatches = Array.isArray(representation?.patches) ? representation.patches : null;
+  if (coverPatches || patchRecords) {
+    const cells = new Set((coverPatches || patchRecords).flatMap(patch => [
+      ...(Array.isArray(patch.cells) ? patch.cells : []),
+      ...(Array.isArray(patch.source_blocks) ? patch.source_blocks : []),
+    ]));
+    const counts = coverPatches ? new Map([
+      ['NURBS volumes', coverPatches.length],
+      ['Bézier cells', cells.size || model.blocks?.length || 0],
+    ]) : new Map([
+      ['NURBS volumes', patchRecords.length],
+      ['Bézier cells', cells.size || model.blocks?.length || 0],
+    ]);
+    for (const [label, value] of counts) {
+      const existing = rows.find(metric => metric?.label === label);
+      if (existing) existing.value = value;
+      else rows.push({ label, value });
+    }
+  }
+  if (rows.length === 0) {
     const empty = document.createElement('div');
     empty.className = 'metric-empty';
     empty.textContent = 'No measurements are published for this experiment.';
     ui.metrics.append(empty);
     return;
   }
-  for (const metric of metrics) {
+  for (const metric of rows) {
     if (!metric || typeof metric.label !== 'string' || metric.value == null) continue;
     const row = document.createElement('div');
     const label = document.createElement('dt');
@@ -77,6 +99,18 @@ async function readModel(experiment) {
   if (!url) throw new Error('The model path is missing or points outside this site.');
   const response = await fetch(url, { cache: 'force-cache' });
   if (!response.ok) throw new Error(`Could not load the model (${response.status}).`);
+  const bytes = await response.arrayBuffer();
+  const model = JSON.parse(new TextDecoder().decode(bytes));
+  const digest = await crypto.subtle.digest('SHA-256', bytes);
+  const sha256 = [...new Uint8Array(digest)].map(value => value.toString(16).padStart(2, '0')).join('');
+  return { model, sha256 };
+}
+
+async function readRepresentation(experiment) {
+  const url = safeLocalUrl(experiment.representation);
+  if (!url) return null;
+  const response = await fetch(url, { cache: 'force-cache' });
+  if (!response.ok) throw new Error(`Could not load the exact NURBS representation (${response.status}).`);
   return response.json();
 }
 
@@ -86,6 +120,40 @@ async function readAudit(experiment) {
   const response = await fetch(url, { cache: 'force-cache' });
   if (!response.ok) return null;
   return response.json();
+}
+
+async function readComparisonIds() {
+  try {
+    const response = await fetch('./comparison-data.json?v=bc4679ffa680', { cache: 'force-cache' });
+    if (!response.ok) return new Set();
+    const data = await response.json();
+    return new Set(Array.isArray(data) ? data.map(item => item?.id).filter(id => typeof id === 'string') : []);
+  } catch { return new Set(); }
+}
+
+function configurePartitionControls(experiment, model, representation) {
+  const assembled = (Array.isArray(representation?.patches) && representation.patches.length > 0)
+    || (Array.isArray(model?.nurbs_patches) && model.nurbs_patches.length > 0);
+  mode = assembled ? 'patches' : 'surface';
+  const patchButton = document.querySelector('[data-mode="patches"]');
+  const blockButton = document.querySelector('[data-mode="blocks"]');
+  patchButton.hidden = !assembled;
+  patchButton.textContent = representation?.patches ? 'NURBS cover patches' : 'NURBS volumes';
+  blockButton.textContent = assembled ? 'Bézier cells' : 'Blocks';
+  const compare = document.querySelector('.comparison-link');
+  const compareStatus = document.querySelector('.comparison-status');
+  const hasComparison = comparisonIds.has(experiment.id);
+  compare.hidden = !hasComparison;
+  compare.href = `./compare.html?model=${encodeURIComponent(experiment.id)}`;
+  compare.textContent = 'Compare both partitions of this sketch →';
+  compareStatus.hidden = hasComparison;
+  compareStatus.textContent = hasComparison
+    ? '' : 'No paired partition comparison is published for this experiment.';
+  document.querySelectorAll('[data-mode]').forEach(button => {
+    const selected = button.dataset.mode === mode;
+    button.classList.toggle('is-active', selected);
+    button.setAttribute('aria-pressed', String(selected));
+  });
 }
 
 function renderProfile(audit) {
@@ -161,12 +229,7 @@ async function selectExperiment(id) {
   const version = ++selectionVersion;
   modelReady = false;
   renderProfile(null);
-  mode = 'blocks';
-  document.querySelectorAll('[data-mode]').forEach((button) => {
-    const selected = button.dataset.mode === mode;
-    button.classList.toggle('is-active', selected);
-    button.setAttribute('aria-pressed', String(selected));
-  });
+  mode = 'surface';
   const preset = experiment.section && ['x', 'y', 'z'].includes(experiment.section.axis)
     && Number.isFinite(experiment.section.fraction)
     ? experiment.section : { axis: 'z', fraction: 0.5 };
@@ -194,6 +257,7 @@ async function selectExperiment(id) {
   ui.step.firstElementChild.textContent = experiment.stepLabel || 'STEP model';
   ui.model.firstElementChild.textContent = boundary ? 'Triangulated surface (JSON)' : 'Trivariate model (JSON)';
   setLink(ui.model, experiment.model === experiment.source ? null : experiment.model);
+  setLink(ui.representation, experiment.representation);
   setLink(ui.source, experiment.source);
   setLink(ui.step, experiment.step);
   setLink(ui.audit, experiment.audit);
@@ -209,9 +273,17 @@ async function selectExperiment(id) {
   }
   showState('Loading model…');
   try {
-    const model = await readModel(experiment);
+    const loaded = await readModel(experiment);
     if (version !== selectionVersion) return;
-    viewer.setModel(model);
+    const representation = await readRepresentation(experiment);
+    if (version !== selectionVersion) return;
+    if (representation?.source_model_sha256 && representation.source_model_sha256 !== loaded.sha256) {
+      throw new Error('The exact NURBS supplement does not match this model file.');
+    }
+    const model = loaded.model;
+    configurePartitionControls(experiment, model, representation);
+    renderMetrics(experiment.metrics, model, representation);
+    viewer.setModel(model, representation);
     viewer.setMode(mode);
     modelReady = true;
     applyClip();
@@ -290,6 +362,7 @@ async function start() {
     const data = await response.json();
     if (!Array.isArray(data) || data.length === 0) throw new Error('The catalog contains no experiments.');
     experiments = data.filter((item) => item && typeof item.id === 'string' && typeof item.model === 'string');
+    comparisonIds = await readComparisonIds();
     if (experiments.length === 0) throw new Error('No experiment has a usable model.');
     ui.selector.replaceChildren();
     const groups = new Map();
@@ -308,7 +381,7 @@ async function start() {
     }
     ui.selector.disabled = false;
     try {
-      const { createViewer } = await import('./renderer.js?v=e5860fed8412');
+      const { createViewer } = await import('./renderer.js?v=758bdf44b4a0');
       viewer = createViewer(ui.canvas);
       if (!viewer || typeof viewer.setModel !== 'function') throw new Error('The viewer API is incomplete.');
       hideState();

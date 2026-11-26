@@ -1,0 +1,2200 @@
+{
+  "schema": "gallery_exact_patch_map_v1",
+  "case_id": "fieldcraft_x40_y80",
+  "representation_kind": "curved",
+  "method": "exact_homogeneous_bezier_to_clamped_nurbs",
+  "scope_note": "Final patch sets are disjoint unions of exact single-span Bezier volumes and compatible two-span clamped NURBS volumes. Exact piece extraction and interface traces are checked; no global injectivity, shape, or material coverage certificate is implied.",
+  "source_model_sha256": "ea1b7b4c23f053824dbaf50624a7d4842f6333181806bba2ca8e99f5383faa08",
+  "source_recipe_sha256": "7cd26167c2354110dd867709e80a97bb472a8220d54f8a4a51a2c16ee44be2cb",
+  "source_schema": "affine_image_v1",
+  "source_block_count": 10,
+  "native_nurbs_patch_count": 10,
+  "patch_count": 5,
+  "exact_extraction_count": 10,
+  "exact_interface_count": 11,
+  "patches": [
+    {
+      "id": "band:elbow_east_fillet+elbow_north_fillet",
+      "source_blocks": [
+        "elbow_east_fillet",
+        "elbow_north_fillet"
+      ],
+      "cells": [
+        "elbow_east_fillet",
+        "elbow_north_fillet"
+      ],
+      "patch_kind": "two_span_nurbs",
+      "degrees": [
+        2,
+        1,
+        1
+      ],
+      "knots": [
+        [
+          0,
+          0,
+          0,
+          1,
+          1,
+          2,
+          2,
+          2
+        ],
+        [
+          0,
+          0,
+          1,
+          1
+        ],
+        [
+          0,
+          0,
+          1,
+          1
+        ]
+      ],
+      "control_shape": [
+        5,
+        2,
+        2
+      ],
+      "controls_homogeneous": [
+        [
+          896,
+          512,
+          0,
+          64
+        ],
+        [
+          896,
+          512,
+          2560,
+          64
+        ],
+        [
+          896,
+          0,
+          0,
+          64
+        ],
+        [
+          896,
+          0,
+          2560,
+          64
+        ],
+        [
+          704,
+          512,
+          0,
+          64
+        ],
+        [
+          704,
+          512,
+          2560,
+          64
+        ],
+        [
+          448,
+          0,
+          0,
+          64
+        ],
+        [
+          448,
+          0,
+          2560,
+          64
+        ],
+        [
+          736,
+          832,
+          0,
+          80
+        ],
+        [
+          736,
+          832,
+          3200,
+          80
+        ],
+        [
+          0,
+          0,
+          0,
+          80
+        ],
+        [
+          0,
+          0,
+          3200,
+          80
+        ],
+        [
+          768,
+          1152,
+          0,
+          96
+        ],
+        [
+          768,
+          1152,
+          3840,
+          96
+        ],
+        [
+          0,
+          896,
+          0,
+          128
+        ],
+        [
+          0,
+          896,
+          5120,
+          128
+        ],
+        [
+          1024,
+          1792,
+          0,
+          128
+        ],
+        [
+          1024,
+          1792,
+          5120,
+          128
+        ],
+        [
+          0,
+          1792,
+          0,
+          128
+        ],
+        [
+          0,
+          1792,
+          5120,
+          128
+        ]
+      ],
+      "homogeneous_common_scale_denominator": 1,
+      "spans": [
+        {
+          "source_block": "elbow_east_fillet",
+          "axis_map": [
+            0,
+            1,
+            2
+          ],
+          "flips": [
+            true,
+            true,
+            false
+          ],
+          "degree_elevation": [
+            0,
+            0,
+            0
+          ],
+          "parameter_interval": [
+            0,
+            1
+          ]
+        },
+        {
+          "source_block": "elbow_north_fillet",
+          "axis_map": [
+            0,
+            1,
+            2
+          ],
+          "flips": [
+            true,
+            true,
+            false
+          ],
+          "degree_elevation": [
+            0,
+            0,
+            0
+          ],
+          "parameter_interval": [
+            1,
+            2
+          ]
+        }
+      ],
+      "exact_piece_extraction_expected": true
+    },
+    {
+      "id": "band:wing_east_east+wing_east_south",
+      "source_blocks": [
+        "wing_east_east",
+        "wing_east_south"
+      ],
+      "cells": [
+        "wing_east_east",
+        "wing_east_south"
+      ],
+      "patch_kind": "two_span_nurbs",
+      "degrees": [
+        2,
+        1,
+        1
+      ],
+      "knots": [
+        [
+          0,
+          0,
+          0,
+          1,
+          1,
+          2,
+          2,
+          2
+        ],
+        [
+          0,
+          0,
+          1,
+          1
+        ],
+        [
+          0,
+          0,
+          1,
+          1
+        ]
+      ],
+      "control_shape": [
+        5,
+        2,
+        2
+      ],
+      "controls_homogeneous": [
+        [
+          6720,
+          0,
+          3440,
+          160
+        ],
+        [
+          6720,
+          1280,
+          3440,
+          160
+        ],
+        [
+          9600,
+          0,
+          6400,
+          160
+        ],
+        [
+          9600,
+          1280,
+          6400,
+          160
+        ],
+        [
+          6480,
+          0,
+          3760,
+          160
+        ],
+        [
+          6480,
+          1280,
+          3760,
+          160
+        ],
+        [
+          5920,
+          0,
+          6400,
+          160
+        ],
+        [
+          5920,
+          1280,
+          6400,
+          160
+        ],
+        [
+          12320,
+          0,
+          7040,
+          320
+        ],
+        [
+          12320,
+          2560,
+          7040,
+          320
+        ],
+        [
+          2240,
+          0,
+          6400,
+          160
+        ],
+        [
+          2240,
+          1280,
+          6400,
+          160
+        ],
+        [
+          5840,
+          0,
+          3280,
+          160
+        ],
+        [
+          5840,
+          1280,
+          3280,
+          160
+        ],
+        [
+          2240,
+          0,
+          3200,
+          160
+        ],
+        [
+          2240,
+          1280,
+          3200,
+          160
+        ],
+        [
+          6080,
+          0,
+          2960,
+          160
+        ],
+        [
+          6080,
+          1280,
+          2960,
+          160
+        ],
+        [
+          2240,
+          0,
+          0,
+          160
+        ],
+        [
+          2240,
+          1280,
+          0,
+          160
+        ]
+      ],
+      "homogeneous_common_scale_denominator": 1,
+      "spans": [
+        {
+          "source_block": "wing_east_east",
+          "axis_map": [
+            0,
+            1,
+            2
+          ],
+          "flips": [
+            true,
+            true,
+            false
+          ],
+          "degree_elevation": [
+            0,
+            0,
+            0
+          ],
+          "parameter_interval": [
+            0,
+            1
+          ]
+        },
+        {
+          "source_block": "wing_east_south",
+          "axis_map": [
+            0,
+            1,
+            2
+          ],
+          "flips": [
+            true,
+            true,
+            false
+          ],
+          "degree_elevation": [
+            0,
+            0,
+            0
+          ],
+          "parameter_interval": [
+            1,
+            2
+          ]
+        }
+      ],
+      "exact_piece_extraction_expected": true
+    },
+    {
+      "id": "band:wing_east_north+wing_east_west",
+      "source_blocks": [
+        "wing_east_north",
+        "wing_east_west"
+      ],
+      "cells": [
+        "wing_east_north",
+        "wing_east_west"
+      ],
+      "patch_kind": "two_span_nurbs",
+      "degrees": [
+        2,
+        1,
+        1
+      ],
+      "knots": [
+        [
+          0,
+          0,
+          0,
+          1,
+          1,
+          2,
+          2,
+          2
+        ],
+        [
+          0,
+          0,
+          1,
+          1
+        ],
+        [
+          0,
+          0,
+          1,
+          1
+        ]
+      ],
+      "control_shape": [
+        5,
+        2,
+        2
+      ],
+      "controls_homogeneous": [
+        [
+          9600,
+          0,
+          6400,
+          160
+        ],
+        [
+          9600,
+          1280,
+          6400,
+          160
+        ],
+        [
+          6720,
+          0,
+          3440,
+          160
+        ],
+        [
+          6720,
+          1280,
+          3440,
+          160
+        ],
+        [
+          9600,
+          0,
+          3200,
+          160
+        ],
+        [
+          9600,
+          1280,
+          3200,
+          160
+        ],
+        [
+          6960,
+          0,
+          3120,
+          160
+        ],
+        [
+          6960,
+          1280,
+          3120,
+          160
+        ],
+        [
+          9600,
+          0,
+          0,
+          160
+        ],
+        [
+          9600,
+          1280,
+          0,
+          160
+        ],
+        [
+          13280,
+          0,
+          5760,
+          320
+        ],
+        [
+          13280,
+          2560,
+          5760,
+          320
+        ],
+        [
+          5920,
+          0,
+          0,
+          160
+        ],
+        [
+          5920,
+          1280,
+          0,
+          160
+        ],
+        [
+          6320,
+          0,
+          2640,
+          160
+        ],
+        [
+          6320,
+          1280,
+          2640,
+          160
+        ],
+        [
+          2240,
+          0,
+          0,
+          160
+        ],
+        [
+          2240,
+          1280,
+          0,
+          160
+        ],
+        [
+          6080,
+          0,
+          2960,
+          160
+        ],
+        [
+          6080,
+          1280,
+          2960,
+          160
+        ]
+      ],
+      "homogeneous_common_scale_denominator": 1,
+      "spans": [
+        {
+          "source_block": "wing_east_north",
+          "axis_map": [
+            0,
+            1,
+            2
+          ],
+          "flips": [
+            false,
+            false,
+            false
+          ],
+          "degree_elevation": [
+            0,
+            0,
+            0
+          ],
+          "parameter_interval": [
+            0,
+            1
+          ]
+        },
+        {
+          "source_block": "wing_east_west",
+          "axis_map": [
+            0,
+            1,
+            2
+          ],
+          "flips": [
+            false,
+            false,
+            false
+          ],
+          "degree_elevation": [
+            0,
+            0,
+            0
+          ],
+          "parameter_interval": [
+            1,
+            2
+          ]
+        }
+      ],
+      "exact_piece_extraction_expected": true
+    },
+    {
+      "id": "band:wing_north_east+wing_north_south",
+      "source_blocks": [
+        "wing_north_east",
+        "wing_north_south"
+      ],
+      "cells": [
+        "wing_north_east",
+        "wing_north_south"
+      ],
+      "patch_kind": "two_span_nurbs",
+      "degrees": [
+        2,
+        1,
+        1
+      ],
+      "knots": [
+        [
+          0,
+          0,
+          0,
+          1,
+          1,
+          2,
+          2,
+          2
+        ],
+        [
+          0,
+          0,
+          1,
+          1
+        ],
+        [
+          0,
+          0,
+          1,
+          1
+        ]
+      ],
+      "control_shape": [
+        5,
+        2,
+        2
+      ],
+      "controls_homogeneous": [
+        [
+          0,
+          5600,
+          3840,
+          160
+        ],
+        [
+          1280,
+          5600,
+          3840,
+          160
+        ],
+        [
+          0,
+          8000,
+          6400,
+          160
+        ],
+        [
+          1280,
+          8000,
+          6400,
+          160
+        ],
+        [
+          0,
+          6240,
+          3360,
+          160
+        ],
+        [
+          1280,
+          6240,
+          3360,
+          160
+        ],
+        [
+          0,
+          8000,
+          3200,
+          160
+        ],
+        [
+          1280,
+          8000,
+          3200,
+          160
+        ],
+        [
+          0,
+          11520,
+          5440,
+          320
+        ],
+        [
+          2560,
+          11520,
+          5440,
+          320
+        ],
+        [
+          0,
+          8000,
+          0,
+          160
+        ],
+        [
+          1280,
+          8000,
+          0,
+          160
+        ],
+        [
+          0,
+          5280,
+          2080,
+          160
+        ],
+        [
+          1280,
+          5280,
+          2080,
+          160
+        ],
+        [
+          0,
+          5120,
+          0,
+          160
+        ],
+        [
+          1280,
+          5120,
+          0,
+          160
+        ],
+        [
+          0,
+          4640,
+          2560,
+          160
+        ],
+        [
+          1280,
+          4640,
+          2560,
+          160
+        ],
+        [
+          0,
+          2240,
+          0,
+          160
+        ],
+        [
+          1280,
+          2240,
+          0,
+          160
+        ]
+      ],
+      "homogeneous_common_scale_denominator": 1,
+      "spans": [
+        {
+          "source_block": "wing_north_east",
+          "axis_map": [
+            0,
+            1,
+            2
+          ],
+          "flips": [
+            true,
+            true,
+            false
+          ],
+          "degree_elevation": [
+            0,
+            0,
+            0
+          ],
+          "parameter_interval": [
+            0,
+            1
+          ]
+        },
+        {
+          "source_block": "wing_north_south",
+          "axis_map": [
+            0,
+            1,
+            2
+          ],
+          "flips": [
+            true,
+            true,
+            false
+          ],
+          "degree_elevation": [
+            0,
+            0,
+            0
+          ],
+          "parameter_interval": [
+            1,
+            2
+          ]
+        }
+      ],
+      "exact_piece_extraction_expected": true
+    },
+    {
+      "id": "band:wing_north_north+wing_north_west",
+      "source_blocks": [
+        "wing_north_north",
+        "wing_north_west"
+      ],
+      "cells": [
+        "wing_north_north",
+        "wing_north_west"
+      ],
+      "patch_kind": "two_span_nurbs",
+      "degrees": [
+        2,
+        1,
+        1
+      ],
+      "knots": [
+        [
+          0,
+          0,
+          0,
+          1,
+          1,
+          2,
+          2,
+          2
+        ],
+        [
+          0,
+          0,
+          1,
+          1
+        ],
+        [
+          0,
+          0,
+          1,
+          1
+        ]
+      ],
+      "control_shape": [
+        5,
+        2,
+        2
+      ],
+      "controls_homogeneous": [
+        [
+          0,
+          8000,
+          6400,
+          160
+        ],
+        [
+          1280,
+          8000,
+          6400,
+          160
+        ],
+        [
+          0,
+          5600,
+          3840,
+          160
+        ],
+        [
+          1280,
+          5600,
+          3840,
+          160
+        ],
+        [
+          0,
+          5120,
+          6400,
+          160
+        ],
+        [
+          1280,
+          5120,
+          6400,
+          160
+        ],
+        [
+          0,
+          4960,
+          4320,
+          160
+        ],
+        [
+          1280,
+          4960,
+          4320,
+          160
+        ],
+        [
+          0,
+          2240,
+          6400,
+          160
+        ],
+        [
+          1280,
+          2240,
+          6400,
+          160
+        ],
+        [
+          0,
+          8960,
+          7360,
+          320
+        ],
+        [
+          2560,
+          8960,
+          7360,
+          320
+        ],
+        [
+          0,
+          2240,
+          3200,
+          160
+        ],
+        [
+          1280,
+          2240,
+          3200,
+          160
+        ],
+        [
+          0,
+          4000,
+          3040,
+          160
+        ],
+        [
+          1280,
+          4000,
+          3040,
+          160
+        ],
+        [
+          0,
+          2240,
+          0,
+          160
+        ],
+        [
+          1280,
+          2240,
+          0,
+          160
+        ],
+        [
+          0,
+          4640,
+          2560,
+          160
+        ],
+        [
+          1280,
+          4640,
+          2560,
+          160
+        ]
+      ],
+      "homogeneous_common_scale_denominator": 1,
+      "spans": [
+        {
+          "source_block": "wing_north_north",
+          "axis_map": [
+            0,
+            1,
+            2
+          ],
+          "flips": [
+            false,
+            false,
+            false
+          ],
+          "degree_elevation": [
+            0,
+            0,
+            0
+          ],
+          "parameter_interval": [
+            0,
+            1
+          ]
+        },
+        {
+          "source_block": "wing_north_west",
+          "axis_map": [
+            0,
+            1,
+            2
+          ],
+          "flips": [
+            false,
+            false,
+            false
+          ],
+          "degree_elevation": [
+            0,
+            0,
+            0
+          ],
+          "parameter_interval": [
+            1,
+            2
+          ]
+        }
+      ],
+      "exact_piece_extraction_expected": true
+    }
+  ],
+  "interfaces": [
+    {
+      "first": {
+        "patch_id": "band:elbow_east_fillet+elbow_north_fillet",
+        "source_block": "elbow_east_fillet",
+        "side": "u1",
+        "patch_side": "u0",
+        "axis_map": [
+          0,
+          1,
+          2
+        ],
+        "flips": [
+          true,
+          true,
+          false
+        ],
+        "parameter_interval": [
+          0,
+          1
+        ]
+      },
+      "second": {
+        "patch_id": "band:wing_east_east+wing_east_south",
+        "source_block": "wing_east_south",
+        "side": "v0",
+        "patch_side": "v1",
+        "axis_map": [
+          0,
+          1,
+          2
+        ],
+        "flips": [
+          true,
+          true,
+          false
+        ],
+        "parameter_interval": [
+          1,
+          2
+        ]
+      },
+      "orientation": {
+        "flip_first": false,
+        "flip_second": false,
+        "swap": true
+      },
+      "status": "exact_match"
+    },
+    {
+      "first": {
+        "patch_id": "band:elbow_east_fillet+elbow_north_fillet",
+        "source_block": "elbow_north_fillet",
+        "side": "u0",
+        "patch_side": "u1",
+        "axis_map": [
+          0,
+          1,
+          2
+        ],
+        "flips": [
+          true,
+          true,
+          false
+        ],
+        "parameter_interval": [
+          1,
+          2
+        ]
+      },
+      "second": {
+        "patch_id": "band:wing_north_north+wing_north_west",
+        "source_block": "wing_north_west",
+        "side": "v0",
+        "patch_side": "v0",
+        "axis_map": [
+          0,
+          1,
+          2
+        ],
+        "flips": [
+          false,
+          false,
+          false
+        ],
+        "parameter_interval": [
+          1,
+          2
+        ]
+      },
+      "orientation": {
+        "flip_first": false,
+        "flip_second": true,
+        "swap": true
+      },
+      "status": "exact_match"
+    },
+    {
+      "first": {
+        "patch_id": "band:wing_east_east+wing_east_south",
+        "source_block": "wing_east_east",
+        "side": "u1",
+        "patch_side": "u0",
+        "axis_map": [
+          0,
+          1,
+          2
+        ],
+        "flips": [
+          true,
+          true,
+          false
+        ],
+        "parameter_interval": [
+          0,
+          1
+        ]
+      },
+      "second": {
+        "patch_id": "band:wing_east_north+wing_east_west",
+        "source_block": "wing_east_north",
+        "side": "u0",
+        "patch_side": "u0",
+        "axis_map": [
+          0,
+          1,
+          2
+        ],
+        "flips": [
+          false,
+          false,
+          false
+        ],
+        "parameter_interval": [
+          0,
+          1
+        ]
+      },
+      "orientation": {
+        "flip_first": false,
+        "flip_second": false,
+        "swap": false
+      },
+      "status": "exact_match"
+    },
+    {
+      "first": {
+        "patch_id": "band:wing_east_east+wing_east_south",
+        "source_block": "wing_east_south",
+        "side": "u0",
+        "patch_side": "u1",
+        "axis_map": [
+          0,
+          1,
+          2
+        ],
+        "flips": [
+          true,
+          true,
+          false
+        ],
+        "parameter_interval": [
+          1,
+          2
+        ]
+      },
+      "second": {
+        "patch_id": "band:wing_east_north+wing_east_west",
+        "source_block": "wing_east_west",
+        "side": "u1",
+        "patch_side": "u1",
+        "axis_map": [
+          0,
+          1,
+          2
+        ],
+        "flips": [
+          false,
+          false,
+          false
+        ],
+        "parameter_interval": [
+          1,
+          2
+        ]
+      },
+      "orientation": {
+        "flip_first": false,
+        "flip_second": false,
+        "swap": false
+      },
+      "status": "exact_match"
+    },
+    {
+      "first": {
+        "patch_id": "band:wing_north_east+wing_north_south",
+        "source_block": "wing_north_east",
+        "side": "u1",
+        "patch_side": "u0",
+        "axis_map": [
+          0,
+          1,
+          2
+        ],
+        "flips": [
+          true,
+          true,
+          false
+        ],
+        "parameter_interval": [
+          0,
+          1
+        ]
+      },
+      "second": {
+        "patch_id": "band:wing_north_north+wing_north_west",
+        "source_block": "wing_north_north",
+        "side": "u0",
+        "patch_side": "u0",
+        "axis_map": [
+          0,
+          1,
+          2
+        ],
+        "flips": [
+          false,
+          false,
+          false
+        ],
+        "parameter_interval": [
+          0,
+          1
+        ]
+      },
+      "orientation": {
+        "flip_first": false,
+        "flip_second": false,
+        "swap": false
+      },
+      "status": "exact_match"
+    },
+    {
+      "first": {
+        "patch_id": "band:wing_north_east+wing_north_south",
+        "source_block": "wing_north_south",
+        "side": "u0",
+        "patch_side": "u1",
+        "axis_map": [
+          0,
+          1,
+          2
+        ],
+        "flips": [
+          true,
+          true,
+          false
+        ],
+        "parameter_interval": [
+          1,
+          2
+        ]
+      },
+      "second": {
+        "patch_id": "band:wing_north_north+wing_north_west",
+        "source_block": "wing_north_west",
+        "side": "u1",
+        "patch_side": "u1",
+        "axis_map": [
+          0,
+          1,
+          2
+        ],
+        "flips": [
+          false,
+          false,
+          false
+        ],
+        "parameter_interval": [
+          1,
+          2
+        ]
+      },
+      "orientation": {
+        "flip_first": false,
+        "flip_second": false,
+        "swap": false
+      },
+      "status": "exact_match"
+    }
+  ],
+  "boundary_faces": [
+    {
+      "patch_id": "band:elbow_east_fillet+elbow_north_fillet",
+      "source_block": "elbow_east_fillet",
+      "side": "v0",
+      "patch_side": "v1",
+      "axis_map": [
+        0,
+        1,
+        2
+      ],
+      "flips": [
+        true,
+        true,
+        false
+      ],
+      "parameter_interval": [
+        0,
+        1
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:elbow_east_fillet+elbow_north_fillet",
+      "source_block": "elbow_east_fillet",
+      "side": "v1",
+      "patch_side": "v0",
+      "axis_map": [
+        0,
+        1,
+        2
+      ],
+      "flips": [
+        true,
+        true,
+        false
+      ],
+      "parameter_interval": [
+        0,
+        1
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:elbow_east_fillet+elbow_north_fillet",
+      "source_block": "elbow_east_fillet",
+      "side": "w0",
+      "patch_side": "w0",
+      "axis_map": [
+        0,
+        1,
+        2
+      ],
+      "flips": [
+        true,
+        true,
+        false
+      ],
+      "parameter_interval": [
+        0,
+        1
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:elbow_east_fillet+elbow_north_fillet",
+      "source_block": "elbow_east_fillet",
+      "side": "w1",
+      "patch_side": "w1",
+      "axis_map": [
+        0,
+        1,
+        2
+      ],
+      "flips": [
+        true,
+        true,
+        false
+      ],
+      "parameter_interval": [
+        0,
+        1
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:elbow_east_fillet+elbow_north_fillet",
+      "source_block": "elbow_north_fillet",
+      "side": "v0",
+      "patch_side": "v1",
+      "axis_map": [
+        0,
+        1,
+        2
+      ],
+      "flips": [
+        true,
+        true,
+        false
+      ],
+      "parameter_interval": [
+        1,
+        2
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:elbow_east_fillet+elbow_north_fillet",
+      "source_block": "elbow_north_fillet",
+      "side": "v1",
+      "patch_side": "v0",
+      "axis_map": [
+        0,
+        1,
+        2
+      ],
+      "flips": [
+        true,
+        true,
+        false
+      ],
+      "parameter_interval": [
+        1,
+        2
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:elbow_east_fillet+elbow_north_fillet",
+      "source_block": "elbow_north_fillet",
+      "side": "w0",
+      "patch_side": "w0",
+      "axis_map": [
+        0,
+        1,
+        2
+      ],
+      "flips": [
+        true,
+        true,
+        false
+      ],
+      "parameter_interval": [
+        1,
+        2
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:elbow_east_fillet+elbow_north_fillet",
+      "source_block": "elbow_north_fillet",
+      "side": "w1",
+      "patch_side": "w1",
+      "axis_map": [
+        0,
+        1,
+        2
+      ],
+      "flips": [
+        true,
+        true,
+        false
+      ],
+      "parameter_interval": [
+        1,
+        2
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:wing_east_east+wing_east_south",
+      "source_block": "wing_east_east",
+      "side": "v0",
+      "patch_side": "v1",
+      "axis_map": [
+        0,
+        1,
+        2
+      ],
+      "flips": [
+        true,
+        true,
+        false
+      ],
+      "parameter_interval": [
+        0,
+        1
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:wing_east_east+wing_east_south",
+      "source_block": "wing_east_east",
+      "side": "v1",
+      "patch_side": "v0",
+      "axis_map": [
+        0,
+        1,
+        2
+      ],
+      "flips": [
+        true,
+        true,
+        false
+      ],
+      "parameter_interval": [
+        0,
+        1
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:wing_east_east+wing_east_south",
+      "source_block": "wing_east_east",
+      "side": "w0",
+      "patch_side": "w0",
+      "axis_map": [
+        0,
+        1,
+        2
+      ],
+      "flips": [
+        true,
+        true,
+        false
+      ],
+      "parameter_interval": [
+        0,
+        1
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:wing_east_east+wing_east_south",
+      "source_block": "wing_east_east",
+      "side": "w1",
+      "patch_side": "w1",
+      "axis_map": [
+        0,
+        1,
+        2
+      ],
+      "flips": [
+        true,
+        true,
+        false
+      ],
+      "parameter_interval": [
+        0,
+        1
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:wing_east_north+wing_east_west",
+      "source_block": "wing_east_north",
+      "side": "v0",
+      "patch_side": "v0",
+      "axis_map": [
+        0,
+        1,
+        2
+      ],
+      "flips": [
+        false,
+        false,
+        false
+      ],
+      "parameter_interval": [
+        0,
+        1
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:wing_east_north+wing_east_west",
+      "source_block": "wing_east_north",
+      "side": "v1",
+      "patch_side": "v1",
+      "axis_map": [
+        0,
+        1,
+        2
+      ],
+      "flips": [
+        false,
+        false,
+        false
+      ],
+      "parameter_interval": [
+        0,
+        1
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:wing_east_north+wing_east_west",
+      "source_block": "wing_east_north",
+      "side": "w0",
+      "patch_side": "w0",
+      "axis_map": [
+        0,
+        1,
+        2
+      ],
+      "flips": [
+        false,
+        false,
+        false
+      ],
+      "parameter_interval": [
+        0,
+        1
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:wing_east_north+wing_east_west",
+      "source_block": "wing_east_north",
+      "side": "w1",
+      "patch_side": "w1",
+      "axis_map": [
+        0,
+        1,
+        2
+      ],
+      "flips": [
+        false,
+        false,
+        false
+      ],
+      "parameter_interval": [
+        0,
+        1
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:wing_east_east+wing_east_south",
+      "source_block": "wing_east_south",
+      "side": "v1",
+      "patch_side": "v0",
+      "axis_map": [
+        0,
+        1,
+        2
+      ],
+      "flips": [
+        true,
+        true,
+        false
+      ],
+      "parameter_interval": [
+        1,
+        2
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:wing_east_east+wing_east_south",
+      "source_block": "wing_east_south",
+      "side": "w0",
+      "patch_side": "w0",
+      "axis_map": [
+        0,
+        1,
+        2
+      ],
+      "flips": [
+        true,
+        true,
+        false
+      ],
+      "parameter_interval": [
+        1,
+        2
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:wing_east_east+wing_east_south",
+      "source_block": "wing_east_south",
+      "side": "w1",
+      "patch_side": "w1",
+      "axis_map": [
+        0,
+        1,
+        2
+      ],
+      "flips": [
+        true,
+        true,
+        false
+      ],
+      "parameter_interval": [
+        1,
+        2
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:wing_east_north+wing_east_west",
+      "source_block": "wing_east_west",
+      "side": "v0",
+      "patch_side": "v0",
+      "axis_map": [
+        0,
+        1,
+        2
+      ],
+      "flips": [
+        false,
+        false,
+        false
+      ],
+      "parameter_interval": [
+        1,
+        2
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:wing_east_north+wing_east_west",
+      "source_block": "wing_east_west",
+      "side": "v1",
+      "patch_side": "v1",
+      "axis_map": [
+        0,
+        1,
+        2
+      ],
+      "flips": [
+        false,
+        false,
+        false
+      ],
+      "parameter_interval": [
+        1,
+        2
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:wing_east_north+wing_east_west",
+      "source_block": "wing_east_west",
+      "side": "w0",
+      "patch_side": "w0",
+      "axis_map": [
+        0,
+        1,
+        2
+      ],
+      "flips": [
+        false,
+        false,
+        false
+      ],
+      "parameter_interval": [
+        1,
+        2
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:wing_east_north+wing_east_west",
+      "source_block": "wing_east_west",
+      "side": "w1",
+      "patch_side": "w1",
+      "axis_map": [
+        0,
+        1,
+        2
+      ],
+      "flips": [
+        false,
+        false,
+        false
+      ],
+      "parameter_interval": [
+        1,
+        2
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:wing_north_east+wing_north_south",
+      "source_block": "wing_north_east",
+      "side": "v0",
+      "patch_side": "v1",
+      "axis_map": [
+        0,
+        1,
+        2
+      ],
+      "flips": [
+        true,
+        true,
+        false
+      ],
+      "parameter_interval": [
+        0,
+        1
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:wing_north_east+wing_north_south",
+      "source_block": "wing_north_east",
+      "side": "v1",
+      "patch_side": "v0",
+      "axis_map": [
+        0,
+        1,
+        2
+      ],
+      "flips": [
+        true,
+        true,
+        false
+      ],
+      "parameter_interval": [
+        0,
+        1
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:wing_north_east+wing_north_south",
+      "source_block": "wing_north_east",
+      "side": "w0",
+      "patch_side": "w0",
+      "axis_map": [
+        0,
+        1,
+        2
+      ],
+      "flips": [
+        true,
+        true,
+        false
+      ],
+      "parameter_interval": [
+        0,
+        1
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:wing_north_east+wing_north_south",
+      "source_block": "wing_north_east",
+      "side": "w1",
+      "patch_side": "w1",
+      "axis_map": [
+        0,
+        1,
+        2
+      ],
+      "flips": [
+        true,
+        true,
+        false
+      ],
+      "parameter_interval": [
+        0,
+        1
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:wing_north_north+wing_north_west",
+      "source_block": "wing_north_north",
+      "side": "v0",
+      "patch_side": "v0",
+      "axis_map": [
+        0,
+        1,
+        2
+      ],
+      "flips": [
+        false,
+        false,
+        false
+      ],
+      "parameter_interval": [
+        0,
+        1
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:wing_north_north+wing_north_west",
+      "source_block": "wing_north_north",
+      "side": "v1",
+      "patch_side": "v1",
+      "axis_map": [
+        0,
+        1,
+        2
+      ],
+      "flips": [
+        false,
+        false,
+        false
+      ],
+      "parameter_interval": [
+        0,
+        1
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:wing_north_north+wing_north_west",
+      "source_block": "wing_north_north",
+      "side": "w0",
+      "patch_side": "w0",
+      "axis_map": [
+        0,
+        1,
+        2
+      ],
+      "flips": [
+        false,
+        false,
+        false
+      ],
+      "parameter_interval": [
+        0,
+        1
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:wing_north_north+wing_north_west",
+      "source_block": "wing_north_north",
+      "side": "w1",
+      "patch_side": "w1",
+      "axis_map": [
+        0,
+        1,
+        2
+      ],
+      "flips": [
+        false,
+        false,
+        false
+      ],
+      "parameter_interval": [
+        0,
+        1
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:wing_north_east+wing_north_south",
+      "source_block": "wing_north_south",
+      "side": "v0",
+      "patch_side": "v1",
+      "axis_map": [
+        0,
+        1,
+        2
+      ],
+      "flips": [
+        true,
+        true,
+        false
+      ],
+      "parameter_interval": [
+        1,
+        2
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:wing_north_east+wing_north_south",
+      "source_block": "wing_north_south",
+      "side": "v1",
+      "patch_side": "v0",
+      "axis_map": [
+        0,
+        1,
+        2
+      ],
+      "flips": [
+        true,
+        true,
+        false
+      ],
+      "parameter_interval": [
+        1,
+        2
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:wing_north_east+wing_north_south",
+      "source_block": "wing_north_south",
+      "side": "w0",
+      "patch_side": "w0",
+      "axis_map": [
+        0,
+        1,
+        2
+      ],
+      "flips": [
+        true,
+        true,
+        false
+      ],
+      "parameter_interval": [
+        1,
+        2
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:wing_north_east+wing_north_south",
+      "source_block": "wing_north_south",
+      "side": "w1",
+      "patch_side": "w1",
+      "axis_map": [
+        0,
+        1,
+        2
+      ],
+      "flips": [
+        true,
+        true,
+        false
+      ],
+      "parameter_interval": [
+        1,
+        2
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:wing_north_north+wing_north_west",
+      "source_block": "wing_north_west",
+      "side": "v1",
+      "patch_side": "v1",
+      "axis_map": [
+        0,
+        1,
+        2
+      ],
+      "flips": [
+        false,
+        false,
+        false
+      ],
+      "parameter_interval": [
+        1,
+        2
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:wing_north_north+wing_north_west",
+      "source_block": "wing_north_west",
+      "side": "w0",
+      "patch_side": "w0",
+      "axis_map": [
+        0,
+        1,
+        2
+      ],
+      "flips": [
+        false,
+        false,
+        false
+      ],
+      "parameter_interval": [
+        1,
+        2
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:wing_north_north+wing_north_west",
+      "source_block": "wing_north_west",
+      "side": "w1",
+      "patch_side": "w1",
+      "axis_map": [
+        0,
+        1,
+        2
+      ],
+      "flips": [
+        false,
+        false,
+        false
+      ],
+      "parameter_interval": [
+        1,
+        2
+      ],
+      "status": "extracted_exactly_from_model"
+    }
+  ],
+  "merged_source_blocks": [
+    "elbow_east_fillet",
+    "elbow_north_fillet",
+    "wing_east_east",
+    "wing_east_north",
+    "wing_east_south",
+    "wing_east_west",
+    "wing_north_east",
+    "wing_north_north",
+    "wing_north_south",
+    "wing_north_west"
+  ],
+  "errors": []
+}

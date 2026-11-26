@@ -24,6 +24,15 @@ TIMESTAMP = re.compile(rb"(?m)^(FILE_NAME\('SolidCraft boundary',')\d{4}-\d\d-\d
 def load(data):
     return json.loads(data, parse_float=Decimal)
 
+def first_difference(expected, actual, path="$"):
+    if isinstance(expected, dict) and isinstance(actual, dict) and expected.keys() == actual.keys():
+        key = next(key for key in expected if expected[key] != actual[key])
+        return first_difference(expected[key], actual[key], f"{path}.{key}")
+    if isinstance(expected, list) and isinstance(actual, list) and len(expected) == len(actual):
+        index = next(i for i, item in enumerate(expected) if item != actual[i])
+        return first_difference(expected[index], actual[index], f"{path}[{index}]")
+    return f"{path}: expected {str(expected)[:160]}, rebuilt {str(actual)[:160]}"
+
 def step_content(data):
     normalized, count = TIMESTAMP.subn(rb"\1UTC\2", data)
     if count != 1:
@@ -50,8 +59,9 @@ def check(cli, entry):
                 raise ValueError((proc.stderr + proc.stdout).decode(errors="replace")[-1500:])
             return proc.stdout
         run("build", links["source"], model)
-        if load(model.read_bytes()) != load(links["model"].read_bytes()):
-            raise ValueError("published model differs from current build")
+        rebuilt, published = load(model.read_bytes()), load(links["model"].read_bytes())
+        if rebuilt != published:
+            raise ValueError(f"model mismatch at {first_difference(published, rebuilt)}")
         native = load(run("audit", model))
         evidence = load(links["audit"].read_bytes())
         if native.get("status") != "valid" or native != evidence.get("model_audit", evidence):

@@ -1,4 +1,8 @@
-# Box minus centered cylinder reference
+# Box and centered cylinder
+
+The [tall-cylinder viewer](https://jeffwitz.github.io/SolidCraftTrivariate/box-cylinder.html#tall-cylinder) shows the operands and five Boolean results. Switch between native Bézier cells and exact NURBS volumes for each state. See the [geometry, expected volumes and checks](tall-operations.md).
+
+## Four-sector difference reference
 
 This control case uses the stock `[0,40] × [0,40] × [0,12]` mm and a
 z-directed cylinder centered at `(20,20)` mm, radius `5` mm, with tool interval

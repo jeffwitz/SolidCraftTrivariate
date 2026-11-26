@@ -74,7 +74,7 @@ const injectedExpressions = {
     const status = document.querySelector('#boolean-status');
     if (!section || !operation || !status || !document.querySelector('#operand-a')
       || !document.querySelector('#operand-b') || !document.querySelector('#boolean-result')
-      || !document.querySelector('a[href="./box-cylinder.html"]')) return false;
+      || !document.querySelector('a[href="./box-cylinder.html#tall-cylinder"]')) return false;
     if (!['pierced_square', 'reference_rectangle'].every(value => [...section.options].some(option => option.value === value))
       || !['difference', 'union', 'intersection'].every(value => [...operation.options].some(option => option.value === value))) return false;
     for (const sectionValue of ['pierced_square', 'reference_rectangle']) for (const operationValue of ['difference', 'union', 'intersection']) {
@@ -149,6 +149,70 @@ const injectedExpressions = {
     document.querySelector('#mode-blocks').click();
     return document.querySelector('#mode-blocks').getAttribute('aria-pressed') === 'true'
       && document.querySelector('#view-volume').getAttribute('aria-pressed') === 'true';
+  })()`,
+  tallCylinderViewerSweep: `(async () => {
+    const manifestResponse = await fetch('./box-cylinder/tall/manifest.json');
+    if (!manifestResponse.ok) return false;
+    const manifest = await manifestResponse.json();
+    const stateSelect = document.querySelector('#tall-state');
+    const canvas = document.querySelector('#tall-model-view');
+    const status = document.querySelector('#tall-status');
+    if (!stateSelect || !canvas || !status) return false;
+    const expectedStates = ['box', 'cylinder', 'union', 'intersection', 'a-minus-b', 'b-minus-a', 'xor'];
+    if (!expectedStates.every(id => manifest.states.some(state => state.id === id))
+      || !expectedStates.every(id => [...stateSelect.options].some(option => option.value === id))
+      || JSON.stringify(manifest.stock_size_mm) !== '[40,40,12]'
+      || manifest.cylinder_radius_mm !== 5
+      || JSON.stringify(manifest.cylinder_interval_mm) !== '[-12,24]') return false;
+    for (const id of expectedStates) {
+      const metrics = manifest.states.find(state => state.id === id);
+      stateSelect.value = id;
+      stateSelect.dispatchEvent(new Event('change'));
+      for (let attempt = 0; attempt < 200; attempt++) {
+        if (canvas.dataset.state === id && status.dataset.kind === 'ready') break;
+        await new Promise(resolve => setTimeout(resolve, 50));
+      }
+      if (canvas.dataset.state !== id || status.dataset.kind !== 'ready'
+        || !status.textContent.includes(id)
+        || document.querySelector('#tall-bezier-count').textContent !== String(metrics.bezier_cells)
+        || document.querySelector('#tall-nurbs-count').textContent !== String(metrics.nurbs_volumes)
+        || document.querySelector('#tall-component-count').textContent !== String(metrics.components)) return false;
+      if (id === 'xor' ? document.querySelector('#tall-contact-note').hidden
+        : !document.querySelector('#tall-contact-note').hidden) return false;
+      const recipePath = './box-cylinder/tall/' + id + '.recipe.json';
+      const recipeLink = document.querySelector('#tall-recipe-file');
+      if (new URL(recipeLink.href).pathname !== new URL(recipePath, location.href).pathname) return false;
+      const recipeResponse = await fetch(recipePath);
+      if (!recipeResponse.ok || (await recipeResponse.arrayBuffer()).byteLength < 1) return false;
+      for (const mode of ['bezier', 'nurbs']) {
+        document.querySelector('#tall-mode-' + mode).click();
+        if (canvas.dataset.mode !== mode
+          || document.querySelector('#tall-mode-' + mode).getAttribute('aria-pressed') !== 'true'
+          || (mode === 'nurbs' && !document.querySelector('#tall-mode-note').textContent.includes('exact patch file'))) return false;
+      }
+    }
+    for (const id of ['box', 'cylinder', 'union', 'xor']) {
+      stateSelect.value = id;
+      stateSelect.dispatchEvent(new Event('change'));
+    }
+    for (let attempt = 0; attempt < 200; attempt++) {
+      if (canvas.dataset.state === 'xor' && status.dataset.kind === 'ready') break;
+      await new Promise(resolve => setTimeout(resolve, 50));
+    }
+    if (canvas.dataset.state !== 'xor' || status.dataset.kind !== 'ready') return false;
+    document.querySelector('#tall-view-top').click();
+    if (document.querySelector('#tall-view-top').getAttribute('aria-pressed') !== 'true') return false;
+    document.querySelector('#tall-view-volume').click();
+    const axis = document.querySelector('#tall-section-axis');
+    axis.value = 'y'; axis.dispatchEvent(new Event('change'));
+    if (axis.value !== 'y' || canvas.dataset.sectionAxis !== 'y') return false;
+    axis.value = ''; axis.dispatchEvent(new Event('change'));
+    if (canvas.dataset.sectionAxis !== 'off') return false;
+    axis.value = 'x'; axis.dispatchEvent(new Event('change'));
+    document.querySelector('#tall-mode-bezier').click();
+    return document.querySelector('#tall-view-volume').getAttribute('aria-pressed') === 'true'
+      && canvas.dataset.state === 'xor' && canvas.dataset.mode === 'bezier'
+      && canvas.dataset.sectionAxis === 'x' && canvas.dataset.sectionFraction === '0.5';
   })()`,
   galleryReady: `(() => {
     const status = document.querySelector('#canvas-state');
@@ -345,6 +409,7 @@ function validateInjectedExpressions() {
     ['booleanViewerReady', injectedExpressions.booleanViewerReady],
     ['crossedViewerSweep', injectedExpressions.crossedViewerSweep],
     ['boxCylinderViewerReady', injectedExpressions.boxCylinderViewerReady],
+    ['tallCylinderViewerSweep', injectedExpressions.tallCylinderViewerSweep],
     ['galleryReady', injectedExpressions.galleryReady],
     ['bodySummary', injectedExpressions.bodySummary],
     ['publicUiLocale', injectedExpressions.publicUiLocale],
@@ -602,7 +667,8 @@ async function runBrowserChecks() {
     await command('Page.navigate', { url: serverUrl + page });
     await waitForDocument(page);
     let viewerReady = false;
-    const maxAttempts = [injectedExpressions.edgeViewerReady, injectedExpressions.booleanViewerReady, injectedExpressions.crossedViewerSweep].includes(readyExpression) ? 2 : 200;
+    const maxAttempts = [injectedExpressions.edgeViewerReady, injectedExpressions.booleanViewerReady,
+      injectedExpressions.crossedViewerSweep, injectedExpressions.tallCylinderViewerSweep].includes(readyExpression) ? 2 : 200;
     for (let attempt = 0; attempt < maxAttempts; attempt++) {
       if (await evaluate(readyExpression)) { viewerReady = true; break; }
       await pause(50);
@@ -631,6 +697,13 @@ async function runBrowserChecks() {
         const screen = await capture(`axial-boolean-${index}`, region, true, false);
         if (screen.paintedPixels < 250) throw new Error(`Axial Boolean canvas ${index} appears blank: ${JSON.stringify(screen)}`);
       }
+      await evaluate("document.querySelector('a[href=\"./box-cylinder.html#tall-cylinder\"]').click()");
+      await waitForDocument('/box-cylinder.html');
+      const deepLink = await evaluate(`({hash:location.hash, target:document.querySelector('#tall-cylinder')?.getBoundingClientRect().top})`);
+      if (deepLink.hash !== '#tall-cylinder' || !Number.isFinite(deepLink.target)
+        || deepLink.target < -100 || deepLink.target > await evaluate('innerHeight')) {
+        throw new Error(`Boolean page does not reach the tall-cylinder section directly: ${JSON.stringify(deepLink)}`);
+      }
     }
     if (page === 'box-cylinder.html') {
       const regions = await evaluate(`['result-view','classic-view'].map(id => {
@@ -649,6 +722,36 @@ async function runBrowserChecks() {
       for (const region of regions) after.push(await capture('box-cylinder-view', region, false, false));
       if (before.some((hash, index) => hash === after[index])) {
         throw new Error('The result and classic view cameras did not stay synchronized');
+      }
+      await evaluate("document.querySelector('#tall-model-view').scrollIntoView({block:'center'})");
+      for (const stateId of ['cylinder', 'union']) {
+        const loadState = await evaluate(`(async () => {
+          const select = document.querySelector('#tall-state');
+          const canvas = document.querySelector('#tall-model-view');
+          const status = document.querySelector('#tall-status');
+          select.value = ${JSON.stringify(stateId)};
+          select.dispatchEvent(new Event('change'));
+          for (let attempt = 0; attempt < 200; attempt++) {
+            if (canvas.dataset.state === ${JSON.stringify(stateId)} && status.dataset.kind === 'ready') return true;
+            await new Promise(resolve => setTimeout(resolve, 50));
+          }
+          return false;
+        })()`);
+        if (!loadState) throw new Error(`Tall-cylinder state ${stateId} did not load for the view comparison`);
+        await evaluate("document.querySelector('#tall-view-volume').click();document.querySelector('#tall-mode-bezier').click()");
+        await pause(250);
+        const tallRegion = await evaluate(`(() => {
+          const r = document.querySelector('#tall-model-view').getBoundingClientRect();
+          return {x:r.left + scrollX,y:r.top + scrollY,width:r.width,height:r.height,scale:1};
+        })()`);
+        const bezierImage = await capture(`tall-${stateId}-bezier`, tallRegion, true, false);
+        await evaluate("document.querySelector('#tall-mode-nurbs').click()");
+        await pause(250);
+        const nurbsImage = await capture(`tall-${stateId}-nurbs`, tallRegion, true, false);
+        if (bezierImage.paintedPixels < 250 || nurbsImage.paintedPixels < 250
+          || bezierImage.hash === nurbsImage.hash) {
+          throw new Error(`Bézier and NURBS views are not visibly distinct for ${stateId}: ${JSON.stringify({ bezier: bezierImage, nurbs: nurbsImage })}`);
+        }
       }
     }
     await evaluate(`(() => {
@@ -711,6 +814,7 @@ async function runBrowserChecks() {
   await checkPageCanReturnHome('booleans.html', injectedExpressions.booleanViewerReady);
   await checkPageCanReturnHome('booleans-crossed.html', injectedExpressions.crossedViewerSweep);
   await checkPageCanReturnHome('box-cylinder.html', injectedExpressions.boxCylinderViewerReady);
+  await checkPageCanReturnHome('box-cylinder.html', injectedExpressions.tallCylinderViewerSweep);
   await checkPageCanReturnHome('shapes.html', injectedExpressions.galleryReady);
   await command('Page.navigate', { url: serverUrl + '?model=retired-curved-catalog-id&campaign=route-qa#preserve-me' });
   await waitForGallery(landingId);

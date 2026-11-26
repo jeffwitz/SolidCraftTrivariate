@@ -8,6 +8,16 @@ fn recipe() -> Json {
     json::parse(include_str!("references/box_minus_cylinder.recipe.json")).unwrap()
 }
 
+fn suite_recipe(operation: &str) -> Json {
+    let mut value = json::parse(include_str!(
+        "../docs/site/box-cylinder/tall/box.recipe.json"
+    ))
+    .unwrap();
+    let root = object_mut(&mut value);
+    root.insert("operation".into(), Json::String(operation.to_owned()));
+    value
+}
+
 fn object_mut(value: &mut Json) -> &mut BTreeMap<String, Json> {
     match value {
         Json::Object(fields) => fields,
@@ -106,4 +116,111 @@ fn exact_world_z_translation_and_model_tampering_are_checked() {
     object_mut(object_mut(&mut tampered).get_mut("tool").unwrap())
         .insert("radius_mm".into(), Json::Number("6".into()));
     assert!(interchange::audit(&tampered).is_err());
+}
+
+#[test]
+fn tall_cylinder_boolean_suite_has_exact_counts_and_volumes() {
+    let cases = [
+        ("box", 1, 0, 1, 19_200, 0),
+        ("cylinder", 15, 34, 1, 0, 900),
+        ("union", 19, 42, 1, 19_200, 600),
+        ("intersection", 5, 8, 1, 0, 300),
+        ("a_minus_b", 4, 4, 1, 19_200, -300),
+        ("b_minus_a", 10, 16, 2, 0, 600),
+        ("symmetric_difference", 14, 20, 3, 19_200, 300),
+    ];
+    for (operation, blocks, interfaces, components, constant, pi) in cases {
+        let model = interchange::build(&suite_recipe(operation)).unwrap();
+        assert_eq!(
+            model.field("schema").unwrap().text().unwrap(),
+            "box_cylinder_boolean_suite_v1"
+        );
+        assert_eq!(
+            model.field("blocks").unwrap().items().unwrap().len(),
+            blocks
+        );
+        assert_eq!(
+            model
+                .field("topology")
+                .unwrap()
+                .field("interfaces")
+                .unwrap()
+                .items()
+                .unwrap()
+                .len(),
+            interfaces
+        );
+        assert_eq!(
+            model
+                .field("partition_plan")
+                .unwrap()
+                .field("face_connected_components")
+                .unwrap()
+                .number::<usize>()
+                .unwrap(),
+            components
+        );
+        assert_eq!(
+            model
+                .field("volume_mm3")
+                .unwrap()
+                .field("constant")
+                .unwrap()
+                .number::<i64>()
+                .unwrap(),
+            constant
+        );
+        assert_eq!(
+            model
+                .field("volume_mm3")
+                .unwrap()
+                .field("pi_coefficient")
+                .unwrap()
+                .number::<i64>()
+                .unwrap(),
+            pi
+        );
+        assert_eq!(
+            interchange::audit(&model)
+                .unwrap()
+                .field("status")
+                .unwrap()
+                .text()
+                .unwrap(),
+            "valid"
+        );
+    }
+}
+
+#[test]
+fn boolean_suite_supports_translated_stock_and_a_different_height() {
+    let mut recipe = suite_recipe("intersection");
+    let root = object_mut(&mut recipe);
+    let stock = object_mut(root.get_mut("stock").unwrap());
+    stock.insert("min_mm".into(), array_numbers(&[0, 0, 10]));
+    stock.insert("max_mm".into(), array_numbers(&[40, 40, 20]));
+    object_mut(root.get_mut("tool").unwrap())
+        .insert("interval_mm".into(), array_numbers(&[-8, 28]));
+
+    let model = interchange::build(&recipe).unwrap();
+    assert_eq!(model.field("blocks").unwrap().items().unwrap().len(), 5);
+    assert_eq!(
+        model
+            .field("volume_mm3")
+            .unwrap()
+            .field("pi_coefficient")
+            .unwrap()
+            .number::<i64>()
+            .unwrap(),
+        250
+    );
+    assert_eq!(
+        interchange::audit(&model)
+            .unwrap()
+            .field("status")
+            .unwrap()
+            .text()
+            .unwrap(),
+        "valid"
+    );
 }

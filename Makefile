@@ -25,6 +25,8 @@ check-published-geometry:
 	cargo build --locked --offline --release
 	cargo build --locked --offline --release --example annulus_four_block_chamfer --example annulus_original_edges --example annulus_prepared_volumes
 	python3 scripts/check_operation_geometry.py
+	python3 scripts/build_box_cylinder_tall_patches.py --check
+	python3 scripts/check_tall_booleans.py
 	python3 scripts/check_gallery_geometry.py
 	python3 scripts/check_reference_geometry.py --cli target/release/solidcraft-trivariate
 	python3 tests/references/replay_geometry_recipes.py --cli target/release/solidcraft-trivariate --work build/reference-recipe-replay --output build/reference-recipe-replay.json

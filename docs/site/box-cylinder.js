@@ -6,6 +6,11 @@ const viewers = {};
 let syncing = false;
 let view = 'volume';
 let mode = 'blocks';
+let tallViewer;
+let tallManifest;
+let tallMode = 'bezier';
+let tallView = 'volume';
+let tallLoadSerial = 0;
 
 async function readModel(name) {
   const response = await fetch(`./box-cylinder/${name}.model.json`);
@@ -39,6 +44,88 @@ function setView(next) {
   });
   byId('view-top').setAttribute('aria-pressed', String(next === 'top'));
   byId('view-volume').setAttribute('aria-pressed', String(next === 'volume'));
+}
+
+function setTallView(next) {
+  tallView = next;
+  const current = tallViewer.getCamera();
+  tallViewer.setCamera({
+    ...current,
+    yaw: next === 'top' ? 0 : 0.72,
+    pitch: next === 'top' ? Math.PI / 2 - 1e-7 : 0.5,
+  });
+  byId('tall-view-top').setAttribute('aria-pressed', String(next === 'top'));
+  byId('tall-view-volume').setAttribute('aria-pressed', String(next === 'volume'));
+}
+
+function setTallMode(next) {
+  tallMode = next;
+  if (tallViewer && tallViewer.getSurfaceStats() !== null) {
+    tallViewer.setMode(next === 'nurbs' ? 'patches' : 'blocks');
+  }
+  byId('tall-mode-bezier').setAttribute('aria-pressed', String(next === 'bezier'));
+  byId('tall-mode-nurbs').setAttribute('aria-pressed', String(next === 'nurbs'));
+  byId('tall-model-view').dataset.mode = next;
+  byId('tall-mode-note').textContent = next === 'nurbs'
+    ? 'Showing the merged NURBS patch maps from the selected state’s exact patch file.'
+    : 'Showing the actual Bézier cell maps from the selected trivariate model.';
+}
+
+async function readTallJson(path) {
+  const response = await fetch(path);
+  if (!response.ok) throw new Error(`Could not load ${path} (${response.status}).`);
+  return response.json();
+}
+
+async function loadTallState() {
+  const serial = ++tallLoadSerial;
+  const stateId = byId('tall-state').value;
+  const state = tallManifest.states.find(item => item.id === stateId);
+  const modelPath = `./box-cylinder/tall/${stateId}.model.json`;
+  const patchesPath = `./box-cylinder/tall/${stateId}.patches.json`;
+  const tallStatus = byId('tall-status');
+  tallStatus.dataset.kind = 'loading';
+  tallStatus.textContent = `Loading ${stateId} model and patch map…`;
+  try {
+    const [model, patches] = await Promise.all([readTallJson(modelPath), readTallJson(patchesPath)]);
+    if (serial !== tallLoadSerial) return;
+    if (!state || model.blocks?.length !== state.bezier_cells || patches.patches?.length !== state.nurbs_volumes) {
+      throw new Error(`The ${stateId} model, patch map and manifest counts disagree.`);
+    }
+    if (patches.schema !== 'gallery_exact_patch_map_v1') throw new Error(`The ${stateId} patch map has an unsupported schema.`);
+    tallViewer.setModel(model, patches);
+    tallViewer.setMode(tallMode === 'nurbs' ? 'patches' : 'blocks');
+    const camera = tallViewer.getCamera();
+    tallViewer.setCamera({
+      ...camera,
+      yaw: tallView === 'top' ? 0 : 0.72,
+      pitch: tallView === 'top' ? Math.PI / 2 - 1e-7 : 0.5,
+    });
+    byId('tall-state-title').textContent = stateId.replaceAll('-', ' ').replace(/\b\w/g, char => char.toUpperCase());
+    byId('tall-bezier-count').textContent = String(state.bezier_cells);
+    byId('tall-nurbs-count').textContent = String(state.nurbs_volumes);
+    byId('tall-component-count').textContent = String(state.components);
+    byId('tall-volume').textContent = `${Number(state.volume_mm3).toLocaleString('en-US', { maximumFractionDigits: 6 })} mm³`;
+    const constant = state.volume_constant_mm3;
+    const piCoefficient = state.volume_pi_coefficient_mm3;
+    const exactVolume = piCoefficient === 0 ? String(constant)
+      : constant === 0 ? `${piCoefficient}π`
+      : `${constant} ${piCoefficient < 0 ? '−' : '+'} ${Math.abs(piCoefficient)}π`;
+    byId('tall-volume-exact').textContent = `${exactVolume} mm³`;
+    byId('tall-audit-file').href = `./box-cylinder/tall/${stateId}.audit.json`;
+    byId('tall-model-file').href = modelPath;
+    byId('tall-patches-file').href = patchesPath;
+    byId('tall-recipe-file').href = `./box-cylinder/tall/${stateId}.recipe.json`;
+    byId('tall-model-view').dataset.state = stateId;
+    byId('tall-model-view').dataset.mode = tallMode;
+    byId('tall-contact-note').hidden = stateId !== 'xor';
+    tallStatus.textContent = `Loaded ${stateId} · ${state.bezier_cells} Bézier cells · ${state.nurbs_volumes} NURBS volumes.`;
+    tallStatus.dataset.kind = 'ready';
+  } catch (error) {
+    if (serial !== tallLoadSerial) return;
+    tallStatus.textContent = `Could not load ${stateId}: ${error.message}`;
+    tallStatus.dataset.kind = 'error';
+  }
 }
 
 async function start() {
@@ -105,6 +192,37 @@ async function start() {
     viewers.classic.reset();
     if (view === 'top') setView('top');
   });
+
+  tallViewer = createViewer(byId('tall-model-view'));
+  tallViewer.setClip('x', 0.5);
+  const manifestResponse = await fetch('./box-cylinder/tall/manifest.json');
+  if (!manifestResponse.ok) throw new Error('Could not load the tall-cylinder state manifest.');
+  tallManifest = await manifestResponse.json();
+  const expectedStateIds = ['box', 'cylinder', 'union', 'intersection', 'a-minus-b', 'b-minus-a', 'xor'];
+  if (!Array.isArray(tallManifest.states) || expectedStateIds.some(id => !tallManifest.states.some(state => state.id === id))) {
+    throw new Error('The tall-cylinder manifest does not contain all seven Boolean states.');
+  }
+  byId('tall-state').addEventListener('change', loadTallState);
+  byId('tall-mode-bezier').addEventListener('click', () => setTallMode('bezier'));
+  byId('tall-mode-nurbs').addEventListener('click', () => setTallMode('nurbs'));
+  byId('tall-view-top').addEventListener('click', () => setTallView('top'));
+  byId('tall-view-volume').addEventListener('click', () => setTallView('volume'));
+  const setTallSection = () => {
+    const axis = byId('tall-section-axis').value || null;
+    const fraction = Number(byId('tall-section-position').value) / 100;
+    byId('tall-section-value').textContent = `${byId('tall-section-position').value}%`;
+    byId('tall-model-view').dataset.sectionAxis = axis || 'off';
+    byId('tall-model-view').dataset.sectionFraction = String(fraction);
+    tallViewer.setClip(axis, fraction);
+  };
+  byId('tall-section-axis').addEventListener('change', setTallSection);
+  byId('tall-section-position').addEventListener('input', setTallSection);
+  byId('tall-reset').addEventListener('click', () => {
+    tallViewer.reset();
+    if (tallView === 'top') setTallView('top');
+  });
+  setTallSection();
+  await loadTallState();
 }
 
 start().catch(error => {

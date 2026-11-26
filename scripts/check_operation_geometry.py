@@ -7,6 +7,7 @@ import subprocess
 import tempfile
 
 from check_gallery_geometry import step_content
+from check_tall_booleans import STATES
 
 ROOT = Path(__file__).resolve().parents[1]
 SITE = ROOT / "docs/site"
@@ -51,13 +52,19 @@ def check():
                 if step_content(candidate.read_bytes()) != step_content((box / "result.step").read_bytes()):
                     raise ValueError("Box minus cylinder STEP differs from its native replay")
 
+        tall = box / "tall"
+        for state in STATES:
+            subprocess.run([CLI, "build", tall / f"{state}.recipe.json", model], check=True, capture_output=True)
+            compare(model.read_bytes(), tall / f"{state}.model.json")
+            compare(subprocess.check_output([CLI, "audit", model]), tall / f"{state}.audit.json")
+
         crossed = SITE / "crossed-tools"
         for rise in (-3, 0, 3):
             for op in ("intersection", "union", "a-minus-b", "b-minus-a"):
                 subprocess.run([CLI, "crossed-boolean", crossed / f"rise-{rise}.recipe.json", op, model],
                                check=True, capture_output=True)
                 compare(model.read_bytes(), crossed / f"{op}-{rise}.json")
-    print("Native replay matched six edge models, ten axial models and audits, twelve crossed-tool models, and the box/cylinder comparison with its STEP.")
+    print("Native replay matched six edge models, ten axial models and audits, twelve crossed-tool models, the box/cylinder comparison with its STEP, and seven tall-cylinder states.")
 
 
 if __name__ == "__main__":

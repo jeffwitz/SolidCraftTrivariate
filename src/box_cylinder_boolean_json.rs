@@ -1,6 +1,9 @@
 //! Versioned JSON exchange for the two-operand box-minus-cylinder constructor.
 use crate::{
-    box_cylinder_boolean::{subtract_through_cylinder, BoxOperand, ThroughCylinderOperand},
+    box_cylinder_boolean::{
+        build_boolean_state, subtract_through_cylinder, BoxOperand, ThroughCylinderOperand,
+        SUITE_FAMILY,
+    },
     bracket_json::{design, encode_blocks, topology},
     json::{object, Json},
 };
@@ -46,11 +49,10 @@ fn inputs(value: &Json, is_model: bool) -> Result<Inputs, &'static str> {
     } else {
         &["family", "operation", "stock", "tool"]
     })?;
-    if value
+    let family = value
         .field(if is_model { "schema" } else { "family" })?
-        .text()?
-        != FAMILY
-    {
+        .text()?;
+    if family != FAMILY && family != SUITE_FAMILY {
         return Err("unexpected_box_cylinder_schema");
     }
     let stock = value.field("stock")?;
@@ -66,7 +68,7 @@ fn inputs(value: &Json, is_model: bool) -> Result<Inputs, &'static str> {
     if tool.field("axis")?.text()? != "z" {
         return Err("cylinder_axis_must_be_z");
     }
-    if value.field("operation")?.text()? != "difference" {
+    if family == FAMILY && value.field("operation")?.text()? != "difference" {
         return Err("only_box_minus_cylinder_is_supported");
     }
     let [cx, cy] = int_array(tool.field("center_mm")?)?;
@@ -181,5 +183,76 @@ pub(crate) fn audit(model: &Json) -> Result<Json, &'static str> {
                 .clone(),
         ),
         ("volume_mm3", expected.field("volume_mm3")?.clone()),
+    ]))
+}
+
+/// Serialize a selected regularized Boolean of the two primitive operands.
+fn suite_result(source: &Json, input: Inputs) -> Result<Json, &'static str> {
+    let state = build_boolean_state(source.field("operation")?.text()?, input.stock, input.tool)?;
+    Ok(object([
+        ("schema", string(SUITE_FAMILY)),
+        ("operation", string(state.operation)),
+        ("stock", source.field("stock")?.clone()),
+        ("tool", source.field("tool")?.clone()),
+        ("blocks", encode_blocks(state.blocks)),
+        ("topology", topology(&state.certificate.incidence)),
+        ("design_faces", design(&state.certificate)),
+        (
+            "partition_plan",
+            object([
+                ("method", string("axial_box_disk_region_selection")),
+                (
+                    "face_connected_components",
+                    number(state.connected_components),
+                ),
+                (
+                    "determinant_lower_bound_mm3",
+                    number(state.certificate.determinant_lower_bound_mm3),
+                ),
+            ]),
+        ),
+        (
+            "volume_mm3",
+            object([
+                ("constant", number(state.volume_constant_mm3)),
+                ("pi_coefficient", number(state.volume_pi_coefficient_mm3)),
+            ]),
+        ),
+    ]))
+}
+
+pub(crate) fn build_suite(recipe: &Json) -> Result<Json, &'static str> {
+    suite_result(recipe, inputs(recipe, false)?)
+}
+
+pub(crate) fn audit_suite(model: &Json) -> Result<Json, &'static str> {
+    let expected = suite_result(model, inputs(model, true)?)?;
+    if model != &expected {
+        return Err("Boolean suite model differs from native operand reconstruction");
+    }
+    let plan = model.field("partition_plan")?;
+    let topology = model.field("topology")?;
+    Ok(object([
+        ("status", string("valid")),
+        ("method", string("certified_box_cylinder_boolean_suite")),
+        ("operation", model.field("operation")?.clone()),
+        ("blocks", number(model.field("blocks")?.items()?.len())),
+        (
+            "shared_faces",
+            number(topology.field("interfaces")?.items()?.len()),
+        ),
+        (
+            "exterior_sides",
+            number(topology.field("exterior")?.items()?.len()),
+        ),
+        (
+            "face_connected_components",
+            plan.field("face_connected_components")?.clone(),
+        ),
+        (
+            "determinant_lower_bound_mm3",
+            plan.field("determinant_lower_bound_mm3")?.clone(),
+        ),
+        ("volume_mm3", model.field("volume_mm3")?.clone()),
     ]))
 }

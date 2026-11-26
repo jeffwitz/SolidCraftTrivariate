@@ -121,7 +121,7 @@ def preserve_independent_record(case_id: str, old: dict, bracket_cases: dict, br
     name = case_id.removeprefix("bench-bracket-").replace("-", "_")
     if name in bracket_cases:
         return {
-            "scope": "Frozen bracket comparison at the recorded candidate and baseline revisions.",
+            "scope": "Latest frozen bracket benchmark record. Its STEP checks concern the benchmark candidate STEP, not the regenerated gallery STEP.",
             "candidate_revision": bracket_report.get("candidate_revision"),
             "baseline_revision": bracket_report.get("baseline_revision"),
             "candidate": bracket_cases[name],

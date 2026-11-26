@@ -18,3 +18,9 @@ The browser check can then be run with:
 ```sh
 node tests/references/gallery_browser.mjs build/gallery-qa
 ```
+
+The [NURBS comparison](compare.html) shows both audited layouts for each of
+the 46 polygon benchmarks. To regenerate the compact display geometry, run
+`python3 scripts/check_sketch_nurbs.py --cli target/release/solidcraft-trivariate`
+followed by `python3 scripts/gallery_nurbs_comparison.py`. Integer homogeneous
+control points, span incidence and patch membership are retained in the viewer data.

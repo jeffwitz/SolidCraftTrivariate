@@ -38,7 +38,7 @@ void main() {
 
 const SURFACE_COLOR = [0.78, 0.67, 0.52];
 const SECTION_COLOR = [0.20, 0.48, 0.46];
-const DEFAULT_CAMERA = { yaw: 0.72, pitch: 0.5, distance: 2 };
+const DEFAULT_CAMERA = { yaw: 0.72, pitch: 0.5, distance: 2, panX: 0, panY: 0 };
 const CAMERA_FILL = 0.85;
 const GRID = 12;
 const CAP_GRID = 12;
@@ -383,7 +383,7 @@ function buildSurfaceMeshes(model, mode) {
     const evaluate = makeEvaluator(block);
     const divisions = meshDivisions(model, block, GRID);
     const axes = [0, 1, 2].map(axis => parameterStations(block, axis, divisions));
-    const color = mode === 'surface' ? SURFACE_COLOR : blockColor(block.id);
+    const color = mode === 'surface' ? SURFACE_COLOR : (block.displayColor ?? blockColor(block.id));
     const skip = mode === 'surface'
       ? hiddenSides.get(block.id) || new Set()
       : duplicateSides.get(block.id) || new Set();
@@ -588,7 +588,7 @@ function buildCapMeshes(model, axis, fraction, bounds, mode) {
       if (faceVisible || !coplanar.retainedSide) continue;
       // The retained side needs one cap where its shared interface is hidden.
     }
-    const color = mode === 'blocks' ? blockColor(block.id) : SECTION_COLOR;
+    const color = mode === 'blocks' ? (block.displayColor ?? blockColor(block.id)) : SECTION_COLOR;
     if (zSlices?.[blockIndex]) {
       const { z0, z1 } = zSlices[blockIndex];
       const w = (plane - z0) / (z1 - z0);
@@ -666,7 +666,7 @@ function createProgram(gl) {
 }
 
 /** Create an interactive viewer for an accepted trivariate model JSON value. */
-export function createViewer(canvas) {
+export function createViewer(canvas, onCameraChange = () => {}) {
   const gl = canvas.getContext('webgl', { antialias: true, alpha: false });
   if (!gl) throw new Error('WebGL is unavailable');
   const program = createProgram(gl);
@@ -691,12 +691,12 @@ export function createViewer(canvas) {
   let cameraAdjusted = false;
   let lastCanvasSize = null;
   let drag = null;
+  let dragTool = 'orbit';
   let frame = 0;
   let surfaceMeshes = [];
   let capMeshes = [];
   let triangleMesh = null;
   const activePointers = new Map();
-  let pinchDistance = null;
 
   if (typeof ResizeObserver === 'function') {
     new ResizeObserver(scheduleDraw).observe(canvas);
@@ -747,6 +747,8 @@ export function createViewer(canvas) {
       camera.distance * Math.sin(camera.pitch),
     ];
     const view = lookAt(eye, [0, 0, 0], [0, 0, 1]);
+    view[12] += camera.panX;
+    view[13] += camera.panY;
     const projection = perspective(Math.PI / 4, width / height, 0.01, 100);
     const mvp = multiplyMatrices(projection, view);
     const modelMatrix = new Float32Array([
@@ -821,53 +823,54 @@ export function createViewer(canvas) {
   }
 
   canvas.style.touchAction = 'none';
+  function notifyCamera() {
+    cameraAdjusted = true;
+    scheduleDraw();
+    onCameraChange({ ...camera });
+  }
+
+  function pan(dx, dy) {
+    const units = 2 * camera.distance * Math.tan(Math.PI / 8) / Math.max(canvas.clientHeight, 1);
+    camera.panX += dx * units;
+    camera.panY -= dy * units;
+  }
+
+  canvas.addEventListener('contextmenu', event => event.preventDefault());
   canvas.addEventListener('pointerdown', event => {
-    activePointers.set(event.pointerId, { x: event.clientX, y: event.clientY });
     canvas.setPointerCapture(event.pointerId);
+    activePointers.set(event.pointerId, { x: event.clientX, y: event.clientY });
     if (activePointers.size === 1) {
-      drag = { x: event.clientX, y: event.clientY, yaw: camera.yaw, pitch: camera.pitch };
-    } else if (activePointers.size === 2) {
-      const [first, second] = [...activePointers.values()];
-      pinchDistance = Math.hypot(first.x - second.x, first.y - second.y);
-      drag = null;
+      drag = event.shiftKey || event.button === 1 || event.button === 2 ? 'pan' : dragTool;
     }
   });
   canvas.addEventListener('pointermove', event => {
     const previous = activePointers.get(event.pointerId);
     if (!previous) return;
+    const dx = event.clientX - previous.x, dy = event.clientY - previous.y;
+    const other = [...activePointers.entries()].find(([id]) => id !== event.pointerId)?.[1];
     activePointers.set(event.pointerId, { x: event.clientX, y: event.clientY });
-    if (activePointers.size >= 2) {
-      const [first, second] = [...activePointers.values()];
-      const nextDistance = Math.hypot(first.x - second.x, first.y - second.y);
-      if (pinchDistance > 0 && nextDistance > 0) camera.distance = clamp(camera.distance * pinchDistance / nextDistance, 0.85, 9);
-      pinchDistance = nextDistance;
-      cameraAdjusted = true;
-      scheduleDraw();
-      return;
+    if (other) {
+      const before = Math.hypot(previous.x - other.x, previous.y - other.y);
+      const after = Math.hypot(event.clientX - other.x, event.clientY - other.y);
+      if (before > 0 && after > 0) camera.distance = clamp(camera.distance * before / after, 0.85, 9);
+      pan(dx / 2, dy / 2);
+    } else if (drag === 'pan' || event.shiftKey) {
+      pan(dx, dy);
+    } else {
+      camera.yaw += dx * 0.008;
+      camera.pitch = clamp(camera.pitch + dy * 0.008, -1.45, 1.45);
     }
-    if (!drag) return;
-    camera.yaw = drag.yaw + (event.clientX - drag.x) * 0.008;
-    camera.pitch = clamp(drag.pitch + (event.clientY - drag.y) * 0.008, -1.45, 1.45);
-    cameraAdjusted = true;
-    scheduleDraw();
+    notifyCamera();
   });
   function releasePointer(event) {
     activePointers.delete(event.pointerId);
-    pinchDistance = null;
-    if (activePointers.size === 1) {
-      const [remaining] = activePointers.values();
-      drag = { x: remaining.x, y: remaining.y, yaw: camera.yaw, pitch: camera.pitch };
-    } else {
-      drag = null;
-    }
+    if (!activePointers.size) drag = null;
   }
-  canvas.addEventListener('pointerup', releasePointer);
-  canvas.addEventListener('pointercancel', releasePointer);
+  for (const event of ['pointerup','pointercancel','lostpointercapture']) canvas.addEventListener(event, releasePointer);
   canvas.addEventListener('wheel', event => {
     event.preventDefault();
     camera.distance = clamp(camera.distance * Math.exp(event.deltaY * 0.001), 0.85, 9);
-    cameraAdjusted = true;
-    scheduleDraw();
+    notifyCamera();
   }, { passive: false });
   canvas.addEventListener('keydown', event => {
     const orbitStep = event.shiftKey ? 0.14 : 0.06;
@@ -875,6 +878,9 @@ export function createViewer(canvas) {
       camera = { ...DEFAULT_CAMERA };
       camera.distance = fittedDistance(canvas.clientWidth, canvas.clientHeight);
       cameraAdjusted = false;
+    } else if (event.shiftKey && event.key.startsWith('Arrow')) {
+      const directions = {ArrowLeft: [-20,0], ArrowRight: [20,0], ArrowUp: [0,-20], ArrowDown: [0,20]};
+      pan(...directions[event.key]);
     } else if (event.key === 'ArrowLeft') camera.yaw -= orbitStep;
     else if (event.key === 'ArrowRight') camera.yaw += orbitStep;
     else if (event.key === 'ArrowUp') camera.pitch = clamp(camera.pitch - orbitStep, -1.45, 1.45);
@@ -885,9 +891,20 @@ export function createViewer(canvas) {
     if (event.key !== 'Home') cameraAdjusted = true;
     event.preventDefault();
     scheduleDraw();
+    onCameraChange({ ...camera });
   });
 
   return {
+    setDragTool(tool) {
+      if (!['orbit', 'pan'].includes(tool)) throw new TypeError('Unknown drag tool');
+      dragTool = tool;
+    },
+    getCamera() { return { ...camera }; },
+    setCamera(next) {
+      camera = { ...next };
+      cameraAdjusted = true;
+      scheduleDraw();
+    },
     setModel(value) {
       validateModel(value);
       model = isTriangleModel(value) ? value : normalizeTrivariateModel(value);
@@ -930,6 +947,7 @@ export function createViewer(canvas) {
       camera.distance = fittedDistance(canvas.clientWidth, canvas.clientHeight);
       cameraAdjusted = false;
       scheduleDraw();
+      onCameraChange({ ...camera });
     },
   };
 }

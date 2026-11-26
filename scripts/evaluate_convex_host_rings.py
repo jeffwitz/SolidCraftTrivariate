@@ -26,9 +26,9 @@ CORPUS = EVAL_DIR / "cases.json"
 OLD_CANDIDATE = EVAL_DIR / "candidate.json"
 EXPECTED_CORPUS_SHA256 = "f10964bb0417a702a394f66aa96e148b6ead67685a3a9f9f541cea8d6ab98e7b"
 EXPECTED_REFERENCE_CLI_SHA256 = "684c7c6a89423f798648800e28c53d1065c23b8aaa7e5407409714cea4a36f70"
-DEFAULT_CLI = Path("/tmp/gallery-minimal-49f6/target/release/solidcraft-trivariate")
+DEFAULT_CLI = ROOT / "target/release/solidcraft-trivariate"
 DEFAULT_OUTPUT = ROOT / "docs/results/convex-host-rings.json"
-DEFAULT_WORK = Path("/tmp/convex-host-rings-latest")
+DEFAULT_WORK = ROOT / "build/convex-host-rings"
 
 # Prototype observations copied from the reviewed 30-case extract. This table
 # is intentionally self-contained: running the evaluation does not open the

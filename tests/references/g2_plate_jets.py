@@ -8,6 +8,7 @@ no constructor-generated certificates are consumed.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import math
 import subprocess
@@ -15,6 +16,13 @@ from fractions import Fraction
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
+
+
+def display_path(path: Path) -> str:
+    try:
+        return path.resolve().relative_to(ROOT).as_posix()
+    except ValueError:
+        return f"<work>/{path.name}"
 
 
 def _span(degree: int, knots: list, controls: list, t, side: str) -> int:
@@ -342,15 +350,15 @@ def c0_iga_check(cli: Path, recipe_path: Path, work: Path) -> dict:
     orders = [patch.integrate(package, q) for q in (4, 8, 16)]
     if orders[-1]["relative_residual_linf"] > 1e-8:
         raise AssertionError(f"q16 C0 constant-stress patch residual too high: {orders[-1]}")
-    return {"status": "verified", "cli": str(cli),
+    return {"status": "verified", "cli": display_path(cli),
             "cli_sha256": hashlib.sha256(cli.read_bytes()).hexdigest(),
             "build_audit": build, "space_export": export,
             "exact_c0_trace_and_affine_checks": trace,
             "constant_stress_equilibrium_orders": orders,
             "q16_relative_linf_threshold": 1e-8,
             "source_recipe_preserved": True,
-            "artifacts": {"model": str(model_path.relative_to(ROOT)),
-                          "q3_package": str(package_path.relative_to(ROOT))}}
+            "artifacts": {"model": display_path(model_path),
+                          "q3_package": display_path(package_path)}}
 
 
 def main() -> int:
@@ -396,9 +404,14 @@ def main() -> int:
                          "periodic_profile_area_mm2": profile_area,
                          "independent_remaining_volume_mm3": stock - (rectangle_hole + profile_area) * (zmax - zmin),
                          "method": "exact rectangular stock/rectangle volume plus independent periodic B-spline Green integral"}
+    recipe_path = args.recipe.resolve()
     report = {"schema": "g2_curve_jets_report_v1", "status": "verified" if passed else "failed",
               "method": "independent homogeneous B-spline derivative control polygons and rational quotient-rule jets; oriented unit tangent and geometric curvature vector",
-              "tolerances": tolerances, "source_recipe": str(args.recipe), "curves": rows,
+              "tolerances": tolerances,
+              "source_recipe": display_path(recipe_path),
+              "source_recipe_sha256": hashlib.sha256(recipe_path.read_bytes()).hexdigest(),
+              "source_recipe_renamed_from": "tests/references/g2_plate.recipe.json",
+              "curves": rows,
               "algorithm_self_check": self_check,
               "rectangle_sharp_junctions": rectangle_corner_jets(recipe["rectangle_mm"])
                   if "rectangle_mm" in recipe else None,

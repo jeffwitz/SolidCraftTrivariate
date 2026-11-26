@@ -13,16 +13,18 @@ import contextlib
 import io
 import importlib.util
 import json
+import hashlib
 from collections import Counter
 from fractions import Fraction as F
 from pathlib import Path
-import sys
+import subprocess
 
 
 CASES = ("x40-y80", "x50-y74", "x51-y74", "x64-y64", "x80-y40")
 ROOT = Path(__file__).resolve().parents[2]
-OLD = ROOT / "build/fieldcraft-replay"
-HOST = Path("/home/jeff/Code/SolidCraftTrivariate/build/solidcraft-bridge")
+CURRENT = ROOT / "docs/site/data"
+SOURCE_SCRIPTS = ROOT / "tests/references/fieldcraft_scripts"
+HOSTS = ROOT / "build/solidcraft-bridge"
 REPLAY = ROOT / "tests/references/fieldcraft_kernel_replay.py"
 
 
@@ -202,80 +204,119 @@ def tangency_plane_probes(replay, reference, candidate, source_bores: dict) -> t
     return checks, failures
 
 
-def audit_case(case: str, compact_dir: Path, old_dir: Path, host_dir: Path,
-               previous_model_dir: Path, occ_volume: Path, full: bool) -> dict:
-    model_path = compact_dir / f"{case}.model.json"
-    candidate_path = compact_dir / f"{case}.step"
+def audit_case(case: str, cli: Path, work: Path, current_dir: Path,
+               source_dir: Path, host_dir: Path, occ_volume: Path,
+               full: bool) -> dict:
+    stem = f"fieldcraft_{case.replace('-', '_')}"
+    case_dir = current_dir / stem
+    model_path = case_dir / f"{stem}.model.json"
+    recipe_path = case_dir / f"{stem}.recipe.json"
+    candidate_path = case_dir / f"{stem}.step"
     host_path = host_dir / case / "host.step"
-    if not all(path.is_file() for path in (model_path, candidate_path, host_path)):
-        raise FileNotFoundError(f"missing model or STEP input for {case}")
+    source_script = source_dir / f"{case}.script.json"
+    if not all(path.is_file() for path in (model_path, recipe_path, candidate_path,
+                                           host_path)):
+        raise FileNotFoundError(
+            f"missing current recipe/model/STEP or independent source input for {case}"
+        )
     model = json.loads(model_path.read_text())
+    recipe = json.loads(recipe_path.read_text())
+    work.mkdir(parents=True, exist_ok=True)
+    rebuilt_model = work / f"{case}.model.json"
+    built = subprocess.run([str(cli), "build", str(recipe_path), str(rebuilt_model)],
+                           capture_output=True, text=True)
+    if built.returncode:
+        raise RuntimeError(f"{case}: current recipe failed to build: {built.stderr or built.stdout}")
+    build_summary = json.loads(built.stdout)
+    audited = subprocess.run([str(cli), "audit", str(rebuilt_model)],
+                             capture_output=True, text=True)
+    if audited.returncode:
+        raise RuntimeError(f"{case}: rebuilt model failed audit: {audited.stderr or audited.stdout}")
+    audit_summary = json.loads(audited.stdout)
+    if audit_summary.get("status") != "valid":
+        raise RuntimeError(f"{case}: rebuilt model audit status is {audit_summary.get('status')!r}")
+    if json.loads(rebuilt_model.read_text()) != model:
+        raise AssertionError(f"{case}: current recipe rebuild differs from published model")
     topology = exact_interface_audit(model)
-    previous_path = previous_model_dir / f"{case}.model.json"
-    if not previous_path.is_file():
-        previous_path = previous_model_dir / f"fieldcraft_{case.replace('-', '_')}.model.json"
-    previous = json.loads(previous_path.read_text())
-    previous_topology = exact_interface_audit(previous)
+    topology["model_path"] = model_path.relative_to(ROOT).as_posix()
+    topology["recipe_path"] = recipe_path.relative_to(ROOT).as_posix()
+    topology["candidate_step_path"] = candidate_path.relative_to(ROOT).as_posix()
+    topology["independent_host_step_path"] = f"<host-dir>/{case}/host.step"
     if len(topology["x0_coplanar_exterior_sides"]) != 5:
         raise AssertionError(f"{case}: expected five exterior map sides on x=0")
     if len(topology["y0_coplanar_exterior_sides"]) != 5:
         raise AssertionError(f"{case}: expected five exterior map sides on y=0")
 
     replay = load_replay_module()
-    script = old_dir / "inputs" / f"{case}.script.json"
-    recipe = old_dir / f"{case}.recipe.json"
     with contextlib.redirect_stdout(io.StringIO()):
         record = replay.run(host_path, candidate_path, occ_volume,
-                            compact_dir / f"{case}-oracle", fast=not full,
-                            source_script=script, candidate_recipe=recipe)
-    src_bores = replay.source_holes(script)
+                            work / f"{case}-oracle", fast=not full,
+                            source_script=source_script if source_script.is_file() else None,
+                            candidate_recipe=recipe_path)
+    record["reference"] = f"<host-dir>/{case}/host.step"
+    record["candidate"] = candidate_path.relative_to(ROOT).as_posix()
+    src_bores = (replay.source_holes(source_script) if source_script.is_file()
+                 else replay.candidate_holes(recipe_path))
     source_shape = replay.read_shape(host_path)
     candidate_shape = replay.read_shape(candidate_path)
     tangencies, tangent_failures = tangency_plane_probes(replay, source_shape, candidate_shape, src_bores)
     record["tangency_plane_probes"] = tangencies
     record["tangency_plane_probe_failures"] = tangent_failures
     record["qualification_pass"] = record["qualification_pass"] and tangent_failures == 0
-    # The former 48-block graph has 24 exterior map sides on each wing plane.
-    topology["previous_model_exterior_side_count"] = previous_topology["exterior_sides"]
-    topology["previous_x0_coplanar_exterior_sides"] = len(previous_topology["x0_coplanar_exterior_sides"])
-    topology["previous_y0_coplanar_exterior_sides"] = len(previous_topology["y0_coplanar_exterior_sides"])
-    if topology["previous_x0_coplanar_exterior_sides"] != 24 or topology["previous_y0_coplanar_exterior_sides"] != 24:
-        raise AssertionError(f"{case}: expected 24 historical exterior map sides on each wing plane")
-    return {"case": case, "topology": topology, "step_oracle": record}
+    record["probe_coordinate_source"] = (
+        source_script.relative_to(ROOT).as_posix() if source_script.is_file()
+        else recipe_path.relative_to(ROOT).as_posix()
+    )
+    return {"case": case,
+            "rebuild": {"recipe": recipe_path.relative_to(ROOT).as_posix(),
+                        "model_matches_published": True,
+                        "build": build_summary, "audit": audit_summary},
+            "topology": topology, "step_oracle": record}
 
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--compact-dir", type=Path, default=ROOT / "build/fieldcraft-compact")
-    parser.add_argument("--old-dir", type=Path, default=OLD)
-    parser.add_argument("--previous-model-dir", type=Path)
-    parser.add_argument("--host-dir", type=Path, default=HOST)
-    parser.add_argument("--occ-volume", type=Path, default=HOST / "occ-volume")
+    parser.add_argument("--cli", type=Path, default=ROOT / "target/release/solidcraft-trivariate")
+    parser.add_argument("--work", type=Path, default=ROOT / "build/fieldcraft-compact-oracle")
+    parser.add_argument("--current-dir", type=Path, default=CURRENT)
+    parser.add_argument("--source-dir", type=Path, default=SOURCE_SCRIPTS)
+    parser.add_argument("--host-dir", type=Path, default=HOSTS,
+                        help="directory containing <case>/host.step from independent SolidCore exports")
+    parser.add_argument("--occ-volume", type=Path, default=HOSTS / "occ-volume")
     parser.add_argument("--case", choices=CASES, action="append")
     parser.add_argument("--fast", action="store_true", help="use one coarse classification grid")
-    parser.add_argument("--output", type=Path)
+    parser.add_argument("--output", type=Path,
+                        default=ROOT / "docs/results/fieldcraft-compact-current-oracle.json")
     args = parser.parse_args()
+    for name in ("work", "current_dir", "source_dir", "host_dir", "occ_volume", "output"):
+        value = getattr(args, name, None)
+        if value is not None and not value.is_absolute():
+            setattr(args, name, ROOT / value)
+    cli = args.cli.resolve()
+    if not cli.is_file():
+        raise FileNotFoundError(f"CLI binary not found: {cli}")
     if not args.occ_volume.is_file():
-        # The audited binary is built next to the host exports in current workspaces.
-        fallback = HOST.parent / "solidcraft-bridge/occ-volume"
-        if not fallback.is_file():
-            raise FileNotFoundError("occ-volume helper not found; pass --occ-volume")
-        args.occ_volume = fallback
-    if args.previous_model_dir is None:
-        args.previous_model_dir = args.old_dir
-        if (args.compact_dir / "previous").is_dir():
-            args.previous_model_dir = args.compact_dir / "previous"
-    results = [audit_case(case, args.compact_dir, args.old_dir, args.host_dir,
-                          args.previous_model_dir,
-                          args.occ_volume, not args.fast)
+        raise FileNotFoundError("occ-volume helper not found; pass --occ-volume")
+    cli_hash = hashlib.sha256(cli.read_bytes()).hexdigest()
+    results = [audit_case(case, cli, args.work, args.current_dir, args.source_dir,
+                          args.host_dir, args.occ_volume, not args.fast)
                for case in (args.case or CASES)]
+    if hashlib.sha256(cli.read_bytes()).hexdigest() != cli_hash:
+        raise RuntimeError("CLI binary changed during oracle run")
+    replay = load_replay_module()
     payload = {"status": "pass" if all(row["step_oracle"]["qualification_pass"]
                                        for row in results) else "fail",
+               "checkout_revision": subprocess.check_output(
+                   ["git", "rev-parse", "HEAD"], cwd=ROOT, text=True
+               ).strip(),
+               "cli_path": cli.relative_to(ROOT).as_posix() if cli.is_relative_to(ROOT) else cli.name,
+               "cli_sha256": cli_hash,
+               "freecad_version": ".".join(replay.App.Version()[:3]),
+               "cases_expected": len(CASES),
                "cases": results}
     encoded = json.dumps(payload, indent=2, sort_keys=True) + "\n"
-    if args.output:
-        args.output.parent.mkdir(parents=True, exist_ok=True)
-        args.output.write_text(encoded)
+    args.output.parent.mkdir(parents=True, exist_ok=True)
+    args.output.write_text(encoded)
     print(encoded, end="")
     if payload["status"] != "pass":
         raise SystemExit(1)

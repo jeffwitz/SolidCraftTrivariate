@@ -34,26 +34,6 @@ This verifies the transferred load/support job and equilibrium. It does not comp
 
 The default `FreeCAD.Shape.Volume` value for the imported candidate STEP is not used for acceptance. The piecewise rational B-spline boundary requires adaptive mass integration; the script preserves the default value only as a diagnostic in its raw shape summary. All reported acceptance volumes come from `occ-volume` on the exported BREP.
 
-## Reproduction
+## Current reproduction
 
-Run from the repository root after building the release CLI and with the FreeCAD Python environment and `occ-volume` binary available. The independent host export for each case must already be present under `build/solidcraft-bridge/<case>/host.step`. The supported case IDs are `x40-y80 x50-y74 x51-y74 x64-y64 x80-y40`:
-
-```sh
-: "${FC_ENV:?Set FC_ENV to the FreeCAD Python environment}"
-: "${FC_BUILD:?Set FC_BUILD to the FreeCAD build containing lib and Mod/Part}"
-case_id=x64-y64
-host="build/solidcraft-bridge/$case_id"
-archive=build/fieldcraft-archive/fieldcraft-native
-unzip -oq docs/results/fieldcraft-replay/fieldcraft-native.zip -d build/fieldcraft-archive
-variant="$archive/variants/$case_id"
-LD_LIBRARY_PATH="$FC_BUILD/lib:$FC_ENV/lib" \
-PYTHONPATH="$FC_BUILD/lib:$FC_BUILD/Mod/Part" \
-  "$FC_ENV/bin/python" tests/references/fieldcraft_kernel_replay.py \
-  "$host/host.step" "$variant/$case_id.step" \
-  --output "build/fieldcraft-oracle/$case_id.json" \
-  --occ-volume build/solidcraft-bridge/occ-volume --fast \
-  --source-script "$archive/replay/inputs/$case_id.script.json" \
-  --candidate-recipe "$variant/$case_id.recipe.json"
-```
-
-Set `case_id` to the case being checked. BREP intermediates are written under `build/fieldcraft-oracle/C/` so concurrent runs cannot overwrite one another. Full run records and hashes are regenerated in `build/fieldcraft-oracle/`; that directory is build output, not a committed reference.
+Use the [current replay instructions](fieldcraft-replay/README.md) to generate the STEP from the sketch. The current compact partition has its own [STEP qualification](fieldcraft-compact.md). The table above describes the earlier 48-block experiment. Its exact inputs, binaries and reproduction instructions belong to the [historical revision](https://github.com/jeffwitz/SolidCraftTrivariate/tree/3e48ae3/docs/results/fieldcraft-replay).

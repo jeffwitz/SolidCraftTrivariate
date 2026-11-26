@@ -1,37 +1,37 @@
 [
   {
-    "audit": "data/bench-bracket-east-stack/audit.json?v=136136dd0562",
-    "description": "Two vertically separated bores occupy the east arm. Their cuts propagate through the bend and the opposite wing; the mid-height preset crosses the central level. The viewer renders the trivariate model; its linked STEP is the independently checked boundary reference.",
+    "audit": "data/bench-bracket-east-stack/audit.json?v=de6c4c0e6433",
+    "description": "Two vertically separated bores occupy the east arm. Their cuts propagate through the bend and the opposite wing; the mid-height preset crosses the central level. The linked STEP is exported from this same native model; independent benchmark checks are scoped separately in the audit.",
     "group": "Bracket cut propagation benchmark",
     "id": "bench-bracket-east-stack",
     "metrics": [
       {
-        "label": "Candidate blocks",
-        "value": "17"
+        "label": "Partition method",
+        "value": "propagated_isoparametric_cuts"
       },
       {
-        "label": "Reference blocks",
-        "value": "112"
+        "label": "Rust model blocks",
+        "value": 17
       },
       {
-        "label": "Candidate interfaces",
-        "value": "22"
+        "label": "Rust shared interfaces",
+        "value": 22
+      },
+      {
+        "label": "Sampled κ₂ max",
+        "value": "8.10291"
       },
       {
         "label": "Certified determinant lower bound",
-        "value": "21.3086 mm³"
+        "value": "21.308571 mm³"
       },
       {
-        "label": "Sampled maximum condition number",
-        "value": "8.103"
+        "label": "Benchmark material probes",
+        "value": "208 probes; 0 disagreements"
       },
       {
-        "label": "Independent material probes",
-        "value": "208 / 208; 0 disagreements"
-      },
-      {
-        "label": "STEP readback",
-        "value": "1 valid closed solid; analytic volume agrees"
+        "label": "Exact volume",
+        "value": "(34080 − 632π) mm³"
       }
     ],
     "model": "data/bench-bracket-east-stack/model.json?v=576cfd748595",
@@ -41,44 +41,44 @@
     },
     "source": "data/bench-bracket-east-stack/recipe.json?v=d6ee6efcdf5f",
     "sourceLabel": "Reproducible feature recipe (JSON)",
-    "step": "data/bench-bracket-east-stack/reference.step?v=84011020b6bf",
-    "stepLabel": "Independent closed-solid boundary (STEP)",
+    "step": "data/bench-bracket-east-stack/reference.step?v=61547447a8e5",
+    "stepLabel": "OCCT-checked boundary export (STEP)",
     "title": "Two-level east-arm stack",
     "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/propagated-bores.md"
   },
   {
-    "audit": "data/bench-bracket-original/audit.json?v=8b32f423643c",
-    "description": "The baseline 60 × 50 × 40 mm filleted L carries one through-bore in each arm. The mid-height cut passes through both bore axes. The viewer renders the trivariate model; its linked STEP is the independently checked boundary reference.",
+    "audit": "data/bench-bracket-original/audit.json?v=27112f352cde",
+    "description": "The baseline 60 × 50 × 40 mm filleted L carries one through-bore in each arm. The mid-height cut passes through both bore axes. The linked STEP is exported from this same native model; independent benchmark checks are scoped separately in the audit.",
     "group": "Bracket cut propagation benchmark",
     "id": "bench-bracket-original",
     "metrics": [
       {
-        "label": "Candidate blocks",
-        "value": "10"
+        "label": "Partition method",
+        "value": "four_sector_local_sweeps"
       },
       {
-        "label": "Reference blocks",
-        "value": "10"
+        "label": "Rust model blocks",
+        "value": 10
       },
       {
-        "label": "Candidate interfaces",
-        "value": "11"
+        "label": "Rust shared interfaces",
+        "value": 11
+      },
+      {
+        "label": "Sampled κ₂ max",
+        "value": "13.3333"
       },
       {
         "label": "Certified determinant lower bound",
-        "value": "67.7333 mm³"
+        "value": "67.733333 mm³"
       },
       {
-        "label": "Sampled maximum condition number",
-        "value": "13.33"
+        "label": "Benchmark material probes",
+        "value": "192 probes; 0 disagreements"
       },
       {
-        "label": "Independent material probes",
-        "value": "192 / 192; 0 disagreements"
-      },
-      {
-        "label": "STEP readback",
-        "value": "1 valid closed solid; analytic volume agrees"
+        "label": "Exact volume",
+        "value": "(34080 − 616π) mm³"
       }
     ],
     "model": "data/bench-bracket-original/model.json?v=7206ee7dd1be",
@@ -88,44 +88,44 @@
     },
     "source": "data/bench-bracket-original/recipe.json?v=1a574737d5f1",
     "sourceLabel": "Reproducible feature recipe (JSON)",
-    "step": "data/bench-bracket-original/reference.step?v=a156aee2bdef",
-    "stepLabel": "Independent closed-solid boundary (STEP)",
+    "step": "data/bench-bracket-original/reference.step?v=64dfd3f2e841",
+    "stepLabel": "OCCT-checked boundary export (STEP)",
     "title": "Original two-bore bracket",
     "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/propagated-bores.md"
   },
   {
-    "audit": "data/bench-bracket-in-plane/audit.json?v=4ffb605a238c",
-    "description": "A third bore lies in the same arm plane as the original east-arm bore. This control retains the uncoupled local partition. The viewer renders the trivariate model; its linked STEP is the independently checked boundary reference.",
+    "audit": "data/bench-bracket-in-plane/audit.json?v=7bdb966067c7",
+    "description": "A third bore lies in the same arm plane as the original east-arm bore. This control retains the uncoupled local partition. The linked STEP is exported from this same native model; independent benchmark checks are scoped separately in the audit.",
     "group": "Bracket cut propagation benchmark",
     "id": "bench-bracket-in-plane",
     "metrics": [
       {
-        "label": "Candidate blocks",
-        "value": "14"
+        "label": "Partition method",
+        "value": "four_sector_local_sweeps"
       },
       {
-        "label": "Reference blocks",
-        "value": "14"
+        "label": "Rust model blocks",
+        "value": 14
       },
       {
-        "label": "Candidate interfaces",
-        "value": "16"
+        "label": "Rust shared interfaces",
+        "value": 16
+      },
+      {
+        "label": "Sampled κ₂ max",
+        "value": "13.3333"
       },
       {
         "label": "Certified determinant lower bound",
-        "value": "2.10286 mm³"
+        "value": "2.1028571 mm³"
       },
       {
-        "label": "Sampled maximum condition number",
-        "value": "13.33"
+        "label": "Benchmark material probes",
+        "value": "208 probes; 0 disagreements"
       },
       {
-        "label": "Independent material probes",
-        "value": "208 / 208; 0 disagreements"
-      },
-      {
-        "label": "STEP readback",
-        "value": "1 valid closed solid; analytic volume agrees"
+        "label": "Exact volume",
+        "value": "(34080 − 648π) mm³"
       }
     ],
     "model": "data/bench-bracket-in-plane/model.json?v=940e32978a93",
@@ -135,44 +135,44 @@
     },
     "source": "data/bench-bracket-in-plane/recipe.json?v=899b692ed318",
     "sourceLabel": "Reproducible feature recipe (JSON)",
-    "step": "data/bench-bracket-in-plane/reference.step?v=c8e54d73b304",
-    "stepLabel": "Independent closed-solid boundary (STEP)",
+    "step": "data/bench-bracket-in-plane/reference.step?v=205000d1e56e",
+    "stepLabel": "OCCT-checked boundary export (STEP)",
     "title": "Two coplanar bores in one wing",
     "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/propagated-bores.md"
   },
   {
-    "audit": "data/bench-bracket-north-stack/audit.json?v=4180da20c4f4",
-    "description": "The two-level stack is rotated into the north arm. It checks propagation when the host arm changes. The viewer renders the trivariate model; its linked STEP is the independently checked boundary reference.",
+    "audit": "data/bench-bracket-north-stack/audit.json?v=3f93994333cb",
+    "description": "The two-level stack is rotated into the north arm. It checks propagation when the host arm changes. The linked STEP is exported from this same native model; independent benchmark checks are scoped separately in the audit.",
     "group": "Bracket cut propagation benchmark",
     "id": "bench-bracket-north-stack",
     "metrics": [
       {
-        "label": "Candidate blocks",
-        "value": "17"
+        "label": "Partition method",
+        "value": "propagated_isoparametric_cuts"
       },
       {
-        "label": "Reference blocks",
-        "value": "112"
+        "label": "Rust model blocks",
+        "value": 17
       },
       {
-        "label": "Candidate interfaces",
-        "value": "22"
+        "label": "Rust shared interfaces",
+        "value": 22
+      },
+      {
+        "label": "Sampled κ₂ max",
+        "value": "8.83397"
       },
       {
         "label": "Certified determinant lower bound",
-        "value": "14.6571 mm³"
+        "value": "14.657143 mm³"
       },
       {
-        "label": "Sampled maximum condition number",
-        "value": "8.834"
+        "label": "Benchmark material probes",
+        "value": "208 probes; 0 disagreements"
       },
       {
-        "label": "Independent material probes",
-        "value": "208 / 208; 0 disagreements"
-      },
-      {
-        "label": "STEP readback",
-        "value": "1 valid closed solid; analytic volume agrees"
+        "label": "Exact volume",
+        "value": "(34080 − 632π) mm³"
       }
     ],
     "model": "data/bench-bracket-north-stack/model.json?v=93eef3974758",
@@ -182,44 +182,44 @@
     },
     "source": "data/bench-bracket-north-stack/recipe.json?v=94990b07adc2",
     "sourceLabel": "Reproducible feature recipe (JSON)",
-    "step": "data/bench-bracket-north-stack/reference.step?v=57e5b079bc54",
-    "stepLabel": "Independent closed-solid boundary (STEP)",
+    "step": "data/bench-bracket-north-stack/reference.step?v=f7808fc3d301",
+    "stepLabel": "OCCT-checked boundary export (STEP)",
     "title": "Rotated two-level stack",
     "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/propagated-bores.md"
   },
   {
-    "audit": "data/bench-bracket-east-offset-stack/audit.json?v=0d218bbc07fa",
-    "description": "Two offset bores in the east arm require a propagated cut layout. The historical reference refused this valid placement. The viewer renders the trivariate model; its linked STEP is the independently checked boundary reference.",
+    "audit": "data/bench-bracket-east-offset-stack/audit.json?v=7de94e533e9b",
+    "description": "Two offset bores in the east arm require a propagated cut layout. The historical reference refused this valid placement. The linked STEP is exported from this same native model; independent benchmark checks are scoped separately in the audit.",
     "group": "Bracket cut propagation benchmark",
     "id": "bench-bracket-east-offset-stack",
     "metrics": [
       {
-        "label": "Candidate blocks",
-        "value": "17"
+        "label": "Partition method",
+        "value": "propagated_isoparametric_cuts"
       },
       {
-        "label": "Reference blocks",
-        "value": "Refused"
+        "label": "Rust model blocks",
+        "value": 17
       },
       {
-        "label": "Candidate interfaces",
-        "value": "22"
+        "label": "Rust shared interfaces",
+        "value": 22
+      },
+      {
+        "label": "Sampled κ₂ max",
+        "value": "10.7662"
       },
       {
         "label": "Certified determinant lower bound",
-        "value": "8.68571 mm³"
+        "value": "8.6857143 mm³"
       },
       {
-        "label": "Sampled maximum condition number",
-        "value": "10.77"
+        "label": "Benchmark material probes",
+        "value": "208 probes; 0 disagreements"
       },
       {
-        "label": "Independent material probes",
-        "value": "208 / 208; 0 disagreements"
-      },
-      {
-        "label": "STEP readback",
-        "value": "1 valid closed solid; analytic volume agrees"
+        "label": "Exact volume",
+        "value": "(34080 − 688π) mm³"
       }
     ],
     "model": "data/bench-bracket-east-offset-stack/model.json?v=401f58728dc5",
@@ -229,44 +229,44 @@
     },
     "source": "data/bench-bracket-east-offset-stack/recipe.json?v=f65a7a5e8f4a",
     "sourceLabel": "Reproducible feature recipe (JSON)",
-    "step": "data/bench-bracket-east-offset-stack/reference.step?v=b38a126e02d1",
-    "stepLabel": "Independent closed-solid boundary (STEP)",
+    "step": "data/bench-bracket-east-offset-stack/reference.step?v=4d8ba3f229bd",
+    "stepLabel": "OCCT-checked boundary export (STEP)",
     "title": "Offset east-arm stack",
     "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/propagated-bores.md"
   },
   {
-    "audit": "data/bench-bracket-diagonal/audit.json?v=deacd560e987",
-    "description": "The two bores occupy different positions and elevations. The local-host construction keeps the separator inside its wing. The viewer renders the trivariate model; its linked STEP is the independently checked boundary reference.",
+    "audit": "data/bench-bracket-diagonal/audit.json?v=58b2df2a0120",
+    "description": "The two bores occupy different positions and elevations. The local-host construction keeps the separator inside its wing. The linked STEP is exported from this same native model; independent benchmark checks are scoped separately in the audit.",
     "group": "Bracket cut propagation benchmark",
     "id": "bench-bracket-diagonal",
     "metrics": [
       {
-        "label": "Candidate blocks",
-        "value": "14"
+        "label": "Partition method",
+        "value": "local_bore_hosts"
       },
       {
-        "label": "Reference blocks",
-        "value": "142"
+        "label": "Rust model blocks",
+        "value": 14
       },
       {
-        "label": "Candidate interfaces",
-        "value": "16"
+        "label": "Rust shared interfaces",
+        "value": 16
+      },
+      {
+        "label": "Sampled κ₂ max",
+        "value": "13.3333"
       },
       {
         "label": "Certified determinant lower bound",
-        "value": "6.51429 mm³"
+        "value": "6.5142857 mm³"
       },
       {
-        "label": "Sampled maximum condition number",
-        "value": "13.33"
+        "label": "Benchmark material probes",
+        "value": "208 probes; 0 disagreements"
       },
       {
-        "label": "Independent material probes",
-        "value": "208 / 208; 0 disagreements"
-      },
-      {
-        "label": "STEP readback",
-        "value": "1 valid closed solid; analytic volume agrees"
+        "label": "Exact volume",
+        "value": "(34080 − 632π) mm³"
       }
     ],
     "model": "data/bench-bracket-diagonal/model.json?v=ca500cc591ef",
@@ -276,44 +276,44 @@
     },
     "source": "data/bench-bracket-diagonal/recipe.json?v=1e76c361e351",
     "sourceLabel": "Reproducible feature recipe (JSON)",
-    "step": "data/bench-bracket-diagonal/reference.step?v=f27477ecec3c",
-    "stepLabel": "Independent closed-solid boundary (STEP)",
+    "step": "data/bench-bracket-diagonal/reference.step?v=17ec17697c29",
+    "stepLabel": "OCCT-checked boundary export (STEP)",
     "title": "Diagonal pair of bores",
     "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/propagated-bores.md"
   },
   {
-    "audit": "data/bench-bracket-three-levels/audit.json?v=cc73669f3756",
-    "description": "Three separated bore levels in one arm induce six closure cuts. The mid-height preset crosses the central bore. The viewer renders the trivariate model; its linked STEP is the independently checked boundary reference.",
+    "audit": "data/bench-bracket-three-levels/audit.json?v=41ce29e5a73a",
+    "description": "Three separated bore levels in one arm induce six closure cuts. The mid-height preset crosses the central bore. The linked STEP is exported from this same native model; independent benchmark checks are scoped separately in the audit.",
     "group": "Bracket cut propagation benchmark",
     "id": "bench-bracket-three-levels",
     "metrics": [
       {
-        "label": "Candidate blocks",
-        "value": "24"
+        "label": "Partition method",
+        "value": "propagated_isoparametric_cuts"
       },
       {
-        "label": "Reference blocks",
-        "value": "Refused"
+        "label": "Rust model blocks",
+        "value": 24
       },
       {
-        "label": "Candidate interfaces",
-        "value": "33"
+        "label": "Rust shared interfaces",
+        "value": 33
+      },
+      {
+        "label": "Sampled κ₂ max",
+        "value": "11.4854"
       },
       {
         "label": "Certified determinant lower bound",
-        "value": "4.38857 mm³"
+        "value": "4.3885714 mm³"
       },
       {
-        "label": "Sampled maximum condition number",
-        "value": "11.49"
+        "label": "Benchmark material probes",
+        "value": "224 probes; 0 disagreements"
       },
       {
-        "label": "Independent material probes",
-        "value": "224 / 224; 0 disagreements"
-      },
-      {
-        "label": "STEP readback",
-        "value": "1 valid closed solid; analytic volume agrees"
+        "label": "Exact volume",
+        "value": "(34080 − 584π) mm³"
       }
     ],
     "model": "data/bench-bracket-three-levels/model.json?v=ab59e398902d",
@@ -323,44 +323,44 @@
     },
     "source": "data/bench-bracket-three-levels/recipe.json?v=f6fb8d9ab8bf",
     "sourceLabel": "Reproducible feature recipe (JSON)",
-    "step": "data/bench-bracket-three-levels/reference.step?v=77ac01ac81ff",
-    "stepLabel": "Independent closed-solid boundary (STEP)",
+    "step": "data/bench-bracket-three-levels/reference.step?v=d6bb550f6857",
+    "stepLabel": "OCCT-checked boundary export (STEP)",
     "title": "Three bore elevations",
     "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/propagated-bores.md"
   },
   {
-    "audit": "data/bench-bracket-both-stacked/audit.json?v=457a358016a4",
-    "description": "Each arm carries a two-level bore stack. The shared bend must close both propagated cut requests. The viewer renders the trivariate model; its linked STEP is the independently checked boundary reference.",
+    "audit": "data/bench-bracket-both-stacked/audit.json?v=b667710537b8",
+    "description": "Each arm carries a two-level bore stack. The shared bend must close both propagated cut requests. The linked STEP is exported from this same native model; independent benchmark checks are scoped separately in the audit.",
     "group": "Bracket cut propagation benchmark",
     "id": "bench-bracket-both-stacked",
     "metrics": [
       {
-        "label": "Candidate blocks",
-        "value": "20"
+        "label": "Partition method",
+        "value": "propagated_isoparametric_cuts"
       },
       {
-        "label": "Reference blocks",
-        "value": "Refused"
+        "label": "Rust model blocks",
+        "value": 20
       },
       {
-        "label": "Candidate interfaces",
-        "value": "26"
+        "label": "Rust shared interfaces",
+        "value": 26
+      },
+      {
+        "label": "Sampled κ₂ max",
+        "value": "8.10291"
       },
       {
         "label": "Certified determinant lower bound",
-        "value": "14.6571 mm³"
+        "value": "14.657143 mm³"
       },
       {
-        "label": "Sampled maximum condition number",
-        "value": "8.103"
+        "label": "Benchmark material probes",
+        "value": "224 probes; 0 disagreements"
       },
       {
-        "label": "Independent material probes",
-        "value": "224 / 224; 0 disagreements"
-      },
-      {
-        "label": "STEP readback",
-        "value": "1 valid closed solid; analytic volume agrees"
+        "label": "Exact volume",
+        "value": "(34080 − 648π) mm³"
       }
     ],
     "model": "data/bench-bracket-both-stacked/model.json?v=c31329a2acb0",
@@ -370,44 +370,44 @@
     },
     "source": "data/bench-bracket-both-stacked/recipe.json?v=4ccbfc5f4304",
     "sourceLabel": "Reproducible feature recipe (JSON)",
-    "step": "data/bench-bracket-both-stacked/reference.step?v=f6afbcf45463",
-    "stepLabel": "Independent closed-solid boundary (STEP)",
+    "step": "data/bench-bracket-both-stacked/reference.step?v=f82d5600c9f2",
+    "stepLabel": "OCCT-checked boundary export (STEP)",
     "title": "Stacks in both bracket arms",
     "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/propagated-bores.md"
   },
   {
-    "audit": "data/bench-bracket-axial-z/audit.json?v=d8de645c2593",
-    "description": "A bore along the bracket height intersects the two arm bores. The mid-height cut crosses the axial bore. The viewer renders the trivariate model; its linked STEP is the independently checked boundary reference.",
+    "audit": "data/bench-bracket-axial-z/audit.json?v=982075a60c72",
+    "description": "A bore along the bracket height intersects the two arm bores. The mid-height cut crosses the axial bore. The linked STEP is exported from this same native model; independent benchmark checks are scoped separately in the audit.",
     "group": "Bracket cut propagation benchmark",
     "id": "bench-bracket-axial-z",
     "metrics": [
       {
-        "label": "Candidate blocks",
-        "value": "39"
+        "label": "Partition method",
+        "value": "propagated_isoparametric_cuts"
       },
       {
-        "label": "Reference blocks",
-        "value": "Refused"
+        "label": "Rust model blocks",
+        "value": 39
       },
       {
-        "label": "Candidate interfaces",
-        "value": "63"
+        "label": "Rust shared interfaces",
+        "value": 63
+      },
+      {
+        "label": "Sampled κ₂ max",
+        "value": "12.8084"
       },
       {
         "label": "Certified determinant lower bound",
-        "value": "5.68857 mm³"
+        "value": "5.6885714 mm³"
       },
       {
-        "label": "Sampled maximum condition number",
-        "value": "12.81"
+        "label": "Benchmark material probes",
+        "value": "208 probes; 0 disagreements"
       },
       {
-        "label": "Independent material probes",
-        "value": "208 / 208; 0 disagreements"
-      },
-      {
-        "label": "STEP readback",
-        "value": "1 valid closed solid; analytic volume agrees"
+        "label": "Exact volume",
+        "value": "(34080 − 776π) mm³"
       }
     ],
     "model": "data/bench-bracket-axial-z/model.json?v=9dee0a575d3a",
@@ -417,44 +417,44 @@
     },
     "source": "data/bench-bracket-axial-z/recipe.json?v=ef58c49b252c",
     "sourceLabel": "Reproducible feature recipe (JSON)",
-    "step": "data/bench-bracket-axial-z/reference.step?v=801b8b4b0730",
-    "stepLabel": "Independent closed-solid boundary (STEP)",
+    "step": "data/bench-bracket-axial-z/reference.step?v=8f6f2278cee2",
+    "stepLabel": "OCCT-checked boundary export (STEP)",
     "title": "Axial bore with transverse bores",
     "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/propagated-bores.md"
   },
   {
-    "audit": "data/bench-bracket-unequal-stack/audit.json?v=b0641e41d5ce",
-    "description": "The 12 mm and 20 mm arms carry a two-level stack. This checks cut propagation with a rectangular bend chart. The viewer renders the trivariate model; its linked STEP is the independently checked boundary reference.",
+    "audit": "data/bench-bracket-unequal-stack/audit.json?v=5fceb10993ea",
+    "description": "The 12 mm and 20 mm arms carry a two-level stack. This checks cut propagation with a rectangular bend chart. The linked STEP is exported from this same native model; independent benchmark checks are scoped separately in the audit.",
     "group": "Bracket cut propagation benchmark",
     "id": "bench-bracket-unequal-stack",
     "metrics": [
       {
-        "label": "Candidate blocks",
-        "value": "17"
+        "label": "Partition method",
+        "value": "propagated_isoparametric_cuts"
       },
       {
-        "label": "Reference blocks",
-        "value": "112"
+        "label": "Rust model blocks",
+        "value": 17
       },
       {
-        "label": "Candidate interfaces",
-        "value": "22"
+        "label": "Rust shared interfaces",
+        "value": 22
+      },
+      {
+        "label": "Sampled κ₂ max",
+        "value": "7.40684"
       },
       {
         "label": "Certified determinant lower bound",
-        "value": "21.8571 mm³"
+        "value": "21.857143 mm³"
       },
       {
-        "label": "Sampled maximum condition number",
-        "value": "7.407"
+        "label": "Benchmark material probes",
+        "value": "208 probes; 0 disagreements"
       },
       {
-        "label": "Independent material probes",
-        "value": "208 / 208; 0 disagreements"
-      },
-      {
-        "label": "STEP readback",
-        "value": "1 valid closed solid; analytic volume agrees"
+        "label": "Exact volume",
+        "value": "(40800 − 696π) mm³"
       }
     ],
     "model": "data/bench-bracket-unequal-stack/model.json?v=55969954a508",
@@ -464,44 +464,40 @@
     },
     "source": "data/bench-bracket-unequal-stack/recipe.json?v=d73eff6c9d2f",
     "sourceLabel": "Reproducible feature recipe (JSON)",
-    "step": "data/bench-bracket-unequal-stack/reference.step?v=cab27e78f34d",
-    "stepLabel": "Independent closed-solid boundary (STEP)",
+    "step": "data/bench-bracket-unequal-stack/reference.step?v=8177b04eab4d",
+    "stepLabel": "OCCT-checked boundary export (STEP)",
     "title": "Unequal-width bracket stack",
     "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/propagated-bores.md"
   },
   {
-    "audit": "data/bench-bracket-unequal-transverse-bores/audit.json?v=050f27dae85d",
-    "description": "A 12 mm × 20 mm unequal-width filleted L bracket with an R4 bend and two orthogonal R2 through-bores. The mid-height cut crosses both bore axes. The viewer renders the trivariate model; its linked STEP is the independently checked boundary reference.",
+    "audit": "data/bench-bracket-unequal-transverse-bores/audit.json?v=58e0ad0db0a3",
+    "description": "A 12 mm × 20 mm unequal-width filleted L bracket with an R4 bend and two orthogonal R2 through-bores. The mid-height cut crosses both bore axes. The linked STEP is exported from this same native model; independent benchmark checks are scoped separately in the audit.",
     "group": "Bracket cut propagation benchmark",
     "id": "bench-bracket-unequal-transverse-bores",
     "metrics": [
       {
-        "label": "Candidate blocks",
-        "value": "10"
+        "label": "Partition method",
+        "value": "local_bore_hosts"
       },
       {
-        "label": "Historical reference blocks",
-        "value": "48"
+        "label": "Rust model blocks",
+        "value": 10
       },
       {
-        "label": "Candidate interfaces",
-        "value": "11"
+        "label": "Rust shared interfaces",
+        "value": 11
       },
       {
-        "label": "Historical reference interfaces",
-        "value": "74"
+        "label": "Sampled κ₂ max",
+        "value": "21.2534"
       },
       {
         "label": "Certified determinant lower bound",
-        "value": "12.3214 mm³"
+        "value": "12.321429 mm³"
       },
       {
-        "label": "STEP readback",
-        "value": "1 valid closed solid, 1 shell, 38 faces"
-      },
-      {
-        "label": "Volume",
-        "value": "30 912 − 176π mm³; relative error 4.79 × 10⁻¹⁶"
+        "label": "Exact volume",
+        "value": "(30912 − 176π) mm³"
       }
     ],
     "model": "data/bench-bracket-unequal-transverse-bores/model.json?v=60aba12ab256",
@@ -511,35 +507,43 @@
     },
     "source": "data/bench-bracket-unequal-transverse-bores/recipe.json?v=f226b982c819",
     "sourceLabel": "Feature recipe (JSON)",
-    "step": "data/bench-bracket-unequal-transverse-bores/reference.step?v=5ac1619fbf5e",
-    "stepLabel": "Independent closed-solid boundary (STEP)",
+    "step": "data/bench-bracket-unequal-transverse-bores/reference.step?v=2e115119fc46",
+    "stepLabel": "OCCT-checked boundary export (STEP)",
     "title": "Unequal-width bracket with two transverse bores",
     "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/propagated-bores.md"
   },
   {
     "id": "bench_poly_through_diamond_center",
     "title": "Through diamond center",
-    "description": "Convex through holes; 1 hole. Exact-rational geometry checks passed for both paired executables.",
+    "description": "Latest tracked Rust release: separated_convex_quad_rings, 6 blocks and 6 shared interfaces. Exact layer coverage and the closed-domain determinant certificate passed. The 5×5×5 Jacobian condition sample is a diagnostic, not a continuous bound.",
     "source": "data/bench-poly-through_diamond_center/bench_poly_through_diamond_center.recipe.json?v=715925020ceb",
-    "model": "data/bench-poly-through_diamond_center/bench_poly_through_diamond_center.model.json?v=c7d0ac0a33fa",
-    "audit": "data/bench-poly-through_diamond_center/bench_poly_through_diamond_center.audit.json?v=5e97b8b520e8",
-    "step": "data/bench-poly-through_diamond_center/bench_poly_through_diamond_center.step?v=697cbf6ec9a0",
+    "model": "data/bench-poly-through_diamond_center/bench_poly_through_diamond_center.model.json?v=db7be92d4979",
+    "audit": "data/bench-poly-through_diamond_center/bench_poly_through_diamond_center.audit.json?v=364c5f12837f",
+    "step": "data/bench-poly-through_diamond_center/bench_poly_through_diamond_center.step?v=2ef376b6107a",
     "metrics": [
       {
-        "label": "Blocks · baseline → candidate",
-        "value": "30 → 8"
-      },
-      {
         "label": "Partition method",
-        "value": "Radial convex partition"
+        "value": "separated_convex_quad_rings"
       },
       {
-        "label": "Sampled κ₂ max · baseline → candidate",
-        "value": "53.7 → 5.41"
+        "label": "Rust model blocks",
+        "value": 6
+      },
+      {
+        "label": "Rust shared interfaces",
+        "value": 6
+      },
+      {
+        "label": "Sampled κ₂ max",
+        "value": "4.18541"
+      },
+      {
+        "label": "Certified determinant lower bound",
+        "value": "1716 mm³"
       },
       {
         "label": "Exact volume",
-        "value": "31416/1 mm³"
+        "value": "31416 mm³"
       }
     ],
     "section": {
@@ -547,28 +551,37 @@
       "fraction": 0.5
     },
     "group": "Polygon benchmark · through-holes",
-    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/sketch-planner-polygon-evaluation/README.md"
+    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/sketch-planner-polygon-evaluation/README.md",
+    "stepLabel": "OCCT-checked boundary export (STEP)"
   },
   {
     "id": "bench_poly_through_hex_offset",
     "title": "Through hex offset",
-    "description": "Convex through holes; 1 hole. Exact-rational geometry checks passed for both paired executables.",
+    "description": "Latest tracked Rust release: separated_convex_quad_rings, 6 blocks and 6 shared interfaces. Exact layer coverage and the closed-domain determinant certificate passed. The 5×5×5 Jacobian condition sample is a diagnostic, not a continuous bound.",
     "source": "data/bench-poly-through_hex_offset/bench_poly_through_hex_offset.recipe.json?v=424819aa877b",
-    "model": "data/bench-poly-through_hex_offset/bench_poly_through_hex_offset.model.json?v=61b61e2bfc95",
-    "audit": "data/bench-poly-through_hex_offset/bench_poly_through_hex_offset.audit.json?v=f31b6c46528d",
-    "step": "data/bench-poly-through_hex_offset/bench_poly_through_hex_offset.step?v=0fe1aba52758",
+    "model": "data/bench-poly-through_hex_offset/bench_poly_through_hex_offset.model.json?v=74ab9695bb2c",
+    "audit": "data/bench-poly-through_hex_offset/bench_poly_through_hex_offset.audit.json?v=c441b0e24f74",
+    "step": "data/bench-poly-through_hex_offset/bench_poly_through_hex_offset.step?v=c6c8ec0a8cc0",
     "metrics": [
       {
-        "label": "Blocks · baseline → candidate",
-        "value": "6 → 6"
-      },
-      {
         "label": "Partition method",
-        "value": "Rectangular hosts · X"
+        "value": "separated_convex_quad_rings"
       },
       {
-        "label": "Sampled κ₂ max · baseline → candidate",
-        "value": "28.1 → 28.1"
+        "label": "Rust model blocks",
+        "value": 6
+      },
+      {
+        "label": "Rust shared interfaces",
+        "value": 6
+      },
+      {
+        "label": "Sampled κ₂ max",
+        "value": "10.9477"
+      },
+      {
+        "label": "Certified determinant lower bound",
+        "value": "930 mm³"
       },
       {
         "label": "Exact volume",
@@ -580,28 +593,37 @@
       "fraction": 0.5
     },
     "group": "Polygon benchmark · through-holes",
-    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/sketch-planner-polygon-evaluation/README.md"
+    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/sketch-planner-polygon-evaluation/README.md",
+    "stepLabel": "OCCT-checked boundary export (STEP)"
   },
   {
     "id": "bench_poly_through_pentagon_tight_clearance",
     "title": "Through pentagon tight clearance",
-    "description": "Convex through holes; 1 hole. Exact-rational geometry checks passed for both paired executables.",
+    "description": "Latest tracked Rust release: separated_convex_quad_rings, 6 blocks and 6 shared interfaces. Exact layer coverage and the closed-domain determinant certificate passed. The 5×5×5 Jacobian condition sample is a diagnostic, not a continuous bound.",
     "source": "data/bench-poly-through_pentagon_tight_clearance/bench_poly_through_pentagon_tight_clearance.recipe.json?v=c437db02c7b5",
-    "model": "data/bench-poly-through_pentagon_tight_clearance/bench_poly_through_pentagon_tight_clearance.model.json?v=f256f43e622f",
-    "audit": "data/bench-poly-through_pentagon_tight_clearance/bench_poly_through_pentagon_tight_clearance.audit.json?v=7bb20d5a4b95",
-    "step": "data/bench-poly-through_pentagon_tight_clearance/bench_poly_through_pentagon_tight_clearance.step?v=21d3df3d98ba",
+    "model": "data/bench-poly-through_pentagon_tight_clearance/bench_poly_through_pentagon_tight_clearance.model.json?v=c62ed55d83bd",
+    "audit": "data/bench-poly-through_pentagon_tight_clearance/bench_poly_through_pentagon_tight_clearance.audit.json?v=d3e48c00527d",
+    "step": "data/bench-poly-through_pentagon_tight_clearance/bench_poly_through_pentagon_tight_clearance.step?v=d13b2b906afb",
     "metrics": [
       {
-        "label": "Blocks · baseline → candidate",
-        "value": "51 → 9"
-      },
-      {
         "label": "Partition method",
-        "value": "Radial convex partition"
+        "value": "separated_convex_quad_rings"
       },
       {
-        "label": "Sampled κ₂ max · baseline → candidate",
-        "value": "84.8 → 7.45"
+        "label": "Rust model blocks",
+        "value": 6
+      },
+      {
+        "label": "Rust shared interfaces",
+        "value": 6
+      },
+      {
+        "label": "Sampled κ₂ max",
+        "value": "8.81842"
+      },
+      {
+        "label": "Certified determinant lower bound",
+        "value": "99 mm³"
       },
       {
         "label": "Exact volume",
@@ -613,32 +635,41 @@
       "fraction": 0.5
     },
     "group": "Polygon benchmark · through-holes",
-    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/sketch-planner-polygon-evaluation/README.md"
+    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/sketch-planner-polygon-evaluation/README.md",
+    "stepLabel": "OCCT-checked boundary export (STEP)"
   },
   {
     "id": "bench_poly_through_two_rectangles",
     "title": "Through two rectangles",
-    "description": "Convex through holes; 2 holes. Exact-rational geometry checks passed for both paired executables.",
+    "description": "Latest tracked Rust release: rectangular_hosts_x, 8 blocks and 9 shared interfaces. Exact layer coverage and the closed-domain determinant certificate passed. The 5×5×5 Jacobian condition sample is a diagnostic, not a continuous bound.",
     "source": "data/bench-poly-through_two_rectangles/bench_poly_through_two_rectangles.recipe.json?v=0b28612f0690",
     "model": "data/bench-poly-through_two_rectangles/bench_poly_through_two_rectangles.model.json?v=2fb7560c49e3",
-    "audit": "data/bench-poly-through_two_rectangles/bench_poly_through_two_rectangles.audit.json?v=12183bbcc59f",
-    "step": "data/bench-poly-through_two_rectangles/bench_poly_through_two_rectangles.step?v=756fbfe1a34f",
+    "audit": "data/bench-poly-through_two_rectangles/bench_poly_through_two_rectangles.audit.json?v=3c33bc03a1e0",
+    "step": "data/bench-poly-through_two_rectangles/bench_poly_through_two_rectangles.step?v=fe69902a2c37",
     "metrics": [
       {
-        "label": "Blocks · baseline → candidate",
-        "value": "8 → 8"
-      },
-      {
         "label": "Partition method",
-        "value": "Rectangular hosts · X"
+        "value": "rectangular_hosts_x"
       },
       {
-        "label": "Sampled κ₂ max · baseline → candidate",
-        "value": "4.48 → 4.48"
+        "label": "Rust model blocks",
+        "value": 8
+      },
+      {
+        "label": "Rust shared interfaces",
+        "value": 9
+      },
+      {
+        "label": "Sampled κ₂ max",
+        "value": "4.48307"
+      },
+      {
+        "label": "Certified determinant lower bound",
+        "value": "2268 mm³"
       },
       {
         "label": "Exact volume",
-        "value": "51120/1 mm³"
+        "value": "51120 mm³"
       }
     ],
     "section": {
@@ -646,32 +677,41 @@
       "fraction": 0.5
     },
     "group": "Polygon benchmark · through-holes",
-    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/sketch-planner-polygon-evaluation/README.md"
+    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/sketch-planner-polygon-evaluation/README.md",
+    "stepLabel": "OCCT-checked boundary export (STEP)"
   },
   {
     "id": "bench_poly_through_octagon_high_aspect",
     "title": "Through octagon high aspect",
-    "description": "Convex through holes; 1 hole. Exact-rational geometry checks passed for both paired executables.",
+    "description": "Latest tracked Rust release: separated_convex_quad_rings, 8 blocks and 8 shared interfaces. Exact layer coverage and the closed-domain determinant certificate passed. The 5×5×5 Jacobian condition sample is a diagnostic, not a continuous bound.",
     "source": "data/bench-poly-through_octagon_high_aspect/bench_poly_through_octagon_high_aspect.recipe.json?v=bf533fea425c",
-    "model": "data/bench-poly-through_octagon_high_aspect/bench_poly_through_octagon_high_aspect.model.json?v=a0481c96bbbe",
-    "audit": "data/bench-poly-through_octagon_high_aspect/bench_poly_through_octagon_high_aspect.audit.json?v=ee887efbeab6",
-    "step": "data/bench-poly-through_octagon_high_aspect/bench_poly_through_octagon_high_aspect.step?v=12e2bd4e2bc1",
+    "model": "data/bench-poly-through_octagon_high_aspect/bench_poly_through_octagon_high_aspect.model.json?v=a731b4e34798",
+    "audit": "data/bench-poly-through_octagon_high_aspect/bench_poly_through_octagon_high_aspect.audit.json?v=08fea1340734",
+    "step": "data/bench-poly-through_octagon_high_aspect/bench_poly_through_octagon_high_aspect.step?v=7690a208fccf",
     "metrics": [
       {
-        "label": "Blocks · baseline → candidate",
-        "value": "48 → 8"
-      },
-      {
         "label": "Partition method",
-        "value": "Convex host separators"
+        "value": "separated_convex_quad_rings"
       },
       {
-        "label": "Sampled κ₂ max · baseline → candidate",
-        "value": "85.4 → 36"
+        "label": "Rust model blocks",
+        "value": 8
+      },
+      {
+        "label": "Rust shared interfaces",
+        "value": 8
+      },
+      {
+        "label": "Sampled κ₂ max",
+        "value": "8.77327"
+      },
+      {
+        "label": "Certified determinant lower bound",
+        "value": "290 mm³"
       },
       {
         "label": "Exact volume",
-        "value": "25440/1 mm³"
+        "value": "25440 mm³"
       }
     ],
     "section": {
@@ -679,32 +719,41 @@
       "fraction": 0.5
     },
     "group": "Polygon benchmark · through-holes",
-    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/sketch-planner-polygon-evaluation/README.md"
+    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/sketch-planner-polygon-evaluation/README.md",
+    "stepLabel": "OCCT-checked boundary export (STEP)"
   },
   {
     "id": "bench_poly_blind_rotated_quad",
     "title": "Blind rotated quad",
-    "description": "Convex blind pockets; 1 pocket/profile. Exact-rational geometry checks passed for both paired executables.",
+    "description": "Latest tracked Rust release: separated_convex_quad_rings, 11 blocks and 19 shared interfaces. Exact layer coverage and the closed-domain determinant certificate passed. The 5×5×5 Jacobian condition sample is a diagnostic, not a continuous bound.",
     "source": "data/bench-poly-blind_rotated_quad/bench_poly_blind_rotated_quad.recipe.json?v=a3c5e06690d9",
-    "model": "data/bench-poly-blind_rotated_quad/bench_poly_blind_rotated_quad.model.json?v=401d1185f36c",
-    "audit": "data/bench-poly-blind_rotated_quad/bench_poly_blind_rotated_quad.audit.json?v=6258b9f9081b",
-    "step": "data/bench-poly-blind_rotated_quad/bench_poly_blind_rotated_quad.step?v=5d4aa71855a9",
+    "model": "data/bench-poly-blind_rotated_quad/bench_poly_blind_rotated_quad.model.json?v=376b780848a5",
+    "audit": "data/bench-poly-blind_rotated_quad/bench_poly_blind_rotated_quad.audit.json?v=f4d6bfc7c077",
+    "step": "data/bench-poly-blind_rotated_quad/bench_poly_blind_rotated_quad.step?v=bb14edccc394",
     "metrics": [
       {
-        "label": "Blocks · baseline → candidate",
-        "value": "96 → 56"
-      },
-      {
         "label": "Partition method",
-        "value": "Radial convex partition"
+        "value": "separated_convex_quad_rings"
       },
       {
-        "label": "Sampled κ₂ max · baseline → candidate",
-        "value": "805 → 36"
+        "label": "Rust model blocks",
+        "value": 11
+      },
+      {
+        "label": "Rust shared interfaces",
+        "value": 19
+      },
+      {
+        "label": "Sampled κ₂ max",
+        "value": "52.0192"
+      },
+      {
+        "label": "Certified determinant lower bound",
+        "value": "28 mm³"
       },
       {
         "label": "Exact volume",
-        "value": "54948/1 mm³"
+        "value": "54948 mm³"
       }
     ],
     "section": {
@@ -712,32 +761,41 @@
       "fraction": 0.5
     },
     "group": "Polygon benchmark · blind pockets",
-    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/sketch-planner-polygon-evaluation/README.md"
+    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/sketch-planner-polygon-evaluation/README.md",
+    "stepLabel": "OCCT-checked boundary export (STEP)"
   },
   {
     "id": "bench_poly_blind_triangle_shallow",
     "title": "Blind triangle shallow",
-    "description": "Convex blind pockets; 1 pocket/profile. Exact-rational geometry checks passed for both paired executables.",
+    "description": "Latest tracked Rust release: separated_convex_quad_rings, 15 blocks and 27 shared interfaces. Exact layer coverage and the closed-domain determinant certificate passed. The 5×5×5 Jacobian condition sample is a diagnostic, not a continuous bound.",
     "source": "data/bench-poly-blind_triangle_shallow/bench_poly_blind_triangle_shallow.recipe.json?v=c06e28c2b9e4",
-    "model": "data/bench-poly-blind_triangle_shallow/bench_poly_blind_triangle_shallow.model.json?v=a7ee9ccd6f78",
-    "audit": "data/bench-poly-blind_triangle_shallow/bench_poly_blind_triangle_shallow.audit.json?v=bb8fdba5657e",
-    "step": "data/bench-poly-blind_triangle_shallow/bench_poly_blind_triangle_shallow.step?v=6c84bb4218c0",
+    "model": "data/bench-poly-blind_triangle_shallow/bench_poly_blind_triangle_shallow.model.json?v=7e3cada3949f",
+    "audit": "data/bench-poly-blind_triangle_shallow/bench_poly_blind_triangle_shallow.audit.json?v=9567b023a1d4",
+    "step": "data/bench-poly-blind_triangle_shallow/bench_poly_blind_triangle_shallow.step?v=e90ac106c7ac",
     "metrics": [
       {
-        "label": "Blocks · baseline → candidate",
-        "value": "105 → 56"
-      },
-      {
         "label": "Partition method",
-        "value": "Radial convex partition"
+        "value": "separated_convex_quad_rings"
       },
       {
-        "label": "Sampled κ₂ max · baseline → candidate",
-        "value": "53.9 → 909"
+        "label": "Rust model blocks",
+        "value": 15
+      },
+      {
+        "label": "Rust shared interfaces",
+        "value": 27
+      },
+      {
+        "label": "Sampled κ₂ max",
+        "value": "12.5202"
+      },
+      {
+        "label": "Certified determinant lower bound",
+        "value": "164 mm³"
       },
       {
         "label": "Exact volume",
-        "value": "44592/1 mm³"
+        "value": "44592 mm³"
       }
     ],
     "section": {
@@ -745,32 +803,41 @@
       "fraction": 0.5
     },
     "group": "Polygon benchmark · blind pockets",
-    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/sketch-planner-polygon-evaluation/README.md"
+    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/sketch-planner-polygon-evaluation/README.md",
+    "stepLabel": "OCCT-checked boundary export (STEP)"
   },
   {
     "id": "bench_poly_blind_hex_deep",
     "title": "Blind hex deep",
-    "description": "Convex blind pockets; 1 pocket/profile. Exact-rational geometry checks passed for both paired executables.",
+    "description": "Latest tracked Rust release: separated_convex_quad_rings, 14 blocks and 25 shared interfaces. Exact layer coverage and the closed-domain determinant certificate passed. The 5×5×5 Jacobian condition sample is a diagnostic, not a continuous bound.",
     "source": "data/bench-poly-blind_hex_deep/bench_poly_blind_hex_deep.recipe.json?v=77d6b79fd77d",
-    "model": "data/bench-poly-blind_hex_deep/bench_poly_blind_hex_deep.model.json?v=e5c4b6fffffa",
-    "audit": "data/bench-poly-blind_hex_deep/bench_poly_blind_hex_deep.audit.json?v=5b78b2efca53",
-    "step": "data/bench-poly-blind_hex_deep/bench_poly_blind_hex_deep.step?v=783e2aed6e59",
+    "model": "data/bench-poly-blind_hex_deep/bench_poly_blind_hex_deep.model.json?v=6e262eca0429",
+    "audit": "data/bench-poly-blind_hex_deep/bench_poly_blind_hex_deep.audit.json?v=39c742f64220",
+    "step": "data/bench-poly-blind_hex_deep/bench_poly_blind_hex_deep.step?v=f36e3ae323a2",
     "metrics": [
       {
-        "label": "Blocks · baseline → candidate",
-        "value": "14 → 14"
-      },
-      {
         "label": "Partition method",
-        "value": "Rectangular hosts · Y"
+        "value": "separated_convex_quad_rings"
       },
       {
-        "label": "Sampled κ₂ max · baseline → candidate",
-        "value": "42.3 → 42.3"
+        "label": "Rust model blocks",
+        "value": 14
+      },
+      {
+        "label": "Rust shared interfaces",
+        "value": 25
+      },
+      {
+        "label": "Sampled κ₂ max",
+        "value": "25.7343"
+      },
+      {
+        "label": "Certified determinant lower bound",
+        "value": "272 mm³"
       },
       {
         "label": "Exact volume",
-        "value": "69084/1 mm³"
+        "value": "69084 mm³"
       }
     ],
     "section": {
@@ -778,32 +845,41 @@
       "fraction": 0.5
     },
     "group": "Polygon benchmark · blind pockets",
-    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/sketch-planner-polygon-evaluation/README.md"
+    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/sketch-planner-polygon-evaluation/README.md",
+    "stepLabel": "OCCT-checked boundary export (STEP)"
   },
   {
     "id": "bench_poly_blind_two_levels",
     "title": "Blind two levels",
-    "description": "Convex blind pockets; 2 pocket/profiles. Exact-rational geometry checks passed for both paired executables.",
+    "description": "Latest tracked Rust release: separated_convex_quad_rings, 36 blocks and 77 shared interfaces. Exact layer coverage and the closed-domain determinant certificate passed. The 5×5×5 Jacobian condition sample is a diagnostic, not a continuous bound.",
     "source": "data/bench-poly-blind_two_levels/bench_poly_blind_two_levels.recipe.json?v=aba3753fd686",
-    "model": "data/bench-poly-blind_two_levels/bench_poly_blind_two_levels.model.json?v=e9d28927a0ec",
-    "audit": "data/bench-poly-blind_two_levels/bench_poly_blind_two_levels.audit.json?v=94b98ad2295b",
-    "step": "data/bench-poly-blind_two_levels/bench_poly_blind_two_levels.step?v=3551aac640ea",
+    "model": "data/bench-poly-blind_two_levels/bench_poly_blind_two_levels.model.json?v=2a4337118b62",
+    "audit": "data/bench-poly-blind_two_levels/bench_poly_blind_two_levels.audit.json?v=5597e79e8f9c",
+    "step": "data/bench-poly-blind_two_levels/bench_poly_blind_two_levels.step?v=268a9bb5173f",
     "metrics": [
       {
-        "label": "Blocks · baseline → candidate",
-        "value": "36 → 36"
-      },
-      {
         "label": "Partition method",
-        "value": "Rectangular hosts · X"
+        "value": "separated_convex_quad_rings"
       },
       {
-        "label": "Sampled κ₂ max · baseline → candidate",
-        "value": "11.2 → 11.2"
+        "label": "Rust model blocks",
+        "value": 36
+      },
+      {
+        "label": "Rust shared interfaces",
+        "value": 77
+      },
+      {
+        "label": "Sampled κ₂ max",
+        "value": "11.2297"
+      },
+      {
+        "label": "Certified determinant lower bound",
+        "value": "720 mm³"
       },
       {
         "label": "Exact volume",
-        "value": "96720/1 mm³"
+        "value": "96720 mm³"
       }
     ],
     "section": {
@@ -811,32 +887,41 @@
       "fraction": 0.5
     },
     "group": "Polygon benchmark · blind pockets",
-    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/sketch-planner-polygon-evaluation/README.md"
+    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/sketch-planner-polygon-evaluation/README.md",
+    "stepLabel": "OCCT-checked boundary export (STEP)"
   },
   {
     "id": "bench_poly_blind_close_to_boundary",
     "title": "Blind close to boundary",
-    "description": "Convex blind pockets; 1 pocket/profile. Exact-rational geometry checks passed for both paired executables.",
+    "description": "Latest tracked Rust release: separated_convex_quad_rings, 11 blocks and 19 shared interfaces. Exact layer coverage and the closed-domain determinant certificate passed. The 5×5×5 Jacobian condition sample is a diagnostic, not a continuous bound.",
     "source": "data/bench-poly-blind_close_to_boundary/bench_poly_blind_close_to_boundary.recipe.json?v=7b9b339d4cbb",
-    "model": "data/bench-poly-blind_close_to_boundary/bench_poly_blind_close_to_boundary.model.json?v=df68c83aa143",
-    "audit": "data/bench-poly-blind_close_to_boundary/bench_poly_blind_close_to_boundary.audit.json?v=0c4742adf14f",
-    "step": "data/bench-poly-blind_close_to_boundary/bench_poly_blind_close_to_boundary.step?v=c877ab8d1004",
+    "model": "data/bench-poly-blind_close_to_boundary/bench_poly_blind_close_to_boundary.model.json?v=b08d641cb3aa",
+    "audit": "data/bench-poly-blind_close_to_boundary/bench_poly_blind_close_to_boundary.audit.json?v=7e4edaaa6bc7",
+    "step": "data/bench-poly-blind_close_to_boundary/bench_poly_blind_close_to_boundary.step?v=05ed27b12618",
     "metrics": [
       {
-        "label": "Blocks · baseline → candidate",
-        "value": "114 → 56"
-      },
-      {
         "label": "Partition method",
-        "value": "Radial convex partition"
+        "value": "separated_convex_quad_rings"
       },
       {
-        "label": "Sampled κ₂ max · baseline → candidate",
-        "value": "48.8 → 45.8"
+        "label": "Rust model blocks",
+        "value": 11
+      },
+      {
+        "label": "Rust shared interfaces",
+        "value": 19
+      },
+      {
+        "label": "Sampled κ₂ max",
+        "value": "12.8788"
+      },
+      {
+        "label": "Certified determinant lower bound",
+        "value": "121.5 mm³"
       },
       {
         "label": "Exact volume",
-        "value": "29240/1 mm³"
+        "value": "29240 mm³"
       }
     ],
     "section": {
@@ -844,32 +929,41 @@
       "fraction": 0.5
     },
     "group": "Polygon benchmark · blind pockets",
-    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/sketch-planner-polygon-evaluation/README.md"
+    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/sketch-planner-polygon-evaluation/README.md",
+    "stepLabel": "OCCT-checked boundary export (STEP)"
   },
   {
     "id": "bench_poly_concave_c_stock_two_holes",
     "title": "Concave c stock two holes",
-    "description": "Concave stock or cut; 2 pocket/profiles. Exact-rational geometry checks passed for both paired executables.",
+    "description": "Latest tracked Rust release: orthogonal_feature_footprint, 21 blocks and 24 shared interfaces. Exact layer coverage and the closed-domain determinant certificate passed. The 5×5×5 Jacobian condition sample is a diagnostic, not a continuous bound.",
     "source": "data/bench-poly-concave_c_stock_two_holes/bench_poly_concave_c_stock_two_holes.recipe.json?v=bc30624d2eb0",
     "model": "data/bench-poly-concave_c_stock_two_holes/bench_poly_concave_c_stock_two_holes.model.json?v=22339239e98e",
-    "audit": "data/bench-poly-concave_c_stock_two_holes/bench_poly_concave_c_stock_two_holes.audit.json?v=d7a26eede7a1",
-    "step": "data/bench-poly-concave_c_stock_two_holes/bench_poly_concave_c_stock_two_holes.step?v=0f9afad3cd4d",
+    "audit": "data/bench-poly-concave_c_stock_two_holes/bench_poly_concave_c_stock_two_holes.audit.json?v=c63b6e94cc01",
+    "step": "data/bench-poly-concave_c_stock_two_holes/bench_poly_concave_c_stock_two_holes.step?v=989ea7e8ab53",
     "metrics": [
       {
-        "label": "Blocks · baseline → candidate",
-        "value": "21 → 21"
-      },
-      {
         "label": "Partition method",
-        "value": "Orthogonal feature partition"
+        "value": "orthogonal_feature_footprint"
       },
       {
-        "label": "Sampled κ₂ max · baseline → candidate",
-        "value": "11.7 → 11.7"
+        "label": "Rust model blocks",
+        "value": 21
+      },
+      {
+        "label": "Rust shared interfaces",
+        "value": 24
+      },
+      {
+        "label": "Sampled κ₂ max",
+        "value": "11.6667"
+      },
+      {
+        "label": "Certified determinant lower bound",
+        "value": "78 mm³"
       },
       {
         "label": "Exact volume",
-        "value": "12350/1 mm³"
+        "value": "12350 mm³"
       }
     ],
     "section": {
@@ -877,32 +971,41 @@
       "fraction": 0.5
     },
     "group": "Polygon benchmark · concave profiles",
-    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/sketch-planner-polygon-evaluation/README.md"
+    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/sketch-planner-polygon-evaluation/README.md",
+    "stepLabel": "OCCT-checked boundary export (STEP)"
   },
   {
     "id": "bench_poly_concave_l_stock_pocket",
     "title": "Concave l stock pocket",
-    "description": "Concave stock or cut; 1 pocket/profile. Exact-rational geometry checks passed for both paired executables.",
+    "description": "Latest tracked Rust release: orthogonal_feature_footprint, 39 blocks and 72 shared interfaces. Exact layer coverage and the closed-domain determinant certificate passed. The 5×5×5 Jacobian condition sample is a diagnostic, not a continuous bound.",
     "source": "data/bench-poly-concave_l_stock_pocket/bench_poly_concave_l_stock_pocket.recipe.json?v=c051b948bbe2",
     "model": "data/bench-poly-concave_l_stock_pocket/bench_poly_concave_l_stock_pocket.model.json?v=b0cb6b407241",
-    "audit": "data/bench-poly-concave_l_stock_pocket/bench_poly_concave_l_stock_pocket.audit.json?v=6100fe853753",
-    "step": "data/bench-poly-concave_l_stock_pocket/bench_poly_concave_l_stock_pocket.step?v=e22e443b7df0",
+    "audit": "data/bench-poly-concave_l_stock_pocket/bench_poly_concave_l_stock_pocket.audit.json?v=a23f57943386",
+    "step": "data/bench-poly-concave_l_stock_pocket/bench_poly_concave_l_stock_pocket.step?v=07618837e338",
     "metrics": [
       {
-        "label": "Blocks · baseline → candidate",
-        "value": "39 → 39"
-      },
-      {
         "label": "Partition method",
-        "value": "Orthogonal feature partition"
+        "value": "orthogonal_feature_footprint"
       },
       {
-        "label": "Sampled κ₂ max · baseline → candidate",
-        "value": "4.5 → 4.5"
+        "label": "Rust model blocks",
+        "value": 39
+      },
+      {
+        "label": "Rust shared interfaces",
+        "value": 72
+      },
+      {
+        "label": "Sampled κ₂ max",
+        "value": "4.5"
+      },
+      {
+        "label": "Certified determinant lower bound",
+        "value": "128 mm³"
       },
       {
         "label": "Exact volume",
-        "value": "20088/1 mm³"
+        "value": "20088 mm³"
       }
     ],
     "section": {
@@ -910,32 +1013,41 @@
       "fraction": 0.5
     },
     "group": "Polygon benchmark · concave profiles",
-    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/sketch-planner-polygon-evaluation/README.md"
+    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/sketch-planner-polygon-evaluation/README.md",
+    "stepLabel": "OCCT-checked boundary export (STEP)"
   },
   {
     "id": "bench_poly_concave_cut_in_rectangle",
     "title": "Concave cut in rectangle",
-    "description": "Concave stock or cut; 1 pocket/profile. Exact-rational geometry checks passed for both paired executables.",
+    "description": "Latest tracked Rust release: orthogonal_feature_footprint, 45 blocks and 88 shared interfaces. Exact layer coverage and the closed-domain determinant certificate passed. The 5×5×5 Jacobian condition sample is a diagnostic, not a continuous bound.",
     "source": "data/bench-poly-concave_cut_in_rectangle/bench_poly_concave_cut_in_rectangle.recipe.json?v=9701cdbd8f79",
     "model": "data/bench-poly-concave_cut_in_rectangle/bench_poly_concave_cut_in_rectangle.model.json?v=3f8081ffaf76",
-    "audit": "data/bench-poly-concave_cut_in_rectangle/bench_poly_concave_cut_in_rectangle.audit.json?v=803283a2879e",
-    "step": "data/bench-poly-concave_cut_in_rectangle/bench_poly_concave_cut_in_rectangle.step?v=ad86afa946b7",
+    "audit": "data/bench-poly-concave_cut_in_rectangle/bench_poly_concave_cut_in_rectangle.audit.json?v=3d939c58e132",
+    "step": "data/bench-poly-concave_cut_in_rectangle/bench_poly_concave_cut_in_rectangle.step?v=4663cd756501",
     "metrics": [
       {
-        "label": "Blocks · baseline → candidate",
-        "value": "45 → 45"
-      },
-      {
         "label": "Partition method",
-        "value": "Orthogonal feature partition"
+        "value": "orthogonal_feature_footprint"
       },
       {
-        "label": "Sampled κ₂ max · baseline → candidate",
-        "value": "18.5 → 18.5"
+        "label": "Rust model blocks",
+        "value": 45
+      },
+      {
+        "label": "Rust shared interfaces",
+        "value": 88
+      },
+      {
+        "label": "Sampled κ₂ max",
+        "value": "18.5"
+      },
+      {
+        "label": "Certified determinant lower bound",
+        "value": "60 mm³"
       },
       {
         "label": "Exact volume",
-        "value": "30038/1 mm³"
+        "value": "30038 mm³"
       }
     ],
     "section": {
@@ -943,32 +1055,41 @@
       "fraction": 0.5
     },
     "group": "Polygon benchmark · concave profiles",
-    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/sketch-planner-polygon-evaluation/README.md"
+    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/sketch-planner-polygon-evaluation/README.md",
+    "stepLabel": "OCCT-checked boundary export (STEP)"
   },
   {
     "id": "bench_poly_concave_u_stock_offset_hole",
     "title": "Concave u stock offset hole",
-    "description": "Concave stock or cut; 1 pocket/profile. Exact-rational geometry checks passed for both paired executables.",
+    "description": "Latest tracked Rust release: guided_quad_footprint, 6 blocks and 6 shared interfaces. Exact layer coverage and the closed-domain determinant certificate passed. The 5×5×5 Jacobian condition sample is a diagnostic, not a continuous bound.",
     "source": "data/bench-poly-concave_u_stock_offset_hole/bench_poly_concave_u_stock_offset_hole.recipe.json?v=dae44c26d6b5",
     "model": "data/bench-poly-concave_u_stock_offset_hole/bench_poly_concave_u_stock_offset_hole.model.json?v=c2ba785308c2",
-    "audit": "data/bench-poly-concave_u_stock_offset_hole/bench_poly_concave_u_stock_offset_hole.audit.json?v=2701139b4f2a",
-    "step": "data/bench-poly-concave_u_stock_offset_hole/bench_poly_concave_u_stock_offset_hole.step?v=dd93503587a7",
+    "audit": "data/bench-poly-concave_u_stock_offset_hole/bench_poly_concave_u_stock_offset_hole.audit.json?v=c4758784fea5",
+    "step": "data/bench-poly-concave_u_stock_offset_hole/bench_poly_concave_u_stock_offset_hole.step?v=3f83cd536b3a",
     "metrics": [
       {
-        "label": "Blocks · baseline → candidate",
-        "value": "6 → 6"
-      },
-      {
         "label": "Partition method",
-        "value": "Guided quadrilateral partition"
+        "value": "guided_quad_footprint"
       },
       {
-        "label": "Sampled κ₂ max · baseline → candidate",
-        "value": "19.6 → 19.6"
+        "label": "Rust model blocks",
+        "value": 6
+      },
+      {
+        "label": "Rust shared interfaces",
+        "value": 6
+      },
+      {
+        "label": "Sampled κ₂ max",
+        "value": "19.5815"
+      },
+      {
+        "label": "Certified determinant lower bound",
+        "value": "399 mm³"
       },
       {
         "label": "Exact volume",
-        "value": "32186/1 mm³"
+        "value": "32186 mm³"
       }
     ],
     "section": {
@@ -976,32 +1097,41 @@
       "fraction": 0.5
     },
     "group": "Polygon benchmark · concave profiles",
-    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/sketch-planner-polygon-evaluation/README.md"
+    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/sketch-planner-polygon-evaluation/README.md",
+    "stepLabel": "OCCT-checked boundary export (STEP)"
   },
   {
     "id": "bench_poly_concave_stock_blind_two_profiles",
     "title": "Concave stock blind two profiles",
-    "description": "Concave stock or cut; 2 pocket/profiles. Exact-rational geometry checks passed for both paired executables.",
+    "description": "Latest tracked Rust release: orthogonal_feature_footprint, 66 blocks and 123 shared interfaces. Exact layer coverage and the closed-domain determinant certificate passed. The 5×5×5 Jacobian condition sample is a diagnostic, not a continuous bound.",
     "source": "data/bench-poly-concave_stock_blind_two_profiles/bench_poly_concave_stock_blind_two_profiles.recipe.json?v=fce527e41414",
     "model": "data/bench-poly-concave_stock_blind_two_profiles/bench_poly_concave_stock_blind_two_profiles.model.json?v=1685e84fa4bf",
-    "audit": "data/bench-poly-concave_stock_blind_two_profiles/bench_poly_concave_stock_blind_two_profiles.audit.json?v=78dee0558262",
-    "step": "data/bench-poly-concave_stock_blind_two_profiles/bench_poly_concave_stock_blind_two_profiles.step?v=1aef1fbf7cc2",
+    "audit": "data/bench-poly-concave_stock_blind_two_profiles/bench_poly_concave_stock_blind_two_profiles.audit.json?v=067a50a1d6b0",
+    "step": "data/bench-poly-concave_stock_blind_two_profiles/bench_poly_concave_stock_blind_two_profiles.step?v=43d7973a831e",
     "metrics": [
       {
-        "label": "Blocks · baseline → candidate",
-        "value": "66 → 66"
-      },
-      {
         "label": "Partition method",
-        "value": "Orthogonal feature partition"
+        "value": "orthogonal_feature_footprint"
       },
       {
-        "label": "Sampled κ₂ max · baseline → candidate",
-        "value": "24 → 24"
+        "label": "Rust model blocks",
+        "value": 66
+      },
+      {
+        "label": "Rust shared interfaces",
+        "value": 123
+      },
+      {
+        "label": "Sampled κ₂ max",
+        "value": "24"
+      },
+      {
+        "label": "Certified determinant lower bound",
+        "value": "32 mm³"
       },
       {
         "label": "Exact volume",
-        "value": "41800/1 mm³"
+        "value": "41800 mm³"
       }
     ],
     "section": {
@@ -1009,32 +1139,41 @@
       "fraction": 0.5
     },
     "group": "Polygon benchmark · concave profiles",
-    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/sketch-planner-polygon-evaluation/README.md"
+    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/sketch-planner-polygon-evaluation/README.md",
+    "stepLabel": "OCCT-checked boundary export (STEP)"
   },
   {
     "id": "bench_poly_seeded_convex_00",
     "title": "Seeded case 00 · 12-sided stock · 1 through-hole",
-    "description": "Seeded convex through holes; 1 hole. Exact-rational geometry checks passed for both paired executables.",
+    "description": "Latest tracked Rust release: radial_convex_footprint, 12 blocks and 12 shared interfaces. Exact layer coverage and the closed-domain determinant certificate passed. The 5×5×5 Jacobian condition sample is a diagnostic, not a continuous bound.",
     "source": "data/bench-poly-seeded_convex_00/bench_poly_seeded_convex_00.recipe.json?v=2beac43f6fda",
     "model": "data/bench-poly-seeded_convex_00/bench_poly_seeded_convex_00.model.json?v=f6f3d595a9c5",
-    "audit": "data/bench-poly-seeded_convex_00/bench_poly_seeded_convex_00.audit.json?v=76011dda563f",
-    "step": "data/bench-poly-seeded_convex_00/bench_poly_seeded_convex_00.step?v=abe2da96591d",
+    "audit": "data/bench-poly-seeded_convex_00/bench_poly_seeded_convex_00.audit.json?v=b02225bc2a1c",
+    "step": "data/bench-poly-seeded_convex_00/bench_poly_seeded_convex_00.step?v=b8dfbf25ed19",
     "metrics": [
       {
-        "label": "Blocks · baseline → candidate",
-        "value": "72 → 12"
-      },
-      {
         "label": "Partition method",
-        "value": "Radial convex partition"
+        "value": "radial_convex_footprint"
       },
       {
-        "label": "Sampled κ₂ max · baseline → candidate",
-        "value": "440 → 147"
+        "label": "Rust model blocks",
+        "value": 12
+      },
+      {
+        "label": "Rust shared interfaces",
+        "value": 12
+      },
+      {
+        "label": "Sampled κ₂ max",
+        "value": "146.899"
+      },
+      {
+        "label": "Certified determinant lower bound",
+        "value": "720000 mm³"
       },
       {
         "label": "Exact volume",
-        "value": "26039232/1 mm³"
+        "value": "26039232 mm³"
       }
     ],
     "section": {
@@ -1042,32 +1181,41 @@
       "fraction": 0.5
     },
     "group": "Polygon benchmark · seeded through-holes",
-    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/sketch-planner-polygon-evaluation/README.md"
+    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/sketch-planner-polygon-evaluation/README.md",
+    "stepLabel": "OCCT-checked boundary export (STEP)"
   },
   {
     "id": "bench_poly_seeded_convex_02",
     "title": "Seeded case 02 · 5-sided stock · 3 through-holes",
-    "description": "Seeded convex through holes; 3 holes. Exact-rational geometry checks passed for both paired executables.",
+    "description": "Latest tracked Rust release: separated_convex_quad_rings, 17 blocks and 21 shared interfaces. Exact layer coverage and the closed-domain determinant certificate passed. The 5×5×5 Jacobian condition sample is a diagnostic, not a continuous bound.",
     "source": "data/bench-poly-seeded_convex_02/bench_poly_seeded_convex_02.recipe.json?v=21813b09b678",
-    "model": "data/bench-poly-seeded_convex_02/bench_poly_seeded_convex_02.model.json?v=df48b7ebbc8c",
-    "audit": "data/bench-poly-seeded_convex_02/bench_poly_seeded_convex_02.audit.json?v=494c8851725b",
-    "step": "data/bench-poly-seeded_convex_02/bench_poly_seeded_convex_02.step?v=efd0dfd5bbe2",
+    "model": "data/bench-poly-seeded_convex_02/bench_poly_seeded_convex_02.model.json?v=c6a424e27bed",
+    "audit": "data/bench-poly-seeded_convex_02/bench_poly_seeded_convex_02.audit.json?v=20e4e5a0b519",
+    "step": "data/bench-poly-seeded_convex_02/bench_poly_seeded_convex_02.step?v=d7c66dd06d11",
     "metrics": [
       {
-        "label": "Blocks · baseline → candidate",
-        "value": "120 → 120"
-      },
-      {
         "label": "Partition method",
-        "value": "Triangulated partition"
+        "value": "separated_convex_quad_rings"
       },
       {
-        "label": "Sampled κ₂ max · baseline → candidate",
-        "value": "144 → 144"
+        "label": "Rust model blocks",
+        "value": 17
+      },
+      {
+        "label": "Rust shared interfaces",
+        "value": 21
+      },
+      {
+        "label": "Sampled κ₂ max",
+        "value": "278.764"
+      },
+      {
+        "label": "Certified determinant lower bound",
+        "value": "61236.491 mm³"
       },
       {
         "label": "Exact volume",
-        "value": "23041304/1 mm³"
+        "value": "23041304 mm³"
       }
     ],
     "section": {
@@ -1075,32 +1223,41 @@
       "fraction": 0.5
     },
     "group": "Polygon benchmark · seeded through-holes",
-    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/sketch-planner-polygon-evaluation/README.md"
+    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/sketch-planner-polygon-evaluation/README.md",
+    "stepLabel": "OCCT-checked boundary export (STEP)"
   },
   {
     "id": "bench_poly_seeded_convex_04",
     "title": "Seeded case 04 · 6-sided stock · 2 through-holes",
-    "description": "Seeded convex through holes; 2 holes. Exact-rational geometry checks passed for both paired executables.",
+    "description": "Latest tracked Rust release: separated_convex_quad_rings, 12 blocks and 14 shared interfaces. Exact layer coverage and the closed-domain determinant certificate passed. The 5×5×5 Jacobian condition sample is a diagnostic, not a continuous bound.",
     "source": "data/bench-poly-seeded_convex_04/bench_poly_seeded_convex_04.recipe.json?v=fc7d53b0ed85",
-    "model": "data/bench-poly-seeded_convex_04/bench_poly_seeded_convex_04.model.json?v=d51670060c55",
-    "audit": "data/bench-poly-seeded_convex_04/bench_poly_seeded_convex_04.audit.json?v=01b733caaace",
-    "step": "data/bench-poly-seeded_convex_04/bench_poly_seeded_convex_04.step?v=b100401f114b",
+    "model": "data/bench-poly-seeded_convex_04/bench_poly_seeded_convex_04.model.json?v=af61158dd38f",
+    "audit": "data/bench-poly-seeded_convex_04/bench_poly_seeded_convex_04.audit.json?v=227c5f6981c2",
+    "step": "data/bench-poly-seeded_convex_04/bench_poly_seeded_convex_04.step?v=afdff628e748",
     "metrics": [
       {
-        "label": "Blocks · baseline → candidate",
-        "value": "102 → 102"
-      },
-      {
         "label": "Partition method",
-        "value": "Triangulated partition"
+        "value": "separated_convex_quad_rings"
       },
       {
-        "label": "Sampled κ₂ max · baseline → candidate",
-        "value": "116 → 116"
+        "label": "Rust model blocks",
+        "value": 12
+      },
+      {
+        "label": "Rust shared interfaces",
+        "value": 14
+      },
+      {
+        "label": "Sampled κ₂ max",
+        "value": "172.423"
+      },
+      {
+        "label": "Certified determinant lower bound",
+        "value": "180960 mm³"
       },
       {
         "label": "Exact volume",
-        "value": "31215600/1 mm³"
+        "value": "31215600 mm³"
       }
     ],
     "section": {
@@ -1108,32 +1265,41 @@
       "fraction": 0.5
     },
     "group": "Polygon benchmark · seeded through-holes",
-    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/sketch-planner-polygon-evaluation/README.md"
+    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/sketch-planner-polygon-evaluation/README.md",
+    "stepLabel": "OCCT-checked boundary export (STEP)"
   },
   {
     "id": "bench_poly_seeded_convex_06",
     "title": "Seeded case 06 · 9-sided stock · 1 through-hole",
-    "description": "Seeded convex through holes; 1 hole. Exact-rational geometry checks passed for both paired executables.",
+    "description": "Latest tracked Rust release: radial_convex_footprint, 9 blocks and 9 shared interfaces. Exact layer coverage and the closed-domain determinant certificate passed. The 5×5×5 Jacobian condition sample is a diagnostic, not a continuous bound.",
     "source": "data/bench-poly-seeded_convex_06/bench_poly_seeded_convex_06.recipe.json?v=7891bfcf8608",
     "model": "data/bench-poly-seeded_convex_06/bench_poly_seeded_convex_06.model.json?v=a1add9ff4765",
-    "audit": "data/bench-poly-seeded_convex_06/bench_poly_seeded_convex_06.audit.json?v=dbbbd0384a0f",
-    "step": "data/bench-poly-seeded_convex_06/bench_poly_seeded_convex_06.step?v=b661b9b08613",
+    "audit": "data/bench-poly-seeded_convex_06/bench_poly_seeded_convex_06.audit.json?v=7de0856ccbf0",
+    "step": "data/bench-poly-seeded_convex_06/bench_poly_seeded_convex_06.step?v=016ee673fc39",
     "metrics": [
       {
-        "label": "Blocks · baseline → candidate",
-        "value": "78 → 9"
-      },
-      {
         "label": "Partition method",
-        "value": "Radial convex partition"
+        "value": "radial_convex_footprint"
       },
       {
-        "label": "Sampled κ₂ max · baseline → candidate",
-        "value": "165 → 93.8"
+        "label": "Rust model blocks",
+        "value": 9
+      },
+      {
+        "label": "Rust shared interfaces",
+        "value": 9
+      },
+      {
+        "label": "Sampled κ₂ max",
+        "value": "93.8051"
+      },
+      {
+        "label": "Certified determinant lower bound",
+        "value": "1530960 mm³"
       },
       {
         "label": "Exact volume",
-        "value": "41631840/1 mm³"
+        "value": "41631840 mm³"
       }
     ],
     "section": {
@@ -1141,32 +1307,41 @@
       "fraction": 0.5
     },
     "group": "Polygon benchmark · seeded through-holes",
-    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/sketch-planner-polygon-evaluation/README.md"
+    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/sketch-planner-polygon-evaluation/README.md",
+    "stepLabel": "OCCT-checked boundary export (STEP)"
   },
   {
     "id": "bench_poly_seeded_convex_08",
     "title": "Seeded case 08 · 11-sided stock · 3 through-holes",
-    "description": "Seeded convex through holes; 3 holes. Exact-rational geometry checks passed for both paired executables.",
+    "description": "Latest tracked Rust release: separated_convex_quad_rings, 33 blocks and 42 shared interfaces. Exact layer coverage and the closed-domain determinant certificate passed. The 5×5×5 Jacobian condition sample is a diagnostic, not a continuous bound.",
     "source": "data/bench-poly-seeded_convex_08/bench_poly_seeded_convex_08.recipe.json?v=35692b50ed63",
-    "model": "data/bench-poly-seeded_convex_08/bench_poly_seeded_convex_08.model.json?v=0d2dd168f2f0",
-    "audit": "data/bench-poly-seeded_convex_08/bench_poly_seeded_convex_08.audit.json?v=ce1783b05a40",
-    "step": "data/bench-poly-seeded_convex_08/bench_poly_seeded_convex_08.step?v=bff18d9c7548",
+    "model": "data/bench-poly-seeded_convex_08/bench_poly_seeded_convex_08.model.json?v=82c7dea1c0d4",
+    "audit": "data/bench-poly-seeded_convex_08/bench_poly_seeded_convex_08.audit.json?v=8a7da0999b48",
+    "step": "data/bench-poly-seeded_convex_08/bench_poly_seeded_convex_08.step?v=471ce964e5af",
     "metrics": [
       {
-        "label": "Blocks · baseline → candidate",
-        "value": "192 → 192"
-      },
-      {
         "label": "Partition method",
-        "value": "Triangulated partition"
+        "value": "separated_convex_quad_rings"
       },
       {
-        "label": "Sampled κ₂ max · baseline → candidate",
-        "value": "678 → 678"
+        "label": "Rust model blocks",
+        "value": 33
+      },
+      {
+        "label": "Rust shared interfaces",
+        "value": 42
+      },
+      {
+        "label": "Sampled κ₂ max",
+        "value": "114.378"
+      },
+      {
+        "label": "Certified determinant lower bound",
+        "value": "13749.222 mm³"
       },
       {
         "label": "Exact volume",
-        "value": "44495528/1 mm³"
+        "value": "44495528 mm³"
       }
     ],
     "section": {
@@ -1174,32 +1349,41 @@
       "fraction": 0.5
     },
     "group": "Polygon benchmark · seeded through-holes",
-    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/sketch-planner-polygon-evaluation/README.md"
+    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/sketch-planner-polygon-evaluation/README.md",
+    "stepLabel": "OCCT-checked boundary export (STEP)"
   },
   {
     "id": "bench_poly_seeded_convex_10",
     "title": "Seeded case 10 · 12-sided stock · 2 through-holes",
-    "description": "Seeded convex through holes; 2 holes. Exact-rational geometry checks passed for both paired executables.",
+    "description": "Latest tracked Rust release: separated_convex_quad_rings, 24 blocks and 28 shared interfaces. Exact layer coverage and the closed-domain determinant certificate passed. The 5×5×5 Jacobian condition sample is a diagnostic, not a continuous bound.",
     "source": "data/bench-poly-seeded_convex_10/bench_poly_seeded_convex_10.recipe.json?v=4e2c8be6166f",
-    "model": "data/bench-poly-seeded_convex_10/bench_poly_seeded_convex_10.model.json?v=09fe3e44a68e",
-    "audit": "data/bench-poly-seeded_convex_10/bench_poly_seeded_convex_10.audit.json?v=2741cb997ec5",
-    "step": "data/bench-poly-seeded_convex_10/bench_poly_seeded_convex_10.step?v=4c0677e514b7",
+    "model": "data/bench-poly-seeded_convex_10/bench_poly_seeded_convex_10.model.json?v=3dcaa0c95f88",
+    "audit": "data/bench-poly-seeded_convex_10/bench_poly_seeded_convex_10.audit.json?v=074001ed9954",
+    "step": "data/bench-poly-seeded_convex_10/bench_poly_seeded_convex_10.step?v=661924b05fe6",
     "metrics": [
       {
-        "label": "Blocks · baseline → candidate",
-        "value": "114 → 114"
-      },
-      {
         "label": "Partition method",
-        "value": "Triangulated partition"
+        "value": "separated_convex_quad_rings"
       },
       {
-        "label": "Sampled κ₂ max · baseline → candidate",
-        "value": "4.92e+04 → 4.92e+04"
+        "label": "Rust model blocks",
+        "value": 24
+      },
+      {
+        "label": "Rust shared interfaces",
+        "value": 28
+      },
+      {
+        "label": "Sampled κ₂ max",
+        "value": "130.286"
+      },
+      {
+        "label": "Certified determinant lower bound",
+        "value": "3996 mm³"
       },
       {
         "label": "Exact volume",
-        "value": "24954264/1 mm³"
+        "value": "24954264 mm³"
       }
     ],
     "section": {
@@ -1207,32 +1391,41 @@
       "fraction": 0.5
     },
     "group": "Polygon benchmark · seeded through-holes",
-    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/sketch-planner-polygon-evaluation/README.md"
+    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/sketch-planner-polygon-evaluation/README.md",
+    "stepLabel": "OCCT-checked boundary export (STEP)"
   },
   {
     "id": "bench_poly_seeded_convex_12",
     "title": "Seeded case 12 · 5-sided stock · 1 through-hole",
-    "description": "Seeded convex through holes; 1 hole. Exact-rational geometry checks passed for both paired executables.",
+    "description": "Latest tracked Rust release: radial_convex_footprint, 5 blocks and 5 shared interfaces. Exact layer coverage and the closed-domain determinant certificate passed. The 5×5×5 Jacobian condition sample is a diagnostic, not a continuous bound.",
     "source": "data/bench-poly-seeded_convex_12/bench_poly_seeded_convex_12.recipe.json?v=956b698896ba",
     "model": "data/bench-poly-seeded_convex_12/bench_poly_seeded_convex_12.model.json?v=c75ae5254421",
-    "audit": "data/bench-poly-seeded_convex_12/bench_poly_seeded_convex_12.audit.json?v=c3cfdc3005e1",
-    "step": "data/bench-poly-seeded_convex_12/bench_poly_seeded_convex_12.step?v=b56f9a6e44bd",
+    "audit": "data/bench-poly-seeded_convex_12/bench_poly_seeded_convex_12.audit.json?v=dfb8f14d53f3",
+    "step": "data/bench-poly-seeded_convex_12/bench_poly_seeded_convex_12.step?v=985c621bd4aa",
     "metrics": [
       {
-        "label": "Blocks · baseline → candidate",
-        "value": "36 → 5"
-      },
-      {
         "label": "Partition method",
-        "value": "Radial convex partition"
+        "value": "radial_convex_footprint"
       },
       {
-        "label": "Sampled κ₂ max · baseline → candidate",
-        "value": "84 → 118"
+        "label": "Rust model blocks",
+        "value": 5
+      },
+      {
+        "label": "Rust shared interfaces",
+        "value": 5
+      },
+      {
+        "label": "Sampled κ₂ max",
+        "value": "118.144"
+      },
+      {
+        "label": "Certified determinant lower bound",
+        "value": "1672000 mm³"
       },
       {
         "label": "Exact volume",
-        "value": "25135968/1 mm³"
+        "value": "25135968 mm³"
       }
     ],
     "section": {
@@ -1240,32 +1433,41 @@
       "fraction": 0.5
     },
     "group": "Polygon benchmark · seeded through-holes",
-    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/sketch-planner-polygon-evaluation/README.md"
+    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/sketch-planner-polygon-evaluation/README.md",
+    "stepLabel": "OCCT-checked boundary export (STEP)"
   },
   {
     "id": "bench_poly_seeded_convex_14",
     "title": "Seeded case 14 · 10-sided stock · 3 through-holes",
-    "description": "Seeded convex through holes; 3 holes. Exact-rational geometry checks passed for both paired executables.",
+    "description": "Latest tracked Rust release: separated_convex_quad_rings, 30 blocks and 37 shared interfaces. Exact layer coverage and the closed-domain determinant certificate passed. The 5×5×5 Jacobian condition sample is a diagnostic, not a continuous bound.",
     "source": "data/bench-poly-seeded_convex_14/bench_poly_seeded_convex_14.recipe.json?v=a0a99be62984",
-    "model": "data/bench-poly-seeded_convex_14/bench_poly_seeded_convex_14.model.json?v=02f52abec644",
-    "audit": "data/bench-poly-seeded_convex_14/bench_poly_seeded_convex_14.audit.json?v=c2ebf2e7ddc1",
-    "step": "data/bench-poly-seeded_convex_14/bench_poly_seeded_convex_14.step?v=ef7609e8b200",
+    "model": "data/bench-poly-seeded_convex_14/bench_poly_seeded_convex_14.model.json?v=7f1d7e1a0977",
+    "audit": "data/bench-poly-seeded_convex_14/bench_poly_seeded_convex_14.audit.json?v=fab3499a74cd",
+    "step": "data/bench-poly-seeded_convex_14/bench_poly_seeded_convex_14.step?v=501f8313f403",
     "metrics": [
       {
-        "label": "Blocks · baseline → candidate",
-        "value": "156 → 156"
-      },
-      {
         "label": "Partition method",
-        "value": "Triangulated partition"
+        "value": "separated_convex_quad_rings"
       },
       {
-        "label": "Sampled κ₂ max · baseline → candidate",
-        "value": "130 → 130"
+        "label": "Rust model blocks",
+        "value": 30
+      },
+      {
+        "label": "Rust shared interfaces",
+        "value": 37
+      },
+      {
+        "label": "Sampled κ₂ max",
+        "value": "230.712"
+      },
+      {
+        "label": "Certified determinant lower bound",
+        "value": "5544.6089 mm³"
       },
       {
         "label": "Exact volume",
-        "value": "33658768/1 mm³"
+        "value": "33658768 mm³"
       }
     ],
     "section": {
@@ -1273,32 +1475,41 @@
       "fraction": 0.5
     },
     "group": "Polygon benchmark · seeded through-holes",
-    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/sketch-planner-polygon-evaluation/README.md"
+    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/sketch-planner-polygon-evaluation/README.md",
+    "stepLabel": "OCCT-checked boundary export (STEP)"
   },
   {
     "id": "bench_poly_seeded_convex_16",
     "title": "Seeded case 16 · 11-sided stock · 2 through-holes",
-    "description": "Seeded convex through holes; 2 holes. Exact-rational geometry checks passed for both paired executables.",
+    "description": "Latest tracked Rust release: separated_convex_quad_rings, 22 blocks and 26 shared interfaces. Exact layer coverage and the closed-domain determinant certificate passed. The 5×5×5 Jacobian condition sample is a diagnostic, not a continuous bound.",
     "source": "data/bench-poly-seeded_convex_16/bench_poly_seeded_convex_16.recipe.json?v=b056ed7ff742",
-    "model": "data/bench-poly-seeded_convex_16/bench_poly_seeded_convex_16.model.json?v=6cd4ea6df13f",
-    "audit": "data/bench-poly-seeded_convex_16/bench_poly_seeded_convex_16.audit.json?v=28dab107fe15",
-    "step": "data/bench-poly-seeded_convex_16/bench_poly_seeded_convex_16.step?v=5bd08e09b0a1",
+    "model": "data/bench-poly-seeded_convex_16/bench_poly_seeded_convex_16.model.json?v=6a064c7d356c",
+    "audit": "data/bench-poly-seeded_convex_16/bench_poly_seeded_convex_16.audit.json?v=e3db1d0b4d77",
+    "step": "data/bench-poly-seeded_convex_16/bench_poly_seeded_convex_16.step?v=a4f50f2421da",
     "metrics": [
       {
-        "label": "Blocks · baseline → candidate",
-        "value": "114 → 114"
-      },
-      {
         "label": "Partition method",
-        "value": "Triangulated partition"
+        "value": "separated_convex_quad_rings"
       },
       {
-        "label": "Sampled κ₂ max · baseline → candidate",
-        "value": "375 → 375"
+        "label": "Rust model blocks",
+        "value": 22
+      },
+      {
+        "label": "Rust shared interfaces",
+        "value": 26
+      },
+      {
+        "label": "Sampled κ₂ max",
+        "value": "118.062"
+      },
+      {
+        "label": "Certified determinant lower bound",
+        "value": "15961.456 mm³"
       },
       {
         "label": "Exact volume",
-        "value": "41045340/1 mm³"
+        "value": "41045340 mm³"
       }
     ],
     "section": {
@@ -1306,32 +1517,41 @@
       "fraction": 0.5
     },
     "group": "Polygon benchmark · seeded through-holes",
-    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/sketch-planner-polygon-evaluation/README.md"
+    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/sketch-planner-polygon-evaluation/README.md",
+    "stepLabel": "OCCT-checked boundary export (STEP)"
   },
   {
     "id": "bench_poly_seeded_convex_18",
     "title": "Seeded case 18 · 12-sided stock · 1 through-hole",
-    "description": "Seeded convex through holes; 1 hole. Exact-rational geometry checks passed for both paired executables.",
+    "description": "Latest tracked Rust release: radial_convex_footprint, 12 blocks and 12 shared interfaces. Exact layer coverage and the closed-domain determinant certificate passed. The 5×5×5 Jacobian condition sample is a diagnostic, not a continuous bound.",
     "source": "data/bench-poly-seeded_convex_18/bench_poly_seeded_convex_18.recipe.json?v=e1a471e12ba4",
     "model": "data/bench-poly-seeded_convex_18/bench_poly_seeded_convex_18.model.json?v=0bfd5e3a7848",
-    "audit": "data/bench-poly-seeded_convex_18/bench_poly_seeded_convex_18.audit.json?v=4036a798455a",
-    "step": "data/bench-poly-seeded_convex_18/bench_poly_seeded_convex_18.step?v=836a3ad61a9f",
+    "audit": "data/bench-poly-seeded_convex_18/bench_poly_seeded_convex_18.audit.json?v=86f95880f081",
+    "step": "data/bench-poly-seeded_convex_18/bench_poly_seeded_convex_18.step?v=01fe19f8d072",
     "metrics": [
       {
-        "label": "Blocks · baseline → candidate",
-        "value": "72 → 12"
-      },
-      {
         "label": "Partition method",
-        "value": "Radial convex partition"
+        "value": "radial_convex_footprint"
       },
       {
-        "label": "Sampled κ₂ max · baseline → candidate",
-        "value": "744 → 77.8"
+        "label": "Rust model blocks",
+        "value": 12
+      },
+      {
+        "label": "Rust shared interfaces",
+        "value": 12
+      },
+      {
+        "label": "Sampled κ₂ max",
+        "value": "77.7726"
+      },
+      {
+        "label": "Certified determinant lower bound",
+        "value": "1360000 mm³"
       },
       {
         "label": "Exact volume",
-        "value": "49185216/1 mm³"
+        "value": "49185216 mm³"
       }
     ],
     "section": {
@@ -1339,32 +1559,41 @@
       "fraction": 0.5
     },
     "group": "Polygon benchmark · seeded through-holes",
-    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/sketch-planner-polygon-evaluation/README.md"
+    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/sketch-planner-polygon-evaluation/README.md",
+    "stepLabel": "OCCT-checked boundary export (STEP)"
   },
   {
     "id": "bench_poly_seeded_convex_20",
     "title": "Seeded case 20 · 9-sided stock · 3 through-holes",
-    "description": "Seeded convex through holes; 3 holes. Exact-rational geometry checks passed for both paired executables.",
+    "description": "Latest tracked Rust release: separated_convex_quad_rings, 27 blocks and 34 shared interfaces. Exact layer coverage and the closed-domain determinant certificate passed. The 5×5×5 Jacobian condition sample is a diagnostic, not a continuous bound.",
     "source": "data/bench-poly-seeded_convex_20/bench_poly_seeded_convex_20.recipe.json?v=5ec9e5eb9fc0",
-    "model": "data/bench-poly-seeded_convex_20/bench_poly_seeded_convex_20.model.json?v=4cdc73f1e09e",
-    "audit": "data/bench-poly-seeded_convex_20/bench_poly_seeded_convex_20.audit.json?v=c8821275f575",
-    "step": "data/bench-poly-seeded_convex_20/bench_poly_seeded_convex_20.step?v=69e0d505a4c4",
+    "model": "data/bench-poly-seeded_convex_20/bench_poly_seeded_convex_20.model.json?v=8676bedb2db8",
+    "audit": "data/bench-poly-seeded_convex_20/bench_poly_seeded_convex_20.audit.json?v=5a4cea72cb6a",
+    "step": "data/bench-poly-seeded_convex_20/bench_poly_seeded_convex_20.step?v=4ae23209a33c",
     "metrics": [
       {
-        "label": "Blocks · baseline → candidate",
-        "value": "156 → 156"
-      },
-      {
         "label": "Partition method",
-        "value": "Triangulated partition"
+        "value": "separated_convex_quad_rings"
       },
       {
-        "label": "Sampled κ₂ max · baseline → candidate",
-        "value": "316 → 316"
+        "label": "Rust model blocks",
+        "value": 27
+      },
+      {
+        "label": "Rust shared interfaces",
+        "value": 34
+      },
+      {
+        "label": "Sampled κ₂ max",
+        "value": "161.929"
+      },
+      {
+        "label": "Certified determinant lower bound",
+        "value": "32835.835 mm³"
       },
       {
         "label": "Exact volume",
-        "value": "22897512/1 mm³"
+        "value": "22897512 mm³"
       }
     ],
     "section": {
@@ -1372,32 +1601,41 @@
       "fraction": 0.5
     },
     "group": "Polygon benchmark · seeded through-holes",
-    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/sketch-planner-polygon-evaluation/README.md"
+    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/sketch-planner-polygon-evaluation/README.md",
+    "stepLabel": "OCCT-checked boundary export (STEP)"
   },
   {
     "id": "bench_poly_seeded_convex_22",
     "title": "Seeded case 22 · 11-sided stock · 2 through-holes",
-    "description": "Seeded convex through holes; 2 holes. Exact-rational geometry checks passed for both paired executables.",
+    "description": "Latest tracked Rust release: separated_convex_quad_rings, 22 blocks and 26 shared interfaces. Exact layer coverage and the closed-domain determinant certificate passed. The 5×5×5 Jacobian condition sample is a diagnostic, not a continuous bound.",
     "source": "data/bench-poly-seeded_convex_22/bench_poly_seeded_convex_22.recipe.json?v=db7716bf2eca",
-    "model": "data/bench-poly-seeded_convex_22/bench_poly_seeded_convex_22.model.json?v=5a41eb3299f1",
-    "audit": "data/bench-poly-seeded_convex_22/bench_poly_seeded_convex_22.audit.json?v=1a2f74d7c14a",
-    "step": "data/bench-poly-seeded_convex_22/bench_poly_seeded_convex_22.step?v=7e6093470d19",
+    "model": "data/bench-poly-seeded_convex_22/bench_poly_seeded_convex_22.model.json?v=01545e53442f",
+    "audit": "data/bench-poly-seeded_convex_22/bench_poly_seeded_convex_22.audit.json?v=2527b4d8b6cd",
+    "step": "data/bench-poly-seeded_convex_22/bench_poly_seeded_convex_22.step?v=3c220d2821cb",
     "metrics": [
       {
-        "label": "Blocks · baseline → candidate",
-        "value": "114 → 114"
-      },
-      {
         "label": "Partition method",
-        "value": "Triangulated partition"
+        "value": "separated_convex_quad_rings"
       },
       {
-        "label": "Sampled κ₂ max · baseline → candidate",
-        "value": "896 → 896"
+        "label": "Rust model blocks",
+        "value": 22
+      },
+      {
+        "label": "Rust shared interfaces",
+        "value": 26
+      },
+      {
+        "label": "Sampled κ₂ max",
+        "value": "180.598"
+      },
+      {
+        "label": "Certified determinant lower bound",
+        "value": "59993.853 mm³"
       },
       {
         "label": "Exact volume",
-        "value": "30099916/1 mm³"
+        "value": "30099916 mm³"
       }
     ],
     "section": {
@@ -1405,32 +1643,41 @@
       "fraction": 0.5
     },
     "group": "Polygon benchmark · seeded through-holes",
-    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/sketch-planner-polygon-evaluation/README.md"
+    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/sketch-planner-polygon-evaluation/README.md",
+    "stepLabel": "OCCT-checked boundary export (STEP)"
   },
   {
     "id": "bench_poly_seeded_convex_24",
     "title": "Seeded case 24 · 9-sided stock · 1 through-hole",
-    "description": "Seeded convex through holes; 1 hole. Exact-rational geometry checks passed for both paired executables.",
+    "description": "Latest tracked Rust release: radial_convex_footprint, 9 blocks and 9 shared interfaces. Exact layer coverage and the closed-domain determinant certificate passed. The 5×5×5 Jacobian condition sample is a diagnostic, not a continuous bound.",
     "source": "data/bench-poly-seeded_convex_24/bench_poly_seeded_convex_24.recipe.json?v=0a797f4e3759",
     "model": "data/bench-poly-seeded_convex_24/bench_poly_seeded_convex_24.model.json?v=35c8ed5a26f6",
-    "audit": "data/bench-poly-seeded_convex_24/bench_poly_seeded_convex_24.audit.json?v=aba9bc576ae4",
-    "step": "data/bench-poly-seeded_convex_24/bench_poly_seeded_convex_24.step?v=9134ca9b7011",
+    "audit": "data/bench-poly-seeded_convex_24/bench_poly_seeded_convex_24.audit.json?v=36778a60ed2b",
+    "step": "data/bench-poly-seeded_convex_24/bench_poly_seeded_convex_24.step?v=103d1b263819",
     "metrics": [
       {
-        "label": "Blocks · baseline → candidate",
-        "value": "60 → 9"
-      },
-      {
         "label": "Partition method",
-        "value": "Radial convex partition"
+        "value": "radial_convex_footprint"
       },
       {
-        "label": "Sampled κ₂ max · baseline → candidate",
-        "value": "241 → 161"
+        "label": "Rust model blocks",
+        "value": 9
+      },
+      {
+        "label": "Rust shared interfaces",
+        "value": 9
+      },
+      {
+        "label": "Sampled κ₂ max",
+        "value": "161.435"
+      },
+      {
+        "label": "Certified determinant lower bound",
+        "value": "1326832 mm³"
       },
       {
         "label": "Exact volume",
-        "value": "36080928/1 mm³"
+        "value": "36080928 mm³"
       }
     ],
     "section": {
@@ -1438,32 +1685,41 @@
       "fraction": 0.5
     },
     "group": "Polygon benchmark · seeded through-holes",
-    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/sketch-planner-polygon-evaluation/README.md"
+    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/sketch-planner-polygon-evaluation/README.md",
+    "stepLabel": "OCCT-checked boundary export (STEP)"
   },
   {
     "id": "bench_poly_seeded_convex_26",
     "title": "Seeded case 26 · 11-sided stock · 3 through-holes",
-    "description": "Seeded convex through holes; 3 holes. Exact-rational geometry checks passed for both paired executables.",
+    "description": "Latest tracked Rust release: separated_convex_quad_rings, 33 blocks and 42 shared interfaces. Exact layer coverage and the closed-domain determinant certificate passed. The 5×5×5 Jacobian condition sample is a diagnostic, not a continuous bound.",
     "source": "data/bench-poly-seeded_convex_26/bench_poly_seeded_convex_26.recipe.json?v=4edb43bbd36f",
-    "model": "data/bench-poly-seeded_convex_26/bench_poly_seeded_convex_26.model.json?v=a6ecae0204e3",
-    "audit": "data/bench-poly-seeded_convex_26/bench_poly_seeded_convex_26.audit.json?v=0c420aa6ad98",
-    "step": "data/bench-poly-seeded_convex_26/bench_poly_seeded_convex_26.step?v=a4663eb94041",
+    "model": "data/bench-poly-seeded_convex_26/bench_poly_seeded_convex_26.model.json?v=93eaac7a0b13",
+    "audit": "data/bench-poly-seeded_convex_26/bench_poly_seeded_convex_26.audit.json?v=dcbea01e279e",
+    "step": "data/bench-poly-seeded_convex_26/bench_poly_seeded_convex_26.step?v=88c418327975",
     "metrics": [
       {
-        "label": "Blocks · baseline → candidate",
-        "value": "180 → 180"
-      },
-      {
         "label": "Partition method",
-        "value": "Triangulated partition"
+        "value": "separated_convex_quad_rings"
       },
       {
-        "label": "Sampled κ₂ max · baseline → candidate",
-        "value": "711 → 711"
+        "label": "Rust model blocks",
+        "value": 33
+      },
+      {
+        "label": "Rust shared interfaces",
+        "value": 42
+      },
+      {
+        "label": "Sampled κ₂ max",
+        "value": "126.543"
+      },
+      {
+        "label": "Certified determinant lower bound",
+        "value": "22986.389 mm³"
       },
       {
         "label": "Exact volume",
-        "value": "39260760/1 mm³"
+        "value": "39260760 mm³"
       }
     ],
     "section": {
@@ -1471,32 +1727,41 @@
       "fraction": 0.5
     },
     "group": "Polygon benchmark · seeded through-holes",
-    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/sketch-planner-polygon-evaluation/README.md"
+    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/sketch-planner-polygon-evaluation/README.md",
+    "stepLabel": "OCCT-checked boundary export (STEP)"
   },
   {
     "id": "bench_poly_seeded_convex_28",
     "title": "Seeded case 28 · 8-sided stock · 2 through-holes",
-    "description": "Seeded convex through holes; 2 holes. Exact-rational geometry checks passed for both paired executables.",
+    "description": "Latest tracked Rust release: separated_convex_quad_rings, 16 blocks and 18 shared interfaces. Exact layer coverage and the closed-domain determinant certificate passed. The 5×5×5 Jacobian condition sample is a diagnostic, not a continuous bound.",
     "source": "data/bench-poly-seeded_convex_28/bench_poly_seeded_convex_28.recipe.json?v=8965e4074b44",
-    "model": "data/bench-poly-seeded_convex_28/bench_poly_seeded_convex_28.model.json?v=7a4ddfcf6f15",
-    "audit": "data/bench-poly-seeded_convex_28/bench_poly_seeded_convex_28.audit.json?v=06b779710a53",
-    "step": "data/bench-poly-seeded_convex_28/bench_poly_seeded_convex_28.step?v=135c50ae248a",
+    "model": "data/bench-poly-seeded_convex_28/bench_poly_seeded_convex_28.model.json?v=0cc00fec717c",
+    "audit": "data/bench-poly-seeded_convex_28/bench_poly_seeded_convex_28.audit.json?v=14d277a9f431",
+    "step": "data/bench-poly-seeded_convex_28/bench_poly_seeded_convex_28.step?v=0db7ae51c6c1",
     "metrics": [
       {
-        "label": "Blocks · baseline → candidate",
-        "value": "102 → 102"
-      },
-      {
         "label": "Partition method",
-        "value": "Triangulated partition"
+        "value": "separated_convex_quad_rings"
       },
       {
-        "label": "Sampled κ₂ max · baseline → candidate",
-        "value": "286 → 286"
+        "label": "Rust model blocks",
+        "value": 16
+      },
+      {
+        "label": "Rust shared interfaces",
+        "value": 18
+      },
+      {
+        "label": "Sampled κ₂ max",
+        "value": "77.9646"
+      },
+      {
+        "label": "Certified determinant lower bound",
+        "value": "193120 mm³"
       },
       {
         "label": "Exact volume",
-        "value": "44417600/1 mm³"
+        "value": "44417600 mm³"
       }
     ],
     "section": {
@@ -1504,32 +1769,41 @@
       "fraction": 0.5
     },
     "group": "Polygon benchmark · seeded through-holes",
-    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/sketch-planner-polygon-evaluation/README.md"
+    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/sketch-planner-polygon-evaluation/README.md",
+    "stepLabel": "OCCT-checked boundary export (STEP)"
   },
   {
     "id": "bench_poly_seeded_convex_01",
     "title": "Seeded case 01 · 9-sided stock · 2 blind pockets",
-    "description": "Seeded convex blind pockets; 2 pocket/profiles. Exact-rational geometry checks passed for both paired executables.",
+    "description": "Latest tracked Rust release: separated_convex_quad_rings, 48 blocks and 94 shared interfaces. Exact layer coverage and the closed-domain determinant certificate passed. The 5×5×5 Jacobian condition sample is a diagnostic, not a continuous bound.",
     "source": "data/bench-poly-seeded_convex_01/bench_poly_seeded_convex_01.recipe.json?v=10965789d75b",
-    "model": "data/bench-poly-seeded_convex_01/bench_poly_seeded_convex_01.model.json?v=d38ab6a4107d",
-    "audit": "data/bench-poly-seeded_convex_01/bench_poly_seeded_convex_01.audit.json?v=b640a3b02366",
-    "step": "data/bench-poly-seeded_convex_01/bench_poly_seeded_convex_01.step?v=a58dbde92baf",
+    "model": "data/bench-poly-seeded_convex_01/bench_poly_seeded_convex_01.model.json?v=0a628d564925",
+    "audit": "data/bench-poly-seeded_convex_01/bench_poly_seeded_convex_01.audit.json?v=480523210450",
+    "step": "data/bench-poly-seeded_convex_01/bench_poly_seeded_convex_01.step?v=10f57b518e51",
     "metrics": [
       {
-        "label": "Blocks · baseline → candidate",
-        "value": "240 → 240"
-      },
-      {
         "label": "Partition method",
-        "value": "Triangulated partition"
+        "value": "separated_convex_quad_rings"
       },
       {
-        "label": "Sampled κ₂ max · baseline → candidate",
-        "value": "854 → 854"
+        "label": "Rust model blocks",
+        "value": 48
+      },
+      {
+        "label": "Rust shared interfaces",
+        "value": 94
+      },
+      {
+        "label": "Sampled κ₂ max",
+        "value": "406.111"
+      },
+      {
+        "label": "Certified determinant lower bound",
+        "value": "1024.1266 mm³"
       },
       {
         "label": "Exact volume",
-        "value": "27291984/1 mm³"
+        "value": "27291984 mm³"
       }
     ],
     "section": {
@@ -1537,32 +1811,41 @@
       "fraction": 0.5
     },
     "group": "Polygon benchmark · seeded blind pockets",
-    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/sketch-planner-polygon-evaluation/README.md"
+    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/sketch-planner-polygon-evaluation/README.md",
+    "stepLabel": "OCCT-checked boundary export (STEP)"
   },
   {
     "id": "bench_poly_seeded_convex_03",
     "title": "Seeded case 03 · 5-sided stock · 1 blind pocket",
-    "description": "Seeded convex blind pockets; 1 pocket/profile. Exact-rational geometry checks passed for both paired executables.",
+    "description": "Latest tracked Rust release: separated_convex_quad_rings, 14 blocks and 25 shared interfaces. Exact layer coverage and the closed-domain determinant certificate passed. The 5×5×5 Jacobian condition sample is a diagnostic, not a continuous bound.",
     "source": "data/bench-poly-seeded_convex_03/bench_poly_seeded_convex_03.recipe.json?v=770764f16a5a",
-    "model": "data/bench-poly-seeded_convex_03/bench_poly_seeded_convex_03.model.json?v=ef2abd6824d8",
-    "audit": "data/bench-poly-seeded_convex_03/bench_poly_seeded_convex_03.audit.json?v=0108c8762faa",
-    "step": "data/bench-poly-seeded_convex_03/bench_poly_seeded_convex_03.step?v=412d563384ce",
+    "model": "data/bench-poly-seeded_convex_03/bench_poly_seeded_convex_03.model.json?v=d1ab46a2a422",
+    "audit": "data/bench-poly-seeded_convex_03/bench_poly_seeded_convex_03.audit.json?v=1f8f9e2a6809",
+    "step": "data/bench-poly-seeded_convex_03/bench_poly_seeded_convex_03.step?v=8f09ed7c9eea",
     "metrics": [
       {
-        "label": "Blocks · baseline → candidate",
-        "value": "84 → 15"
-      },
-      {
         "label": "Partition method",
-        "value": "Radial convex partition"
+        "value": "separated_convex_quad_rings"
       },
       {
-        "label": "Sampled κ₂ max · baseline → candidate",
-        "value": "226 → 415"
+        "label": "Rust model blocks",
+        "value": 14
+      },
+      {
+        "label": "Rust shared interfaces",
+        "value": 25
+      },
+      {
+        "label": "Sampled κ₂ max",
+        "value": "405.96"
+      },
+      {
+        "label": "Certified determinant lower bound",
+        "value": "131100 mm³"
       },
       {
         "label": "Exact volume",
-        "value": "27897116/1 mm³"
+        "value": "27897116 mm³"
       }
     ],
     "section": {
@@ -1570,32 +1853,41 @@
       "fraction": 0.5
     },
     "group": "Polygon benchmark · seeded blind pockets",
-    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/sketch-planner-polygon-evaluation/README.md"
+    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/sketch-planner-polygon-evaluation/README.md",
+    "stepLabel": "OCCT-checked boundary export (STEP)"
   },
   {
     "id": "bench_poly_seeded_convex_05",
     "title": "Seeded case 05 · 8-sided stock · 3 blind pockets",
-    "description": "Seeded convex blind pockets; 3 pocket/profiles. Exact-rational geometry checks passed for both paired executables.",
+    "description": "Latest tracked Rust release: separated_convex_quad_rings, 57 blocks and 114 shared interfaces. Exact layer coverage and the closed-domain determinant certificate passed. The 5×5×5 Jacobian condition sample is a diagnostic, not a continuous bound.",
     "source": "data/bench-poly-seeded_convex_05/bench_poly_seeded_convex_05.recipe.json?v=ce1aafe92dc8",
-    "model": "data/bench-poly-seeded_convex_05/bench_poly_seeded_convex_05.model.json?v=2ab1c33ec7b8",
-    "audit": "data/bench-poly-seeded_convex_05/bench_poly_seeded_convex_05.audit.json?v=67b6a0122541",
-    "step": "data/bench-poly-seeded_convex_05/bench_poly_seeded_convex_05.step?v=0bfa327d7260",
+    "model": "data/bench-poly-seeded_convex_05/bench_poly_seeded_convex_05.model.json?v=c6861b28cb34",
+    "audit": "data/bench-poly-seeded_convex_05/bench_poly_seeded_convex_05.audit.json?v=7c1dfed4da3d",
+    "step": "data/bench-poly-seeded_convex_05/bench_poly_seeded_convex_05.step?v=1a6fd58a41f8",
     "metrics": [
       {
-        "label": "Blocks · baseline → candidate",
-        "value": "330 → 330"
-      },
-      {
         "label": "Partition method",
-        "value": "Triangulated partition"
+        "value": "separated_convex_quad_rings"
       },
       {
-        "label": "Sampled κ₂ max · baseline → candidate",
-        "value": "480 → 480"
+        "label": "Rust model blocks",
+        "value": 57
+      },
+      {
+        "label": "Rust shared interfaces",
+        "value": 114
+      },
+      {
+        "label": "Sampled κ₂ max",
+        "value": "496.576"
+      },
+      {
+        "label": "Certified determinant lower bound",
+        "value": "6169.2308 mm³"
       },
       {
         "label": "Exact volume",
-        "value": "36011200/1 mm³"
+        "value": "36011200 mm³"
       }
     ],
     "section": {
@@ -1603,32 +1895,41 @@
       "fraction": 0.5
     },
     "group": "Polygon benchmark · seeded blind pockets",
-    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/sketch-planner-polygon-evaluation/README.md"
+    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/sketch-planner-polygon-evaluation/README.md",
+    "stepLabel": "OCCT-checked boundary export (STEP)"
   },
   {
     "id": "bench_poly_seeded_convex_07",
     "title": "Seeded case 07 · 5-sided stock · 2 blind pockets",
-    "description": "Seeded convex blind pockets; 2 pocket/profiles. Exact-rational geometry checks passed for both paired executables.",
+    "description": "Latest tracked Rust release: separated_convex_quad_rings, 28 blocks and 54 shared interfaces. Exact layer coverage and the closed-domain determinant certificate passed. The 5×5×5 Jacobian condition sample is a diagnostic, not a continuous bound.",
     "source": "data/bench-poly-seeded_convex_07/bench_poly_seeded_convex_07.recipe.json?v=349fb53f36a2",
-    "model": "data/bench-poly-seeded_convex_07/bench_poly_seeded_convex_07.model.json?v=77dde2d02d1c",
-    "audit": "data/bench-poly-seeded_convex_07/bench_poly_seeded_convex_07.audit.json?v=2370b247ca58",
-    "step": "data/bench-poly-seeded_convex_07/bench_poly_seeded_convex_07.step?v=03f7664bbace",
+    "model": "data/bench-poly-seeded_convex_07/bench_poly_seeded_convex_07.model.json?v=78b2c9d65a19",
+    "audit": "data/bench-poly-seeded_convex_07/bench_poly_seeded_convex_07.audit.json?v=5d4a37aadc84",
+    "step": "data/bench-poly-seeded_convex_07/bench_poly_seeded_convex_07.step?v=04d3cd87d6bc",
     "metrics": [
       {
-        "label": "Blocks · baseline → candidate",
-        "value": "144 → 144"
-      },
-      {
         "label": "Partition method",
-        "value": "Triangulated partition"
+        "value": "separated_convex_quad_rings"
       },
       {
-        "label": "Sampled κ₂ max · baseline → candidate",
-        "value": "357 → 357"
+        "label": "Rust model blocks",
+        "value": 28
+      },
+      {
+        "label": "Rust shared interfaces",
+        "value": 54
+      },
+      {
+        "label": "Sampled κ₂ max",
+        "value": "596.151"
+      },
+      {
+        "label": "Certified determinant lower bound",
+        "value": "2671.4433 mm³"
       },
       {
         "label": "Exact volume",
-        "value": "35990136/1 mm³"
+        "value": "35990136 mm³"
       }
     ],
     "section": {
@@ -1636,32 +1937,41 @@
       "fraction": 0.5
     },
     "group": "Polygon benchmark · seeded blind pockets",
-    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/sketch-planner-polygon-evaluation/README.md"
+    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/sketch-planner-polygon-evaluation/README.md",
+    "stepLabel": "OCCT-checked boundary export (STEP)"
   },
   {
     "id": "bench_poly_seeded_convex_09",
     "title": "Seeded case 09 · 6-sided stock · 1 blind pocket",
-    "description": "Seeded convex blind pockets; 1 pocket/profile. Exact-rational geometry checks passed for both paired executables.",
+    "description": "Latest tracked Rust release: separated_convex_quad_rings, 14 blocks and 25 shared interfaces. Exact layer coverage and the closed-domain determinant certificate passed. The 5×5×5 Jacobian condition sample is a diagnostic, not a continuous bound.",
     "source": "data/bench-poly-seeded_convex_09/bench_poly_seeded_convex_09.recipe.json?v=eca62aa429c1",
-    "model": "data/bench-poly-seeded_convex_09/bench_poly_seeded_convex_09.model.json?v=1ff2dfc43db5",
-    "audit": "data/bench-poly-seeded_convex_09/bench_poly_seeded_convex_09.audit.json?v=24cf36fa32d3",
-    "step": "data/bench-poly-seeded_convex_09/bench_poly_seeded_convex_09.step?v=edddebf20e0c",
+    "model": "data/bench-poly-seeded_convex_09/bench_poly_seeded_convex_09.model.json?v=5cab781c1484",
+    "audit": "data/bench-poly-seeded_convex_09/bench_poly_seeded_convex_09.audit.json?v=f5ab9c1dbf38",
+    "step": "data/bench-poly-seeded_convex_09/bench_poly_seeded_convex_09.step?v=f319e127da42",
     "metrics": [
       {
-        "label": "Blocks · baseline → candidate",
-        "value": "84 → 15"
-      },
-      {
         "label": "Partition method",
-        "value": "Radial convex partition"
+        "value": "separated_convex_quad_rings"
       },
       {
-        "label": "Sampled κ₂ max · baseline → candidate",
-        "value": "487 → 893"
+        "label": "Rust model blocks",
+        "value": 14
+      },
+      {
+        "label": "Rust shared interfaces",
+        "value": 25
+      },
+      {
+        "label": "Sampled κ₂ max",
+        "value": "892.902"
+      },
+      {
+        "label": "Certified determinant lower bound",
+        "value": "104400 mm³"
       },
       {
         "label": "Exact volume",
-        "value": "45414000/1 mm³"
+        "value": "45414000 mm³"
       }
     ],
     "section": {
@@ -1669,32 +1979,41 @@
       "fraction": 0.5
     },
     "group": "Polygon benchmark · seeded blind pockets",
-    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/sketch-planner-polygon-evaluation/README.md"
+    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/sketch-planner-polygon-evaluation/README.md",
+    "stepLabel": "OCCT-checked boundary export (STEP)"
   },
   {
     "id": "bench_poly_seeded_convex_11",
     "title": "Seeded case 11 · 9-sided stock · 3 blind pockets",
-    "description": "Seeded convex blind pockets; 3 pocket/profiles. Exact-rational geometry checks passed for both paired executables.",
+    "description": "Latest tracked Rust release: separated_convex_quad_rings, 74 blocks and 150 shared interfaces. Exact layer coverage and the closed-domain determinant certificate passed. The 5×5×5 Jacobian condition sample is a diagnostic, not a continuous bound.",
     "source": "data/bench-poly-seeded_convex_11/bench_poly_seeded_convex_11.recipe.json?v=f006dc4f4abd",
-    "model": "data/bench-poly-seeded_convex_11/bench_poly_seeded_convex_11.model.json?v=ce5d21b187b3",
-    "audit": "data/bench-poly-seeded_convex_11/bench_poly_seeded_convex_11.audit.json?v=22167de552c8",
-    "step": "data/bench-poly-seeded_convex_11/bench_poly_seeded_convex_11.step?v=b3f27fa56506",
+    "model": "data/bench-poly-seeded_convex_11/bench_poly_seeded_convex_11.model.json?v=cde4979326cf",
+    "audit": "data/bench-poly-seeded_convex_11/bench_poly_seeded_convex_11.audit.json?v=99ba0057aafa",
+    "step": "data/bench-poly-seeded_convex_11/bench_poly_seeded_convex_11.step?v=76bb7fd37099",
     "metrics": [
       {
-        "label": "Blocks · baseline → candidate",
-        "value": "396 → 396"
-      },
-      {
         "label": "Partition method",
-        "value": "Triangulated partition"
+        "value": "separated_convex_quad_rings"
       },
       {
-        "label": "Sampled κ₂ max · baseline → candidate",
-        "value": "299 → 299"
+        "label": "Rust model blocks",
+        "value": 74
+      },
+      {
+        "label": "Rust shared interfaces",
+        "value": 150
+      },
+      {
+        "label": "Sampled κ₂ max",
+        "value": "255.506"
+      },
+      {
+        "label": "Certified determinant lower bound",
+        "value": "6768.3473 mm³"
       },
       {
         "label": "Exact volume",
-        "value": "27176340/1 mm³"
+        "value": "27176340 mm³"
       }
     ],
     "section": {
@@ -1702,32 +2021,41 @@
       "fraction": 0.5
     },
     "group": "Polygon benchmark · seeded blind pockets",
-    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/sketch-planner-polygon-evaluation/README.md"
+    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/sketch-planner-polygon-evaluation/README.md",
+    "stepLabel": "OCCT-checked boundary export (STEP)"
   },
   {
     "id": "bench_poly_seeded_convex_13",
     "title": "Seeded case 13 · 10-sided stock · 2 blind pockets",
-    "description": "Seeded convex blind pockets; 2 pocket/profiles. Exact-rational geometry checks passed for both paired executables.",
+    "description": "Latest tracked Rust release: separated_convex_quad_rings, 48 blocks and 94 shared interfaces. Exact layer coverage and the closed-domain determinant certificate passed. The 5×5×5 Jacobian condition sample is a diagnostic, not a continuous bound.",
     "source": "data/bench-poly-seeded_convex_13/bench_poly_seeded_convex_13.recipe.json?v=dd459dd53feb",
-    "model": "data/bench-poly-seeded_convex_13/bench_poly_seeded_convex_13.model.json?v=04b74341ab8e",
-    "audit": "data/bench-poly-seeded_convex_13/bench_poly_seeded_convex_13.audit.json?v=91d6c25ba268",
-    "step": "data/bench-poly-seeded_convex_13/bench_poly_seeded_convex_13.step?v=a59602fab4af",
+    "model": "data/bench-poly-seeded_convex_13/bench_poly_seeded_convex_13.model.json?v=8be6afe6a6cd",
+    "audit": "data/bench-poly-seeded_convex_13/bench_poly_seeded_convex_13.audit.json?v=8f19d4eb2c95",
+    "step": "data/bench-poly-seeded_convex_13/bench_poly_seeded_convex_13.step?v=35034502e9d2",
     "metrics": [
       {
-        "label": "Blocks · baseline → candidate",
-        "value": "240 → 240"
-      },
-      {
         "label": "Partition method",
-        "value": "Triangulated partition"
+        "value": "separated_convex_quad_rings"
       },
       {
-        "label": "Sampled κ₂ max · baseline → candidate",
-        "value": "505 → 505"
+        "label": "Rust model blocks",
+        "value": 48
+      },
+      {
+        "label": "Rust shared interfaces",
+        "value": 94
+      },
+      {
+        "label": "Sampled κ₂ max",
+        "value": "446.98"
+      },
+      {
+        "label": "Certified determinant lower bound",
+        "value": "26784 mm³"
       },
       {
         "label": "Exact volume",
-        "value": "33188016/1 mm³"
+        "value": "33188016 mm³"
       }
     ],
     "section": {
@@ -1735,32 +2063,41 @@
       "fraction": 0.5
     },
     "group": "Polygon benchmark · seeded blind pockets",
-    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/sketch-planner-polygon-evaluation/README.md"
+    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/sketch-planner-polygon-evaluation/README.md",
+    "stepLabel": "OCCT-checked boundary export (STEP)"
   },
   {
     "id": "bench_poly_seeded_convex_15",
     "title": "Seeded case 15 · 11-sided stock · 1 blind pocket",
-    "description": "Seeded convex blind pockets; 1 pocket/profile. Exact-rational geometry checks passed for both paired executables.",
+    "description": "Latest tracked Rust release: separated_convex_quad_rings, 29 blocks and 52 shared interfaces. Exact layer coverage and the closed-domain determinant certificate passed. The 5×5×5 Jacobian condition sample is a diagnostic, not a continuous bound.",
     "source": "data/bench-poly-seeded_convex_15/bench_poly_seeded_convex_15.recipe.json?v=d8094e66c0ba",
-    "model": "data/bench-poly-seeded_convex_15/bench_poly_seeded_convex_15.model.json?v=b69af54b344c",
-    "audit": "data/bench-poly-seeded_convex_15/bench_poly_seeded_convex_15.audit.json?v=ce3e7cbacb28",
-    "step": "data/bench-poly-seeded_convex_15/bench_poly_seeded_convex_15.step?v=d1fe8f982f2c",
+    "model": "data/bench-poly-seeded_convex_15/bench_poly_seeded_convex_15.model.json?v=73e7f8c3563f",
+    "audit": "data/bench-poly-seeded_convex_15/bench_poly_seeded_convex_15.audit.json?v=e910295b57a6",
+    "step": "data/bench-poly-seeded_convex_15/bench_poly_seeded_convex_15.step?v=650e7ac015dc",
     "metrics": [
       {
-        "label": "Blocks · baseline → candidate",
-        "value": "219 → 219"
-      },
-      {
         "label": "Partition method",
-        "value": "Triangulated partition"
+        "value": "separated_convex_quad_rings"
       },
       {
-        "label": "Sampled κ₂ max · baseline → candidate",
-        "value": "499 → 499"
+        "label": "Rust model blocks",
+        "value": 29
+      },
+      {
+        "label": "Rust shared interfaces",
+        "value": 52
+      },
+      {
+        "label": "Sampled κ₂ max",
+        "value": "267.911"
+      },
+      {
+        "label": "Certified determinant lower bound",
+        "value": "33920 mm³"
       },
       {
         "label": "Exact volume",
-        "value": "40569452/1 mm³"
+        "value": "40569452 mm³"
       }
     ],
     "section": {
@@ -1768,32 +2105,41 @@
       "fraction": 0.5
     },
     "group": "Polygon benchmark · seeded blind pockets",
-    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/sketch-planner-polygon-evaluation/README.md"
+    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/sketch-planner-polygon-evaluation/README.md",
+    "stepLabel": "OCCT-checked boundary export (STEP)"
   },
   {
     "id": "bench_poly_seeded_convex_17",
     "title": "Seeded case 17 · 6-sided stock · 3 blind pockets",
-    "description": "Seeded convex blind pockets; 3 pocket/profiles. Exact-rational geometry checks passed for both paired executables.",
+    "description": "Latest tracked Rust release: separated_convex_quad_rings, 42 blocks and 83 shared interfaces. Exact layer coverage and the closed-domain determinant certificate passed. The 5×5×5 Jacobian condition sample is a diagnostic, not a continuous bound.",
     "source": "data/bench-poly-seeded_convex_17/bench_poly_seeded_convex_17.recipe.json?v=b4aabe9518ec",
-    "model": "data/bench-poly-seeded_convex_17/bench_poly_seeded_convex_17.model.json?v=06d138b51f10",
-    "audit": "data/bench-poly-seeded_convex_17/bench_poly_seeded_convex_17.audit.json?v=53e9f0f1e25e",
-    "step": "data/bench-poly-seeded_convex_17/bench_poly_seeded_convex_17.step?v=5c95029e8bf7",
+    "model": "data/bench-poly-seeded_convex_17/bench_poly_seeded_convex_17.model.json?v=d8607ddb3ce4",
+    "audit": "data/bench-poly-seeded_convex_17/bench_poly_seeded_convex_17.audit.json?v=76e284ed77e0",
+    "step": "data/bench-poly-seeded_convex_17/bench_poly_seeded_convex_17.step?v=bd0391400812",
     "metrics": [
       {
-        "label": "Blocks · baseline → candidate",
-        "value": "342 → 342"
-      },
-      {
         "label": "Partition method",
-        "value": "Triangulated partition"
+        "value": "separated_convex_quad_rings"
       },
       {
-        "label": "Sampled κ₂ max · baseline → candidate",
-        "value": "218 → 218"
+        "label": "Rust model blocks",
+        "value": 42
+      },
+      {
+        "label": "Rust shared interfaces",
+        "value": 83
+      },
+      {
+        "label": "Sampled κ₂ max",
+        "value": "585.955"
+      },
+      {
+        "label": "Certified determinant lower bound",
+        "value": "37125 mm³"
       },
       {
         "label": "Exact volume",
-        "value": "37688400/1 mm³"
+        "value": "37688400 mm³"
       }
     ],
     "section": {
@@ -1801,32 +2147,41 @@
       "fraction": 0.5
     },
     "group": "Polygon benchmark · seeded blind pockets",
-    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/sketch-planner-polygon-evaluation/README.md"
+    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/sketch-planner-polygon-evaluation/README.md",
+    "stepLabel": "OCCT-checked boundary export (STEP)"
   },
   {
     "id": "bench_poly_seeded_convex_19",
     "title": "Seeded case 19 · 10-sided stock · 2 blind pockets",
-    "description": "Seeded convex blind pockets; 2 pocket/profiles. Exact-rational geometry checks passed for both paired executables.",
+    "description": "Latest tracked Rust release: separated_convex_quad_rings, 48 blocks and 94 shared interfaces. Exact layer coverage and the closed-domain determinant certificate passed. The 5×5×5 Jacobian condition sample is a diagnostic, not a continuous bound.",
     "source": "data/bench-poly-seeded_convex_19/bench_poly_seeded_convex_19.recipe.json?v=0962ad271f0e",
-    "model": "data/bench-poly-seeded_convex_19/bench_poly_seeded_convex_19.model.json?v=8ab9c88c393f",
-    "audit": "data/bench-poly-seeded_convex_19/bench_poly_seeded_convex_19.audit.json?v=9cf4c0c003b4",
-    "step": "data/bench-poly-seeded_convex_19/bench_poly_seeded_convex_19.step?v=384cc690fe35",
+    "model": "data/bench-poly-seeded_convex_19/bench_poly_seeded_convex_19.model.json?v=0a47f2658914",
+    "audit": "data/bench-poly-seeded_convex_19/bench_poly_seeded_convex_19.audit.json?v=8e4d53f64b90",
+    "step": "data/bench-poly-seeded_convex_19/bench_poly_seeded_convex_19.step?v=9cd8b36cc23d",
     "metrics": [
       {
-        "label": "Blocks · baseline → candidate",
-        "value": "348 → 348"
-      },
-      {
         "label": "Partition method",
-        "value": "Triangulated partition"
+        "value": "separated_convex_quad_rings"
       },
       {
-        "label": "Sampled κ₂ max · baseline → candidate",
-        "value": "500 → 500"
+        "label": "Rust model blocks",
+        "value": 48
+      },
+      {
+        "label": "Rust shared interfaces",
+        "value": 94
+      },
+      {
+        "label": "Sampled κ₂ max",
+        "value": "409.59"
+      },
+      {
+        "label": "Certified determinant lower bound",
+        "value": "44640 mm³"
       },
       {
         "label": "Exact volume",
-        "value": "49899712/1 mm³"
+        "value": "49899712 mm³"
       }
     ],
     "section": {
@@ -1834,32 +2189,41 @@
       "fraction": 0.5
     },
     "group": "Polygon benchmark · seeded blind pockets",
-    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/sketch-planner-polygon-evaluation/README.md"
+    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/sketch-planner-polygon-evaluation/README.md",
+    "stepLabel": "OCCT-checked boundary export (STEP)"
   },
   {
     "id": "bench_poly_seeded_convex_21",
     "title": "Seeded case 21 · 10-sided stock · 1 blind pocket",
-    "description": "Seeded convex blind pockets; 1 pocket/profile. Exact-rational geometry checks passed for both paired executables.",
+    "description": "Latest tracked Rust release: separated_convex_quad_rings, 24 blocks and 43 shared interfaces. Exact layer coverage and the closed-domain determinant certificate passed. The 5×5×5 Jacobian condition sample is a diagnostic, not a continuous bound.",
     "source": "data/bench-poly-seeded_convex_21/bench_poly_seeded_convex_21.recipe.json?v=0b63e76d5aad",
-    "model": "data/bench-poly-seeded_convex_21/bench_poly_seeded_convex_21.model.json?v=107ebb62e928",
-    "audit": "data/bench-poly-seeded_convex_21/bench_poly_seeded_convex_21.audit.json?v=829d2f66d0fd",
-    "step": "data/bench-poly-seeded_convex_21/bench_poly_seeded_convex_21.step?v=0fe1ede3c3cf",
+    "model": "data/bench-poly-seeded_convex_21/bench_poly_seeded_convex_21.model.json?v=6a75e744e23d",
+    "audit": "data/bench-poly-seeded_convex_21/bench_poly_seeded_convex_21.audit.json?v=659aa190eb33",
+    "step": "data/bench-poly-seeded_convex_21/bench_poly_seeded_convex_21.step?v=feaef1a7ceea",
     "metrics": [
       {
-        "label": "Blocks · baseline → candidate",
-        "value": "174 → 25"
-      },
-      {
         "label": "Partition method",
-        "value": "Radial convex partition"
+        "value": "separated_convex_quad_rings"
       },
       {
-        "label": "Sampled κ₂ max · baseline → candidate",
-        "value": "473 → 669"
+        "label": "Rust model blocks",
+        "value": 24
+      },
+      {
+        "label": "Rust shared interfaces",
+        "value": 43
+      },
+      {
+        "label": "Sampled κ₂ max",
+        "value": "669.392"
+      },
+      {
+        "label": "Certified determinant lower bound",
+        "value": "26784 mm³"
       },
       {
         "label": "Exact volume",
-        "value": "28598184/1 mm³"
+        "value": "28598184 mm³"
       }
     ],
     "section": {
@@ -1867,32 +2231,41 @@
       "fraction": 0.5
     },
     "group": "Polygon benchmark · seeded blind pockets",
-    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/sketch-planner-polygon-evaluation/README.md"
+    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/sketch-planner-polygon-evaluation/README.md",
+    "stepLabel": "OCCT-checked boundary export (STEP)"
   },
   {
     "id": "bench_poly_seeded_convex_23",
     "title": "Seeded case 23 · 10-sided stock · 3 blind pockets",
-    "description": "Seeded convex blind pockets; 3 pocket/profiles. Exact-rational geometry checks passed for both paired executables.",
+    "description": "Latest tracked Rust release: separated_convex_quad_rings, 72 blocks and 145 shared interfaces. Exact layer coverage and the closed-domain determinant certificate passed. The 5×5×5 Jacobian condition sample is a diagnostic, not a continuous bound.",
     "source": "data/bench-poly-seeded_convex_23/bench_poly_seeded_convex_23.recipe.json?v=750ee1c85a94",
-    "model": "data/bench-poly-seeded_convex_23/bench_poly_seeded_convex_23.model.json?v=2b217013585a",
-    "audit": "data/bench-poly-seeded_convex_23/bench_poly_seeded_convex_23.audit.json?v=1242a85dc041",
-    "step": "data/bench-poly-seeded_convex_23/bench_poly_seeded_convex_23.step?v=c28868e2451e",
+    "model": "data/bench-poly-seeded_convex_23/bench_poly_seeded_convex_23.model.json?v=ea2777a88570",
+    "audit": "data/bench-poly-seeded_convex_23/bench_poly_seeded_convex_23.audit.json?v=ec3abf3cce4f",
+    "step": "data/bench-poly-seeded_convex_23/bench_poly_seeded_convex_23.step?v=aaa786ca15ac",
     "metrics": [
       {
-        "label": "Blocks · baseline → candidate",
-        "value": "456 → 456"
-      },
-      {
         "label": "Partition method",
-        "value": "Triangulated partition"
+        "value": "separated_convex_quad_rings"
       },
       {
-        "label": "Sampled κ₂ max · baseline → candidate",
-        "value": "4.53e+03 → 4.53e+03"
+        "label": "Rust model blocks",
+        "value": 72
+      },
+      {
+        "label": "Rust shared interfaces",
+        "value": 145
+      },
+      {
+        "label": "Sampled κ₂ max",
+        "value": "368.875"
+      },
+      {
+        "label": "Certified determinant lower bound",
+        "value": "13243.983 mm³"
       },
       {
         "label": "Exact volume",
-        "value": "32834952/1 mm³"
+        "value": "32834952 mm³"
       }
     ],
     "section": {
@@ -1900,32 +2273,41 @@
       "fraction": 0.5
     },
     "group": "Polygon benchmark · seeded blind pockets",
-    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/sketch-planner-polygon-evaluation/README.md"
+    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/sketch-planner-polygon-evaluation/README.md",
+    "stepLabel": "OCCT-checked boundary export (STEP)"
   },
   {
     "id": "bench_poly_seeded_convex_25",
     "title": "Seeded case 25 · 5-sided stock · 2 blind pockets",
-    "description": "Seeded convex blind pockets; 2 pocket/profiles. Exact-rational geometry checks passed for both paired executables.",
+    "description": "Latest tracked Rust release: separated_convex_quad_rings, 28 blocks and 54 shared interfaces. Exact layer coverage and the closed-domain determinant certificate passed. The 5×5×5 Jacobian condition sample is a diagnostic, not a continuous bound.",
     "source": "data/bench-poly-seeded_convex_25/bench_poly_seeded_convex_25.recipe.json?v=515631da3d75",
-    "model": "data/bench-poly-seeded_convex_25/bench_poly_seeded_convex_25.model.json?v=a009020c75ed",
-    "audit": "data/bench-poly-seeded_convex_25/bench_poly_seeded_convex_25.audit.json?v=84555a336ebf",
-    "step": "data/bench-poly-seeded_convex_25/bench_poly_seeded_convex_25.step?v=2d16ca9ef2fc",
+    "model": "data/bench-poly-seeded_convex_25/bench_poly_seeded_convex_25.model.json?v=f73c58334bb1",
+    "audit": "data/bench-poly-seeded_convex_25/bench_poly_seeded_convex_25.audit.json?v=3532443170d5",
+    "step": "data/bench-poly-seeded_convex_25/bench_poly_seeded_convex_25.step?v=d988cc839b63",
     "metrics": [
       {
-        "label": "Blocks · baseline → candidate",
-        "value": "144 → 144"
-      },
-      {
         "label": "Partition method",
-        "value": "Triangulated partition"
+        "value": "separated_convex_quad_rings"
       },
       {
-        "label": "Sampled κ₂ max · baseline → candidate",
-        "value": "9.12e+03 → 9.12e+03"
+        "label": "Rust model blocks",
+        "value": 28
+      },
+      {
+        "label": "Rust shared interfaces",
+        "value": 54
+      },
+      {
+        "label": "Sampled κ₂ max",
+        "value": "450.11"
+      },
+      {
+        "label": "Certified determinant lower bound",
+        "value": "37620 mm³"
       },
       {
         "label": "Exact volume",
-        "value": "31229536/1 mm³"
+        "value": "31229536 mm³"
       }
     ],
     "section": {
@@ -1933,32 +2315,41 @@
       "fraction": 0.5
     },
     "group": "Polygon benchmark · seeded blind pockets",
-    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/sketch-planner-polygon-evaluation/README.md"
+    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/sketch-planner-polygon-evaluation/README.md",
+    "stepLabel": "OCCT-checked boundary export (STEP)"
   },
   {
     "id": "bench_poly_seeded_convex_27",
     "title": "Seeded case 27 · 12-sided stock · 1 blind pocket",
-    "description": "Seeded convex blind pockets; 1 pocket/profile. Exact-rational geometry checks passed for both paired executables.",
+    "description": "Latest tracked Rust release: separated_convex_quad_rings, 29 blocks and 52 shared interfaces. Exact layer coverage and the closed-domain determinant certificate passed. The 5×5×5 Jacobian condition sample is a diagnostic, not a continuous bound.",
     "source": "data/bench-poly-seeded_convex_27/bench_poly_seeded_convex_27.recipe.json?v=637cde125d78",
-    "model": "data/bench-poly-seeded_convex_27/bench_poly_seeded_convex_27.model.json?v=3d4b6a98b11a",
-    "audit": "data/bench-poly-seeded_convex_27/bench_poly_seeded_convex_27.audit.json?v=5e1d4da40f31",
-    "step": "data/bench-poly-seeded_convex_27/bench_poly_seeded_convex_27.step?v=1434022981d3",
+    "model": "data/bench-poly-seeded_convex_27/bench_poly_seeded_convex_27.model.json?v=300a25d88c73",
+    "audit": "data/bench-poly-seeded_convex_27/bench_poly_seeded_convex_27.audit.json?v=6a80c2831f38",
+    "step": "data/bench-poly-seeded_convex_27/bench_poly_seeded_convex_27.step?v=a467ae28654f",
     "metrics": [
       {
-        "label": "Blocks · baseline → candidate",
-        "value": "204 → 30"
-      },
-      {
         "label": "Partition method",
-        "value": "Radial convex partition"
+        "value": "separated_convex_quad_rings"
       },
       {
-        "label": "Sampled κ₂ max · baseline → candidate",
-        "value": "1.68e+03 → 396"
+        "label": "Rust model blocks",
+        "value": 29
+      },
+      {
+        "label": "Rust shared interfaces",
+        "value": 52
+      },
+      {
+        "label": "Sampled κ₂ max",
+        "value": "396.366"
+      },
+      {
+        "label": "Certified determinant lower bound",
+        "value": "26000 mm³"
       },
       {
         "label": "Exact volume",
-        "value": "46894728/1 mm³"
+        "value": "46894728 mm³"
       }
     ],
     "section": {
@@ -1966,32 +2357,41 @@
       "fraction": 0.5
     },
     "group": "Polygon benchmark · seeded blind pockets",
-    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/sketch-planner-polygon-evaluation/README.md"
+    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/sketch-planner-polygon-evaluation/README.md",
+    "stepLabel": "OCCT-checked boundary export (STEP)"
   },
   {
     "id": "bench_poly_seeded_convex_29",
     "title": "Seeded case 29 · 10-sided stock · 3 blind pockets",
-    "description": "Seeded convex blind pockets; 3 pocket/profiles. Exact-rational geometry checks passed for both paired executables.",
+    "description": "Latest tracked Rust release: separated_convex_quad_rings, 72 blocks and 145 shared interfaces. Exact layer coverage and the closed-domain determinant certificate passed. The 5×5×5 Jacobian condition sample is a diagnostic, not a continuous bound.",
     "source": "data/bench-poly-seeded_convex_29/bench_poly_seeded_convex_29.recipe.json?v=fe1c3012a67a",
-    "model": "data/bench-poly-seeded_convex_29/bench_poly_seeded_convex_29.model.json?v=aa019ec3162e",
-    "audit": "data/bench-poly-seeded_convex_29/bench_poly_seeded_convex_29.audit.json?v=f2d83f15ffc4",
-    "step": "data/bench-poly-seeded_convex_29/bench_poly_seeded_convex_29.step?v=ffe83c771bb5",
+    "model": "data/bench-poly-seeded_convex_29/bench_poly_seeded_convex_29.model.json?v=be5efdef8f53",
+    "audit": "data/bench-poly-seeded_convex_29/bench_poly_seeded_convex_29.audit.json?v=d11de6c031cc",
+    "step": "data/bench-poly-seeded_convex_29/bench_poly_seeded_convex_29.step?v=7e306a4af2c9",
     "metrics": [
       {
-        "label": "Blocks · baseline → candidate",
-        "value": "426 → 426"
-      },
-      {
         "label": "Partition method",
-        "value": "Triangulated partition"
+        "value": "separated_convex_quad_rings"
       },
       {
-        "label": "Sampled κ₂ max · baseline → candidate",
-        "value": "2.14e+03 → 2.14e+03"
+        "label": "Rust model blocks",
+        "value": 72
+      },
+      {
+        "label": "Rust shared interfaces",
+        "value": 145
+      },
+      {
+        "label": "Sampled κ₂ max",
+        "value": "372.999"
+      },
+      {
+        "label": "Certified determinant lower bound",
+        "value": "7470 mm³"
       },
       {
         "label": "Exact volume",
-        "value": "47663640/1 mm³"
+        "value": "47663640 mm³"
       }
     ],
     "section": {
@@ -1999,16 +2399,17 @@
       "fraction": 0.5
     },
     "group": "Polygon benchmark · seeded blind pockets",
-    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/sketch-planner-polygon-evaluation/README.md"
+    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/sketch-planner-polygon-evaluation/README.md",
+    "stepLabel": "OCCT-checked boundary export (STEP)"
   },
   {
     "id": "bench_poly_projection_diamonds",
     "title": "Projection diagnostic · overlapping diamonds",
     "description": "Two disjoint through-diamond holes overlap in both X and Y projection, while their exact planar regions and 3D voids remain separate.",
     "source": "data/bench-poly-projection-diamonds/bench_poly_projection_diamonds.recipe.json?v=50b46c8a50c8",
-    "model": "data/bench-poly-projection-diamonds/bench_poly_projection_diamonds.model.json?v=30de53e4b132",
-    "audit": "data/bench-poly-projection-diamonds/bench_poly_projection_diamonds.audit.json?v=cea3952a380e",
-    "step": "data/bench-poly-projection-diamonds/bench_poly_projection_diamonds.step?v=f1d6abf798eb",
+    "model": "data/bench-poly-projection-diamonds/bench_poly_projection_diamonds.model.json?v=a19e5364520a",
+    "audit": "data/bench-poly-projection-diamonds/bench_poly_projection_diamonds.audit.json?v=aa012d762297",
+    "step": "data/bench-poly-projection-diamonds/bench_poly_projection_diamonds.step?v=ba8d30da1440",
     "metrics": [
       {
         "label": "X projection overlap",
@@ -2023,8 +2424,28 @@
         "value": "2 disjoint diamonds"
       },
       {
-        "label": "Graph blocks",
-        "value": "72"
+        "label": "Rust kernel method",
+        "value": "separated_convex_quad_rings"
+      },
+      {
+        "label": "Rust model blocks",
+        "value": 10
+      },
+      {
+        "label": "Rust shared interfaces",
+        "value": 12
+      },
+      {
+        "label": "Sampled κ₂ max",
+        "value": "86.8218"
+      },
+      {
+        "label": "Certified determinant lower bound",
+        "value": "72 mm³"
+      },
+      {
+        "label": "Exact volume",
+        "value": "113088 mm³"
       }
     ],
     "section": {
@@ -2032,7 +2453,8 @@
       "fraction": 0.5
     },
     "group": "Polygon benchmark · diagnostics",
-    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/sketch-planner-blind-evaluation.md#additional-oblique-separation-diagnostic"
+    "report": "https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/sketch-planner-blind-evaluation.md#additional-oblique-separation-diagnostic",
+    "stepLabel": "OCCT-checked boundary export (STEP)"
   },
   {
     "id": "plate_blind_pocket",
@@ -2040,20 +2462,28 @@
     "description": "The Z section at 85% reveals the curved profile near the pocket floor.",
     "source": "data/plate_blind_pocket/plate_blind_pocket.recipe.json?v=a5e06ad1708b",
     "model": "data/plate_blind_pocket/plate_blind_pocket.model.json?v=df0b4bd7672c",
-    "audit": "data/plate_blind_pocket/plate_blind_pocket.audit.json?v=86435c03c2bf",
-    "step": "data/plate_blind_pocket/plate_blind_pocket.step?v=52f9f60308e5",
+    "audit": "data/plate_blind_pocket/plate_blind_pocket.audit.json?v=f53ca3cad714",
+    "step": "data/plate_blind_pocket/plate_blind_pocket.step?v=d1daecb85bbd",
     "metrics": [
       {
-        "label": "Graph blocks",
-        "value": "9"
+        "label": "Rust kernel method",
+        "value": "curved_sketch_trace_and_bernstein"
       },
       {
-        "label": "Graph interfaces",
-        "value": "16"
+        "label": "Rust model blocks",
+        "value": 9
       },
       {
-        "label": "Prescribed junctions",
-        "value": "4 × G0"
+        "label": "Rust shared interfaces",
+        "value": 16
+      },
+      {
+        "label": "Sampled κ₂ max",
+        "value": "10.6928"
+      },
+      {
+        "label": "Certified determinant lower bound",
+        "value": "836.57143 mm³"
       },
       {
         "label": "Exact volume",
@@ -2064,7 +2494,8 @@
       "axis": "z",
       "fraction": 0.85
     },
-    "group": "Historical models"
+    "group": "Historical models",
+    "stepLabel": "OCCT-checked boundary export (STEP)"
   },
   {
     "id": "rectangle_internal_rectangle",
@@ -2072,20 +2503,28 @@
     "description": "The mid-height Z section shows the cavity’s curved outline.",
     "source": "data/rectangle_internal_rectangle/rectangle_internal_rectangle.recipe.json?v=cc0e7a15df95",
     "model": "data/rectangle_internal_rectangle/rectangle_internal_rectangle.model.json?v=321b49344a4a",
-    "audit": "data/rectangle_internal_rectangle/rectangle_internal_rectangle.audit.json?v=6c8df8ed3e07",
-    "step": "data/rectangle_internal_rectangle/rectangle_internal_rectangle.step?v=142342c973c9",
+    "audit": "data/rectangle_internal_rectangle/rectangle_internal_rectangle.audit.json?v=68577e618a2b",
+    "step": "data/rectangle_internal_rectangle/rectangle_internal_rectangle.step?v=399e08420b3b",
     "metrics": [
       {
-        "label": "Graph blocks",
-        "value": "14"
+        "label": "Rust kernel method",
+        "value": "curved_sketch_trace_and_bernstein"
       },
       {
-        "label": "Graph interfaces",
-        "value": "28"
+        "label": "Rust model blocks",
+        "value": 14
       },
       {
-        "label": "Prescribed junctions",
-        "value": "4 × G0"
+        "label": "Rust shared interfaces",
+        "value": 28
+      },
+      {
+        "label": "Sampled κ₂ max",
+        "value": "14.637"
+      },
+      {
+        "label": "Certified determinant lower bound",
+        "value": "34.56 mm³"
       },
       {
         "label": "Exact volume",
@@ -2096,7 +2535,8 @@
       "axis": "z",
       "fraction": 0.5
     },
-    "group": "Historical models"
+    "group": "Historical models",
+    "stepLabel": "OCCT-checked boundary export (STEP)"
   },
   {
     "id": "rectangle_offset_pocket",
@@ -2104,20 +2544,28 @@
     "description": "The mid-height Z section shows the offset cavity’s curved outline.",
     "source": "data/rectangle_offset_pocket/rectangle_offset_pocket.recipe.json?v=520a258254c5",
     "model": "data/rectangle_offset_pocket/rectangle_offset_pocket.model.json?v=4d14b20b8968",
-    "audit": "data/rectangle_offset_pocket/rectangle_offset_pocket.audit.json?v=afdda64437b2",
-    "step": "data/rectangle_offset_pocket/rectangle_offset_pocket.step?v=c646998117ac",
+    "audit": "data/rectangle_offset_pocket/rectangle_offset_pocket.audit.json?v=f75f7e9dea08",
+    "step": "data/rectangle_offset_pocket/rectangle_offset_pocket.step?v=b47ec187dcb5",
     "metrics": [
       {
-        "label": "Graph blocks",
-        "value": "14"
+        "label": "Rust kernel method",
+        "value": "curved_sketch_trace_and_bernstein"
       },
       {
-        "label": "Graph interfaces",
-        "value": "28"
+        "label": "Rust model blocks",
+        "value": 14
       },
       {
-        "label": "Prescribed junctions",
-        "value": "4 × G0"
+        "label": "Rust shared interfaces",
+        "value": 28
+      },
+      {
+        "label": "Sampled κ₂ max",
+        "value": "16.2607"
+      },
+      {
+        "label": "Certified determinant lower bound",
+        "value": "34.56 mm³"
       },
       {
         "label": "Exact volume",
@@ -2128,7 +2576,8 @@
       "axis": "z",
       "fraction": 0.5
     },
-    "group": "Historical models"
+    "group": "Historical models",
+    "stepLabel": "OCCT-checked boundary export (STEP)"
   },
   {
     "id": "c_section_two_holes",
@@ -2136,20 +2585,28 @@
     "description": "The mid-height Z section reveals the curved hole profiles.",
     "source": "data/c_section_two_holes/c_section_two_holes.recipe.json?v=ccd062882f83",
     "model": "data/c_section_two_holes/c_section_two_holes.model.json?v=cbd0a898af10",
-    "audit": "data/c_section_two_holes/c_section_two_holes.audit.json?v=d846db8a3a9e",
-    "step": "data/c_section_two_holes/c_section_two_holes.step?v=96118ee8d7f4",
+    "audit": "data/c_section_two_holes/c_section_two_holes.audit.json?v=f62c59046c87",
+    "step": "data/c_section_two_holes/c_section_two_holes.step?v=1e100cd3336e",
     "metrics": [
       {
-        "label": "Graph blocks",
-        "value": "9"
+        "label": "Rust kernel method",
+        "value": "curved_sketch_trace_and_bernstein"
       },
       {
-        "label": "Graph interfaces",
-        "value": "10"
+        "label": "Rust model blocks",
+        "value": 9
       },
       {
-        "label": "Prescribed junctions",
-        "value": "8 × C1"
+        "label": "Rust shared interfaces",
+        "value": 10
+      },
+      {
+        "label": "Sampled κ₂ max",
+        "value": "41.027"
+      },
+      {
+        "label": "Certified determinant lower bound",
+        "value": "0.44444444 mm³"
       },
       {
         "label": "Exact volume",
@@ -2160,7 +2617,8 @@
       "axis": "z",
       "fraction": 0.5
     },
-    "group": "Historical models"
+    "group": "Historical models",
+    "stepLabel": "OCCT-checked boundary export (STEP)"
   },
   {
     "id": "l_bracket_polygon_holes_and_pocket",
@@ -2168,20 +2626,28 @@
     "description": "The mid-height Z section reveals the curved profiles inside the prism.",
     "source": "data/l_bracket_polygon_holes_and_pocket/l_bracket_polygon_holes_and_pocket.recipe.json?v=66e196234eda",
     "model": "data/l_bracket_polygon_holes_and_pocket/l_bracket_polygon_holes_and_pocket.model.json?v=ec9be5dc4795",
-    "audit": "data/l_bracket_polygon_holes_and_pocket/l_bracket_polygon_holes_and_pocket.audit.json?v=ce5850f760b2",
-    "step": "data/l_bracket_polygon_holes_and_pocket/l_bracket_polygon_holes_and_pocket.step?v=42a7eb219ed4",
+    "audit": "data/l_bracket_polygon_holes_and_pocket/l_bracket_polygon_holes_and_pocket.audit.json?v=03cca3a7c1b8",
+    "step": "data/l_bracket_polygon_holes_and_pocket/l_bracket_polygon_holes_and_pocket.step?v=b0d47716c512",
     "metrics": [
       {
-        "label": "Graph blocks",
-        "value": "26"
+        "label": "Rust kernel method",
+        "value": "curved_sketch_trace_and_bernstein"
       },
       {
-        "label": "Graph interfaces",
-        "value": "51"
+        "label": "Rust model blocks",
+        "value": 26
       },
       {
-        "label": "Prescribed junctions",
-        "value": "4 × C1 · 4 × G0"
+        "label": "Rust shared interfaces",
+        "value": 51
+      },
+      {
+        "label": "Sampled κ₂ max",
+        "value": "10.1664"
+      },
+      {
+        "label": "Certified determinant lower bound",
+        "value": "4.0634921 mm³"
       },
       {
         "label": "Exact volume",
@@ -2192,7 +2658,8 @@
       "axis": "z",
       "fraction": 0.5
     },
-    "group": "Historical models"
+    "group": "Historical models",
+    "stepLabel": "OCCT-checked boundary export (STEP)"
   },
   {
     "id": "c_section_lower_hole_x_plus_1",
@@ -2200,20 +2667,28 @@
     "description": "The mid-height Z section shows the curved profile after editing.",
     "source": "data/c_section_lower_hole_x_plus_1/c_section_lower_hole_x_plus_1.recipe.json?v=2f6fef068093",
     "model": "data/c_section_lower_hole_x_plus_1/c_section_lower_hole_x_plus_1.model.json?v=99761a1b334b",
-    "audit": "data/c_section_lower_hole_x_plus_1/c_section_lower_hole_x_plus_1.audit.json?v=aeb0e934ca95",
-    "step": "data/c_section_lower_hole_x_plus_1/c_section_lower_hole_x_plus_1.step?v=9c769ae9db51",
+    "audit": "data/c_section_lower_hole_x_plus_1/c_section_lower_hole_x_plus_1.audit.json?v=2049dbf1a412",
+    "step": "data/c_section_lower_hole_x_plus_1/c_section_lower_hole_x_plus_1.step?v=fabb5ed4cd3a",
     "metrics": [
       {
-        "label": "Graph blocks",
-        "value": "9"
+        "label": "Rust kernel method",
+        "value": "curved_sketch_trace_and_bernstein"
       },
       {
-        "label": "Graph interfaces",
-        "value": "10"
+        "label": "Rust model blocks",
+        "value": 9
       },
       {
-        "label": "Prescribed junctions",
-        "value": "8 × C1"
+        "label": "Rust shared interfaces",
+        "value": 10
+      },
+      {
+        "label": "Sampled κ₂ max",
+        "value": "41.027"
+      },
+      {
+        "label": "Certified determinant lower bound",
+        "value": "0.46296296 mm³"
       },
       {
         "label": "Exact volume",
@@ -2224,166 +2699,212 @@
       "axis": "z",
       "fraction": 0.5
     },
-    "group": "Historical models"
+    "group": "Historical models",
+    "stepLabel": "OCCT-checked boundary export (STEP)"
   },
   {
     "id": "fieldcraft_x40_y80",
     "title": "FieldCraft bracket · Ø5 / Ø10",
     "description": "Two through-holes, Ø5 mm along Y, Ø10 mm along X. Four blocks surround each hole, and two blocks form the elbow.",
     "source": "data/fieldcraft_x40_y80/fieldcraft_x40_y80.recipe.json?v=7cd26167c235",
-    "model": "data/fieldcraft_x40_y80/fieldcraft_x40_y80.model.json?v=c77107dc72ec",
-    "audit": "data/fieldcraft_x40_y80/fieldcraft_x40_y80.audit.json?v=55ba3c3f8320",
-    "step": "data/fieldcraft_x40_y80/fieldcraft_x40_y80.step?v=66493c5a5a1c",
+    "model": "data/fieldcraft_x40_y80/fieldcraft_x40_y80.model.json?v=ea1b7b4c23f0",
+    "audit": "data/fieldcraft_x40_y80/fieldcraft_x40_y80.audit.json?v=ede6408d0083",
+    "step": "data/fieldcraft_x40_y80/fieldcraft_x40_y80.step?v=26ce52b0c5d2",
     "metrics": [
       {
-        "label": "Trivariate blocks",
-        "value": "10"
+        "label": "Rust kernel method",
+        "value": "certified_rational_affine_image"
       },
       {
-        "label": "Block interfaces",
-        "value": "11"
+        "label": "Rust model blocks",
+        "value": 10
       },
       {
-        "label": "Through-holes",
-        "value": "Ø5 / Ø10 mm"
+        "label": "Rust shared interfaces",
+        "value": 11
       },
       {
-        "label": "Analytical volume",
-        "value": "32163.628481 mm³"
+        "label": "Sampled κ₂ max",
+        "value": "13.3333"
+      },
+      {
+        "label": "Certified determinant lower bound",
+        "value": "47.916667 mm³"
+      },
+      {
+        "label": "Exact volume",
+        "value": "(34080 − 610π) mm³"
       }
     ],
     "section": {
       "axis": "z",
       "fraction": 0.5
     },
-    "group": "FieldCraft · brackets"
+    "group": "FieldCraft · brackets",
+    "stepLabel": "OCCT-checked boundary export (STEP)"
   },
   {
     "id": "fieldcraft_x50_y74",
     "title": "FieldCraft bracket · Ø6.25 / Ø9.25",
     "description": "Two through-holes, Ø6.25 mm along Y, Ø9.25 mm along X. Four blocks surround each hole, and two blocks form the elbow.",
     "source": "data/fieldcraft_x50_y74/fieldcraft_x50_y74.recipe.json?v=c60db6b35393",
-    "model": "data/fieldcraft_x50_y74/fieldcraft_x50_y74.model.json?v=cf78c1ba857f",
-    "audit": "data/fieldcraft_x50_y74/fieldcraft_x50_y74.audit.json?v=086dea7e97b1",
-    "step": "data/fieldcraft_x50_y74/fieldcraft_x50_y74.step?v=6a03b05e1c25",
+    "model": "data/fieldcraft_x50_y74/fieldcraft_x50_y74.model.json?v=c30d5f13dd53",
+    "audit": "data/fieldcraft_x50_y74/fieldcraft_x50_y74.audit.json?v=73aaaa23222c",
+    "step": "data/fieldcraft_x50_y74/fieldcraft_x50_y74.step?v=b4cfdbfef555",
     "metrics": [
       {
-        "label": "Trivariate blocks",
-        "value": "10"
+        "label": "Rust kernel method",
+        "value": "certified_rational_affine_image"
       },
       {
-        "label": "Block interfaces",
-        "value": "11"
+        "label": "Rust model blocks",
+        "value": 10
       },
       {
-        "label": "Through-holes",
-        "value": "Ø6.25 / Ø9.25 mm"
+        "label": "Rust shared interfaces",
+        "value": 11
       },
       {
-        "label": "Analytical volume",
-        "value": "32165.984676 mm³"
+        "label": "Sampled κ₂ max",
+        "value": "13.3333"
+      },
+      {
+        "label": "Certified determinant lower bound",
+        "value": "57.756696 mm³"
+      },
+      {
+        "label": "Exact volume",
+        "value": "(34080 − 2437/4π) mm³"
       }
     ],
     "section": {
       "axis": "z",
       "fraction": 0.5
     },
-    "group": "FieldCraft · brackets"
+    "group": "FieldCraft · brackets",
+    "stepLabel": "OCCT-checked boundary export (STEP)"
   },
   {
     "id": "fieldcraft_x51_y74",
     "title": "FieldCraft bracket · Ø6.375 / Ø9.25",
     "description": "Two through-holes, Ø6.375 mm along Y, Ø9.25 mm along X. Four blocks surround each hole, and two blocks form the elbow.",
     "source": "data/fieldcraft_x51_y74/fieldcraft_x51_y74.recipe.json?v=b33b5b247294",
-    "model": "data/fieldcraft_x51_y74/fieldcraft_x51_y74.model.json?v=3fe0d6323129",
-    "audit": "data/fieldcraft_x51_y74/fieldcraft_x51_y74.audit.json?v=02f8ce10bfd2",
-    "step": "data/fieldcraft_x51_y74/fieldcraft_x51_y74.step?v=cb05b6ffa1ae",
+    "model": "data/fieldcraft_x51_y74/fieldcraft_x51_y74.model.json?v=a8235e58da85",
+    "audit": "data/fieldcraft_x51_y74/fieldcraft_x51_y74.audit.json?v=70afd89308eb",
+    "step": "data/fieldcraft_x51_y74/fieldcraft_x51_y74.step?v=24866fee8b8c",
     "metrics": [
       {
-        "label": "Trivariate blocks",
-        "value": "10"
+        "label": "Rust kernel method",
+        "value": "certified_rational_affine_image"
       },
       {
-        "label": "Block interfaces",
-        "value": "11"
+        "label": "Rust model blocks",
+        "value": 10
       },
       {
-        "label": "Through-holes",
-        "value": "Ø6.375 / Ø9.25 mm"
+        "label": "Rust shared interfaces",
+        "value": 11
       },
       {
-        "label": "Analytical volume",
-        "value": "32156.069024 mm³"
+        "label": "Sampled κ₂ max",
+        "value": "13.3333"
+      },
+      {
+        "label": "Certified determinant lower bound",
+        "value": "58.693638 mm³"
+      },
+      {
+        "label": "Exact volume",
+        "value": "(34080 − 19597/32π) mm³"
       }
     ],
     "section": {
       "axis": "z",
       "fraction": 0.5
     },
-    "group": "FieldCraft · brackets"
+    "group": "FieldCraft · brackets",
+    "stepLabel": "OCCT-checked boundary export (STEP)"
   },
   {
     "id": "fieldcraft_x64_y64",
     "title": "FieldCraft bracket · original",
     "description": "Two through-holes, Ø8 mm along Y, Ø8 mm along X. Four blocks surround each hole, and two blocks form the elbow.",
     "source": "data/fieldcraft_x64_y64/fieldcraft_x64_y64.recipe.json?v=5dc34f4b0a41",
-    "model": "data/fieldcraft_x64_y64/fieldcraft_x64_y64.model.json?v=43f64fd2acc3",
-    "audit": "data/fieldcraft_x64_y64/fieldcraft_x64_y64.audit.json?v=e6948f207dd6",
-    "step": "data/fieldcraft_x64_y64/fieldcraft_x64_y64.step?v=696b37b96e5e",
+    "model": "data/fieldcraft_x64_y64/fieldcraft_x64_y64.model.json?v=82fb0d3f7a09",
+    "audit": "data/fieldcraft_x64_y64/fieldcraft_x64_y64.audit.json?v=ca1452dbb576",
+    "step": "data/fieldcraft_x64_y64/fieldcraft_x64_y64.step?v=dcecfef9fc96",
     "metrics": [
       {
-        "label": "Trivariate blocks",
-        "value": "10"
+        "label": "Rust kernel method",
+        "value": "certified_rational_affine_image"
       },
       {
-        "label": "Block interfaces",
-        "value": "11"
+        "label": "Rust model blocks",
+        "value": 10
       },
       {
-        "label": "Through-holes",
-        "value": "Ø8 / Ø8 mm"
+        "label": "Rust shared interfaces",
+        "value": 11
       },
       {
-        "label": "Analytical volume",
-        "value": "32144.778925 mm³"
+        "label": "Sampled κ₂ max",
+        "value": "13.3333"
+      },
+      {
+        "label": "Certified determinant lower bound",
+        "value": "67.733333 mm³"
+      },
+      {
+        "label": "Exact volume",
+        "value": "(34080 − 616π) mm³"
       }
     ],
     "section": {
       "axis": "z",
       "fraction": 0.5
     },
-    "group": "FieldCraft · brackets"
+    "group": "FieldCraft · brackets",
+    "stepLabel": "OCCT-checked boundary export (STEP)"
   },
   {
     "id": "fieldcraft_x80_y40",
     "title": "FieldCraft bracket · Ø10 / Ø5",
     "description": "Two through-holes, Ø10 mm along Y, Ø5 mm along X. Four blocks surround each hole, and two blocks form the elbow.",
     "source": "data/fieldcraft_x80_y40/fieldcraft_x80_y40.recipe.json?v=56b129e5557f",
-    "model": "data/fieldcraft_x80_y40/fieldcraft_x80_y40.model.json?v=687d8d269d44",
-    "audit": "data/fieldcraft_x80_y40/fieldcraft_x80_y40.audit.json?v=4e19dc14548e",
-    "step": "data/fieldcraft_x80_y40/fieldcraft_x80_y40.step?v=7f433b4ff38f",
+    "model": "data/fieldcraft_x80_y40/fieldcraft_x80_y40.model.json?v=0550567e45d3",
+    "audit": "data/fieldcraft_x80_y40/fieldcraft_x80_y40.audit.json?v=0c36b52a1105",
+    "step": "data/fieldcraft_x80_y40/fieldcraft_x80_y40.step?v=738946533995",
     "metrics": [
       {
-        "label": "Trivariate blocks",
-        "value": "10"
+        "label": "Rust kernel method",
+        "value": "certified_rational_affine_image"
       },
       {
-        "label": "Block interfaces",
-        "value": "11"
+        "label": "Rust model blocks",
+        "value": 10
       },
       {
-        "label": "Through-holes",
-        "value": "Ø10 / Ø5 mm"
+        "label": "Rust shared interfaces",
+        "value": 11
       },
       {
-        "label": "Analytical volume",
-        "value": "32163.628481 mm³"
+        "label": "Sampled κ₂ max",
+        "value": "13.3333"
+      },
+      {
+        "label": "Certified determinant lower bound",
+        "value": "46.440476 mm³"
+      },
+      {
+        "label": "Exact volume",
+        "value": "(34080 − 610π) mm³"
       }
     ],
     "section": {
       "axis": "z",
       "fraction": 0.5
     },
-    "group": "FieldCraft · brackets"
+    "group": "FieldCraft · brackets",
+    "stepLabel": "OCCT-checked boundary export (STEP)"
   }
 ]

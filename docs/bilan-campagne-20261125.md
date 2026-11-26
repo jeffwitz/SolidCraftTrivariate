@@ -1,5 +1,7 @@
 # Luna campaign results — 25 November 2026
 
+Historical campaign record. For the current sketch planner, models and reproduction commands, use the [documentation index](README.md).
+
 **The campaign closed at 09:23 UTC on 25 November**, ten hours after it began at 23:23 UTC on 24 November. All three agents completed their assignments. Baseline: L1 `ea5b940`; branch: `campagne-20261125-10h`; published functional revision: `819eb478431c98b3ae46d516b557c599c3317849`. An isolated check of that revision passed 389 Rust tests and 58 Python tests, `make check`, and strict Clippy (`-D warnings`). The [campaign journal](campagne-20261125.md) records dated protocols, thresholds, method changes and failed attempts.
 
 ## Demonstrator workflow

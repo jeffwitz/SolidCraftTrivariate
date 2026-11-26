@@ -2,15 +2,7 @@
 
 ## Question and comparison
 
-This replay compares the ten-block partition with the archived 48-block PA5 bracket under one common static linear-elastic job. It also retains the separate archived `x64-y64` 48-block model because that model has the same physical dimensions but a different element parameterization and Q2 space.
-
-The geometry is the 60 × 50 × 40 mm L bracket, 8 mm wall, R6 inside fillet, and two Ø8 mm through-bores. The 10-block model is rebuilt from the versioned `fieldcraft_x64_y64` recipe. The two archived models are extracted from `fieldcraft-native.zip`:
-
-| Curve | Archived input | Meaning |
-|---|---|---|
-| 10 blocks | `docs/site/data/fieldcraft_x64_y64/fieldcraft_x64_y64.recipe.json` | Current partition, rebuilt and audited by the native CLI. |
-| 48 blocks, timeline grid | `fieldcraft-native/mechanical/bracket-sketch.model.json` | The historical PA5 model behind the previously reported 144.124 N·mm result. |
-| 48 blocks, x64-y64 archive grid | `fieldcraft-native/variants/x64-y64/x64-y64.model.json` | A separate archive variant with another 48-block parameterization. |
+The current driver builds and audits the ten-block FieldCraft bracket from its [sketch recipe](../site/data/fieldcraft_x64_y64/fieldcraft_x64_y64.recipe.json). This report retains the measured 48-block curves from the earlier refinement study as numerical references. The [historical revision](https://github.com/jeffwitz/SolidCraftTrivariate/tree/3e48ae3) contains the corresponding geometry and driver.
 
 All three models describe the same bracket: bore centers (40, 4, 20) mm along Y and (4, 32, 20) mm along X, each with radius 4 mm. Their q32 volume integrals agree at 32144.7789254 mm³. The two 48-block models must remain separate in an energy plot: they have the same block and degree counts but different Q2 approximation spaces.
 
@@ -43,7 +35,7 @@ All q16 solves have relative residuals below 1.0 × 10⁻¹⁰. The maximum rela
 
 The compact h3 run gives 151.8788 N·mm. Aitken extrapolation from the last three levels of each sequence gives approximately 151.949, 152.007 and 152.008 N·mm. For a comparison at matched error, take 151.95 N·mm as an illustrative limiting energy. Log-linear interpolation of relative energy deficit against scalar DOFs between measured h1 and h2 points gives approximately 3,710, 7,830 and 8,576 DOFs respectively at a 0.5% deficit. The two historical spaces require 2.11× and 2.31× the compact count under this estimate. The extrapolation supplies no certified upper bound. For this homogeneous clamp and prescribed load, the energy deficit equals half the squared energy norm of the displacement error in the exact Galerkin problem. A small energy deficit therefore leaves appreciable field error.
 
-The previously reported 144.124 N·mm is reproduced by the timeline-native archive: q16 gives 144.123646473 N·mm and q32 gives 144.123644356 N·mm. The other archived 48-block model yields 143.724598875 N·mm at q16 and 143.724597622 N·mm at q32. Both have 705 scalar DOFs and the same volume, supports and load. The 0.277% energy separation comes from their distinct parameterized analysis spaces, not from different stated geometry or boundary conditions. The earlier `fieldcraft-compact.md` value refers to the timeline-native model.
+In the frozen experiment, the timeline-native archive reproduced the previously reported 144.124 N·mm: q16 gives 144.123646473 N·mm and q32 gives 144.123644356 N·mm. The other archived 48-block model yields 143.724598875 N·mm at q16 and 143.724597622 N·mm at q32. Both have 705 scalar DOFs and the same volume, supports and load. The 0.277% energy separation comes from their distinct parameterized analysis spaces, not from different stated geometry or boundary conditions. The earlier `fieldcraft-compact.md` value refers to the timeline-native model.
 
 This parameterization distinction also appears in geometric conditioning. An independent `export-geometry-vtu MODEL 4` sample on the 125-point tensor grid in every block reports maximum Jacobian condition numbers κ of 13.33 for the ten-block model, 128 for the timeline grid, and 2,048 for the x64-y64 archive grid. The sample is a conditioning diagnostic, not a continuous bound; details and reproduction are in [`fieldcraft-compact.md`](fieldcraft-compact.md). The high κ and 1,650 PCG iterations on the x64-y64 h1 run give a concrete cost difference between the two 48-block analysis parameterizations.
 
@@ -51,17 +43,17 @@ Wall times are single end-to-end CLI observations from one machine run. They inc
 
 ## Reproduction
 
-From a checkout containing this script and report (the kernel base revision is recorded in the result JSON), build the native release CLI and replay both archived 48-block representations plus the current ten-block recipe:
+Build the current release and replay the ten-block sketch recipe:
 
 ```sh
 cargo build --locked --offline --release
 python3 scripts/fieldcraft_bracket_pa5.py \
   --cli target/release/solidcraft-trivariate \
-  --max-level 3 --max-level-48 2 \
+  --max-level 3 \
   --orders 8 16 24 32
 ```
 
-The script extracts the archived ZIP with Python's standard-library `zipfile`, audits all models, generates each q/level job and writes regenerable job and solve outputs under `build/fieldcraft-bracket-pa5/`. It records the source revision and CLI SHA-256 in `fieldcraft-bracket-pa5-energy-dof.json`.
+The driver rebuilds the geometry from the current recipe, audits it and writes its refinement study under `build/fieldcraft-bracket-pa5/`. The numerical table and three-curve plot record the original comparative experiment.
 
 The extended run used the release executable from kernel revision `e5bd5c6`. The result identifies the executable by SHA-256 and records the driver checkout separately.
 

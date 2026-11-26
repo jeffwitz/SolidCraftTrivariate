@@ -1,10 +1,8 @@
-# Historical 48-block FieldCraft bracket models
+# FieldCraft sketch models
 
-[Current 10-block partition and comparison](../fieldcraft-compact.md)
+The current replay bundle contains five two-bore brackets and a four-sector control plate. The CLI builds the brackets from the L-shaped sketch, inside fillet and bore axes. Each has ten blocks and eleven interfaces. The ZIP includes the source recipe, trivariate model, native audit and STEP export for all six solids.
 
-[Download the five archived models, recipes, STEP files, and audits](./fieldcraft-native.zip)
-
-The original bracket has 60 and 50 mm arms, an 8 mm wall, a 40 mm extrusion, and an inside fillet of radius 6 mm. The archive contains five 48-block models: the original x64-y64 case and four campaign variants that change only the bore diameters. The first bore is centered at x=40 mm and drilled along Y. The second is centered at y=32 mm and drilled along X. Both are centered at z=20 mm.
+[Download the current bundle](fieldcraft-compact.zip) · [Inspect the original bracket](https://jeffwitz.github.io/SolidCraftTrivariate/?model=fieldcraft_x64_y64)
 
 | Case | Bore diameter along Y (mm) | Bore diameter along X (mm) | Analytical volume (mm³) |
 |---|---:|---:|---:|
@@ -14,10 +12,15 @@ The original bracket has 60 and 50 mm arms, an 8 mm wall, a 40 mm extrusion, and
 | x50-y74 | 6.25 | 9.25 | 32,165.984676 |
 | x51-y74 | 6.375 | 9.25 | 32,156.069024 |
 
-The historical Rust constructor takes the L outline, fillet, and the centers, axes, and radii of both bores. Fractional coordinates use a sixteenth-millimeter grid followed by exact rational scaling. The two regions around the bores share the same Z levels. Each archived model has 48 blocks and 74 conforming interfaces. These counts describe the historical partition and do not establish minimality. The current sketch-based construction and its 10-block results are documented separately above.
+To rebuild one bracket directly from its tracked recipe:
 
-FreeCAD/OCCT re-imported each STEP as a valid one-shell solid. The five STEP files agree with their corresponding SolidCraft reference files at all 1,920 grid points and 80 probes placed ±0.02 mm from the bore walls. Adaptive mass-property integration found a maximum volume difference below `5 × 10⁻⁹ mm³` for each corresponding pair.
+```sh
+cargo build --release --locked --offline
+mkdir -p build/fieldcraft-replay
+cli=target/release/solidcraft-trivariate
+"$cli" build docs/site/data/fieldcraft_x64_y64/fieldcraft_x64_y64.recipe.json build/fieldcraft-replay/bracket.json
+"$cli" audit build/fieldcraft-replay/bracket.json
+"$cli" export-step build/fieldcraft-replay/bracket.json build/fieldcraft-replay/bracket.step
+```
 
-After extracting the archive, the CLI can rebuild each solid with `build`, check it with `audit`, and export it with `export-step`. The archive README describes the input and results for the mechanical check on the original part.
-
-[Independent check of the five exports](../fieldcraft-kernel-replay.md) · [FieldCraft model source](https://github.com/tangency-labs/fieldcraft/tree/35e834652d8548384c2da8ef1b28d588c9af2ffd/tests/corpus/filleted-bracket) · [Bracket mechanical replay](../fieldcraft-bracket-pa5-mechanics.md)
+[Volume and STEP qualification](../fieldcraft-compact.md) · [Mechanical analysis](../fieldcraft-bracket-pa5-mechanics.md)

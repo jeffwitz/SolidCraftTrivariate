@@ -1,5 +1,7 @@
 # Polygonal sketch planner evaluation
 
+This directory preserves the frozen inputs and the paired measurements at `4e8a394`. The [current kernel results](../../convex-host-rings.md) cover the same 45 inputs and 12 additional sketches.
+
 This directory contains a paired evaluation of the baseline planner and the frozen candidate on 45 deterministic public synthetic recipes. It is separate from any externally owned private holdout.
 
 ## Frozen inputs and executables

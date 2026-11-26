@@ -1,5 +1,7 @@
 # Blind evaluation of sketch partitioning
 
+This is the baseline comparison frozen at `4e8a394`. The [current kernel results](convex-host-rings.md) cover the same 45 inputs and 12 additional sketches.
+
 The reference executable is built from `e5bd5c6`. The evaluation owner keeps the generator, seeds, cases and measurements outside the implementation workspace until the candidate revision is frozen. The owner can publish a SHA-256 commitment to a private bundle containing the generator version, seeds and scoring script before development. Specify the family definitions, units, tolerances, time budget and acceptance thresholds in advance. Disclose the bundle after scoring so that others can reproduce the comparison. Cases disclosed during development become regressions for subsequent runs.
 
 ## Frozen comparison
@@ -46,4 +48,4 @@ Set `RECIPE` to the path of one private recipe. Use a fresh output directory per
 
 ### Additional oblique-separation diagnostic
 
-After the freeze, a separate through-hole diagnostic used a 100 × 100 × 12 mm square with diamond centers at (42, 42) and (58, 58) and half-diagonal 12 mm. The X and Y projections overlap. The two holes are strictly separated by the line x + y = 100. Both executables returned 72 blocks and exact volume 113088 mm³. This example shows why finding a separating line alone does not settle the host shapes, corner correspondence or admissibility of the ring maps. The diagnostic has a separate denominator from the 45-case evaluation. [Reproducible recipe](../tests/regressions/overlapping_projections_diamonds.recipe.json)
+After the freeze, a separate through-hole diagnostic used a 100 × 100 × 12 mm square with diamond centers at (42, 42) and (58, 58) and half-diagonal 12 mm. The X and Y projections overlap. The two holes are strictly separated by the line x + y = 100. The two historical executables returned 72 blocks and exact volume 113088 mm³. The current construction uses ten blocks for the same exact volume. This example shows why finding a separating line alone does not settle the host shapes, corner correspondence or admissibility of the ring maps. The diagnostic has a separate denominator from the 45-case evaluation. [Reproducible recipe](../tests/regressions/overlapping_projections_diamonds.recipe.json)

@@ -3,764 +3,153 @@
   "case": {
     "id": "seeded_convex_26",
     "family": "seeded_convex_through_holes",
-    "paired_outcome": "common_success",
-    "baseline_admitted": true,
-    "candidate_admitted": true,
-    "baseline_geometry_pass": true,
-    "candidate_geometry_pass": true,
-    "baseline_method": "triangulated_feature_footprint",
-    "candidate_method": "triangulated_feature_footprint",
-    "baseline_blocks": 180,
-    "candidate_blocks": 180,
-    "baseline_input_vertex_euler_gap": 156,
-    "candidate_input_vertex_euler_gap": 156,
-    "block_delta_candidate_minus_baseline": 0,
-    "baseline_build_s": 0.06376039399765432,
-    "candidate_build_s": 0.06636222900124267,
-    "baseline_total_s": 0.10251005197642371,
-    "candidate_total_s": 0.09718137898016721,
-    "baseline_condition_max": 710.8549668538699,
-    "candidate_condition_max": 710.8549668538699,
-    "cut_count": 3
-  },
-  "candidate": {
-    "id": "seeded_convex_26",
-    "family": "seeded_convex_through_holes",
-    "build_elapsed_s": 0.06636222900124267,
-    "build_stdout": "{\"blocks\":180,\"bounded_sketch_faces\":20,\"cavities\":0,\"determinant_lower_bound_mm3\":1114.5417156286717,\"exterior_sides\":472,\"hausdorff_error_upper_bound_mm\":0,\"method\":\"certified_sketch_layer_partition\",\"shared_faces\":304,\"status\":\"valid\",\"volume_exact_mm3\":[39260760,1]}",
+    "build_elapsed_s": 6.702176214021165,
+    "build_stdout": "{\"blocks\":33,\"bounded_sketch_faces\":33,\"cavities\":0,\"determinant_lower_bound_mm3\":22986.388888888876,\"exterior_sides\":114,\"hausdorff_error_upper_bound_mm\":0,\"method\":\"certified_sketch_layer_partition\",\"shared_faces\":42,\"status\":\"valid\",\"volume_exact_mm3\":[39260760,1]}",
     "build_stderr": "",
     "admitted": true,
     "geometry_pass": true,
-    "construction_method": "triangulated_feature_footprint",
-    "block_count": 180,
+    "construction_method": "separated_convex_quad_rings",
+    "block_count": 33,
     "condition_grid_5cube_per_block": [
       {
-        "block_id": "face6_z0_15",
-        "max_condition_2": 21.824399334211975
+        "block_id": "quad_-810d1_545d1_-10865444d14049_1018169d1561_-556d1_449d1_-12589009d28098_2880257d6244_z0_15",
+        "max_condition_2": 25.829097064647982
       },
       {
-        "block_id": "face7_z0_15",
-        "max_condition_2": 16.03207029710592
+        "block_id": "quad_-12589009d28098_2880257d6244_-236d1_393d1_-6494423d28098_2085311d6244_12d1_285d1_z0_15",
+        "max_condition_2": 24.331629082781454
       },
       {
-        "block_id": "face8_z0_15",
-        "max_condition_2": 24.259096582770127
+        "block_id": "quad_-556d1_449d1_-12589009d28098_2880257d6244_-332d1_337d1_-6494423d28098_2085311d6244_z0_15",
+        "max_condition_2": 17.8204961851101
       },
       {
-        "block_id": "face9_z0_15",
-        "max_condition_2": 26.484181605594344
+        "block_id": "quad_-10865444d14049_1018169d1561_-12589009d28098_2880257d6244_-420d1_501d1_-236d1_393d1_z0_15",
+        "max_condition_2": 35.83589413598023
       },
       {
-        "block_id": "face10_z0_15",
-        "max_condition_2": 26.46720766384168
+        "block_id": "quad_-2561624d1561_1813115d1561_-1004d1_591d1_-810d1_545d1_-10865444d14049_1018169d1561_z0_15",
+        "max_condition_2": 87.5985174513415
       },
       {
-        "block_id": "face11_z0_15",
-        "max_condition_2": 31.552812222678426
+        "block_id": "quad_-2561624d1561_1813115d1561_-10865444d14049_1018169d1561_-484d1_575d1_-420d1_501d1_z0_15",
+        "max_condition_2": 109.39011715929664
       },
       {
-        "block_id": "face12_z0_15",
-        "max_condition_2": 27.91664480883513
+        "block_id": "quad_-332d1_337d1_-6494423d28098_2085311d6244_-202d1_241d1_848d9_143d1_z0_15",
+        "max_condition_2": 32.46322670710872
       },
       {
-        "block_id": "face13_z0_15",
-        "max_condition_2": 22.936980121749414
+        "block_id": "quad_-6494423d28098_2085311d6244_12d1_285d1_848d9_143d1_244d1_211d1_z0_15",
+        "max_condition_2": 29.753010409149557
       },
       {
-        "block_id": "face14_z0_15",
-        "max_condition_2": 33.12506525649225
+        "block_id": "quad_-1816d1_1203d1_-2561624d1561_1813115d1561_-1084d1_575d1_-1004d1_591d1_z0_15",
+        "max_condition_2": 65.18293838763013
       },
       {
-        "block_id": "face15_z0_15",
-        "max_condition_2": 521.0214251524051
+        "block_id": "quad_-2561624d1561_1813115d1561_-846d1_973d1_-484d1_575d1_-404d1_591d1_z0_15",
+        "max_condition_2": 101.6260244276926
       },
       {
-        "block_id": "face16_z0_15",
-        "max_condition_2": 621.4106007766125
+        "block_id": "quad_-22012d27_143d1_-356d1_211d1_-212d1_195d1_-20519d108_143d1_z0_15",
+        "max_condition_2": 51.802221400686435
       },
       {
-        "block_id": "face17_z0_15",
-        "max_condition_2": 521.0125351421233
+        "block_id": "quad_-976d1_213d1_-22012d27_143d1_-588d1_285d1_-356d1_211d1_z0_15",
+        "max_condition_2": 34.355048442872885
       },
       {
-        "block_id": "face18_z0_15",
-        "max_condition_2": 29.00708682843807
+        "block_id": "quad_-22012d27_143d1_264d1_-327d1_464d1_-107d1_712d1_-215d1_z0_15",
+        "max_condition_2": 116.40341500864227
       },
       {
-        "block_id": "face19_z0_15",
-        "max_condition_2": 39.92744282688175
+        "block_id": "quad_-22012d27_143d1_-20519d108_143d1_280d1_1d1_464d1_-107d1_z0_15",
+        "max_condition_2": 96.10869384908845
       },
       {
-        "block_id": "face20_z0_15",
-        "max_condition_2": 44.02282378747509
+        "block_id": "quad_-20519d108_143d1_848d9_143d1_216d1_75d1_280d1_1d1_z0_15",
+        "max_condition_2": 37.51841569735936
       },
       {
-        "block_id": "face21_z0_15",
-        "max_condition_2": 12.868864238301331
+        "block_id": "quad_-212d1_195d1_-202d1_241d1_-20519d108_143d1_848d9_143d1_z0_15",
+        "max_condition_2": 27.78386210993645
       },
       {
-        "block_id": "face22_z0_15",
-        "max_condition_2": 18.402945005405503
+        "block_id": "quad_-2216d1_1123d1_-1896d1_753d1_-1020d1_501d1_-836d1_393d1_z0_15",
+        "max_condition_2": 126.54339749995293
       },
       {
-        "block_id": "face23_z0_15",
-        "max_condition_2": 15.724352757460398
+        "block_id": "quad_-2216d1_1123d1_-1816d1_1203d1_-1084d1_575d1_-1020d1_501d1_z0_15",
+        "max_condition_2": 92.42336426946214
       },
       {
-        "block_id": "face26_z0_15",
-        "max_condition_2": 25.869080012921504
+        "block_id": "quad_-1896d1_753d1_-976d1_213d1_-836d1_393d1_-588d1_285d1_z0_15",
+        "max_condition_2": 102.55899583772849
       },
       {
-        "block_id": "face27_z0_15",
-        "max_condition_2": 30.314375167919437
+        "block_id": "quad_-846d1_973d1_-404d1_591d1_-210d1_545d1_424d1_493d1_z0_15",
+        "max_condition_2": 99.38549205120819
       },
       {
-        "block_id": "face29_z0_15",
-        "max_condition_2": 29.244347723986454
+        "block_id": "quad_-210d1_545d1_44d1_449d1_424d1_493d1_949d1_461d2_z0_15",
+        "max_condition_2": 72.99103969426483
       },
       {
-        "block_id": "face33_z0_15",
-        "max_condition_2": 161.14734541963966
+        "block_id": "quad_44d1_449d1_268d1_337d1_949d1_461d2_1124d1_143d1_z0_15",
+        "max_condition_2": 64.17359241455205
       },
       {
-        "block_id": "face34_z0_15",
-        "max_condition_2": 161.13158874831743
+        "block_id": "quad_848d9_143d1_216d1_75d1_296d1_91d1_14977d36_143d1_z0_15",
+        "max_condition_2": 22.999477458672242
       },
       {
-        "block_id": "face35_z0_15",
-        "max_condition_2": 453.13917817082756
+        "block_id": "quad_848d9_143d1_244d1_211d1_388d1_195d1_14977d36_143d1_z0_15",
+        "max_condition_2": 23.748361764385876
       },
       {
-        "block_id": "face36_z0_15",
-        "max_condition_2": 61.00886918995265
+        "block_id": "quad_264d1_-327d1_712d1_-215d1_944d1_-289d1_1424d1_-697d1_z0_15",
+        "max_condition_2": 90.22548260998602
       },
       {
-        "block_id": "face37_z0_15",
-        "max_condition_2": 36.73779624064606
+        "block_id": "quad_268d1_337d1_398d1_241d1_5482d9_143d1_1124d1_143d1_z0_15",
+        "max_condition_2": 67.52154582709287
       },
       {
-        "block_id": "face38_z0_15",
-        "max_condition_2": 47.65089232945535
+        "block_id": "quad_296d1_91d1_14977d36_143d1_490d1_45d1_5482d9_143d1_z0_15",
+        "max_condition_2": 15.56743392117865
       },
       {
-        "block_id": "face39_z0_15",
-        "max_condition_2": 34.99474297252879
+        "block_id": "quad_388d1_195d1_398d1_241d1_14977d36_143d1_5482d9_143d1_z0_15",
+        "max_condition_2": 19.70544107214327
       },
       {
-        "block_id": "face40_z0_15",
-        "max_condition_2": 41.12903018805801
+        "block_id": "quad_490d1_45d1_5482d9_143d1_744d1_-51d1_1124d1_143d1_z0_15",
+        "max_condition_2": 43.39131191781297
       },
       {
-        "block_id": "face41_z0_15",
-        "max_condition_2": 31.54265838009268
+        "block_id": "quad_744d1_-51d1_968d1_-163d1_1124d1_143d1_1544d1_-67d1_z0_15",
+        "max_condition_2": 47.63564450994078
       },
       {
-        "block_id": "face42_z0_15",
-        "max_condition_2": 29.846685919701255
+        "block_id": "quad_944d1_-289d1_1088d1_-305d1_1424d1_-697d1_2144d1_-777d1_z0_15",
+        "max_condition_2": 90.11210181162215
       },
       {
-        "block_id": "face43_z0_15",
-        "max_condition_2": 48.16104663831369
+        "block_id": "quad_968d1_-163d1_1098d1_-259d1_1544d1_-67d1_2194d1_-547d1_z0_15",
+        "max_condition_2": 91.30779585030218
       },
       {
-        "block_id": "face44_z0_15",
-        "max_condition_2": 40.74150533023365
-      },
-      {
-        "block_id": "face45_z0_15",
-        "max_condition_2": 40.68576681355846
-      },
-      {
-        "block_id": "face46_z0_15",
-        "max_condition_2": 36.96838042994762
-      },
-      {
-        "block_id": "face47_z0_15",
-        "max_condition_2": 236.11048883879366
-      },
-      {
-        "block_id": "face48_z0_15",
-        "max_condition_2": 236.11482417195654
-      },
-      {
-        "block_id": "face49_z0_15",
-        "max_condition_2": 236.1148241719598
-      },
-      {
-        "block_id": "face50_z0_15",
-        "max_condition_2": 60.81675198587932
-      },
-      {
-        "block_id": "face51_z0_15",
-        "max_condition_2": 52.64238336340177
-      },
-      {
-        "block_id": "face52_z0_15",
-        "max_condition_2": 41.19389137233108
-      },
-      {
-        "block_id": "face56_z0_15",
-        "max_condition_2": 68.90210327874455
-      },
-      {
-        "block_id": "face57_z0_15",
-        "max_condition_2": 52.1751266670898
-      },
-      {
-        "block_id": "face58_z0_15",
-        "max_condition_2": 50.61021547936271
-      },
-      {
-        "block_id": "face62_z0_15",
-        "max_condition_2": 56.42187089378943
-      },
-      {
-        "block_id": "face63_z0_15",
-        "max_condition_2": 56.42484914078466
-      },
-      {
-        "block_id": "face64_z0_15",
-        "max_condition_2": 56.42484914078479
-      },
-      {
-        "block_id": "face65_z0_15",
-        "max_condition_2": 18.493969419847406
-      },
-      {
-        "block_id": "face66_z0_15",
-        "max_condition_2": 20.162754952323386
-      },
-      {
-        "block_id": "face67_z0_15",
-        "max_condition_2": 16.96197298544448
-      },
-      {
-        "block_id": "face68_z0_15",
-        "max_condition_2": 55.63386608697251
-      },
-      {
-        "block_id": "face69_z0_15",
-        "max_condition_2": 116.36359766652029
-      },
-      {
-        "block_id": "face73_z0_15",
-        "max_condition_2": 48.81427755441661
-      },
-      {
-        "block_id": "face74_z0_15",
-        "max_condition_2": 23.683033548601266
-      },
-      {
-        "block_id": "face75_z0_15",
-        "max_condition_2": 20.958348200090835
-      },
-      {
-        "block_id": "face76_z0_15",
-        "max_condition_2": 15.753840327852412
-      },
-      {
-        "block_id": "face77_z0_15",
-        "max_condition_2": 48.83181975626338
-      },
-      {
-        "block_id": "face81_z0_15",
-        "max_condition_2": 100.06879860762055
-      },
-      {
-        "block_id": "face82_z0_15",
-        "max_condition_2": 100.09700066848151
-      },
-      {
-        "block_id": "face89_z0_15",
-        "max_condition_2": 5.627922812837995
-      },
-      {
-        "block_id": "face90_z0_15",
-        "max_condition_2": 7.934981795765692
-      },
-      {
-        "block_id": "face91_z0_15",
-        "max_condition_2": 7.693750629508742
-      },
-      {
-        "block_id": "face94_z0_15",
-        "max_condition_2": 14.489132792382232
-      },
-      {
-        "block_id": "face96_z0_15",
-        "max_condition_2": 10.243191575018711
-      },
-      {
-        "block_id": "face97_z0_15",
-        "max_condition_2": 48.87592409546165
-      },
-      {
-        "block_id": "face98_z0_15",
-        "max_condition_2": 34.52215435590527
-      },
-      {
-        "block_id": "face99_z0_15",
-        "max_condition_2": 52.79807244436735
-      },
-      {
-        "block_id": "face100_z0_15",
-        "max_condition_2": 32.11438356625596
-      },
-      {
-        "block_id": "face101_z0_15",
-        "max_condition_2": 15.352930221647593
-      },
-      {
-        "block_id": "face104_z0_15",
-        "max_condition_2": 5.692708828297852
-      },
-      {
-        "block_id": "face105_z0_15",
-        "max_condition_2": 7.0154022649335595
-      },
-      {
-        "block_id": "face106_z0_15",
-        "max_condition_2": 5.405295805503741
-      },
-      {
-        "block_id": "face108_z0_15",
-        "max_condition_2": 32.10963216197796
-      },
-      {
-        "block_id": "face110_z0_15",
-        "max_condition_2": 13.73041146017789
-      },
-      {
-        "block_id": "face111_z0_15",
-        "max_condition_2": 32.114383566255896
-      },
-      {
-        "block_id": "face112_z0_15",
-        "max_condition_2": 13.715741511004582
-      },
-      {
-        "block_id": "face120_z0_15",
-        "max_condition_2": 13.73041146017789
-      },
-      {
-        "block_id": "face121_z0_15",
-        "max_condition_2": 193.27813019138088
-      },
-      {
-        "block_id": "face124_z0_15",
-        "max_condition_2": 44.61370888433715
-      },
-      {
-        "block_id": "face126_z0_15",
-        "max_condition_2": 39.237201097275204
-      },
-      {
-        "block_id": "face127_z0_15",
-        "max_condition_2": 29.699859791103947
-      },
-      {
-        "block_id": "face128_z0_15",
-        "max_condition_2": 219.32205918293462
-      },
-      {
-        "block_id": "face129_z0_15",
-        "max_condition_2": 40.67957154029698
-      },
-      {
-        "block_id": "face130_z0_15",
-        "max_condition_2": 620.9154853607042
-      },
-      {
-        "block_id": "face131_z0_15",
-        "max_condition_2": 125.09977574006687
-      },
-      {
-        "block_id": "face132_z0_15",
-        "max_condition_2": 193.2768830777612
-      },
-      {
-        "block_id": "face134_z0_15",
-        "max_condition_2": 620.912965557738
-      },
-      {
-        "block_id": "face135_z0_15",
-        "max_condition_2": 9.638955632012896
-      },
-      {
-        "block_id": "face137_z0_15",
-        "max_condition_2": 7.797996879636297
-      },
-      {
-        "block_id": "face138_z0_15",
-        "max_condition_2": 29.648223426453143
-      },
-      {
-        "block_id": "face139_z0_15",
-        "max_condition_2": 16.320941673595964
-      },
-      {
-        "block_id": "face142_z0_15",
-        "max_condition_2": 11.07906761428038
-      },
-      {
-        "block_id": "face145_z0_15",
-        "max_condition_2": 11.593187862768549
-      },
-      {
-        "block_id": "face146_z0_15",
-        "max_condition_2": 26.455908818430917
-      },
-      {
-        "block_id": "face147_z0_15",
-        "max_condition_2": 21.315671923429473
-      },
-      {
-        "block_id": "face148_z0_15",
-        "max_condition_2": 35.12547978736553
-      },
-      {
-        "block_id": "face150_z0_15",
-        "max_condition_2": 23.049627756179074
-      },
-      {
-        "block_id": "face151_z0_15",
-        "max_condition_2": 39.787068835024
-      },
-      {
-        "block_id": "face152_z0_15",
-        "max_condition_2": 35.13797551276664
-      },
-      {
-        "block_id": "face153_z0_15",
-        "max_condition_2": 219.31113035946314
-      },
-      {
-        "block_id": "face154_z0_15",
-        "max_condition_2": 31.12929740625718
-      },
-      {
-        "block_id": "face155_z0_15",
-        "max_condition_2": 204.61931082546735
-      },
-      {
-        "block_id": "face157_z0_15",
-        "max_condition_2": 20.607120527164017
-      },
-      {
-        "block_id": "face158_z0_15",
-        "max_condition_2": 39.79030343697065
-      },
-      {
-        "block_id": "face160_z0_15",
-        "max_condition_2": 20.26882720367277
-      },
-      {
-        "block_id": "face161_z0_15",
-        "max_condition_2": 35.638921767876774
-      },
-      {
-        "block_id": "face162_z0_15",
-        "max_condition_2": 16.061467688675677
-      },
-      {
-        "block_id": "face166_z0_15",
-        "max_condition_2": 34.30757526032214
-      },
-      {
-        "block_id": "face167_z0_15",
-        "max_condition_2": 13.613119858983323
-      },
-      {
-        "block_id": "face171_z0_15",
-        "max_condition_2": 50.714176768606286
-      },
-      {
-        "block_id": "face172_z0_15",
-        "max_condition_2": 147.3448998105157
-      },
-      {
-        "block_id": "face173_z0_15",
-        "max_condition_2": 380.79903325755356
-      },
-      {
-        "block_id": "face176_z0_15",
-        "max_condition_2": 20.31040333520081
-      },
-      {
-        "block_id": "face177_z0_15",
-        "max_condition_2": 42.022816009980914
-      },
-      {
-        "block_id": "face178_z0_15",
-        "max_condition_2": 12.655826034980983
-      },
-      {
-        "block_id": "face184_z0_15",
-        "max_condition_2": 127.82192574008435
-      },
-      {
-        "block_id": "face188_z0_15",
-        "max_condition_2": 147.3399586557339
-      },
-      {
-        "block_id": "face189_z0_15",
-        "max_condition_2": 10.137838675156903
-      },
-      {
-        "block_id": "face190_z0_15",
-        "max_condition_2": 24.998782531421025
-      },
-      {
-        "block_id": "face191_z0_15",
-        "max_condition_2": 24.524638277598875
-      },
-      {
-        "block_id": "face192_z0_15",
-        "max_condition_2": 40.06112873094902
-      },
-      {
-        "block_id": "face195_z0_15",
-        "max_condition_2": 107.35838711088053
-      },
-      {
-        "block_id": "face197_z0_15",
-        "max_condition_2": 19.67895683941946
-      },
-      {
-        "block_id": "face198_z0_15",
-        "max_condition_2": 127.81228815672284
-      },
-      {
-        "block_id": "face200_z0_15",
-        "max_condition_2": 26.12765336188112
-      },
-      {
-        "block_id": "face201_z0_15",
-        "max_condition_2": 14.738918163178118
-      },
-      {
-        "block_id": "face203_z0_15",
-        "max_condition_2": 46.046196611122774
-      },
-      {
-        "block_id": "face204_z0_15",
-        "max_condition_2": 38.33209550593985
-      },
-      {
-        "block_id": "face206_z0_15",
-        "max_condition_2": 29.98533057475342
-      },
-      {
-        "block_id": "face211_z0_15",
-        "max_condition_2": 46.03950032410107
-      },
-      {
-        "block_id": "face212_z0_15",
-        "max_condition_2": 710.8549668538699
-      },
-      {
-        "block_id": "face213_z0_15",
-        "max_condition_2": 106.08184802437171
-      },
-      {
-        "block_id": "face214_z0_15",
-        "max_condition_2": 32.41369245081742
-      },
-      {
-        "block_id": "face215_z0_15",
-        "max_condition_2": 15.561833101478992
-      },
-      {
-        "block_id": "face217_z0_15",
-        "max_condition_2": 16.601998479706857
-      },
-      {
-        "block_id": "face218_z0_15",
-        "max_condition_2": 193.30787486077844
-      },
-      {
-        "block_id": "face220_z0_15",
-        "max_condition_2": 29.707085426231586
-      },
-      {
-        "block_id": "face221_z0_15",
-        "max_condition_2": 29.771696369548838
-      },
-      {
-        "block_id": "face223_z0_15",
-        "max_condition_2": 28.12234734700195
-      },
-      {
-        "block_id": "face224_z0_15",
-        "max_condition_2": 23.31990803386574
-      },
-      {
-        "block_id": "face226_z0_15",
-        "max_condition_2": 24.21012990899012
-      },
-      {
-        "block_id": "face227_z0_15",
-        "max_condition_2": 54.89672838415433
-      },
-      {
-        "block_id": "face229_z0_15",
-        "max_condition_2": 25.525228616845197
-      },
-      {
-        "block_id": "face232_z0_15",
-        "max_condition_2": 165.06794970329022
-      },
-      {
-        "block_id": "face233_z0_15",
-        "max_condition_2": 73.90711565356938
-      },
-      {
-        "block_id": "face235_z0_15",
-        "max_condition_2": 23.178716907877835
-      },
-      {
-        "block_id": "face237_z0_15",
-        "max_condition_2": 47.536113159809126
-      },
-      {
-        "block_id": "face238_z0_15",
-        "max_condition_2": 21.452482123686675
-      },
-      {
-        "block_id": "face239_z0_15",
-        "max_condition_2": 128.82087904235235
-      },
-      {
-        "block_id": "face240_z0_15",
-        "max_condition_2": 21.55251831505166
-      },
-      {
-        "block_id": "face245_z0_15",
-        "max_condition_2": 28.32080280586892
-      },
-      {
-        "block_id": "face246_z0_15",
-        "max_condition_2": 19.048721883446184
-      },
-      {
-        "block_id": "face247_z0_15",
-        "max_condition_2": 19.20753261472073
-      },
-      {
-        "block_id": "face248_z0_15",
-        "max_condition_2": 35.48676939490568
-      },
-      {
-        "block_id": "face249_z0_15",
-        "max_condition_2": 25.17529955118735
-      },
-      {
-        "block_id": "face250_z0_15",
-        "max_condition_2": 25.223503160268336
-      },
-      {
-        "block_id": "face251_z0_15",
-        "max_condition_2": 20.629281400066464
-      },
-      {
-        "block_id": "face252_z0_15",
-        "max_condition_2": 27.07791601011764
-      },
-      {
-        "block_id": "face253_z0_15",
-        "max_condition_2": 29.320388937236405
-      },
-      {
-        "block_id": "face254_z0_15",
-        "max_condition_2": 24.5842980945237
-      },
-      {
-        "block_id": "face255_z0_15",
-        "max_condition_2": 44.5021622997683
-      },
-      {
-        "block_id": "face256_z0_15",
-        "max_condition_2": 35.19212619476788
-      },
-      {
-        "block_id": "face257_z0_15",
-        "max_condition_2": 28.851109308520098
-      },
-      {
-        "block_id": "face258_z0_15",
-        "max_condition_2": 25.694041662987082
-      },
-      {
-        "block_id": "face259_z0_15",
-        "max_condition_2": 32.935320735510764
-      },
-      {
-        "block_id": "face260_z0_15",
-        "max_condition_2": 27.013193932669942
-      },
-      {
-        "block_id": "face265_z0_15",
-        "max_condition_2": 219.32205918293462
-      },
-      {
-        "block_id": "face266_z0_15",
-        "max_condition_2": 106.13132916118872
-      },
-      {
-        "block_id": "face269_z0_15",
-        "max_condition_2": 380.81201195209354
-      },
-      {
-        "block_id": "face271_z0_15",
-        "max_condition_2": 107.3635822567388
-      },
-      {
-        "block_id": "face272_z0_15",
-        "max_condition_2": 26.149158798871913
-      },
-      {
-        "block_id": "face273_z0_15",
-        "max_condition_2": 21.322463729886064
-      },
-      {
-        "block_id": "face274_z0_15",
-        "max_condition_2": 43.978350788624475
-      },
-      {
-        "block_id": "face275_z0_15",
-        "max_condition_2": 139.13868703175805
-      },
-      {
-        "block_id": "face276_z0_15",
-        "max_condition_2": 46.96258961744768
-      },
-      {
-        "block_id": "face277_z0_15",
-        "max_condition_2": 37.88715403976276
-      },
-      {
-        "block_id": "face278_z0_15",
-        "max_condition_2": 32.557746047452405
-      },
-      {
-        "block_id": "face279_z0_15",
-        "max_condition_2": 27.232260097186984
-      },
-      {
-        "block_id": "face280_z0_15",
-        "max_condition_2": 23.813391714686283
-      },
-      {
-        "block_id": "face281_z0_15",
-        "max_condition_2": 26.689825925437376
+        "block_id": "quad_1088d1_-305d1_1098d1_-259d1_2144d1_-777d1_2194d1_-547d1_z0_15",
+        "max_condition_2": 77.18231949144543
       }
     ],
     "reported_method": "certified_sketch_layer_partition",
-    "audit_elapsed_s": 0.030819149978924543,
+    "audit_elapsed_s": 3.252393209026195,
     "closed_domain_certificate": {
       "status": "valid",
       "method": "certified_sketch_layer_partition",
-      "determinant_lower_bound_mm3": 1114.5417156286717,
+      "determinant_lower_bound_mm3": 22986.388888888876,
       "hausdorff_error_upper_bound_mm": 0
     },
     "volume_exact_expected_mm3": [
@@ -775,12 +164,12 @@
     "input_vertex_lower_bound_total_blocks": 24,
     "layers": [
       {
-        "cells": 180,
-        "vertices": 234,
-        "edges": 416,
+        "cells": 33,
+        "vertices": 55,
+        "edges": 90,
         "euler": -2,
-        "boundary_edges": 112,
-        "internal_edges": 304,
+        "boundary_edges": 48,
+        "internal_edges": 42,
         "area_exact_mm2": [
           2617384,
           1
@@ -806,49 +195,273 @@
           "assumption": "one connected conforming quadrilateral section; all input contour corners mandatory",
           "input_vertex_count": 44,
           "input_only_bound_blocks": 24,
-          "actual_boundary_vertex_count": 112,
-          "actual_interior_vertex_count": 122,
-          "with_inserted_host_vertices_bound_blocks": "180",
-          "observed_quads": 180,
+          "actual_boundary_vertex_count": 48,
+          "actual_interior_vertex_count": 7,
+          "with_inserted_host_vertices_bound_blocks": "33",
+          "observed_quads": 33,
           "attains_conditional_bound": true
         }
       }
     ],
     "outcome": "valid_model"
   },
-  "rebuild": {
-    "blocks": 180,
-    "bounded_sketch_faces": 20,
-    "cavities": 0,
-    "determinant_lower_bound_mm3": 1114.5417156286717,
-    "exterior_sides": 472,
-    "hausdorff_error_upper_bound_mm": 0,
-    "method": "certified_sketch_layer_partition",
-    "shared_faces": 304,
-    "status": "valid",
-    "volume_exact_mm3": [
-      39260760,
-      1
-    ]
+  "latest_release": {
+    "tag": "latest-release",
+    "cli_sha256": "0690e67c5077228d880f3002d2fef06d081dd612aba500855264599f20e8ef38",
+    "measurement_scope": "Latest tracked 45-case release run; its condition grid is a sampled diagnostic."
   },
   "model_audit": {
-    "blocks": 180,
-    "bounded_sketch_faces": 20,
+    "blocks": 33,
+    "bounded_sketch_faces": 33,
     "cavities": 0,
-    "determinant_lower_bound_mm3": 1114.5417156286717,
-    "exterior_sides": 472,
+    "determinant_lower_bound_mm3": 22986.388888888876,
+    "exterior_sides": 114,
     "hausdorff_error_upper_bound_mm": 0,
     "method": "certified_sketch_layer_partition",
-    "shared_faces": 304,
+    "shared_faces": 42,
     "status": "valid",
     "volume_exact_mm3": [
       39260760,
       1
     ]
   },
-  "provenance": {
+  "kernel_rebuild": {
+    "command": "build recipe.json model.json; audit model.json; export-step model.json reference.step",
+    "kernel_revision": "7d37353900e86345ed8ef176fc2c987bf06a8d5b",
+    "kernel_binary_sha256": "0690e67c5077228d880f3002d2fef06d081dd612aba500855264599f20e8ef38",
     "recipe_sha256": "4edb43bbd36f1668008321b1e2c3d713a6f1364d60d44b5031bdb76481f1e935",
-    "model_sha256": "a6ecae0204e3d5843b780b8e3d87344e777f90319999dc45eac6799ff9819ebe",
-    "step_sha256": "a4663eb940411f4fb18d8119e129ca28d950851625fe4356ffec6c2fb7c01778"
+    "model_sha256": "93eaac7a0b13c17816d7ee502d13a5a4a7e4bc1fbbfa1234a54d279028f4c083",
+    "step_sha256": "88c418327975b6b9588995befddafd71bc4edc2f1a7a16bc09ad750d034a7bd5",
+    "build_report": {
+      "blocks": 33,
+      "bounded_sketch_faces": 33,
+      "cavities": 0,
+      "determinant_lower_bound_mm3": 22986.388888888876,
+      "exterior_sides": 114,
+      "hausdorff_error_upper_bound_mm": 0,
+      "method": "certified_sketch_layer_partition",
+      "shared_faces": 42,
+      "status": "valid",
+      "volume_exact_mm3": [
+        39260760,
+        1
+      ]
+    },
+    "sampled_condition": {
+      "method": "maximum spectral Jacobian condition number on the closed 5x5x5 parameter grid per block; diagnostic only",
+      "points_per_block": 125,
+      "sample_count": 4125,
+      "maximum_condition_2": 126.54339749995482
+    }
+  },
+  "latest_run_details_case": {
+    "id": "seeded_convex_26",
+    "family": "seeded_convex_through_holes",
+    "build_elapsed_s": 6.702176214021165,
+    "build_stdout": "{\"blocks\":33,\"bounded_sketch_faces\":33,\"cavities\":0,\"determinant_lower_bound_mm3\":22986.388888888876,\"exterior_sides\":114,\"hausdorff_error_upper_bound_mm\":0,\"method\":\"certified_sketch_layer_partition\",\"shared_faces\":42,\"status\":\"valid\",\"volume_exact_mm3\":[39260760,1]}",
+    "build_stderr": "",
+    "admitted": true,
+    "geometry_pass": true,
+    "construction_method": "separated_convex_quad_rings",
+    "block_count": 33,
+    "condition_grid_5cube_per_block": [
+      {
+        "block_id": "quad_-810d1_545d1_-10865444d14049_1018169d1561_-556d1_449d1_-12589009d28098_2880257d6244_z0_15",
+        "max_condition_2": 25.829097064647982
+      },
+      {
+        "block_id": "quad_-12589009d28098_2880257d6244_-236d1_393d1_-6494423d28098_2085311d6244_12d1_285d1_z0_15",
+        "max_condition_2": 24.331629082781454
+      },
+      {
+        "block_id": "quad_-556d1_449d1_-12589009d28098_2880257d6244_-332d1_337d1_-6494423d28098_2085311d6244_z0_15",
+        "max_condition_2": 17.8204961851101
+      },
+      {
+        "block_id": "quad_-10865444d14049_1018169d1561_-12589009d28098_2880257d6244_-420d1_501d1_-236d1_393d1_z0_15",
+        "max_condition_2": 35.83589413598023
+      },
+      {
+        "block_id": "quad_-2561624d1561_1813115d1561_-1004d1_591d1_-810d1_545d1_-10865444d14049_1018169d1561_z0_15",
+        "max_condition_2": 87.5985174513415
+      },
+      {
+        "block_id": "quad_-2561624d1561_1813115d1561_-10865444d14049_1018169d1561_-484d1_575d1_-420d1_501d1_z0_15",
+        "max_condition_2": 109.39011715929664
+      },
+      {
+        "block_id": "quad_-332d1_337d1_-6494423d28098_2085311d6244_-202d1_241d1_848d9_143d1_z0_15",
+        "max_condition_2": 32.46322670710872
+      },
+      {
+        "block_id": "quad_-6494423d28098_2085311d6244_12d1_285d1_848d9_143d1_244d1_211d1_z0_15",
+        "max_condition_2": 29.753010409149557
+      },
+      {
+        "block_id": "quad_-1816d1_1203d1_-2561624d1561_1813115d1561_-1084d1_575d1_-1004d1_591d1_z0_15",
+        "max_condition_2": 65.18293838763013
+      },
+      {
+        "block_id": "quad_-2561624d1561_1813115d1561_-846d1_973d1_-484d1_575d1_-404d1_591d1_z0_15",
+        "max_condition_2": 101.6260244276926
+      },
+      {
+        "block_id": "quad_-22012d27_143d1_-356d1_211d1_-212d1_195d1_-20519d108_143d1_z0_15",
+        "max_condition_2": 51.802221400686435
+      },
+      {
+        "block_id": "quad_-976d1_213d1_-22012d27_143d1_-588d1_285d1_-356d1_211d1_z0_15",
+        "max_condition_2": 34.355048442872885
+      },
+      {
+        "block_id": "quad_-22012d27_143d1_264d1_-327d1_464d1_-107d1_712d1_-215d1_z0_15",
+        "max_condition_2": 116.40341500864227
+      },
+      {
+        "block_id": "quad_-22012d27_143d1_-20519d108_143d1_280d1_1d1_464d1_-107d1_z0_15",
+        "max_condition_2": 96.10869384908845
+      },
+      {
+        "block_id": "quad_-20519d108_143d1_848d9_143d1_216d1_75d1_280d1_1d1_z0_15",
+        "max_condition_2": 37.51841569735936
+      },
+      {
+        "block_id": "quad_-212d1_195d1_-202d1_241d1_-20519d108_143d1_848d9_143d1_z0_15",
+        "max_condition_2": 27.78386210993645
+      },
+      {
+        "block_id": "quad_-2216d1_1123d1_-1896d1_753d1_-1020d1_501d1_-836d1_393d1_z0_15",
+        "max_condition_2": 126.54339749995293
+      },
+      {
+        "block_id": "quad_-2216d1_1123d1_-1816d1_1203d1_-1084d1_575d1_-1020d1_501d1_z0_15",
+        "max_condition_2": 92.42336426946214
+      },
+      {
+        "block_id": "quad_-1896d1_753d1_-976d1_213d1_-836d1_393d1_-588d1_285d1_z0_15",
+        "max_condition_2": 102.55899583772849
+      },
+      {
+        "block_id": "quad_-846d1_973d1_-404d1_591d1_-210d1_545d1_424d1_493d1_z0_15",
+        "max_condition_2": 99.38549205120819
+      },
+      {
+        "block_id": "quad_-210d1_545d1_44d1_449d1_424d1_493d1_949d1_461d2_z0_15",
+        "max_condition_2": 72.99103969426483
+      },
+      {
+        "block_id": "quad_44d1_449d1_268d1_337d1_949d1_461d2_1124d1_143d1_z0_15",
+        "max_condition_2": 64.17359241455205
+      },
+      {
+        "block_id": "quad_848d9_143d1_216d1_75d1_296d1_91d1_14977d36_143d1_z0_15",
+        "max_condition_2": 22.999477458672242
+      },
+      {
+        "block_id": "quad_848d9_143d1_244d1_211d1_388d1_195d1_14977d36_143d1_z0_15",
+        "max_condition_2": 23.748361764385876
+      },
+      {
+        "block_id": "quad_264d1_-327d1_712d1_-215d1_944d1_-289d1_1424d1_-697d1_z0_15",
+        "max_condition_2": 90.22548260998602
+      },
+      {
+        "block_id": "quad_268d1_337d1_398d1_241d1_5482d9_143d1_1124d1_143d1_z0_15",
+        "max_condition_2": 67.52154582709287
+      },
+      {
+        "block_id": "quad_296d1_91d1_14977d36_143d1_490d1_45d1_5482d9_143d1_z0_15",
+        "max_condition_2": 15.56743392117865
+      },
+      {
+        "block_id": "quad_388d1_195d1_398d1_241d1_14977d36_143d1_5482d9_143d1_z0_15",
+        "max_condition_2": 19.70544107214327
+      },
+      {
+        "block_id": "quad_490d1_45d1_5482d9_143d1_744d1_-51d1_1124d1_143d1_z0_15",
+        "max_condition_2": 43.39131191781297
+      },
+      {
+        "block_id": "quad_744d1_-51d1_968d1_-163d1_1124d1_143d1_1544d1_-67d1_z0_15",
+        "max_condition_2": 47.63564450994078
+      },
+      {
+        "block_id": "quad_944d1_-289d1_1088d1_-305d1_1424d1_-697d1_2144d1_-777d1_z0_15",
+        "max_condition_2": 90.11210181162215
+      },
+      {
+        "block_id": "quad_968d1_-163d1_1098d1_-259d1_1544d1_-67d1_2194d1_-547d1_z0_15",
+        "max_condition_2": 91.30779585030218
+      },
+      {
+        "block_id": "quad_1088d1_-305d1_1098d1_-259d1_2144d1_-777d1_2194d1_-547d1_z0_15",
+        "max_condition_2": 77.18231949144543
+      }
+    ],
+    "reported_method": "certified_sketch_layer_partition",
+    "audit_elapsed_s": 3.252393209026195,
+    "closed_domain_certificate": {
+      "status": "valid",
+      "method": "certified_sketch_layer_partition",
+      "determinant_lower_bound_mm3": 22986.388888888876,
+      "hausdorff_error_upper_bound_mm": 0
+    },
+    "volume_exact_expected_mm3": [
+      39260760,
+      1
+    ],
+    "volume_exact_cli_mm3": [
+      39260760,
+      1
+    ],
+    "volume_match": true,
+    "input_vertex_lower_bound_total_blocks": 24,
+    "layers": [
+      {
+        "cells": 33,
+        "vertices": 55,
+        "edges": 90,
+        "euler": -2,
+        "boundary_edges": 48,
+        "internal_edges": 42,
+        "area_exact_mm2": [
+          2617384,
+          1
+        ],
+        "area_sum_mm2": 2617384.0,
+        "pairwise_overlap_pairs": 0,
+        "z_interval_mm": [
+          0.0,
+          15.0
+        ],
+        "expected_area_exact_mm2": [
+          2617384,
+          1
+        ],
+        "area_gap_exact_mm2": [
+          0,
+          1
+        ],
+        "contained_in_expected_material": true,
+        "expected_euler_characteristic": -2,
+        "active_hole_count": 3,
+        "quadrilateral_lower_bounds": {
+          "assumption": "one connected conforming quadrilateral section; all input contour corners mandatory",
+          "input_vertex_count": 44,
+          "input_only_bound_blocks": 24,
+          "actual_boundary_vertex_count": 48,
+          "actual_interior_vertex_count": 7,
+          "with_inserted_host_vertices_bound_blocks": "33",
+          "observed_quads": 33,
+          "attains_conditional_bound": true
+        }
+      }
+    ],
+    "outcome": "valid_model"
+  },
+  "latest_run_details_metadata": {
+    "tag": "latest-release",
+    "cli_sha256": "0690e67c5077228d880f3002d2fef06d081dd612aba500855264599f20e8ef38",
+    "source_checkout_head": "7d37353900e86345ed8ef176fc2c987bf06a8d5b"
   }
 }

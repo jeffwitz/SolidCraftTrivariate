@@ -1,5 +1,7 @@
 # Multi-loop NURBS sketches and crossed extrusions
 
+Historical campaign record. For the current sketch planner, models and reproduction commands, use the [documentation index](README.md).
+
 Starting point: `81cb61d` on `campagne-nurbs-multiboucles`. This cycle follows the completed ten-hour campaign and covers multi-contour sketches, automatic partitioning, pockets and IGA spaces.
 
 ## M1 — strip contours, through-hole and pocket

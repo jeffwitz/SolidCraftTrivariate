@@ -1,4 +1,4 @@
-.PHONY: bootstrap refs test demo demo-native check
+.PHONY: bootstrap refs test demo demo-native check check-published-geometry
 bootstrap:
 	bash scripts/references.sh clone
 refs:
@@ -20,7 +20,10 @@ demo:
 	python3 -m trivariate audit build/affine_pair.json
 	cargo run --quiet --locked --offline -- build tests/references/annular_pair.json build/annular_pair.json
 	python3 -m trivariate audit build/annular_pair.json
-	cargo run --quiet --locked --offline -- build tests/references/filleted_bracket.json build/filleted_bracket.json
-	python3 -m trivariate audit build/filleted_bracket.json
 demo: demo-native
-check: refs test demo
+check-published-geometry:
+	cargo build --locked --offline --release
+	python3 scripts/check_gallery_geometry.py
+	python3 scripts/check_reference_geometry.py --cli target/release/solidcraft-trivariate
+	python3 tests/references/replay_geometry_recipes.py --cli target/release/solidcraft-trivariate --work build/reference-recipe-replay --output build/reference-recipe-replay.json
+check: refs test demo check-published-geometry

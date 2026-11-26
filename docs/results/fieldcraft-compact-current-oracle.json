@@ -1,0 +1,3285 @@
+{
+  "cases": [
+    {
+      "case": "x40-y80",
+      "rebuild": {
+        "audit": {
+          "blocks": 10,
+          "cavities": 0,
+          "determinant_denominator": 4096,
+          "determinant_lower_bound_mm3": 47.91666666666197,
+          "determinant_numerator": 1,
+          "exterior_sides": 38,
+          "hausdorff_error_upper_bound_mm": 0,
+          "linear_operator_norm_upper": 0.06250000000000003,
+          "method": "certified_rational_affine_image",
+          "shared_faces": 11,
+          "source_certificate": {
+            "blocks": 10,
+            "cavities": 0,
+            "determinant_lower_bound_mm3": 196266.66666664748,
+            "exterior_sides": 38,
+            "hausdorff_error_upper_bound_mm": 0,
+            "method": "certified_orthogonal_sketch_features",
+            "shared_faces": 11,
+            "status": "valid",
+            "through_bores": 2,
+            "volume_exact": {
+              "pi_coefficient_mm3": [
+                -9994240,
+                4
+              ],
+              "twice_rational_part_mm3": 279183360
+            }
+          },
+          "status": "valid"
+        },
+        "build": {
+          "blocks": 10,
+          "cavities": 0,
+          "determinant_denominator": 4096,
+          "determinant_lower_bound_mm3": 47.91666666666197,
+          "determinant_numerator": 1,
+          "exterior_sides": 38,
+          "hausdorff_error_upper_bound_mm": 0,
+          "linear_operator_norm_upper": 0.06250000000000003,
+          "method": "certified_rational_affine_image",
+          "shared_faces": 11,
+          "source_certificate": {
+            "blocks": 10,
+            "cavities": 0,
+            "determinant_lower_bound_mm3": 196266.66666664748,
+            "exterior_sides": 38,
+            "hausdorff_error_upper_bound_mm": 0,
+            "method": "certified_orthogonal_sketch_features",
+            "shared_faces": 11,
+            "status": "valid",
+            "through_bores": 2,
+            "volume_exact": {
+              "pi_coefficient_mm3": [
+                -9994240,
+                4
+              ],
+              "twice_rational_part_mm3": 279183360
+            }
+          },
+          "status": "valid"
+        },
+        "model_matches_published": true,
+        "recipe": "docs/site/data/fieldcraft_x40_y80/fieldcraft_x40_y80.recipe.json"
+      },
+      "step_oracle": {
+        "adaptive_occ_mass_properties": {
+          "candidate": [
+            {
+              "estimated_error": 9.712641003587671e-10,
+              "surface_estimated_error": 3.089316242435218e-16,
+              "surface_mm2": 10525.083772474272,
+              "tolerance": 1e-09,
+              "volume_mm3": 32163.62848131022
+            },
+            {
+              "estimated_error": 2.3988725237835735e-10,
+              "surface_estimated_error": 3.2728347034530846e-16,
+              "surface_mm2": 10525.084028344583,
+              "tolerance": 1e-12,
+              "volume_mm3": 32163.628481310214
+            }
+          ],
+          "reference": [
+            {
+              "estimated_error": 6.778561271256111e-12,
+              "surface_estimated_error": 1.725192658155146e-15,
+              "surface_mm2": 10525.084028247575,
+              "tolerance": 1e-09,
+              "volume_mm3": 32163.628481310236
+            },
+            {
+              "estimated_error": 2.0085373108984646e-15,
+              "surface_estimated_error": 5.65431943371292e-16,
+              "surface_mm2": 10525.08402824757,
+              "tolerance": 1e-12,
+              "volume_mm3": 32163.628481310236
+            }
+          ]
+        },
+        "analytic_volume_mm3": 32163.628481310225,
+        "bbox_max_abs_delta_mm": 0.0,
+        "bore_parameters_mm": {
+          "candidate": {
+            "x": {
+              "center_mm": [
+                4.0,
+                32.0,
+                20.0
+              ],
+              "radius_mm": 5.0
+            },
+            "y": {
+              "center_mm": [
+                40.0,
+                4.0,
+                20.0
+              ],
+              "radius_mm": 2.5
+            }
+          },
+          "reference": {
+            "x": {
+              "center_mm": [
+                4.0,
+                32,
+                20
+              ],
+              "radius_mm": 5.0
+            },
+            "y": {
+              "center_mm": [
+                40,
+                4.0,
+                20
+              ],
+              "radius_mm": 2.5
+            }
+          }
+        },
+        "candidate": "docs/site/data/fieldcraft_x40_y80/fieldcraft_x40_y80.step",
+        "candidate_shape": {
+          "area_mm2": 10525.084028270016,
+          "bounds_mm": [
+            0.0,
+            60.0,
+            0.0,
+            50.0,
+            0.0,
+            40.0
+          ],
+          "cylinders": [
+            2.5,
+            2.5,
+            2.5,
+            2.5,
+            5.0,
+            5.0,
+            5.0,
+            5.0
+          ],
+          "edges": 76,
+          "faces": 38,
+          "shells": 1,
+          "solids": 1,
+          "valid": true,
+          "vertices": 36,
+          "volume_mm3": 32163.62847806065
+        },
+        "input_sha256": {
+          "candidate_audit": "ede6408d0083aaf0acffdf8f84d161bd0cb576cb488a8943bfc4eec33ff32ff2",
+          "candidate_model": "ea1b7b4c23f053824dbaf50624a7d4842f6333181806bba2ca8e99f5383faa08",
+          "candidate_recipe": "7cd26167c2354110dd867709e80a97bb472a8220d54f8a4a51a2c16ee44be2cb",
+          "candidate_step": "26ce52b0c5d24c81488217db515f414431ff49ae499b3e03733886adf3a3e930",
+          "reference_step": "90a0f4edd803e9d0537697d4d72bd7aeedae4eb64ea74e252f5fabf9c19d8861",
+          "source_script": "830ee65bd8ad0ba9231e7522d403815f36d4edc30ddb3853902484827e54e924"
+        },
+        "interior_classification_grids": [
+          {
+            "mismatches": 0,
+            "shape": [
+              8,
+              8,
+              6
+            ],
+            "tested": 384
+          },
+          {
+            "mismatches": 0,
+            "shape": [
+              12,
+              12,
+              8
+            ],
+            "tested": 1152
+          }
+        ],
+        "probe_coordinate_source": "tests/references/fieldcraft_scripts/x40-y80.script.json",
+        "qualification_pass": true,
+        "radial_probe_failures": 0,
+        "radial_probes": [
+          {
+            "axis": "x",
+            "candidate_inside": false,
+            "direction": "y",
+            "expected_inside": false,
+            "pass": true,
+            "point_mm": [
+              4.0,
+              27.02,
+              20.0
+            ],
+            "radial_offset_mm": -0.02,
+            "reference_inside": false,
+            "sign": -1
+          },
+          {
+            "axis": "x",
+            "candidate_inside": true,
+            "direction": "y",
+            "expected_inside": true,
+            "pass": true,
+            "point_mm": [
+              4.0,
+              26.98,
+              20.0
+            ],
+            "radial_offset_mm": 0.02,
+            "reference_inside": true,
+            "sign": -1
+          },
+          {
+            "axis": "x",
+            "candidate_inside": false,
+            "direction": "y",
+            "expected_inside": false,
+            "pass": true,
+            "point_mm": [
+              4.0,
+              36.980000000000004,
+              20.0
+            ],
+            "radial_offset_mm": -0.02,
+            "reference_inside": false,
+            "sign": 1
+          },
+          {
+            "axis": "x",
+            "candidate_inside": true,
+            "direction": "y",
+            "expected_inside": true,
+            "pass": true,
+            "point_mm": [
+              4.0,
+              37.019999999999996,
+              20.0
+            ],
+            "radial_offset_mm": 0.02,
+            "reference_inside": true,
+            "sign": 1
+          },
+          {
+            "axis": "x",
+            "candidate_inside": false,
+            "direction": "z",
+            "expected_inside": false,
+            "pass": true,
+            "point_mm": [
+              4.0,
+              32.0,
+              15.02
+            ],
+            "radial_offset_mm": -0.02,
+            "reference_inside": false,
+            "sign": -1
+          },
+          {
+            "axis": "x",
+            "candidate_inside": true,
+            "direction": "z",
+            "expected_inside": true,
+            "pass": true,
+            "point_mm": [
+              4.0,
+              32.0,
+              14.98
+            ],
+            "radial_offset_mm": 0.02,
+            "reference_inside": true,
+            "sign": -1
+          },
+          {
+            "axis": "x",
+            "candidate_inside": false,
+            "direction": "z",
+            "expected_inside": false,
+            "pass": true,
+            "point_mm": [
+              4.0,
+              32.0,
+              24.98
+            ],
+            "radial_offset_mm": -0.02,
+            "reference_inside": false,
+            "sign": 1
+          },
+          {
+            "axis": "x",
+            "candidate_inside": true,
+            "direction": "z",
+            "expected_inside": true,
+            "pass": true,
+            "point_mm": [
+              4.0,
+              32.0,
+              25.02
+            ],
+            "radial_offset_mm": 0.02,
+            "reference_inside": true,
+            "sign": 1
+          },
+          {
+            "axis": "y",
+            "candidate_inside": false,
+            "direction": "x",
+            "expected_inside": false,
+            "pass": true,
+            "point_mm": [
+              37.52,
+              4.0,
+              20.0
+            ],
+            "radial_offset_mm": -0.02,
+            "reference_inside": false,
+            "sign": -1
+          },
+          {
+            "axis": "y",
+            "candidate_inside": true,
+            "direction": "x",
+            "expected_inside": true,
+            "pass": true,
+            "point_mm": [
+              37.48,
+              4.0,
+              20.0
+            ],
+            "radial_offset_mm": 0.02,
+            "reference_inside": true,
+            "sign": -1
+          },
+          {
+            "axis": "y",
+            "candidate_inside": false,
+            "direction": "x",
+            "expected_inside": false,
+            "pass": true,
+            "point_mm": [
+              42.48,
+              4.0,
+              20.0
+            ],
+            "radial_offset_mm": -0.02,
+            "reference_inside": false,
+            "sign": 1
+          },
+          {
+            "axis": "y",
+            "candidate_inside": true,
+            "direction": "x",
+            "expected_inside": true,
+            "pass": true,
+            "point_mm": [
+              42.52,
+              4.0,
+              20.0
+            ],
+            "radial_offset_mm": 0.02,
+            "reference_inside": true,
+            "sign": 1
+          },
+          {
+            "axis": "y",
+            "candidate_inside": false,
+            "direction": "z",
+            "expected_inside": false,
+            "pass": true,
+            "point_mm": [
+              40.0,
+              4.0,
+              17.52
+            ],
+            "radial_offset_mm": -0.02,
+            "reference_inside": false,
+            "sign": -1
+          },
+          {
+            "axis": "y",
+            "candidate_inside": true,
+            "direction": "z",
+            "expected_inside": true,
+            "pass": true,
+            "point_mm": [
+              40.0,
+              4.0,
+              17.48
+            ],
+            "radial_offset_mm": 0.02,
+            "reference_inside": true,
+            "sign": -1
+          },
+          {
+            "axis": "y",
+            "candidate_inside": false,
+            "direction": "z",
+            "expected_inside": false,
+            "pass": true,
+            "point_mm": [
+              40.0,
+              4.0,
+              22.48
+            ],
+            "radial_offset_mm": -0.02,
+            "reference_inside": false,
+            "sign": 1
+          },
+          {
+            "axis": "y",
+            "candidate_inside": true,
+            "direction": "z",
+            "expected_inside": true,
+            "pass": true,
+            "point_mm": [
+              40.0,
+              4.0,
+              22.52
+            ],
+            "radial_offset_mm": 0.02,
+            "reference_inside": true,
+            "sign": 1
+          }
+        ],
+        "reference": "<host-dir>/x40-y80/host.step",
+        "reference_shape": {
+          "area_mm2": 10525.08402824757,
+          "bounds_mm": [
+            0.0,
+            60.0,
+            0.0,
+            50.0,
+            0.0,
+            40.0
+          ],
+          "cylinders": [
+            2.500000000000008,
+            5.0,
+            6.0
+          ],
+          "edges": 27,
+          "faces": 11,
+          "shells": 1,
+          "solids": 1,
+          "valid": true,
+          "vertices": 18,
+          "volume_mm3": 32163.628481310214
+        },
+        "shape_difference_method": "uniform interior point classification; volume and area from adaptive OCCT Gauss-Kronrod integration",
+        "source_cylinder_radius_match": true,
+        "tangency_plane_probe_failures": 0,
+        "tangency_plane_probes": [
+          {
+            "axis": "x",
+            "candidate_inside": true,
+            "expected_inside": true,
+            "outside_radius_by_mm": 0.02,
+            "pass": true,
+            "point_mm": [
+              4.0,
+              26.98,
+              15.0
+            ],
+            "radial_sign": -1,
+            "reference_inside": true,
+            "z_tangency_sign": -1
+          },
+          {
+            "axis": "x",
+            "candidate_inside": true,
+            "expected_inside": true,
+            "outside_radius_by_mm": 0.02,
+            "pass": true,
+            "point_mm": [
+              4.0,
+              37.019999999999996,
+              15.0
+            ],
+            "radial_sign": 1,
+            "reference_inside": true,
+            "z_tangency_sign": -1
+          },
+          {
+            "axis": "x",
+            "candidate_inside": true,
+            "expected_inside": true,
+            "outside_radius_by_mm": 0.02,
+            "pass": true,
+            "point_mm": [
+              4.0,
+              26.98,
+              25.0
+            ],
+            "radial_sign": -1,
+            "reference_inside": true,
+            "z_tangency_sign": 1
+          },
+          {
+            "axis": "x",
+            "candidate_inside": true,
+            "expected_inside": true,
+            "outside_radius_by_mm": 0.02,
+            "pass": true,
+            "point_mm": [
+              4.0,
+              37.019999999999996,
+              25.0
+            ],
+            "radial_sign": 1,
+            "reference_inside": true,
+            "z_tangency_sign": 1
+          },
+          {
+            "axis": "y",
+            "candidate_inside": true,
+            "expected_inside": true,
+            "outside_radius_by_mm": 0.02,
+            "pass": true,
+            "point_mm": [
+              37.48,
+              4.0,
+              17.5
+            ],
+            "radial_sign": -1,
+            "reference_inside": true,
+            "z_tangency_sign": -1
+          },
+          {
+            "axis": "y",
+            "candidate_inside": true,
+            "expected_inside": true,
+            "outside_radius_by_mm": 0.02,
+            "pass": true,
+            "point_mm": [
+              42.52,
+              4.0,
+              17.5
+            ],
+            "radial_sign": 1,
+            "reference_inside": true,
+            "z_tangency_sign": -1
+          },
+          {
+            "axis": "y",
+            "candidate_inside": true,
+            "expected_inside": true,
+            "outside_radius_by_mm": 0.02,
+            "pass": true,
+            "point_mm": [
+              37.48,
+              4.0,
+              22.5
+            ],
+            "radial_sign": -1,
+            "reference_inside": true,
+            "z_tangency_sign": 1
+          },
+          {
+            "axis": "y",
+            "candidate_inside": true,
+            "expected_inside": true,
+            "outside_radius_by_mm": 0.02,
+            "pass": true,
+            "point_mm": [
+              42.52,
+              4.0,
+              22.5
+            ],
+            "radial_sign": 1,
+            "reference_inside": true,
+            "z_tangency_sign": 1
+          }
+        ]
+      },
+      "topology": {
+        "blocks": 10,
+        "candidate_step_path": "docs/site/data/fieldcraft_x40_y80/fieldcraft_x40_y80.step",
+        "elbow_trace_interfaces": 3,
+        "exact_trace_interfaces": 11,
+        "exterior_sides": 38,
+        "fillet_blocks": [
+          "elbow_east_fillet",
+          "elbow_north_fillet"
+        ],
+        "independent_host_step_path": "<host-dir>/x40-y80/host.step",
+        "interfaces": 11,
+        "model_path": "docs/site/data/fieldcraft_x40_y80/fieldcraft_x40_y80.model.json",
+        "recipe_path": "docs/site/data/fieldcraft_x40_y80/fieldcraft_x40_y80.recipe.json",
+        "x0_coplanar_exterior_sides": [
+          [
+            "elbow_north_fillet",
+            "v0"
+          ],
+          [
+            "wing_north_east",
+            "w0"
+          ],
+          [
+            "wing_north_north",
+            "w0"
+          ],
+          [
+            "wing_north_south",
+            "w0"
+          ],
+          [
+            "wing_north_west",
+            "w0"
+          ]
+        ],
+        "y0_coplanar_exterior_sides": [
+          [
+            "elbow_east_fillet",
+            "v0"
+          ],
+          [
+            "wing_east_east",
+            "w0"
+          ],
+          [
+            "wing_east_north",
+            "w0"
+          ],
+          [
+            "wing_east_south",
+            "w0"
+          ],
+          [
+            "wing_east_west",
+            "w0"
+          ]
+        ]
+      }
+    },
+    {
+      "case": "x50-y74",
+      "rebuild": {
+        "audit": {
+          "blocks": 10,
+          "cavities": 0,
+          "determinant_denominator": 4096,
+          "determinant_lower_bound_mm3": 57.75669642856667,
+          "determinant_numerator": 1,
+          "exterior_sides": 38,
+          "hausdorff_error_upper_bound_mm": 0,
+          "linear_operator_norm_upper": 0.06250000000000003,
+          "method": "certified_rational_affine_image",
+          "shared_faces": 11,
+          "source_certificate": {
+            "blocks": 10,
+            "cavities": 0,
+            "determinant_lower_bound_mm3": 236571.42857140914,
+            "exterior_sides": 38,
+            "hausdorff_error_upper_bound_mm": 0,
+            "method": "certified_orthogonal_sketch_features",
+            "shared_faces": 11,
+            "status": "valid",
+            "through_bores": 2,
+            "volume_exact": {
+              "pi_coefficient_mm3": [
+                -9981952,
+                4
+              ],
+              "twice_rational_part_mm3": 279183360
+            }
+          },
+          "status": "valid"
+        },
+        "build": {
+          "blocks": 10,
+          "cavities": 0,
+          "determinant_denominator": 4096,
+          "determinant_lower_bound_mm3": 57.75669642856667,
+          "determinant_numerator": 1,
+          "exterior_sides": 38,
+          "hausdorff_error_upper_bound_mm": 0,
+          "linear_operator_norm_upper": 0.06250000000000003,
+          "method": "certified_rational_affine_image",
+          "shared_faces": 11,
+          "source_certificate": {
+            "blocks": 10,
+            "cavities": 0,
+            "determinant_lower_bound_mm3": 236571.42857140914,
+            "exterior_sides": 38,
+            "hausdorff_error_upper_bound_mm": 0,
+            "method": "certified_orthogonal_sketch_features",
+            "shared_faces": 11,
+            "status": "valid",
+            "through_bores": 2,
+            "volume_exact": {
+              "pi_coefficient_mm3": [
+                -9981952,
+                4
+              ],
+              "twice_rational_part_mm3": 279183360
+            }
+          },
+          "status": "valid"
+        },
+        "model_matches_published": true,
+        "recipe": "docs/site/data/fieldcraft_x50_y74/fieldcraft_x50_y74.recipe.json"
+      },
+      "step_oracle": {
+        "adaptive_occ_mass_properties": {
+          "candidate": [
+            {
+              "estimated_error": 9.792652581327256e-10,
+              "surface_estimated_error": 3.089316242435218e-16,
+              "surface_mm2": 10538.23918777683,
+              "tolerance": 1e-09,
+              "volume_mm3": 32165.98467580041
+            },
+            {
+              "estimated_error": 2.3881509838349025e-10,
+              "surface_estimated_error": 3.6187644375762673e-16,
+              "surface_mm2": 10538.239447613108,
+              "tolerance": 1e-12,
+              "volume_mm3": 32165.98467580041
+            }
+          ],
+          "reference": [
+            {
+              "estimated_error": 6.215333124301297e-12,
+              "surface_estimated_error": 1.725192658155146e-15,
+              "surface_mm2": 10538.23944748448,
+              "tolerance": 1e-09,
+              "volume_mm3": 32165.98467580041
+            },
+            {
+              "estimated_error": 2.0337632556657524e-15,
+              "surface_estimated_error": 3.6187644375762673e-16,
+              "surface_mm2": 10538.23944748448,
+              "tolerance": 1e-12,
+              "volume_mm3": 32165.98467580041
+            }
+          ]
+        },
+        "analytic_volume_mm3": 32165.984675800417,
+        "bbox_max_abs_delta_mm": 0.0,
+        "bore_parameters_mm": {
+          "candidate": {
+            "x": {
+              "center_mm": [
+                4.0,
+                32.0,
+                20.0
+              ],
+              "radius_mm": 4.625
+            },
+            "y": {
+              "center_mm": [
+                40.0,
+                4.0,
+                20.0
+              ],
+              "radius_mm": 3.125
+            }
+          },
+          "reference": {
+            "x": {
+              "center_mm": [
+                4.0,
+                32,
+                20
+              ],
+              "radius_mm": 4.625
+            },
+            "y": {
+              "center_mm": [
+                40,
+                4.0,
+                20
+              ],
+              "radius_mm": 3.125
+            }
+          }
+        },
+        "candidate": "docs/site/data/fieldcraft_x50_y74/fieldcraft_x50_y74.step",
+        "candidate_shape": {
+          "area_mm2": 10538.239447539574,
+          "bounds_mm": [
+            0.0,
+            60.0,
+            0.0,
+            50.0,
+            0.0,
+            40.0
+          ],
+          "cylinders": [
+            3.125,
+            3.125,
+            3.125,
+            3.125,
+            4.625,
+            4.625,
+            4.625,
+            4.625
+          ],
+          "edges": 76,
+          "faces": 38,
+          "shells": 1,
+          "solids": 1,
+          "valid": true,
+          "vertices": 36,
+          "volume_mm3": 32165.984672594383
+        },
+        "input_sha256": {
+          "candidate_audit": "73aaaa23222cf25a745d3b7d180e103f24247a52bf2238527cb54229c096d4ca",
+          "candidate_model": "c30d5f13dd53b3aa9e239b6ce02989269e50d905962cbfa727ac79e6cc46eb39",
+          "candidate_recipe": "c60db6b353933a7055386cfe7d2ebc153be54d534357e04573a265513187173f",
+          "candidate_step": "b4cfdbfef555708e8a4a7af4c254482e3673fc29d624ea7d9cf93c3426c7da87",
+          "reference_step": "c0d0dc7c09b963ebd642839213f5af6802cfb4d809051714087dda8c74f35546",
+          "source_script": "445614af81985a823ef4ee1019409bad2ccce0d36602ab33ece7153417fa6af0"
+        },
+        "interior_classification_grids": [
+          {
+            "mismatches": 0,
+            "shape": [
+              8,
+              8,
+              6
+            ],
+            "tested": 384
+          },
+          {
+            "mismatches": 0,
+            "shape": [
+              12,
+              12,
+              8
+            ],
+            "tested": 1152
+          }
+        ],
+        "probe_coordinate_source": "tests/references/fieldcraft_scripts/x50-y74.script.json",
+        "qualification_pass": true,
+        "radial_probe_failures": 0,
+        "radial_probes": [
+          {
+            "axis": "x",
+            "candidate_inside": false,
+            "direction": "y",
+            "expected_inside": false,
+            "pass": true,
+            "point_mm": [
+              4.0,
+              27.395,
+              20.0
+            ],
+            "radial_offset_mm": -0.02,
+            "reference_inside": false,
+            "sign": -1
+          },
+          {
+            "axis": "x",
+            "candidate_inside": true,
+            "direction": "y",
+            "expected_inside": true,
+            "pass": true,
+            "point_mm": [
+              4.0,
+              27.355,
+              20.0
+            ],
+            "radial_offset_mm": 0.02,
+            "reference_inside": true,
+            "sign": -1
+          },
+          {
+            "axis": "x",
+            "candidate_inside": false,
+            "direction": "y",
+            "expected_inside": false,
+            "pass": true,
+            "point_mm": [
+              4.0,
+              36.605000000000004,
+              20.0
+            ],
+            "radial_offset_mm": -0.02,
+            "reference_inside": false,
+            "sign": 1
+          },
+          {
+            "axis": "x",
+            "candidate_inside": true,
+            "direction": "y",
+            "expected_inside": true,
+            "pass": true,
+            "point_mm": [
+              4.0,
+              36.644999999999996,
+              20.0
+            ],
+            "radial_offset_mm": 0.02,
+            "reference_inside": true,
+            "sign": 1
+          },
+          {
+            "axis": "x",
+            "candidate_inside": false,
+            "direction": "z",
+            "expected_inside": false,
+            "pass": true,
+            "point_mm": [
+              4.0,
+              32.0,
+              15.395
+            ],
+            "radial_offset_mm": -0.02,
+            "reference_inside": false,
+            "sign": -1
+          },
+          {
+            "axis": "x",
+            "candidate_inside": true,
+            "direction": "z",
+            "expected_inside": true,
+            "pass": true,
+            "point_mm": [
+              4.0,
+              32.0,
+              15.355
+            ],
+            "radial_offset_mm": 0.02,
+            "reference_inside": true,
+            "sign": -1
+          },
+          {
+            "axis": "x",
+            "candidate_inside": false,
+            "direction": "z",
+            "expected_inside": false,
+            "pass": true,
+            "point_mm": [
+              4.0,
+              32.0,
+              24.605
+            ],
+            "radial_offset_mm": -0.02,
+            "reference_inside": false,
+            "sign": 1
+          },
+          {
+            "axis": "x",
+            "candidate_inside": true,
+            "direction": "z",
+            "expected_inside": true,
+            "pass": true,
+            "point_mm": [
+              4.0,
+              32.0,
+              24.645
+            ],
+            "radial_offset_mm": 0.02,
+            "reference_inside": true,
+            "sign": 1
+          },
+          {
+            "axis": "y",
+            "candidate_inside": false,
+            "direction": "x",
+            "expected_inside": false,
+            "pass": true,
+            "point_mm": [
+              36.895,
+              4.0,
+              20.0
+            ],
+            "radial_offset_mm": -0.02,
+            "reference_inside": false,
+            "sign": -1
+          },
+          {
+            "axis": "y",
+            "candidate_inside": true,
+            "direction": "x",
+            "expected_inside": true,
+            "pass": true,
+            "point_mm": [
+              36.855,
+              4.0,
+              20.0
+            ],
+            "radial_offset_mm": 0.02,
+            "reference_inside": true,
+            "sign": -1
+          },
+          {
+            "axis": "y",
+            "candidate_inside": false,
+            "direction": "x",
+            "expected_inside": false,
+            "pass": true,
+            "point_mm": [
+              43.105,
+              4.0,
+              20.0
+            ],
+            "radial_offset_mm": -0.02,
+            "reference_inside": false,
+            "sign": 1
+          },
+          {
+            "axis": "y",
+            "candidate_inside": true,
+            "direction": "x",
+            "expected_inside": true,
+            "pass": true,
+            "point_mm": [
+              43.145,
+              4.0,
+              20.0
+            ],
+            "radial_offset_mm": 0.02,
+            "reference_inside": true,
+            "sign": 1
+          },
+          {
+            "axis": "y",
+            "candidate_inside": false,
+            "direction": "z",
+            "expected_inside": false,
+            "pass": true,
+            "point_mm": [
+              40.0,
+              4.0,
+              16.895
+            ],
+            "radial_offset_mm": -0.02,
+            "reference_inside": false,
+            "sign": -1
+          },
+          {
+            "axis": "y",
+            "candidate_inside": true,
+            "direction": "z",
+            "expected_inside": true,
+            "pass": true,
+            "point_mm": [
+              40.0,
+              4.0,
+              16.855
+            ],
+            "radial_offset_mm": 0.02,
+            "reference_inside": true,
+            "sign": -1
+          },
+          {
+            "axis": "y",
+            "candidate_inside": false,
+            "direction": "z",
+            "expected_inside": false,
+            "pass": true,
+            "point_mm": [
+              40.0,
+              4.0,
+              23.105
+            ],
+            "radial_offset_mm": -0.02,
+            "reference_inside": false,
+            "sign": 1
+          },
+          {
+            "axis": "y",
+            "candidate_inside": true,
+            "direction": "z",
+            "expected_inside": true,
+            "pass": true,
+            "point_mm": [
+              40.0,
+              4.0,
+              23.145
+            ],
+            "radial_offset_mm": 0.02,
+            "reference_inside": true,
+            "sign": 1
+          }
+        ],
+        "reference": "<host-dir>/x50-y74/host.step",
+        "reference_shape": {
+          "area_mm2": 10538.23944748448,
+          "bounds_mm": [
+            0.0,
+            60.0,
+            0.0,
+            50.0,
+            0.0,
+            40.0
+          ],
+          "cylinders": [
+            3.1250000000000004,
+            4.624999999999991,
+            6.0
+          ],
+          "edges": 27,
+          "faces": 11,
+          "shells": 1,
+          "solids": 1,
+          "valid": true,
+          "vertices": 18,
+          "volume_mm3": 32165.984675800417
+        },
+        "shape_difference_method": "uniform interior point classification; volume and area from adaptive OCCT Gauss-Kronrod integration",
+        "source_cylinder_radius_match": true,
+        "tangency_plane_probe_failures": 0,
+        "tangency_plane_probes": [
+          {
+            "axis": "x",
+            "candidate_inside": true,
+            "expected_inside": true,
+            "outside_radius_by_mm": 0.02,
+            "pass": true,
+            "point_mm": [
+              4.0,
+              27.355,
+              15.375
+            ],
+            "radial_sign": -1,
+            "reference_inside": true,
+            "z_tangency_sign": -1
+          },
+          {
+            "axis": "x",
+            "candidate_inside": true,
+            "expected_inside": true,
+            "outside_radius_by_mm": 0.02,
+            "pass": true,
+            "point_mm": [
+              4.0,
+              36.644999999999996,
+              15.375
+            ],
+            "radial_sign": 1,
+            "reference_inside": true,
+            "z_tangency_sign": -1
+          },
+          {
+            "axis": "x",
+            "candidate_inside": true,
+            "expected_inside": true,
+            "outside_radius_by_mm": 0.02,
+            "pass": true,
+            "point_mm": [
+              4.0,
+              27.355,
+              24.625
+            ],
+            "radial_sign": -1,
+            "reference_inside": true,
+            "z_tangency_sign": 1
+          },
+          {
+            "axis": "x",
+            "candidate_inside": true,
+            "expected_inside": true,
+            "outside_radius_by_mm": 0.02,
+            "pass": true,
+            "point_mm": [
+              4.0,
+              36.644999999999996,
+              24.625
+            ],
+            "radial_sign": 1,
+            "reference_inside": true,
+            "z_tangency_sign": 1
+          },
+          {
+            "axis": "y",
+            "candidate_inside": true,
+            "expected_inside": true,
+            "outside_radius_by_mm": 0.02,
+            "pass": true,
+            "point_mm": [
+              36.855,
+              4.0,
+              16.875
+            ],
+            "radial_sign": -1,
+            "reference_inside": true,
+            "z_tangency_sign": -1
+          },
+          {
+            "axis": "y",
+            "candidate_inside": true,
+            "expected_inside": true,
+            "outside_radius_by_mm": 0.02,
+            "pass": true,
+            "point_mm": [
+              43.145,
+              4.0,
+              16.875
+            ],
+            "radial_sign": 1,
+            "reference_inside": true,
+            "z_tangency_sign": -1
+          },
+          {
+            "axis": "y",
+            "candidate_inside": true,
+            "expected_inside": true,
+            "outside_radius_by_mm": 0.02,
+            "pass": true,
+            "point_mm": [
+              36.855,
+              4.0,
+              23.125
+            ],
+            "radial_sign": -1,
+            "reference_inside": true,
+            "z_tangency_sign": 1
+          },
+          {
+            "axis": "y",
+            "candidate_inside": true,
+            "expected_inside": true,
+            "outside_radius_by_mm": 0.02,
+            "pass": true,
+            "point_mm": [
+              43.145,
+              4.0,
+              23.125
+            ],
+            "radial_sign": 1,
+            "reference_inside": true,
+            "z_tangency_sign": 1
+          }
+        ]
+      },
+      "topology": {
+        "blocks": 10,
+        "candidate_step_path": "docs/site/data/fieldcraft_x50_y74/fieldcraft_x50_y74.step",
+        "elbow_trace_interfaces": 3,
+        "exact_trace_interfaces": 11,
+        "exterior_sides": 38,
+        "fillet_blocks": [
+          "elbow_east_fillet",
+          "elbow_north_fillet"
+        ],
+        "independent_host_step_path": "<host-dir>/x50-y74/host.step",
+        "interfaces": 11,
+        "model_path": "docs/site/data/fieldcraft_x50_y74/fieldcraft_x50_y74.model.json",
+        "recipe_path": "docs/site/data/fieldcraft_x50_y74/fieldcraft_x50_y74.recipe.json",
+        "x0_coplanar_exterior_sides": [
+          [
+            "elbow_north_fillet",
+            "v0"
+          ],
+          [
+            "wing_north_east",
+            "w0"
+          ],
+          [
+            "wing_north_north",
+            "w0"
+          ],
+          [
+            "wing_north_south",
+            "w0"
+          ],
+          [
+            "wing_north_west",
+            "w0"
+          ]
+        ],
+        "y0_coplanar_exterior_sides": [
+          [
+            "elbow_east_fillet",
+            "v0"
+          ],
+          [
+            "wing_east_east",
+            "w0"
+          ],
+          [
+            "wing_east_north",
+            "w0"
+          ],
+          [
+            "wing_east_south",
+            "w0"
+          ],
+          [
+            "wing_east_west",
+            "w0"
+          ]
+        ]
+      }
+    },
+    {
+      "case": "x51-y74",
+      "rebuild": {
+        "audit": {
+          "blocks": 10,
+          "cavities": 0,
+          "determinant_denominator": 4096,
+          "determinant_lower_bound_mm3": 58.69363839285233,
+          "determinant_numerator": 1,
+          "exterior_sides": 38,
+          "hausdorff_error_upper_bound_mm": 0,
+          "linear_operator_norm_upper": 0.06250000000000003,
+          "method": "certified_rational_affine_image",
+          "shared_faces": 11,
+          "source_certificate": {
+            "blocks": 10,
+            "cavities": 0,
+            "determinant_lower_bound_mm3": 240409.1428571232,
+            "exterior_sides": 38,
+            "hausdorff_error_upper_bound_mm": 0,
+            "method": "certified_orthogonal_sketch_features",
+            "shared_faces": 11,
+            "status": "valid",
+            "through_bores": 2,
+            "volume_exact": {
+              "pi_coefficient_mm3": [
+                -10033664,
+                4
+              ],
+              "twice_rational_part_mm3": 279183360
+            }
+          },
+          "status": "valid"
+        },
+        "build": {
+          "blocks": 10,
+          "cavities": 0,
+          "determinant_denominator": 4096,
+          "determinant_lower_bound_mm3": 58.69363839285233,
+          "determinant_numerator": 1,
+          "exterior_sides": 38,
+          "hausdorff_error_upper_bound_mm": 0,
+          "linear_operator_norm_upper": 0.06250000000000003,
+          "method": "certified_rational_affine_image",
+          "shared_faces": 11,
+          "source_certificate": {
+            "blocks": 10,
+            "cavities": 0,
+            "determinant_lower_bound_mm3": 240409.1428571232,
+            "exterior_sides": 38,
+            "hausdorff_error_upper_bound_mm": 0,
+            "method": "certified_orthogonal_sketch_features",
+            "shared_faces": 11,
+            "status": "valid",
+            "through_bores": 2,
+            "volume_exact": {
+              "pi_coefficient_mm3": [
+                -10033664,
+                4
+              ],
+              "twice_rational_part_mm3": 279183360
+            }
+          },
+          "status": "valid"
+        },
+        "model_matches_published": true,
+        "recipe": "docs/site/data/fieldcraft_x51_y74/fieldcraft_x51_y74.recipe.json"
+      },
+      "step_oracle": {
+        "adaptive_occ_mass_properties": {
+          "candidate": [
+            {
+              "estimated_error": 9.783416923362859e-10,
+              "surface_estimated_error": 3.089316242435218e-16,
+              "surface_mm2": 10538.901866689166,
+              "tolerance": 1e-09,
+              "volume_mm3": 32156.069023987522
+            },
+            {
+              "estimated_error": 2.35948969801744e-10,
+              "surface_estimated_error": 3.3762533493910056e-16,
+              "surface_mm2": 10538.902127320254,
+              "tolerance": 1e-12,
+              "volume_mm3": 32156.06902398753
+            }
+          ],
+          "reference": [
+            {
+              "estimated_error": 6.278877174524606e-12,
+              "surface_estimated_error": 1.725192658155146e-15,
+              "surface_mm2": 10538.902127184847,
+              "tolerance": 1e-09,
+              "volume_mm3": 32156.06902398752
+            },
+            {
+              "estimated_error": 2.365660532783899e-15,
+              "surface_estimated_error": 2.445111106470455e-16,
+              "surface_mm2": 10538.902127184847,
+              "tolerance": 1e-12,
+              "volume_mm3": 32156.06902398752
+            }
+          ]
+        },
+        "analytic_volume_mm3": 32156.069023987526,
+        "bbox_max_abs_delta_mm": 0.0,
+        "bore_parameters_mm": {
+          "candidate": {
+            "x": {
+              "center_mm": [
+                4.0,
+                32.0,
+                20.0
+              ],
+              "radius_mm": 4.625
+            },
+            "y": {
+              "center_mm": [
+                40.0,
+                4.0,
+                20.0
+              ],
+              "radius_mm": 3.1875
+            }
+          },
+          "reference": {
+            "x": {
+              "center_mm": [
+                4.0,
+                32,
+                20
+              ],
+              "radius_mm": 4.625
+            },
+            "y": {
+              "center_mm": [
+                40,
+                4.0,
+                20
+              ],
+              "radius_mm": 3.1875
+            }
+          }
+        },
+        "candidate": "docs/site/data/fieldcraft_x51_y74/fieldcraft_x51_y74.step",
+        "candidate_shape": {
+          "area_mm2": 10538.902127246916,
+          "bounds_mm": [
+            0.0,
+            60.0,
+            0.0,
+            50.0,
+            0.0,
+            40.0
+          ],
+          "cylinders": [
+            3.1875,
+            3.1875,
+            3.1875,
+            3.1875,
+            4.625,
+            4.625,
+            4.625,
+            4.625
+          ],
+          "edges": 76,
+          "faces": 38,
+          "shells": 1,
+          "solids": 1,
+          "valid": true,
+          "vertices": 36,
+          "volume_mm3": 32156.069020790786
+        },
+        "input_sha256": {
+          "candidate_audit": "70afd89308eb8c6b0f0c9210554e5620e9fa562a26a48d226eab0245f2b843ec",
+          "candidate_model": "a8235e58da852af1e949f4a4c73bf0440fa5c219c1880495e9248e43d6f6ac15",
+          "candidate_recipe": "b33b5b247294ce177dbcffe5510eba0f35a4314d205e0e1df121653a486fe7a4",
+          "candidate_step": "24866fee8b8c258c0bac9684d30993f63994517ad7ae010b9fc39bd4b1666da7",
+          "reference_step": "ffa08fd944d978da344f8d570f0b06aab14cd9a91865743d239c0c7598ae52ba",
+          "source_script": "1351082f4b871ad3260419b7c641d4358ee3c941a784001336bb26f7cd0ca03c"
+        },
+        "interior_classification_grids": [
+          {
+            "mismatches": 0,
+            "shape": [
+              8,
+              8,
+              6
+            ],
+            "tested": 384
+          },
+          {
+            "mismatches": 0,
+            "shape": [
+              12,
+              12,
+              8
+            ],
+            "tested": 1152
+          }
+        ],
+        "probe_coordinate_source": "tests/references/fieldcraft_scripts/x51-y74.script.json",
+        "qualification_pass": true,
+        "radial_probe_failures": 0,
+        "radial_probes": [
+          {
+            "axis": "x",
+            "candidate_inside": false,
+            "direction": "y",
+            "expected_inside": false,
+            "pass": true,
+            "point_mm": [
+              4.0,
+              27.395,
+              20.0
+            ],
+            "radial_offset_mm": -0.02,
+            "reference_inside": false,
+            "sign": -1
+          },
+          {
+            "axis": "x",
+            "candidate_inside": true,
+            "direction": "y",
+            "expected_inside": true,
+            "pass": true,
+            "point_mm": [
+              4.0,
+              27.355,
+              20.0
+            ],
+            "radial_offset_mm": 0.02,
+            "reference_inside": true,
+            "sign": -1
+          },
+          {
+            "axis": "x",
+            "candidate_inside": false,
+            "direction": "y",
+            "expected_inside": false,
+            "pass": true,
+            "point_mm": [
+              4.0,
+              36.605000000000004,
+              20.0
+            ],
+            "radial_offset_mm": -0.02,
+            "reference_inside": false,
+            "sign": 1
+          },
+          {
+            "axis": "x",
+            "candidate_inside": true,
+            "direction": "y",
+            "expected_inside": true,
+            "pass": true,
+            "point_mm": [
+              4.0,
+              36.644999999999996,
+              20.0
+            ],
+            "radial_offset_mm": 0.02,
+            "reference_inside": true,
+            "sign": 1
+          },
+          {
+            "axis": "x",
+            "candidate_inside": false,
+            "direction": "z",
+            "expected_inside": false,
+            "pass": true,
+            "point_mm": [
+              4.0,
+              32.0,
+              15.395
+            ],
+            "radial_offset_mm": -0.02,
+            "reference_inside": false,
+            "sign": -1
+          },
+          {
+            "axis": "x",
+            "candidate_inside": true,
+            "direction": "z",
+            "expected_inside": true,
+            "pass": true,
+            "point_mm": [
+              4.0,
+              32.0,
+              15.355
+            ],
+            "radial_offset_mm": 0.02,
+            "reference_inside": true,
+            "sign": -1
+          },
+          {
+            "axis": "x",
+            "candidate_inside": false,
+            "direction": "z",
+            "expected_inside": false,
+            "pass": true,
+            "point_mm": [
+              4.0,
+              32.0,
+              24.605
+            ],
+            "radial_offset_mm": -0.02,
+            "reference_inside": false,
+            "sign": 1
+          },
+          {
+            "axis": "x",
+            "candidate_inside": true,
+            "direction": "z",
+            "expected_inside": true,
+            "pass": true,
+            "point_mm": [
+              4.0,
+              32.0,
+              24.645
+            ],
+            "radial_offset_mm": 0.02,
+            "reference_inside": true,
+            "sign": 1
+          },
+          {
+            "axis": "y",
+            "candidate_inside": false,
+            "direction": "x",
+            "expected_inside": false,
+            "pass": true,
+            "point_mm": [
+              36.8325,
+              4.0,
+              20.0
+            ],
+            "radial_offset_mm": -0.02,
+            "reference_inside": false,
+            "sign": -1
+          },
+          {
+            "axis": "y",
+            "candidate_inside": true,
+            "direction": "x",
+            "expected_inside": true,
+            "pass": true,
+            "point_mm": [
+              36.7925,
+              4.0,
+              20.0
+            ],
+            "radial_offset_mm": 0.02,
+            "reference_inside": true,
+            "sign": -1
+          },
+          {
+            "axis": "y",
+            "candidate_inside": false,
+            "direction": "x",
+            "expected_inside": false,
+            "pass": true,
+            "point_mm": [
+              43.1675,
+              4.0,
+              20.0
+            ],
+            "radial_offset_mm": -0.02,
+            "reference_inside": false,
+            "sign": 1
+          },
+          {
+            "axis": "y",
+            "candidate_inside": true,
+            "direction": "x",
+            "expected_inside": true,
+            "pass": true,
+            "point_mm": [
+              43.2075,
+              4.0,
+              20.0
+            ],
+            "radial_offset_mm": 0.02,
+            "reference_inside": true,
+            "sign": 1
+          },
+          {
+            "axis": "y",
+            "candidate_inside": false,
+            "direction": "z",
+            "expected_inside": false,
+            "pass": true,
+            "point_mm": [
+              40.0,
+              4.0,
+              16.8325
+            ],
+            "radial_offset_mm": -0.02,
+            "reference_inside": false,
+            "sign": -1
+          },
+          {
+            "axis": "y",
+            "candidate_inside": true,
+            "direction": "z",
+            "expected_inside": true,
+            "pass": true,
+            "point_mm": [
+              40.0,
+              4.0,
+              16.7925
+            ],
+            "radial_offset_mm": 0.02,
+            "reference_inside": true,
+            "sign": -1
+          },
+          {
+            "axis": "y",
+            "candidate_inside": false,
+            "direction": "z",
+            "expected_inside": false,
+            "pass": true,
+            "point_mm": [
+              40.0,
+              4.0,
+              23.1675
+            ],
+            "radial_offset_mm": -0.02,
+            "reference_inside": false,
+            "sign": 1
+          },
+          {
+            "axis": "y",
+            "candidate_inside": true,
+            "direction": "z",
+            "expected_inside": true,
+            "pass": true,
+            "point_mm": [
+              40.0,
+              4.0,
+              23.2075
+            ],
+            "radial_offset_mm": 0.02,
+            "reference_inside": true,
+            "sign": 1
+          }
+        ],
+        "reference": "<host-dir>/x51-y74/host.step",
+        "reference_shape": {
+          "area_mm2": 10538.902127184845,
+          "bounds_mm": [
+            0.0,
+            60.0,
+            0.0,
+            50.0,
+            0.0,
+            40.0
+          ],
+          "cylinders": [
+            3.1875000000000036,
+            4.624999999999991,
+            6.0
+          ],
+          "edges": 27,
+          "faces": 11,
+          "shells": 1,
+          "solids": 1,
+          "valid": true,
+          "vertices": 18,
+          "volume_mm3": 32156.069023987522
+        },
+        "shape_difference_method": "uniform interior point classification; volume and area from adaptive OCCT Gauss-Kronrod integration",
+        "source_cylinder_radius_match": true,
+        "tangency_plane_probe_failures": 0,
+        "tangency_plane_probes": [
+          {
+            "axis": "x",
+            "candidate_inside": true,
+            "expected_inside": true,
+            "outside_radius_by_mm": 0.02,
+            "pass": true,
+            "point_mm": [
+              4.0,
+              27.355,
+              15.375
+            ],
+            "radial_sign": -1,
+            "reference_inside": true,
+            "z_tangency_sign": -1
+          },
+          {
+            "axis": "x",
+            "candidate_inside": true,
+            "expected_inside": true,
+            "outside_radius_by_mm": 0.02,
+            "pass": true,
+            "point_mm": [
+              4.0,
+              36.644999999999996,
+              15.375
+            ],
+            "radial_sign": 1,
+            "reference_inside": true,
+            "z_tangency_sign": -1
+          },
+          {
+            "axis": "x",
+            "candidate_inside": true,
+            "expected_inside": true,
+            "outside_radius_by_mm": 0.02,
+            "pass": true,
+            "point_mm": [
+              4.0,
+              27.355,
+              24.625
+            ],
+            "radial_sign": -1,
+            "reference_inside": true,
+            "z_tangency_sign": 1
+          },
+          {
+            "axis": "x",
+            "candidate_inside": true,
+            "expected_inside": true,
+            "outside_radius_by_mm": 0.02,
+            "pass": true,
+            "point_mm": [
+              4.0,
+              36.644999999999996,
+              24.625
+            ],
+            "radial_sign": 1,
+            "reference_inside": true,
+            "z_tangency_sign": 1
+          },
+          {
+            "axis": "y",
+            "candidate_inside": true,
+            "expected_inside": true,
+            "outside_radius_by_mm": 0.02,
+            "pass": true,
+            "point_mm": [
+              36.7925,
+              4.0,
+              16.8125
+            ],
+            "radial_sign": -1,
+            "reference_inside": true,
+            "z_tangency_sign": -1
+          },
+          {
+            "axis": "y",
+            "candidate_inside": true,
+            "expected_inside": true,
+            "outside_radius_by_mm": 0.02,
+            "pass": true,
+            "point_mm": [
+              43.2075,
+              4.0,
+              16.8125
+            ],
+            "radial_sign": 1,
+            "reference_inside": true,
+            "z_tangency_sign": -1
+          },
+          {
+            "axis": "y",
+            "candidate_inside": true,
+            "expected_inside": true,
+            "outside_radius_by_mm": 0.02,
+            "pass": true,
+            "point_mm": [
+              36.7925,
+              4.0,
+              23.1875
+            ],
+            "radial_sign": -1,
+            "reference_inside": true,
+            "z_tangency_sign": 1
+          },
+          {
+            "axis": "y",
+            "candidate_inside": true,
+            "expected_inside": true,
+            "outside_radius_by_mm": 0.02,
+            "pass": true,
+            "point_mm": [
+              43.2075,
+              4.0,
+              23.1875
+            ],
+            "radial_sign": 1,
+            "reference_inside": true,
+            "z_tangency_sign": 1
+          }
+        ]
+      },
+      "topology": {
+        "blocks": 10,
+        "candidate_step_path": "docs/site/data/fieldcraft_x51_y74/fieldcraft_x51_y74.step",
+        "elbow_trace_interfaces": 3,
+        "exact_trace_interfaces": 11,
+        "exterior_sides": 38,
+        "fillet_blocks": [
+          "elbow_east_fillet",
+          "elbow_north_fillet"
+        ],
+        "independent_host_step_path": "<host-dir>/x51-y74/host.step",
+        "interfaces": 11,
+        "model_path": "docs/site/data/fieldcraft_x51_y74/fieldcraft_x51_y74.model.json",
+        "recipe_path": "docs/site/data/fieldcraft_x51_y74/fieldcraft_x51_y74.recipe.json",
+        "x0_coplanar_exterior_sides": [
+          [
+            "elbow_north_fillet",
+            "v0"
+          ],
+          [
+            "wing_north_east",
+            "w0"
+          ],
+          [
+            "wing_north_north",
+            "w0"
+          ],
+          [
+            "wing_north_south",
+            "w0"
+          ],
+          [
+            "wing_north_west",
+            "w0"
+          ]
+        ],
+        "y0_coplanar_exterior_sides": [
+          [
+            "elbow_east_fillet",
+            "v0"
+          ],
+          [
+            "wing_east_east",
+            "w0"
+          ],
+          [
+            "wing_east_north",
+            "w0"
+          ],
+          [
+            "wing_east_south",
+            "w0"
+          ],
+          [
+            "wing_east_west",
+            "w0"
+          ]
+        ]
+      }
+    },
+    {
+      "case": "x64-y64",
+      "rebuild": {
+        "audit": {
+          "blocks": 10,
+          "cavities": 0,
+          "determinant_denominator": 4096,
+          "determinant_lower_bound_mm3": 67.73333333332907,
+          "determinant_numerator": 1,
+          "exterior_sides": 38,
+          "hausdorff_error_upper_bound_mm": 0,
+          "linear_operator_norm_upper": 0.06250000000000003,
+          "method": "certified_rational_affine_image",
+          "shared_faces": 11,
+          "source_certificate": {
+            "blocks": 10,
+            "cavities": 0,
+            "determinant_lower_bound_mm3": 277435.733333316,
+            "exterior_sides": 38,
+            "hausdorff_error_upper_bound_mm": 0,
+            "method": "certified_orthogonal_sketch_features",
+            "shared_faces": 11,
+            "status": "valid",
+            "through_bores": 2,
+            "volume_exact": {
+              "pi_coefficient_mm3": [
+                -10092544,
+                4
+              ],
+              "twice_rational_part_mm3": 279183360
+            }
+          },
+          "status": "valid"
+        },
+        "build": {
+          "blocks": 10,
+          "cavities": 0,
+          "determinant_denominator": 4096,
+          "determinant_lower_bound_mm3": 67.73333333332907,
+          "determinant_numerator": 1,
+          "exterior_sides": 38,
+          "hausdorff_error_upper_bound_mm": 0,
+          "linear_operator_norm_upper": 0.06250000000000003,
+          "method": "certified_rational_affine_image",
+          "shared_faces": 11,
+          "source_certificate": {
+            "blocks": 10,
+            "cavities": 0,
+            "determinant_lower_bound_mm3": 277435.733333316,
+            "exterior_sides": 38,
+            "hausdorff_error_upper_bound_mm": 0,
+            "method": "certified_orthogonal_sketch_features",
+            "shared_faces": 11,
+            "status": "valid",
+            "through_bores": 2,
+            "volume_exact": {
+              "pi_coefficient_mm3": [
+                -10092544,
+                4
+              ],
+              "twice_rational_part_mm3": 279183360
+            }
+          },
+          "status": "valid"
+        },
+        "model_matches_published": true,
+        "recipe": "docs/site/data/fieldcraft_x64_y64/fieldcraft_x64_y64.recipe.json"
+      },
+      "step_oracle": {
+        "adaptive_occ_mass_properties": {
+          "candidate": [
+            {
+              "estimated_error": 9.635638617778504e-10,
+              "surface_estimated_error": 3.089316242435218e-16,
+              "surface_mm2": 10545.504116506441,
+              "tolerance": 1e-09,
+              "volume_mm3": 32144.778925388666
+            },
+            {
+              "estimated_error": 2.375233632320358e-10,
+              "surface_estimated_error": 3.325794419603862e-16,
+              "surface_mm2": 10545.504380659446,
+              "tolerance": 1e-12,
+              "volume_mm3": 32144.778925388673
+            }
+          ],
+          "reference": [
+            {
+              "estimated_error": 5.73917575751492e-12,
+              "surface_estimated_error": 1.725192658155146e-15,
+              "surface_mm2": 10545.504380495906,
+              "tolerance": 1e-09,
+              "volume_mm3": 32144.778925388673
+            },
+            {
+              "estimated_error": 2.421011644157311e-15,
+              "surface_estimated_error": 2.045117903573518e-16,
+              "surface_mm2": 10545.504380495904,
+              "tolerance": 1e-12,
+              "volume_mm3": 32144.778925388673
+            }
+          ]
+        },
+        "analytic_volume_mm3": 32144.778925388688,
+        "bbox_max_abs_delta_mm": 0.0,
+        "bore_parameters_mm": {
+          "candidate": {
+            "x": {
+              "center_mm": [
+                4.0,
+                32.0,
+                20.0
+              ],
+              "radius_mm": 4.0
+            },
+            "y": {
+              "center_mm": [
+                40.0,
+                4.0,
+                20.0
+              ],
+              "radius_mm": 4.0
+            }
+          },
+          "reference": {
+            "x": {
+              "center_mm": [
+                4.0,
+                32,
+                20
+              ],
+              "radius_mm": 4.0
+            },
+            "y": {
+              "center_mm": [
+                40,
+                4.0,
+                20
+              ],
+              "radius_mm": 4.0
+            }
+          }
+        },
+        "candidate": "docs/site/data/fieldcraft_x64_y64/fieldcraft_x64_y64.step",
+        "candidate_shape": {
+          "area_mm2": 10545.50438058699,
+          "bounds_mm": [
+            0.0,
+            60.0,
+            0.0,
+            50.0,
+            0.0,
+            40.0
+          ],
+          "cylinders": [
+            4.0,
+            4.0,
+            4.0,
+            4.0,
+            4.0,
+            4.0,
+            4.0,
+            4.0
+          ],
+          "edges": 76,
+          "faces": 38,
+          "shells": 1,
+          "solids": 1,
+          "valid": true,
+          "vertices": 36,
+          "volume_mm3": 32144.778922230635
+        },
+        "input_sha256": {
+          "candidate_audit": "ca1452dbb576ccc0dddc5ec3fe04ee5112e4fdfc9006648eac0f9da2d6c53a8a",
+          "candidate_model": "82fb0d3f7a0977a47c705886d13632900dc62429be572231fc4f152a38688e09",
+          "candidate_recipe": "5dc34f4b0a41efe68a4bb7886695b7a2c36d7edc41686956591a486412ff6971",
+          "candidate_step": "dcecfef9fc967f0895e801fe4b8d839cf12d2cc4636a990cd4cd826558244f32",
+          "reference_step": "7df2276824b68f22d2d4d69577d2a99dc80181a6048c76ee90f6bb3f02702538",
+          "source_script": "b9cfc6a449ca4ec54022b9cf7b8ef46adc2017548b93e9441cb10bdb0565ee7f"
+        },
+        "interior_classification_grids": [
+          {
+            "mismatches": 0,
+            "shape": [
+              8,
+              8,
+              6
+            ],
+            "tested": 384
+          },
+          {
+            "mismatches": 0,
+            "shape": [
+              12,
+              12,
+              8
+            ],
+            "tested": 1152
+          }
+        ],
+        "probe_coordinate_source": "tests/references/fieldcraft_scripts/x64-y64.script.json",
+        "qualification_pass": true,
+        "radial_probe_failures": 0,
+        "radial_probes": [
+          {
+            "axis": "x",
+            "candidate_inside": false,
+            "direction": "y",
+            "expected_inside": false,
+            "pass": true,
+            "point_mm": [
+              4.0,
+              28.02,
+              20.0
+            ],
+            "radial_offset_mm": -0.02,
+            "reference_inside": false,
+            "sign": -1
+          },
+          {
+            "axis": "x",
+            "candidate_inside": true,
+            "direction": "y",
+            "expected_inside": true,
+            "pass": true,
+            "point_mm": [
+              4.0,
+              27.98,
+              20.0
+            ],
+            "radial_offset_mm": 0.02,
+            "reference_inside": true,
+            "sign": -1
+          },
+          {
+            "axis": "x",
+            "candidate_inside": false,
+            "direction": "y",
+            "expected_inside": false,
+            "pass": true,
+            "point_mm": [
+              4.0,
+              35.98,
+              20.0
+            ],
+            "radial_offset_mm": -0.02,
+            "reference_inside": false,
+            "sign": 1
+          },
+          {
+            "axis": "x",
+            "candidate_inside": true,
+            "direction": "y",
+            "expected_inside": true,
+            "pass": true,
+            "point_mm": [
+              4.0,
+              36.019999999999996,
+              20.0
+            ],
+            "radial_offset_mm": 0.02,
+            "reference_inside": true,
+            "sign": 1
+          },
+          {
+            "axis": "x",
+            "candidate_inside": false,
+            "direction": "z",
+            "expected_inside": false,
+            "pass": true,
+            "point_mm": [
+              4.0,
+              32.0,
+              16.02
+            ],
+            "radial_offset_mm": -0.02,
+            "reference_inside": false,
+            "sign": -1
+          },
+          {
+            "axis": "x",
+            "candidate_inside": true,
+            "direction": "z",
+            "expected_inside": true,
+            "pass": true,
+            "point_mm": [
+              4.0,
+              32.0,
+              15.98
+            ],
+            "radial_offset_mm": 0.02,
+            "reference_inside": true,
+            "sign": -1
+          },
+          {
+            "axis": "x",
+            "candidate_inside": false,
+            "direction": "z",
+            "expected_inside": false,
+            "pass": true,
+            "point_mm": [
+              4.0,
+              32.0,
+              23.98
+            ],
+            "radial_offset_mm": -0.02,
+            "reference_inside": false,
+            "sign": 1
+          },
+          {
+            "axis": "x",
+            "candidate_inside": true,
+            "direction": "z",
+            "expected_inside": true,
+            "pass": true,
+            "point_mm": [
+              4.0,
+              32.0,
+              24.02
+            ],
+            "radial_offset_mm": 0.02,
+            "reference_inside": true,
+            "sign": 1
+          },
+          {
+            "axis": "y",
+            "candidate_inside": false,
+            "direction": "x",
+            "expected_inside": false,
+            "pass": true,
+            "point_mm": [
+              36.02,
+              4.0,
+              20.0
+            ],
+            "radial_offset_mm": -0.02,
+            "reference_inside": false,
+            "sign": -1
+          },
+          {
+            "axis": "y",
+            "candidate_inside": true,
+            "direction": "x",
+            "expected_inside": true,
+            "pass": true,
+            "point_mm": [
+              35.980000000000004,
+              4.0,
+              20.0
+            ],
+            "radial_offset_mm": 0.02,
+            "reference_inside": true,
+            "sign": -1
+          },
+          {
+            "axis": "y",
+            "candidate_inside": false,
+            "direction": "x",
+            "expected_inside": false,
+            "pass": true,
+            "point_mm": [
+              43.98,
+              4.0,
+              20.0
+            ],
+            "radial_offset_mm": -0.02,
+            "reference_inside": false,
+            "sign": 1
+          },
+          {
+            "axis": "y",
+            "candidate_inside": true,
+            "direction": "x",
+            "expected_inside": true,
+            "pass": true,
+            "point_mm": [
+              44.019999999999996,
+              4.0,
+              20.0
+            ],
+            "radial_offset_mm": 0.02,
+            "reference_inside": true,
+            "sign": 1
+          },
+          {
+            "axis": "y",
+            "candidate_inside": false,
+            "direction": "z",
+            "expected_inside": false,
+            "pass": true,
+            "point_mm": [
+              40.0,
+              4.0,
+              16.02
+            ],
+            "radial_offset_mm": -0.02,
+            "reference_inside": false,
+            "sign": -1
+          },
+          {
+            "axis": "y",
+            "candidate_inside": true,
+            "direction": "z",
+            "expected_inside": true,
+            "pass": true,
+            "point_mm": [
+              40.0,
+              4.0,
+              15.98
+            ],
+            "radial_offset_mm": 0.02,
+            "reference_inside": true,
+            "sign": -1
+          },
+          {
+            "axis": "y",
+            "candidate_inside": false,
+            "direction": "z",
+            "expected_inside": false,
+            "pass": true,
+            "point_mm": [
+              40.0,
+              4.0,
+              23.98
+            ],
+            "radial_offset_mm": -0.02,
+            "reference_inside": false,
+            "sign": 1
+          },
+          {
+            "axis": "y",
+            "candidate_inside": true,
+            "direction": "z",
+            "expected_inside": true,
+            "pass": true,
+            "point_mm": [
+              40.0,
+              4.0,
+              24.02
+            ],
+            "radial_offset_mm": 0.02,
+            "reference_inside": true,
+            "sign": 1
+          }
+        ],
+        "reference": "<host-dir>/x64-y64/host.step",
+        "reference_shape": {
+          "area_mm2": 10545.504380495904,
+          "bounds_mm": [
+            0.0,
+            60.0,
+            0.0,
+            50.0,
+            0.0,
+            40.0
+          ],
+          "cylinders": [
+            4.000000000000002,
+            4.000000000000002,
+            6.0
+          ],
+          "edges": 27,
+          "faces": 11,
+          "shells": 1,
+          "solids": 1,
+          "valid": true,
+          "vertices": 18,
+          "volume_mm3": 32144.778925388677
+        },
+        "shape_difference_method": "uniform interior point classification; volume and area from adaptive OCCT Gauss-Kronrod integration",
+        "source_cylinder_radius_match": true,
+        "tangency_plane_probe_failures": 0,
+        "tangency_plane_probes": [
+          {
+            "axis": "x",
+            "candidate_inside": true,
+            "expected_inside": true,
+            "outside_radius_by_mm": 0.02,
+            "pass": true,
+            "point_mm": [
+              4.0,
+              27.98,
+              16.0
+            ],
+            "radial_sign": -1,
+            "reference_inside": true,
+            "z_tangency_sign": -1
+          },
+          {
+            "axis": "x",
+            "candidate_inside": true,
+            "expected_inside": true,
+            "outside_radius_by_mm": 0.02,
+            "pass": true,
+            "point_mm": [
+              4.0,
+              36.019999999999996,
+              16.0
+            ],
+            "radial_sign": 1,
+            "reference_inside": true,
+            "z_tangency_sign": -1
+          },
+          {
+            "axis": "x",
+            "candidate_inside": true,
+            "expected_inside": true,
+            "outside_radius_by_mm": 0.02,
+            "pass": true,
+            "point_mm": [
+              4.0,
+              27.98,
+              24.0
+            ],
+            "radial_sign": -1,
+            "reference_inside": true,
+            "z_tangency_sign": 1
+          },
+          {
+            "axis": "x",
+            "candidate_inside": true,
+            "expected_inside": true,
+            "outside_radius_by_mm": 0.02,
+            "pass": true,
+            "point_mm": [
+              4.0,
+              36.019999999999996,
+              24.0
+            ],
+            "radial_sign": 1,
+            "reference_inside": true,
+            "z_tangency_sign": 1
+          },
+          {
+            "axis": "y",
+            "candidate_inside": true,
+            "expected_inside": true,
+            "outside_radius_by_mm": 0.02,
+            "pass": true,
+            "point_mm": [
+              35.980000000000004,
+              4.0,
+              16.0
+            ],
+            "radial_sign": -1,
+            "reference_inside": true,
+            "z_tangency_sign": -1
+          },
+          {
+            "axis": "y",
+            "candidate_inside": true,
+            "expected_inside": true,
+            "outside_radius_by_mm": 0.02,
+            "pass": true,
+            "point_mm": [
+              44.019999999999996,
+              4.0,
+              16.0
+            ],
+            "radial_sign": 1,
+            "reference_inside": true,
+            "z_tangency_sign": -1
+          },
+          {
+            "axis": "y",
+            "candidate_inside": true,
+            "expected_inside": true,
+            "outside_radius_by_mm": 0.02,
+            "pass": true,
+            "point_mm": [
+              35.980000000000004,
+              4.0,
+              24.0
+            ],
+            "radial_sign": -1,
+            "reference_inside": true,
+            "z_tangency_sign": 1
+          },
+          {
+            "axis": "y",
+            "candidate_inside": true,
+            "expected_inside": true,
+            "outside_radius_by_mm": 0.02,
+            "pass": true,
+            "point_mm": [
+              44.019999999999996,
+              4.0,
+              24.0
+            ],
+            "radial_sign": 1,
+            "reference_inside": true,
+            "z_tangency_sign": 1
+          }
+        ]
+      },
+      "topology": {
+        "blocks": 10,
+        "candidate_step_path": "docs/site/data/fieldcraft_x64_y64/fieldcraft_x64_y64.step",
+        "elbow_trace_interfaces": 3,
+        "exact_trace_interfaces": 11,
+        "exterior_sides": 38,
+        "fillet_blocks": [
+          "elbow_east_fillet",
+          "elbow_north_fillet"
+        ],
+        "independent_host_step_path": "<host-dir>/x64-y64/host.step",
+        "interfaces": 11,
+        "model_path": "docs/site/data/fieldcraft_x64_y64/fieldcraft_x64_y64.model.json",
+        "recipe_path": "docs/site/data/fieldcraft_x64_y64/fieldcraft_x64_y64.recipe.json",
+        "x0_coplanar_exterior_sides": [
+          [
+            "elbow_north_fillet",
+            "v0"
+          ],
+          [
+            "wing_north_east",
+            "w0"
+          ],
+          [
+            "wing_north_north",
+            "w0"
+          ],
+          [
+            "wing_north_south",
+            "w0"
+          ],
+          [
+            "wing_north_west",
+            "w0"
+          ]
+        ],
+        "y0_coplanar_exterior_sides": [
+          [
+            "elbow_east_fillet",
+            "v0"
+          ],
+          [
+            "wing_east_east",
+            "w0"
+          ],
+          [
+            "wing_east_north",
+            "w0"
+          ],
+          [
+            "wing_east_south",
+            "w0"
+          ],
+          [
+            "wing_east_west",
+            "w0"
+          ]
+        ]
+      }
+    },
+    {
+      "case": "x80-y40",
+      "rebuild": {
+        "audit": {
+          "blocks": 10,
+          "cavities": 0,
+          "determinant_denominator": 4096,
+          "determinant_lower_bound_mm3": 46.44047619047193,
+          "determinant_numerator": 1,
+          "exterior_sides": 38,
+          "hausdorff_error_upper_bound_mm": 0,
+          "linear_operator_norm_upper": 0.06250000000000003,
+          "method": "certified_rational_affine_image",
+          "shared_faces": 11,
+          "source_certificate": {
+            "blocks": 10,
+            "cavities": 0,
+            "determinant_lower_bound_mm3": 190220.19047617307,
+            "exterior_sides": 38,
+            "hausdorff_error_upper_bound_mm": 0,
+            "method": "certified_orthogonal_sketch_features",
+            "shared_faces": 11,
+            "status": "valid",
+            "through_bores": 2,
+            "volume_exact": {
+              "pi_coefficient_mm3": [
+                -9994240,
+                4
+              ],
+              "twice_rational_part_mm3": 279183360
+            }
+          },
+          "status": "valid"
+        },
+        "build": {
+          "blocks": 10,
+          "cavities": 0,
+          "determinant_denominator": 4096,
+          "determinant_lower_bound_mm3": 46.44047619047193,
+          "determinant_numerator": 1,
+          "exterior_sides": 38,
+          "hausdorff_error_upper_bound_mm": 0,
+          "linear_operator_norm_upper": 0.06250000000000003,
+          "method": "certified_rational_affine_image",
+          "shared_faces": 11,
+          "source_certificate": {
+            "blocks": 10,
+            "cavities": 0,
+            "determinant_lower_bound_mm3": 190220.19047617307,
+            "exterior_sides": 38,
+            "hausdorff_error_upper_bound_mm": 0,
+            "method": "certified_orthogonal_sketch_features",
+            "shared_faces": 11,
+            "status": "valid",
+            "through_bores": 2,
+            "volume_exact": {
+              "pi_coefficient_mm3": [
+                -9994240,
+                4
+              ],
+              "twice_rational_part_mm3": 279183360
+            }
+          },
+          "status": "valid"
+        },
+        "model_matches_published": true,
+        "recipe": "docs/site/data/fieldcraft_x80_y40/fieldcraft_x80_y40.recipe.json"
+      },
+      "step_oracle": {
+        "adaptive_occ_mass_properties": {
+          "candidate": [
+            {
+              "estimated_error": 9.795226900687604e-10,
+              "surface_estimated_error": 3.089316242435218e-16,
+              "surface_mm2": 10525.083768204659,
+              "tolerance": 1e-09,
+              "volume_mm3": 32163.628481310217
+            },
+            {
+              "estimated_error": 2.416569810226015e-10,
+              "surface_estimated_error": 3.233494405776743e-16,
+              "surface_mm2": 10525.084028376197,
+              "tolerance": 1e-12,
+              "volume_mm3": 32163.628481310217
+            }
+          ],
+          "reference": [
+            {
+              "estimated_error": 5.0178205517123184e-12,
+              "surface_estimated_error": 1.725192658155146e-15,
+              "surface_mm2": 10525.084028247575,
+              "tolerance": 1e-09,
+              "volume_mm3": 32163.628481310232
+            },
+            {
+              "estimated_error": 1.9808838855171027e-15,
+              "surface_estimated_error": 5.65431943371292e-16,
+              "surface_mm2": 10525.084028247571,
+              "tolerance": 1e-12,
+              "volume_mm3": 32163.628481310232
+            }
+          ]
+        },
+        "analytic_volume_mm3": 32163.628481310225,
+        "bbox_max_abs_delta_mm": 0.0,
+        "bore_parameters_mm": {
+          "candidate": {
+            "x": {
+              "center_mm": [
+                4.0,
+                32.0,
+                20.0
+              ],
+              "radius_mm": 2.5
+            },
+            "y": {
+              "center_mm": [
+                40.0,
+                4.0,
+                20.0
+              ],
+              "radius_mm": 5.0
+            }
+          },
+          "reference": {
+            "x": {
+              "center_mm": [
+                4.0,
+                32,
+                20
+              ],
+              "radius_mm": 2.5
+            },
+            "y": {
+              "center_mm": [
+                40,
+                4.0,
+                20
+              ],
+              "radius_mm": 5.0
+            }
+          }
+        },
+        "candidate": "docs/site/data/fieldcraft_x80_y40/fieldcraft_x80_y40.step",
+        "candidate_shape": {
+          "area_mm2": 10525.084028302645,
+          "bounds_mm": [
+            0.0,
+            60.0,
+            0.0,
+            50.0,
+            0.0,
+            40.0
+          ],
+          "cylinders": [
+            2.5,
+            2.5,
+            2.5,
+            2.5,
+            5.0,
+            5.0,
+            5.0,
+            5.0
+          ],
+          "edges": 76,
+          "faces": 38,
+          "shells": 1,
+          "solids": 1,
+          "valid": true,
+          "vertices": 36,
+          "volume_mm3": 32163.628478104165
+        },
+        "input_sha256": {
+          "candidate_audit": "0c36b52a11056468fc92179e7850be9be58cf96b7a46cd934b5a2842839d7870",
+          "candidate_model": "0550567e45d3a33d8a0b1c0d0b80b70706047e78507b590662ef069ad5ea3a9a",
+          "candidate_recipe": "56b129e5557f9980045f34b7abf1d7ff84f962f11864e5fe14d4daf75e07f6ea",
+          "candidate_step": "7389465339957ace7b656ac627d2e217de4489487410dd490a791b87c893cc44",
+          "reference_step": "48c9e97c522a0f2263ef9c165ff49479aa6fc80e92de2107c71630891bd6ca79",
+          "source_script": "89d24566cd6ae4dd2e8298ec5c17109be9c30b50ea810c35cf32bdf02a572e3a"
+        },
+        "interior_classification_grids": [
+          {
+            "mismatches": 0,
+            "shape": [
+              8,
+              8,
+              6
+            ],
+            "tested": 384
+          },
+          {
+            "mismatches": 0,
+            "shape": [
+              12,
+              12,
+              8
+            ],
+            "tested": 1152
+          }
+        ],
+        "probe_coordinate_source": "tests/references/fieldcraft_scripts/x80-y40.script.json",
+        "qualification_pass": true,
+        "radial_probe_failures": 0,
+        "radial_probes": [
+          {
+            "axis": "x",
+            "candidate_inside": false,
+            "direction": "y",
+            "expected_inside": false,
+            "pass": true,
+            "point_mm": [
+              4.0,
+              29.52,
+              20.0
+            ],
+            "radial_offset_mm": -0.02,
+            "reference_inside": false,
+            "sign": -1
+          },
+          {
+            "axis": "x",
+            "candidate_inside": true,
+            "direction": "y",
+            "expected_inside": true,
+            "pass": true,
+            "point_mm": [
+              4.0,
+              29.48,
+              20.0
+            ],
+            "radial_offset_mm": 0.02,
+            "reference_inside": true,
+            "sign": -1
+          },
+          {
+            "axis": "x",
+            "candidate_inside": false,
+            "direction": "y",
+            "expected_inside": false,
+            "pass": true,
+            "point_mm": [
+              4.0,
+              34.48,
+              20.0
+            ],
+            "radial_offset_mm": -0.02,
+            "reference_inside": false,
+            "sign": 1
+          },
+          {
+            "axis": "x",
+            "candidate_inside": true,
+            "direction": "y",
+            "expected_inside": true,
+            "pass": true,
+            "point_mm": [
+              4.0,
+              34.52,
+              20.0
+            ],
+            "radial_offset_mm": 0.02,
+            "reference_inside": true,
+            "sign": 1
+          },
+          {
+            "axis": "x",
+            "candidate_inside": false,
+            "direction": "z",
+            "expected_inside": false,
+            "pass": true,
+            "point_mm": [
+              4.0,
+              32.0,
+              17.52
+            ],
+            "radial_offset_mm": -0.02,
+            "reference_inside": false,
+            "sign": -1
+          },
+          {
+            "axis": "x",
+            "candidate_inside": true,
+            "direction": "z",
+            "expected_inside": true,
+            "pass": true,
+            "point_mm": [
+              4.0,
+              32.0,
+              17.48
+            ],
+            "radial_offset_mm": 0.02,
+            "reference_inside": true,
+            "sign": -1
+          },
+          {
+            "axis": "x",
+            "candidate_inside": false,
+            "direction": "z",
+            "expected_inside": false,
+            "pass": true,
+            "point_mm": [
+              4.0,
+              32.0,
+              22.48
+            ],
+            "radial_offset_mm": -0.02,
+            "reference_inside": false,
+            "sign": 1
+          },
+          {
+            "axis": "x",
+            "candidate_inside": true,
+            "direction": "z",
+            "expected_inside": true,
+            "pass": true,
+            "point_mm": [
+              4.0,
+              32.0,
+              22.52
+            ],
+            "radial_offset_mm": 0.02,
+            "reference_inside": true,
+            "sign": 1
+          },
+          {
+            "axis": "y",
+            "candidate_inside": false,
+            "direction": "x",
+            "expected_inside": false,
+            "pass": true,
+            "point_mm": [
+              35.019999999999996,
+              4.0,
+              20.0
+            ],
+            "radial_offset_mm": -0.02,
+            "reference_inside": false,
+            "sign": -1
+          },
+          {
+            "axis": "y",
+            "candidate_inside": true,
+            "direction": "x",
+            "expected_inside": true,
+            "pass": true,
+            "point_mm": [
+              34.980000000000004,
+              4.0,
+              20.0
+            ],
+            "radial_offset_mm": 0.02,
+            "reference_inside": true,
+            "sign": -1
+          },
+          {
+            "axis": "y",
+            "candidate_inside": false,
+            "direction": "x",
+            "expected_inside": false,
+            "pass": true,
+            "point_mm": [
+              44.980000000000004,
+              4.0,
+              20.0
+            ],
+            "radial_offset_mm": -0.02,
+            "reference_inside": false,
+            "sign": 1
+          },
+          {
+            "axis": "y",
+            "candidate_inside": true,
+            "direction": "x",
+            "expected_inside": true,
+            "pass": true,
+            "point_mm": [
+              45.019999999999996,
+              4.0,
+              20.0
+            ],
+            "radial_offset_mm": 0.02,
+            "reference_inside": true,
+            "sign": 1
+          },
+          {
+            "axis": "y",
+            "candidate_inside": false,
+            "direction": "z",
+            "expected_inside": false,
+            "pass": true,
+            "point_mm": [
+              40.0,
+              4.0,
+              15.02
+            ],
+            "radial_offset_mm": -0.02,
+            "reference_inside": false,
+            "sign": -1
+          },
+          {
+            "axis": "y",
+            "candidate_inside": true,
+            "direction": "z",
+            "expected_inside": true,
+            "pass": true,
+            "point_mm": [
+              40.0,
+              4.0,
+              14.98
+            ],
+            "radial_offset_mm": 0.02,
+            "reference_inside": true,
+            "sign": -1
+          },
+          {
+            "axis": "y",
+            "candidate_inside": false,
+            "direction": "z",
+            "expected_inside": false,
+            "pass": true,
+            "point_mm": [
+              40.0,
+              4.0,
+              24.98
+            ],
+            "radial_offset_mm": -0.02,
+            "reference_inside": false,
+            "sign": 1
+          },
+          {
+            "axis": "y",
+            "candidate_inside": true,
+            "direction": "z",
+            "expected_inside": true,
+            "pass": true,
+            "point_mm": [
+              40.0,
+              4.0,
+              25.02
+            ],
+            "radial_offset_mm": 0.02,
+            "reference_inside": true,
+            "sign": 1
+          }
+        ],
+        "reference": "<host-dir>/x80-y40/host.step",
+        "reference_shape": {
+          "area_mm2": 10525.084028247573,
+          "bounds_mm": [
+            0.0,
+            60.0,
+            0.0,
+            50.0,
+            0.0,
+            40.0
+          ],
+          "cylinders": [
+            2.499999999999993,
+            5.0,
+            6.0
+          ],
+          "edges": 27,
+          "faces": 11,
+          "shells": 1,
+          "solids": 1,
+          "valid": true,
+          "vertices": 18,
+          "volume_mm3": 32163.62848131022
+        },
+        "shape_difference_method": "uniform interior point classification; volume and area from adaptive OCCT Gauss-Kronrod integration",
+        "source_cylinder_radius_match": true,
+        "tangency_plane_probe_failures": 0,
+        "tangency_plane_probes": [
+          {
+            "axis": "x",
+            "candidate_inside": true,
+            "expected_inside": true,
+            "outside_radius_by_mm": 0.02,
+            "pass": true,
+            "point_mm": [
+              4.0,
+              29.48,
+              17.5
+            ],
+            "radial_sign": -1,
+            "reference_inside": true,
+            "z_tangency_sign": -1
+          },
+          {
+            "axis": "x",
+            "candidate_inside": true,
+            "expected_inside": true,
+            "outside_radius_by_mm": 0.02,
+            "pass": true,
+            "point_mm": [
+              4.0,
+              34.52,
+              17.5
+            ],
+            "radial_sign": 1,
+            "reference_inside": true,
+            "z_tangency_sign": -1
+          },
+          {
+            "axis": "x",
+            "candidate_inside": true,
+            "expected_inside": true,
+            "outside_radius_by_mm": 0.02,
+            "pass": true,
+            "point_mm": [
+              4.0,
+              29.48,
+              22.5
+            ],
+            "radial_sign": -1,
+            "reference_inside": true,
+            "z_tangency_sign": 1
+          },
+          {
+            "axis": "x",
+            "candidate_inside": true,
+            "expected_inside": true,
+            "outside_radius_by_mm": 0.02,
+            "pass": true,
+            "point_mm": [
+              4.0,
+              34.52,
+              22.5
+            ],
+            "radial_sign": 1,
+            "reference_inside": true,
+            "z_tangency_sign": 1
+          },
+          {
+            "axis": "y",
+            "candidate_inside": true,
+            "expected_inside": true,
+            "outside_radius_by_mm": 0.02,
+            "pass": true,
+            "point_mm": [
+              34.980000000000004,
+              4.0,
+              15.0
+            ],
+            "radial_sign": -1,
+            "reference_inside": true,
+            "z_tangency_sign": -1
+          },
+          {
+            "axis": "y",
+            "candidate_inside": true,
+            "expected_inside": true,
+            "outside_radius_by_mm": 0.02,
+            "pass": true,
+            "point_mm": [
+              45.019999999999996,
+              4.0,
+              15.0
+            ],
+            "radial_sign": 1,
+            "reference_inside": true,
+            "z_tangency_sign": -1
+          },
+          {
+            "axis": "y",
+            "candidate_inside": true,
+            "expected_inside": true,
+            "outside_radius_by_mm": 0.02,
+            "pass": true,
+            "point_mm": [
+              34.980000000000004,
+              4.0,
+              25.0
+            ],
+            "radial_sign": -1,
+            "reference_inside": true,
+            "z_tangency_sign": 1
+          },
+          {
+            "axis": "y",
+            "candidate_inside": true,
+            "expected_inside": true,
+            "outside_radius_by_mm": 0.02,
+            "pass": true,
+            "point_mm": [
+              45.019999999999996,
+              4.0,
+              25.0
+            ],
+            "radial_sign": 1,
+            "reference_inside": true,
+            "z_tangency_sign": 1
+          }
+        ]
+      },
+      "topology": {
+        "blocks": 10,
+        "candidate_step_path": "docs/site/data/fieldcraft_x80_y40/fieldcraft_x80_y40.step",
+        "elbow_trace_interfaces": 3,
+        "exact_trace_interfaces": 11,
+        "exterior_sides": 38,
+        "fillet_blocks": [
+          "elbow_east_fillet",
+          "elbow_north_fillet"
+        ],
+        "independent_host_step_path": "<host-dir>/x80-y40/host.step",
+        "interfaces": 11,
+        "model_path": "docs/site/data/fieldcraft_x80_y40/fieldcraft_x80_y40.model.json",
+        "recipe_path": "docs/site/data/fieldcraft_x80_y40/fieldcraft_x80_y40.recipe.json",
+        "x0_coplanar_exterior_sides": [
+          [
+            "elbow_north_fillet",
+            "v0"
+          ],
+          [
+            "wing_north_east",
+            "w0"
+          ],
+          [
+            "wing_north_north",
+            "w0"
+          ],
+          [
+            "wing_north_south",
+            "w0"
+          ],
+          [
+            "wing_north_west",
+            "w0"
+          ]
+        ],
+        "y0_coplanar_exterior_sides": [
+          [
+            "elbow_east_fillet",
+            "v0"
+          ],
+          [
+            "wing_east_east",
+            "w0"
+          ],
+          [
+            "wing_east_north",
+            "w0"
+          ],
+          [
+            "wing_east_south",
+            "w0"
+          ],
+          [
+            "wing_east_west",
+            "w0"
+          ]
+        ]
+      }
+    }
+  ],
+  "cases_expected": 5,
+  "checkout_revision": "3e48ae3d5761f2c838ab30a86435c605463fa6b7",
+  "cli_path": "target/release/solidcraft-trivariate",
+  "cli_sha256": "0690e67c5077228d880f3002d2fef06d081dd612aba500855264599f20e8ef38",
+  "freecad_version": "26.3.0",
+  "status": "pass"
+}

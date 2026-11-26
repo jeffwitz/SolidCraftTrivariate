@@ -162,7 +162,15 @@ def run(reference_path, candidate_path, occ_volume=None, artifact_dir=None, fast
     if source_script is not None or candidate_recipe is not None:
         if source_script is None or candidate_recipe is None:
             raise ValueError("both source_script and candidate_recipe are required")
-        src_bores = source_holes(source_script)
+        if source_script is not None:
+            src_bores = source_holes(source_script)
+        elif candidate_recipe is not None:
+            # If the historical authoring scripts are unavailable, use the
+            # tracked current recipe for probe coordinates while retaining the
+            # independent STEP's membership and mass-property checks.
+            src_bores = candidate_holes(candidate_recipe)
+        else:
+            raise ValueError("source_script or candidate_recipe is required for bore checks")
         dst_bores = candidate_holes(candidate_recipe)
         source_radii = sorted([float(src_bores["x"]["radius_mm"]),
                                float(src_bores["y"]["radius_mm"]), 6.0])

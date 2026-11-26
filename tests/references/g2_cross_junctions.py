@@ -18,6 +18,14 @@ from fractions import Fraction
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
+
+
+def display_path(path: Path) -> str:
+    """Keep oracle reports portable when scratch output is outside the checkout."""
+    try:
+        return path.resolve().relative_to(ROOT).as_posix()
+    except ValueError:
+        return f"<work>/{path.name}"
 SPEC = importlib.util.spec_from_file_location(
     "g2_plate_jets_source", ROOT / "tests/references/g2_plate_jets.py")
 jets = importlib.util.module_from_spec(SPEC)
@@ -565,7 +573,7 @@ def c0_iga_check(cli: Path, recipe_path: Path, work: Path,
                   "status": "verified" if wall_samples and wall_max_error <= 1e-10
                       else "unavailable" if not wall_samples else "failed"}
     constructed_jets = constructed_wall_junctions(model, source_curve)
-    return {"status": "verified", "cli": str(cli),
+    return {"status": "verified", "cli": display_path(cli),
             "cli_sha256": hashlib.sha256(cli.read_bytes()).hexdigest(),
             "build_audit": build, "space_export": export,
             "design_face_feature_counts": dict(sorted(features.items())),
@@ -576,8 +584,8 @@ def c0_iga_check(cli: Path, recipe_path: Path, work: Path,
             "constant_stress_equilibrium_orders": equilibrium,
             "q16_relative_linf_threshold": 1e-8,
             "source_recipe_preserved": True,
-            "artifacts": {"model": str(model_path.relative_to(ROOT)),
-                          "q3_package": str(package_path.relative_to(ROOT))}}
+            "artifacts": {"model": display_path(model_path),
+                          "q3_package": display_path(package_path)}}
 
 
 def nearest_source_parameter(curve: dict, target: tuple[float, float], interval: tuple[float, float]) -> float:
@@ -855,7 +863,7 @@ def main() -> int:
     )
     report = {"schema": "g2_cross_seam_junctions_v1", "status": "verified" if checks_passed else "failed",
               "method": "independent periodic NURBS source evaluation; spanwise level-set bisection; exact homogeneous knot insertion; reverse and cyclic reindex metamorphic checks",
-              "recipe": str(args.recipe), "rectangle_y_mm": ylevels, "rectangle_z_mm": zrange,
+              "recipe": display_path(args.recipe), "rectangle_y_mm": ylevels, "rectangle_z_mm": zrange,
               "source_junctions_and_closure": profile_jets,
               "intersection_roots_by_y": roots,
               "exact_intersection_witnesses": exact_intersections,

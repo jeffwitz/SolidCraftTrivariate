@@ -306,11 +306,44 @@
       "subboxes": 1
     }
   ],
-  "step_readback": {
+  "historical_step_readback": {
     "reader": "OCCT 7.8.1",
     "closed_shells": 1,
     "valid_solids": 1,
     "volume_mm3": 1699.1851851851848,
     "relative_volume_error": 2.676267159408547e-16
+  },
+  "historical_step_readback_scope": "This readback belongs to the previous gallery STEP and is not evidence about the regenerated STEP.",
+  "model_audit": {
+    "blocks": 9,
+    "cavities": 0,
+    "determinant_lower_bound_mm3": 0.44444444444387027,
+    "exterior_sides": 34,
+    "method": "curved_sketch_trace_and_bernstein",
+    "shared_faces": 10,
+    "status": "valid"
+  },
+  "kernel_rebuild": {
+    "command": "build recipe.json model.json; audit model.json; export-step model.json reference.step",
+    "kernel_revision": "7d37353900e86345ed8ef176fc2c987bf06a8d5b",
+    "kernel_binary_sha256": "0690e67c5077228d880f3002d2fef06d081dd612aba500855264599f20e8ef38",
+    "recipe_sha256": "ccd062882f835ce9cdc9ec14465bbec61793750546c6a55b3715cc052927e472",
+    "model_sha256": "cbd0a898af102e69c54eba7d488ba50656cc6d5f727465f119ae0fb87b7d16df",
+    "step_sha256": "1e100cd3336e3904bf883dc080a3d65a0ae5ef3aa8f5ad5cf09633df6de27b3c",
+    "build_report": {
+      "blocks": 9,
+      "cavities": 0,
+      "determinant_lower_bound_mm3": 0.44444444444387027,
+      "exterior_sides": 34,
+      "method": "curved_sketch_trace_and_bernstein",
+      "shared_faces": 10,
+      "status": "valid"
+    },
+    "sampled_condition": {
+      "method": "maximum spectral Jacobian condition number on the closed 5x5x5 parameter grid per block; diagnostic only",
+      "points_per_block": 125,
+      "sample_count": 1125,
+      "maximum_condition_2": 41.02697076161977
+    }
   }
 }

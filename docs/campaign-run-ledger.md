@@ -1,5 +1,7 @@
 # Detailed campaign ledger, 24–25 November 2026
 
+Historical campaign record. For the current sketch planner, models and reproduction commands, use the [documentation index](README.md).
+
 [Campaign overview](campagne-20261125.md) · [Results and limitations](bilan-campagne-20261125.md)
 
 Branch `campagne-20261125-10h`, L1 baseline `ea5b940`. The work window runs from 00:23 to 10:23 Paris time (09:23 UTC). The coordinating Codex task continues the increments through the deadline. Check the actual time at every transition and at least every five minutes during an increment. Reserve the final ten minutes for the last review, saving work, and writing the report.

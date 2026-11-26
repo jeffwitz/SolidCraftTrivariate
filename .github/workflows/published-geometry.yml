@@ -1,0 +1,42 @@
+name: Published geometry replay
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'src/**'
+      - 'Cargo.*'
+      - 'Makefile'
+      - 'examples/**'
+      - 'tests/references/**'
+      - 'tests/regressions/**'
+      - 'docs/site/**'
+      - 'docs/results/**'
+      - 'scripts/check_*geometry.py'
+      - 'scripts/gallery_catalog.py'
+      - '.github/workflows/published-geometry.yml'
+  pull_request:
+    paths:
+      - 'src/**'
+      - 'Cargo.*'
+      - 'Makefile'
+      - 'examples/**'
+      - 'tests/references/**'
+      - 'tests/regressions/**'
+      - 'docs/site/**'
+      - 'docs/results/**'
+      - 'scripts/check_*geometry.py'
+      - 'scripts/gallery_catalog.py'
+      - '.github/workflows/published-geometry.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  replay:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - run: make check-published-geometry

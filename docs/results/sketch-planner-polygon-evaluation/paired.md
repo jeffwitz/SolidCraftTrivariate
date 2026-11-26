@@ -1,5 +1,7 @@
 # Paired polygonal sketch partition evaluation
 
+These paired scores are historical observations at `4e8a394`. The [current kernel results](../../convex-host-rings.md) cover the same 45 inputs and 12 additional sketches.
+
 Public synthetic corpus SHA-256: `f10964bb0417a702a394f66aa96e148b6ead67685a3a9f9f541cea8d6ab98e7b`.
 Baseline executable SHA-256: `ea0bbf8609bb575cc5ac5f8dec6c8c1659a85050a95f7f0db86869d15160786c` (`baseline-e5bd5c6`).
 Candidate executable SHA-256: `684c7c6a89423f798648800e28c53d1065c23b8aaa7e5407409714cea4a36f70` (`candidate-4e8a3944`).

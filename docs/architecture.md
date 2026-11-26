@@ -28,6 +28,10 @@ The target contract takes outlines, a 3D builder (extrusion, revolution, etc.), 
 
 Each template must state its topology class, regularity assumptions, and knot-placement rules. For a revolved profile, the planner checks where parametric corners of the maps land on the contour after an edit. If two exterior faces of one tensor cell meet along an edge that has become smooth on the skin, the determinant vanishes along their shared edge. This rules out that particular candidate. In that case, the plan must record why it was rejected before considering a topology change. Reports distinguish an admitted candidate, the best candidate tested, and a proven minimum. This rule guides planner development.
 
+## Published models
+
+The gallery, standalone replay files and compact FieldCraft bundle carry models rebuilt from their source recipes. `make check-published-geometry` reconstructs them and compares them to the published data, including native STEP contents after normalization of the exchange timestamp. The separately identified SolidCore STEP is an independent CAD reference.
+
 ## Historical Python reference model
 
 The versioned recipe is the construction intent. `trivariate.build.build(recipe)` produces an in-memory candidate model. `trivariate.audit.audit(model)` takes only that model and reconstructs expected coefficients from the declared dimensions. The CLI serializes JSON after validation to a temporary file in the destination directory; rename is atomic. Of concurrent valid publications, the last one replaces the previous file.

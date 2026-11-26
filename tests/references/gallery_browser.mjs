@@ -94,6 +94,10 @@ const injectedExpressions = {
       title: experiment.title || experiment.id,
       description: experiment.description || '',
       metrics: experiment.metrics || [],
+      modelBlockCount: (model.blocks || []).length,
+      modelInterfaceCount: (model.topology?.interfaces || []).length,
+      modelAudit: audit?.model_audit || null,
+      kernelRebuild: audit?.kernel_rebuild || null,
       representation: experiment.representation || null,
       section: experiment.section || null,
       links: {
@@ -491,6 +495,16 @@ async function runBrowserChecks() {
   if (resources.some(experiment => experiment.assets.length === 0
     || experiment.assets.some(asset => asset.status !== 200 || asset.bytes < 1))) {
     throw new Error(`Gallery resource requests failed: ${JSON.stringify(resources)}`);
+  }
+  if (resources.some(experiment => !experiment.modelAudit
+    || experiment.modelAudit.status !== 'valid'
+    || experiment.modelAudit.blocks !== experiment.modelBlockCount
+    || experiment.modelAudit.shared_faces !== experiment.modelInterfaceCount
+    || !experiment.kernelRebuild?.kernel_binary_sha256
+    || !experiment.kernelRebuild?.recipe_sha256
+    || !experiment.kernelRebuild?.model_sha256
+    || !experiment.kernelRebuild?.step_sha256)) {
+    throw new Error(`A gallery model is missing its current Rust audit/rebuild record: ${JSON.stringify(resources.filter(experiment => !experiment.modelAudit || experiment.modelAudit.blocks !== experiment.modelBlockCount || experiment.modelAudit.shared_faces !== experiment.modelInterfaceCount || !experiment.kernelRebuild?.kernel_binary_sha256).map(({ id, modelBlockCount, modelInterfaceCount, modelAudit, kernelRebuild }) => ({ id, modelBlockCount, modelInterfaceCount, modelAudit, kernelRebuild })))}`);
   }
   if (resources.some(experiment => experiment.assets.some(asset => !/[?&]v=[^&#]+/.test(asset.path)))) {
     throw new Error('A model, recipe, audit, STEP, or figure URL is missing the current cache version');

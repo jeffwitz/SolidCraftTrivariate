@@ -14,3 +14,5 @@ The production kernel, builders, and audits are developed in Rust. Python provid
 6. Run `make check` at integration. Report revision, recipe, environment, commands, measurements, coverage, and limitations. Rejection of a required case counts as a coverage failure. Keep regenerable results under `build/`.
 7. `upstream/` contains read-only references. Before reusing code, document its origin, revision, license, required notices, and numerical contract. The original code's license choice before distribution belongs to the project owner (NF-8).
 8. If construction conflicts with its oracle, preserve the counterexample and identify the assumption at fault before changing thresholds or scope.
+
+Rebuild tracked geometry from its source recipe whenever the chosen partition changes. Run `make check-published-geometry` before publishing. Keep historical measurements linked to their original revision, and distribute the current geometry and its native audit together.

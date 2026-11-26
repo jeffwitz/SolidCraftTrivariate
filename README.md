@@ -2,11 +2,11 @@
 
 A native Rust volumetric kernel for building and auditing rational trivariate maps, exporting STEP, and preparing their IGA analysis spaces. The geometry workflow starts from a sketch or recipe, derives its partition lines, then builds and audits the volumes in the same crate. Python supplies independent oracles and historical references. [Documentation index](docs/README.md)
 
-The WebGL gallery contains 68 entries. Browse the 45 polygon benchmark pieces, the overlapping-projections diamond diagnostic, the ten bore propagation controls and the unequal-width two-bore bracket alongside six curved-profile parts and five FieldCraft variants. Each entry includes the native model, recipe, audit and STEP export. [Open the east-wing bore stack](https://jeffwitz.github.io/SolidCraftTrivariate/?model=bench-bracket-east-stack) · [Polygon benchmark](docs/results/sketch-planner-polygon-evaluation/README.md) · [Bracket measurements](docs/results/propagated-bores.md)
+The WebGL gallery contains 68 entries. Browse the 45 polygon benchmark pieces, the overlapping-projections diamond diagnostic, the ten bore propagation controls and the unequal-width two-bore bracket alongside six curved-profile parts and five FieldCraft variants. Each entry includes the native model, recipe, audit and STEP export. [Open the east-wing bore stack](https://jeffwitz.github.io/SolidCraftTrivariate/?model=bench-bracket-east-stack) · [Polygon benchmark](docs/convex-host-rings.md) · [Bracket measurements](docs/results/propagated-bores.md)
 
-The polygonal planner compares local separators with the historical partition on the same recipe. In the recorded corpus, the blind pocket uses 9 instead of 17 volumes and the two-hole C profile uses 9 instead of 35. Both meet the topological lower bound within the conforming partition class studied. Map conditioning also affects analysis. [Algorithm](docs/architecture.md#planner) · [Corpus, proofs, and measurements](docs/partition-poche-comparaison.md) · [Sketch-based construction](docs/partition-esquisses.md)
+The automatic polygonal planner derives separators, quadrilateral rings and pocket floors directly from the contours. On the 45-piece polygon corpus it selects 1,208 blocks in total, including 910 on the 30 seeded convex sketches. All 45 published recipes and 12 additional sketches passed independent geometry and volume checks. On eight of the 45 cases the maximum sampled condition number increased. [Current measurements](docs/convex-host-rings.md) · [Partition selection](docs/architecture.md#planner)
 
-The paired planner evaluation compares convex sketch partitions and multi-bore brackets against release `e5bd5c6`. On the ten public bracket controls the new kernel builds ten valid closed solids, including the four cases previously refused. The east and north bore stacks each use 17 blocks, down from 112. [Paired evaluation](docs/sketch-planner-blind-evaluation.md) · [Bracket controls and STEP results](docs/results/propagated-bores.md)
+The orthogonal sketch planner builds all ten public bore-propagation controls. The east and north bore stacks each use 17 blocks. The five original FieldCraft variants use ten blocks each. [Bracket measurements](docs/results/propagated-bores.md) · [Downloadable FieldCraft geometry](docs/results/fieldcraft-replay/README.md)
 
 ## Quick start: sketch, plan, volumes
 
@@ -92,18 +92,14 @@ This fixture produces 9 blocks and a certified determinant lower bound of `191.9
 
 ### Mechanical analysis
 
-The Rust solver takes an audited model and a versioned job. This example imports the historical bracket template, solves its reference job, and exports the field and stress for ParaView:
+The FieldCraft PA5 driver rebuilds the original two-bore bracket from its sketch recipe, checks its native audit, and runs the prescribed-load elasticity problem. The two pierced arms use four blocks each and the bend uses two. The driver checks the 320 mm² load area, 2,000 N resultant and the volume at higher quadrature orders.
 
 ```sh
-mkdir -p build/demo
-cli=target/release/solidcraft-trivariate
-"$cli" import-solidcraft upstream/fieldcraft/tests/oracle/filleted-bracket-fillet-stress/design.json build/demo/bracket.json
-python3 -c 'import json; print(json.dumps(json.load(open("tests/references/mechanical_jobs/bracket.json"))["job"]))' > build/demo/job.json
-"$cli" solve-job build/demo/bracket.json build/demo/job.json build/demo/result.json
-"$cli" export-field-vtu build/demo/result.json 4 build/demo/bracket-field.vtu
+cargo build --release --locked --offline
+python3 scripts/fieldcraft_bracket_pa5.py --max-level 1
 ```
 
-The historical FieldCraft bracket template has 36 blocks and 55 interfaces. The sketch-based builder reproduces the bracket and its four two-bore variants with 10 blocks and 11 interfaces. Each pierced arm uses four blocks and the bend uses two. [Models, STEP, and checks](docs/results/fieldcraft-compact.md). The result retains displacements in mm, reactions, work-energy balance, and per-block stresses at interfaces. The solver handles small-strain linear isotropic elasticity. Comparisons and limits for each experiment are recorded in the [campaign log](docs/campagne-20261125.md).
+The output under `build/fieldcraft-bracket-pa5/` includes the rebuilt model, solve results and energy-versus-DOF plot. The [mechanics report](docs/results/fieldcraft-bracket-pa5-mechanics.md) also records earlier energy measurements for comparison.
 
 ### Editing bore depth
 

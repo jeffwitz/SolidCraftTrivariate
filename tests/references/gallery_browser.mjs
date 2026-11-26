@@ -809,6 +809,8 @@ async function runBrowserChecks() {
   const noPair = resources.find(item => !item.hasComparison);
   if (noPair) {
     await command('Page.navigate', {url: `${serverUrl}compare.html?model=${encodeURIComponent(noPair.id)}`});
+    const comparisonSettled = "location.search === '?model=' + encodeURIComponent(" + JSON.stringify(noPair.id) + ") && document.querySelector('#status') && !document.querySelector('#status').textContent.includes('Loading')";
+    for (let i = 0; i < 200 && !await evaluate(comparisonSettled); i++) await pause(50);
     const noPairStatus = await evaluate("({text:document.querySelector('#status').textContent,hidden:document.querySelector('.comparison').hidden})");
     if (!noPairStatus.hidden || !noPairStatus.text.includes('No paired partition comparison')) {
       throw new Error(`Unpaired model was given an unrelated comparison: ${JSON.stringify(noPairStatus)}`);

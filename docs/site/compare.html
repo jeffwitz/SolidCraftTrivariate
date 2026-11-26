@@ -4,8 +4,8 @@
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
   <title>NURBS partition comparison · SolidCraft</title>
   <link id="compare-catalog-url" rel="alternate" type="application/json" href="./experiments.json?v=686fe6d7c056">
-  <link rel="stylesheet" href="./style.css?v=4c80dc8c8d5c"><link rel="stylesheet" href="./compare.css?v=10bd0f5e1bc0">
-  <script type="module" src="./compare.js?v=50fbe8b25aaa"></script>
+  <link rel="stylesheet" href="./style.css?v=4c80dc8c8d5c"><link rel="stylesheet" href="./compare.css?v=e699c5e137f3">
+  <script type="module" src="./compare.js?v=1402f0a8ba5a"></script>
 </head>
 <body>
   <header class="topbar"><a class="wordmark" href="./"><span class="mark">S</span>SolidCraft <span class="wordmark-light">/ Trivariate</span></a><a href="./">Geometry gallery ↗</a></header>
@@ -20,7 +20,7 @@
       <button class="reset-button" id="reset">Reset views</button>
     </div>
     <p id="status" role="status">Loading models…</p>
-    <div class="comparison">
+    <div class="comparison" hidden>
       <section class="viewport-panel"><div class="viewport-head"><h2>Assembled</h2><span>Existing partition</span></div><canvas id="assemble" tabindex="0" aria-label="Assembled partition" aria-describedby="gestures"></canvas><p id="assemble-stats"></p></section>
       <section class="viewport-panel"><div class="viewport-head"><h2 id="right-title">Native optimized</h2><span id="right-subtitle">Reselected separators</span></div><canvas id="optimize" tabindex="0" aria-label="Right NURBS partition view" aria-describedby="gestures"></canvas><p id="optimize-stats"></p></section>
     </div>

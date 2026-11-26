@@ -116,6 +116,7 @@ async function start() {
     const catalog = await catalogResponse.json();
     experimentById = new Map(catalog.map(item => [item.id, item]));
   }
+  document.querySelector(".comparison").hidden = false;
   for (const mode of modes) {
     viewers[mode] = createViewer(byId(mode), camera => {
       active = mode;

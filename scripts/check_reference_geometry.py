@@ -122,6 +122,19 @@ def main() -> None:
         results = ROOT / "docs/results"
         covered = {p for _, _, model, step in direct_cases for p in (model, step)}
         covered.update((compact_path, open_model, reference_step))
+        rim_sources = [
+            ("s3-stock", "edit-s3-stock-rim", work / "s3-face-pocket.model.json"),
+            ("fieldcraft", "edit-fieldcraft-bore-rims", ROOT / "docs/site/data/fieldcraft_x64_y64/fieldcraft_x64_y64.model.json"),
+        ]
+        for stem, command, source in rim_sources:
+            for state in ("chamfer", "fillet"):
+                filename = f"{stem}-{state}.step"
+                saved = results / "fixed-rims" / filename
+                regenerated = work / filename
+                run([str(cli), command, str(source), state, str(regenerated)])
+                compare_step(filename, saved.read_bytes(), regenerated.read_bytes())
+                covered.add(saved)
+                checks += 1
         shipped = {p for p in results.rglob("*") if p.is_file()
                    and p.name.endswith((".model.json", ".step", ".zip"))}
         if covered != shipped:

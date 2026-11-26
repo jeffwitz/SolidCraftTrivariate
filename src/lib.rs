@@ -136,12 +136,16 @@ pub mod sketch_layers;
 mod sketch_layers_json;
 pub mod sketch_arrangement;
 pub mod sketch_quads;
+mod sketch_radial;
 mod sketch_quad_separators;
 
 pub mod sketch_bore_chart;
 pub mod sketch_fillet_chart;
 mod compact_orthogonal;
 mod compact_hosts;
+pub mod mapped_cut_propagation;
+mod mapped_seams;
+mod mixed_axis_hosts;
 mod compact_wing;
 pub mod orthogonal_sketch;
 

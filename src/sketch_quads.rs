@@ -94,7 +94,7 @@ fn sub(a: Ratio, b: Ratio) -> Result<Ratio, &'static str> {
     a.checked_sub(b)
 }
 
-fn cross(a: [Ratio; 2], b: [Ratio; 2], c: [Ratio; 2]) -> Result<Ratio, &'static str> {
+pub(crate) fn cross(a: [Ratio; 2], b: [Ratio; 2], c: [Ratio; 2]) -> Result<Ratio, &'static str> {
     let abx = sub(b[0], a[0])?;
     let aby = sub(b[1], a[1])?;
     let acx = sub(c[0], a[0])?;
@@ -248,7 +248,7 @@ fn triangulate(face: &[[Ratio; 2]]) -> Result<Vec<[usize; 3]>, &'static str> {
     Ok(triangles)
 }
 
-fn midpoint(a: [Ratio; 2], b: [Ratio; 2]) -> Result<[Ratio; 2], &'static str> {
+pub(crate) fn midpoint(a: [Ratio; 2], b: [Ratio; 2]) -> Result<[Ratio; 2], &'static str> {
     let half = Ratio::new(1, 2)?;
     Ok([
         a[0].checked_add(b[0])?.checked_mul(half)?,
@@ -256,7 +256,7 @@ fn midpoint(a: [Ratio; 2], b: [Ratio; 2]) -> Result<[Ratio; 2], &'static str> {
     ])
 }
 
-fn centroid(triangle: [[Ratio; 2]; 3]) -> Result<[Ratio; 2], &'static str> {
+pub(crate) fn centroid(triangle: [[Ratio; 2]; 3]) -> Result<[Ratio; 2], &'static str> {
     let third = Ratio::new(1, 3)?;
     Ok([
         triangle[0][0]
@@ -397,6 +397,42 @@ pub(crate) fn footprint_segments(job: &SketchLayers) -> Vec<Segment> {
         role: Role::Construction,
     }));
     segments
+}
+
+/// Generate guides in integer ticks, then express the exact arrangement in the
+/// doubled millimeter coordinates consumed by the layer builder.
+pub(crate) fn scaled_guided_arrangement(
+    job: &SketchLayers,
+    scale: i32,
+    make_guides: impl FnOnce(&SketchLayers) -> Option<Vec<Segment>>,
+) -> Result<Option<Arrangement>, &'static str> {
+    if !(1..=8).contains(&scale) || !job.guides.is_empty() {
+        return Ok(None);
+    }
+    let mut ticks = job.clone();
+    for ring in std::iter::once(&mut ticks.outer).chain(ticks.cuts.iter_mut().map(|c| &mut c.0)) {
+        for p in &mut ring.vertices {
+            for coordinate in p {
+                *coordinate = coordinate
+                    .checked_mul(scale)
+                    .ok_or("guide_coordinate_overflow")?;
+            }
+        }
+    }
+    let Some(guides) = make_guides(&ticks) else {
+        return Ok(None);
+    };
+    ticks.guides = guides;
+    let Some(mut graph) = guided_quad_arrangement(&ticks)? else {
+        return Ok(None);
+    };
+    let factor = Ratio::new(1, i128::from(scale))?;
+    for p in &mut graph.vertices {
+        for coordinate in p {
+            *coordinate = coordinate.checked_mul(factor)?;
+        }
+    }
+    Ok(Some(graph))
 }
 
 /// Keep complete quadrilateral faces when the sketch itself supplies a conforming

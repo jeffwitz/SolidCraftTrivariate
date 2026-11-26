@@ -517,8 +517,13 @@ fn prefer(candidate: &Partition, current: &Partition, quality_ties: bool) -> boo
     }
 }
 
-pub fn partition(job: &SketchLayers) -> Result<Partition, &'static str> {
+/// Candidate set used by the e5bd5c6 model format.
+pub(crate) fn partition_rectangular_hosts(job: &SketchLayers) -> Result<Partition, &'static str> {
     validate(job)?;
+    rectangular_host_candidates(job)
+}
+
+fn rectangular_host_candidates(job: &SketchLayers) -> Result<Partition, &'static str> {
     let mut best = partition_initial_candidates(job, true);
     for (axis, method) in [(0, "rectangular_hosts_x"), (1, "rectangular_hosts_y")] {
         let Some(guides) = crate::sketch_quad_separators::rectangular_hosts(job, axis) else {
@@ -538,6 +543,41 @@ pub fn partition(job: &SketchLayers) -> Result<Partition, &'static str> {
         };
         if replace {
             best = Ok(candidate);
+        }
+    }
+    best
+}
+
+pub fn partition(job: &SketchLayers) -> Result<Partition, &'static str> {
+    validate(job)?;
+    let mut best = rectangular_host_candidates(job);
+    for scale in [1, 2, 4, 8] {
+        let graph = crate::sketch_quads::scaled_guided_arrangement(job, scale, |scaled| {
+            crate::sketch_quad_separators::convex_host_guides(scaled)
+        });
+        if let Ok(Some(graph)) = graph {
+            if let Ok(candidate) =
+                partition_from_graph(job, Some((graph, "convex_host_separators")))
+            {
+                let replace = match &best {
+                    Ok(old) => prefer(&candidate, old, true),
+                    Err(_) => true,
+                };
+                if replace {
+                    best = Ok(candidate);
+                }
+            }
+        }
+    }
+    if let Ok(Some(graph)) = crate::sketch_radial::footprint(job) {
+        if let Ok(candidate) = partition_from_graph(job, Some((graph, "radial_convex_footprint"))) {
+            let replace = match &best {
+                Ok(old) => prefer(&candidate, old, true),
+                Err(_) => true,
+            };
+            if replace {
+                best = Ok(candidate);
+            }
         }
     }
     best

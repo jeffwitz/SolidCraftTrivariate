@@ -227,25 +227,31 @@ pub(crate) fn build(recipe: &Json) -> Result<Json, &'static str> {
 }
 pub(crate) fn audit(model: &Json) -> Result<Json, &'static str> {
     let job = parse(model, true)?;
+    let blocks = decode_blocks(model)?;
     let replay = |p: &Partition| -> Result<bool, &'static str> {
-        Ok(decode_blocks(model)? == p.blocks
+        Ok(blocks == p.blocks
             && model.field("topology")? == &topology(&p.certificate.incidence)
             && model.field("design_faces")? == &design(&p.certificate)
             && model.field("partition_plan")? == &plan(p))
     };
-    let p = match partition(&job) {
-        Ok(p) if replay(&p)? => p,
-        _ => {
-            let legacy = match crate::sketch_layers::partition_classic(&job) {
-                Ok(old) if replay(&old)? => old,
-                _ => crate::sketch_layers::partition_legacy(&job)?,
-            };
-            if !replay(&legacy)? {
-                return Err("sketch_partition_replay_mismatch");
+    // Older files can store a fully valid choice displaced by a newer proposal.
+    // Replay all coefficients, design labels, incidence and ledger together.
+    let planners = [
+        partition,
+        crate::sketch_layers::partition_rectangular_hosts,
+        crate::sketch_layers::partition_classic,
+        crate::sketch_layers::partition_legacy,
+    ];
+    let mut found = None;
+    for planner in planners {
+        if let Ok(part) = planner(&job) {
+            if replay(&part)? {
+                found = Some(part);
+                break;
             }
-            legacy
         }
-    };
+    }
+    let p = found.ok_or("sketch_partition_replay_mismatch")?;
     Ok(object([
         ("status", Json::String("valid".into())),
         ("method", Json::String(METHOD.into())),

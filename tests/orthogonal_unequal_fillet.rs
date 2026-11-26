@@ -73,14 +73,14 @@ fn unequal_leg_filleted_l_uses_certified_rectangular_local_chart() {
 }
 
 #[test]
-fn unequal_arms_preserve_both_transverse_bores_on_grid_fallback() {
+fn unequal_arms_keep_both_transverse_bores_in_local_hosts() {
     let recipe = parse(include_str!(
         "references/unequal_fillet_cross_bores.recipe.json"
     ))
     .unwrap();
     let model = interchange::build(&recipe).unwrap();
     let report = interchange::audit(&model).unwrap();
-    for (field, expected) in [("through_bores", 2), ("blocks", 48), ("shared_faces", 74)] {
+    for (field, expected) in [("through_bores", 2), ("blocks", 10), ("shared_faces", 11)] {
         assert_eq!(
             report.field(field).unwrap().number::<usize>().unwrap(),
             expected
@@ -88,7 +88,13 @@ fn unequal_arms_preserve_both_transverse_bores_on_grid_fallback() {
     }
     let plan = model.field("partition_plan").unwrap();
     assert_eq!(
-        plan.field("fallback_reason").unwrap().text().unwrap(),
-        "compact_bracket_unequal_leg_thickness"
+        plan.field("method").unwrap().text().unwrap(),
+        "local_bore_hosts"
     );
+    let old = plan
+        .field("cut_comparison")
+        .unwrap()
+        .field("previous")
+        .unwrap();
+    assert_eq!(old.field("blocks").unwrap().number::<usize>().unwrap(), 48);
 }

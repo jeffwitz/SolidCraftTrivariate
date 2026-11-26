@@ -32,7 +32,6 @@ pub(crate) struct Corner<'a> {
     pub(crate) f: &'a Fillet,
     pub(crate) sign: [i32; 2],
     pub(crate) origin: [i32; 2],
-    pub(crate) size: i32,
     /// Width of the local fillet patch along each sketch axis.
     pub(crate) size_xy: [i32; 2],
     pub(crate) bounds: Bounds,
@@ -42,7 +41,26 @@ struct Tube<'a> {
     bounds: Bounds,
     guard: i32,
 }
+/// Replay evidence for comparing regular, fully conforming candidate partitions.
+pub(crate) struct CutComparison {
+    pub prior: Result<usize, &'static str>,
+    pub propagated: Result<usize, &'static str>,
+    pub selected: bool,
+}
+
+pub(crate) struct CutSource {
+    pub round: usize,
+    pub block: String,
+    pub axis: usize,
+    pub numerator: i128,
+    pub denominator: i128,
+    pub sources: Vec<String>,
+}
+
 pub struct SweepPartition {
+    pub(crate) cut_rounds: Vec<[usize; 3]>,
+    pub(crate) cut_sources: Vec<CutSource>,
+    pub(crate) cut_comparison: Option<CutComparison>,
     pub(crate) compact: bool,
     pub(crate) fallback_reason: Option<String>,
     pub blocks: Vec<BracketBlock>,
@@ -137,8 +155,6 @@ pub(crate) fn corner<'a>(j: &OrthogonalSketch, f: &'a Fillet) -> Result<Corner<'
         f,
         origin,
         sign,
-        // Keep the historical scalar for the equal-width compact template.
-        size: size_xy[0],
         size_xy,
         bounds,
     })
@@ -335,12 +351,13 @@ fn compact_plate(j: &OrthogonalSketch) -> Result<Option<SweepPartition>, &'stati
 
 /// Build and certify the local-chart partition. Interacting guard regions are explicitly refused.
 pub fn build(j: &OrthogonalSketch) -> Result<SweepPartition, &'static str> {
-    build_with_strategy(j, true)
+    build_with_strategy(j, true, true)
 }
 
 pub(crate) fn build_with_strategy(
     j: &OrthogonalSketch,
     prefer_compact: bool,
+    compare_cuts: bool,
 ) -> Result<SweepPartition, &'static str> {
     validate(&SketchLayers {
         outer: j.outer.clone(),
@@ -380,6 +397,37 @@ pub(crate) fn build_with_strategy(
     }) {
         return Err("invalid_sketch_bore");
     }
+    let prior = build_local_or_grid(j, prefer_compact);
+    if !compare_cuts {
+        return prior;
+    }
+    let propagated = match crate::compact_orthogonal::try_propagated(j) {
+        Ok(None) => return prior,
+        Ok(Some(p)) => Ok(p),
+        Err(reason) => Err(reason),
+    };
+    let block_count = |p: &SweepPartition| p.blocks.len();
+    let prior_count = prior.as_ref().map(block_count).map_err(|e| *e);
+    let propagated_count = propagated.as_ref().map(block_count).map_err(|e| *e);
+    let selected = match (prior_count, propagated_count) {
+        (Err(_), Err(reason)) => return Err(reason),
+        (_, Err(_)) => false,
+        (Err(_), Ok(_)) => true,
+        (Ok(a), Ok(b)) => b < a,
+    };
+    let mut best = if selected { propagated? } else { prior? };
+    best.cut_comparison = Some(CutComparison {
+        prior: prior_count,
+        propagated: propagated_count,
+        selected,
+    });
+    Ok(best)
+}
+
+fn build_local_or_grid(
+    j: &OrthogonalSketch,
+    prefer_compact: bool,
+) -> Result<SweepPartition, &'static str> {
     let mut fallback_reason: Option<String> = None;
     if prefer_compact {
         let unequal_fillet = if j.fillets.len() == 1 {
@@ -619,6 +667,9 @@ pub(crate) fn finish_partition(
         );
     }
     Ok(SweepPartition {
+        cut_comparison: None,
+        cut_rounds: Vec::new(),
+        cut_sources: Vec::new(),
         compact: false,
         fallback_reason: None,
         blocks,

@@ -64,6 +64,7 @@ fn hosts_for_group<'a>(
     axis: usize,
     bores: &[&'a Bore],
     full_single: bool,
+    prefer_transverse_split: bool,
 ) -> Option<Vec<(&'a Bore, Bounds)>> {
     if bores.len() == 1 {
         return Some(vec![(
@@ -76,7 +77,13 @@ fn hosts_for_group<'a>(
         )]);
     }
     if bores.len() > 1 {
-        for split_axis in [(axis + 1) % 3, (axis + 2) % 3] {
+        let mut split_axes = [(axis + 1) % 3, (axis + 2) % 3];
+        if prefer_transverse_split {
+            // Keep cuts in the transverse sketch plane when feasible. An axial
+            // z cut crosses the bend and needs mapped trace propagation.
+            split_axes.sort_by_key(|&candidate| usize::from(candidate == 2));
+        }
+        for split_axis in split_axes {
             let mut ordered = bores.to_vec();
             ordered.sort_by_key(|b| b.center[split_axis]);
             if ordered.windows(2).any(|w| {
@@ -168,6 +175,29 @@ pub(crate) fn holed_box(
     prefix: &str,
     full_single: bool,
 ) -> Result<Option<HoledBox>, &'static str> {
+    holed_box_impl(axis, bounds, bores, prefix, full_single, false)
+}
+
+/// Candidate planner variant that delays axial cuts when a transverse split
+/// gives an equally compact host layout.
+pub(crate) fn holed_box_propagated(
+    axis: usize,
+    bounds: Bounds,
+    bores: &[&Bore],
+    prefix: &str,
+    full_single: bool,
+) -> Result<Option<HoledBox>, &'static str> {
+    holed_box_impl(axis, bounds, bores, prefix, full_single, true)
+}
+
+fn holed_box_impl(
+    axis: usize,
+    bounds: Bounds,
+    bores: &[&Bore],
+    prefix: &str,
+    full_single: bool,
+    prefer_transverse_split: bool,
+) -> Result<Option<HoledBox>, &'static str> {
     if bores.is_empty() || axis > 2 || bores.iter().any(|b| b.axis != axis) {
         return Ok(None);
     }
@@ -182,7 +212,8 @@ pub(crate) fn holed_box(
     }) {
         return Ok(None);
     }
-    let Some(hosts) = hosts_for_group(bounds, axis, bores, full_single) else {
+    let Some(hosts) = hosts_for_group(bounds, axis, bores, full_single, prefer_transverse_split)
+    else {
         return Ok(None);
     };
     let mut levels: [BTreeSet<i32>; 3] = std::array::from_fn(|k| BTreeSet::from(bounds[k]));

@@ -9,6 +9,7 @@ use crate::{
 pub(crate) const FAMILY: &str = "orthogonal_sketch_features_v1";
 pub(crate) const METHOD: &str = "certified_orthogonal_sketch_features";
 pub(crate) const COMPACT_METHOD: &str = "four_sector_local_sweeps";
+pub(crate) const PROPAGATED_METHOD: &str = "propagated_isoparametric_cuts";
 const PARAMETERS: [&str; 4] = ["outer", "height_mm", "fillets", "bores"];
 fn n(x: impl ToString) -> Json {
     Json::Number(x.to_string())
@@ -104,6 +105,69 @@ fn plan(p: &SweepPartition) -> Json {
             ),
         ),
     ]);
+    if let (Some(comparison), Json::Object(fields)) = (&p.cut_comparison, &mut out) {
+        let score = |count: Result<usize, &'static str>| match count {
+            Ok(count) => object([("blocks", n(count))]),
+            Err(reason) => object([("refusal", Json::String(reason.into()))]),
+        };
+        fields.insert(
+            "cut_comparison".into(),
+            object([
+                ("previous", score(comparison.prior)),
+                ("propagated", score(comparison.propagated)),
+            ]),
+        );
+        if !p.cut_rounds.is_empty() {
+            fields.insert(
+                "cut_rounds".into(),
+                Json::Array(
+                    p.cut_rounds
+                        .iter()
+                        .map(|r| {
+                            object([
+                                ("requests", n(r[0])),
+                                ("closed_cuts", n(r[1])),
+                                ("blocks", n(r[2])),
+                            ])
+                        })
+                        .collect(),
+                ),
+            );
+            fields.insert(
+                "cut_sources".into(),
+                Json::Array(
+                    p.cut_sources
+                        .iter()
+                        .map(|c| {
+                            object([
+                                ("round", n(c.round)),
+                                ("block", Json::String(c.block.clone())),
+                                ("axis", n(c.axis)),
+                                (
+                                    "parameter",
+                                    Json::Array(vec![n(c.numerator), n(c.denominator)]),
+                                ),
+                                (
+                                    "sources",
+                                    Json::Array(
+                                        c.sources.iter().cloned().map(Json::String).collect(),
+                                    ),
+                                ),
+                            ])
+                        })
+                        .collect(),
+                ),
+            );
+        }
+        if comparison.selected {
+            let method = if p.cut_rounds.is_empty() {
+                "local_bore_hosts"
+            } else {
+                PROPAGATED_METHOD
+            };
+            fields.insert("method".into(), Json::String(method.into()));
+        }
+    }
     if let (Some(reason), Json::Object(fields)) = (p.fallback_reason.as_ref(), &mut out) {
         fields.insert("fallback_reason".into(), Json::String(reason.clone()));
     }
@@ -160,7 +224,15 @@ pub(crate) fn audit(model: &Json) -> Result<Json, &'static str> {
         .field("partition_plan")?
         .field("fallback_reason")
         .is_ok();
-    let p = orthogonal_sketch::build_with_strategy(&j, compact || has_fallback_reason)?;
+    let compared = model
+        .field("partition_plan")?
+        .field("cut_comparison")
+        .is_ok();
+    let p = orthogonal_sketch::build_with_strategy(
+        &j,
+        compact || has_fallback_reason || compared,
+        compared,
+    )?;
     let mut expected_plan = plan(&p);
     if !has_fallback_reason {
         if let Json::Object(fields) = &mut expected_plan {
@@ -205,4 +277,45 @@ pub(crate) fn audit(model: &Json) -> Result<Json, &'static str> {
         ("hausdorff_error_upper_bound_mm", n(0)),
         ("volume_exact", volume),
     ]))
+}
+
+#[cfg(test)]
+mod replay_tests {
+    use super::*;
+
+    #[test]
+    fn archived_fallback_keeps_its_grid_and_rejects_a_forged_reason() {
+        let recipe = crate::json::parse(
+            r#"{
+            "family":"orthogonal_sketch_features_v1",
+            "outer":{"id":"body","vertices":[[0,0],[60,0],[60,8],[8,8],[8,50],[0,50]]},
+            "height_mm":40,"fillets":[{"id":"f","vertex":[8,8],"radius_mm":6}],
+            "bores":[{"id":"low","axis":"y","center_mm":[38,4,10],"radius_mm":3},
+                     {"id":"high","axis":"y","center_mm":[38,4,30],"radius_mm":3},
+                     {"id":"upright","axis":"x","center_mm":[4,32,20],"radius_mm":4}]}"#,
+        )
+        .unwrap();
+        let job = parse(&recipe).unwrap();
+        let old = orthogonal_sketch::build_with_strategy(&job, true, false).unwrap();
+        assert_eq!(old.blocks.len(), 112);
+        let ledger = plan(&old);
+        assert!(ledger.field("fallback_reason").is_ok());
+        let mut model = encode(FAMILY, old.blocks, &old.certificate);
+        if let Json::Object(f) = &mut model {
+            for k in PARAMETERS {
+                f.insert(k.into(), recipe.field(k).unwrap().clone());
+            }
+            f.insert("partition_plan".into(), ledger);
+        }
+        audit(&model).unwrap();
+        if let Json::Object(f) = &mut model {
+            if let Some(Json::Object(p)) = f.get_mut("partition_plan") {
+                p.insert("fallback_reason".into(), Json::String("made_up".into()));
+            }
+        }
+        assert_eq!(
+            audit(&model),
+            Err("orthogonal_feature_partition_replay_mismatch")
+        );
+    }
 }

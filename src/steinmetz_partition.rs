@@ -266,6 +266,9 @@ pub(crate) fn try_build(j: &OrthogonalSketch) -> Result<Option<SweepPartition>, 
     let r = i64::from(a.radius);
     let planes = std::array::from_fn(|k| vec![bounds[k][0], center[k], bounds[k][1]]);
     Ok(Some(SweepPartition {
+        cut_comparison: None,
+        cut_rounds: Vec::new(),
+        cut_sources: Vec::new(),
         compact: false,
         fallback_reason: None,
         blocks,

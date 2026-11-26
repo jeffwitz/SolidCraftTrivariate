@@ -13,6 +13,12 @@ use crate::{
 use std::collections::{BTreeMap, BTreeSet};
 
 type Bounds = [[i32; 2]; 3];
+type CutClosureResult = (
+    Vec<BracketBlock>,
+    BTreeMap<(String, usize, bool), String>,
+    Vec<[usize; 3]>,
+    Vec<orthogonal_sketch::CutSource>,
+);
 
 fn ordered(a: i32, b: i32) -> [i32; 2] {
     [a.min(b), a.max(b)]
@@ -36,10 +42,7 @@ fn standard_l(j: &OrthogonalSketch, c: &orthogonal_sketch::Corner<'_>) -> Option
     let (Some(x_ext), Some(y_ext)) = (x_ext, y_ext) else {
         return None;
     };
-    let back = [
-        f[0] - c.sign[0] * (c.size - c.f.radius),
-        f[1] - c.sign[1] * (c.size - c.f.radius),
-    ];
+    let back = c.origin;
     let expected = [
         back,
         [x_ext, back[1]],
@@ -59,31 +62,12 @@ fn make_arm_bounds(
     ends: [i32; 2],
 ) -> Result<[Bounds; 2], &'static str> {
     let f = c.f.vertex;
-    let t = c.size - c.f.radius;
-    let x_far = c.origin[0]
-        .checked_add(
-            c.sign[0]
-                .checked_mul(c.size)
-                .ok_or("compact_elbow_overflow")?,
-        )
-        .ok_or("compact_elbow_overflow")?;
-    let y_far = c.origin[1]
-        .checked_add(
-            c.sign[1]
-                .checked_mul(c.size)
-                .ok_or("compact_elbow_overflow")?,
-        )
-        .ok_or("compact_elbow_overflow")?;
+    let [x_far, y_far] = std::array::from_fn(|k| c.origin[k] + c.sign[k] * c.size_xy[k]);
     let [x_end, y_end] = ends;
     if (x_end - x_far) * c.sign[0] <= 0 || (y_end - y_far) * c.sign[1] <= 0 {
         return Err("compact_elbow_nonpositive_wing_length");
     }
-    let x_band = f[0]
-        .checked_sub(c.sign[0].checked_mul(t).ok_or("compact_elbow_overflow")?)
-        .ok_or("compact_elbow_overflow")?;
-    let y_band = f[1]
-        .checked_sub(c.sign[1].checked_mul(t).ok_or("compact_elbow_overflow")?)
-        .ok_or("compact_elbow_overflow")?;
+    let [x_band, y_band] = c.origin;
     let east = [ordered(x_far, x_end), ordered(y_band, f[1]), [0, j.height]];
     let north = [ordered(x_band, f[0]), ordered(y_far, y_end), [0, j.height]];
     if east[0][0] == east[0][1]
@@ -119,7 +103,9 @@ fn elbow_faces(
 ) -> Result<(), &'static str> {
     let z = [0, j.height];
     let id = "elbow";
-    for mut block in crate::sketch_fillet_chart::fillet_charts([0, 0], c.size, c.f.radius, z, id)? {
+    for mut block in
+        crate::sketch_fillet_chart::fillet_charts_rect([0, 0], c.size_xy, c.f.radius, z, id)?
+    {
         orthogonal_sketch::transform_fillet(&mut block, c)?;
         let center = [
             c.f.vertex[0] + c.sign[0] * c.f.radius,
@@ -254,6 +240,209 @@ pub(crate) fn try_build(j: &OrthogonalSketch) -> Result<Option<SweepPartition>, 
     // regularity; exact shared traces and the prescribed physical labels
     // certify conformity and provenance for this assembled candidate.
     Ok(Some(partition))
+}
+
+/// Candidate using the mapped-cut closure policy. The caller compares it with
+/// the frozen compact plan before selection; this entry point keeps failures
+/// separate from the historical builder.
+pub(crate) fn try_propagated(j: &OrthogonalSketch) -> Result<Option<SweepPartition>, &'static str> {
+    if j.fillets.len() != 1
+        || j.bores.len() < 2
+        || j.height <= 0
+        || j.bores
+            .iter()
+            .any(|b| b.axis > 2 || !(1..=1024).contains(&b.radius))
+        || edges(&j.outer).any(|(a, b)| a[0] != b[0] && a[1] != b[1])
+    {
+        return Ok(None);
+    }
+    let c = match orthogonal_sketch::corner(j, &j.fillets[0]) {
+        Ok(c) => c,
+        Err(_) => return Ok(None),
+    };
+    let Some(ends) = standard_l(j, &c) else {
+        return Ok(None);
+    };
+    let arms = make_arm_bounds(j, &c, ends)?;
+    let mut by_arm: [Vec<&orthogonal_sketch::Bore>; 2] = std::array::from_fn(|_| Vec::new());
+    for bore in &j.bores {
+        let arm_index = match bore.axis {
+            1 => Some(0),
+            0 => Some(1),
+            2 => {
+                let fits = (0..2)
+                    .filter(|&i| {
+                        bore.center[2] > arms[i][2][0]
+                            && bore.center[2] < arms[i][2][1]
+                            && bore.center[0] - bore.radius > arms[i][0][0]
+                            && bore.center[0] + bore.radius < arms[i][0][1]
+                            && bore.center[1] - bore.radius > arms[i][1][0]
+                            && bore.center[1] + bore.radius < arms[i][1][1]
+                    })
+                    .collect::<Vec<_>>();
+                if fits.len() != 1 {
+                    return Ok(None);
+                }
+                fits.first().copied()
+            }
+            _ => None,
+        };
+        let Some(index) = arm_index else {
+            return Ok(None);
+        };
+        by_arm[index].push(bore);
+    }
+    // A host is one tensor extrusion direction. Mixed bore axes in the same
+    // arm require a non-isoparametric T-junction and are deliberately refused.
+    let mut blocks = Vec::new();
+    let mut physical = BTreeMap::new();
+    elbow_faces(j, &c, &mut physical, &mut blocks)?;
+    let mut guards = vec![(c.f.id.clone(), c.bounds)];
+    for arm_index in 0..2 {
+        let arm_axis = if arm_index == 0 { 1 } else { 0 };
+        let group = &by_arm[arm_index];
+        if group.is_empty() {
+            blocks.push(crate::compact_hosts::plain_box(
+                format!("propagated_wing_free_{arm_index}"),
+                arms[arm_index],
+            ));
+            continue;
+        }
+        let bore_axes = group.iter().map(|b| b.axis).collect::<BTreeSet<_>>();
+        let hosted = if bore_axes.len() > 1 {
+            crate::mixed_axis_hosts::build(
+                arms[arm_index],
+                group,
+                &format!("propagated_wing_{arm_index}"),
+            )?
+        } else {
+            let bore_axis = group[0].axis;
+            crate::compact_hosts::holed_box_propagated(
+                bore_axis,
+                arms[arm_index],
+                group,
+                &format!("propagated_wing_{arm_index}"),
+                bore_axis == arm_axis,
+            )?
+        };
+        let Some(crate::compact_hosts::HoledBox {
+            blocks: mut hosted,
+            physical: mut labels,
+            guards: mut host_guards,
+        }) = hosted
+        else {
+            return Ok(None);
+        };
+        blocks.append(&mut hosted);
+        physical.append(&mut labels);
+        guards.append(&mut host_guards);
+    }
+
+    let mut planes: [BTreeSet<i32>; 3] = std::array::from_fn(|_| BTreeSet::new());
+    for bounds in [c.bounds, arms[0], arms[1]] {
+        for axis in 0..3 {
+            planes[axis].extend(bounds[axis]);
+        }
+    }
+    for (_, bounds) in guards.iter().skip(1) {
+        for axis in 0..3 {
+            planes[axis].extend(bounds[axis]);
+        }
+    }
+    let h = i128::from(j.height);
+    let rf = i128::from(c.f.radius);
+    let mut twice_constant = i128::from(area2(&j.outer))
+        .checked_mul(h)
+        .ok_or("mapped_cut_volume_overflow")?;
+    twice_constant = twice_constant
+        .checked_add(2 * rf * rf * h)
+        .ok_or("mapped_cut_volume_overflow")?;
+    let mut four_pi = -rf * rf * h;
+    for bore in &j.bores {
+        let length = if bore.axis == 2 {
+            j.height
+        } else {
+            arms[if bore.axis == 1 { 0 } else { 1 }][bore.axis][1]
+                - arms[if bore.axis == 1 { 0 } else { 1 }][bore.axis][0]
+        };
+        let r = i128::from(bore.radius);
+        four_pi = four_pi
+            .checked_sub(4 * r * r * i128::from(length))
+            .ok_or("mapped_cut_volume_overflow")?;
+    }
+    let (blocks, physical, cut_rounds, cut_sources) = close_mapped_cuts(blocks, physical, 1024)?;
+    let mut result = orthogonal_sketch::finish_partition(
+        j,
+        blocks,
+        physical,
+        twice_constant,
+        four_pi,
+        planes.map(|p| p.into_iter().collect()),
+        guards,
+    )?;
+    result.cut_rounds = cut_rounds;
+    result.cut_sources = cut_sources;
+    Ok(Some(result))
+}
+
+fn close_mapped_cuts(
+    mut blocks: Vec<BracketBlock>,
+    mut physical: BTreeMap<(String, usize, bool), String>,
+    budget: usize,
+) -> Result<CutClosureResult, &'static str> {
+    let mut rounds = Vec::new();
+    let mut sources = Vec::new();
+    for round in 0..8 {
+        let (faces, requests) = crate::mapped_seams::discover(&blocks)?;
+        if requests.is_empty() {
+            return Ok((blocks, physical, rounds, sources));
+        }
+        let previous_count = blocks.len();
+        let plan = crate::mapped_cut_propagation::propagate_exact_cuts(
+            &blocks, &faces, &requests, budget,
+        )?;
+        if plan.child_count <= previous_count || plan.child_count > budget {
+            return Err("mapped_cut_no_progress_or_budget");
+        }
+        rounds.push([
+            plan.requested_cut_count,
+            plan.propagated_cut_count,
+            plan.child_count,
+        ]);
+        for cut in &plan.cuts {
+            sources.push(orthogonal_sketch::CutSource {
+                round,
+                block: blocks[cut.block].id.clone(),
+                axis: cut.axis,
+                numerator: cut.parameter.numerator,
+                denominator: cut.parameter.denominator,
+                sources: cut.provenance.clone(),
+            });
+        }
+        let mut transferred = BTreeMap::new();
+        for ((id, axis, upper), label) in &physical {
+            let source_index = blocks
+                .iter()
+                .position(|b| b.id == *id)
+                .ok_or("mapped_cut_lost_physical_source")?;
+            let mut count = 0;
+            for child in plan
+                .boundary_children
+                .iter()
+                .filter(|c| c.source_block == source_index && c.axis == *axis && c.upper == *upper)
+            {
+                let child_id = plan.blocks[child.child_block].id.clone();
+                transferred.insert((child_id, *axis, *upper), label.clone());
+                count += 1;
+            }
+            if count == 0 {
+                return Err("mapped_cut_lost_physical_boundary");
+            }
+        }
+        blocks = plan.blocks;
+        physical = transferred;
+    }
+    Err("mapped_cut_round_budget")
 }
 
 fn try_multi_arm_hosts(

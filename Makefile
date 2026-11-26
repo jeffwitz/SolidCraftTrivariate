@@ -1,4 +1,4 @@
-.PHONY: bootstrap refs test demo demo-native check check-published-geometry
+.PHONY: bootstrap refs test demo demo-native check check-strict check-published-geometry
 bootstrap:
 	bash scripts/references.sh clone
 refs:
@@ -26,4 +26,5 @@ check-published-geometry:
 	python3 scripts/check_gallery_geometry.py
 	python3 scripts/check_reference_geometry.py --cli target/release/solidcraft-trivariate
 	python3 tests/references/replay_geometry_recipes.py --cli target/release/solidcraft-trivariate --work build/reference-recipe-replay --output build/reference-recipe-replay.json
-check: refs test demo check-published-geometry
+check: test demo check-published-geometry
+check-strict: refs check

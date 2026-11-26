@@ -158,7 +158,7 @@ class BracketTests(unittest.TestCase):
             for sector in ("east", "north", "west", "south"):
                 self.assertIn(f"hole_{leg}_sector_{sector}_z10_30", identifiers)
 
-    def test_volume_matches_analytic_formula_and_locked_fieldcraft_fixture(self):
+    def test_volume_matches_analytic_formula(self):
         nodes_weights_12 = _gauss(12)
         nodes_weights_16 = _gauss(16)
         volume12 = sum(_block_volume(block, 12, nodes_weights_12)
@@ -166,17 +166,29 @@ class BracketTests(unittest.TestCase):
         volume16 = sum(_block_volume(block, 16, nodes_weights_16)
                        for block in self.blocks)
         expected = 34080.0 - 616.0 * math.pi
+        self.assertLessEqual(abs(volume16 - expected), 1e-7)
+        self.assertLessEqual(abs(volume16 - volume12), 1e-7)
+        self.volume_order12 = volume12
+        self.volume_order16 = volume16
+        self.volume_error = abs(volume16 - expected)
+
+    def test_volume_matches_locked_fieldcraft_fixture_when_available(self):
+        checkout_path = ROOT / "upstream/fieldcraft"
         fixture_path = ROOT / "upstream/fieldcraft/tests/corpus/filleted-bracket-blocks/fixture.json"
+        if not checkout_path.is_dir():
+            self.skipTest(
+                "optional FieldCraft checkout is absent; run `make bootstrap` to install references"
+            )
+        if not fixture_path.is_file():
+            self.fail(f"FieldCraft checkout is present but its locked fixture is missing: {fixture_path}")
         fixture = json.loads(fixture_path.read_text())
         fixture_volume = fixture["values"]["surface.solidcraft_mm3"]["value"]
         lock = (ROOT / "references.lock").read_text()
         self.assertIn(FIELDCRAFT_REVISION, lock)
-        self.assertLessEqual(abs(volume16 - expected), 1e-7)
-        self.assertLessEqual(abs(volume16 - volume12), 1e-7)
+        nodes_weights_16 = _gauss(16)
+        volume16 = sum(_block_volume(block, 16, nodes_weights_16)
+                       for block in self.blocks)
         self.assertLessEqual(abs(volume16 - fixture_volume), 1e-7)
-        self.volume_order12 = volume12
-        self.volume_order16 = volume16
-        self.volume_error = abs(volume16 - expected)
         self.fixture_volume = fixture_volume
 
     def test_hole_and_fillet_radii_and_transverse_hole_centers(self):

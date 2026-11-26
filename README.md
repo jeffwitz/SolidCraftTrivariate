@@ -2,6 +2,12 @@
 
 A native Rust volumetric kernel for building and auditing rational trivariate maps, exporting STEP, and preparing their IGA analysis spaces. The geometry workflow starts from a sketch or recipe, derives its partition lines, then builds and audits the volumes in the same crate. Python supplies independent oracles and historical references. [Documentation index](docs/README.md)
 
+## Polygonal sketch input contract
+
+The native `sketch_layer_partition_v1` input is a set of straight-edged polygon contours in the XY plane, with coordinates in integer millimeters. Each loop has 3–64 distinct vertices, a unique identifier, and must be simple: self-crossings, repeated vertices, and contacts between contours are rejected. The outer loop must enclose every cut. Without Boolean operation history, cut loops must also be mutually disjoint and non-nested; with history, nested loops are allowed, but contours still may not touch or cross. A recipe supports at most 12 cuts, an integer height from 1 to 4096 mm, integer cut intervals satisfying `0 ≤ z0 < z1 ≤ height`, and an optional integer top shift of at most 4096 mm per axis. Coordinates and construction-guide endpoints are limited to ±4096 mm; at most 64 construction guides are allowed. Clockwise or counterclockwise input winding is accepted and normalized by the planner.
+
+These are polygonal line segments, not sampled approximations of curves: this input family does not accept arcs or NURBS contours. Automatic partitioning tries certified strategies for the supplied geometry and can still reject a valid contour set when no supported partition is found. Passing one strategy does not imply that every simple polygon is supported. Curved profiles use their separate NURBS recipe families.
+
 The WebGL gallery contains 68 entries. Browse the 45 polygon benchmark pieces, the overlapping-projections diamond diagnostic, the ten bore propagation controls and the unequal-width two-bore bracket alongside six curved-profile parts and five FieldCraft variants. Each entry includes the native model, recipe, audit and STEP export. [Open the east-wing bore stack](https://jeffwitz.github.io/SolidCraftTrivariate/?model=bench-bracket-east-stack) · [Polygon benchmark](docs/convex-host-rings.md) · [Bracket measurements](docs/results/propagated-bores.md)
 
 The automatic polygonal planner derives separators, quadrilateral rings and pocket floors directly from the contours. On the 45-piece polygon corpus it selects 1,208 blocks in total, including 910 on the 30 seeded convex sketches. All 45 published recipes and 12 additional sketches passed independent geometry and volume checks. On eight of the 45 cases the maximum sampled condition number increased. [Current measurements](docs/convex-host-rings.md) · [Partition selection](docs/architecture.md#planner)
@@ -17,7 +23,7 @@ cargo build --release --locked --offline
 make demo-native
 ```
 
-To install the six references listed in `references.lock` and run the full reference and test suite, run `make bootstrap` once, then `make check`. `make check` checks that those clones are present; it does not install them implicitly.
+`make check` runs the local Rust and Python tests, demos, and published-geometry replay without requiring any upstream checkout. To also require and validate all six pinned upstream references listed in `references.lock`, run `make bootstrap` once and then `make check-strict`. The standalone `make refs` target checks those clones without installing them.
 
 `plan-sketch` reports contour junctions and cutting levels induced by other operations before blocks are created. In this example, a periodic cubic profile is subtracted by extrusion from a transverse rectangle. The plan is saved as inspectable JSON:
 
@@ -131,7 +137,7 @@ python3 -m trivariate audit build/affine_pair.json
 python3 -m trivariate evaluate tests/references/quarter_annulus.json 0.5 0.5 0.5
 ```
 
-On a fresh clone, `make bootstrap` retrieves the six oracle dependencies pinned in `references.lock`; afterward, `make check` runs offline. For Rust tests alone: `cargo test --locked --offline`.
+On a fresh clone, `make bootstrap` retrieves the six oracle dependencies pinned in `references.lock`; afterward, `make check-strict` requires their exact locked checkouts and runs the local checks offline. For Rust tests alone: `cargo test --locked --offline`.
 
 ## Documents and results
 

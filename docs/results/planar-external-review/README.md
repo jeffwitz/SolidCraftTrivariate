@@ -1,14 +1,14 @@
-# Held-out polygon partition review
+# External polygon partition review
 
 ## Scope and reproducibility
 
-This is an external, held-out set of 11 polygonal recipes supplied in `heldout_11_recipes.zip`. It is separate from the 45 published polygon cases and the 12 additional cases. The exact recipe bytes are preserved under [`inputs/`](inputs/); [`inputs.sha256.json`](inputs.sha256.json) records the archive SHA-256 and every recipe SHA-256. The ZIP itself and supplied model file are not copied into this result directory.
+This is an external set of 11 polygonal recipes supplied in `heldout_11_recipes.zip`. It is separate from the 45 published polygon cases and the 12 additional cases. The prototype used mixed_sizes during development; the other ten recipes were withheld. The exact recipe bytes are preserved under [`inputs/`](inputs/); [`inputs.sha256.json`](inputs.sha256.json) records the archive SHA-256 and every recipe SHA-256. The ZIP itself and supplied model file are not copied into this result directory.
 
 The supplied archive SHA-256 is `308f53a93925dbe2aa86759390c6a21943813a92f36889a9221b104adc6b4f89`. The standalone `mixed_sizes.recipe.json` supplied alongside it matches the archive entry byte for byte.
 
 Both CLIs ran sequentially against the same 11 source recipes. The baseline used the clean release CLI from revision `72e8e19c1bd4b25b41610a11d930f38543e40d40` (SHA-256 `8f33eeba801e38e56fbe52ad6ccb96a68a28d2f20187a7d67df869af0c0f9ac2`). The frozen prototype used revision `f406011839fdf6dd92f3d7857c53b2b35c90231e` (SHA-256 `e2ac9c06f1148c914f53c13ad05e4f71c6900847c758647bcd7e0470cbd55bfc`) with `partition_strategy: ring_planar_lookahead` inserted into a temporary build copy of each recipe. The versioned input files were not edited. [The per-case JSON report](paired_evaluation.json) includes exact input and build-recipe hashes, model and STEP hashes, native build/audit reports, per-layer coverage, independent topology/provenance results, all sampled metrics, wall times, and failure details.
 
-The independent geometry audit uses exact `Fraction` polygon moments and volume, Shapely unions and pairwise intersections on every axial layer, a separately constructed FreeCAD/OCCT prism-minus-prisms reference, and imported STEP validity, solid count, volume, centroid, and deterministic point classification. Planar quality metrics were computed by `/tmp/sct-planar-metrics/scripts/evaluate_polygon_extrusion_quality.py` (SHA-256 `018a75fcf2c379012e25afee2678d858105cfe29b845d3812fb630fe0fddec14`): the maximum planar spectral condition number and thickness aspect use a 5 × 5 × 5 parameter grid per trilinear block; minimum corner sine uses the eight corners. These samples are diagnostics and do not certify a continuous condition bound.
+The independent geometry audit uses exact `Fraction` polygon moments and volume, Shapely unions and pairwise intersections on every axial layer, a separately constructed FreeCAD/OCCT prism-minus-prisms reference, and imported STEP validity, solid count, volume, centroid, and deterministic point classification. Planar quality metrics were computed by `scripts/evaluate_polygon_extrusion_quality.py` (SHA-256 `018a75fcf2c379012e25afee2678d858105cfe29b845d3812fb630fe0fddec14`): the maximum planar spectral condition number and thickness aspect use a 5 × 5 × 5 parameter grid per trilinear block; minimum corner sine uses the eight corners. These samples are diagnostics and do not certify a continuous condition bound.
 
 Recorded environment: FreeCAD 26.3.0, OCCT 7.8.1, Python 3.11.14, NumPy 1.26.4, and Shapely 2.1.2. Per-case timings below are sequential wall-clock seconds. Build, explicit native audit, STEP export, and independent audit/metric costs are reported separately in the JSON.
 
@@ -32,7 +32,7 @@ Both strategies built and passed the native and independent checks for all 11 re
 | two_16gons | 32 | 8.7352 → 8.7352 | 0.3764 → 0.3764 | 3.4571 → 7.2961 |
 | two_triangles | 8 | 27.2133 → 22.8291 | 0.0948 → 0.0906 | 2.3321 → 4.3582 |
 
-The lookahead reduced the sampled maximum planar condition number on five cases and left six unchanged; it worsened none on this held-out set. It left block counts unchanged. The minimum corner sine improved on four cases, was unchanged on six, and decreased slightly on `two_triangles`; that case's sampled planar condition number still improved. Full metric witnesses are retained per case in the JSON.
+The lookahead reduced the sampled maximum planar condition number on five cases and left six unchanged; it worsened none on the eleven external cases. It left block counts unchanged. The minimum corner sine improved on four cases, was unchanged on six, and decreased slightly on `two_triangles`; that case's sampled planar condition number still improved. Full metric witnesses are retained per case in the JSON.
 
 Aggregate costs were:
 

@@ -102,6 +102,50 @@ def constraints(nets, ids, nodes):
     return np.vstack(full), np.vstack(partial)
 
 
+def exact_trace_space(nets, ids, full):
+    # Form constraints with the integer geometry gauges, then orthonormalize
+    # only after their exact null space has been determined.
+    import sympy as sp
+
+    rows = [list(map(int, row)) for row in full]
+    for (band, col), slave in ids.items():
+        if col == 1:
+            continue
+        master = ids[band, 1]
+        for k in range(7):
+            u = sp.Rational(k, 6)
+            U = [(1 - u) ** 3, 3 * u * (1 - u) ** 2, 3 * u * u * (1 - u), u**3]
+            for side in [0, 1]:
+                v = int(col == 2)
+                indices = [4 * i + 2 * v + side for i in range(4)]
+                S = [a * int(nets[slave][i, 3]) for a, i in zip(U, indices)]
+                den = sum(S)
+                w = sum(a * int(nets[slave][i, 2]) for a, i in zip(U, indices)) / (
+                    12 * den
+                )
+                row = [0] * full.shape[1]
+                for i, idx in enumerate(indices):
+                    row[16 * slave + idx] = S[i] / den
+                mden = sum(
+                    a * int(nets[master][4 * i + 2 * (1 - v), 3])
+                    for i, a in enumerate(U)
+                )
+                for i, a in enumerate(U):
+                    for j, h in enumerate([1 - w, w]):
+                        idx = 4 * i + 2 * (1 - v) + j
+                        row[16 * master + idx] = (
+                            -a * h * int(nets[master][idx, 3]) / mden
+                        )
+                rows.append(row)
+    matrix = sp.polys.matrices.DomainMatrix.from_Matrix(
+        sp.SparseMatrix(rows)
+    ).to_field()
+    vectors = matrix.nullspace().to_Matrix().T
+    # Scale columns before conversion to avoid amplifying the chart gauge.
+    A = np.array(vectors.tolist(), dtype=float)
+    return np.linalg.qr(A / np.linalg.norm(A, axis=0))[0]
+
+
 def assemble(nets, ids, q, fitted=False):
     # Manufactured u=(x,-nu*y,-nu*z)/E gives exact uniaxial stress of 1 MPa.
     sigma = np.diag([1.0, 0.0, 0.0])
@@ -234,17 +278,18 @@ def matching_reference(nets, ids, rise, q):
 
 def run(model, q, rise):
     blocks = model["blocks"]
+    assert all(abs(c) < 2**53 for b in blocks for h in b["controls"] for c in h)
     nets = [np.asarray(b["controls"], float) for b in blocks]
     ids = {
         tuple(map(int, re.fullmatch(r"band(\d+)_col(\d+)_z.*", b["id"]).groups())): i
         for i, b in enumerate(blocks)
     }
     nd = 16 * len(nets)
-    full, partial = constraints(nets, ids, np.linspace(0, 1, 7))
+    full, _ = constraints(nets, ids, np.linspace(0, 1, 7))
     # Off-collocation evaluations test continuity for the whole constrained space.
     _, holdout = constraints(nets, ids, (leggauss(17)[0] + 1) / 2)
     _, coarse = constraints(nets, ids, np.linspace(0, 1, 4))
-    Z = null_space(np.vstack([full, partial]), rcond=1e-11)
+    Z = exact_trace_space(nets, ids, full)
     loose = null_space(np.vstack([full, coarse]), rcond=1e-11)
     leakage = lambda z: float(np.max(np.linalg.norm(holdout @ z, axis=1)))
     K, f, t, V = assemble(nets, ids, q)

@@ -28,7 +28,7 @@ The diamond sketch builds in 10 blocks with 12 interfaces and exact volume 113,0
 
 ## Measured results
 
-The release executable built from `083fdfe` passed the independent section and volume oracle on all 45 frozen polygon recipes and the 12 additional seeded recipes. The latter use two or three convex cutters and include blind intervals. The tests are reproducible public benchmarks. They measure the best certified candidate selected by this implementation.
+The release executable built offline from the clean checkout `72e8e19` (kernel source revision `083fdfe`) passed the independent section and volume oracle on all 45 frozen polygon recipes and the 12 additional seeded recipes. The latter use two or three convex cutters and include blind intervals. The tests are reproducible public benchmarks. They measure the best certified candidate selected by this implementation.
 
 | Set | Valid | Previous kernel blocks | Prototype blocks | Native automatic blocks |
 |---|---:|---:|---:|---:|
@@ -38,4 +38,4 @@ The release executable built from `083fdfe` passed the independent section and v
 
 For the 30-case subset the native solver matches the prototype count on 26 cases, improves three by two blocks each and uses two additional blocks on case 11. For case 10, two twelve-sided holes require 24 blocks in this ring construction. The previous kernel used 114. The measured maximum 3D Jacobian condition number falls from 49,185 to 130.3.
 
-The block count falls on 30 of the 45 frozen sketches. On eight sketches the maximum sampled 3D condition number increases by more than one part per million. The largest ratio is 2.69 on seeded case 17. Positive closed-domain determinant bounds, sampled conditioning and optimality are separate claims. This bounded automatic search targets polygonal sketches; intersecting or curved NURBS cuts use their existing builders. [Full per-case measurements and hashes](results/convex-host-rings.json)
+The block count falls on 30 of the 45 frozen sketches. The [independent extrusion diagnostics](results/polygon-extrusion-quality/README.md) rank in-plane distortion separately from the ratio of in-plane stretch to layer thickness. On eight sketches the maximum sampled 3D condition number increases by more than one part per million. The largest ratio is 2.69 on seeded case 17. Positive closed-domain determinant bounds, sampled conditioning and optimality are separate claims. This bounded automatic search targets polygonal sketches; intersecting or curved NURBS cuts use their existing builders. [Full per-case measurements and hashes](results/convex-host-rings.json)

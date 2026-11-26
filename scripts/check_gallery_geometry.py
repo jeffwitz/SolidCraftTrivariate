@@ -71,6 +71,13 @@ def check(cli, entry):
                 or int(metrics.get("Rust model blocks", -1)) != native["blocks"]
                 or int(metrics.get("Rust shared interfaces", -1)) != native["shared_faces"]):
             raise ValueError("displayed partition counts differ from the native audit")
+        if entry["id"].startswith("bench_poly_"):
+            report = evidence["extrusion_quality"]
+            for label, key in (("Sampled in-plane κ₂ max", "planar_spectral_kappa"),
+                               ("Minimum corner sine", "minimum_corner_sine"),
+                               ("Maximum in-plane span / normal thickness", "thickness_direction_aspect")):
+                if str(metrics.get(label)) != format(float(report[key]), ".6g"):
+                    raise ValueError(f"displayed {label} differs from the quality report")
         for key, field in (("model", "model_sha256"), ("step", "step_sha256"), ("source", "recipe_sha256")):
             if evidence.get("kernel_rebuild", {}).get(field) != hashlib.sha256(links[key].read_bytes()).hexdigest():
                 raise ValueError(f"{key} digest differs from the published rebuild record")

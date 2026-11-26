@@ -44,3 +44,16 @@ python3 scripts/evaluate_polygon_extrusion_quality.py \
 ```
 
 The JSON records the source revision, Python version, evaluator and manifest hashes, each model hash, per-case extrema, and witnesses. `summarize_model(model_dict)` exposes the same case-level summary for another gallery or benchmark integration.
+
+
+## Geometry at the largest in-plane condition numbers
+
+The following rows trace the two incident face edges at the worst sampled planar corner back to the source sketch. Vertex indices start at zero in the recipe. The angle is the interior angle of the material cell, measured between its two incident edge vectors. An acute angle and its supplement have the same sine.
+
+| Case | In-plane κ | Interior angle | Sketch vertex at the corner | Other ends of the two incident edges |
+| --- | ---: | ---: | --- | --- |
+| seeded_convex_14 | 229.39 | 179.38° | cut_2[6] | cut_2[5] and an interior construction point near (80.701, 507.753) |
+| seeded_convex_26 | 126.54 | 177.07° | cut_2[10] | cut_2[0] and stock[9] |
+| seeded_convex_04 | 123.94 | 177.94° | cut_2[4] | cut_2[3] and stock[5] |
+
+Case 14 is a candidate for changing a separator or the points introduced on it. In cases 26 and 04 the cell connects directly to an original stock vertex. An alternative partition could change which hole and stock vertices share a cell. The witness alone does not identify the construction decision that first made this pairing unavoidable.

@@ -3,7 +3,7 @@
   "case": {
     "id": "concave_stock_blind_two_profiles",
     "family": "concave_stock_or_cut",
-    "build_elapsed_s": 0.06547397002577782,
+    "build_elapsed_s": 0.033174037002027035,
     "build_stdout": "{\"blocks\":66,\"bounded_sketch_faces\":72,\"cavities\":0,\"determinant_lower_bound_mm3\":31.999999999999986,\"exterior_sides\":150,\"hausdorff_error_upper_bound_mm\":0,\"method\":\"certified_sketch_layer_partition\",\"shared_faces\":123,\"status\":\"valid\",\"volume_exact_mm3\":[41800,1]}",
     "build_stderr": "",
     "admitted": true,
@@ -277,7 +277,7 @@
       }
     ],
     "reported_method": "certified_sketch_layer_partition",
-    "audit_elapsed_s": 0.015223561960738152,
+    "audit_elapsed_s": 0.01720600202679634,
     "closed_domain_certificate": {
       "status": "valid",
       "method": "certified_sketch_layer_partition",
@@ -423,5 +423,74 @@
   "measurement_release": {
     "tag": "latest-release",
     "cli_sha256": "8f33eeba801e38e56fbe52ad6ccb96a68a28d2f20187a7d67df869af0c0f9ac2"
+  },
+  "extrusion_quality": {
+    "block_count": 66,
+    "planar_spectral_kappa": 24.0,
+    "planar_spectral_kappa_witness": {
+      "block": "face10_z0_8",
+      "param": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "sigma_max_mm": 24.0,
+      "sigma_min_mm": 1.0
+    },
+    "minimum_corner_sine": 1.0,
+    "minimum_corner_sine_witness": {
+      "block": "face0_z0_8",
+      "param": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "du_mm": [
+        6.0,
+        0.0,
+        0.0
+      ],
+      "dv_mm": [
+        0.0,
+        4.0,
+        0.0
+      ]
+    },
+    "thickness_direction_aspect": 6.75,
+    "thickness_direction_aspect_witness": {
+      "block": "face35_z0_8",
+      "param": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "planar_sigma_max_mm": 54.0,
+      "normal_thickness_per_parameter_mm": 8.0,
+      "thickness_tangent_3d_mm": 8.0
+    },
+    "max_3d_spectral_kappa": 24.0,
+    "max_3d_spectral_kappa_witness": {
+      "block": "face10_z0_8",
+      "param": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "singular_values_mm": [
+        24.0,
+        8.0,
+        1.0
+      ]
+    },
+    "minimum_sampled_jacobian_determinant_mm3": 32.0,
+    "minimum_sampled_jacobian_determinant_mm3_witness": {
+      "block": "face7_z0_8",
+      "param": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "determinant_mm3": 32.0
+    }
   }
 }

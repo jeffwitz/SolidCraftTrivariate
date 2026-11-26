@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 from fractions import Fraction
 from pathlib import Path
 from check_gallery_geometry import step_content
+from evaluate_polygon_extrusion_quality import summarize_model
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -310,6 +311,17 @@ def rebuild(entries: list[dict], cli: Path) -> None:
                     "tag": polygon_run["tag"], "cli_sha256": polygon_run["cli_sha256"],
                 }
             refresh_entry_metadata(entry, build_report, kernel_audit, model_doc, polygon_record, bracket_record, condition)
+            if case_id.startswith("bench_poly_"):
+                planar = summarize_model(model_doc)
+                audit_doc["extrusion_quality"] = planar
+                for metric in entry["metrics"]:
+                    if metric["label"] == "Sampled κ₂ max":
+                        metric["label"] = "Sampled 3D κ₂ max"
+                entry["metrics"].extend([
+                    {"label": "Sampled in-plane κ₂ max", "value": f"{planar['planar_spectral_kappa']:.6g}"},
+                    {"label": "Minimum corner sine", "value": f"{planar['minimum_corner_sine']:.6g}"},
+                    {"label": "Maximum in-plane span / normal thickness", "value": f"{planar['thickness_direction_aspect']:.6g}"},
+                ])
             sync_volume_metric(entry, audit_doc)
             write_json(staged_audit, audit_doc)
 

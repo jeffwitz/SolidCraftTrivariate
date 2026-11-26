@@ -133,6 +133,7 @@ pub mod solidcraft_blind_bore;
 pub mod solidcraft_counterbore;
 
 pub mod sketch_layers;
+pub mod sketch_nurbs;
 mod sketch_layers_json;
 pub mod sketch_arrangement;
 pub mod sketch_quads;

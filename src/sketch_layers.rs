@@ -651,6 +651,98 @@ fn partition_initial_candidates(
     }
 }
 
+/// Compare valid separator candidates by the number of assembled NURBS patches.
+/// The compatibility planner remains the default for stored recipes.
+pub fn partition_nurbs_aware(job: &SketchLayers) -> Result<Partition, &'static str> {
+    validate(job)?;
+    // Explicit triangulation and user-provided separators are constraints.
+    if job.force_triangulation || !job.guides.is_empty() {
+        return partition(job);
+    }
+    // Start from the plain arrangement, then enumerate the same underlying
+    // separator families directly. This avoids running the composite default
+    // planner and repeating its candidate searches.
+    let mut best = partition_from_graph(job, None).or_else(|_| partition(job))?;
+    let score = |part: &Partition| {
+        let cells = part
+            .blocks
+            .iter()
+            .map(|b| b.controls.as_slice().try_into())
+            .collect::<Result<Vec<[[i64; 4]; 8]>, _>>();
+        let patches = cells
+            .ok()
+            .map(|c| crate::sketch_nurbs::assemble(&c).len())
+            .unwrap_or(usize::MAX);
+        (patches, part.blocks.len(), sample_condition(part))
+    };
+    let mut best_score = score(&best);
+    let mut consider = |candidate: Partition| {
+        if candidate.blocks == best.blocks {
+            return;
+        }
+        let candidate_score = score(&candidate);
+        if (candidate_score.0, candidate_score.1) < (best_score.0, best_score.1)
+            || (candidate_score.0 == best_score.0
+                && candidate_score.1 == best_score.1
+                && candidate_score.2 < best_score.2 * (1.0 - 1e-12))
+        {
+            best = candidate;
+            best_score = candidate_score;
+        }
+    };
+    if let Some((guided_job, method)) = guided_candidate_job(job) {
+        if let Ok(Some(graph)) = crate::sketch_quads::guided_quad_arrangement(&guided_job) {
+            if let Ok(candidate) = partition_from_graph(job, Some((graph, method))) {
+                consider(candidate);
+            }
+        }
+    }
+    // Stream alternatives to cap peak memory; plain partition remains an
+    // available incumbent even if every separator proposal is rejected.
+    for axis in [0, 1] {
+        if let Some(guides) = crate::sketch_quad_separators::rectangular_hosts(job, axis) {
+            let mut proposed = job.clone();
+            proposed.guides = guides;
+            if let Ok(Some(graph)) = crate::sketch_quads::guided_quad_arrangement(&proposed) {
+                let method = if axis == 0 {
+                    "rectangular_hosts_x"
+                } else {
+                    "rectangular_hosts_y"
+                };
+                if let Ok(candidate) = partition_from_graph(job, Some((graph, method))) {
+                    consider(candidate);
+                }
+            }
+        }
+    }
+    for scale in [1, 2, 4, 8] {
+        if let Ok(Some(graph)) =
+            crate::sketch_quads::scaled_guided_arrangement(job, scale, |scaled| {
+                crate::sketch_quad_separators::convex_host_guides(scaled)
+            })
+        {
+            if let Ok(candidate) =
+                partition_from_graph(job, Some((graph, "convex_host_separators")))
+            {
+                consider(candidate);
+            }
+        }
+    }
+    if let Ok(Some(graph)) = crate::sketch_radial::footprint(job) {
+        if let Ok(candidate) = partition_from_graph(job, Some((graph, "radial_convex_footprint"))) {
+            consider(candidate);
+        }
+    }
+    crate::sketch_ring_footprint::visit(job, |graph| {
+        if let Ok(candidate) =
+            partition_from_graph(job, Some((graph, "separated_convex_quad_rings")))
+        {
+            consider(candidate);
+        }
+    });
+    Ok(best)
+}
+
 /// Replay the pre-planner partition for stored models created before guided
 /// quadrilateral footprints were introduced.
 pub(crate) fn partition_legacy(job: &SketchLayers) -> Result<Partition, &'static str> {
@@ -868,4 +960,74 @@ fn partition_from_graph(
         rectangular_grid,
         graph,
     })
+}
+
+#[cfg(test)]
+mod nurbs_partition_tests {
+    use super::*;
+
+    #[test]
+    fn nurbs_selector_keeps_incumbent_available_and_returns_certified_partition() {
+        let job = SketchLayers {
+            outer: SketchLoop {
+                id: "body".into(),
+                vertices: vec![[0, 0], [60, 0], [60, 40], [0, 40]],
+            },
+            cuts: vec![(
+                SketchLoop {
+                    id: "pocket".into(),
+                    vertices: vec![[20, 15], [40, 15], [40, 25], [20, 25]],
+                },
+                [14, 20],
+            )],
+            guides: Vec::new(),
+            height: 20,
+            force_triangulation: false,
+            operations: None,
+            shift: [0, 0],
+        };
+        let incumbent = partition(&job).unwrap();
+        let selected = partition_nurbs_aware(&job).unwrap();
+        let assemble = |p: &Partition| {
+            let cells = p
+                .blocks
+                .iter()
+                .map(|b| b.controls.as_slice().try_into().unwrap())
+                .collect::<Vec<[[i64; 4]; 8]>>();
+            crate::sketch_nurbs::assemble(&cells)
+        };
+        assert!(selected.certificate.determinant_lower_bound_mm3 > 0.0);
+        assert_eq!(selected.volume, incumbent.volume);
+        assert!(assemble(&selected).len() <= assemble(&incumbent).len());
+    }
+
+    #[test]
+    fn nurbs_selector_preserves_explicit_guides_and_triangulation() {
+        let mut job = SketchLayers {
+            outer: SketchLoop {
+                id: "body".into(),
+                vertices: vec![[0, 0], [40, 0], [40, 30], [0, 30]],
+            },
+            cuts: Vec::new(),
+            guides: vec![Segment {
+                id: "user-separator".into(),
+                a: [0, 15],
+                b: [40, 15],
+                role: Role::Construction,
+            }],
+            height: 10,
+            force_triangulation: false,
+            operations: None,
+            shift: [0, 0],
+        };
+        let guided = partition(&job).unwrap();
+        let selected = partition_nurbs_aware(&job).unwrap();
+        assert_eq!(selected.blocks, guided.blocks);
+
+        job.guides.clear();
+        job.force_triangulation = true;
+        let triangulated = partition(&job).unwrap();
+        let selected = partition_nurbs_aware(&job).unwrap();
+        assert_eq!(selected.blocks, triangulated.blocks);
+    }
 }

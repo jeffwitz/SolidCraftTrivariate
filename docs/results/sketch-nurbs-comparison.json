@@ -1,0 +1,1116 @@
+{
+  "scope": "46 published polygon gallery recipes",
+  "kernel_binary_sha256": "32419887d795e7d3d67178e1c3464fbb590057e3f64be38d5200dc73f7977df8",
+  "quality_grid_per_cell": [
+    5,
+    5,
+    5
+  ],
+  "independent_volume_matches_published_audits": 46,
+  "cases": [
+    {
+      "case": "bench_poly_blind_close_to_boundary",
+      "modes": {
+        "assemble": {
+          "method": "separated_convex_quad_rings",
+          "patches": 7,
+          "cells": 11,
+          "q1_geometric_nodes": 30,
+          "interfaces_verified": 19,
+          "kappa_planar": 10.676549546804464,
+          "kappa_3d": 10.676549546804466
+        },
+        "optimize": {
+          "method": "separated_convex_quad_rings",
+          "patches": 7,
+          "cells": 11,
+          "q1_geometric_nodes": 30,
+          "interfaces_verified": 19,
+          "kappa_planar": 10.676549546804464,
+          "kappa_3d": 10.676549546804466
+        }
+      },
+      "volume_mm3": "58480"
+    },
+    {
+      "case": "bench_poly_blind_hex_deep",
+      "modes": {
+        "assemble": {
+          "method": "separated_convex_quad_rings",
+          "patches": 10,
+          "cells": 14,
+          "q1_geometric_nodes": 36,
+          "interfaces_verified": 25,
+          "kappa_planar": 25.49018097222585,
+          "kappa_3d": 25.642530003139218
+        },
+        "optimize": {
+          "method": "separated_convex_quad_rings",
+          "patches": 10,
+          "cells": 14,
+          "q1_geometric_nodes": 36,
+          "interfaces_verified": 25,
+          "kappa_planar": 25.49018097222585,
+          "kappa_3d": 25.642530003139218
+        }
+      },
+      "volume_mm3": "138168"
+    },
+    {
+      "case": "bench_poly_blind_rotated_quad",
+      "modes": {
+        "assemble": {
+          "method": "separated_convex_quad_rings",
+          "patches": 7,
+          "cells": 11,
+          "q1_geometric_nodes": 30,
+          "interfaces_verified": 19,
+          "kappa_planar": 52.01923788120067,
+          "kappa_3d": 52.01923788120067
+        },
+        "optimize": {
+          "method": "separated_convex_quad_rings",
+          "patches": 7,
+          "cells": 11,
+          "q1_geometric_nodes": 30,
+          "interfaces_verified": 19,
+          "kappa_planar": 52.01923788120067,
+          "kappa_3d": 52.01923788120067
+        }
+      },
+      "volume_mm3": "109896"
+    },
+    {
+      "case": "bench_poly_blind_triangle_shallow",
+      "modes": {
+        "assemble": {
+          "method": "separated_convex_quad_rings",
+          "patches": 8,
+          "cells": 15,
+          "q1_geometric_nodes": 38,
+          "interfaces_verified": 27,
+          "kappa_planar": 10.216728047400053,
+          "kappa_3d": 10.21672804740005
+        },
+        "optimize": {
+          "method": "separated_convex_quad_rings",
+          "patches": 8,
+          "cells": 15,
+          "q1_geometric_nodes": 38,
+          "interfaces_verified": 27,
+          "kappa_planar": 10.216728047400053,
+          "kappa_3d": 10.21672804740005
+        }
+      },
+      "volume_mm3": "89184"
+    },
+    {
+      "case": "bench_poly_blind_two_levels",
+      "modes": {
+        "assemble": {
+          "method": "separated_convex_quad_rings",
+          "patches": 36,
+          "cells": 36,
+          "q1_geometric_nodes": 70,
+          "interfaces_verified": 77,
+          "kappa_planar": 6.586328231089081,
+          "kappa_3d": 6.58632823108908
+        },
+        "optimize": {
+          "method": "orthogonal_feature_footprint",
+          "patches": 24,
+          "cells": 96,
+          "q1_geometric_nodes": 180,
+          "interfaces_verified": 214,
+          "kappa_planar": 15.5,
+          "kappa_3d": 15.5
+        }
+      },
+      "volume_mm3": "193440"
+    },
+    {
+      "case": "bench_poly_concave_c_stock_two_holes",
+      "modes": {
+        "assemble": {
+          "method": "orthogonal_feature_footprint",
+          "patches": 7,
+          "cells": 21,
+          "q1_geometric_nodes": 76,
+          "interfaces_verified": 24,
+          "kappa_planar": 11.666666666666666,
+          "kappa_3d": 13.0
+        },
+        "optimize": {
+          "method": "orthogonal_feature_footprint",
+          "patches": 7,
+          "cells": 21,
+          "q1_geometric_nodes": 76,
+          "interfaces_verified": 24,
+          "kappa_planar": 11.666666666666666,
+          "kappa_3d": 13.0
+        }
+      },
+      "volume_mm3": "24700"
+    },
+    {
+      "case": "bench_poly_concave_cut_in_rectangle",
+      "modes": {
+        "assemble": {
+          "method": "orthogonal_feature_footprint",
+          "patches": 14,
+          "cells": 45,
+          "q1_geometric_nodes": 100,
+          "interfaces_verified": 88,
+          "kappa_planar": 7.4,
+          "kappa_3d": 9.25
+        },
+        "optimize": {
+          "method": "orthogonal_feature_footprint",
+          "patches": 14,
+          "cells": 45,
+          "q1_geometric_nodes": 100,
+          "interfaces_verified": 88,
+          "kappa_planar": 7.4,
+          "kappa_3d": 9.25
+        }
+      },
+      "volume_mm3": "60076"
+    },
+    {
+      "case": "bench_poly_concave_l_stock_pocket",
+      "modes": {
+        "assemble": {
+          "method": "orthogonal_feature_footprint",
+          "patches": 12,
+          "cells": 39,
+          "q1_geometric_nodes": 96,
+          "interfaces_verified": 72,
+          "kappa_planar": 4.0,
+          "kappa_3d": 4.5
+        },
+        "optimize": {
+          "method": "orthogonal_feature_footprint",
+          "patches": 12,
+          "cells": 39,
+          "q1_geometric_nodes": 96,
+          "interfaces_verified": 72,
+          "kappa_planar": 4.0,
+          "kappa_3d": 4.5
+        }
+      },
+      "volume_mm3": "40176"
+    },
+    {
+      "case": "bench_poly_concave_stock_blind_two_profiles",
+      "modes": {
+        "assemble": {
+          "method": "orthogonal_feature_footprint",
+          "patches": 20,
+          "cells": 66,
+          "q1_geometric_nodes": 158,
+          "interfaces_verified": 123,
+          "kappa_planar": 24.0,
+          "kappa_3d": 26.0
+        },
+        "optimize": {
+          "method": "orthogonal_feature_footprint",
+          "patches": 20,
+          "cells": 66,
+          "q1_geometric_nodes": 158,
+          "interfaces_verified": 123,
+          "kappa_planar": 24.0,
+          "kappa_3d": 26.0
+        }
+      },
+      "volume_mm3": "83600"
+    },
+    {
+      "case": "bench_poly_concave_u_stock_offset_hole",
+      "modes": {
+        "assemble": {
+          "method": "guided_quad_footprint",
+          "patches": 6,
+          "cells": 6,
+          "q1_geometric_nodes": 24,
+          "interfaces_verified": 6,
+          "kappa_planar": 18.135335219111838,
+          "kappa_3d": 35.54677471360188
+        },
+        "optimize": {
+          "method": "guided_quad_footprint",
+          "patches": 6,
+          "cells": 6,
+          "q1_geometric_nodes": 24,
+          "interfaces_verified": 6,
+          "kappa_planar": 18.135335219111838,
+          "kappa_3d": 35.54677471360188
+        }
+      },
+      "volume_mm3": "64372"
+    },
+    {
+      "case": "bench_poly_projection_diamonds",
+      "modes": {
+        "assemble": {
+          "method": "separated_convex_quad_rings",
+          "patches": 4,
+          "cells": 10,
+          "q1_geometric_nodes": 34,
+          "interfaces_verified": 12,
+          "kappa_planar": 86.82181549079172,
+          "kappa_3d": 86.82181549078899
+        },
+        "optimize": {
+          "method": "separated_convex_quad_rings",
+          "patches": 4,
+          "cells": 10,
+          "q1_geometric_nodes": 34,
+          "interfaces_verified": 12,
+          "kappa_planar": 86.82181549079172,
+          "kappa_3d": 86.82181549078899
+        }
+      },
+      "volume_mm3": "226176"
+    },
+    {
+      "case": "bench_poly_seeded_convex_00",
+      "modes": {
+        "assemble": {
+          "method": "radial_convex_footprint",
+          "patches": 12,
+          "cells": 12,
+          "q1_geometric_nodes": 48,
+          "interfaces_verified": 12,
+          "kappa_planar": 21.099906424888196,
+          "kappa_3d": 21.099985116981895
+        },
+        "optimize": {
+          "method": "radial_convex_footprint",
+          "patches": 12,
+          "cells": 12,
+          "q1_geometric_nodes": 48,
+          "interfaces_verified": 12,
+          "kappa_planar": 21.099906424888196,
+          "kappa_3d": 21.099985116981895
+        }
+      },
+      "volume_mm3": "1328000832"
+    },
+    {
+      "case": "bench_poly_seeded_convex_01",
+      "modes": {
+        "assemble": {
+          "method": "separated_convex_quad_rings",
+          "patches": 32,
+          "cells": 48,
+          "q1_geometric_nodes": 108,
+          "interfaces_verified": 92,
+          "kappa_planar": 22.35441167720482,
+          "kappa_3d": 22.35443730754498
+        },
+        "optimize": {
+          "method": "separated_convex_quad_rings",
+          "patches": 28,
+          "cells": 50,
+          "q1_geometric_nodes": 108,
+          "interfaces_verified": 99,
+          "kappa_planar": 164.31984304294676,
+          "kappa_3d": 219.00771079203196
+        }
+      },
+      "volume_mm3": "1282723248"
+    },
+    {
+      "case": "bench_poly_seeded_convex_02",
+      "modes": {
+        "assemble": {
+          "method": "separated_convex_quad_rings",
+          "patches": 12,
+          "cells": 17,
+          "q1_geometric_nodes": 56,
+          "interfaces_verified": 21,
+          "kappa_planar": 104.40013426735545,
+          "kappa_3d": 104.40013426735547
+        },
+        "optimize": {
+          "method": "separated_convex_quad_rings",
+          "patches": 10,
+          "cells": 18,
+          "q1_geometric_nodes": 58,
+          "interfaces_verified": 23,
+          "kappa_planar": 44.37370692643778,
+          "kappa_3d": 56.334978481675705
+        }
+      },
+      "volume_mm3": "1474643456"
+    },
+    {
+      "case": "bench_poly_seeded_convex_03",
+      "modes": {
+        "assemble": {
+          "method": "separated_convex_quad_rings",
+          "patches": 11,
+          "cells": 14,
+          "q1_geometric_nodes": 36,
+          "interfaces_verified": 25,
+          "kappa_planar": 11.434452901602908,
+          "kappa_3d": 11.434468163597428
+        },
+        "optimize": {
+          "method": "radial_convex_footprint",
+          "patches": 10,
+          "cells": 15,
+          "q1_geometric_nodes": 38,
+          "interfaces_verified": 27,
+          "kappa_planar": 21.049400603730046,
+          "kappa_3d": 21.04946519563633
+        }
+      },
+      "volume_mm3": "1032193292"
+    },
+    {
+      "case": "bench_poly_seeded_convex_04",
+      "modes": {
+        "assemble": {
+          "method": "separated_convex_quad_rings",
+          "patches": 8,
+          "cells": 12,
+          "q1_geometric_nodes": 40,
+          "interfaces_verified": 15,
+          "kappa_planar": 41.11109233123079,
+          "kappa_3d": 41.111092331230324
+        },
+        "optimize": {
+          "method": "separated_convex_quad_rings",
+          "patches": 4,
+          "cells": 16,
+          "q1_geometric_nodes": 50,
+          "interfaces_verified": 22,
+          "kappa_planar": 195.99578386475702,
+          "kappa_3d": 195.99578386477364
+        }
+      },
+      "volume_mm3": "1810504800"
+    },
+    {
+      "case": "bench_poly_seeded_convex_05",
+      "modes": {
+        "assemble": {
+          "method": "separated_convex_quad_rings",
+          "patches": 41,
+          "cells": 57,
+          "q1_geometric_nodes": 120,
+          "interfaces_verified": 114,
+          "kappa_planar": 15.366314327690844,
+          "kappa_3d": 18.9502280173774
+        },
+        "optimize": {
+          "method": "separated_convex_quad_rings",
+          "patches": 33,
+          "cells": 65,
+          "q1_geometric_nodes": 135,
+          "interfaces_verified": 132,
+          "kappa_planar": 32.290100834688,
+          "kappa_3d": 35.26539961279617
+        }
+      },
+      "volume_mm3": "1224380800"
+    },
+    {
+      "case": "bench_poly_seeded_convex_06",
+      "modes": {
+        "assemble": {
+          "method": "radial_convex_footprint",
+          "patches": 9,
+          "cells": 9,
+          "q1_geometric_nodes": 36,
+          "interfaces_verified": 9,
+          "kappa_planar": 16.582783182602224,
+          "kappa_3d": 16.58290261779569
+        },
+        "optimize": {
+          "method": "radial_convex_footprint",
+          "patches": 9,
+          "cells": 9,
+          "q1_geometric_nodes": 36,
+          "interfaces_verified": 9,
+          "kappa_planar": 16.582783182602224,
+          "kappa_3d": 16.58290261779569
+        }
+      },
+      "volume_mm3": "1290587040"
+    },
+    {
+      "case": "bench_poly_seeded_convex_07",
+      "modes": {
+        "assemble": {
+          "method": "separated_convex_quad_rings",
+          "patches": 20,
+          "cells": 28,
+          "q1_geometric_nodes": 63,
+          "interfaces_verified": 54,
+          "kappa_planar": 75.5582243681831,
+          "kappa_3d": 102.83591881006879
+        },
+        "optimize": {
+          "method": "separated_convex_quad_rings",
+          "patches": 14,
+          "cells": 34,
+          "q1_geometric_nodes": 75,
+          "interfaces_verified": 67,
+          "kappa_planar": 175.56978277014383,
+          "kappa_3d": 175.56998998531444
+        }
+      },
+      "volume_mm3": "1583565984"
+    },
+    {
+      "case": "bench_poly_seeded_convex_08",
+      "modes": {
+        "assemble": {
+          "method": "separated_convex_quad_rings",
+          "patches": 19,
+          "cells": 33,
+          "q1_geometric_nodes": 110,
+          "interfaces_verified": 42,
+          "kappa_planar": 75.94252244513885,
+          "kappa_3d": 75.94285677569187
+        },
+        "optimize": {
+          "method": "separated_convex_quad_rings",
+          "patches": 16,
+          "cells": 37,
+          "q1_geometric_nodes": 122,
+          "interfaces_verified": 48,
+          "kappa_planar": 91.02230729765634,
+          "kappa_3d": 357.8917825878759
+        }
+      },
+      "volume_mm3": "1957803232"
+    },
+    {
+      "case": "bench_poly_seeded_convex_09",
+      "modes": {
+        "assemble": {
+          "method": "separated_convex_quad_rings",
+          "patches": 10,
+          "cells": 14,
+          "q1_geometric_nodes": 36,
+          "interfaces_verified": 25,
+          "kappa_planar": 27.17196172507289,
+          "kappa_3d": 27.172011000924865
+        },
+        "optimize": {
+          "method": "separated_convex_quad_rings",
+          "patches": 10,
+          "cells": 14,
+          "q1_geometric_nodes": 36,
+          "interfaces_verified": 25,
+          "kappa_planar": 27.17196172507289,
+          "kappa_3d": 27.172011000924865
+        }
+      },
+      "volume_mm3": "1907388000"
+    },
+    {
+      "case": "bench_poly_seeded_convex_10",
+      "modes": {
+        "assemble": {
+          "method": "separated_convex_quad_rings",
+          "patches": 16,
+          "cells": 24,
+          "q1_geometric_nodes": 84,
+          "interfaces_verified": 29,
+          "kappa_planar": 19.08758076709719,
+          "kappa_3d": 19.087800177224004
+        },
+        "optimize": {
+          "method": "separated_convex_quad_rings",
+          "patches": 14,
+          "cells": 24,
+          "q1_geometric_nodes": 86,
+          "interfaces_verified": 28,
+          "kappa_planar": 24.340160080303004,
+          "kappa_3d": 24.34043844477345
+        }
+      },
+      "volume_mm3": "1272667464"
+    },
+    {
+      "case": "bench_poly_seeded_convex_11",
+      "modes": {
+        "assemble": {
+          "method": "separated_convex_quad_rings",
+          "patches": 43,
+          "cells": 74,
+          "q1_geometric_nodes": 156,
+          "interfaces_verified": 148,
+          "kappa_planar": 36.25777279979276,
+          "kappa_3d": 36.25831613861667
+        },
+        "optimize": {
+          "method": "separated_convex_quad_rings",
+          "patches": 37,
+          "cells": 80,
+          "q1_geometric_nodes": 165,
+          "interfaces_verified": 163,
+          "kappa_planar": 11.649482804486595,
+          "kappa_3d": 11.649712535315281
+        }
+      },
+      "volume_mm3": "1277287980"
+    },
+    {
+      "case": "bench_poly_seeded_convex_12",
+      "modes": {
+        "assemble": {
+          "method": "radial_convex_footprint",
+          "patches": 5,
+          "cells": 5,
+          "q1_geometric_nodes": 20,
+          "interfaces_verified": 5,
+          "kappa_planar": 4.351017061804355,
+          "kappa_3d": 4.351112152209244
+        },
+        "optimize": {
+          "method": "radial_convex_footprint",
+          "patches": 5,
+          "cells": 5,
+          "q1_geometric_nodes": 20,
+          "interfaces_verified": 5,
+          "kappa_planar": 4.351017061804355,
+          "kappa_3d": 4.351112152209244
+        }
+      },
+      "volume_mm3": "728943072"
+    },
+    {
+      "case": "bench_poly_seeded_convex_13",
+      "modes": {
+        "assemble": {
+          "method": "separated_convex_quad_rings",
+          "patches": 32,
+          "cells": 48,
+          "q1_geometric_nodes": 105,
+          "interfaces_verified": 94,
+          "kappa_planar": 15.577993597585987,
+          "kappa_3d": 15.578707654055613
+        },
+        "optimize": {
+          "method": "separated_convex_quad_rings",
+          "patches": 32,
+          "cells": 48,
+          "q1_geometric_nodes": 105,
+          "interfaces_verified": 94,
+          "kappa_planar": 15.577993597585987,
+          "kappa_3d": 15.578707654055613
+        }
+      },
+      "volume_mm3": "1294332624"
+    },
+    {
+      "case": "bench_poly_seeded_convex_14",
+      "modes": {
+        "assemble": {
+          "method": "separated_convex_quad_rings",
+          "patches": 18,
+          "cells": 30,
+          "q1_geometric_nodes": 100,
+          "interfaces_verified": 38,
+          "kappa_planar": 245.56423375665682,
+          "kappa_3d": 245.56532889370126
+        },
+        "optimize": {
+          "method": "separated_convex_quad_rings",
+          "patches": 14,
+          "cells": 34,
+          "q1_geometric_nodes": 110,
+          "interfaces_verified": 45,
+          "kappa_planar": 32.11071963442564,
+          "kappa_3d": 51.80498657312817
+        }
+      },
+      "volume_mm3": "1211715648"
+    },
+    {
+      "case": "bench_poly_seeded_convex_15",
+      "modes": {
+        "assemble": {
+          "method": "separated_convex_quad_rings",
+          "patches": 26,
+          "cells": 29,
+          "q1_geometric_nodes": 72,
+          "interfaces_verified": 52,
+          "kappa_planar": 19.336024877463483,
+          "kappa_3d": 19.33641503114383
+        },
+        "optimize": {
+          "method": "separated_convex_quad_rings",
+          "patches": 26,
+          "cells": 29,
+          "q1_geometric_nodes": 72,
+          "interfaces_verified": 52,
+          "kappa_planar": 19.336024877463483,
+          "kappa_3d": 19.33641503114383
+        }
+      },
+      "volume_mm3": "1379361368"
+    },
+    {
+      "case": "bench_poly_seeded_convex_16",
+      "modes": {
+        "assemble": {
+          "method": "separated_convex_quad_rings",
+          "patches": 15,
+          "cells": 22,
+          "q1_geometric_nodes": 78,
+          "interfaces_verified": 26,
+          "kappa_planar": 51.1264108521921,
+          "kappa_3d": 51.12646939312405
+        },
+        "optimize": {
+          "method": "separated_convex_quad_rings",
+          "patches": 14,
+          "cells": 23,
+          "q1_geometric_nodes": 80,
+          "interfaces_verified": 28,
+          "kappa_planar": 41.39635171179412,
+          "kappa_3d": 41.39641043474384
+        }
+      },
+      "volume_mm3": "2011221660"
+    },
+    {
+      "case": "bench_poly_seeded_convex_17",
+      "modes": {
+        "assemble": {
+          "method": "separated_convex_quad_rings",
+          "patches": 34,
+          "cells": 42,
+          "q1_geometric_nodes": 90,
+          "interfaces_verified": 83,
+          "kappa_planar": 29.57010568399889,
+          "kappa_3d": 29.570318945013444
+        },
+        "optimize": {
+          "method": "separated_convex_quad_rings",
+          "patches": 28,
+          "cells": 48,
+          "q1_geometric_nodes": 105,
+          "interfaces_verified": 94,
+          "kappa_planar": 27.33824716384554,
+          "kappa_3d": 27.338587301488317
+        }
+      },
+      "volume_mm3": "1092963600"
+    },
+    {
+      "case": "bench_poly_seeded_convex_18",
+      "modes": {
+        "assemble": {
+          "method": "radial_convex_footprint",
+          "patches": 12,
+          "cells": 12,
+          "q1_geometric_nodes": 48,
+          "interfaces_verified": 12,
+          "kappa_planar": 21.099906424888196,
+          "kappa_3d": 21.100297450991345
+        },
+        "optimize": {
+          "method": "radial_convex_footprint",
+          "patches": 12,
+          "cells": 12,
+          "q1_geometric_nodes": 48,
+          "interfaces_verified": 12,
+          "kappa_planar": 21.099906424888196,
+          "kappa_3d": 21.100297450991345
+        }
+      },
+      "volume_mm3": "1328000832"
+    },
+    {
+      "case": "bench_poly_seeded_convex_19",
+      "modes": {
+        "assemble": {
+          "method": "separated_convex_quad_rings",
+          "patches": 32,
+          "cells": 48,
+          "q1_geometric_nodes": 108,
+          "interfaces_verified": 92,
+          "kappa_planar": 40.87969002176663,
+          "kappa_3d": 40.8797309671493
+        },
+        "optimize": {
+          "method": "separated_convex_quad_rings",
+          "patches": 32,
+          "cells": 48,
+          "q1_geometric_nodes": 108,
+          "interfaces_verified": 92,
+          "kappa_planar": 40.87969002176663,
+          "kappa_3d": 40.8797309671493
+        }
+      },
+      "volume_mm3": "2045888192"
+    },
+    {
+      "case": "bench_poly_seeded_convex_20",
+      "modes": {
+        "assemble": {
+          "method": "separated_convex_quad_rings",
+          "patches": 17,
+          "cells": 27,
+          "q1_geometric_nodes": 90,
+          "interfaces_verified": 34,
+          "kappa_planar": 20.865505883976006,
+          "kappa_3d": 35.39284212245854
+        },
+        "optimize": {
+          "method": "separated_convex_quad_rings",
+          "patches": 14,
+          "cells": 30,
+          "q1_geometric_nodes": 96,
+          "interfaces_verified": 40,
+          "kappa_planar": 32.8181842580482,
+          "kappa_3d": 60.49907154545672
+        }
+      },
+      "volume_mm3": "1190670624"
+    },
+    {
+      "case": "bench_poly_seeded_convex_21",
+      "modes": {
+        "assemble": {
+          "method": "separated_convex_quad_rings",
+          "patches": 20,
+          "cells": 24,
+          "q1_geometric_nodes": 60,
+          "interfaces_verified": 43,
+          "kappa_planar": 39.50912512278654,
+          "kappa_3d": 39.50912512278655
+        },
+        "optimize": {
+          "method": "separated_convex_quad_rings",
+          "patches": 20,
+          "cells": 24,
+          "q1_geometric_nodes": 60,
+          "interfaces_verified": 43,
+          "kappa_planar": 39.50912512278654,
+          "kappa_3d": 39.50912512278655
+        }
+      },
+      "volume_mm3": "2116265616"
+    },
+    {
+      "case": "bench_poly_seeded_convex_22",
+      "modes": {
+        "assemble": {
+          "method": "separated_convex_quad_rings",
+          "patches": 15,
+          "cells": 22,
+          "q1_geometric_nodes": 78,
+          "interfaces_verified": 26,
+          "kappa_planar": 46.13620705249065,
+          "kappa_3d": 46.13652573967543
+        },
+        "optimize": {
+          "method": "separated_convex_quad_rings",
+          "patches": 13,
+          "cells": 24,
+          "q1_geometric_nodes": 82,
+          "interfaces_verified": 30,
+          "kappa_planar": 103.8846355746894,
+          "kappa_3d": 103.88536646535344
+        }
+      },
+      "volume_mm3": "2016694372"
+    },
+    {
+      "case": "bench_poly_seeded_convex_23",
+      "modes": {
+        "assemble": {
+          "method": "separated_convex_quad_rings",
+          "patches": 48,
+          "cells": 72,
+          "q1_geometric_nodes": 153,
+          "interfaces_verified": 143,
+          "kappa_planar": 35.516771743548304,
+          "kappa_3d": 44.13461212596166
+        },
+        "optimize": {
+          "method": "separated_convex_quad_rings",
+          "patches": 42,
+          "cells": 80,
+          "q1_geometric_nodes": 168,
+          "interfaces_verified": 161,
+          "kappa_planar": 86.39346611494967,
+          "kappa_3d": 116.72825138847722
+        }
+      },
+      "volume_mm3": "2035767024"
+    },
+    {
+      "case": "bench_poly_seeded_convex_24",
+      "modes": {
+        "assemble": {
+          "method": "radial_convex_footprint",
+          "patches": 9,
+          "cells": 9,
+          "q1_geometric_nodes": 36,
+          "interfaces_verified": 9,
+          "kappa_planar": 36.2659672462239,
+          "kappa_3d": 36.265987714367185
+        },
+        "optimize": {
+          "method": "radial_convex_footprint",
+          "patches": 9,
+          "cells": 9,
+          "q1_geometric_nodes": 36,
+          "interfaces_verified": 9,
+          "kappa_planar": 36.2659672462239,
+          "kappa_3d": 36.265987714367185
+        }
+      },
+      "volume_mm3": "2056612896"
+    },
+    {
+      "case": "bench_poly_seeded_convex_25",
+      "modes": {
+        "assemble": {
+          "method": "separated_convex_quad_rings",
+          "patches": 15,
+          "cells": 28,
+          "q1_geometric_nodes": 63,
+          "interfaces_verified": 54,
+          "kappa_planar": 35.997131437010275,
+          "kappa_3d": 35.99800940751588
+        },
+        "optimize": {
+          "method": "separated_convex_quad_rings",
+          "patches": 15,
+          "cells": 28,
+          "q1_geometric_nodes": 63,
+          "interfaces_verified": 54,
+          "kappa_planar": 35.997131437010275,
+          "kappa_3d": 35.99800940751588
+        }
+      },
+      "volume_mm3": "718279328"
+    },
+    {
+      "case": "bench_poly_seeded_convex_26",
+      "modes": {
+        "assemble": {
+          "method": "separated_convex_quad_rings",
+          "patches": 19,
+          "cells": 33,
+          "q1_geometric_nodes": 110,
+          "interfaces_verified": 42,
+          "kappa_planar": 75.94252244513885,
+          "kappa_3d": 75.94277775985783
+        },
+        "optimize": {
+          "method": "separated_convex_quad_rings",
+          "patches": 16,
+          "cells": 37,
+          "q1_geometric_nodes": 122,
+          "interfaces_verified": 48,
+          "kappa_planar": 91.02230729765674,
+          "kappa_3d": 351.67081747466153
+        }
+      },
+      "volume_mm3": "1923777240"
+    },
+    {
+      "case": "bench_poly_seeded_convex_27",
+      "modes": {
+        "assemble": {
+          "method": "separated_convex_quad_rings",
+          "patches": 29,
+          "cells": 29,
+          "q1_geometric_nodes": 72,
+          "interfaces_verified": 52,
+          "kappa_planar": 46.2116104165493,
+          "kappa_3d": 46.211819506581065
+        },
+        "optimize": {
+          "method": "radial_convex_footprint",
+          "patches": 24,
+          "cells": 30,
+          "q1_geometric_nodes": 74,
+          "interfaces_verified": 54,
+          "kappa_planar": 46.2116104165493,
+          "kappa_3d": 46.211819506581065
+        }
+      },
+      "volume_mm3": "2204052216"
+    },
+    {
+      "case": "bench_poly_seeded_convex_28",
+      "modes": {
+        "assemble": {
+          "method": "separated_convex_quad_rings",
+          "patches": 10,
+          "cells": 16,
+          "q1_geometric_nodes": 54,
+          "interfaces_verified": 20,
+          "kappa_planar": 18.94643902521628,
+          "kappa_3d": 18.94661396637841
+        },
+        "optimize": {
+          "method": "separated_convex_quad_rings",
+          "patches": 10,
+          "cells": 16,
+          "q1_geometric_nodes": 54,
+          "interfaces_verified": 20,
+          "kappa_planar": 18.94643902521628,
+          "kappa_3d": 18.94661396637841
+        }
+      },
+      "volume_mm3": "1243692800"
+    },
+    {
+      "case": "bench_poly_seeded_convex_29",
+      "modes": {
+        "assemble": {
+          "method": "separated_convex_quad_rings",
+          "patches": 48,
+          "cells": 72,
+          "q1_geometric_nodes": 150,
+          "interfaces_verified": 145,
+          "kappa_planar": 53.444204324441394,
+          "kappa_3d": 53.44426445682734
+        },
+        "optimize": {
+          "method": "separated_convex_quad_rings",
+          "patches": 44,
+          "cells": 76,
+          "q1_geometric_nodes": 156,
+          "interfaces_verified": 155,
+          "kappa_planar": 81.38559625447877,
+          "kappa_3d": 81.38568488655764
+        }
+      },
+      "volume_mm3": "905609160"
+    },
+    {
+      "case": "bench_poly_through_diamond_center",
+      "modes": {
+        "assemble": {
+          "method": "separated_convex_quad_rings",
+          "patches": 2,
+          "cells": 6,
+          "q1_geometric_nodes": 24,
+          "interfaces_verified": 6,
+          "kappa_planar": 2.73002307627514,
+          "kappa_3d": 2.92460607216046
+        },
+        "optimize": {
+          "method": "separated_convex_quad_rings",
+          "patches": 2,
+          "cells": 6,
+          "q1_geometric_nodes": 24,
+          "interfaces_verified": 6,
+          "kappa_planar": 2.73002307627514,
+          "kappa_3d": 2.92460607216046
+        }
+      },
+      "volume_mm3": "62832"
+    },
+    {
+      "case": "bench_poly_through_hex_offset",
+      "modes": {
+        "assemble": {
+          "method": "separated_convex_quad_rings",
+          "patches": 4,
+          "cells": 6,
+          "q1_geometric_nodes": 24,
+          "interfaces_verified": 6,
+          "kappa_planar": 10.843260689339065,
+          "kappa_3d": 12.635309024834822
+        },
+        "optimize": {
+          "method": "separated_convex_quad_rings",
+          "patches": 4,
+          "cells": 6,
+          "q1_geometric_nodes": 24,
+          "interfaces_verified": 6,
+          "kappa_planar": 10.843260689339065,
+          "kappa_3d": 12.635309024834822
+        }
+      },
+      "volume_mm3": "78555"
+    },
+    {
+      "case": "bench_poly_through_octagon_high_aspect",
+      "modes": {
+        "assemble": {
+          "method": "separated_convex_quad_rings",
+          "patches": 4,
+          "cells": 8,
+          "q1_geometric_nodes": 32,
+          "interfaces_verified": 8,
+          "kappa_planar": 8.773272346708735,
+          "kappa_3d": 8.773272346708735
+        },
+        "optimize": {
+          "method": "separated_convex_quad_rings",
+          "patches": 4,
+          "cells": 8,
+          "q1_geometric_nodes": 32,
+          "interfaces_verified": 8,
+          "kappa_planar": 8.773272346708735,
+          "kappa_3d": 8.773272346708735
+        }
+      },
+      "volume_mm3": "50880"
+    },
+    {
+      "case": "bench_poly_through_pentagon_tight_clearance",
+      "modes": {
+        "assemble": {
+          "method": "separated_convex_quad_rings",
+          "patches": 3,
+          "cells": 6,
+          "q1_geometric_nodes": 24,
+          "interfaces_verified": 6,
+          "kappa_planar": 8.818419172260363,
+          "kappa_3d": 16.11652966201403
+        },
+        "optimize": {
+          "method": "separated_convex_quad_rings",
+          "patches": 3,
+          "cells": 6,
+          "q1_geometric_nodes": 24,
+          "interfaces_verified": 6,
+          "kappa_planar": 8.818419172260363,
+          "kappa_3d": 16.11652966201403
+        }
+      },
+      "volume_mm3": "11943"
+    },
+    {
+      "case": "bench_poly_through_two_rectangles",
+      "modes": {
+        "assemble": {
+          "method": "separated_convex_quad_rings",
+          "patches": 8,
+          "cells": 8,
+          "q1_geometric_nodes": 28,
+          "interfaces_verified": 9,
+          "kappa_planar": 5.288442365668854,
+          "kappa_3d": 6.359409594307201
+        },
+        "optimize": {
+          "method": "separated_convex_quad_rings",
+          "patches": 8,
+          "cells": 8,
+          "q1_geometric_nodes": 28,
+          "interfaces_verified": 9,
+          "kappa_planar": 5.288442365668854,
+          "kappa_3d": 6.359409594307201
+        }
+      },
+      "volume_mm3": "102240"
+    }
+  ]
+}

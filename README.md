@@ -59,6 +59,8 @@ target/release/solidcraft-trivariate build "$recipe" build/demo/diamonds.json
 target/release/solidcraft-trivariate audit build/demo/diamonds.json
 ```
 
+Layered polygon recipes also support exact NURBS strip assembly and patch-aware selection of sketch separators. [Recipe modes and benchmark](docs/sketch-nurbs-partition.md)
+
 The two diamond holes overlap in both axis projections. Their profiles are disjoint and can be separated by an oblique chord. [Planner and measured results](docs/convex-host-rings.md)
 
 ### Import a SolidCraft timeline

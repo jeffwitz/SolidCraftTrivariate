@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Compare two exact trivariate partitions of a square block with a vertical cylindrical through-bore.">
+  <title>Box minus cylinder · SolidCraft</title>
+  <link rel="stylesheet" href="./style.css?v=4c80dc8c8d5c">
+  <link rel="stylesheet" href="./hub.css">
+  <link rel="stylesheet" href="./box-cylinder.css?v=c5441edbcbdd">
+  <script type="module" src="./box-cylinder.js?v=2bee90879297"></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="wordmark" href="./" aria-label="SolidCraft home"><span class="mark" aria-hidden="true">S</span><span>SolidCraft <span class="wordmark-light">/ Trivariate</span></span></a>
+    <nav class="hub-nav" aria-label="Main navigation">
+      <a href="./">Home</a><a href="./shapes.html">Shapes</a><a href="./compare.html">Compare</a><a href="./edges.html">Edges</a><a href="./booleans.html" aria-current="page">Boolean operations</a>
+    </nav>
+  </header>
+  <main class="box-cylinder-page">
+    <section class="intro">
+      <p class="eyebrow">Fixed-topology comparison · cylindrical through-cut</p>
+      <h1>One bored box,<br><em>two trivariate partitions.</em></h1>
+      <p class="lede">A 40 × 40 × 12 mm block is cut by a centered radius-5 mm cylinder running from z = −2 to 14 mm. The Boolean result and the classical four-sector replay use the same constructor and identical chart coordinates.</p>
+    </section>
+
+    <section class="bc-workbench" aria-labelledby="bc-view-title">
+      <div class="bc-heading">
+        <div><p class="eyebrow">Interactive chart nets</p><h2 id="bc-view-title">Boolean result and classic replay</h2></div>
+        <div class="bc-controls" role="group" aria-label="View controls">
+          <div class="bc-toggle" aria-label="Camera view"><button id="view-volume" type="button" aria-pressed="true">Volume</button><button id="view-top" type="button" aria-pressed="false">Top</button></div>
+          <div class="bc-toggle" aria-label="Display mode"><button id="mode-surface" type="button" aria-pressed="false">Surface</button><button id="mode-blocks" type="button" aria-pressed="true">Blocks</button></div>
+          <button id="reset-views" class="reset-button" type="button">Reset views</button>
+        </div>
+      </div>
+      <p class="bc-status" id="box-cylinder-status" role="status" aria-live="polite">Loading the two recorded models…</p>
+      <div class="bc-view-grid">
+        <article class="bc-view-card"><header><div><span>BOOLEAN RESULT</span><h3>Result charts</h3></div><output id="result-count">Loading…</output></header><canvas id="result-view" tabindex="0" aria-label="Interactive trivariate result charts. Drag to rotate; scroll to zoom."></canvas><p>Four charts · four shared interfaces · sixteen exterior faces</p></article>
+        <article class="bc-view-card"><header><div><span>CLASSIC REPLAY</span><h3>Reference charts</h3></div><output id="classic-count">Loading…</output></header><canvas id="classic-view" tabindex="0" aria-label="Interactive classical trivariate charts. Drag to rotate; scroll to zoom."></canvas><p>Same constructor and identical four chart coordinate maps</p></article>
+      </div>
+      <p class="bc-mode-note" id="mode-note">Blocks mode colors the four chart volumes and exposes their interfaces.</p>
+      <nav class="bc-files" aria-label="Model source files">
+        <a href="./box-cylinder/result.model.json">Result model JSON</a>
+        <a href="./box-cylinder/classic.model.json">Classic model JSON</a>
+        <a href="./box-cylinder/boolean.recipe.json">Boolean recipe</a>
+        <a href="./box-cylinder/classic.recipe.json">Classic recipe</a>
+        <a href="./box-cylinder/audit.json">Analytical oracle</a>
+        <a href="./box-cylinder/step-audit.json">STEP audit</a>
+        <a href="./box-cylinder/result.step" download="box-cylinder-result.step">Download result STEP</a>
+      </nav>
+    </section>
+
+    <figure class="bc-parameter-figure">
+      <img src="./box-cylinder/parameter-lines.png" alt="Exact horizontal cut at z equals 6 millimetres with coincident u-constant and v-constant parameter lines for the Boolean result and classic replay.">
+      <figcaption><strong>Pointwise-identical parameter grids.</strong> The exact section at z = 6 mm overlays <i>u = const</i> and <i>v = const</i> lines from both models. The Boolean result reuses the same constructor as the classical replay, so the corresponding chart maps coincide point by point.</figcaption>
+    </figure>
+
+    <section class="bc-results" aria-label="Exact volume and scope">
+      <div><span>Stock volume</span><strong>19,200 mm³</strong></div>
+      <div><span>Removed cylinder</span><strong>300π mm³</strong></div>
+      <div><span>Remaining volume</span><strong>19,200 − 300π mm³</strong><small>≈ 18,257.522 mm³</small></div>
+      <p>The reference formula assumes the cylinder fully crosses the 12 mm stock. The two models and the independent audit are available above.</p>
+    </section>
+
+    <nav class="bc-bottom-nav" aria-label="Explore geometry">
+      <a href="./booleans.html">← Boolean operations</a><a href="./edges.html">Inspect fillets and chamfers →</a><a href="./shapes.html">Browse shape partitions →</a>
+    </nav>
+  </main>
+</body>
+</html>

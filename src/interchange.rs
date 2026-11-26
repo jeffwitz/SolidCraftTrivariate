@@ -226,6 +226,7 @@ pub fn build(recipe: &Json) -> Result<Json, &'static str> {
         }
         super::nurbs_sketch_json::FAMILY => super::nurbs_sketch_json::build(recipe),
         super::orthogonal_sketch_json::FAMILY => super::orthogonal_sketch_json::build(recipe),
+        super::box_cylinder_boolean_json::FAMILY => super::box_cylinder_boolean_json::build(recipe),
         super::interval_bores_json::FAMILY => super::interval_bores_json::build(recipe),
         super::circular_polygon_json::FAMILY => super::circular_polygon_json::build(recipe),
         super::polygon_json::FAMILY | super::polygon_json::PERFORATED => {
@@ -290,6 +291,7 @@ pub fn audit(model: &Json) -> Result<Json, &'static str> {
         }
         super::nurbs_sketch_json::FAMILY => super::nurbs_sketch_json::audit(model),
         super::orthogonal_sketch_json::FAMILY => super::orthogonal_sketch_json::audit(model),
+        super::box_cylinder_boolean_json::FAMILY => super::box_cylinder_boolean_json::audit(model),
         super::interval_bores_json::FAMILY => super::interval_bores_json::audit(model),
         super::circular_polygon_json::FAMILY => super::circular_polygon_json::audit(model),
         super::polygon_json::FAMILY | super::polygon_json::PERFORATED => {

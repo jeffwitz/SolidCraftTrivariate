@@ -21,6 +21,8 @@ pub mod bracket_audit;
 pub mod bracket_parameters;
 pub mod bracket_parameters_audit;
 pub mod bracket_solve;
+pub mod box_cylinder_boolean;
+mod box_cylinder_boolean_json;
 mod bracket_json;
 mod curved_sketch;
 mod curved_sketch_audit;

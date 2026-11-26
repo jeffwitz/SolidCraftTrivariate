@@ -29,7 +29,9 @@ const MIME_TYPES = {
   '.html': 'text/html; charset=utf-8',
   '.js': 'text/javascript; charset=utf-8',
   '.json': 'application/json; charset=utf-8',
+  '.png': 'image/png',
   '.step': 'application/step',
+  '.webp': 'image/webp',
 };
 
 const injectedExpressions = {
@@ -71,7 +73,8 @@ const injectedExpressions = {
     const operation = document.querySelector('#boolean-operation');
     const status = document.querySelector('#boolean-status');
     if (!section || !operation || !status || !document.querySelector('#operand-a')
-      || !document.querySelector('#operand-b') || !document.querySelector('#boolean-result')) return false;
+      || !document.querySelector('#operand-b') || !document.querySelector('#boolean-result')
+      || !document.querySelector('a[href="./box-cylinder.html"]')) return false;
     if (!['pierced_square', 'reference_rectangle'].every(value => [...section.options].some(option => option.value === value))
       || !['difference', 'union', 'intersection'].every(value => [...operation.options].some(option => option.value === value))) return false;
     for (const sectionValue of ['pierced_square', 'reference_rectangle']) for (const operationValue of ['difference', 'union', 'intersection']) {
@@ -117,6 +120,35 @@ const injectedExpressions = {
     }
     const rect = canvas.getBoundingClientRect();
     return rect.width > 1 && rect.height > 1 && status.hidden;
+  })()`,
+  boxCylinderViewerReady: `(async () => {
+    const status = document.querySelector('#box-cylinder-status');
+    const result = document.querySelector('#result-view');
+    const classic = document.querySelector('#classic-view');
+    if (!status || !result || !classic) return false;
+    for (let attempt = 0; attempt < 200; attempt++) {
+      if (status.dataset.kind === 'ready'
+        && status.textContent === 'Both trivariate models loaded · 4 charts each · 4 shared interfaces · 16 exterior faces.') break;
+      await new Promise(resolve => setTimeout(resolve, 50));
+    }
+    if (status.dataset.kind !== 'ready' || !status.textContent.includes('4 charts each')) return false;
+    for (const href of ['./box-cylinder/result.model.json', './box-cylinder/classic.model.json',
+      './box-cylinder/boolean.recipe.json', './box-cylinder/classic.recipe.json',
+      './box-cylinder/audit.json', './box-cylinder/step-audit.json', './box-cylinder/result.step']) {
+      if (![...document.querySelectorAll('.bc-files a')].some(link => new URL(link.href).pathname.endsWith(href.slice(1)))) return false;
+      const response = await fetch(href);
+      if (!response.ok || (await response.arrayBuffer()).byteLength < 1) return false;
+    }
+    const figure = document.querySelector('.bc-parameter-figure img');
+    if (!figure?.complete || figure.naturalWidth < 1) return false;
+    document.querySelector('#view-top').click();
+    if (document.querySelector('#view-top').getAttribute('aria-pressed') !== 'true') return false;
+    document.querySelector('#view-volume').click();
+    document.querySelector('#mode-surface').click();
+    if (document.querySelector('#mode-surface').getAttribute('aria-pressed') !== 'true') return false;
+    document.querySelector('#mode-blocks').click();
+    return document.querySelector('#mode-blocks').getAttribute('aria-pressed') === 'true'
+      && document.querySelector('#view-volume').getAttribute('aria-pressed') === 'true';
   })()`,
   galleryReady: `(() => {
     const status = document.querySelector('#canvas-state');
@@ -312,6 +344,7 @@ function validateInjectedExpressions() {
     ['edgeViewerReady', injectedExpressions.edgeViewerReady],
     ['booleanViewerReady', injectedExpressions.booleanViewerReady],
     ['crossedViewerSweep', injectedExpressions.crossedViewerSweep],
+    ['boxCylinderViewerReady', injectedExpressions.boxCylinderViewerReady],
     ['galleryReady', injectedExpressions.galleryReady],
     ['bodySummary', injectedExpressions.bodySummary],
     ['publicUiLocale', injectedExpressions.publicUiLocale],
@@ -589,6 +622,35 @@ async function runBrowserChecks() {
         throw new Error(`Crossed Boolean result canvas appears blank: ${JSON.stringify(rendered)}`);
       }
     }
+    if (page === 'booleans.html') {
+      const regions = await evaluate(`['operand-a','operand-b','boolean-result'].map(id => {
+        const r = document.getElementById(id).getBoundingClientRect();
+        return {x:r.left,y:r.top,width:r.width,height:r.height,scale:1};
+      })`);
+      for (const [index, region] of regions.entries()) {
+        const screen = await capture(`axial-boolean-${index}`, region, true, false);
+        if (screen.paintedPixels < 250) throw new Error(`Axial Boolean canvas ${index} appears blank: ${JSON.stringify(screen)}`);
+      }
+    }
+    if (page === 'box-cylinder.html') {
+      const regions = await evaluate(`['result-view','classic-view'].map(id => {
+        const r = document.getElementById(id).getBoundingClientRect();
+        return {x:r.left,y:r.top,width:r.width,height:r.height,scale:1};
+      })`);
+      const before = [];
+      for (const region of regions) {
+        const screen = await capture('box-cylinder-view', region, true, false);
+        if (screen.paintedPixels < 250) throw new Error(`Box-cylinder viewer appears blank: ${JSON.stringify(screen)}`);
+        before.push(screen.hash);
+      }
+      await evaluate("document.querySelector('#result-view').dispatchEvent(new KeyboardEvent('keydown', {key:'ArrowRight', bubbles:true}))");
+      await pause(180);
+      const after = [];
+      for (const region of regions) after.push(await capture('box-cylinder-view', region, false, false));
+      if (before.some((hash, index) => hash === after[index])) {
+        throw new Error('The result and classic view cameras did not stay synchronized');
+      }
+    }
     await evaluate(`(() => {
       const link = [...document.querySelectorAll('a[href]')].find(item => {
         const url = new URL(item.href, location.href);
@@ -648,6 +710,7 @@ async function runBrowserChecks() {
   await checkPageCanReturnHome('edges.html', injectedExpressions.edgeViewerReady);
   await checkPageCanReturnHome('booleans.html', injectedExpressions.booleanViewerReady);
   await checkPageCanReturnHome('booleans-crossed.html', injectedExpressions.crossedViewerSweep);
+  await checkPageCanReturnHome('box-cylinder.html', injectedExpressions.boxCylinderViewerReady);
   await checkPageCanReturnHome('shapes.html', injectedExpressions.galleryReady);
   await command('Page.navigate', { url: serverUrl + '?model=retired-curved-catalog-id&campaign=route-qa#preserve-me' });
   await waitForGallery(landingId);

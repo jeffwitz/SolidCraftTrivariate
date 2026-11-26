@@ -1,5 +1,7 @@
 # Conforming hexahedral reference for the crossed-tool union
 
+The [directional enrichment study](bending-enrichment.md) revisits the inclined union on the original ten charts and the conforming 22-chart control.
+
 The same ten-chart Rust union supplies the geometry. The reference calculation uses displacement-based finite elements with shared global nodes and full Gauss integration (2³ for HEX8, 3³ for twenty-node serendipity bricks). The elastic constants, left end clamp and right end traction of 1 MPa in the global x direction match the IGA study. The mean loaded-end displacement is the external work divided by the applied force of 40.22222222 N.
 
 ## Mesh construction

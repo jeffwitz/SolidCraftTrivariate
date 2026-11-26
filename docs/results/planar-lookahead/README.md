@@ -43,3 +43,15 @@ python3 -c 'import json,sys; r=json.load(open(sys.argv[1])); r["partition_strate
 target/release/solidcraft-trivariate build build/mixed_sizes-lookahead.recipe.json build/mixed_sizes-lookahead.model.json
 target/release/solidcraft-trivariate audit build/mixed_sizes-lookahead.model.json
 ```
+
+## Observed cost by number of cuts
+
+The 57 paired measurements group as follows when joined to their original recipes by case ID. Each time includes construction and audit. The last column is the slowest observed lookahead run in that group.
+
+| Sketch cuts | Cases | Median default (s) | Median lookahead (s) | Maximum lookahead (s) |
+|---:|---:|---:|---:|---:|
+| 1 | 21 | 0.10 | 0.21 | 0.80 |
+| 2 | 20 | 1.05 | 3.07 | 25.10 |
+| 3 | 16 | 5.55 | 12.61 | 47.54 |
+
+The recorded corpus supports a descriptive comparison over one to three cuts. Vertex counts, pocket depths and search paths also vary across these groups. Inferring an asymptotic cost from these timings would require a controlled scaling study. [Per-case timings](../polygon-extrusion-quality/ring-lookahead/paired-results.json) · [Original recipes](../sketch-planner-polygon-evaluation/cases.json) · [Supplemental recipes](../polygon-extrusion-quality/ring-lookahead/supplemental-cases.json)

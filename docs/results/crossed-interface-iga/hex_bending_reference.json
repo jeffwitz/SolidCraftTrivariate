@@ -1,0 +1,898 @@
+{
+  "schema": "s2_tilted_hex8_hex20_comparison_v1",
+  "source": {
+    "recipe": "tests/references/g2_cross_sketches.recipe.json",
+    "recipe_sha256": "59d7eceb73cd74d71ed1309627fda908a2a0036ff3bec2d4ceebb7dc269c8c1f",
+    "native_binary": "solidcraft-trivariate",
+    "native_binary_sha256": "c92c9948224519943a324aa5229c1df19e690e9e8c0d60f7dacd0eb3254f117b",
+    "family": "inclined_crossed_tools_v1"
+  },
+  "conditions": {
+    "transverse_rise_mm": 3,
+    "young_modulus_MPa": 1000.0,
+    "poisson_ratio": 0.3,
+    "clamp": "x=0, all displacement components",
+    "load": "1 MPa traction in global +x on x=100 end",
+    "resultant_force_N": 40.22222222222224,
+    "observable": "traction-weighted mean global ux on loaded end",
+    "sampling": "same traction-consistent end integral; force-weighted displacement"
+  },
+  "iga_ten_chart": {
+    "charts": 10,
+    "scalar_total": 88,
+    "vector_total": 264,
+    "scalar_free_after_clamp": 74,
+    "vector_free_after_clamp": 222,
+    "loaded_end_traction_weighted_mean_ux_mm": 0.08004944529505988,
+    "quadrature_order": 14,
+    "relative_equilibrium_residual": 6.442417571982477e-13,
+    "continuity_jump_mm": 4.258741102670767e-17
+  },
+  "iga_enriched_22_chart_targets": {
+    "source": "docs/results/crossed-interface-iga/smooth_bending.json",
+    "source_sha256": "0db5f3317c8332f92b3ecc1a8f748442f01e854869873693dfc1299a1db6f5b8",
+    "geometry_charts": 22,
+    "field_degree": [
+      3,
+      2,
+      2
+    ],
+    "field_spans_vw": [
+      2,
+      2
+    ],
+    "transverse_rise_mm": 3,
+    "integration_cells": 88,
+    "common_observable": "same traction-weighted loaded-end mean global ux",
+    "same_material_loading_clamp": true,
+    "targets": {
+      "C0": {
+        "free_vector_dofs": 4128,
+        "loaded_end_traction_weighted_mean_ux_mm": 0.29729400005065354,
+        "relative_equilibrium_residual": 5.53537060396597e-11,
+        "integration_cells": 88,
+        "source_volume_mm3": 6799.60472546083
+      },
+      "C1": {
+        "free_vector_dofs": 2520,
+        "loaded_end_traction_weighted_mean_ux_mm": 0.2896992614239085,
+        "relative_equilibrium_residual": 2.641042817131677e-11,
+        "integration_cells": 88,
+        "source_volume_mm3": 6799.60472546083
+      }
+    },
+    "preselected_exact_budget_case": {
+      "source": "docs/results/crossed-interface-iga/matched_iga.json",
+      "source_sha256": "aa94753e94f4a88bb7cdf1d90d7ad8062d724d2aba80ed653a12ab2838926b9e",
+      "target": {
+        "free_vector_dofs": 11112,
+        "loaded_end_traction_weighted_mean_ux_mm": 0.3055843317926726,
+        "field_degree": [
+          3,
+          2,
+          2
+        ],
+        "subdivisions_vw": [
+          6,
+          2
+        ],
+        "integration_cells": 264,
+        "source_volume_mm3": 6799.604725460842,
+        "quadrature_order": 8,
+        "relative_equilibrium_residual": 2.502693275851131e-10
+      }
+    }
+  },
+  "same_mesh_comparison": {
+    "level": 1,
+    "same_corner_mesh": true,
+    "element_corner_connectivity_identical": true,
+    "hex8": {
+      "element": "HEX8",
+      "elements": 1014,
+      "nodes": 1820,
+      "total_displacement_dofs": 5460,
+      "fixed_displacement_dofs": 78,
+      "free_displacement_dofs": 5382,
+      "loaded_end_traction_weighted_mean_ux_mm": 0.25727567819611624,
+      "strain_energy_Nmm": 5.174099750388562,
+      "volume_mm3": 6779.590052906845,
+      "minimum_gauss_jacobian": 0.11077440627348872,
+      "affine_energy_relative_error": 3.907985046680551e-14,
+      "traction_moment_max_gap_N": 2.7325507624625898,
+      "resultant_force_N": 40.222222222222236
+    },
+    "hex20": {
+      "element": "HEX20",
+      "elements": 1014,
+      "nodes": 6401,
+      "total_displacement_dofs": 19203,
+      "fixed_displacement_dofs": 189,
+      "free_displacement_dofs": 19014,
+      "loaded_end_traction_weighted_mean_ux_mm": 0.3067665698511906,
+      "strain_energy_Nmm": 6.169416571451722,
+      "volume_mm3": 6779.590052906848,
+      "minimum_gauss_jacobian": 0.09564030831970687,
+      "affine_energy_relative_error": 1.0622613899613498e-12,
+      "traction_moment_max_gap_N": 1.7003220372779102,
+      "resultant_force_N": 40.22222222222222
+    },
+    "hex20_minus_hex8_ux_mm": 0.049490891655074365,
+    "relative_hex20_minus_hex8_ux": 0.1923652169613499,
+    "iga_dof_match": false,
+    "dof_match_note": "This baseline mesh is not DOF-matched; separate low-budget searches below bracket both enriched IGA targets."
+  },
+  "equal_budget_search": {
+    "parameters": {
+      "circumferential_divisions": [
+        1,
+        2
+      ],
+      "wing_a_profile_divisions": [
+        1,
+        13
+      ],
+      "core_profile_divisions": [
+        1,
+        3
+      ],
+      "wing_b_profile_divisions": [
+        1,
+        4
+      ],
+      "height_divisions": 1
+    },
+    "candidate_policy": "Integer chart-following meshes; retain only one connected cell complex, no overused faces, and complete paired partial-interface quadrilaterals. Actual HEX20 free DOFs are counted after the x=0 clamp.",
+    "search_counts": {
+      "candidates_validated": 312,
+      "candidates_attempted": 312,
+      "candidates_rejected": 0,
+      "candidate_dof_values": [
+        1734,
+        1932,
+        2130,
+        2328,
+        2526,
+        2724,
+        2922,
+        3120,
+        3318,
+        3486,
+        3516,
+        3714,
+        3852,
+        3912,
+        4110,
+        4218,
+        4308,
+        4506,
+        4584,
+        4704,
+        4902,
+        4950,
+        5100,
+        5298,
+        5316,
+        5496,
+        5556,
+        5682,
+        5694,
+        5892,
+        5922,
+        6048,
+        6090,
+        6288,
+        6414,
+        6486,
+        6654,
+        6684,
+        6780,
+        7020,
+        7146,
+        7386,
+        7512,
+        7626,
+        7752,
+        7878,
+        7992,
+        8118,
+        8244,
+        8358,
+        8484,
+        8610,
+        8724,
+        8850,
+        8976,
+        9090,
+        9216,
+        9456,
+        9582,
+        9822,
+        9948,
+        10188,
+        10314,
+        10554,
+        10680,
+        10920,
+        11046,
+        11286,
+        11652,
+        12018,
+        12384,
+        12750,
+        13116
+      ]
+    },
+    "targets_and_brackets": {
+      "C0": {
+        "target": {
+          "free_vector_dofs": 4128,
+          "loaded_end_traction_weighted_mean_ux_mm": 0.29729400005065354,
+          "relative_equilibrium_residual": 5.53537060396597e-11,
+          "integration_cells": 88,
+          "source_volume_mm3": 6799.60472546083
+        },
+        "match_status": "bracketed",
+        "selected": [
+          {
+            "options": {
+              "circumferential": 1,
+              "nv_by_col": [
+                1,
+                3,
+                3
+              ],
+              "height": 1
+            },
+            "free_dofs": 4110,
+            "nodes": 1393,
+            "total_dofs": 4179,
+            "elements": 230,
+            "partial_trace_quads": 8,
+            "topology": {
+              "unique_corner_faces": 832,
+              "boundary_faces": 284,
+              "interior_faces": 548,
+              "overused_faces": 0,
+              "cell_components": 1
+            }
+          },
+          {
+            "options": {
+              "circumferential": 2,
+              "nv_by_col": [
+                1,
+                1,
+                3
+              ],
+              "height": 1
+            },
+            "free_dofs": 4218,
+            "nodes": 1449,
+            "total_dofs": 4347,
+            "elements": 202,
+            "partial_trace_quads": 16,
+            "topology": {
+              "unique_corner_faces": 796,
+              "boundary_faces": 380,
+              "interior_faces": 416,
+              "overused_faces": 0,
+              "cell_components": 1
+            }
+          }
+        ],
+        "measured_hex20_bracket": [
+          {
+            "element": "HEX20",
+            "elements": 230,
+            "nodes": 1393,
+            "total_displacement_dofs": 4179,
+            "fixed_displacement_dofs": 69,
+            "free_displacement_dofs": 4110,
+            "loaded_end_traction_weighted_mean_ux_mm": 0.2933356095680037,
+            "strain_energy_Nmm": 5.899305036867633,
+            "volume_mm3": 6623.216049382717,
+            "minimum_gauss_jacobian": 1.3248125090616052,
+            "affine_energy_relative_error": 2.391420395042587e-13,
+            "traction_moment_max_gap_N": 2.696617464284067,
+            "resultant_force_N": 40.22222222222224,
+            "division_parameters": {
+              "circumferential": 1,
+              "nv_by_col": [
+                1,
+                3,
+                3
+              ],
+              "height": 1
+            },
+            "corner_elements": 230,
+            "partial_interface_quads": 8,
+            "corner_topology": {
+              "unique_corner_faces": 832,
+              "boundary_faces": 284,
+              "interior_faces": 548,
+              "overused_faces": 0,
+              "cell_components": 1
+            },
+            "relative_volume_error_to_exact_union": -0.025941019103306595,
+            "free_dof_difference": -18,
+            "free_dof_difference_percent": -0.436046511627907,
+            "mean_ux_difference_from_iga_mm": -0.003958390482649843,
+            "mean_ux_relative_difference_from_iga": -0.013314733839147164
+          },
+          {
+            "element": "HEX20",
+            "elements": 202,
+            "nodes": 1449,
+            "total_displacement_dofs": 4347,
+            "fixed_displacement_dofs": 129,
+            "free_displacement_dofs": 4218,
+            "loaded_end_traction_weighted_mean_ux_mm": 0.2930735720958591,
+            "strain_energy_Nmm": 5.894035172150058,
+            "volume_mm3": 6754.822374873863,
+            "minimum_gauss_jacobian": 0.8439853976838958,
+            "affine_energy_relative_error": 4.2299497238218464e-14,
+            "traction_moment_max_gap_N": 3.374154196370173,
+            "resultant_force_N": 40.22222222222224,
+            "division_parameters": {
+              "circumferential": 2,
+              "nv_by_col": [
+                1,
+                1,
+                3
+              ],
+              "height": 1
+            },
+            "corner_elements": 202,
+            "partial_interface_quads": 16,
+            "corner_topology": {
+              "unique_corner_faces": 796,
+              "boundary_faces": 380,
+              "interior_faces": 416,
+              "overused_faces": 0,
+              "cell_components": 1
+            },
+            "relative_volume_error_to_exact_union": -0.006586022628533361,
+            "free_dof_difference": 90,
+            "free_dof_difference_percent": 2.1802325581395348,
+            "mean_ux_difference_from_iga_mm": -0.004220427954794437,
+            "mean_ux_relative_difference_from_iga": -0.014196142384559907
+          }
+        ]
+      },
+      "C1": {
+        "target": {
+          "free_vector_dofs": 2520,
+          "loaded_end_traction_weighted_mean_ux_mm": 0.2896992614239085,
+          "relative_equilibrium_residual": 2.641042817131677e-11,
+          "integration_cells": 88,
+          "source_volume_mm3": 6799.60472546083
+        },
+        "match_status": "bracketed",
+        "selected": [
+          {
+            "options": {
+              "circumferential": 1,
+              "nv_by_col": [
+                1,
+                1,
+                4
+              ],
+              "height": 1
+            },
+            "free_dofs": 2328,
+            "nodes": 799,
+            "total_dofs": 2397,
+            "elements": 106,
+            "partial_trace_quads": 8,
+            "topology": {
+              "unique_corner_faces": 426,
+              "boundary_faces": 216,
+              "interior_faces": 210,
+              "overused_faces": 0,
+              "cell_components": 1
+            }
+          },
+          {
+            "options": {
+              "circumferential": 1,
+              "nv_by_col": [
+                2,
+                1,
+                4
+              ],
+              "height": 1
+            },
+            "free_dofs": 2526,
+            "nodes": 865,
+            "total_dofs": 2595,
+            "elements": 114,
+            "partial_trace_quads": 8,
+            "topology": {
+              "unique_corner_faces": 460,
+              "boundary_faces": 236,
+              "interior_faces": 224,
+              "overused_faces": 0,
+              "cell_components": 1
+            }
+          }
+        ],
+        "measured_hex20_bracket": [
+          {
+            "element": "HEX20",
+            "elements": 106,
+            "nodes": 799,
+            "total_displacement_dofs": 2397,
+            "fixed_displacement_dofs": 69,
+            "free_displacement_dofs": 2328,
+            "loaded_end_traction_weighted_mean_ux_mm": 0.29272325872722355,
+            "strain_energy_Nmm": 5.886989981069719,
+            "volume_mm3": 6623.216049382718,
+            "minimum_gauss_jacobian": 4.1980663667348095,
+            "affine_energy_relative_error": 1.2323475573339238e-13,
+            "traction_moment_max_gap_N": 3.6013261676503356,
+            "resultant_force_N": 40.22222222222223,
+            "division_parameters": {
+              "circumferential": 1,
+              "nv_by_col": [
+                1,
+                1,
+                4
+              ],
+              "height": 1
+            },
+            "corner_elements": 106,
+            "partial_interface_quads": 8,
+            "corner_topology": {
+              "unique_corner_faces": 426,
+              "boundary_faces": 216,
+              "interior_faces": 210,
+              "overused_faces": 0,
+              "cell_components": 1
+            },
+            "relative_volume_error_to_exact_union": -0.025941019103306484,
+            "free_dof_difference": -192,
+            "free_dof_difference_percent": -7.619047619047619,
+            "mean_ux_difference_from_iga_mm": 0.0030239973033150402,
+            "mean_ux_relative_difference_from_iga": 0.010438401839382383
+          },
+          {
+            "element": "HEX20",
+            "elements": 114,
+            "nodes": 865,
+            "total_displacement_dofs": 2595,
+            "fixed_displacement_dofs": 69,
+            "free_displacement_dofs": 2526,
+            "loaded_end_traction_weighted_mean_ux_mm": 0.30085832925349165,
+            "strain_energy_Nmm": 6.050595288320222,
+            "volume_mm3": 6623.216049382718,
+            "minimum_gauss_jacobian": 4.1980663667348095,
+            "affine_energy_relative_error": 1.4788170688007085e-13,
+            "traction_moment_max_gap_N": 3.0328968354278807,
+            "resultant_force_N": 40.22222222222223,
+            "division_parameters": {
+              "circumferential": 1,
+              "nv_by_col": [
+                2,
+                1,
+                4
+              ],
+              "height": 1
+            },
+            "corner_elements": 114,
+            "partial_interface_quads": 8,
+            "corner_topology": {
+              "unique_corner_faces": 460,
+              "boundary_faces": 236,
+              "interior_faces": 224,
+              "overused_faces": 0,
+              "cell_components": 1
+            },
+            "relative_volume_error_to_exact_union": -0.025941019103306484,
+            "free_dof_difference": 6,
+            "free_dof_difference_percent": 0.23809523809523808,
+            "mean_ux_difference_from_iga_mm": 0.011159067829583147,
+            "mean_ux_relative_difference_from_iga": 0.038519490090291875
+          }
+        ]
+      },
+      "p322_v6w2_C0": {
+        "target": {
+          "free_vector_dofs": 11112,
+          "loaded_end_traction_weighted_mean_ux_mm": 0.3055843317926726,
+          "field_degree": [
+            3,
+            2,
+            2
+          ],
+          "subdivisions_vw": [
+            6,
+            2
+          ],
+          "integration_cells": 264,
+          "source_volume_mm3": 6799.604725460842,
+          "quadrature_order": 8,
+          "relative_equilibrium_residual": 2.502693275851131e-10
+        },
+        "match_status": "exact",
+        "selected": [
+          {
+            "options": {
+              "circumferential": 3,
+              "nv_by_col": [
+                10,
+                1,
+                3
+              ],
+              "height": 1
+            },
+            "free_dofs": 11112,
+            "nodes": 3767,
+            "total_dofs": 11301,
+            "elements": 522,
+            "partial_trace_quads": 24,
+            "topology": {
+              "unique_corner_faces": 2082,
+              "boundary_faces": 1032,
+              "interior_faces": 1050,
+              "overused_faces": 0,
+              "cell_components": 1
+            }
+          }
+        ],
+        "selection_note": "configuration selected before displacement evaluation; integer layout 3, [10,1,3], 1 has 11,112 measured free HEX20 vector DOFs",
+        "measured_hex20_bracket": [
+          {
+            "element": "HEX20",
+            "elements": 522,
+            "nodes": 3767,
+            "total_displacement_dofs": 11301,
+            "fixed_displacement_dofs": 189,
+            "free_displacement_dofs": 11112,
+            "loaded_end_traction_weighted_mean_ux_mm": 0.3060885545325837,
+            "strain_energy_Nmm": 6.155780930044183,
+            "volume_mm3": 6779.590052906845,
+            "minimum_gauss_jacobian": 0.2946546442874099,
+            "affine_energy_relative_error": 4.425348976155874e-13,
+            "traction_moment_max_gap_N": 2.442521309095345,
+            "resultant_force_N": 40.22222222222222,
+            "division_parameters": {
+              "circumferential": 3,
+              "nv_by_col": [
+                10,
+                1,
+                3
+              ],
+              "height": 1
+            },
+            "corner_elements": 522,
+            "partial_interface_quads": 24,
+            "corner_topology": {
+              "unique_corner_faces": 2082,
+              "boundary_faces": 1032,
+              "interior_faces": 1050,
+              "overused_faces": 0,
+              "cell_components": 1
+            },
+            "relative_volume_error_to_exact_union": -0.0029435053009833068,
+            "free_dof_difference": 0,
+            "free_dof_difference_percent": 0.0,
+            "mean_ux_difference_from_iga_mm": 0.000504222739911131,
+            "mean_ux_relative_difference_from_iga": 0.0016500281181079934
+          }
+        ]
+      }
+    },
+    "additional_conforming_iga_targets": {
+      "source": "docs/results/crossed-interface-iga/conforming_bending_study.json",
+      "source_sha256": "be41e1b12e6d9ac24f881357268483cfd534867bfd6298eb51aaf078ea321f09",
+      "scan": {
+        "p322": {
+          "free_vector_dofs": 1302,
+          "loaded_end_traction_weighted_mean_ux_mm": 0.2811101118201394,
+          "field_degree": [
+            3,
+            2,
+            2
+          ],
+          "subdivisions_vw": [
+            1,
+            1
+          ],
+          "integration_cells": 22,
+          "target_free_vector_dofs": 1302,
+          "exact_match_found": false,
+          "nearest_lower": null,
+          "nearest_upper": {
+            "free_dofs": 1734,
+            "difference": 432,
+            "difference_percent": 33.17972350230415
+          }
+        },
+        "p322_v2": {
+          "free_vector_dofs": 2268,
+          "loaded_end_traction_weighted_mean_ux_mm": 0.2970471010879078,
+          "field_degree": [
+            3,
+            2,
+            2
+          ],
+          "subdivisions_vw": [
+            2,
+            1
+          ],
+          "integration_cells": 44,
+          "target_free_vector_dofs": 2268,
+          "exact_match_found": false,
+          "nearest_lower": {
+            "free_dofs": 2130,
+            "difference": -138,
+            "difference_percent": -6.084656084656085
+          },
+          "nearest_upper": {
+            "free_dofs": 2328,
+            "difference": 60,
+            "difference_percent": 2.6455026455026456
+          }
+        },
+        "p322_w2": {
+          "free_vector_dofs": 2382,
+          "loaded_end_traction_weighted_mean_ux_mm": 0.28127176406061505,
+          "field_degree": [
+            3,
+            2,
+            2
+          ],
+          "subdivisions_vw": [
+            1,
+            2
+          ],
+          "integration_cells": 44,
+          "target_free_vector_dofs": 2382,
+          "exact_match_found": false,
+          "nearest_lower": {
+            "free_dofs": 2328,
+            "difference": -54,
+            "difference_percent": -2.2670025188916876
+          },
+          "nearest_upper": {
+            "free_dofs": 2526,
+            "difference": 144,
+            "difference_percent": 6.045340050377834
+          }
+        },
+        "p322_vw2": {
+          "free_vector_dofs": 4128,
+          "loaded_end_traction_weighted_mean_ux_mm": 0.29729400005065354,
+          "field_degree": [
+            3,
+            2,
+            2
+          ],
+          "subdivisions_vw": [
+            2,
+            2
+          ],
+          "integration_cells": 88,
+          "target_free_vector_dofs": 4128,
+          "exact_match_found": false,
+          "nearest_lower": {
+            "free_dofs": 4110,
+            "difference": -18,
+            "difference_percent": -0.436046511627907
+          },
+          "nearest_upper": {
+            "free_dofs": 4218,
+            "difference": 90,
+            "difference_percent": 2.1802325581395348
+          }
+        },
+        "p322_v4": {
+          "free_vector_dofs": 4200,
+          "loaded_end_traction_weighted_mean_ux_mm": 0.303479824606869,
+          "field_degree": [
+            3,
+            2,
+            2
+          ],
+          "subdivisions_vw": [
+            4,
+            1
+          ],
+          "integration_cells": 88,
+          "target_free_vector_dofs": 4200,
+          "exact_match_found": false,
+          "nearest_lower": {
+            "free_dofs": 4110,
+            "difference": -90,
+            "difference_percent": -2.142857142857143
+          },
+          "nearest_upper": {
+            "free_dofs": 4218,
+            "difference": 18,
+            "difference_percent": 0.42857142857142855
+          }
+        },
+        "p322_w4": {
+          "free_vector_dofs": 4542,
+          "loaded_end_traction_weighted_mean_ux_mm": 0.2812858810904785,
+          "field_degree": [
+            3,
+            2,
+            2
+          ],
+          "subdivisions_vw": [
+            1,
+            4
+          ],
+          "integration_cells": 88,
+          "target_free_vector_dofs": 4542,
+          "exact_match_found": false,
+          "nearest_lower": {
+            "free_dofs": 4506,
+            "difference": -36,
+            "difference_percent": -0.7926023778071334
+          },
+          "nearest_upper": {
+            "free_dofs": 4584,
+            "difference": 42,
+            "difference_percent": 0.9247027741083224
+          }
+        },
+        "p322_v4w2": {
+          "free_vector_dofs": 7620,
+          "loaded_end_traction_weighted_mean_ux_mm": 0.303750715096693,
+          "field_degree": [
+            3,
+            2,
+            2
+          ],
+          "subdivisions_vw": [
+            4,
+            2
+          ],
+          "integration_cells": 176,
+          "target_free_vector_dofs": 7620,
+          "exact_match_found": false,
+          "nearest_lower": {
+            "free_dofs": 7512,
+            "difference": -108,
+            "difference_percent": -1.4173228346456692
+          },
+          "nearest_upper": {
+            "free_dofs": 7626,
+            "difference": 6,
+            "difference_percent": 0.07874015748031496
+          }
+        },
+        "p322_v2w4": {
+          "free_vector_dofs": 7848,
+          "loaded_end_traction_weighted_mean_ux_mm": 0.2973180141746599,
+          "field_degree": [
+            3,
+            2,
+            2
+          ],
+          "subdivisions_vw": [
+            2,
+            4
+          ],
+          "integration_cells": 176,
+          "target_free_vector_dofs": 7848,
+          "exact_match_found": false,
+          "nearest_lower": {
+            "free_dofs": 7752,
+            "difference": -96,
+            "difference_percent": -1.2232415902140672
+          },
+          "nearest_upper": {
+            "free_dofs": 7878,
+            "difference": 30,
+            "difference_percent": 0.382262996941896
+          }
+        },
+        "p322_v6w2_C0": {
+          "free_vector_dofs": 11112,
+          "loaded_end_traction_weighted_mean_ux_mm": 0.3055843317926726,
+          "field_degree": [
+            3,
+            2,
+            2
+          ],
+          "subdivisions_vw": [
+            6,
+            2
+          ],
+          "integration_cells": 264,
+          "source_volume_mm3": 6799.604725460842,
+          "quadrature_order": 8,
+          "relative_equilibrium_residual": 2.502693275851131e-10,
+          "exact_match_found": true,
+          "selected_hex20_divisions": {
+            "circumferential": 3,
+            "nv_by_col": [
+              10,
+              1,
+              3
+            ],
+            "height": 1
+          },
+          "selected_hex20_free_dofs": 11112,
+          "dof_difference": 0
+        }
+      }
+    },
+    "additional_ten_chart_counts": {
+      "594": {
+        "source": "parent-requested ten-chart IGA DOF target",
+        "target_free_vector_dofs": 594,
+        "exact_match_found": false,
+        "nearest_lower": null,
+        "nearest_upper": {
+          "free_dofs": 1734,
+          "difference": 1140,
+          "difference_percent": 191.91919191919192
+        }
+      },
+      "996": {
+        "source": "parent-requested ten-chart IGA DOF target",
+        "target_free_vector_dofs": 996,
+        "exact_match_found": false,
+        "nearest_lower": null,
+        "nearest_upper": {
+          "free_dofs": 1734,
+          "difference": 738,
+          "difference_percent": 74.09638554216868
+        }
+      },
+      "1152": {
+        "source": "parent-requested ten-chart IGA DOF target",
+        "target_free_vector_dofs": 1152,
+        "exact_match_found": false,
+        "nearest_lower": null,
+        "nearest_upper": {
+          "free_dofs": 1734,
+          "difference": 582,
+          "difference_percent": 50.520833333333336
+        }
+      },
+      "1926": {
+        "source": "parent-requested ten-chart IGA DOF target",
+        "target_free_vector_dofs": 1926,
+        "exact_match_found": false,
+        "nearest_lower": {
+          "free_dofs": 1734,
+          "difference": -192,
+          "difference_percent": -9.968847352024921
+        },
+        "nearest_upper": {
+          "free_dofs": 1932,
+          "difference": 6,
+          "difference_percent": 0.3115264797507788
+        }
+      },
+      "2268": {
+        "source": "parent-requested ten-chart IGA DOF target",
+        "target_free_vector_dofs": 2268,
+        "exact_match_found": false,
+        "nearest_lower": {
+          "free_dofs": 2130,
+          "difference": -138,
+          "difference_percent": -6.084656084656085
+        },
+        "nearest_upper": {
+          "free_dofs": 2328,
+          "difference": 60,
+          "difference_percent": 2.6455026455026456
+        }
+      }
+    }
+  },
+  "limits": [
+    "The hexahedral boundary is chordal; it is not the exact rational spline boundary.",
+    "HEX8 and HEX20 share the same corner mesh, but HEX20 adds midside nodes on its edges.",
+    "The coarse equal-budget meshes use fewer chart-profile divisions and have chordal boundary-volume error; their response is an equal-DOF diagnostic, not a convergence qualification.",
+    "The equal-budget search checks cell connectivity, face incidence and partial-interface pairing, but does not prove exact geometry conformity at every chart seam.",
+    "These low-cost tilted cases do not establish three-dimensional convergence."
+  ]
+}

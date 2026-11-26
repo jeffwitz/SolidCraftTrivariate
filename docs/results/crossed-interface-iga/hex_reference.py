@@ -104,7 +104,7 @@ def elevate_hexes(X, C):
     )
 
 
-def mesh(model, n, rise):
+def mesh(model, n, rise, *, circumferential=None, nv_by_col=None, height=None):
     xyz = []
     ids = {}
     conn = []
@@ -131,8 +131,9 @@ def mesh(model, n, rise):
             H = U @ ((1 - v) * net[:, 0, 0, :] + v * net[:, 1, 0, :])
             return H[:2] / H[3]
 
-        nv = [12, 3, 4][c] * n
-        nu = 3 * n
+        mesh_height = n if height is None else height
+        nv = [12, 3, 4][c] * n if nv_by_col is None else nv_by_col[c]
+        nu = 3 * n if circumferential is None else circumferential
         for i in range(nu):
             for j in range(nv):
                 # u grows with y and v grows from right to left.
@@ -165,9 +166,9 @@ def mesh(model, n, rise):
                         ]
                     )
                     for l in layers:
-                        for k in range(n):
+                        for k in range(mesh_height):
                             heights = [
-                                caps[l] + (caps[l + 1] - caps[l]) * (k + s) / n
+                                caps[l] + (caps[l + 1] - caps[l]) * (k + s) / mesh_height
                                 for s in (0, 1)
                             ]
                             cell = [
@@ -218,7 +219,7 @@ def mesh(model, n, rise):
                                 traces.setdefault(key, []).append(
                                     (eid, local, endpoints, k, b, side, c)
                                 )
-    assert all(len(p) == 2 for p in traces.values()) and len(traces) == 24 * n * n, (
+    assert all(len(p) == 2 for p in traces.values()) and len(traces) == 8 * nu * mesh_height, (
         len(traces),
         [v for v in traces.values() if len(v) != 2][:4],
     )
@@ -229,8 +230,10 @@ def face_point(edge, t, w):
     return [(t, 0, w), (1, t, w), (1 - t, 1, w), (0, 1 - t, w)][edge]
 
 
-def solve_mesh(model, n, rise, vtk_directory=None, quadratic=False):
-    X, C, loads, traces, nets = mesh(model, n, rise)
+def solve_mesh(model, n, rise, vtk_directory=None, quadratic=False, mesh_options=None):
+    options = {} if mesh_options is None else mesh_options
+    X, C, loads, traces, nets = mesh(model, n, rise, **options)
+    mesh_height = n if options.get("height") is None else options["height"]
     if quadratic:
         X, C = elevate_hexes(X, C)
     nodes_per_cell = C.shape[1]
@@ -338,7 +341,7 @@ def solve_mesh(model, n, rise, vtk_directory=None, quadratic=False):
                         grad
                     ) * np.eye(3)
                     area = np.cross(J[:, edge % 2], J[:, 2]) * (1 if edge < 2 else -1)
-                    height = (k + w) / n
+                    height = (k + w) / mesh_height
                     weights = np.outer(B, [1 - height, height]).ravel()
                     G[int(col == 1)] += weights[:, None] * (sig @ area) * wt * ww
     if vtk_directory:

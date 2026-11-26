@@ -42,3 +42,8 @@ check-cylinder-iga: check-axial-knot-reduction
 	python3 tests/references/cylinder_torsion.py
 	python3 tests/references/tall_cylinder_iga.py --check
 	python3 tests/references/axial_knot_torsion.py --check
+
+.PHONY: check-crossed-bending
+check-crossed-bending:
+	cargo build --locked --offline --release
+	OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 python3 docs/results/crossed-interface-iga/check_bending.py target/release/solidcraft-trivariate

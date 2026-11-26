@@ -1,0 +1,77 @@
+{
+  "runs": [
+    {
+      "rise_mm": 3,
+      "degree": [
+        3,
+        2,
+        2
+      ],
+      "spans_vw": [
+        2,
+        2
+      ],
+      "gauss_order": 8,
+      "geometry_charts": 22,
+      "volume_mm3": 6799.60472546083,
+      "force_N": 40.222222222222044,
+      "max_constraint_coefficient_residual": 0.0,
+      "fields": [
+        {
+          "continuity": "C0",
+          "free_vector_dofs": 4128,
+          "mean_ux_mm": 0.29729400005065354,
+          "energy_N_mm": 5.978912667685339,
+          "relative_residual": 5.53537060396597e-11
+        },
+        {
+          "continuity": "C1",
+          "free_vector_dofs": 2520,
+          "mean_ux_mm": 0.2896992614239085,
+          "energy_N_mm": 5.826174035303023,
+          "relative_residual": 2.641042817131677e-11
+        }
+      ]
+    },
+    {
+      "rise_mm": 3,
+      "degree": [
+        3,
+        2,
+        2
+      ],
+      "spans_vw": [
+        3,
+        3
+      ],
+      "gauss_order": 8,
+      "geometry_charts": 22,
+      "volume_mm3": 6799.604725460827,
+      "force_N": 40.22222222222202,
+      "max_constraint_coefficient_residual": 5.551115123125783e-17,
+      "fields": [
+        {
+          "continuity": "C0",
+          "free_vector_dofs": 8514,
+          "mean_ux_mm": 0.3017433054165528,
+          "energy_N_mm": 6.068393142266198,
+          "relative_residual": 1.729066392070981e-10
+        },
+        {
+          "continuity": "C1",
+          "free_vector_dofs": 4128,
+          "mean_ux_mm": 0.29817755452912864,
+          "energy_N_mm": 5.9966819299746685,
+          "relative_residual": 5.086340960467311e-11
+        }
+      ]
+    }
+  ],
+  "equal_budget": {
+    "free_vector_dofs": 4128,
+    "c0_two_spans_mean_ux_mm": 0.29729400005065354,
+    "c1_three_spans_mean_ux_mm": 0.29817755452912864,
+    "c0_integration_cells": 88,
+    "c1_integration_cells": 198
+  }
+}

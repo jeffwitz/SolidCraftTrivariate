@@ -1,0 +1,315 @@
+{
+  "schema": "crossed_interface_conforming_bending_study_v1",
+  "case": {
+    "rise_mm": 3,
+    "geometry": "original S2 tilted crossed-tool union, extended to its conforming 22-chart matching-face control",
+    "geometry_source": "tests/references/g2_cross_sketches.recipe.json via crossed-boolean union",
+    "material": {
+      "young_MPa": 1000.0,
+      "poisson": 0.3
+    },
+    "boundary_conditions": "x=0 clamped; 1 MPa traction on x=100",
+    "observable": "traction-weighted mean loaded-end ux",
+    "parameter_axes": {
+      "u": "shared cubic ordinate parameter along the crossed profile",
+      "v": "longitudinal center-to-wing direction; p321 enriches this direction",
+      "w": "physical z thickness/height direction; p312 enriches this direction"
+    },
+    "geometry_map": "unchanged rational (3,1,1) map; homogeneous controls are exactly degree-elevated for analysis quadrature",
+    "analysis_basis": "rational Bernstein tensor basis with p=(3,pv,pw)",
+    "solver": "SciPy sparse direct solve, with reduced residual reported",
+    "trace": "C0 coefficient identification on every matching face, all mesh seams, and collapsed polar lines",
+    "quadrature": "tensor Gauss-Legendre, recorded per row",
+    "interior_continuity": "single-span elements joined C0; internal knot multiplicity equals degree"
+  },
+  "baseline_reference": {
+    "degrees_uvw": [
+      3,
+      1,
+      1
+    ],
+    "fitted_charts": 22,
+    "fitted_scalar_dofs": 172,
+    "loaded_end_mean_ux_mm": 0.08316766140422435
+  },
+  "cases": {
+    "p311": {
+      "degrees_uvw": [
+        3,
+        1,
+        1
+      ],
+      "subdivisions_vw": [
+        1,
+        1
+      ],
+      "gauss_order": 8,
+      "element_count": 22,
+      "scalar_dofs_free": 158,
+      "vector_dofs_free": 474,
+      "loaded_force_x_N": 40.222222222222044,
+      "loaded_end_mean_ux_mm": 0.08316766140438349,
+      "strain_energy_N_mm": 1.6725940793549132,
+      "reduced_residual": 1.7879314192838631e-13,
+      "geometry_volume_mm3": 6799.60472546083,
+      "relative_volume_difference": 5.021483229228352e-11
+    },
+    "p321": {
+      "degrees_uvw": [
+        3,
+        2,
+        1
+      ],
+      "subdivisions_vw": [
+        1,
+        1
+      ],
+      "gauss_order": 8,
+      "element_count": 22,
+      "scalar_dofs_free": 254,
+      "vector_dofs_free": 762,
+      "loaded_force_x_N": 40.22222222222204,
+      "loaded_end_mean_ux_mm": 0.26504417306755573,
+      "strain_energy_N_mm": 5.330332813839805,
+      "reduced_residual": 7.886208623370184e-12,
+      "geometry_volume_mm3": 6799.604725460829,
+      "relative_volume_difference": 5.021494331458598e-11
+    },
+    "p312": {
+      "degrees_uvw": [
+        3,
+        1,
+        2
+      ],
+      "subdivisions_vw": [
+        1,
+        1
+      ],
+      "gauss_order": 8,
+      "element_count": 22,
+      "scalar_dofs_free": 273,
+      "vector_dofs_free": 819,
+      "loaded_force_x_N": 40.222222222222044,
+      "loaded_end_mean_ux_mm": 0.0837108050938649,
+      "strain_energy_N_mm": 1.6835173024431607,
+      "reduced_residual": 2.2650442496181186e-13,
+      "geometry_volume_mm3": 6799.604725460829,
+      "relative_volume_difference": 5.021494331458598e-11
+    },
+    "p322": {
+      "degrees_uvw": [
+        3,
+        2,
+        2
+      ],
+      "subdivisions_vw": [
+        1,
+        1
+      ],
+      "gauss_order": 8,
+      "element_count": 22,
+      "scalar_dofs_free": 434,
+      "vector_dofs_free": 1302,
+      "loaded_force_x_N": 40.222222222222044,
+      "loaded_end_mean_ux_mm": 0.2811101118201394,
+      "strain_energy_N_mm": 5.653436693273005,
+      "reduced_residual": 1.375342171833789e-11,
+      "geometry_volume_mm3": 6799.604725460829,
+      "relative_volume_difference": 5.021494331458598e-11
+    },
+    "p322_v2": {
+      "degrees_uvw": [
+        3,
+        2,
+        2
+      ],
+      "subdivisions_vw": [
+        2,
+        1
+      ],
+      "gauss_order": 8,
+      "element_count": 44,
+      "scalar_dofs_free": 756,
+      "vector_dofs_free": 2268,
+      "loaded_force_x_N": 40.222222222222044,
+      "loaded_end_mean_ux_mm": 0.2970471010879078,
+      "strain_energy_N_mm": 5.9739472552009625,
+      "reduced_residual": 2.6550239776548775e-11,
+      "geometry_volume_mm3": 6799.604725460829,
+      "relative_volume_difference": 5.021494331458598e-11
+    },
+    "p322_w2": {
+      "degrees_uvw": [
+        3,
+        2,
+        2
+      ],
+      "subdivisions_vw": [
+        1,
+        2
+      ],
+      "gauss_order": 8,
+      "element_count": 44,
+      "scalar_dofs_free": 794,
+      "vector_dofs_free": 2382,
+      "loaded_force_x_N": 40.222222222222044,
+      "loaded_end_mean_ux_mm": 0.28127176406061505,
+      "strain_energy_N_mm": 5.656687699484873,
+      "reduced_residual": 7.057612337829144e-11,
+      "geometry_volume_mm3": 6799.604725460829,
+      "relative_volume_difference": 5.021494331458598e-11
+    },
+    "p322_vw2": {
+      "degrees_uvw": [
+        3,
+        2,
+        2
+      ],
+      "subdivisions_vw": [
+        2,
+        2
+      ],
+      "gauss_order": 8,
+      "element_count": 88,
+      "scalar_dofs_free": 1376,
+      "vector_dofs_free": 4128,
+      "loaded_force_x_N": 40.222222222222044,
+      "loaded_end_mean_ux_mm": 0.29729400005065354,
+      "strain_energy_N_mm": 5.978912667865255,
+      "reduced_residual": 5.53537060396597e-11,
+      "geometry_volume_mm3": 6799.60472546083,
+      "relative_volume_difference": 5.021483229228352e-11
+    },
+    "p322_v4": {
+      "degrees_uvw": [
+        3,
+        2,
+        2
+      ],
+      "subdivisions_vw": [
+        4,
+        1
+      ],
+      "gauss_order": 8,
+      "element_count": 88,
+      "scalar_dofs_free": 1400,
+      "vector_dofs_free": 4200,
+      "loaded_force_x_N": 40.222222222222044,
+      "loaded_end_mean_ux_mm": 0.303479824606869,
+      "strain_energy_N_mm": 6.103316473122673,
+      "reduced_residual": 1.3320751445700233e-11,
+      "geometry_volume_mm3": 6799.604725460833,
+      "relative_volume_difference": 5.021438820307367e-11
+    },
+    "p322_w4": {
+      "degrees_uvw": [
+        3,
+        2,
+        2
+      ],
+      "subdivisions_vw": [
+        1,
+        4
+      ],
+      "gauss_order": 8,
+      "element_count": 88,
+      "scalar_dofs_free": 1514,
+      "vector_dofs_free": 4542,
+      "loaded_force_x_N": 40.222222222222044,
+      "loaded_end_mean_ux_mm": 0.2812858810904785,
+      "strain_energy_N_mm": 5.656971610510286,
+      "reduced_residual": 3.771929188672402e-10,
+      "geometry_volume_mm3": 6799.604725460833,
+      "relative_volume_difference": 5.021438820307367e-11
+    },
+    "p322_v4w2": {
+      "degrees_uvw": [
+        3,
+        2,
+        2
+      ],
+      "subdivisions_vw": [
+        4,
+        2
+      ],
+      "gauss_order": 8,
+      "element_count": 176,
+      "scalar_dofs_free": 2540,
+      "vector_dofs_free": 7620,
+      "loaded_force_x_N": 40.222222222222044,
+      "loaded_end_mean_ux_mm": 0.303750715096693,
+      "strain_energy_N_mm": 6.108764380540464,
+      "reduced_residual": 4.974110265464279e-11,
+      "geometry_volume_mm3": 6799.604725460828,
+      "relative_volume_difference": 5.021505433688844e-11
+    },
+    "p322_v2w4": {
+      "degrees_uvw": [
+        3,
+        2,
+        2
+      ],
+      "subdivisions_vw": [
+        2,
+        4
+      ],
+      "gauss_order": 8,
+      "element_count": 176,
+      "scalar_dofs_free": 2616,
+      "vector_dofs_free": 7848,
+      "loaded_force_x_N": 40.222222222222044,
+      "loaded_end_mean_ux_mm": 0.2973180141746599,
+      "strain_energy_N_mm": 5.979395618053556,
+      "reduced_residual": 4.991752136248931e-10,
+      "geometry_volume_mm3": 6799.604725460835,
+      "relative_volume_difference": 5.021416615846874e-11
+    }
+  },
+  "quadrature_convergence": {
+    "case": "p322_vw2",
+    "order_8": {
+      "degrees_uvw": [
+        3,
+        2,
+        2
+      ],
+      "subdivisions_vw": [
+        2,
+        2
+      ],
+      "gauss_order": 8,
+      "element_count": 88,
+      "scalar_dofs_free": 1376,
+      "vector_dofs_free": 4128,
+      "loaded_force_x_N": 40.222222222222044,
+      "loaded_end_mean_ux_mm": 0.29729400005065354,
+      "strain_energy_N_mm": 5.978912667865255,
+      "reduced_residual": 5.53537060396597e-11,
+      "geometry_volume_mm3": 6799.60472546083,
+      "relative_volume_difference": 5.021483229228352e-11
+    },
+    "order_12": {
+      "degrees_uvw": [
+        3,
+        2,
+        2
+      ],
+      "subdivisions_vw": [
+        2,
+        2
+      ],
+      "gauss_order": 12,
+      "element_count": 88,
+      "scalar_dofs_free": 1376,
+      "vector_dofs_free": 4128,
+      "loaded_force_x_N": 40.222222222222214,
+      "loaded_end_mean_ux_mm": 0.29729399844665994,
+      "strain_energy_N_mm": 5.978912635906878,
+      "reduced_residual": 4.868736085364299e-11,
+      "geometry_volume_mm3": 6799.604725802264,
+      "relative_volume_difference": 1.1102230246251565e-15
+    },
+    "loaded_end_mean_ux_relative_change": 5.395311086786592e-09,
+    "strain_energy_relative_change": 5.345182185756414e-09
+  }
+}

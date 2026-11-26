@@ -1,5 +1,7 @@
 # Elasticity across partial interfaces in the S2 union
 
+[Degree elevation, thickness refinement, and C¹ field study on the inclined union](bending-enrichment.md)
+
 This independent NumPy/SciPy/SymPy study assembles the rational (3,1,1) basis on the ten chart control nets emitted by the native Rust CLI. Cases use transverse rises of −3, 0 and +3 mm across 100 mm. From the repository root run
 
 ```sh

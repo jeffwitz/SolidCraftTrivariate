@@ -70,8 +70,8 @@
   },
   "kernel_rebuild": {
     "command": "build recipe.json model.json; audit model.json; export-step model.json reference.step",
-    "kernel_revision": "7d37353900e86345ed8ef176fc2c987bf06a8d5b",
-    "kernel_binary_sha256": "0690e67c5077228d880f3002d2fef06d081dd612aba500855264599f20e8ef38",
+    "kernel_revision": "083fdfe14373aadbca0e9d10586e2cce32ba077d",
+    "kernel_binary_sha256": "8f33eeba801e38e56fbe52ad6ccb96a68a28d2f20187a7d67df869af0c0f9ac2",
     "recipe_sha256": "94990b07adc287eecde3d838e58bd9af12e86e29c498bf79b4db3ec3d6067545",
     "model_sha256": "93eef39747583936640bae35f5083bc5067602439da2f8113c11604e7e400875",
     "step_sha256": "f7808fc3d301a200dac4ec191def69ea926451c43a2230b2b2179c6b614eef63",
@@ -99,35 +99,5 @@
       "sample_count": 2125,
       "maximum_condition_2": 8.83397010792513
     }
-  },
-  "latest_benchmark_case": {
-    "status": "qualified",
-    "method": "propagated_isoparametric_cuts",
-    "blocks": 17,
-    "reason": null,
-    "det_lower_mm3": 14.65714285713713,
-    "cut_comparison": {
-      "previous": {
-        "blocks": 112
-      },
-      "propagated": {
-        "blocks": 17
-      }
-    },
-    "cut_rounds": [
-      {
-        "blocks": 17,
-        "closed_cuts": 3,
-        "requests": 2
-      }
-    ],
-    "cut_source_records": 3,
-    "interfaces": 22,
-    "max_sampled_kappa": 8.83397010792513,
-    "volume_relative_error": 1.133520473385762e-16,
-    "probes": 208,
-    "probe_mismatches": 0,
-    "closed_valid": true,
-    "labels_match": true
   }
 }

@@ -3,7 +3,7 @@
   "case": {
     "id": "seeded_convex_19",
     "family": "seeded_convex_blind_pockets",
-    "build_elapsed_s": 0.6537787669803947,
+    "build_elapsed_s": 0.7605365989729762,
     "build_stdout": "{\"blocks\":48,\"bounded_sketch_faces\":28,\"cavities\":0,\"determinant_lower_bound_mm3\":44639.99999999998,\"exterior_sides\":100,\"hausdorff_error_upper_bound_mm\":0,\"method\":\"certified_sketch_layer_partition\",\"shared_faces\":94,\"status\":\"valid\",\"volume_exact_mm3\":[49899712,1]}",
     "build_stderr": "",
     "admitted": true,
@@ -205,7 +205,7 @@
       }
     ],
     "reported_method": "certified_sketch_layer_partition",
-    "audit_elapsed_s": 0.3297305680462159,
+    "audit_elapsed_s": 0.3666547309840098,
     "closed_domain_certificate": {
       "status": "valid",
       "method": "certified_sketch_layer_partition",
@@ -304,11 +304,6 @@
     ],
     "outcome": "valid_model"
   },
-  "latest_release": {
-    "tag": "latest-release",
-    "cli_sha256": "0690e67c5077228d880f3002d2fef06d081dd612aba500855264599f20e8ef38",
-    "measurement_scope": "Latest tracked 45-case release run; its condition grid is a sampled diagnostic."
-  },
   "model_audit": {
     "blocks": 48,
     "bounded_sketch_faces": 28,
@@ -326,8 +321,8 @@
   },
   "kernel_rebuild": {
     "command": "build recipe.json model.json; audit model.json; export-step model.json reference.step",
-    "kernel_revision": "7d37353900e86345ed8ef176fc2c987bf06a8d5b",
-    "kernel_binary_sha256": "0690e67c5077228d880f3002d2fef06d081dd612aba500855264599f20e8ef38",
+    "kernel_revision": "083fdfe14373aadbca0e9d10586e2cce32ba077d",
+    "kernel_binary_sha256": "8f33eeba801e38e56fbe52ad6ccb96a68a28d2f20187a7d67df869af0c0f9ac2",
     "recipe_sha256": "0962ad271f0e76c8cf5467a9ed14b5368c62bd058c8a01ec0a055e80ac7fc9fa",
     "model_sha256": "0a47f2658914bb65d199803f3a52be0df5be4d1bdee50e36a3e89fcde4f50094",
     "step_sha256": "9cd8b36cc23d4840954106a4deae2f30063cf974a58312d5b2af515fb4263537",
@@ -353,313 +348,8 @@
       "maximum_condition_2": 409.5900886829238
     }
   },
-  "latest_run_details_case": {
-    "id": "seeded_convex_19",
-    "family": "seeded_convex_blind_pockets",
-    "build_elapsed_s": 0.6537787669803947,
-    "build_stdout": "{\"blocks\":48,\"bounded_sketch_faces\":28,\"cavities\":0,\"determinant_lower_bound_mm3\":44639.99999999998,\"exterior_sides\":100,\"hausdorff_error_upper_bound_mm\":0,\"method\":\"certified_sketch_layer_partition\",\"shared_faces\":94,\"status\":\"valid\",\"volume_exact_mm3\":[49899712,1]}",
-    "build_stderr": "",
-    "admitted": true,
-    "geometry_pass": true,
-    "construction_method": "separated_convex_quad_rings",
-    "block_count": 48,
-    "condition_grid_5cube_per_block": [
-      {
-        "block_id": "quad_-783d1_1836d1_-423d1_616d1_-23d1_284d1_-23d1_408d1_z0_5",
-        "max_condition_2": 409.59008868292375
-      },
-      {
-        "block_id": "quad_-783d1_1836d1_-308d1_1041d1_-23d1_844d1_49d1_600d1_z0_5",
-        "max_condition_2": 310.6114863344329
-      },
-      {
-        "block_id": "quad_-783d1_1836d1_-308d1_1041d1_-23d1_408d1_49d1_364d1_z0_5",
-        "max_condition_2": 372.7177115075394
-      },
-      {
-        "block_id": "quad_-783d1_1836d1_-783d1_2456d1_-23d1_844d1_-23d1_968d1_z0_5",
-        "max_condition_2": 352.3993678073243
-      },
-      {
-        "block_id": "quad_-783d1_2456d1_-423d1_2236d1_-23d1_968d1_49d1_924d1_z0_5",
-        "max_condition_2": 341.95330223812897
-      },
-      {
-        "block_id": "quad_-423d1_616d1_-128d1_-69d1_-23d1_284d1_49d1_40d1_z0_5",
-        "max_condition_2": 177.43663572400055
-      },
-      {
-        "block_id": "quad_-423d1_2236d1_49d1_924d1_167d1_726d1_167d1_1246d1_z0_5",
-        "max_condition_2": 360.1841784282124
-      },
-      {
-        "block_id": "quad_-308d1_1041d1_49d1_364d1_167d1_166d1_167d1_246d1_z0_5",
-        "max_condition_2": 240.20871661556689
-      },
-      {
-        "block_id": "quad_-308d1_1041d1_49d1_600d1_167d1_246d1_167d1_326d1_z0_5",
-        "max_condition_2": 216.78412883274976
-      },
-      {
-        "block_id": "quad_-128d1_-69d1_49d1_40d1_167d1_-754d1_167d1_-234d1_z0_5",
-        "max_condition_2": 178.56478084505616
-      },
-      {
-        "block_id": "quad_-23d1_284d1_49d1_40d1_167d1_166d1_285d1_-108d1_z0_5",
-        "max_condition_2": 77.9585468723564
-      },
-      {
-        "block_id": "quad_-23d1_284d1_-23d1_408d1_49d1_364d1_167d1_166d1_z0_5",
-        "max_condition_2": 62.41395198907897
-      },
-      {
-        "block_id": "quad_-23d1_844d1_49d1_600d1_167d1_726d1_285d1_452d1_z0_5",
-        "max_condition_2": 77.9585468723564
-      },
-      {
-        "block_id": "quad_-23d1_844d1_-23d1_968d1_49d1_924d1_167d1_726d1_z0_5",
-        "max_condition_2": 62.41395198907897
-      },
-      {
-        "block_id": "quad_49d1_40d1_167d1_-234d1_285d1_-108d1_357d1_-352d1_z0_5",
-        "max_condition_2": 77.9585468723564
-      },
-      {
-        "block_id": "quad_49d1_600d1_167d1_326d1_285d1_452d1_357d1_208d1_z0_5",
-        "max_condition_2": 77.9585468723564
-      },
-      {
-        "block_id": "quad_167d1_-754d1_167d1_-234d1_285d1_-432d1_757d1_-1744d1_z0_5",
-        "max_condition_2": 360.18417842821225
-      },
-      {
-        "block_id": "quad_167d1_-234d1_285d1_-432d1_357d1_-476d1_357d1_-352d1_z0_5",
-        "max_condition_2": 62.41395198907897
-      },
-      {
-        "block_id": "quad_167d1_166d1_167d1_246d1_285d1_-108d1_642d1_-549d1_z0_5",
-        "max_condition_2": 216.78412883274976
-      },
-      {
-        "block_id": "quad_167d1_246d1_167d1_326d1_285d1_128d1_642d1_-549d1_z0_5",
-        "max_condition_2": 240.2087166155669
-      },
-      {
-        "block_id": "quad_167d1_326d1_285d1_128d1_357d1_84d1_357d1_208d1_z0_5",
-        "max_condition_2": 62.41395198907897
-      },
-      {
-        "block_id": "quad_167d1_726d1_167d1_1246d1_285d1_452d1_462d1_561d1_z0_5",
-        "max_condition_2": 178.56478084505616
-      },
-      {
-        "block_id": "quad_285d1_-432d1_357d1_-476d1_757d1_-1744d1_1117d1_-1964d1_z0_5",
-        "max_condition_2": 341.95330223812897
-      },
-      {
-        "block_id": "quad_285d1_-108d1_357d1_-352d1_642d1_-549d1_1117d1_-1344d1_z0_5",
-        "max_condition_2": 310.6114863344329
-      },
-      {
-        "block_id": "quad_285d1_128d1_357d1_84d1_642d1_-549d1_1117d1_-1344d1_z0_5",
-        "max_condition_2": 372.7177115075394
-      },
-      {
-        "block_id": "quad_285d1_452d1_357d1_208d1_462d1_561d1_757d1_-124d1_z0_5",
-        "max_condition_2": 177.43663572400055
-      },
-      {
-        "block_id": "quad_357d1_-476d1_357d1_-352d1_1117d1_-1964d1_1117d1_-1344d1_z0_5",
-        "max_condition_2": 352.3993678073243
-      },
-      {
-        "block_id": "quad_357d1_84d1_357d1_208d1_757d1_-124d1_1117d1_-1344d1_z0_5",
-        "max_condition_2": 409.5900886829237
-      },
-      {
-        "block_id": "quad_-783d1_1836d1_-423d1_616d1_-23d1_284d1_-23d1_408d1_z5_18",
-        "max_condition_2": 157.53568472395318
-      },
-      {
-        "block_id": "quad_-783d1_1836d1_-308d1_1041d1_-23d1_844d1_49d1_600d1_z5_18",
-        "max_condition_2": 119.46700269806786
-      },
-      {
-        "block_id": "quad_-783d1_1836d1_-308d1_1041d1_-23d1_408d1_49d1_364d1_z5_18",
-        "max_condition_2": 143.36750734091063
-      },
-      {
-        "block_id": "quad_-783d1_1836d1_-783d1_2456d1_-23d1_844d1_-23d1_968d1_z5_18",
-        "max_condition_2": 135.53878346925006
-      },
-      {
-        "block_id": "quad_-783d1_2456d1_-423d1_2236d1_-23d1_968d1_49d1_924d1_z5_18",
-        "max_condition_2": 131.52104938168384
-      },
-      {
-        "block_id": "quad_-423d1_616d1_-128d1_-69d1_-23d1_284d1_49d1_40d1_z5_18",
-        "max_condition_2": 68.24531357876793
-      },
-      {
-        "block_id": "quad_-423d1_2236d1_49d1_924d1_167d1_726d1_167d1_1246d1_z5_18",
-        "max_condition_2": 138.53358229749549
-      },
-      {
-        "block_id": "quad_-308d1_1041d1_49d1_364d1_167d1_166d1_167d1_246d1_z5_18",
-        "max_condition_2": 92.40264332917098
-      },
-      {
-        "block_id": "quad_-308d1_1041d1_49d1_600d1_167d1_246d1_167d1_326d1_z5_18",
-        "max_condition_2": 83.38015744548339
-      },
-      {
-        "block_id": "quad_-128d1_-69d1_49d1_40d1_167d1_-754d1_167d1_-234d1_z5_18",
-        "max_condition_2": 68.67998137566397
-      },
-      {
-        "block_id": "quad_167d1_-754d1_167d1_-234d1_285d1_-432d1_757d1_-1744d1_z5_18",
-        "max_condition_2": 138.5335822974955
-      },
-      {
-        "block_id": "quad_167d1_166d1_167d1_246d1_285d1_-108d1_642d1_-549d1_z5_18",
-        "max_condition_2": 83.38015744548339
-      },
-      {
-        "block_id": "quad_167d1_246d1_167d1_326d1_285d1_128d1_642d1_-549d1_z5_18",
-        "max_condition_2": 92.40264332917097
-      },
-      {
-        "block_id": "quad_167d1_726d1_167d1_1246d1_285d1_452d1_462d1_561d1_z5_18",
-        "max_condition_2": 68.67998137566397
-      },
-      {
-        "block_id": "quad_285d1_-432d1_357d1_-476d1_757d1_-1744d1_1117d1_-1964d1_z5_18",
-        "max_condition_2": 131.52104938168384
-      },
-      {
-        "block_id": "quad_285d1_-108d1_357d1_-352d1_642d1_-549d1_1117d1_-1344d1_z5_18",
-        "max_condition_2": 119.46700269806786
-      },
-      {
-        "block_id": "quad_285d1_128d1_357d1_84d1_642d1_-549d1_1117d1_-1344d1_z5_18",
-        "max_condition_2": 143.36750734091063
-      },
-      {
-        "block_id": "quad_285d1_452d1_357d1_208d1_462d1_561d1_757d1_-124d1_z5_18",
-        "max_condition_2": 68.24531357876793
-      },
-      {
-        "block_id": "quad_357d1_-476d1_357d1_-352d1_1117d1_-1964d1_1117d1_-1344d1_z5_18",
-        "max_condition_2": 135.53878346925006
-      },
-      {
-        "block_id": "quad_357d1_84d1_357d1_208d1_757d1_-124d1_1117d1_-1344d1_z5_18",
-        "max_condition_2": 157.53568472395312
-      }
-    ],
-    "reported_method": "certified_sketch_layer_partition",
-    "audit_elapsed_s": 0.3297305680462159,
-    "closed_domain_certificate": {
-      "status": "valid",
-      "method": "certified_sketch_layer_partition",
-      "determinant_lower_bound_mm3": 44639.99999999998,
-      "hausdorff_error_upper_bound_mm": 0
-    },
-    "volume_exact_expected_mm3": [
-      49899712,
-      1
-    ],
-    "volume_exact_cli_mm3": [
-      49899712,
-      1
-    ],
-    "volume_match": true,
-    "input_vertex_lower_bound_total_blocks": 20,
-    "layers": [
-      {
-        "cells": 28,
-        "vertices": 35,
-        "edges": 62,
-        "euler": 1,
-        "boundary_edges": 12,
-        "internal_edges": 50,
-        "area_exact_mm2": [
-          2942200,
-          1
-        ],
-        "area_sum_mm2": 2942200.0,
-        "pairwise_overlap_pairs": 0,
-        "z_interval_mm": [
-          0.0,
-          5.0
-        ],
-        "expected_area_exact_mm2": [
-          2942200,
-          1
-        ],
-        "area_gap_exact_mm2": [
-          0,
-          1
-        ],
-        "contained_in_expected_material": true,
-        "expected_euler_characteristic": 1,
-        "active_hole_count": 0,
-        "quadrilateral_lower_bounds": {
-          "assumption": "one connected conforming quadrilateral section; all input contour corners mandatory",
-          "input_vertex_count": 10,
-          "input_only_bound_blocks": 4,
-          "actual_boundary_vertex_count": 12,
-          "actual_interior_vertex_count": 23,
-          "with_inserted_host_vertices_bound_blocks": "28",
-          "observed_quads": 28,
-          "attains_conditional_bound": true
-        }
-      },
-      {
-        "cells": 20,
-        "vertices": 35,
-        "edges": 56,
-        "euler": -1,
-        "boundary_edges": 32,
-        "internal_edges": 24,
-        "area_exact_mm2": [
-          2706824,
-          1
-        ],
-        "area_sum_mm2": 2706824.0,
-        "pairwise_overlap_pairs": 0,
-        "z_interval_mm": [
-          5.0,
-          18.0
-        ],
-        "expected_area_exact_mm2": [
-          2706824,
-          1
-        ],
-        "area_gap_exact_mm2": [
-          0,
-          1
-        ],
-        "contained_in_expected_material": true,
-        "expected_euler_characteristic": -1,
-        "active_hole_count": 2,
-        "quadrilateral_lower_bounds": {
-          "assumption": "one connected conforming quadrilateral section; all input contour corners mandatory",
-          "input_vertex_count": 30,
-          "input_only_bound_blocks": 16,
-          "actual_boundary_vertex_count": 32,
-          "actual_interior_vertex_count": 3,
-          "with_inserted_host_vertices_bound_blocks": "20",
-          "observed_quads": 20,
-          "attains_conditional_bound": true
-        }
-      }
-    ],
-    "outcome": "valid_model"
-  },
-  "latest_run_details_metadata": {
+  "measurement_release": {
     "tag": "latest-release",
-    "cli_sha256": "0690e67c5077228d880f3002d2fef06d081dd612aba500855264599f20e8ef38",
-    "source_checkout_head": "7d37353900e86345ed8ef176fc2c987bf06a8d5b"
+    "cli_sha256": "8f33eeba801e38e56fbe52ad6ccb96a68a28d2f20187a7d67df869af0c0f9ac2"
   }
 }

@@ -42,6 +42,19 @@ cli=target/release/solidcraft-trivariate
 
 For this recipe, the recorded audit reports 32 blocks, 46 shared interfaces, 100 exterior faces, a determinant lower bound of `5.729862499996598 mm³`, and two through bores. The bound certifies local regularity of the maps on their domains; by itself it does not establish global fidelity for a different recipe.
 
+### Build rings from polygonal sketch contours
+
+For convex stock with convex holes or blind pockets, the automatic planner derives candidate separator lines, matching ring vertices and pocket floors directly from the outlines. The `construction` field can be omitted. Inspect the selected rational sketch graph and its axial layers before exporting the volume.
+
+```sh
+recipe=tests/regressions/overlapping_projections_diamonds.recipe.json
+target/release/solidcraft-trivariate plan-sketch "$recipe"
+target/release/solidcraft-trivariate build "$recipe" build/demo/diamonds.json
+target/release/solidcraft-trivariate audit build/demo/diamonds.json
+```
+
+The two diamond holes overlap in both axis projections. Their profiles are disjoint and can be separated by an oblique chord. [Planner and measured results](docs/convex-host-rings.md)
+
 ### Import a SolidCraft timeline
 
 `import-solidcraft-sketch` reads a canonical timeline exported from SolidCraft; it does not launch or execute the user's script. The qualified subset is an orthogonal polygon sketch, its extrusion, a fillet, and two through bores on distinct axes. A versioned fixture lets you replay import, audit, and STEP export:

@@ -658,6 +658,7 @@ mod tests {
             guides: vec![],
             height: 7,
             shift: [3, -2],
+            strategy: crate::sketch_layers::PlannerStrategy::Automatic,
             force_triangulation: false,
             operations: None,
         };
@@ -700,6 +701,7 @@ mod tests {
             guides,
             height: 20,
             shift: [0, 0],
+            strategy: crate::sketch_layers::PlannerStrategy::Automatic,
             force_triangulation: false,
             operations: None,
         };
@@ -725,6 +727,7 @@ mod tests {
             guides: vec![],
             height: 10,
             shift: [0, 0],
+            strategy: crate::sketch_layers::PlannerStrategy::Automatic,
             force_triangulation: false,
             operations: None,
         };
@@ -759,6 +762,7 @@ mod tests {
             guides: vec![],
             height: 10,
             shift: [0, 0],
+            strategy: crate::sketch_layers::PlannerStrategy::Automatic,
             force_triangulation: false,
             operations: None,
         };
@@ -802,6 +806,7 @@ mod tests {
             guides: vec![],
             height: 10,
             shift: [0, 0],
+            strategy: crate::sketch_layers::PlannerStrategy::Automatic,
             force_triangulation: false,
             operations: None,
         };

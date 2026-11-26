@@ -363,6 +363,7 @@ pub(crate) fn build_with_strategy(
         outer: j.outer.clone(),
         height: j.height,
         shift: [0, 0],
+        strategy: crate::sketch_layers::PlannerStrategy::Automatic,
         cuts: Vec::new(),
         guides: Vec::new(),
         force_triangulation: false,

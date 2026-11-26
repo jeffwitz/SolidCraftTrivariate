@@ -17,3 +17,23 @@ Report three distinct outcomes for each admissible input: whether a model passed
 Use public synthetic inputs independent of the holdout. For polygonal sections, search separating lines from convex features and test their intersections with the current host. A separating line can meet adjacent host edges. Verify the resulting cell topology, convexity and full traces before admitting a quadrilateral ring. On blind pockets the floor must also admit a conforming cap, including boundary parity. Treat concave stock and holes as a separate extension.
 
 For stacked bores, propagate a requested cut through mapped face coordinates. Carry axis permutations, reversals, knot parameters and feature provenance. Split a rational Bézier span in homogeneous coordinates. A trace entering a neighbor must be an admitted isoparametric cut there before exact tensor subdivision can be used. Close the cut set across all incident faces, deduplicate requests, enforce a declared block budget and certify both children and their interfaces. Record the first incompatible trace or budget refusal. Compare the final count with other certified plans before selection.
+
+
+## Run on independent private sketches
+
+The kernel evaluated here is frozen at `4e8a3944cd5aa85f8ba0984b109b6649b2d54b6f`. The next commit supplies the three bracket regression recipes and has identical Rust sources. Build the reference and candidate into separate directories. This leaves the active checkout and the private corpus intact.
+
+```sh
+git worktree add --detach ../sct-baseline e5bd5c6
+git worktree add --detach ../sct-candidate 15b2626
+cargo build --release --locked --offline --manifest-path ../sct-baseline/Cargo.toml
+cargo build --release --locked --offline --manifest-path ../sct-candidate/Cargo.toml
+mkdir -p build/holdout/baseline build/holdout/candidate
+for version in baseline candidate; do
+    cli="../sct-$version/target/release/solidcraft-trivariate"
+    "$cli" build "$RECIPE" "build/holdout/$version/model.json" &&
+    "$cli" audit "build/holdout/$version/model.json"
+done
+```
+
+Set `RECIPE` to the path of one private recipe. Use a fresh output directory per recipe when collecting a corpus. Record unsuccessful builds and run the independent geometry checks before comparing block counts. The [public 3D controls](results/propagated-bores.md) include the corresponding STEP readback.

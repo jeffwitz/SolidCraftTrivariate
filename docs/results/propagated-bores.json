@@ -1,0 +1,390 @@
+{
+  "baseline_revision": "e5bd5c6",
+  "candidate_revision": "4e8a3944cd5aa85f8ba0984b109b6649b2d54b6f",
+  "baseline": {
+    "binary_sha256": "ea0bbf8609bb575cc5ac5f8dec6c8c1659a85050a95f7f0db86869d15160786c",
+    "cases": {
+      "original": {
+        "status": "qualified",
+        "method": "four_sector_local_sweeps",
+        "blocks": 10,
+        "reason": null,
+        "det_lower_mm3": 67.7333333333291,
+        "interfaces": 11,
+        "max_sampled_kappa": 13.333333333333334,
+        "volume_relative_error": 4.526991852127318e-16,
+        "probes": 192,
+        "probe_mismatches": 0,
+        "closed_valid": true,
+        "labels_match": true
+      },
+      "in_plane": {
+        "status": "qualified",
+        "method": "four_sector_local_sweeps",
+        "blocks": 14,
+        "reason": null,
+        "det_lower_mm3": 2.102857142851801,
+        "interfaces": 16,
+        "max_sampled_kappa": 13.333333333333334,
+        "volume_relative_error": 0.0,
+        "probes": 208,
+        "probe_mismatches": 0,
+        "closed_valid": true,
+        "labels_match": true
+      },
+      "east_stack": {
+        "status": "qualified",
+        "method": "axis_planes_and_disjoint_local_sweeps",
+        "blocks": 112,
+        "reason": "compact_bracket_error:uncoupled_orthogonal_sketch_interface",
+        "det_lower_mm3": 0.006696428571417738,
+        "interfaces": 192,
+        "max_sampled_kappa": 128.0,
+        "volume_relative_error": 7.934643313700333e-16,
+        "probes": 208,
+        "probe_mismatches": 0,
+        "closed_valid": true,
+        "labels_match": true
+      },
+      "north_stack": {
+        "status": "qualified",
+        "method": "axis_planes_and_disjoint_local_sweeps",
+        "blocks": 112,
+        "reason": "compact_bracket_error:uncoupled_orthogonal_sketch_interface",
+        "det_lower_mm3": 0.006696428571418174,
+        "interfaces": 192,
+        "max_sampled_kappa": 128.0,
+        "volume_relative_error": 1.5869286627400665e-15,
+        "probes": 208,
+        "probe_mismatches": 0,
+        "closed_valid": true,
+        "labels_match": true
+      },
+      "east_offset_stack": {
+        "status": "refused",
+        "reason": "{\"reason\":\"bore_guard_needs_additional_trace_subdivision\",\"status\":\"error\"}"
+      },
+      "diagonal": {
+        "status": "qualified",
+        "method": "axis_planes_and_disjoint_local_sweeps",
+        "blocks": 142,
+        "reason": "compact_bracket_error:uncoupled_orthogonal_sketch_interface",
+        "det_lower_mm3": 0.006696428571415554,
+        "interfaces": 249,
+        "max_sampled_kappa": 128.0,
+        "volume_relative_error": 4.534081893543048e-16,
+        "probes": 208,
+        "probe_mismatches": 0,
+        "closed_valid": true,
+        "labels_match": true
+      },
+      "three_levels": {
+        "status": "refused",
+        "reason": "{\"reason\":\"bore_guard_needs_additional_trace_subdivision\",\"status\":\"error\"}"
+      },
+      "both_stacked": {
+        "status": "refused",
+        "reason": "{\"reason\":\"bore_guard_needs_additional_trace_subdivision\",\"status\":\"error\"}"
+      },
+      "axial_z": {
+        "status": "refused",
+        "reason": "{\"reason\":\"uncoupled_orthogonal_sketch_interface\",\"status\":\"error\"}"
+      },
+      "unequal_stack": {
+        "status": "qualified",
+        "method": "axis_planes_and_disjoint_local_sweeps",
+        "blocks": 112,
+        "reason": "compact_bracket_unequal_leg_thickness",
+        "det_lower_mm3": 0.006696428571417738,
+        "interfaces": 192,
+        "max_sampled_kappa": 192.0,
+        "volume_relative_error": 9.421532301657497e-16,
+        "probes": 208,
+        "probe_mismatches": 0,
+        "closed_valid": true,
+        "labels_match": true
+      }
+    }
+  },
+  "candidate": {
+    "binary_sha256": "684c7c6a89423f798648800e28c53d1065c23b8aaa7e5407409714cea4a36f70",
+    "cases": {
+      "original": {
+        "status": "qualified",
+        "method": "four_sector_local_sweeps",
+        "blocks": 10,
+        "reason": null,
+        "det_lower_mm3": 67.7333333333291,
+        "cut_comparison": {
+          "previous": {
+            "blocks": 10
+          },
+          "propagated": {
+            "blocks": 10
+          }
+        },
+        "interfaces": 11,
+        "max_sampled_kappa": 13.333333333333334,
+        "volume_relative_error": 4.526991852127318e-16,
+        "probes": 192,
+        "probe_mismatches": 0,
+        "closed_valid": true,
+        "labels_match": true
+      },
+      "in_plane": {
+        "status": "qualified",
+        "method": "four_sector_local_sweeps",
+        "blocks": 14,
+        "reason": null,
+        "det_lower_mm3": 2.102857142851801,
+        "cut_comparison": {
+          "previous": {
+            "blocks": 14
+          },
+          "propagated": {
+            "blocks": 14
+          }
+        },
+        "interfaces": 16,
+        "max_sampled_kappa": 13.333333333333334,
+        "volume_relative_error": 0.0,
+        "probes": 208,
+        "probe_mismatches": 0,
+        "closed_valid": true,
+        "labels_match": true
+      },
+      "east_stack": {
+        "status": "qualified",
+        "method": "propagated_isoparametric_cuts",
+        "blocks": 17,
+        "reason": null,
+        "det_lower_mm3": 21.308571428563937,
+        "cut_comparison": {
+          "previous": {
+            "blocks": 112
+          },
+          "propagated": {
+            "blocks": 17
+          }
+        },
+        "cut_rounds": [
+          {
+            "blocks": 17,
+            "closed_cuts": 3,
+            "requests": 2
+          }
+        ],
+        "cut_source_records": 3,
+        "interfaces": 22,
+        "max_sampled_kappa": 8.102909222133583,
+        "volume_relative_error": 3.4005614201572855e-16,
+        "probes": 208,
+        "probe_mismatches": 0,
+        "closed_valid": true,
+        "labels_match": true
+      },
+      "north_stack": {
+        "status": "qualified",
+        "method": "propagated_isoparametric_cuts",
+        "blocks": 17,
+        "reason": null,
+        "det_lower_mm3": 14.65714285713713,
+        "cut_comparison": {
+          "previous": {
+            "blocks": 112
+          },
+          "propagated": {
+            "blocks": 17
+          }
+        },
+        "cut_rounds": [
+          {
+            "blocks": 17,
+            "closed_cuts": 3,
+            "requests": 2
+          }
+        ],
+        "cut_source_records": 3,
+        "interfaces": 22,
+        "max_sampled_kappa": 8.83397010792513,
+        "volume_relative_error": 1.133520473385762e-16,
+        "probes": 208,
+        "probe_mismatches": 0,
+        "closed_valid": true,
+        "labels_match": true
+      },
+      "east_offset_stack": {
+        "status": "qualified",
+        "method": "propagated_isoparametric_cuts",
+        "blocks": 17,
+        "reason": null,
+        "det_lower_mm3": 8.685714285703781,
+        "cut_comparison": {
+          "previous": {
+            "refusal": "bore_guard_needs_additional_trace_subdivision"
+          },
+          "propagated": {
+            "blocks": 17
+          }
+        },
+        "cut_rounds": [
+          {
+            "blocks": 17,
+            "closed_cuts": 3,
+            "requests": 2
+          }
+        ],
+        "cut_source_records": 3,
+        "interfaces": 22,
+        "max_sampled_kappa": 10.766174652083421,
+        "volume_relative_error": 0.0,
+        "probes": 208,
+        "probe_mismatches": 0,
+        "closed_valid": true,
+        "labels_match": true
+      },
+      "diagonal": {
+        "status": "qualified",
+        "method": "local_bore_hosts",
+        "blocks": 14,
+        "reason": null,
+        "det_lower_mm3": 6.514285714264018,
+        "cut_comparison": {
+          "previous": {
+            "blocks": 142
+          },
+          "propagated": {
+            "blocks": 14
+          }
+        },
+        "interfaces": 16,
+        "max_sampled_kappa": 13.333333333333334,
+        "volume_relative_error": 4.534081893543048e-16,
+        "probes": 208,
+        "probe_mismatches": 0,
+        "closed_valid": true,
+        "labels_match": true
+      },
+      "three_levels": {
+        "status": "qualified",
+        "method": "propagated_isoparametric_cuts",
+        "blocks": 24,
+        "reason": null,
+        "det_lower_mm3": 4.388571428562449,
+        "cut_comparison": {
+          "previous": {
+            "refusal": "bore_guard_needs_additional_trace_subdivision"
+          },
+          "propagated": {
+            "blocks": 24
+          }
+        },
+        "cut_rounds": [
+          {
+            "blocks": 24,
+            "closed_cuts": 6,
+            "requests": 4
+          }
+        ],
+        "cut_source_records": 6,
+        "interfaces": 33,
+        "max_sampled_kappa": 11.485396683929007,
+        "volume_relative_error": 4.512878083005411e-16,
+        "probes": 224,
+        "probe_mismatches": 0,
+        "closed_valid": true,
+        "labels_match": true
+      },
+      "both_stacked": {
+        "status": "qualified",
+        "method": "propagated_isoparametric_cuts",
+        "blocks": 20,
+        "reason": null,
+        "det_lower_mm3": 14.65714285713713,
+        "cut_comparison": {
+          "previous": {
+            "refusal": "bore_guard_needs_additional_trace_subdivision"
+          },
+          "propagated": {
+            "blocks": 20
+          }
+        },
+        "cut_rounds": [
+          {
+            "blocks": 20,
+            "closed_cuts": 2,
+            "requests": 4
+          }
+        ],
+        "cut_source_records": 2,
+        "interfaces": 26,
+        "max_sampled_kappa": 8.102909222133583,
+        "volume_relative_error": 3.4058956336679657e-16,
+        "probes": 224,
+        "probe_mismatches": 0,
+        "closed_valid": true,
+        "labels_match": true
+      },
+      "axial_z": {
+        "status": "qualified",
+        "method": "propagated_isoparametric_cuts",
+        "blocks": 39,
+        "reason": null,
+        "det_lower_mm3": 5.688571428570127,
+        "cut_comparison": {
+          "previous": {
+            "refusal": "uncoupled_orthogonal_sketch_interface"
+          },
+          "propagated": {
+            "blocks": 39
+          }
+        },
+        "cut_rounds": [
+          {
+            "blocks": 39,
+            "closed_cuts": 18,
+            "requests": 4
+          }
+        ],
+        "cut_source_records": 18,
+        "interfaces": 63,
+        "max_sampled_kappa": 12.808388688760227,
+        "volume_relative_error": 2.299452966874678e-16,
+        "probes": 208,
+        "probe_mismatches": 0,
+        "closed_valid": true,
+        "labels_match": true
+      },
+      "unequal_stack": {
+        "status": "qualified",
+        "method": "propagated_isoparametric_cuts",
+        "blocks": 17,
+        "reason": null,
+        "det_lower_mm3": 21.85714285713574,
+        "cut_comparison": {
+          "previous": {
+            "blocks": 112
+          },
+          "propagated": {
+            "blocks": 17
+          }
+        },
+        "cut_rounds": [
+          {
+            "blocks": 17,
+            "closed_cuts": 3,
+            "requests": 2
+          }
+        ],
+        "cut_source_records": 3,
+        "interfaces": 22,
+        "max_sampled_kappa": 7.406843105228037,
+        "volume_relative_error": 5.652919380994498e-16,
+        "probes": 208,
+        "probe_mismatches": 0,
+        "closed_valid": true,
+        "labels_match": true
+      }
+    }
+  }
+}

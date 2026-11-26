@@ -9,6 +9,7 @@ This script only orchestrates runs, checks result invariants, and plots JSON.
 
 from __future__ import annotations
 
+import xml.etree.ElementTree as ET
 import argparse
 import itertools
 import json
@@ -83,6 +84,10 @@ def number(obj: dict, key: str) -> float:
 
 
 def render_existing(records: list[dict]) -> None:
+    import os
+    mpl_config = OUT / "matplotlib-config"
+    mpl_config.mkdir(exist_ok=True)
+    os.environ.setdefault("MPLCONFIGDIR", str(mpl_config))
     import matplotlib.pyplot as plt
 
     q16 = [r for r in records if r["quadrature_order"] == 16]
@@ -95,7 +100,7 @@ def render_existing(records: list[dict]) -> None:
         ax.plot([r["scalar_dofs"] for r in rows], [r["strain_energy_n_mm"] for r in rows],
                 color=color, marker=marker, markersize=7, linewidth=2.1, label=labels[family])
     ax.set_xscale("log")
-    dof_ticks = [171, 705, 975, 4275, 6399]
+    dof_ticks = sorted({r["scalar_dofs"] for r in q16})
     ax.set_xticks(dof_ticks, [f"{x:,}" for x in dof_ticks])
     ax.set_xlabel("Global scalar Q2 degrees of freedom")
     ax.set_ylabel("Strain energy (N·mm)")
@@ -107,6 +112,16 @@ def render_existing(records: list[dict]) -> None:
     for extension in ("png", "svg"):
         fig.savefig(OUT / f"fieldcraft-bracket-pa5-energy-dof.{extension}", dpi=220 if extension == "png" else None, bbox_inches="tight")
     plt.close(fig)
+
+
+def geometry_condition(model: Path) -> float:
+    vtu = OUT / f"{model.stem}.quality.vtu"
+    cli("export-geometry-vtu", str(model), "4", str(vtu))
+    arrays = ET.parse(vtu).findall('.//Piece/PointData/DataArray[@Name="condition_number"]')
+    samples = [list(map(float, array.text.split())) for array in arrays]
+    if len(samples) != len(load_json(model)["blocks"]) or any(len(v) != 125 for v in samples):
+        raise ValueError("incomplete block quality sample")
+    return max(max(block) for block in samples)
 
 
 def main() -> None:
@@ -125,11 +140,6 @@ def main() -> None:
         raise FileNotFoundError(f"native CLI binary not found: {CLI}")
     OUT.mkdir(parents=True, exist_ok=True)
     if args.render_only:
-        import os
-
-        mpl_config = OUT / "matplotlib-config"
-        mpl_config.mkdir(exist_ok=True)
-        os.environ.setdefault("MPLCONFIGDIR", str(mpl_config))
         render_existing(load_json(OUT / "fieldcraft-bracket-pa5-energy-dof.json")["records"])
         return
 
@@ -230,9 +240,7 @@ def main() -> None:
             "quadrature_qualification": "h0 q8, q16, q24, q32 are compared for both spaces; q16/q32 energy agreement is checked explicitly. q32 provides the volume cross-check. All refined runs use q16.",
             "archive_variant_note": "The timeline-native and affine-image 48-block archives share physical dimensions and q32 volume, but use distinct Q2 spaces and have distinct energies; they are shown as separate curves.",
             "sampled_geometry_condition_number_max": {
-                "10-block": 13.33,
-                "48-block-timeline": 64.0,
-                "48-block-x64-y64": 2048.0,
+                name: geometry_condition(path) for name, path, _ in cases
             },
             "condition_number_method": "Independent export-geometry-vtu sampling on {0, 1/4, 1/2, 3/4, 1}^3 in every block; see docs/results/fieldcraft-compact.md.",
             "cli_binary": CLI.name,
@@ -248,36 +256,7 @@ def main() -> None:
     }
     json_path = OUT / "fieldcraft-bracket-pa5-energy-dof.json"
     json_path.write_text(json.dumps(output, indent=2) + "\n")
-    try:
-        import os
-        mpl_config = OUT / "matplotlib-config"
-        mpl_config.mkdir(exist_ok=True)
-        os.environ.setdefault("MPLCONFIGDIR", str(mpl_config))
-        import matplotlib.pyplot as plt
-    except ImportError as exc:
-        raise RuntimeError("matplotlib is required to render the standalone plot") from exc
-
-    q16 = [r for r in records if r["quadrature_order"] == 16]
-    fig, ax = plt.subplots(figsize=(8.2, 5.4), constrained_layout=True)
-    styles = {"10-block": ("#147D92", "o"), "48-block-timeline": ("#D56A27", "s"), "48-block-x64-y64": ("#7654A6", "^")}
-    labels = {"10-block": "10 blocks", "48-block-timeline": "48 blocks · timeline grid", "48-block-x64-y64": "48 blocks · x64-y64 archive grid"}
-    for family, _, _ in cases:
-        rows = sorted((r for r in q16 if r["family"] == family), key=lambda r: r["scalar_dofs"])
-        color, marker = styles[family]
-        ax.plot([r["scalar_dofs"] for r in rows], [r["strain_energy_n_mm"] for r in rows],
-                color=color, marker=marker, markersize=7, linewidth=2.1, label=labels[family])
-    ax.set_xscale("log")
-    dof_ticks = [171, 705, 975, 4275, 6399]
-    ax.set_xticks(dof_ticks, [f"{x:,}" for x in dof_ticks])
-    ax.set_xlabel("Global scalar Q2 degrees of freedom")
-    ax.set_ylabel("Strain energy (N·mm)")
-    ax.set_title("FieldCraft bracket: energy versus analysis size")
-    ax.grid(True, which="both", color="#D9DEE5", linewidth=0.7)
-    ax.spines[["top", "right"]].set_visible(False)
-    ax.legend(frameon=False, title="Geometric partition")
-    fig.text(0.01, -0.015, "Same geometry, supports, +2000 N traction, steel, and q16 integration; full uniform octree refinement.", fontsize=8.5, color="#475569")
-    for extension in ("png", "svg"):
-        fig.savefig(OUT / f"fieldcraft-bracket-pa5-energy-dof.{extension}", dpi=220 if extension == "png" else None, bbox_inches="tight")
+    render_existing(records)
     print(json.dumps({"result": str(json_path), "records": len(records), "plot": str(OUT / "fieldcraft-bracket-pa5-energy-dof.png")}, indent=2))
 
 

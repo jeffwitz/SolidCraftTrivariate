@@ -25,7 +25,7 @@ The macro reads AP214 STEP with FreeCAD 26.3.0 / OCCT and checks validity, one s
 | --- | ---: | ---: | ---: | ---: | --- |
 | Unequal filleted L, no bores | 1 / 1 / 18 | 30761.203552627685 | `30912 − 48π` = 30761.20355262769 | <1e−15 | Valid, closed, volume agrees |
 | Slender plate with one through bore | 1 / 1 / 24 | 14060.707993412296 | `14400 − 108π` = 14060.707993412303 | 5.2e−16 | Valid, closed, volume agrees |
-| Unequal filleted L with transverse bores in both arms | 1 / 1 / 140 | 30359.0796929682 | `30912 − 176π` = 30359.079692968196 | <2e−16 | Valid, closed, volume agrees |
+| Unequal filleted L with transverse bores in both arms | 1 / 1 / 38 | 30359.079692968182 | `30912 − 176π` = 30359.079692968196 | 4.8e−16 | Valid, closed, volume agrees |
 | FieldCraft bracket with an extra R2 bore | 1 / 1 / 52 | 32044.24796047382 | `34080 − 648π` = 32044.247960473815 | 1.14e−16 | Valid, closed, volume agrees |
 
-The default `FreeCAD.Shape.Volume` values for the first three imports were 30761.203550362396, 14060.707993590195, and 30358.52082001161 mm³. The last differs from the analytic target by 0.5588729566 mm³, while adaptive OCCT integration agrees with the target within its reported error estimate. Keep this default-property discrepancy in the raw output; it is not the acceptance measurement. Full measurements are written by the macro to `build/orthogonal-step-freecad-audit.json`.
+On the ten-block unequal bracket the default FreeCAD property gives 30359.079691341878 mm³. The earlier 48-block export had 140 boundary faces and gave 30358.52082001161 mm³ with the default property. Both representations pass adaptive integration against the same analytic target. Full measurements are written by the macro to `build/orthogonal-step-freecad-audit.json`.

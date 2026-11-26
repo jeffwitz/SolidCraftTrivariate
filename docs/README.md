@@ -25,4 +25,4 @@ The [campaign summary](bilan-campagne-20261125.md) gives the outcomes of the ini
 
 The [research positioning](positionnement-campagne-20261125.md), [development workflow study](../ArtcratAdaptation.md) and [FieldCraft and SolidCraft design study](../LienSolidecraft.md) document the project's starting assumptions. For current development conventions, see the [repository instructions](../AGENTS.md) and [Luna guide](LUNA.md).
 
-The [blind sketch-planner evaluation protocol](sketch-planner-blind-evaluation.md) defines the paired comparison against revision `e5bd5c6`.
+The [blind sketch-planner evaluation protocol](sketch-planner-blind-evaluation.md) includes the paired comparison against revision `e5bd5c6`. The [bracket propagation study](results/propagated-bores.md) records block counts, map quality and independent STEP readback for ten controls.

@@ -6,6 +6,8 @@ The gallery contains six curved-profile solids and five FieldCraft bracket varia
 
 The polygonal planner compares local separators with the historical partition on the same recipe. In the recorded corpus, the blind pocket uses 9 instead of 17 volumes and the two-hole C profile uses 9 instead of 35. Both meet the topological lower bound within the conforming partition class studied. Map conditioning also affects analysis. [Algorithm](docs/architecture.md#planner) · [Corpus, proofs, and measurements](docs/partition-poche-comparaison.md) · [Sketch-based construction](docs/partition-esquisses.md)
 
+The paired planner evaluation compares convex sketch partitions and multi-bore brackets against release `e5bd5c6`. On the ten public bracket controls the new kernel builds ten valid closed solids, including the four cases previously refused. The east and north bore stacks each use 17 blocks, down from 112. [Paired evaluation](docs/sketch-planner-blind-evaluation.md) · [Bracket controls and STEP results](docs/results/propagated-bores.md)
+
 ## Quick start: sketch, plan, volumes
 
 Requirements: Rust/Cargo, Python 3.10+, Git, Bash, and Make. From the repository root, the initial Rust workflow does not depend on upstream clones or Python oracles:

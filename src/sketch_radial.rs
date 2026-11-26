@@ -292,6 +292,7 @@ mod tests {
             guides: vec![],
             operations: None,
             shift: [0, 0],
+            strategy: crate::sketch_layers::PlannerStrategy::Automatic,
             force_triangulation: false,
         };
         let ring = footprint(&job).unwrap().unwrap();

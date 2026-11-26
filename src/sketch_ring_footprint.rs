@@ -61,6 +61,22 @@ fn cap(poly: &[Point]) -> Option<Vec<Quad>> {
 }
 
 pub(super) fn visit(job: &SketchLayers, mut consider: impl FnMut(Arrangement)) {
+    visit_with(job, host_candidates, &mut consider)
+}
+
+pub(super) fn visit_lookahead(job: &SketchLayers, mut consider: impl FnMut(Arrangement)) {
+    visit_with(
+        job,
+        crate::sketch_convex_hosts::host_candidates_lookahead,
+        &mut consider,
+    )
+}
+
+fn visit_with(
+    job: &SketchLayers,
+    host_candidates: fn(&[Point], &[Vec<Point>]) -> Vec<Vec<Vec<Point>>>,
+    consider: &mut impl FnMut(Arrangement),
+) {
     if job.force_triangulation
         || !job.guides.is_empty()
         || job.operations.is_some()

@@ -326,6 +326,26 @@ fn convex_hull(points: &[Point]) -> Vec<Point> {
         .collect()
 }
 
+// Chord endpoints are distinct bounded rational coordinates. Carry the
+// rounding residuals through the square root so clearance ties do not
+// depend on the system libm implementation of hypot.
+fn chord_length(a: Point, b: Point) -> f64 {
+    let dx = (as_f64(b[0]) - as_f64(a[0])).abs();
+    let dy = (as_f64(b[1]) - as_f64(a[1])).abs();
+    let (long, short) = (dx.max(dy), dx.min(dy));
+    let long_sq = long * long;
+    let short_sq = short * short;
+    let sum = long_sq + short_sq;
+    let root = sum.sqrt();
+    if root == 0.0 {
+        return root;
+    }
+    let sum_error = (long_sq - sum) + short_sq;
+    let error = sum_error + long.mul_add(long, -long_sq) + short.mul_add(short, -short_sq);
+    let residual = (-root).mul_add(root, sum) + error;
+    root + residual / (2.0 * root)
+}
+
 fn split(
     work: &Work,
     holes: &[Vec<Point>],
@@ -341,7 +361,7 @@ fn split(
         }
         let mut left = Vec::new();
         let mut right = Vec::new();
-        let length = (as_f64(b[0]) - as_f64(a[0])).hypot(as_f64(b[1]) - as_f64(a[1]));
+        let length = chord_length(a, b);
         let mut clearance = f64::INFINITY;
         let mut valid = true;
         for &hid in &work.hole_ids {

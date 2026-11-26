@@ -15,6 +15,8 @@ import hashlib
 import json
 import math
 import sys
+import subprocess
+import tempfile
 from fractions import Fraction
 from pathlib import Path
 
@@ -311,6 +313,89 @@ def _chain_patch(curved, blocks, chain):
     }
 
 
+def verify_cylinder_seams(cover, model, expected_segments):
+    """Classify each original same-patch face as an internal knot or an identified end."""
+    from collections import Counter
+
+    locations = {}
+    for patch in cover["patches"]:
+        for span in patch["spans"]:
+            if span["axis_map"] != [0, 1, 2] or any(span["flips"]):
+                raise ValueError("Unexpected cylinder tensor orientation")
+            locations[span["source_block"]] = (patch, span["parameter_intervals"])
+
+    expected = Counter()
+    for iface in model["topology"]["interfaces"]:
+        (cell_a, side_a), (cell_b, side_b) = iface["first"], iface["second"]
+        pa, ranges_a = locations[cell_a]
+        pb, ranges_b = locations[cell_b]
+        if pa["id"] != pb["id"]:
+            continue
+        axis = "uvw".index(side_a[0])
+        if (
+            side_a[0] != side_b[0]
+            or side_a[1] == side_b[1]
+            or any(iface["orientation"].values())
+        ):
+            raise ValueError("Undeclared axis change inside cylinder tensor")
+        if any(ranges_a[d] != ranges_b[d] for d in range(3) if d != axis):
+            raise ValueError(
+                "Seam spans do not coincide in their tangential coordinates"
+            )
+        ends = [ranges_a[axis][int(side_a[1])], ranges_b[axis][int(side_b[1])]]
+        if ends[0] != ends[1]:
+            if sorted(ends) != [0, pa["knots"][axis][-1]] or axis != 0:
+                raise ValueError("Invalid identification across a cylinder patch")
+            expected[tuple(sorted(((cell_a, side_a), (cell_b, side_b))))] += 1
+
+    actual = Counter()
+    for seam in cover.get("self_seams", []):
+        faces = [seam[key] for key in ("first", "second")]
+        if any(
+            face["patch_id"] != locations[face["source_block"]][0]["id"]
+            or face["patch_side"] != face["side"]
+            for face in faces
+        ) or any(seam["orientation"].values()):
+            raise ValueError("Invalid cylinder self seam")
+        actual[
+            tuple(sorted((face["source_block"], face["side"]) for face in faces))
+        ] += 1
+    if expected != actual or sum(actual.values()) != expected_segments:
+        raise ValueError("Cylinder cover omits or duplicates a required self seam")
+
+
+def publish_cylinder(root, outdir, check):
+    """Rebuild both tensor covers and independently verify extraction and topology."""
+    from check_gallery_patch_maps import verify_patch_samples, verify_patch_topology
+
+    model_path = outdir / "cylinder.model.json"
+    model = json.loads(model_path.read_bytes())
+    binary = root / "target/release/examples/cylinder_tensor_covers"
+    with tempfile.TemporaryDirectory() as tmp:
+        subprocess.run([binary, model_path, tmp], check=True)
+        for count in (2, 3):
+            filename = f"cylinder-{count}.patches.json"
+            data = (Path(tmp) / filename).read_bytes()
+            cover = json.loads(data)
+            if len(cover["patches"]) != count:
+                raise ValueError(f"Unexpected cylinder cover size for {filename}")
+            verify_patch_samples(cover["patches"], model)
+            verify_patch_topology(cover, model)
+            verify_cylinder_seams(cover, model, 3 if count == 2 else 0)
+            destinations = [outdir / filename]
+            if count == 2:
+                destinations.append(outdir / "cylinder.patches.json")
+            for path in destinations:
+                if check:
+                    if path.read_bytes() != data:
+                        raise ValueError(f"Stale cylinder cover: {path}")
+                else:
+                    path.write_bytes(data)
+            print(
+                f"cylinder: 15 source cells extracted exactly from {count} NURBS volumes"
+            )
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--root", type=Path, default=Path("."))
@@ -326,6 +411,9 @@ def main() -> None:
     if not args.check:
         outdir.mkdir(parents=True, exist_ok=True)
     for state in args.states:
+        if state == "cylinder":
+            publish_cylinder(root, outdir, args.check)
+            continue
         payload = build_one(root, state)
         path = outdir / f"{state}.patches.json"
         encoded = json.dumps(payload, separators=(",", ":"), sort_keys=True) + "\n"

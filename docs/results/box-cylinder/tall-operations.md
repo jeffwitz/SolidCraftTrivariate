@@ -21,7 +21,7 @@ The suite extends the box/cylinder constructor, the exact gallery patch maps and
 | State | Bézier cells | NURBS volumes | Shared Bézier faces |
 |---|---:|---:|---:|
 | A | 1 | 1 | 0 |
-| B | 15 | 5 | 34 |
+| B | 15 | 2 (closed ring) or 3 (half-rings) | 34 |
 | Union | 19 | 7 | 42 |
 | Intersection | 5 | 3 | 8 |
 | A minus B | 4 | 2 | 4 |
@@ -29,6 +29,8 @@ The suite extends the box/cylinder constructor, the exact gallery patch maps and
 | Symmetric difference | 14 | 8 | 20 |
 
 Each disk section has a regular square core and four surrounding cells. The disk sectors reuse the homogeneous circular traces of the classical bore. In the union, five axial NURBS volumes continue through all three height intervals. The remaining two volumes contain the four original bore sectors. Every source Bézier cell is recovered by extraction from its assigned NURBS volume. These counts describe the published construction.
+
+The cylinder supports a joint angular and axial fusion. The two-volume cover identifies both angular end traces of the annulus. The three-volume cover has two half-rings. [Geometry, seam topology and IGA qualification](closed-ring-iga.md)
 
 ## Reproduce the gallery
 
@@ -40,6 +42,7 @@ cli=target/release/solidcraft-trivariate
 mkdir -p build
 "$cli" build "$site/union.recipe.json" build/tall-union.json
 "$cli" audit build/tall-union.json
+cargo build --release --locked --offline --example cylinder_tensor_covers
 python3 scripts/build_box_cylinder_tall_patches.py --check
 python3 scripts/check_tall_booleans.py
 ```

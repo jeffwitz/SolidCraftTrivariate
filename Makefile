@@ -23,7 +23,7 @@ demo:
 demo: demo-native
 check-published-geometry:
 	cargo build --locked --offline --release
-	cargo build --locked --offline --release --example annulus_four_block_chamfer --example annulus_original_edges --example annulus_prepared_volumes
+	cargo build --locked --offline --release --example annulus_four_block_chamfer --example annulus_original_edges --example annulus_prepared_volumes --example cylinder_tensor_covers
 	python3 scripts/check_operation_geometry.py
 	python3 scripts/build_box_cylinder_tall_patches.py --check
 	python3 scripts/check_tall_booleans.py
@@ -32,3 +32,8 @@ check-published-geometry:
 	python3 tests/references/replay_geometry_recipes.py --cli target/release/solidcraft-trivariate --work build/reference-recipe-replay --output build/reference-recipe-replay.json
 check: test demo check-published-geometry
 check-strict: refs check
+
+.PHONY: check-cylinder-iga
+check-cylinder-iga:
+	python3 tests/references/cylinder_torsion.py
+	python3 tests/references/tall_cylinder_iga.py --check

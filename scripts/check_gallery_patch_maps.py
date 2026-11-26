@@ -38,7 +38,7 @@ def weighted_point(controls, bases):
     return x
 
 
-def exact_control_net(patch, span, source, interval, shape, controls):
+def exact_control_net(patch, span, source, offsets, shape, controls):
     """Compare every coefficient after closed-form tensor Bernstein degree elevation."""
     degrees = patch["degrees"]
     axes = span["axis_map"]
@@ -62,7 +62,8 @@ def exact_control_net(patch, span, source, interval, shape, controls):
                 for j in range(n + 1)
             ]
         expected = weighted_point(source["controls"], rows)
-        pos = ((out[0] + interval * degrees[0]) * shape[1] + out[1]) * shape[2] + out[2]
+        i, j, k = [v + base * d for v, base, d in zip(out, offsets, degrees)]
+        pos = (i * shape[1] + j) * shape[2] + k
         actual = controls[pos]
         if scale is None:
             scale = Fraction(actual[3]) / expected[3]
@@ -90,7 +91,9 @@ def verify_patch_samples(patches, model):
         count = len(patch["spans"])
         expected_knots = []
         for axis, degree in enumerate(degrees):
-            n = count if axis == 0 else 1
+            n = patch["knots"][axis][-1]
+            if not isinstance(n, int) or not 1 <= n <= count:
+                raise ValueError(f"Invalid span count in {patch['id']}")
             expected_knots.append(
                 [0] * (degree + 1)
                 + [k for k in range(1, n) for _ in range(degree)]
@@ -105,23 +108,29 @@ def verify_patch_samples(patches, model):
         ]
         if patch["control_shape"] != shape or len(controls) != prod(shape):
             raise ValueError("Invalid assembled control lattice dimensions")
+        available = set(product(*(range(k[-1]) for k in expected_knots)))
         for interval, span in enumerate(patch["spans"]):
             name = span["source_block"]
             if name in visited or name not in cells:
                 raise ValueError(f"Duplicated or unknown source cell {name}")
             visited.add(name)
             src = cells[name]
-            start, end = map(Fraction, span["parameter_interval"])
+            if "parameter_intervals" in span:
+                bounds = span["parameter_intervals"]
+            else:
+                bounds = [span["parameter_interval"], [0, 1], [0, 1]]
+                if bounds[0] != [interval, interval + 1]:
+                    raise ValueError("Unexpected legacy cell order")
             axes = span["axis_map"]
-            if sorted(axes) != [0, 1, 2] or len(span["flips"]) != 3 or start >= end:
+            if sorted(axes) != [0, 1, 2] or len(span["flips"]) != 3 or len(bounds) != 3:
                 raise ValueError(f"Invalid parameter map for {name}")
-            if (start, end) != (interval, interval + 1):
-                raise ValueError(
-                    "Source cell does not match the recorded knot interval"
-                )
-            exact_control_net(patch, span, src, interval, shape, controls)
+            offsets = tuple(pair[0] for pair in bounds)
+            if offsets not in available or any(b != a + 1 for a, b in bounds):
+                raise ValueError(f"Missing or duplicated knot cell for {name}")
+            available.remove(offsets)
+            exact_control_net(patch, span, src, offsets, shape, controls)
             for uvw in witnesses:
-                t = (start + (end - start) * uvw[0], *uvw[1:])
+                t = tuple(start + u for start, u in zip(offsets, uvw))
                 loc = [0] * 3
                 for axis, source_axis in enumerate(axes):
                     loc[source_axis] = (
@@ -141,6 +150,8 @@ def verify_patch_samples(patches, model):
                     raise ValueError(
                         f"Patch {patch['id']} diverges from {name} at {uvw}"
                     )
+        if available:
+            raise ValueError(f"Uncovered knot cells in {patch['id']}")
     if visited != set(cells):
         raise ValueError("The NURBS patches do not cover every source cell")
     return len(visited) * len(witnesses)

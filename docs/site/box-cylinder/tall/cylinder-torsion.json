@@ -1,0 +1,70 @@
+{
+  "test": "3D linear elasticity, exact circular-cylinder torsion",
+  "gauss_order": 16,
+  "shear_modulus_MPa": 1,
+  "twist_per_mm": 0.001,
+  "analytic_torque_N_mm": 0.9817477042468105,
+  "analytic_energy_N_mm": 0.017671458676442584,
+  "covers": {
+    "bezier_15": {
+      "vector_dofs": 204,
+      "free_vector_dofs": 153,
+      "torque_N_mm": 0.9817477042518732,
+      "support_torque_N_mm": -0.9817477042518729,
+      "torque_balance_relative": 3.392591660210256e-16,
+      "energy_N_mm": 0.017671458676533726,
+      "torque_relative_error": 5.156763904778927e-12,
+      "energy_relative_error": 5.157430038593702e-12,
+      "displacement_relative_error": 7.741463933604898e-13,
+      "free_residual": 4.345158992532504e-14
+    },
+    "nurbs_3": {
+      "vector_dofs": 204,
+      "free_vector_dofs": 153,
+      "torque_N_mm": 0.9817477042518732,
+      "support_torque_N_mm": -0.9817477042518674,
+      "torque_balance_relative": 5.88049221103111e-15,
+      "energy_N_mm": 0.017671458676533552,
+      "torque_relative_error": 5.156763904778927e-12,
+      "energy_relative_error": 5.147660075977001e-12,
+      "displacement_relative_error": 7.704447537206461e-13,
+      "free_residual": 3.696063679729894e-14
+    },
+    "nurbs_2": {
+      "vector_dofs": 204,
+      "free_vector_dofs": 153,
+      "torque_N_mm": 0.9817477042518732,
+      "support_torque_N_mm": -0.9817477042518621,
+      "torque_balance_relative": 1.1308638867367519e-14,
+      "energy_N_mm": 0.017671458676533615,
+      "torque_relative_error": 5.156763904778927e-12,
+      "energy_relative_error": 5.151212789655801e-12,
+      "displacement_relative_error": 7.695885119447917e-13,
+      "free_residual": 4.506081154928946e-14
+    }
+  },
+  "closed_ring_order20": {
+    "vector_dofs": 204,
+    "free_vector_dofs": 153,
+    "torque_N_mm": 0.981747704246817,
+    "support_torque_N_mm": -0.9817477042468186,
+    "torque_balance_relative": 1.5832094414396065e-15,
+    "energy_N_mm": 0.017671458676442715,
+    "torque_relative_error": 6.661338147750939e-15,
+    "energy_relative_error": 7.327471962526033e-15,
+    "displacement_relative_error": 3.8912310016208576e-14,
+    "free_residual": 3.926554293944375e-14
+  },
+  "negative_control_opened_seam": {
+    "vector_dofs": 216,
+    "free_vector_dofs": 162,
+    "torque_N_mm": 0.9817477042518732,
+    "support_torque_N_mm": -0.9817477042518584,
+    "torque_balance_relative": 1.50404896935988e-14,
+    "energy_N_mm": 0.020864050522078598,
+    "torque_relative_error": 5.156763904778927e-12,
+    "energy_relative_error": 0.18066374169167942,
+    "displacement_relative_error": 0.20330619848287315,
+    "free_residual": 5.048676032638201e-14
+  }
+}

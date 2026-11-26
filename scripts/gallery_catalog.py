@@ -182,24 +182,26 @@ def prepare_audit(case_id: str, old: dict, kernel_audit: dict, build_report: dic
 
 def refresh_entry_metadata(entry: dict, build_report: dict, kernel_audit: dict,
                            model: dict, polygon_record: dict | None,
-                           bracket_record: dict | None, condition: dict) -> None:
+                           bracket_record: dict | None, condition: dict, height_factor: int = 1) -> None:
     method = model.get("partition_plan", {}).get("method", build_report.get("method", kernel_audit.get("method", model.get("schema", "native Rust builder"))))
     blocks = int(kernel_audit.get("blocks", len(model.get("blocks", []))))
     interfaces = int(kernel_audit.get("shared_faces", len(model.get("topology", {}).get("interfaces", []))))
     sampled_kappa = condition["maximum_condition_2"]
     if polygon_record:
-        old_kappa = max(float(row["max_condition_2"]) for row in polygon_record["condition_grid_5cube_per_block"])
-        if int(polygon_record["block_count"]) != blocks or method != polygon_record["construction_method"]:
-            raise ValueError(f"latest polygon ledger does not match current kernel for {entry['id']}")
-        latest_build = json.loads(polygon_record["build_stdout"])
-        if int(latest_build["shared_faces"]) != interfaces:
-            raise ValueError(f"latest polygon interface count does not match current kernel for {entry['id']}")
-        if abs(sampled_kappa - old_kappa) > 1e-10 * max(1.0, old_kappa):
-            raise ValueError(f"latest polygon condition measurement differs for {entry['id']}: {sampled_kappa} != {old_kappa}")
-        current_det = float(kernel_audit["determinant_lower_bound_mm3"])
-        latest_det = float(polygon_record["closed_domain_certificate"]["determinant_lower_bound_mm3"])
-        if abs(current_det - latest_det) > 1e-10 * max(1.0, abs(latest_det)):
-            raise ValueError(f"latest polygon determinant bound differs for {entry['id']}")
+        # The planner may select another partition when the extrusion height changes.
+        if height_factor == 1:
+            old_kappa = max(float(row["max_condition_2"]) for row in polygon_record["condition_grid_5cube_per_block"])
+            if int(polygon_record["block_count"]) != blocks or method != polygon_record["construction_method"]:
+                raise ValueError(f"latest polygon ledger does not match current kernel for {entry['id']}")
+            latest_build = json.loads(polygon_record["build_stdout"])
+            if int(latest_build["shared_faces"]) != interfaces:
+                raise ValueError(f"latest polygon interface count does not match current kernel for {entry['id']}")
+            if abs(sampled_kappa - old_kappa) > 1e-10 * max(1.0, old_kappa):
+                raise ValueError(f"latest polygon condition measurement differs for {entry['id']}: {sampled_kappa} != {old_kappa}")
+            current_det = float(kernel_audit["determinant_lower_bound_mm3"])
+            latest_det = height_factor * float(polygon_record["closed_domain_certificate"]["determinant_lower_bound_mm3"])
+            if abs(current_det - latest_det) > 1e-10 * max(1.0, abs(latest_det)):
+                raise ValueError(f"latest polygon determinant bound differs for {entry['id']}")
         entry["metrics"] = [
             {"label": "Partition method", "value": method},
             {"label": "Rust model blocks", "value": blocks},
@@ -271,6 +273,8 @@ def rebuild(entries: list[dict], cli: Path) -> None:
     revision = subprocess.run(["git", "log", "-1", "--format=%H", "--", "src", "Cargo.toml", "Cargo.lock"], cwd=ROOT, check=True,
                               text=True, capture_output=True).stdout.strip()
     polygon_records, polygon_run = polygon_latest()
+    frozen = read_json(ROOT / "docs/results/sketch-planner-polygon-evaluation/cases.json")
+    original_recipes = {case["id"]: case["recipe"] for case in frozen["cases"]}
     bracket_records, bracket_report = bracket_latest()
 
     for entry in entries:
@@ -306,12 +310,33 @@ def rebuild(entries: list[dict], cli: Path) -> None:
                 polygon_record, kernel_sha, revision, recipe,
                 model_bytes, published_step, condition, bracket_records, bracket_report,
             )
+            height_factor = 1
             if polygon_record:
-                audit_doc["measurement_release"] = {
-                    "tag": polygon_run["tag"], "cli_sha256": polygon_run["cli_sha256"],
+                original = original_recipes[polygon_record["id"]]
+                current = read_json(recipe)
+                height_factor, remainder = divmod(current["height_mm"], original["height_mm"])
+                expected = dict(original, height_mm=original["height_mm"] * height_factor,
+                                cuts=[dict(cut, z_interval_mm=[z * height_factor for z in cut["z_interval_mm"]])
+                                      for cut in original["cuts"]])
+                if remainder or height_factor < 1 or current != expected:
+                    raise ValueError(f"gallery recipe differs from the frozen planar benchmark: {case_id}")
+                old_volume = Fraction(*polygon_record["volume_exact_cli_mm3"])
+                if Fraction(*kernel_audit["volume_exact_mm3"]) != height_factor * old_volume:
+                    raise ValueError(f"scaled polygon volume mismatch: {case_id}")
+                audit_doc["case"] = {"id": polygon_record["id"], "family": polygon_record["family"]}
+                audit_doc["frozen_reference"] = {
+                    "height_mm": original["height_mm"], "gallery_height_factor": height_factor,
+                    "tag": polygon_run["tag"], "report": "docs/results/convex-host-rings.json",
                 }
-            refresh_entry_metadata(entry, build_report, kernel_audit, model_doc, polygon_record, bracket_record, condition)
+            refresh_entry_metadata(entry, build_report, kernel_audit, model_doc, polygon_record, bracket_record, condition, height_factor)
             if case_id.startswith("bench_poly_"):
+                height = read_json(recipe)["height_mm"]
+                entry["metrics"].insert(0, {"label": "Stock thickness", "value": f"{height} mm"})
+                if polygon_record:
+                    entry["description"] = (
+                        f"{height} mm extrusion of the benchmark sketch, with {build_report['blocks']} blocks "
+                        f"and {kernel_audit['shared_faces']} shared interfaces."
+                    )
                 planar = summarize_model(model_doc)
                 audit_doc["extrusion_quality"] = planar
                 for metric in entry["metrics"]:

@@ -515,12 +515,16 @@
   {
     "id": "bench_poly_through_diamond_center",
     "title": "Through diamond center",
-    "description": "Latest tracked Rust release: separated_convex_quad_rings, 6 blocks and 6 shared interfaces. Exact layer coverage and the closed-domain determinant certificate passed. The 5×5×5 Jacobian condition sample is a diagnostic, not a continuous bound.",
-    "source": "data/bench-poly-through_diamond_center/bench_poly_through_diamond_center.recipe.json?v=715925020ceb",
-    "model": "data/bench-poly-through_diamond_center/bench_poly_through_diamond_center.model.json?v=db7be92d4979",
-    "audit": "data/bench-poly-through_diamond_center/bench_poly_through_diamond_center.audit.json?v=0240ef149123",
-    "step": "data/bench-poly-through_diamond_center/bench_poly_through_diamond_center.step?v=2ef376b6107a",
+    "description": "24 mm extrusion of the benchmark sketch, with 6 blocks and 6 shared interfaces.",
+    "source": "data/bench-poly-through_diamond_center/bench_poly_through_diamond_center.recipe.json?v=c2c424c59b60",
+    "model": "data/bench-poly-through_diamond_center/bench_poly_through_diamond_center.model.json?v=5d353b1c1765",
+    "audit": "data/bench-poly-through_diamond_center/bench_poly_through_diamond_center.audit.json?v=5efe4bb15b6a",
+    "step": "data/bench-poly-through_diamond_center/bench_poly_through_diamond_center.step?v=14dcc15a2dbd",
     "metrics": [
+      {
+        "label": "Stock thickness",
+        "value": "24 mm"
+      },
       {
         "label": "Partition method",
         "value": "separated_convex_quad_rings"
@@ -535,15 +539,15 @@
       },
       {
         "label": "Sampled 3D κ₂ max",
-        "value": "4.18541"
+        "value": "2.92461"
       },
       {
         "label": "Certified determinant lower bound",
-        "value": "1716 mm³"
+        "value": "3432 mm³"
       },
       {
         "label": "Exact volume",
-        "value": "31416 mm³"
+        "value": "62832 mm³"
       },
       {
         "label": "Sampled in-plane κ₂ max",
@@ -555,7 +559,7 @@
       },
       {
         "label": "Maximum in-plane span / normal thickness",
-        "value": "4.18541"
+        "value": "2.0927"
       }
     ],
     "section": {
@@ -569,12 +573,16 @@
   {
     "id": "bench_poly_through_hex_offset",
     "title": "Through hex offset",
-    "description": "Latest tracked Rust release: separated_convex_quad_rings, 6 blocks and 6 shared interfaces. Exact layer coverage and the closed-domain determinant certificate passed. The 5×5×5 Jacobian condition sample is a diagnostic, not a continuous bound.",
-    "source": "data/bench-poly-through_hex_offset/bench_poly_through_hex_offset.recipe.json?v=424819aa877b",
-    "model": "data/bench-poly-through_hex_offset/bench_poly_through_hex_offset.model.json?v=74ab9695bb2c",
-    "audit": "data/bench-poly-through_hex_offset/bench_poly_through_hex_offset.audit.json?v=5a782a4743f0",
-    "step": "data/bench-poly-through_hex_offset/bench_poly_through_hex_offset.step?v=c6c8ec0a8cc0",
+    "description": "30 mm extrusion of the benchmark sketch, with 6 blocks and 6 shared interfaces.",
+    "source": "data/bench-poly-through_hex_offset/bench_poly_through_hex_offset.recipe.json?v=d231850eefdf",
+    "model": "data/bench-poly-through_hex_offset/bench_poly_through_hex_offset.model.json?v=c921f1b00944",
+    "audit": "data/bench-poly-through_hex_offset/bench_poly_through_hex_offset.audit.json?v=5a68ae7e25c9",
+    "step": "data/bench-poly-through_hex_offset/bench_poly_through_hex_offset.step?v=e93892956e85",
     "metrics": [
+      {
+        "label": "Stock thickness",
+        "value": "30 mm"
+      },
       {
         "label": "Partition method",
         "value": "separated_convex_quad_rings"
@@ -589,15 +597,15 @@
       },
       {
         "label": "Sampled 3D κ₂ max",
-        "value": "10.9477"
+        "value": "12.6353"
       },
       {
         "label": "Certified determinant lower bound",
-        "value": "930 mm³"
+        "value": "1860 mm³"
       },
       {
         "label": "Exact volume",
-        "value": "78555/2 mm³"
+        "value": "78555 mm³"
       },
       {
         "label": "Sampled in-plane κ₂ max",
@@ -609,7 +617,7 @@
       },
       {
         "label": "Maximum in-plane span / normal thickness",
-        "value": "4.88741"
+        "value": "2.4437"
       }
     ],
     "section": {
@@ -623,12 +631,16 @@
   {
     "id": "bench_poly_through_pentagon_tight_clearance",
     "title": "Through pentagon tight clearance",
-    "description": "Latest tracked Rust release: separated_convex_quad_rings, 6 blocks and 6 shared interfaces. Exact layer coverage and the closed-domain determinant certificate passed. The 5×5×5 Jacobian condition sample is a diagnostic, not a continuous bound.",
-    "source": "data/bench-poly-through_pentagon_tight_clearance/bench_poly_through_pentagon_tight_clearance.recipe.json?v=c437db02c7b5",
-    "model": "data/bench-poly-through_pentagon_tight_clearance/bench_poly_through_pentagon_tight_clearance.model.json?v=c62ed55d83bd",
-    "audit": "data/bench-poly-through_pentagon_tight_clearance/bench_poly_through_pentagon_tight_clearance.audit.json?v=232ebcd3cd33",
-    "step": "data/bench-poly-through_pentagon_tight_clearance/bench_poly_through_pentagon_tight_clearance.step?v=d13b2b906afb",
+    "description": "18 mm extrusion of the benchmark sketch, with 6 blocks and 6 shared interfaces.",
+    "source": "data/bench-poly-through_pentagon_tight_clearance/bench_poly_through_pentagon_tight_clearance.recipe.json?v=f56a35ffe311",
+    "model": "data/bench-poly-through_pentagon_tight_clearance/bench_poly_through_pentagon_tight_clearance.model.json?v=f2bddd5d135f",
+    "audit": "data/bench-poly-through_pentagon_tight_clearance/bench_poly_through_pentagon_tight_clearance.audit.json?v=4007f538f29f",
+    "step": "data/bench-poly-through_pentagon_tight_clearance/bench_poly_through_pentagon_tight_clearance.step?v=0f9f51424837",
     "metrics": [
+      {
+        "label": "Stock thickness",
+        "value": "18 mm"
+      },
       {
         "label": "Partition method",
         "value": "separated_convex_quad_rings"
@@ -643,15 +655,15 @@
       },
       {
         "label": "Sampled 3D κ₂ max",
-        "value": "8.81842"
+        "value": "16.1165"
       },
       {
         "label": "Certified determinant lower bound",
-        "value": "99 mm³"
+        "value": "198 mm³"
       },
       {
         "label": "Exact volume",
-        "value": "11943/2 mm³"
+        "value": "11943 mm³"
       },
       {
         "label": "Sampled in-plane κ₂ max",
@@ -663,7 +675,7 @@
       },
       {
         "label": "Maximum in-plane span / normal thickness",
-        "value": "3.06419"
+        "value": "1.53209"
       }
     ],
     "section": {
@@ -677,15 +689,19 @@
   {
     "id": "bench_poly_through_two_rectangles",
     "title": "Through two rectangles",
-    "description": "Latest tracked Rust release: rectangular_hosts_x, 8 blocks and 9 shared interfaces. Exact layer coverage and the closed-domain determinant certificate passed. The 5×5×5 Jacobian condition sample is a diagnostic, not a continuous bound.",
-    "source": "data/bench-poly-through_two_rectangles/bench_poly_through_two_rectangles.recipe.json?v=0b28612f0690",
-    "model": "data/bench-poly-through_two_rectangles/bench_poly_through_two_rectangles.model.json?v=2fb7560c49e3",
-    "audit": "data/bench-poly-through_two_rectangles/bench_poly_through_two_rectangles.audit.json?v=06c7c0396616",
-    "step": "data/bench-poly-through_two_rectangles/bench_poly_through_two_rectangles.step?v=fe69902a2c37",
+    "description": "36 mm extrusion of the benchmark sketch, with 8 blocks and 9 shared interfaces.",
+    "source": "data/bench-poly-through_two_rectangles/bench_poly_through_two_rectangles.recipe.json?v=6ac4940534c1",
+    "model": "data/bench-poly-through_two_rectangles/bench_poly_through_two_rectangles.model.json?v=327b70f3739d",
+    "audit": "data/bench-poly-through_two_rectangles/bench_poly_through_two_rectangles.audit.json?v=77eaaa414f21",
+    "step": "data/bench-poly-through_two_rectangles/bench_poly_through_two_rectangles.step?v=cdbfd1c200e6",
     "metrics": [
       {
+        "label": "Stock thickness",
+        "value": "36 mm"
+      },
+      {
         "label": "Partition method",
-        "value": "rectangular_hosts_x"
+        "value": "separated_convex_quad_rings"
       },
       {
         "label": "Rust model blocks",
@@ -697,27 +713,27 @@
       },
       {
         "label": "Sampled 3D κ₂ max",
-        "value": "4.48307"
+        "value": "6.35941"
       },
       {
         "label": "Certified determinant lower bound",
-        "value": "2268 mm³"
+        "value": "4536 mm³"
       },
       {
         "label": "Exact volume",
-        "value": "51120 mm³"
+        "value": "102240 mm³"
       },
       {
         "label": "Sampled in-plane κ₂ max",
-        "value": "4.48307"
+        "value": "5.28844"
       },
       {
         "label": "Minimum corner sine",
-        "value": "0.566529"
+        "value": "0.458289"
       },
       {
         "label": "Maximum in-plane span / normal thickness",
-        "value": "2.55827"
+        "value": "1.47293"
       }
     ],
     "section": {
@@ -731,12 +747,16 @@
   {
     "id": "bench_poly_through_octagon_high_aspect",
     "title": "Through octagon high aspect",
-    "description": "Latest tracked Rust release: separated_convex_quad_rings, 8 blocks and 8 shared interfaces. Exact layer coverage and the closed-domain determinant certificate passed. The 5×5×5 Jacobian condition sample is a diagnostic, not a continuous bound.",
-    "source": "data/bench-poly-through_octagon_high_aspect/bench_poly_through_octagon_high_aspect.recipe.json?v=bf533fea425c",
-    "model": "data/bench-poly-through_octagon_high_aspect/bench_poly_through_octagon_high_aspect.model.json?v=a731b4e34798",
-    "audit": "data/bench-poly-through_octagon_high_aspect/bench_poly_through_octagon_high_aspect.audit.json?v=d0e8ca66108e",
-    "step": "data/bench-poly-through_octagon_high_aspect/bench_poly_through_octagon_high_aspect.step?v=7690a208fccf",
+    "description": "20 mm extrusion of the benchmark sketch, with 8 blocks and 8 shared interfaces.",
+    "source": "data/bench-poly-through_octagon_high_aspect/bench_poly_through_octagon_high_aspect.recipe.json?v=e56df9d6cb22",
+    "model": "data/bench-poly-through_octagon_high_aspect/bench_poly_through_octagon_high_aspect.model.json?v=4999ae0fd6f0",
+    "audit": "data/bench-poly-through_octagon_high_aspect/bench_poly_through_octagon_high_aspect.audit.json?v=a65ab5373ca2",
+    "step": "data/bench-poly-through_octagon_high_aspect/bench_poly_through_octagon_high_aspect.step?v=546100d15324",
     "metrics": [
+      {
+        "label": "Stock thickness",
+        "value": "20 mm"
+      },
       {
         "label": "Partition method",
         "value": "separated_convex_quad_rings"
@@ -755,11 +775,11 @@
       },
       {
         "label": "Certified determinant lower bound",
-        "value": "290 mm³"
+        "value": "580 mm³"
       },
       {
         "label": "Exact volume",
-        "value": "25440 mm³"
+        "value": "50880 mm³"
       },
       {
         "label": "Sampled in-plane κ₂ max",
@@ -771,7 +791,7 @@
       },
       {
         "label": "Maximum in-plane span / normal thickness",
-        "value": "6.03532"
+        "value": "3.01766"
       }
     ],
     "section": {
@@ -785,12 +805,16 @@
   {
     "id": "bench_poly_blind_rotated_quad",
     "title": "Blind rotated quad",
-    "description": "Latest tracked Rust release: separated_convex_quad_rings, 11 blocks and 19 shared interfaces. Exact layer coverage and the closed-domain determinant certificate passed. The 5×5×5 Jacobian condition sample is a diagnostic, not a continuous bound.",
-    "source": "data/bench-poly-blind_rotated_quad/bench_poly_blind_rotated_quad.recipe.json?v=a3c5e06690d9",
-    "model": "data/bench-poly-blind_rotated_quad/bench_poly_blind_rotated_quad.model.json?v=376b780848a5",
-    "audit": "data/bench-poly-blind_rotated_quad/bench_poly_blind_rotated_quad.audit.json?v=71de431f0841",
-    "step": "data/bench-poly-blind_rotated_quad/bench_poly_blind_rotated_quad.step?v=bb14edccc394",
+    "description": "40 mm extrusion of the benchmark sketch, with 11 blocks and 19 shared interfaces.",
+    "source": "data/bench-poly-blind_rotated_quad/bench_poly_blind_rotated_quad.recipe.json?v=d2f23ecb614b",
+    "model": "data/bench-poly-blind_rotated_quad/bench_poly_blind_rotated_quad.model.json?v=3139ea79ae1a",
+    "audit": "data/bench-poly-blind_rotated_quad/bench_poly_blind_rotated_quad.audit.json?v=3830583b5fca",
+    "step": "data/bench-poly-blind_rotated_quad/bench_poly_blind_rotated_quad.step?v=ee65cc00385e",
     "metrics": [
+      {
+        "label": "Stock thickness",
+        "value": "40 mm"
+      },
       {
         "label": "Partition method",
         "value": "separated_convex_quad_rings"
@@ -809,11 +833,11 @@
       },
       {
         "label": "Certified determinant lower bound",
-        "value": "28 mm³"
+        "value": "56 mm³"
       },
       {
         "label": "Exact volume",
-        "value": "54948 mm³"
+        "value": "109896 mm³"
       },
       {
         "label": "Sampled in-plane κ₂ max",
@@ -825,7 +849,7 @@
       },
       {
         "label": "Maximum in-plane span / normal thickness",
-        "value": "10.9923"
+        "value": "5.49613"
       }
     ],
     "section": {
@@ -839,12 +863,16 @@
   {
     "id": "bench_poly_blind_triangle_shallow",
     "title": "Blind triangle shallow",
-    "description": "Latest tracked Rust release: separated_convex_quad_rings, 15 blocks and 27 shared interfaces. Exact layer coverage and the closed-domain determinant certificate passed. The 5×5×5 Jacobian condition sample is a diagnostic, not a continuous bound.",
-    "source": "data/bench-poly-blind_triangle_shallow/bench_poly_blind_triangle_shallow.recipe.json?v=c06e28c2b9e4",
-    "model": "data/bench-poly-blind_triangle_shallow/bench_poly_blind_triangle_shallow.model.json?v=7e3cada3949f",
-    "audit": "data/bench-poly-blind_triangle_shallow/bench_poly_blind_triangle_shallow.audit.json?v=2992ee7a3784",
-    "step": "data/bench-poly-blind_triangle_shallow/bench_poly_blind_triangle_shallow.step?v=e90ac106c7ac",
+    "description": "32 mm extrusion of the benchmark sketch, with 15 blocks and 27 shared interfaces.",
+    "source": "data/bench-poly-blind_triangle_shallow/bench_poly_blind_triangle_shallow.recipe.json?v=9828c00f09d4",
+    "model": "data/bench-poly-blind_triangle_shallow/bench_poly_blind_triangle_shallow.model.json?v=a4e3771417d5",
+    "audit": "data/bench-poly-blind_triangle_shallow/bench_poly_blind_triangle_shallow.audit.json?v=cfb2562e5353",
+    "step": "data/bench-poly-blind_triangle_shallow/bench_poly_blind_triangle_shallow.step?v=965e890f9812",
     "metrics": [
+      {
+        "label": "Stock thickness",
+        "value": "32 mm"
+      },
       {
         "label": "Partition method",
         "value": "separated_convex_quad_rings"
@@ -859,15 +887,15 @@
       },
       {
         "label": "Sampled 3D κ₂ max",
-        "value": "12.5202"
+        "value": "10.2167"
       },
       {
         "label": "Certified determinant lower bound",
-        "value": "164 mm³"
+        "value": "328 mm³"
       },
       {
         "label": "Exact volume",
-        "value": "44592 mm³"
+        "value": "89184 mm³"
       },
       {
         "label": "Sampled in-plane κ₂ max",
@@ -879,7 +907,7 @@
       },
       {
         "label": "Maximum in-plane span / normal thickness",
-        "value": "12.5202"
+        "value": "6.26009"
       }
     ],
     "section": {
@@ -893,12 +921,16 @@
   {
     "id": "bench_poly_blind_hex_deep",
     "title": "Blind hex deep",
-    "description": "Latest tracked Rust release: separated_convex_quad_rings, 14 blocks and 25 shared interfaces. Exact layer coverage and the closed-domain determinant certificate passed. The 5×5×5 Jacobian condition sample is a diagnostic, not a continuous bound.",
-    "source": "data/bench-poly-blind_hex_deep/bench_poly_blind_hex_deep.recipe.json?v=77d6b79fd77d",
-    "model": "data/bench-poly-blind_hex_deep/bench_poly_blind_hex_deep.model.json?v=6e262eca0429",
-    "audit": "data/bench-poly-blind_hex_deep/bench_poly_blind_hex_deep.audit.json?v=5b44542b7031",
-    "step": "data/bench-poly-blind_hex_deep/bench_poly_blind_hex_deep.step?v=f36e3ae323a2",
+    "description": "44 mm extrusion of the benchmark sketch, with 14 blocks and 25 shared interfaces.",
+    "source": "data/bench-poly-blind_hex_deep/bench_poly_blind_hex_deep.recipe.json?v=21b9fcaa5e91",
+    "model": "data/bench-poly-blind_hex_deep/bench_poly_blind_hex_deep.model.json?v=6b394f590d37",
+    "audit": "data/bench-poly-blind_hex_deep/bench_poly_blind_hex_deep.audit.json?v=89f258b694e1",
+    "step": "data/bench-poly-blind_hex_deep/bench_poly_blind_hex_deep.step?v=bb4f893709bf",
     "metrics": [
+      {
+        "label": "Stock thickness",
+        "value": "44 mm"
+      },
       {
         "label": "Partition method",
         "value": "separated_convex_quad_rings"
@@ -913,15 +945,15 @@
       },
       {
         "label": "Sampled 3D κ₂ max",
-        "value": "25.7343"
+        "value": "25.6425"
       },
       {
         "label": "Certified determinant lower bound",
-        "value": "272 mm³"
+        "value": "544 mm³"
       },
       {
         "label": "Exact volume",
-        "value": "69084 mm³"
+        "value": "138168 mm³"
       },
       {
         "label": "Sampled in-plane κ₂ max",
@@ -933,7 +965,7 @@
       },
       {
         "label": "Maximum in-plane span / normal thickness",
-        "value": "20.4021"
+        "value": "10.201"
       }
     ],
     "section": {
@@ -947,12 +979,16 @@
   {
     "id": "bench_poly_blind_two_levels",
     "title": "Blind two levels",
-    "description": "Latest tracked Rust release: separated_convex_quad_rings, 36 blocks and 77 shared interfaces. Exact layer coverage and the closed-domain determinant certificate passed. The 5×5×5 Jacobian condition sample is a diagnostic, not a continuous bound.",
-    "source": "data/bench-poly-blind_two_levels/bench_poly_blind_two_levels.recipe.json?v=aba3753fd686",
-    "model": "data/bench-poly-blind_two_levels/bench_poly_blind_two_levels.model.json?v=2a4337118b62",
-    "audit": "data/bench-poly-blind_two_levels/bench_poly_blind_two_levels.audit.json?v=a58b400671b4",
-    "step": "data/bench-poly-blind_two_levels/bench_poly_blind_two_levels.step?v=268a9bb5173f",
+    "description": "48 mm extrusion of the benchmark sketch, with 36 blocks and 77 shared interfaces.",
+    "source": "data/bench-poly-blind_two_levels/bench_poly_blind_two_levels.recipe.json?v=5cef7552ad2d",
+    "model": "data/bench-poly-blind_two_levels/bench_poly_blind_two_levels.model.json?v=c35813d48205",
+    "audit": "data/bench-poly-blind_two_levels/bench_poly_blind_two_levels.audit.json?v=498cd92528b2",
+    "step": "data/bench-poly-blind_two_levels/bench_poly_blind_two_levels.step?v=c4a8b64f869e",
     "metrics": [
+      {
+        "label": "Stock thickness",
+        "value": "48 mm"
+      },
       {
         "label": "Partition method",
         "value": "separated_convex_quad_rings"
@@ -967,15 +1003,15 @@
       },
       {
         "label": "Sampled 3D κ₂ max",
-        "value": "11.2297"
+        "value": "6.58633"
       },
       {
         "label": "Certified determinant lower bound",
-        "value": "720 mm³"
+        "value": "1440 mm³"
       },
       {
         "label": "Exact volume",
-        "value": "96720 mm³"
+        "value": "193440 mm³"
       },
       {
         "label": "Sampled in-plane κ₂ max",
@@ -987,7 +1023,7 @@
       },
       {
         "label": "Maximum in-plane span / normal thickness",
-        "value": "11.2297"
+        "value": "5.61487"
       }
     ],
     "section": {
@@ -1001,12 +1037,16 @@
   {
     "id": "bench_poly_blind_close_to_boundary",
     "title": "Blind close to boundary",
-    "description": "Latest tracked Rust release: separated_convex_quad_rings, 11 blocks and 19 shared interfaces. Exact layer coverage and the closed-domain determinant certificate passed. The 5×5×5 Jacobian condition sample is a diagnostic, not a continuous bound.",
-    "source": "data/bench-poly-blind_close_to_boundary/bench_poly_blind_close_to_boundary.recipe.json?v=7b9b339d4cbb",
-    "model": "data/bench-poly-blind_close_to_boundary/bench_poly_blind_close_to_boundary.model.json?v=b08d641cb3aa",
-    "audit": "data/bench-poly-blind_close_to_boundary/bench_poly_blind_close_to_boundary.audit.json?v=34e0208b2b14",
-    "step": "data/bench-poly-blind_close_to_boundary/bench_poly_blind_close_to_boundary.step?v=05ed27b12618",
+    "description": "28 mm extrusion of the benchmark sketch, with 11 blocks and 19 shared interfaces.",
+    "source": "data/bench-poly-blind_close_to_boundary/bench_poly_blind_close_to_boundary.recipe.json?v=13297652fad6",
+    "model": "data/bench-poly-blind_close_to_boundary/bench_poly_blind_close_to_boundary.model.json?v=2ba8e9ce725f",
+    "audit": "data/bench-poly-blind_close_to_boundary/bench_poly_blind_close_to_boundary.audit.json?v=2d93e1cc7a7f",
+    "step": "data/bench-poly-blind_close_to_boundary/bench_poly_blind_close_to_boundary.step?v=d6deffa5ed1d",
     "metrics": [
+      {
+        "label": "Stock thickness",
+        "value": "28 mm"
+      },
       {
         "label": "Partition method",
         "value": "separated_convex_quad_rings"
@@ -1021,15 +1061,15 @@
       },
       {
         "label": "Sampled 3D κ₂ max",
-        "value": "12.8788"
+        "value": "10.6765"
       },
       {
         "label": "Certified determinant lower bound",
-        "value": "121.5 mm³"
+        "value": "243 mm³"
       },
       {
         "label": "Exact volume",
-        "value": "29240 mm³"
+        "value": "58480 mm³"
       },
       {
         "label": "Sampled in-plane κ₂ max",
@@ -1041,7 +1081,7 @@
       },
       {
         "label": "Maximum in-plane span / normal thickness",
-        "value": "12.8788"
+        "value": "6.43941"
       }
     ],
     "section": {
@@ -1055,12 +1095,16 @@
   {
     "id": "bench_poly_concave_c_stock_two_holes",
     "title": "Concave c stock two holes",
-    "description": "Latest tracked Rust release: orthogonal_feature_footprint, 21 blocks and 24 shared interfaces. Exact layer coverage and the closed-domain determinant certificate passed. The 5×5×5 Jacobian condition sample is a diagnostic, not a continuous bound.",
-    "source": "data/bench-poly-concave_c_stock_two_holes/bench_poly_concave_c_stock_two_holes.recipe.json?v=bc30624d2eb0",
-    "model": "data/bench-poly-concave_c_stock_two_holes/bench_poly_concave_c_stock_two_holes.model.json?v=22339239e98e",
-    "audit": "data/bench-poly-concave_c_stock_two_holes/bench_poly_concave_c_stock_two_holes.audit.json?v=9d07552fe924",
-    "step": "data/bench-poly-concave_c_stock_two_holes/bench_poly_concave_c_stock_two_holes.step?v=989ea7e8ab53",
+    "description": "26 mm extrusion of the benchmark sketch, with 21 blocks and 24 shared interfaces.",
+    "source": "data/bench-poly-concave_c_stock_two_holes/bench_poly_concave_c_stock_two_holes.recipe.json?v=3540372affce",
+    "model": "data/bench-poly-concave_c_stock_two_holes/bench_poly_concave_c_stock_two_holes.model.json?v=00ad96c607f9",
+    "audit": "data/bench-poly-concave_c_stock_two_holes/bench_poly_concave_c_stock_two_holes.audit.json?v=b899eac9be78",
+    "step": "data/bench-poly-concave_c_stock_two_holes/bench_poly_concave_c_stock_two_holes.step?v=331ef69ece35",
     "metrics": [
+      {
+        "label": "Stock thickness",
+        "value": "26 mm"
+      },
       {
         "label": "Partition method",
         "value": "orthogonal_feature_footprint"
@@ -1075,15 +1119,15 @@
       },
       {
         "label": "Sampled 3D κ₂ max",
-        "value": "11.6667"
+        "value": "13"
       },
       {
         "label": "Certified determinant lower bound",
-        "value": "78 mm³"
+        "value": "156 mm³"
       },
       {
         "label": "Exact volume",
-        "value": "12350 mm³"
+        "value": "24700 mm³"
       },
       {
         "label": "Sampled in-plane κ₂ max",
@@ -1095,7 +1139,7 @@
       },
       {
         "label": "Maximum in-plane span / normal thickness",
-        "value": "2.69231"
+        "value": "1.34615"
       }
     ],
     "section": {
@@ -1109,12 +1153,16 @@
   {
     "id": "bench_poly_concave_l_stock_pocket",
     "title": "Concave l stock pocket",
-    "description": "Latest tracked Rust release: orthogonal_feature_footprint, 39 blocks and 72 shared interfaces. Exact layer coverage and the closed-domain determinant certificate passed. The 5×5×5 Jacobian condition sample is a diagnostic, not a continuous bound.",
-    "source": "data/bench-poly-concave_l_stock_pocket/bench_poly_concave_l_stock_pocket.recipe.json?v=c051b948bbe2",
-    "model": "data/bench-poly-concave_l_stock_pocket/bench_poly_concave_l_stock_pocket.model.json?v=b0cb6b407241",
-    "audit": "data/bench-poly-concave_l_stock_pocket/bench_poly_concave_l_stock_pocket.audit.json?v=c93d8bc89b1d",
-    "step": "data/bench-poly-concave_l_stock_pocket/bench_poly_concave_l_stock_pocket.step?v=07618837e338",
+    "description": "34 mm extrusion of the benchmark sketch, with 39 blocks and 72 shared interfaces.",
+    "source": "data/bench-poly-concave_l_stock_pocket/bench_poly_concave_l_stock_pocket.recipe.json?v=43ee4c58dec7",
+    "model": "data/bench-poly-concave_l_stock_pocket/bench_poly_concave_l_stock_pocket.model.json?v=f02f8e990d8d",
+    "audit": "data/bench-poly-concave_l_stock_pocket/bench_poly_concave_l_stock_pocket.audit.json?v=b71a53893826",
+    "step": "data/bench-poly-concave_l_stock_pocket/bench_poly_concave_l_stock_pocket.step?v=8e4592750410",
     "metrics": [
+      {
+        "label": "Stock thickness",
+        "value": "34 mm"
+      },
       {
         "label": "Partition method",
         "value": "orthogonal_feature_footprint"
@@ -1133,11 +1181,11 @@
       },
       {
         "label": "Certified determinant lower bound",
-        "value": "128 mm³"
+        "value": "256 mm³"
       },
       {
         "label": "Exact volume",
-        "value": "20088 mm³"
+        "value": "40176 mm³"
       },
       {
         "label": "Sampled in-plane κ₂ max",
@@ -1149,7 +1197,7 @@
       },
       {
         "label": "Maximum in-plane span / normal thickness",
-        "value": "4.5"
+        "value": "2.25"
       }
     ],
     "section": {
@@ -1163,12 +1211,16 @@
   {
     "id": "bench_poly_concave_cut_in_rectangle",
     "title": "Concave cut in rectangle",
-    "description": "Latest tracked Rust release: orthogonal_feature_footprint, 45 blocks and 88 shared interfaces. Exact layer coverage and the closed-domain determinant certificate passed. The 5×5×5 Jacobian condition sample is a diagnostic, not a continuous bound.",
-    "source": "data/bench-poly-concave_cut_in_rectangle/bench_poly_concave_cut_in_rectangle.recipe.json?v=9701cdbd8f79",
-    "model": "data/bench-poly-concave_cut_in_rectangle/bench_poly_concave_cut_in_rectangle.model.json?v=3f8081ffaf76",
-    "audit": "data/bench-poly-concave_cut_in_rectangle/bench_poly_concave_cut_in_rectangle.audit.json?v=a447934af9b4",
-    "step": "data/bench-poly-concave_cut_in_rectangle/bench_poly_concave_cut_in_rectangle.step?v=4663cd756501",
+    "description": "22 mm extrusion of the benchmark sketch, with 45 blocks and 88 shared interfaces.",
+    "source": "data/bench-poly-concave_cut_in_rectangle/bench_poly_concave_cut_in_rectangle.recipe.json?v=6481c0d450b1",
+    "model": "data/bench-poly-concave_cut_in_rectangle/bench_poly_concave_cut_in_rectangle.model.json?v=5027a5efb1f8",
+    "audit": "data/bench-poly-concave_cut_in_rectangle/bench_poly_concave_cut_in_rectangle.audit.json?v=884c4ed1f9c2",
+    "step": "data/bench-poly-concave_cut_in_rectangle/bench_poly_concave_cut_in_rectangle.step?v=3f332f67689c",
     "metrics": [
+      {
+        "label": "Stock thickness",
+        "value": "22 mm"
+      },
       {
         "label": "Partition method",
         "value": "orthogonal_feature_footprint"
@@ -1183,15 +1235,15 @@
       },
       {
         "label": "Sampled 3D κ₂ max",
-        "value": "18.5"
+        "value": "9.25"
       },
       {
         "label": "Certified determinant lower bound",
-        "value": "60 mm³"
+        "value": "120 mm³"
       },
       {
         "label": "Exact volume",
-        "value": "30038 mm³"
+        "value": "60076 mm³"
       },
       {
         "label": "Sampled in-plane κ₂ max",
@@ -1203,7 +1255,7 @@
       },
       {
         "label": "Maximum in-plane span / normal thickness",
-        "value": "18.5"
+        "value": "9.25"
       }
     ],
     "section": {
@@ -1217,12 +1269,16 @@
   {
     "id": "bench_poly_concave_u_stock_offset_hole",
     "title": "Concave u stock offset hole",
-    "description": "Latest tracked Rust release: guided_quad_footprint, 6 blocks and 6 shared interfaces. Exact layer coverage and the closed-domain determinant certificate passed. The 5×5×5 Jacobian condition sample is a diagnostic, not a continuous bound.",
-    "source": "data/bench-poly-concave_u_stock_offset_hole/bench_poly_concave_u_stock_offset_hole.recipe.json?v=dae44c26d6b5",
-    "model": "data/bench-poly-concave_u_stock_offset_hole/bench_poly_concave_u_stock_offset_hole.model.json?v=c2ba785308c2",
-    "audit": "data/bench-poly-concave_u_stock_offset_hole/bench_poly_concave_u_stock_offset_hole.audit.json?v=837ba2013a83",
-    "step": "data/bench-poly-concave_u_stock_offset_hole/bench_poly_concave_u_stock_offset_hole.step?v=3f83cd536b3a",
+    "description": "38 mm extrusion of the benchmark sketch, with 6 blocks and 6 shared interfaces.",
+    "source": "data/bench-poly-concave_u_stock_offset_hole/bench_poly_concave_u_stock_offset_hole.recipe.json?v=c54d74b6ccea",
+    "model": "data/bench-poly-concave_u_stock_offset_hole/bench_poly_concave_u_stock_offset_hole.model.json?v=2283c8f6c02a",
+    "audit": "data/bench-poly-concave_u_stock_offset_hole/bench_poly_concave_u_stock_offset_hole.audit.json?v=a1ab4857e6ee",
+    "step": "data/bench-poly-concave_u_stock_offset_hole/bench_poly_concave_u_stock_offset_hole.step?v=8c556743fd3b",
     "metrics": [
+      {
+        "label": "Stock thickness",
+        "value": "38 mm"
+      },
       {
         "label": "Partition method",
         "value": "guided_quad_footprint"
@@ -1237,15 +1293,15 @@
       },
       {
         "label": "Sampled 3D κ₂ max",
-        "value": "19.5815"
+        "value": "35.5468"
       },
       {
         "label": "Certified determinant lower bound",
-        "value": "399 mm³"
+        "value": "798 mm³"
       },
       {
         "label": "Exact volume",
-        "value": "32186 mm³"
+        "value": "64372 mm³"
       },
       {
         "label": "Sampled in-plane κ₂ max",
@@ -1257,7 +1313,7 @@
       },
       {
         "label": "Maximum in-plane span / normal thickness",
-        "value": "3.45183"
+        "value": "1.72591"
       }
     ],
     "section": {
@@ -1271,12 +1327,16 @@
   {
     "id": "bench_poly_concave_stock_blind_two_profiles",
     "title": "Concave stock blind two profiles",
-    "description": "Latest tracked Rust release: orthogonal_feature_footprint, 66 blocks and 123 shared interfaces. Exact layer coverage and the closed-domain determinant certificate passed. The 5×5×5 Jacobian condition sample is a diagnostic, not a continuous bound.",
-    "source": "data/bench-poly-concave_stock_blind_two_profiles/bench_poly_concave_stock_blind_two_profiles.recipe.json?v=fce527e41414",
-    "model": "data/bench-poly-concave_stock_blind_two_profiles/bench_poly_concave_stock_blind_two_profiles.model.json?v=1685e84fa4bf",
-    "audit": "data/bench-poly-concave_stock_blind_two_profiles/bench_poly_concave_stock_blind_two_profiles.audit.json?v=8f16ea7dc85e",
-    "step": "data/bench-poly-concave_stock_blind_two_profiles/bench_poly_concave_stock_blind_two_profiles.step?v=43d7973a831e",
+    "description": "42 mm extrusion of the benchmark sketch, with 66 blocks and 123 shared interfaces.",
+    "source": "data/bench-poly-concave_stock_blind_two_profiles/bench_poly_concave_stock_blind_two_profiles.recipe.json?v=d527602ec4df",
+    "model": "data/bench-poly-concave_stock_blind_two_profiles/bench_poly_concave_stock_blind_two_profiles.model.json?v=9d031b401adf",
+    "audit": "data/bench-poly-concave_stock_blind_two_profiles/bench_poly_concave_stock_blind_two_profiles.audit.json?v=b73569854643",
+    "step": "data/bench-poly-concave_stock_blind_two_profiles/bench_poly_concave_stock_blind_two_profiles.step?v=20cabbcd7eb7",
     "metrics": [
+      {
+        "label": "Stock thickness",
+        "value": "42 mm"
+      },
       {
         "label": "Partition method",
         "value": "orthogonal_feature_footprint"
@@ -1291,15 +1351,15 @@
       },
       {
         "label": "Sampled 3D κ₂ max",
-        "value": "24"
+        "value": "26"
       },
       {
         "label": "Certified determinant lower bound",
-        "value": "32 mm³"
+        "value": "64 mm³"
       },
       {
         "label": "Exact volume",
-        "value": "41800 mm³"
+        "value": "83600 mm³"
       },
       {
         "label": "Sampled in-plane κ₂ max",
@@ -1311,7 +1371,7 @@
       },
       {
         "label": "Maximum in-plane span / normal thickness",
-        "value": "6.75"
+        "value": "3.375"
       }
     ],
     "section": {
@@ -1325,12 +1385,16 @@
   {
     "id": "bench_poly_seeded_convex_00",
     "title": "Seeded case 00 · 12-sided stock · 1 through-hole",
-    "description": "Latest tracked Rust release: radial_convex_footprint, 12 blocks and 12 shared interfaces. Exact layer coverage and the closed-domain determinant certificate passed. The 5×5×5 Jacobian condition sample is a diagnostic, not a continuous bound.",
-    "source": "data/bench-poly-seeded_convex_00/bench_poly_seeded_convex_00.recipe.json?v=2beac43f6fda",
-    "model": "data/bench-poly-seeded_convex_00/bench_poly_seeded_convex_00.model.json?v=f6f3d595a9c5",
-    "audit": "data/bench-poly-seeded_convex_00/bench_poly_seeded_convex_00.audit.json?v=b4cbc193acf4",
-    "step": "data/bench-poly-seeded_convex_00/bench_poly_seeded_convex_00.step?v=b8dfbf25ed19",
+    "description": "459 mm extrusion of the benchmark sketch, with 12 blocks and 12 shared interfaces.",
+    "source": "data/bench-poly-seeded_convex_00/bench_poly_seeded_convex_00.recipe.json?v=469b0dbde6cd",
+    "model": "data/bench-poly-seeded_convex_00/bench_poly_seeded_convex_00.model.json?v=3d08a9b307f0",
+    "audit": "data/bench-poly-seeded_convex_00/bench_poly_seeded_convex_00.audit.json?v=d31110c14df2",
+    "step": "data/bench-poly-seeded_convex_00/bench_poly_seeded_convex_00.step?v=afd43825f7ba",
     "metrics": [
+      {
+        "label": "Stock thickness",
+        "value": "459 mm"
+      },
       {
         "label": "Partition method",
         "value": "radial_convex_footprint"
@@ -1345,15 +1409,15 @@
       },
       {
         "label": "Sampled 3D κ₂ max",
-        "value": "146.899"
+        "value": "21.1"
       },
       {
         "label": "Certified determinant lower bound",
-        "value": "720000 mm³"
+        "value": "36720000 mm³"
       },
       {
         "label": "Exact volume",
-        "value": "26039232 mm³"
+        "value": "1328000832 mm³"
       },
       {
         "label": "Sampled in-plane κ₂ max",
@@ -1365,7 +1429,7 @@
       },
       {
         "label": "Maximum in-plane span / normal thickness",
-        "value": "146.898"
+        "value": "2.88035"
       }
     ],
     "section": {
@@ -1379,12 +1443,16 @@
   {
     "id": "bench_poly_seeded_convex_02",
     "title": "Seeded case 02 · 5-sided stock · 3 through-holes",
-    "description": "Latest tracked Rust release: separated_convex_quad_rings, 17 blocks and 21 shared interfaces. Exact layer coverage and the closed-domain determinant certificate passed. The 5×5×5 Jacobian condition sample is a diagnostic, not a continuous bound.",
-    "source": "data/bench-poly-seeded_convex_02/bench_poly_seeded_convex_02.recipe.json?v=21813b09b678",
-    "model": "data/bench-poly-seeded_convex_02/bench_poly_seeded_convex_02.model.json?v=c6a424e27bed",
-    "audit": "data/bench-poly-seeded_convex_02/bench_poly_seeded_convex_02.audit.json?v=17b17ffe9445",
-    "step": "data/bench-poly-seeded_convex_02/bench_poly_seeded_convex_02.step?v=d7c66dd06d11",
+    "description": "704 mm extrusion of the benchmark sketch, with 17 blocks and 21 shared interfaces.",
+    "source": "data/bench-poly-seeded_convex_02/bench_poly_seeded_convex_02.recipe.json?v=30bb910cc768",
+    "model": "data/bench-poly-seeded_convex_02/bench_poly_seeded_convex_02.model.json?v=4dc56b4ef88d",
+    "audit": "data/bench-poly-seeded_convex_02/bench_poly_seeded_convex_02.audit.json?v=ccf446c1d72b",
+    "step": "data/bench-poly-seeded_convex_02/bench_poly_seeded_convex_02.step?v=36a2677f816e",
     "metrics": [
+      {
+        "label": "Stock thickness",
+        "value": "704 mm"
+      },
       {
         "label": "Partition method",
         "value": "separated_convex_quad_rings"
@@ -1399,19 +1467,19 @@
       },
       {
         "label": "Sampled 3D κ₂ max",
-        "value": "278.764"
+        "value": "104.4"
       },
       {
         "label": "Certified determinant lower bound",
-        "value": "61236.491 mm³"
+        "value": "4666934 mm³"
       },
       {
         "label": "Exact volume",
-        "value": "23041304 mm³"
+        "value": "1474643456 mm³"
       },
       {
         "label": "Sampled in-plane κ₂ max",
-        "value": "107.686"
+        "value": "104.4"
       },
       {
         "label": "Minimum corner sine",
@@ -1419,7 +1487,7 @@
       },
       {
         "label": "Maximum in-plane span / normal thickness",
-        "value": "278.764"
+        "value": "4.35569"
       }
     ],
     "section": {
@@ -1433,12 +1501,16 @@
   {
     "id": "bench_poly_seeded_convex_04",
     "title": "Seeded case 04 · 6-sided stock · 2 through-holes",
-    "description": "Latest tracked Rust release: separated_convex_quad_rings, 12 blocks and 14 shared interfaces. Exact layer coverage and the closed-domain determinant certificate passed. The 5×5×5 Jacobian condition sample is a diagnostic, not a continuous bound.",
-    "source": "data/bench-poly-seeded_convex_04/bench_poly_seeded_convex_04.recipe.json?v=fc7d53b0ed85",
-    "model": "data/bench-poly-seeded_convex_04/bench_poly_seeded_convex_04.model.json?v=af61158dd38f",
-    "audit": "data/bench-poly-seeded_convex_04/bench_poly_seeded_convex_04.audit.json?v=ed662f6162cb",
-    "step": "data/bench-poly-seeded_convex_04/bench_poly_seeded_convex_04.step?v=afdff628e748",
+    "description": "754 mm extrusion of the benchmark sketch, with 12 blocks and 15 shared interfaces.",
+    "source": "data/bench-poly-seeded_convex_04/bench_poly_seeded_convex_04.recipe.json?v=da6e90672ca7",
+    "model": "data/bench-poly-seeded_convex_04/bench_poly_seeded_convex_04.model.json?v=a58059f5b41e",
+    "audit": "data/bench-poly-seeded_convex_04/bench_poly_seeded_convex_04.audit.json?v=502c6c354d24",
+    "step": "data/bench-poly-seeded_convex_04/bench_poly_seeded_convex_04.step?v=da7cf614d69c",
     "metrics": [
+      {
+        "label": "Stock thickness",
+        "value": "754 mm"
+      },
       {
         "label": "Partition method",
         "value": "separated_convex_quad_rings"
@@ -1449,31 +1521,31 @@
       },
       {
         "label": "Rust shared interfaces",
-        "value": 14
+        "value": 15
       },
       {
         "label": "Sampled 3D κ₂ max",
-        "value": "172.423"
+        "value": "41.1111"
       },
       {
         "label": "Certified determinant lower bound",
-        "value": "180960 mm³"
+        "value": "6559800 mm³"
       },
       {
         "label": "Exact volume",
-        "value": "31215600 mm³"
+        "value": "1810504800 mm³"
       },
       {
         "label": "Sampled in-plane κ₂ max",
-        "value": "123.942"
+        "value": "41.1111"
       },
       {
         "label": "Minimum corner sine",
-        "value": "0.0359495"
+        "value": "0.0662631"
       },
       {
         "label": "Maximum in-plane span / normal thickness",
-        "value": "172.423"
+        "value": "3.71609"
       }
     ],
     "section": {
@@ -1487,12 +1559,16 @@
   {
     "id": "bench_poly_seeded_convex_06",
     "title": "Seeded case 06 · 9-sided stock · 1 through-hole",
-    "description": "Latest tracked Rust release: radial_convex_footprint, 9 blocks and 9 shared interfaces. Exact layer coverage and the closed-domain determinant certificate passed. The 5×5×5 Jacobian condition sample is a diagnostic, not a continuous bound.",
-    "source": "data/bench-poly-seeded_convex_06/bench_poly_seeded_convex_06.recipe.json?v=7891bfcf8608",
-    "model": "data/bench-poly-seeded_convex_06/bench_poly_seeded_convex_06.model.json?v=a1add9ff4765",
-    "audit": "data/bench-poly-seeded_convex_06/bench_poly_seeded_convex_06.audit.json?v=e1f04e339aa8",
-    "step": "data/bench-poly-seeded_convex_06/bench_poly_seeded_convex_06.step?v=016ee673fc39",
+    "description": "465 mm extrusion of the benchmark sketch, with 9 blocks and 9 shared interfaces.",
+    "source": "data/bench-poly-seeded_convex_06/bench_poly_seeded_convex_06.recipe.json?v=767f89404a3e",
+    "model": "data/bench-poly-seeded_convex_06/bench_poly_seeded_convex_06.model.json?v=4f39b8d0fdaf",
+    "audit": "data/bench-poly-seeded_convex_06/bench_poly_seeded_convex_06.audit.json?v=7c03a610e14c",
+    "step": "data/bench-poly-seeded_convex_06/bench_poly_seeded_convex_06.step?v=95fcfdae6706",
     "metrics": [
+      {
+        "label": "Stock thickness",
+        "value": "465 mm"
+      },
       {
         "label": "Partition method",
         "value": "radial_convex_footprint"
@@ -1507,15 +1583,15 @@
       },
       {
         "label": "Sampled 3D κ₂ max",
-        "value": "93.8051"
+        "value": "16.5829"
       },
       {
         "label": "Certified determinant lower bound",
-        "value": "1530960 mm³"
+        "value": "47459760 mm³"
       },
       {
         "label": "Exact volume",
-        "value": "41631840 mm³"
+        "value": "1290587040 mm³"
       },
       {
         "label": "Sampled in-plane κ₂ max",
@@ -1527,7 +1603,7 @@
       },
       {
         "label": "Maximum in-plane span / normal thickness",
-        "value": "93.8041"
+        "value": "3.02594"
       }
     ],
     "section": {
@@ -1541,12 +1617,16 @@
   {
     "id": "bench_poly_seeded_convex_08",
     "title": "Seeded case 08 · 11-sided stock · 3 through-holes",
-    "description": "Latest tracked Rust release: separated_convex_quad_rings, 33 blocks and 42 shared interfaces. Exact layer coverage and the closed-domain determinant certificate passed. The 5×5×5 Jacobian condition sample is a diagnostic, not a continuous bound.",
-    "source": "data/bench-poly-seeded_convex_08/bench_poly_seeded_convex_08.recipe.json?v=35692b50ed63",
-    "model": "data/bench-poly-seeded_convex_08/bench_poly_seeded_convex_08.model.json?v=82c7dea1c0d4",
-    "audit": "data/bench-poly-seeded_convex_08/bench_poly_seeded_convex_08.audit.json?v=96a910f8859f",
-    "step": "data/bench-poly-seeded_convex_08/bench_poly_seeded_convex_08.step?v=471ce964e5af",
+    "description": "748 mm extrusion of the benchmark sketch, with 33 blocks and 42 shared interfaces.",
+    "source": "data/bench-poly-seeded_convex_08/bench_poly_seeded_convex_08.recipe.json?v=029ac72c8018",
+    "model": "data/bench-poly-seeded_convex_08/bench_poly_seeded_convex_08.model.json?v=ac5525541e3d",
+    "audit": "data/bench-poly-seeded_convex_08/bench_poly_seeded_convex_08.audit.json?v=ad553433c5c0",
+    "step": "data/bench-poly-seeded_convex_08/bench_poly_seeded_convex_08.step?v=6477cebcc502",
     "metrics": [
+      {
+        "label": "Stock thickness",
+        "value": "748 mm"
+      },
       {
         "label": "Partition method",
         "value": "separated_convex_quad_rings"
@@ -1561,15 +1641,15 @@
       },
       {
         "label": "Sampled 3D κ₂ max",
-        "value": "114.378"
+        "value": "75.9429"
       },
       {
         "label": "Certified determinant lower bound",
-        "value": "13749.222 mm³"
+        "value": "604965.78 mm³"
       },
       {
         "label": "Exact volume",
-        "value": "44495528 mm³"
+        "value": "1957803232 mm³"
       },
       {
         "label": "Sampled in-plane κ₂ max",
@@ -1581,7 +1661,7 @@
       },
       {
         "label": "Maximum in-plane span / normal thickness",
-        "value": "114.288"
+        "value": "2.59745"
       }
     ],
     "section": {
@@ -1595,12 +1675,16 @@
   {
     "id": "bench_poly_seeded_convex_10",
     "title": "Seeded case 10 · 12-sided stock · 2 through-holes",
-    "description": "Latest tracked Rust release: separated_convex_quad_rings, 24 blocks and 28 shared interfaces. Exact layer coverage and the closed-domain determinant certificate passed. The 5×5×5 Jacobian condition sample is a diagnostic, not a continuous bound.",
-    "source": "data/bench-poly-seeded_convex_10/bench_poly_seeded_convex_10.recipe.json?v=4e2c8be6166f",
-    "model": "data/bench-poly-seeded_convex_10/bench_poly_seeded_convex_10.model.json?v=3dcaa0c95f88",
-    "audit": "data/bench-poly-seeded_convex_10/bench_poly_seeded_convex_10.audit.json?v=92925ed425dd",
-    "step": "data/bench-poly-seeded_convex_10/bench_poly_seeded_convex_10.step?v=661924b05fe6",
+    "description": "459 mm extrusion of the benchmark sketch, with 24 blocks and 29 shared interfaces.",
+    "source": "data/bench-poly-seeded_convex_10/bench_poly_seeded_convex_10.recipe.json?v=e2fcc11ed8b8",
+    "model": "data/bench-poly-seeded_convex_10/bench_poly_seeded_convex_10.model.json?v=837447db4c14",
+    "audit": "data/bench-poly-seeded_convex_10/bench_poly_seeded_convex_10.audit.json?v=274ae623942d",
+    "step": "data/bench-poly-seeded_convex_10/bench_poly_seeded_convex_10.step?v=4474d572c802",
     "metrics": [
+      {
+        "label": "Stock thickness",
+        "value": "459 mm"
+      },
       {
         "label": "Partition method",
         "value": "separated_convex_quad_rings"
@@ -1611,31 +1695,31 @@
       },
       {
         "label": "Rust shared interfaces",
-        "value": 28
+        "value": 29
       },
       {
         "label": "Sampled 3D κ₂ max",
-        "value": "130.286"
+        "value": "19.0878"
       },
       {
         "label": "Certified determinant lower bound",
-        "value": "3996 mm³"
+        "value": "2077716.4 mm³"
       },
       {
         "label": "Exact volume",
-        "value": "24954264 mm³"
+        "value": "1272667464 mm³"
       },
       {
         "label": "Sampled in-plane κ₂ max",
-        "value": "34.9083"
+        "value": "19.0876"
       },
       {
         "label": "Minimum corner sine",
-        "value": "0.0598923"
+        "value": "0.155497"
       },
       {
         "label": "Maximum in-plane span / normal thickness",
-        "value": "130.283"
+        "value": "2.69473"
       }
     ],
     "section": {
@@ -1649,12 +1733,16 @@
   {
     "id": "bench_poly_seeded_convex_12",
     "title": "Seeded case 12 · 5-sided stock · 1 through-hole",
-    "description": "Latest tracked Rust release: radial_convex_footprint, 5 blocks and 5 shared interfaces. Exact layer coverage and the closed-domain determinant certificate passed. The 5×5×5 Jacobian condition sample is a diagnostic, not a continuous bound.",
-    "source": "data/bench-poly-seeded_convex_12/bench_poly_seeded_convex_12.recipe.json?v=956b698896ba",
-    "model": "data/bench-poly-seeded_convex_12/bench_poly_seeded_convex_12.model.json?v=c75ae5254421",
-    "audit": "data/bench-poly-seeded_convex_12/bench_poly_seeded_convex_12.audit.json?v=98cf34925c7e",
-    "step": "data/bench-poly-seeded_convex_12/bench_poly_seeded_convex_12.step?v=985c621bd4aa",
+    "description": "319 mm extrusion of the benchmark sketch, with 5 blocks and 5 shared interfaces.",
+    "source": "data/bench-poly-seeded_convex_12/bench_poly_seeded_convex_12.recipe.json?v=7bff3c044ce1",
+    "model": "data/bench-poly-seeded_convex_12/bench_poly_seeded_convex_12.model.json?v=044468dc6084",
+    "audit": "data/bench-poly-seeded_convex_12/bench_poly_seeded_convex_12.audit.json?v=864931371b72",
+    "step": "data/bench-poly-seeded_convex_12/bench_poly_seeded_convex_12.step?v=83a368dfbe6b",
     "metrics": [
+      {
+        "label": "Stock thickness",
+        "value": "319 mm"
+      },
       {
         "label": "Partition method",
         "value": "radial_convex_footprint"
@@ -1669,15 +1757,15 @@
       },
       {
         "label": "Sampled 3D κ₂ max",
-        "value": "118.144"
+        "value": "4.35111"
       },
       {
         "label": "Certified determinant lower bound",
-        "value": "1672000 mm³"
+        "value": "48488000 mm³"
       },
       {
         "label": "Exact volume",
-        "value": "25135968 mm³"
+        "value": "728943072 mm³"
       },
       {
         "label": "Sampled in-plane κ₂ max",
@@ -1689,7 +1777,7 @@
       },
       {
         "label": "Maximum in-plane span / normal thickness",
-        "value": "118.143"
+        "value": "4.07391"
       }
     ],
     "section": {
@@ -1703,12 +1791,16 @@
   {
     "id": "bench_poly_seeded_convex_14",
     "title": "Seeded case 14 · 10-sided stock · 3 through-holes",
-    "description": "Latest tracked Rust release: separated_convex_quad_rings, 30 blocks and 37 shared interfaces. Exact layer coverage and the closed-domain determinant certificate passed. The 5×5×5 Jacobian condition sample is a diagnostic, not a continuous bound.",
-    "source": "data/bench-poly-seeded_convex_14/bench_poly_seeded_convex_14.recipe.json?v=a0a99be62984",
-    "model": "data/bench-poly-seeded_convex_14/bench_poly_seeded_convex_14.model.json?v=7f1d7e1a0977",
-    "audit": "data/bench-poly-seeded_convex_14/bench_poly_seeded_convex_14.audit.json?v=92118dee588e",
-    "step": "data/bench-poly-seeded_convex_14/bench_poly_seeded_convex_14.step?v=501f8313f403",
+    "description": "468 mm extrusion of the benchmark sketch, with 30 blocks and 38 shared interfaces.",
+    "source": "data/bench-poly-seeded_convex_14/bench_poly_seeded_convex_14.recipe.json?v=e0f48464f018",
+    "model": "data/bench-poly-seeded_convex_14/bench_poly_seeded_convex_14.model.json?v=4ff9156f4ae5",
+    "audit": "data/bench-poly-seeded_convex_14/bench_poly_seeded_convex_14.audit.json?v=b93ffcc5799d",
+    "step": "data/bench-poly-seeded_convex_14/bench_poly_seeded_convex_14.step?v=e579afa49716",
     "metrics": [
+      {
+        "label": "Stock thickness",
+        "value": "468 mm"
+      },
       {
         "label": "Partition method",
         "value": "separated_convex_quad_rings"
@@ -1719,31 +1811,31 @@
       },
       {
         "label": "Rust shared interfaces",
-        "value": 37
+        "value": 38
       },
       {
         "label": "Sampled 3D κ₂ max",
-        "value": "230.712"
+        "value": "245.565"
       },
       {
         "label": "Certified determinant lower bound",
-        "value": "5544.6089 mm³"
+        "value": "930372.81 mm³"
       },
       {
         "label": "Exact volume",
-        "value": "33658768 mm³"
+        "value": "1211715648 mm³"
       },
       {
         "label": "Sampled in-plane κ₂ max",
-        "value": "229.388"
+        "value": "245.564"
       },
       {
         "label": "Minimum corner sine",
-        "value": "0.0107457"
+        "value": "0.0282143"
       },
       {
         "label": "Maximum in-plane span / normal thickness",
-        "value": "123.362"
+        "value": "3.18265"
       }
     ],
     "section": {
@@ -1757,12 +1849,16 @@
   {
     "id": "bench_poly_seeded_convex_16",
     "title": "Seeded case 16 · 11-sided stock · 2 through-holes",
-    "description": "Latest tracked Rust release: separated_convex_quad_rings, 22 blocks and 26 shared interfaces. Exact layer coverage and the closed-domain determinant certificate passed. The 5×5×5 Jacobian condition sample is a diagnostic, not a continuous bound.",
-    "source": "data/bench-poly-seeded_convex_16/bench_poly_seeded_convex_16.recipe.json?v=b056ed7ff742",
-    "model": "data/bench-poly-seeded_convex_16/bench_poly_seeded_convex_16.model.json?v=6a064c7d356c",
-    "audit": "data/bench-poly-seeded_convex_16/bench_poly_seeded_convex_16.audit.json?v=9f2f45bfd599",
-    "step": "data/bench-poly-seeded_convex_16/bench_poly_seeded_convex_16.step?v=a4f50f2421da",
+    "description": "735 mm extrusion of the benchmark sketch, with 22 blocks and 26 shared interfaces.",
+    "source": "data/bench-poly-seeded_convex_16/bench_poly_seeded_convex_16.recipe.json?v=611d6d475f12",
+    "model": "data/bench-poly-seeded_convex_16/bench_poly_seeded_convex_16.model.json?v=7d10af83469a",
+    "audit": "data/bench-poly-seeded_convex_16/bench_poly_seeded_convex_16.audit.json?v=21a0e848ee15",
+    "step": "data/bench-poly-seeded_convex_16/bench_poly_seeded_convex_16.step?v=ab9e57e5de52",
     "metrics": [
+      {
+        "label": "Stock thickness",
+        "value": "735 mm"
+      },
       {
         "label": "Partition method",
         "value": "separated_convex_quad_rings"
@@ -1777,27 +1873,27 @@
       },
       {
         "label": "Sampled 3D κ₂ max",
-        "value": "118.062"
+        "value": "51.1265"
       },
       {
         "label": "Certified determinant lower bound",
-        "value": "15961.456 mm³"
+        "value": "4445280 mm³"
       },
       {
         "label": "Exact volume",
-        "value": "41045340 mm³"
+        "value": "2011221660 mm³"
       },
       {
         "label": "Sampled in-plane κ₂ max",
-        "value": "72.6759"
+        "value": "51.1264"
       },
       {
         "label": "Minimum corner sine",
-        "value": "0.0424362"
+        "value": "0.0399574"
       },
       {
         "label": "Maximum in-plane span / normal thickness",
-        "value": "118.061"
+        "value": "3.68362"
       }
     ],
     "section": {
@@ -1811,12 +1907,16 @@
   {
     "id": "bench_poly_seeded_convex_18",
     "title": "Seeded case 18 · 12-sided stock · 1 through-hole",
-    "description": "Latest tracked Rust release: radial_convex_footprint, 12 blocks and 12 shared interfaces. Exact layer coverage and the closed-domain determinant certificate passed. The 5×5×5 Jacobian condition sample is a diagnostic, not a continuous bound.",
-    "source": "data/bench-poly-seeded_convex_18/bench_poly_seeded_convex_18.recipe.json?v=e1a471e12ba4",
-    "model": "data/bench-poly-seeded_convex_18/bench_poly_seeded_convex_18.model.json?v=0bfd5e3a7848",
-    "audit": "data/bench-poly-seeded_convex_18/bench_poly_seeded_convex_18.audit.json?v=e91bf5d4e49d",
-    "step": "data/bench-poly-seeded_convex_18/bench_poly_seeded_convex_18.step?v=01fe19f8d072",
+    "description": "459 mm extrusion of the benchmark sketch, with 12 blocks and 12 shared interfaces.",
+    "source": "data/bench-poly-seeded_convex_18/bench_poly_seeded_convex_18.recipe.json?v=70cb967d2387",
+    "model": "data/bench-poly-seeded_convex_18/bench_poly_seeded_convex_18.model.json?v=c3c14786a170",
+    "audit": "data/bench-poly-seeded_convex_18/bench_poly_seeded_convex_18.audit.json?v=0f7a3d8d8152",
+    "step": "data/bench-poly-seeded_convex_18/bench_poly_seeded_convex_18.step?v=b6b6ea9a9f8c",
     "metrics": [
+      {
+        "label": "Stock thickness",
+        "value": "459 mm"
+      },
       {
         "label": "Partition method",
         "value": "radial_convex_footprint"
@@ -1831,15 +1931,15 @@
       },
       {
         "label": "Sampled 3D κ₂ max",
-        "value": "77.7726"
+        "value": "21.1003"
       },
       {
         "label": "Certified determinant lower bound",
-        "value": "1360000 mm³"
+        "value": "36720000 mm³"
       },
       {
         "label": "Exact volume",
-        "value": "49185216 mm³"
+        "value": "1328000832 mm³"
       },
       {
         "label": "Sampled in-plane κ₂ max",
@@ -1851,7 +1951,7 @@
       },
       {
         "label": "Maximum in-plane span / normal thickness",
-        "value": "77.7694"
+        "value": "2.88035"
       }
     ],
     "section": {
@@ -1865,12 +1965,16 @@
   {
     "id": "bench_poly_seeded_convex_20",
     "title": "Seeded case 20 · 9-sided stock · 3 through-holes",
-    "description": "Latest tracked Rust release: separated_convex_quad_rings, 27 blocks and 34 shared interfaces. Exact layer coverage and the closed-domain determinant certificate passed. The 5×5×5 Jacobian condition sample is a diagnostic, not a continuous bound.",
-    "source": "data/bench-poly-seeded_convex_20/bench_poly_seeded_convex_20.recipe.json?v=5ec9e5eb9fc0",
-    "model": "data/bench-poly-seeded_convex_20/bench_poly_seeded_convex_20.model.json?v=8676bedb2db8",
-    "audit": "data/bench-poly-seeded_convex_20/bench_poly_seeded_convex_20.audit.json?v=b95a26ddb8fc",
-    "step": "data/bench-poly-seeded_convex_20/bench_poly_seeded_convex_20.step?v=4ae23209a33c",
+    "description": "468 mm extrusion of the benchmark sketch, with 27 blocks and 34 shared interfaces.",
+    "source": "data/bench-poly-seeded_convex_20/bench_poly_seeded_convex_20.recipe.json?v=f01c6204d2d0",
+    "model": "data/bench-poly-seeded_convex_20/bench_poly_seeded_convex_20.model.json?v=3f974da3ed51",
+    "audit": "data/bench-poly-seeded_convex_20/bench_poly_seeded_convex_20.audit.json?v=4a73d9e541dc",
+    "step": "data/bench-poly-seeded_convex_20/bench_poly_seeded_convex_20.step?v=9bb2d6d3256a",
     "metrics": [
+      {
+        "label": "Stock thickness",
+        "value": "468 mm"
+      },
       {
         "label": "Partition method",
         "value": "separated_convex_quad_rings"
@@ -1885,15 +1989,15 @@
       },
       {
         "label": "Sampled 3D κ₂ max",
-        "value": "161.929"
+        "value": "35.3928"
       },
       {
         "label": "Certified determinant lower bound",
-        "value": "32835.835 mm³"
+        "value": "1707463.4 mm³"
       },
       {
         "label": "Exact volume",
-        "value": "22897512 mm³"
+        "value": "1190670624 mm³"
       },
       {
         "label": "Sampled in-plane κ₂ max",
@@ -1905,7 +2009,7 @@
       },
       {
         "label": "Maximum in-plane span / normal thickness",
-        "value": "161.928"
+        "value": "3.114"
       }
     ],
     "section": {
@@ -1919,12 +2023,16 @@
   {
     "id": "bench_poly_seeded_convex_22",
     "title": "Seeded case 22 · 11-sided stock · 2 through-holes",
-    "description": "Latest tracked Rust release: separated_convex_quad_rings, 22 blocks and 26 shared interfaces. Exact layer coverage and the closed-domain determinant certificate passed. The 5×5×5 Jacobian condition sample is a diagnostic, not a continuous bound.",
-    "source": "data/bench-poly-seeded_convex_22/bench_poly_seeded_convex_22.recipe.json?v=db7716bf2eca",
-    "model": "data/bench-poly-seeded_convex_22/bench_poly_seeded_convex_22.model.json?v=01545e53442f",
-    "audit": "data/bench-poly-seeded_convex_22/bench_poly_seeded_convex_22.audit.json?v=d14f9d92a520",
-    "step": "data/bench-poly-seeded_convex_22/bench_poly_seeded_convex_22.step?v=3c220d2821cb",
+    "description": "737 mm extrusion of the benchmark sketch, with 22 blocks and 26 shared interfaces.",
+    "source": "data/bench-poly-seeded_convex_22/bench_poly_seeded_convex_22.recipe.json?v=9ba6ced6702b",
+    "model": "data/bench-poly-seeded_convex_22/bench_poly_seeded_convex_22.model.json?v=d4e16b225670",
+    "audit": "data/bench-poly-seeded_convex_22/bench_poly_seeded_convex_22.audit.json?v=356ca7bfa7cd",
+    "step": "data/bench-poly-seeded_convex_22/bench_poly_seeded_convex_22.step?v=56b74c5c4528",
     "metrics": [
+      {
+        "label": "Stock thickness",
+        "value": "737 mm"
+      },
       {
         "label": "Partition method",
         "value": "separated_convex_quad_rings"
@@ -1939,19 +2047,19 @@
       },
       {
         "label": "Sampled 3D κ₂ max",
-        "value": "180.598"
+        "value": "46.1365"
       },
       {
         "label": "Certified determinant lower bound",
-        "value": "59993.853 mm³"
+        "value": "4729860.8 mm³"
       },
       {
         "label": "Exact volume",
-        "value": "30099916 mm³"
+        "value": "2016694372 mm³"
       },
       {
         "label": "Sampled in-plane κ₂ max",
-        "value": "77.4882"
+        "value": "46.1362"
       },
       {
         "label": "Minimum corner sine",
@@ -1959,7 +2067,7 @@
       },
       {
         "label": "Maximum in-plane span / normal thickness",
-        "value": "180.575"
+        "value": "2.85587"
       }
     ],
     "section": {
@@ -1973,12 +2081,16 @@
   {
     "id": "bench_poly_seeded_convex_24",
     "title": "Seeded case 24 · 9-sided stock · 1 through-hole",
-    "description": "Latest tracked Rust release: radial_convex_footprint, 9 blocks and 9 shared interfaces. Exact layer coverage and the closed-domain determinant certificate passed. The 5×5×5 Jacobian condition sample is a diagnostic, not a continuous bound.",
-    "source": "data/bench-poly-seeded_convex_24/bench_poly_seeded_convex_24.recipe.json?v=0a797f4e3759",
-    "model": "data/bench-poly-seeded_convex_24/bench_poly_seeded_convex_24.model.json?v=35c8ed5a26f6",
-    "audit": "data/bench-poly-seeded_convex_24/bench_poly_seeded_convex_24.audit.json?v=1d8c18779c44",
-    "step": "data/bench-poly-seeded_convex_24/bench_poly_seeded_convex_24.step?v=103d1b263819",
+    "description": "741 mm extrusion of the benchmark sketch, with 9 blocks and 9 shared interfaces.",
+    "source": "data/bench-poly-seeded_convex_24/bench_poly_seeded_convex_24.recipe.json?v=22ce1c55b866",
+    "model": "data/bench-poly-seeded_convex_24/bench_poly_seeded_convex_24.model.json?v=d82a0efe615d",
+    "audit": "data/bench-poly-seeded_convex_24/bench_poly_seeded_convex_24.audit.json?v=d8f1b6bf9507",
+    "step": "data/bench-poly-seeded_convex_24/bench_poly_seeded_convex_24.step?v=6afe49eaa020",
     "metrics": [
+      {
+        "label": "Stock thickness",
+        "value": "741 mm"
+      },
       {
         "label": "Partition method",
         "value": "radial_convex_footprint"
@@ -1993,15 +2105,15 @@
       },
       {
         "label": "Sampled 3D κ₂ max",
-        "value": "161.435"
+        "value": "36.266"
       },
       {
         "label": "Certified determinant lower bound",
-        "value": "1326832 mm³"
+        "value": "75629424 mm³"
       },
       {
         "label": "Exact volume",
-        "value": "36080928 mm³"
+        "value": "2056612896 mm³"
       },
       {
         "label": "Sampled in-plane κ₂ max",
@@ -2013,7 +2125,7 @@
       },
       {
         "label": "Maximum in-plane span / normal thickness",
-        "value": "161.434"
+        "value": "2.83218"
       }
     ],
     "section": {
@@ -2027,12 +2139,16 @@
   {
     "id": "bench_poly_seeded_convex_26",
     "title": "Seeded case 26 · 11-sided stock · 3 through-holes",
-    "description": "Latest tracked Rust release: separated_convex_quad_rings, 33 blocks and 42 shared interfaces. Exact layer coverage and the closed-domain determinant certificate passed. The 5×5×5 Jacobian condition sample is a diagnostic, not a continuous bound.",
-    "source": "data/bench-poly-seeded_convex_26/bench_poly_seeded_convex_26.recipe.json?v=4edb43bbd36f",
-    "model": "data/bench-poly-seeded_convex_26/bench_poly_seeded_convex_26.model.json?v=93eaac7a0b13",
-    "audit": "data/bench-poly-seeded_convex_26/bench_poly_seeded_convex_26.audit.json?v=044a5709517d",
-    "step": "data/bench-poly-seeded_convex_26/bench_poly_seeded_convex_26.step?v=88c418327975",
+    "description": "735 mm extrusion of the benchmark sketch, with 33 blocks and 42 shared interfaces.",
+    "source": "data/bench-poly-seeded_convex_26/bench_poly_seeded_convex_26.recipe.json?v=bef868d9f2e0",
+    "model": "data/bench-poly-seeded_convex_26/bench_poly_seeded_convex_26.model.json?v=898cc955997d",
+    "audit": "data/bench-poly-seeded_convex_26/bench_poly_seeded_convex_26.audit.json?v=4a5e3d660d00",
+    "step": "data/bench-poly-seeded_convex_26/bench_poly_seeded_convex_26.step?v=f00211569e91",
     "metrics": [
+      {
+        "label": "Stock thickness",
+        "value": "735 mm"
+      },
       {
         "label": "Partition method",
         "value": "separated_convex_quad_rings"
@@ -2047,27 +2163,27 @@
       },
       {
         "label": "Sampled 3D κ₂ max",
-        "value": "126.543"
+        "value": "75.9428"
       },
       {
         "label": "Certified determinant lower bound",
-        "value": "22986.389 mm³"
+        "value": "594451.67 mm³"
       },
       {
         "label": "Exact volume",
-        "value": "39260760 mm³"
+        "value": "1923777240 mm³"
       },
       {
         "label": "Sampled in-plane κ₂ max",
-        "value": "126.542"
+        "value": "75.9425"
       },
       {
         "label": "Minimum corner sine",
-        "value": "0.0511792"
+        "value": "0.0631441"
       },
       {
         "label": "Maximum in-plane span / normal thickness",
-        "value": "116.403"
+        "value": "2.64339"
       }
     ],
     "section": {
@@ -2081,12 +2197,16 @@
   {
     "id": "bench_poly_seeded_convex_28",
     "title": "Seeded case 28 · 8-sided stock · 2 through-holes",
-    "description": "Latest tracked Rust release: separated_convex_quad_rings, 16 blocks and 18 shared interfaces. Exact layer coverage and the closed-domain determinant certificate passed. The 5×5×5 Jacobian condition sample is a diagnostic, not a continuous bound.",
-    "source": "data/bench-poly-seeded_convex_28/bench_poly_seeded_convex_28.recipe.json?v=8965e4074b44",
-    "model": "data/bench-poly-seeded_convex_28/bench_poly_seeded_convex_28.model.json?v=0cc00fec717c",
-    "audit": "data/bench-poly-seeded_convex_28/bench_poly_seeded_convex_28.audit.json?v=6a9979bb392b",
-    "step": "data/bench-poly-seeded_convex_28/bench_poly_seeded_convex_28.step?v=0db7ae51c6c1",
+    "description": "476 mm extrusion of the benchmark sketch, with 16 blocks and 20 shared interfaces.",
+    "source": "data/bench-poly-seeded_convex_28/bench_poly_seeded_convex_28.recipe.json?v=a4b508d458f4",
+    "model": "data/bench-poly-seeded_convex_28/bench_poly_seeded_convex_28.model.json?v=ae329bd679d4",
+    "audit": "data/bench-poly-seeded_convex_28/bench_poly_seeded_convex_28.audit.json?v=f028db00746b",
+    "step": "data/bench-poly-seeded_convex_28/bench_poly_seeded_convex_28.step?v=6a675b1a8bdd",
     "metrics": [
+      {
+        "label": "Stock thickness",
+        "value": "476 mm"
+      },
       {
         "label": "Partition method",
         "value": "separated_convex_quad_rings"
@@ -2097,31 +2217,31 @@
       },
       {
         "label": "Rust shared interfaces",
-        "value": 18
+        "value": 20
       },
       {
         "label": "Sampled 3D κ₂ max",
-        "value": "77.9646"
+        "value": "18.9466"
       },
       {
         "label": "Certified determinant lower bound",
-        "value": "193120 mm³"
+        "value": "5407360 mm³"
       },
       {
         "label": "Exact volume",
-        "value": "44417600 mm³"
+        "value": "1243692800 mm³"
       },
       {
         "label": "Sampled in-plane κ₂ max",
-        "value": "69.656"
+        "value": "18.9464"
       },
       {
         "label": "Minimum corner sine",
-        "value": "0.0787627"
+        "value": "0.147311"
       },
       {
         "label": "Maximum in-plane span / normal thickness",
-        "value": "77.8842"
+        "value": "3.51917"
       }
     ],
     "section": {
@@ -2135,12 +2255,16 @@
   {
     "id": "bench_poly_seeded_convex_01",
     "title": "Seeded case 01 · 9-sided stock · 2 blind pockets",
-    "description": "Latest tracked Rust release: separated_convex_quad_rings, 48 blocks and 94 shared interfaces. Exact layer coverage and the closed-domain determinant certificate passed. The 5×5×5 Jacobian condition sample is a diagnostic, not a continuous bound.",
-    "source": "data/bench-poly-seeded_convex_01/bench_poly_seeded_convex_01.recipe.json?v=10965789d75b",
-    "model": "data/bench-poly-seeded_convex_01/bench_poly_seeded_convex_01.model.json?v=0a628d564925",
-    "audit": "data/bench-poly-seeded_convex_01/bench_poly_seeded_convex_01.audit.json?v=6649f3e8b915",
-    "step": "data/bench-poly-seeded_convex_01/bench_poly_seeded_convex_01.step?v=10f57b518e51",
+    "description": "470 mm extrusion of the benchmark sketch, with 48 blocks and 92 shared interfaces.",
+    "source": "data/bench-poly-seeded_convex_01/bench_poly_seeded_convex_01.recipe.json?v=ba5c01af39f2",
+    "model": "data/bench-poly-seeded_convex_01/bench_poly_seeded_convex_01.model.json?v=fd91bedb8033",
+    "audit": "data/bench-poly-seeded_convex_01/bench_poly_seeded_convex_01.audit.json?v=72f7571106cf",
+    "step": "data/bench-poly-seeded_convex_01/bench_poly_seeded_convex_01.step?v=15f9afacaeb9",
     "metrics": [
+      {
+        "label": "Stock thickness",
+        "value": "470 mm"
+      },
       {
         "label": "Partition method",
         "value": "separated_convex_quad_rings"
@@ -2151,31 +2275,31 @@
       },
       {
         "label": "Rust shared interfaces",
-        "value": 94
+        "value": 92
       },
       {
         "label": "Sampled 3D κ₂ max",
-        "value": "406.111"
+        "value": "22.3544"
       },
       {
         "label": "Certified determinant lower bound",
-        "value": "1024.1266 mm³"
+        "value": "620979.58 mm³"
       },
       {
         "label": "Exact volume",
-        "value": "27291984 mm³"
+        "value": "1282723248 mm³"
       },
       {
         "label": "Sampled in-plane κ₂ max",
-        "value": "39.1232"
+        "value": "22.3544"
       },
       {
         "label": "Minimum corner sine",
-        "value": "0.106339"
+        "value": "0.111822"
       },
       {
         "label": "Maximum in-plane span / normal thickness",
-        "value": "406.11"
+        "value": "10.0241"
       }
     ],
     "section": {
@@ -2189,12 +2313,16 @@
   {
     "id": "bench_poly_seeded_convex_03",
     "title": "Seeded case 03 · 5-sided stock · 1 blind pocket",
-    "description": "Latest tracked Rust release: separated_convex_quad_rings, 14 blocks and 25 shared interfaces. Exact layer coverage and the closed-domain determinant certificate passed. The 5×5×5 Jacobian condition sample is a diagnostic, not a continuous bound.",
-    "source": "data/bench-poly-seeded_convex_03/bench_poly_seeded_convex_03.recipe.json?v=770764f16a5a",
-    "model": "data/bench-poly-seeded_convex_03/bench_poly_seeded_convex_03.model.json?v=d1ab46a2a422",
-    "audit": "data/bench-poly-seeded_convex_03/bench_poly_seeded_convex_03.audit.json?v=36cfb520a027",
-    "step": "data/bench-poly-seeded_convex_03/bench_poly_seeded_convex_03.step?v=8f09ed7c9eea",
+    "description": "444 mm extrusion of the benchmark sketch, with 14 blocks and 25 shared interfaces.",
+    "source": "data/bench-poly-seeded_convex_03/bench_poly_seeded_convex_03.recipe.json?v=718083adebda",
+    "model": "data/bench-poly-seeded_convex_03/bench_poly_seeded_convex_03.model.json?v=bd8e51aa7fa2",
+    "audit": "data/bench-poly-seeded_convex_03/bench_poly_seeded_convex_03.audit.json?v=386cef0e161c",
+    "step": "data/bench-poly-seeded_convex_03/bench_poly_seeded_convex_03.step?v=5fae79c298c9",
     "metrics": [
+      {
+        "label": "Stock thickness",
+        "value": "444 mm"
+      },
       {
         "label": "Partition method",
         "value": "separated_convex_quad_rings"
@@ -2209,15 +2337,15 @@
       },
       {
         "label": "Sampled 3D κ₂ max",
-        "value": "405.96"
+        "value": "11.4345"
       },
       {
         "label": "Certified determinant lower bound",
-        "value": "131100 mm³"
+        "value": "4850700 mm³"
       },
       {
         "label": "Exact volume",
-        "value": "27897116 mm³"
+        "value": "1032193292 mm³"
       },
       {
         "label": "Sampled in-plane κ₂ max",
@@ -2229,7 +2357,7 @@
       },
       {
         "label": "Maximum in-plane span / normal thickness",
-        "value": "405.959"
+        "value": "10.9719"
       }
     ],
     "section": {
@@ -2243,12 +2371,16 @@
   {
     "id": "bench_poly_seeded_convex_05",
     "title": "Seeded case 05 · 8-sided stock · 3 blind pockets",
-    "description": "Latest tracked Rust release: separated_convex_quad_rings, 57 blocks and 114 shared interfaces. Exact layer coverage and the closed-domain determinant certificate passed. The 5×5×5 Jacobian condition sample is a diagnostic, not a continuous bound.",
-    "source": "data/bench-poly-seeded_convex_05/bench_poly_seeded_convex_05.recipe.json?v=ce1aafe92dc8",
-    "model": "data/bench-poly-seeded_convex_05/bench_poly_seeded_convex_05.model.json?v=c6861b28cb34",
-    "audit": "data/bench-poly-seeded_convex_05/bench_poly_seeded_convex_05.audit.json?v=ebe40a72b710",
-    "step": "data/bench-poly-seeded_convex_05/bench_poly_seeded_convex_05.step?v=1a6fd58a41f8",
+    "description": "476 mm extrusion of the benchmark sketch, with 57 blocks and 114 shared interfaces.",
+    "source": "data/bench-poly-seeded_convex_05/bench_poly_seeded_convex_05.recipe.json?v=9e3836b96a22",
+    "model": "data/bench-poly-seeded_convex_05/bench_poly_seeded_convex_05.model.json?v=b8e97074c5e4",
+    "audit": "data/bench-poly-seeded_convex_05/bench_poly_seeded_convex_05.audit.json?v=17216da8224f",
+    "step": "data/bench-poly-seeded_convex_05/bench_poly_seeded_convex_05.step?v=1b575e994317",
     "metrics": [
+      {
+        "label": "Stock thickness",
+        "value": "476 mm"
+      },
       {
         "label": "Partition method",
         "value": "separated_convex_quad_rings"
@@ -2263,27 +2395,27 @@
       },
       {
         "label": "Sampled 3D κ₂ max",
-        "value": "496.576"
+        "value": "18.9502"
       },
       {
         "label": "Certified determinant lower bound",
-        "value": "6169.2308 mm³"
+        "value": "339012.31 mm³"
       },
       {
         "label": "Exact volume",
-        "value": "36011200 mm³"
+        "value": "1224380800 mm³"
       },
       {
         "label": "Sampled in-plane κ₂ max",
-        "value": "28.332"
+        "value": "15.3663"
       },
       {
         "label": "Minimum corner sine",
-        "value": "0.0819381"
+        "value": "0.147394"
       },
       {
         "label": "Maximum in-plane span / normal thickness",
-        "value": "496.576"
+        "value": "14.6052"
       }
     ],
     "section": {
@@ -2297,12 +2429,16 @@
   {
     "id": "bench_poly_seeded_convex_07",
     "title": "Seeded case 07 · 5-sided stock · 2 blind pockets",
-    "description": "Latest tracked Rust release: separated_convex_quad_rings, 28 blocks and 54 shared interfaces. Exact layer coverage and the closed-domain determinant certificate passed. The 5×5×5 Jacobian condition sample is a diagnostic, not a continuous bound.",
-    "source": "data/bench-poly-seeded_convex_07/bench_poly_seeded_convex_07.recipe.json?v=349fb53f36a2",
-    "model": "data/bench-poly-seeded_convex_07/bench_poly_seeded_convex_07.model.json?v=78b2c9d65a19",
-    "audit": "data/bench-poly-seeded_convex_07/bench_poly_seeded_convex_07.audit.json?v=3ee9fa9e2c5d",
-    "step": "data/bench-poly-seeded_convex_07/bench_poly_seeded_convex_07.step?v=04d3cd87d6bc",
+    "description": "704 mm extrusion of the benchmark sketch, with 28 blocks and 54 shared interfaces.",
+    "source": "data/bench-poly-seeded_convex_07/bench_poly_seeded_convex_07.recipe.json?v=3c3410ed1f34",
+    "model": "data/bench-poly-seeded_convex_07/bench_poly_seeded_convex_07.model.json?v=60ff29dfc46f",
+    "audit": "data/bench-poly-seeded_convex_07/bench_poly_seeded_convex_07.audit.json?v=cfd96cc545aa",
+    "step": "data/bench-poly-seeded_convex_07/bench_poly_seeded_convex_07.step?v=172cca5534ad",
     "metrics": [
+      {
+        "label": "Stock thickness",
+        "value": "704 mm"
+      },
       {
         "label": "Partition method",
         "value": "separated_convex_quad_rings"
@@ -2317,15 +2453,15 @@
       },
       {
         "label": "Sampled 3D κ₂ max",
-        "value": "596.151"
+        "value": "102.836"
       },
       {
         "label": "Certified determinant lower bound",
-        "value": "2671.4433 mm³"
+        "value": "117543.51 mm³"
       },
       {
         "label": "Exact volume",
-        "value": "35990136 mm³"
+        "value": "1583565984 mm³"
       },
       {
         "label": "Sampled in-plane κ₂ max",
@@ -2337,7 +2473,7 @@
       },
       {
         "label": "Maximum in-plane span / normal thickness",
-        "value": "596.151"
+        "value": "13.5489"
       }
     ],
     "section": {
@@ -2351,12 +2487,16 @@
   {
     "id": "bench_poly_seeded_convex_09",
     "title": "Seeded case 09 · 6-sided stock · 1 blind pocket",
-    "description": "Latest tracked Rust release: separated_convex_quad_rings, 14 blocks and 25 shared interfaces. Exact layer coverage and the closed-domain determinant certificate passed. The 5×5×5 Jacobian condition sample is a diagnostic, not a continuous bound.",
-    "source": "data/bench-poly-seeded_convex_09/bench_poly_seeded_convex_09.recipe.json?v=eca62aa429c1",
-    "model": "data/bench-poly-seeded_convex_09/bench_poly_seeded_convex_09.model.json?v=5cab781c1484",
-    "audit": "data/bench-poly-seeded_convex_09/bench_poly_seeded_convex_09.audit.json?v=017b72d6c6d1",
-    "step": "data/bench-poly-seeded_convex_09/bench_poly_seeded_convex_09.step?v=f319e127da42",
+    "description": "756 mm extrusion of the benchmark sketch, with 14 blocks and 25 shared interfaces.",
+    "source": "data/bench-poly-seeded_convex_09/bench_poly_seeded_convex_09.recipe.json?v=4f9ffc63c53a",
+    "model": "data/bench-poly-seeded_convex_09/bench_poly_seeded_convex_09.model.json?v=21d86bacbe18",
+    "audit": "data/bench-poly-seeded_convex_09/bench_poly_seeded_convex_09.audit.json?v=d78e400022d9",
+    "step": "data/bench-poly-seeded_convex_09/bench_poly_seeded_convex_09.step?v=819eee16be29",
     "metrics": [
+      {
+        "label": "Stock thickness",
+        "value": "756 mm"
+      },
       {
         "label": "Partition method",
         "value": "separated_convex_quad_rings"
@@ -2371,15 +2511,15 @@
       },
       {
         "label": "Sampled 3D κ₂ max",
-        "value": "892.902"
+        "value": "27.172"
       },
       {
         "label": "Certified determinant lower bound",
-        "value": "104400 mm³"
+        "value": "4384800 mm³"
       },
       {
         "label": "Exact volume",
-        "value": "45414000 mm³"
+        "value": "1907388000 mm³"
       },
       {
         "label": "Sampled in-plane κ₂ max",
@@ -2391,7 +2531,7 @@
       },
       {
         "label": "Maximum in-plane span / normal thickness",
-        "value": "892.902"
+        "value": "21.2596"
       }
     ],
     "section": {
@@ -2405,12 +2545,16 @@
   {
     "id": "bench_poly_seeded_convex_11",
     "title": "Seeded case 11 · 9-sided stock · 3 blind pockets",
-    "description": "Latest tracked Rust release: separated_convex_quad_rings, 74 blocks and 150 shared interfaces. Exact layer coverage and the closed-domain determinant certificate passed. The 5×5×5 Jacobian condition sample is a diagnostic, not a continuous bound.",
-    "source": "data/bench-poly-seeded_convex_11/bench_poly_seeded_convex_11.recipe.json?v=f006dc4f4abd",
-    "model": "data/bench-poly-seeded_convex_11/bench_poly_seeded_convex_11.model.json?v=cde4979326cf",
-    "audit": "data/bench-poly-seeded_convex_11/bench_poly_seeded_convex_11.audit.json?v=7ce815abace5",
-    "step": "data/bench-poly-seeded_convex_11/bench_poly_seeded_convex_11.step?v=76bb7fd37099",
+    "description": "470 mm extrusion of the benchmark sketch, with 74 blocks and 148 shared interfaces.",
+    "source": "data/bench-poly-seeded_convex_11/bench_poly_seeded_convex_11.recipe.json?v=ce8bb9d4df5f",
+    "model": "data/bench-poly-seeded_convex_11/bench_poly_seeded_convex_11.model.json?v=5fdc121bf0d5",
+    "audit": "data/bench-poly-seeded_convex_11/bench_poly_seeded_convex_11.audit.json?v=5ba7c3a154fa",
+    "step": "data/bench-poly-seeded_convex_11/bench_poly_seeded_convex_11.step?v=faecfbaa5466",
     "metrics": [
+      {
+        "label": "Stock thickness",
+        "value": "470 mm"
+      },
       {
         "label": "Partition method",
         "value": "separated_convex_quad_rings"
@@ -2421,31 +2565,31 @@
       },
       {
         "label": "Rust shared interfaces",
-        "value": 150
+        "value": 148
       },
       {
         "label": "Sampled 3D κ₂ max",
-        "value": "255.506"
+        "value": "36.2583"
       },
       {
         "label": "Certified determinant lower bound",
-        "value": "6768.3473 mm³"
+        "value": "540813.33 mm³"
       },
       {
         "label": "Exact volume",
-        "value": "27176340 mm³"
+        "value": "1277287980 mm³"
       },
       {
         "label": "Sampled in-plane κ₂ max",
-        "value": "40.6225"
+        "value": "36.2578"
       },
       {
         "label": "Minimum corner sine",
-        "value": "0.0591925"
+        "value": "0.0818569"
       },
       {
         "label": "Maximum in-plane span / normal thickness",
-        "value": "255.486"
+        "value": "5.95208"
       }
     ],
     "section": {
@@ -2459,12 +2603,16 @@
   {
     "id": "bench_poly_seeded_convex_13",
     "title": "Seeded case 13 · 10-sided stock · 2 blind pockets",
-    "description": "Latest tracked Rust release: separated_convex_quad_rings, 48 blocks and 94 shared interfaces. Exact layer coverage and the closed-domain determinant certificate passed. The 5×5×5 Jacobian condition sample is a diagnostic, not a continuous bound.",
-    "source": "data/bench-poly-seeded_convex_13/bench_poly_seeded_convex_13.recipe.json?v=dd459dd53feb",
-    "model": "data/bench-poly-seeded_convex_13/bench_poly_seeded_convex_13.model.json?v=8be6afe6a6cd",
-    "audit": "data/bench-poly-seeded_convex_13/bench_poly_seeded_convex_13.audit.json?v=a1dfd2b4f8e3",
-    "step": "data/bench-poly-seeded_convex_13/bench_poly_seeded_convex_13.step?v=35034502e9d2",
+    "description": "468 mm extrusion of the benchmark sketch, with 48 blocks and 94 shared interfaces.",
+    "source": "data/bench-poly-seeded_convex_13/bench_poly_seeded_convex_13.recipe.json?v=746855999088",
+    "model": "data/bench-poly-seeded_convex_13/bench_poly_seeded_convex_13.model.json?v=183af202e28e",
+    "audit": "data/bench-poly-seeded_convex_13/bench_poly_seeded_convex_13.audit.json?v=fc0255b5664e",
+    "step": "data/bench-poly-seeded_convex_13/bench_poly_seeded_convex_13.step?v=bf6f6cd97152",
     "metrics": [
+      {
+        "label": "Stock thickness",
+        "value": "468 mm"
+      },
       {
         "label": "Partition method",
         "value": "separated_convex_quad_rings"
@@ -2479,19 +2627,19 @@
       },
       {
         "label": "Sampled 3D κ₂ max",
-        "value": "446.98"
+        "value": "15.5787"
       },
       {
         "label": "Certified determinant lower bound",
-        "value": "26784 mm³"
+        "value": "676377 mm³"
       },
       {
         "label": "Exact volume",
-        "value": "33188016 mm³"
+        "value": "1294332624 mm³"
       },
       {
         "label": "Sampled in-plane κ₂ max",
-        "value": "27.1559"
+        "value": "15.578"
       },
       {
         "label": "Minimum corner sine",
@@ -2499,7 +2647,7 @@
       },
       {
         "label": "Maximum in-plane span / normal thickness",
-        "value": "446.979"
+        "value": "12.1478"
       }
     ],
     "section": {
@@ -2513,12 +2661,16 @@
   {
     "id": "bench_poly_seeded_convex_15",
     "title": "Seeded case 15 · 11-sided stock · 1 blind pocket",
-    "description": "Latest tracked Rust release: separated_convex_quad_rings, 29 blocks and 52 shared interfaces. Exact layer coverage and the closed-domain determinant certificate passed. The 5×5×5 Jacobian condition sample is a diagnostic, not a continuous bound.",
-    "source": "data/bench-poly-seeded_convex_15/bench_poly_seeded_convex_15.recipe.json?v=d8094e66c0ba",
-    "model": "data/bench-poly-seeded_convex_15/bench_poly_seeded_convex_15.model.json?v=73e7f8c3563f",
-    "audit": "data/bench-poly-seeded_convex_15/bench_poly_seeded_convex_15.audit.json?v=6785b1876b44",
-    "step": "data/bench-poly-seeded_convex_15/bench_poly_seeded_convex_15.step?v=650e7ac015dc",
+    "description": "476 mm extrusion of the benchmark sketch, with 29 blocks and 52 shared interfaces.",
+    "source": "data/bench-poly-seeded_convex_15/bench_poly_seeded_convex_15.recipe.json?v=4e0fb0d1b3da",
+    "model": "data/bench-poly-seeded_convex_15/bench_poly_seeded_convex_15.model.json?v=b22844f6b300",
+    "audit": "data/bench-poly-seeded_convex_15/bench_poly_seeded_convex_15.audit.json?v=be6beda8ab55",
+    "step": "data/bench-poly-seeded_convex_15/bench_poly_seeded_convex_15.step?v=8684147f4121",
     "metrics": [
+      {
+        "label": "Stock thickness",
+        "value": "476 mm"
+      },
       {
         "label": "Partition method",
         "value": "separated_convex_quad_rings"
@@ -2533,15 +2685,15 @@
       },
       {
         "label": "Sampled 3D κ₂ max",
-        "value": "267.911"
+        "value": "19.3364"
       },
       {
         "label": "Certified determinant lower bound",
-        "value": "33920 mm³"
+        "value": "1153280 mm³"
       },
       {
         "label": "Exact volume",
-        "value": "40569452 mm³"
+        "value": "1379361368 mm³"
       },
       {
         "label": "Sampled in-plane κ₂ max",
@@ -2553,7 +2705,7 @@
       },
       {
         "label": "Maximum in-plane span / normal thickness",
-        "value": "267.91"
+        "value": "7.87971"
       }
     ],
     "section": {
@@ -2567,12 +2719,16 @@
   {
     "id": "bench_poly_seeded_convex_17",
     "title": "Seeded case 17 · 6-sided stock · 3 blind pockets",
-    "description": "Latest tracked Rust release: separated_convex_quad_rings, 42 blocks and 83 shared interfaces. Exact layer coverage and the closed-domain determinant certificate passed. The 5×5×5 Jacobian condition sample is a diagnostic, not a continuous bound.",
-    "source": "data/bench-poly-seeded_convex_17/bench_poly_seeded_convex_17.recipe.json?v=b4aabe9518ec",
-    "model": "data/bench-poly-seeded_convex_17/bench_poly_seeded_convex_17.model.json?v=d8607ddb3ce4",
-    "audit": "data/bench-poly-seeded_convex_17/bench_poly_seeded_convex_17.audit.json?v=774747330473",
-    "step": "data/bench-poly-seeded_convex_17/bench_poly_seeded_convex_17.step?v=bd0391400812",
+    "description": "464 mm extrusion of the benchmark sketch, with 42 blocks and 83 shared interfaces.",
+    "source": "data/bench-poly-seeded_convex_17/bench_poly_seeded_convex_17.recipe.json?v=73c4e1c961fc",
+    "model": "data/bench-poly-seeded_convex_17/bench_poly_seeded_convex_17.model.json?v=0114f538beb4",
+    "audit": "data/bench-poly-seeded_convex_17/bench_poly_seeded_convex_17.audit.json?v=9723ad0c1cda",
+    "step": "data/bench-poly-seeded_convex_17/bench_poly_seeded_convex_17.step?v=e8f3f15197a3",
     "metrics": [
+      {
+        "label": "Stock thickness",
+        "value": "464 mm"
+      },
       {
         "label": "Partition method",
         "value": "separated_convex_quad_rings"
@@ -2587,15 +2743,15 @@
       },
       {
         "label": "Sampled 3D κ₂ max",
-        "value": "585.955"
+        "value": "29.5703"
       },
       {
         "label": "Certified determinant lower bound",
-        "value": "37125 mm³"
+        "value": "1076625 mm³"
       },
       {
         "label": "Exact volume",
-        "value": "37688400 mm³"
+        "value": "1092963600 mm³"
       },
       {
         "label": "Sampled in-plane κ₂ max",
@@ -2607,7 +2763,7 @@
       },
       {
         "label": "Maximum in-plane span / normal thickness",
-        "value": "585.954"
+        "value": "20.2053"
       }
     ],
     "section": {
@@ -2621,12 +2777,16 @@
   {
     "id": "bench_poly_seeded_convex_19",
     "title": "Seeded case 19 · 10-sided stock · 2 blind pockets",
-    "description": "Latest tracked Rust release: separated_convex_quad_rings, 48 blocks and 94 shared interfaces. Exact layer coverage and the closed-domain determinant certificate passed. The 5×5×5 Jacobian condition sample is a diagnostic, not a continuous bound.",
-    "source": "data/bench-poly-seeded_convex_19/bench_poly_seeded_convex_19.recipe.json?v=0962ad271f0e",
-    "model": "data/bench-poly-seeded_convex_19/bench_poly_seeded_convex_19.model.json?v=0a47f2658914",
-    "audit": "data/bench-poly-seeded_convex_19/bench_poly_seeded_convex_19.audit.json?v=78b95a55d318",
-    "step": "data/bench-poly-seeded_convex_19/bench_poly_seeded_convex_19.step?v=9cd8b36cc23d",
+    "description": "738 mm extrusion of the benchmark sketch, with 48 blocks and 92 shared interfaces.",
+    "source": "data/bench-poly-seeded_convex_19/bench_poly_seeded_convex_19.recipe.json?v=3297d3d1a47b",
+    "model": "data/bench-poly-seeded_convex_19/bench_poly_seeded_convex_19.model.json?v=1841276413db",
+    "audit": "data/bench-poly-seeded_convex_19/bench_poly_seeded_convex_19.audit.json?v=9afb3bc1aa07",
+    "step": "data/bench-poly-seeded_convex_19/bench_poly_seeded_convex_19.step?v=676a2c2e3c31",
     "metrics": [
+      {
+        "label": "Stock thickness",
+        "value": "738 mm"
+      },
       {
         "label": "Partition method",
         "value": "separated_convex_quad_rings"
@@ -2637,23 +2797,23 @@
       },
       {
         "label": "Rust shared interfaces",
-        "value": 94
+        "value": 92
       },
       {
         "label": "Sampled 3D κ₂ max",
-        "value": "409.59"
+        "value": "40.8797"
       },
       {
         "label": "Certified determinant lower bound",
-        "value": "44640 mm³"
+        "value": "1185105 mm³"
       },
       {
         "label": "Exact volume",
-        "value": "49899712 mm³"
+        "value": "2045888192 mm³"
       },
       {
         "label": "Sampled in-plane κ₂ max",
-        "value": "69.4319"
+        "value": "40.8797"
       },
       {
         "label": "Minimum corner sine",
@@ -2661,7 +2821,7 @@
       },
       {
         "label": "Maximum in-plane span / normal thickness",
-        "value": "409.59"
+        "value": "11.1665"
       }
     ],
     "section": {
@@ -2675,12 +2835,16 @@
   {
     "id": "bench_poly_seeded_convex_21",
     "title": "Seeded case 21 · 10-sided stock · 1 blind pocket",
-    "description": "Latest tracked Rust release: separated_convex_quad_rings, 24 blocks and 43 shared interfaces. Exact layer coverage and the closed-domain determinant certificate passed. The 5×5×5 Jacobian condition sample is a diagnostic, not a continuous bound.",
-    "source": "data/bench-poly-seeded_convex_21/bench_poly_seeded_convex_21.recipe.json?v=0b63e76d5aad",
-    "model": "data/bench-poly-seeded_convex_21/bench_poly_seeded_convex_21.model.json?v=6a75e744e23d",
-    "audit": "data/bench-poly-seeded_convex_21/bench_poly_seeded_convex_21.audit.json?v=9d025039e48f",
-    "step": "data/bench-poly-seeded_convex_21/bench_poly_seeded_convex_21.step?v=feaef1a7ceea",
+    "description": "740 mm extrusion of the benchmark sketch, with 24 blocks and 43 shared interfaces.",
+    "source": "data/bench-poly-seeded_convex_21/bench_poly_seeded_convex_21.recipe.json?v=cdb377b7a4b7",
+    "model": "data/bench-poly-seeded_convex_21/bench_poly_seeded_convex_21.model.json?v=bb4e766efe2e",
+    "audit": "data/bench-poly-seeded_convex_21/bench_poly_seeded_convex_21.audit.json?v=a13d8d6b39e3",
+    "step": "data/bench-poly-seeded_convex_21/bench_poly_seeded_convex_21.step?v=133db1892e68",
     "metrics": [
+      {
+        "label": "Stock thickness",
+        "value": "740 mm"
+      },
       {
         "label": "Partition method",
         "value": "separated_convex_quad_rings"
@@ -2695,15 +2859,15 @@
       },
       {
         "label": "Sampled 3D κ₂ max",
-        "value": "669.392"
+        "value": "39.5091"
       },
       {
         "label": "Certified determinant lower bound",
-        "value": "26784 mm³"
+        "value": "1982016 mm³"
       },
       {
         "label": "Exact volume",
-        "value": "28598184 mm³"
+        "value": "2116265616 mm³"
       },
       {
         "label": "Sampled in-plane κ₂ max",
@@ -2715,7 +2879,7 @@
       },
       {
         "label": "Maximum in-plane span / normal thickness",
-        "value": "669.392"
+        "value": "9.04583"
       }
     ],
     "section": {
@@ -2729,12 +2893,16 @@
   {
     "id": "bench_poly_seeded_convex_23",
     "title": "Seeded case 23 · 10-sided stock · 3 blind pockets",
-    "description": "Latest tracked Rust release: separated_convex_quad_rings, 72 blocks and 145 shared interfaces. Exact layer coverage and the closed-domain determinant certificate passed. The 5×5×5 Jacobian condition sample is a diagnostic, not a continuous bound.",
-    "source": "data/bench-poly-seeded_convex_23/bench_poly_seeded_convex_23.recipe.json?v=750ee1c85a94",
-    "model": "data/bench-poly-seeded_convex_23/bench_poly_seeded_convex_23.model.json?v=ea2777a88570",
-    "audit": "data/bench-poly-seeded_convex_23/bench_poly_seeded_convex_23.audit.json?v=cfead3fcc00a",
-    "step": "data/bench-poly-seeded_convex_23/bench_poly_seeded_convex_23.step?v=aaa786ca15ac",
+    "description": "744 mm extrusion of the benchmark sketch, with 72 blocks and 143 shared interfaces.",
+    "source": "data/bench-poly-seeded_convex_23/bench_poly_seeded_convex_23.recipe.json?v=7287cbbb70b1",
+    "model": "data/bench-poly-seeded_convex_23/bench_poly_seeded_convex_23.model.json?v=7064f6ad41eb",
+    "audit": "data/bench-poly-seeded_convex_23/bench_poly_seeded_convex_23.audit.json?v=dc35f926efdf",
+    "step": "data/bench-poly-seeded_convex_23/bench_poly_seeded_convex_23.step?v=175844804877",
     "metrics": [
+      {
+        "label": "Stock thickness",
+        "value": "744 mm"
+      },
       {
         "label": "Partition method",
         "value": "separated_convex_quad_rings"
@@ -2745,31 +2913,31 @@
       },
       {
         "label": "Rust shared interfaces",
-        "value": 145
+        "value": 143
       },
       {
         "label": "Sampled 3D κ₂ max",
-        "value": "368.875"
+        "value": "44.1346"
       },
       {
         "label": "Certified determinant lower bound",
-        "value": "13243.983 mm³"
+        "value": "1054516.7 mm³"
       },
       {
         "label": "Exact volume",
-        "value": "32834952 mm³"
+        "value": "2035767024 mm³"
       },
       {
         "label": "Sampled in-plane κ₂ max",
-        "value": "65.2388"
+        "value": "35.5168"
       },
       {
         "label": "Minimum corner sine",
-        "value": "0.0702774"
+        "value": "0.0650154"
       },
       {
         "label": "Maximum in-plane span / normal thickness",
-        "value": "368.875"
+        "value": "6.12653"
       }
     ],
     "section": {
@@ -2783,12 +2951,16 @@
   {
     "id": "bench_poly_seeded_convex_25",
     "title": "Seeded case 25 · 5-sided stock · 2 blind pockets",
-    "description": "Latest tracked Rust release: separated_convex_quad_rings, 28 blocks and 54 shared interfaces. Exact layer coverage and the closed-domain determinant certificate passed. The 5×5×5 Jacobian condition sample is a diagnostic, not a continuous bound.",
-    "source": "data/bench-poly-seeded_convex_25/bench_poly_seeded_convex_25.recipe.json?v=515631da3d75",
-    "model": "data/bench-poly-seeded_convex_25/bench_poly_seeded_convex_25.model.json?v=f73c58334bb1",
-    "audit": "data/bench-poly-seeded_convex_25/bench_poly_seeded_convex_25.audit.json?v=207dfa01d429",
-    "step": "data/bench-poly-seeded_convex_25/bench_poly_seeded_convex_25.step?v=d988cc839b63",
+    "description": "322 mm extrusion of the benchmark sketch, with 28 blocks and 54 shared interfaces.",
+    "source": "data/bench-poly-seeded_convex_25/bench_poly_seeded_convex_25.recipe.json?v=f7fb0d6213cb",
+    "model": "data/bench-poly-seeded_convex_25/bench_poly_seeded_convex_25.model.json?v=506a550e46db",
+    "audit": "data/bench-poly-seeded_convex_25/bench_poly_seeded_convex_25.audit.json?v=c43433432ee4",
+    "step": "data/bench-poly-seeded_convex_25/bench_poly_seeded_convex_25.step?v=3ee0135ecbf5",
     "metrics": [
+      {
+        "label": "Stock thickness",
+        "value": "322 mm"
+      },
       {
         "label": "Partition method",
         "value": "separated_convex_quad_rings"
@@ -2803,15 +2975,15 @@
       },
       {
         "label": "Sampled 3D κ₂ max",
-        "value": "450.11"
+        "value": "35.998"
       },
       {
         "label": "Certified determinant lower bound",
-        "value": "37620 mm³"
+        "value": "865260 mm³"
       },
       {
         "label": "Exact volume",
-        "value": "31229536 mm³"
+        "value": "718279328 mm³"
       },
       {
         "label": "Sampled in-plane κ₂ max",
@@ -2823,7 +2995,7 @@
       },
       {
         "label": "Maximum in-plane span / normal thickness",
-        "value": "450.11"
+        "value": "19.57"
       }
     ],
     "section": {
@@ -2837,12 +3009,16 @@
   {
     "id": "bench_poly_seeded_convex_27",
     "title": "Seeded case 27 · 12-sided stock · 1 blind pocket",
-    "description": "Latest tracked Rust release: separated_convex_quad_rings, 29 blocks and 52 shared interfaces. Exact layer coverage and the closed-domain determinant certificate passed. The 5×5×5 Jacobian condition sample is a diagnostic, not a continuous bound.",
-    "source": "data/bench-poly-seeded_convex_27/bench_poly_seeded_convex_27.recipe.json?v=637cde125d78",
-    "model": "data/bench-poly-seeded_convex_27/bench_poly_seeded_convex_27.model.json?v=300a25d88c73",
-    "audit": "data/bench-poly-seeded_convex_27/bench_poly_seeded_convex_27.audit.json?v=14e3de7b4989",
-    "step": "data/bench-poly-seeded_convex_27/bench_poly_seeded_convex_27.step?v=a467ae28654f",
+    "description": "752 mm extrusion of the benchmark sketch, with 29 blocks and 52 shared interfaces.",
+    "source": "data/bench-poly-seeded_convex_27/bench_poly_seeded_convex_27.recipe.json?v=92d726c02c1a",
+    "model": "data/bench-poly-seeded_convex_27/bench_poly_seeded_convex_27.model.json?v=0408e3aadb8e",
+    "audit": "data/bench-poly-seeded_convex_27/bench_poly_seeded_convex_27.audit.json?v=89901844eb9b",
+    "step": "data/bench-poly-seeded_convex_27/bench_poly_seeded_convex_27.step?v=42354ac867cf",
     "metrics": [
+      {
+        "label": "Stock thickness",
+        "value": "752 mm"
+      },
       {
         "label": "Partition method",
         "value": "separated_convex_quad_rings"
@@ -2857,15 +3033,15 @@
       },
       {
         "label": "Sampled 3D κ₂ max",
-        "value": "396.366"
+        "value": "46.2118"
       },
       {
         "label": "Certified determinant lower bound",
-        "value": "26000 mm³"
+        "value": "1222000 mm³"
       },
       {
         "label": "Exact volume",
-        "value": "46894728 mm³"
+        "value": "2204052216 mm³"
       },
       {
         "label": "Sampled in-plane κ₂ max",
@@ -2877,7 +3053,7 @@
       },
       {
         "label": "Maximum in-plane span / normal thickness",
-        "value": "396.364"
+        "value": "8.43328"
       }
     ],
     "section": {
@@ -2891,12 +3067,16 @@
   {
     "id": "bench_poly_seeded_convex_29",
     "title": "Seeded case 29 · 10-sided stock · 3 blind pockets",
-    "description": "Latest tracked Rust release: separated_convex_quad_rings, 72 blocks and 145 shared interfaces. Exact layer coverage and the closed-domain determinant certificate passed. The 5×5×5 Jacobian condition sample is a diagnostic, not a continuous bound.",
-    "source": "data/bench-poly-seeded_convex_29/bench_poly_seeded_convex_29.recipe.json?v=fe1c3012a67a",
-    "model": "data/bench-poly-seeded_convex_29/bench_poly_seeded_convex_29.model.json?v=be5efdef8f53",
-    "audit": "data/bench-poly-seeded_convex_29/bench_poly_seeded_convex_29.audit.json?v=fa3e41c771e5",
-    "step": "data/bench-poly-seeded_convex_29/bench_poly_seeded_convex_29.step?v=7e306a4af2c9",
+    "description": "342 mm extrusion of the benchmark sketch, with 72 blocks and 145 shared interfaces.",
+    "source": "data/bench-poly-seeded_convex_29/bench_poly_seeded_convex_29.recipe.json?v=7fa26ad4ec02",
+    "model": "data/bench-poly-seeded_convex_29/bench_poly_seeded_convex_29.model.json?v=8006ab811083",
+    "audit": "data/bench-poly-seeded_convex_29/bench_poly_seeded_convex_29.audit.json?v=09fd5a5629cc",
+    "step": "data/bench-poly-seeded_convex_29/bench_poly_seeded_convex_29.step?v=ff4ee9c7989a",
     "metrics": [
+      {
+        "label": "Stock thickness",
+        "value": "342 mm"
+      },
       {
         "label": "Partition method",
         "value": "separated_convex_quad_rings"
@@ -2911,15 +3091,15 @@
       },
       {
         "label": "Sampled 3D κ₂ max",
-        "value": "372.999"
+        "value": "53.4443"
       },
       {
         "label": "Certified determinant lower bound",
-        "value": "7470 mm³"
+        "value": "141930 mm³"
       },
       {
         "label": "Exact volume",
-        "value": "47663640 mm³"
+        "value": "905609160 mm³"
       },
       {
         "label": "Sampled in-plane κ₂ max",
@@ -2931,7 +3111,7 @@
       },
       {
         "label": "Maximum in-plane span / normal thickness",
-        "value": "372.999"
+        "value": "19.6315"
       }
     ],
     "section": {
@@ -2946,11 +3126,15 @@
     "id": "bench_poly_projection_diamonds",
     "title": "Projection diagnostic · overlapping diamonds",
     "description": "Two disjoint through-diamond holes overlap in both X and Y projection, while their exact planar regions and 3D voids remain separate.",
-    "source": "data/bench-poly-projection-diamonds/bench_poly_projection_diamonds.recipe.json?v=50b46c8a50c8",
-    "model": "data/bench-poly-projection-diamonds/bench_poly_projection_diamonds.model.json?v=a19e5364520a",
-    "audit": "data/bench-poly-projection-diamonds/bench_poly_projection_diamonds.audit.json?v=1ad95ddb5d20",
-    "step": "data/bench-poly-projection-diamonds/bench_poly_projection_diamonds.step?v=ba8d30da1440",
+    "source": "data/bench-poly-projection-diamonds/bench_poly_projection_diamonds.recipe.json?v=61d82fd015e3",
+    "model": "data/bench-poly-projection-diamonds/bench_poly_projection_diamonds.model.json?v=e181010bef8c",
+    "audit": "data/bench-poly-projection-diamonds/bench_poly_projection_diamonds.audit.json?v=833edddf690b",
+    "step": "data/bench-poly-projection-diamonds/bench_poly_projection_diamonds.step?v=da938ab84b99",
     "metrics": [
+      {
+        "label": "Stock thickness",
+        "value": "24 mm"
+      },
       {
         "label": "X projection overlap",
         "value": "8 mm"
@@ -2981,11 +3165,11 @@
       },
       {
         "label": "Certified determinant lower bound",
-        "value": "72 mm³"
+        "value": "144 mm³"
       },
       {
         "label": "Exact volume",
-        "value": "113088 mm³"
+        "value": "226176 mm³"
       },
       {
         "label": "Sampled in-plane κ₂ max",
@@ -2997,7 +3181,7 @@
       },
       {
         "label": "Maximum in-plane span / normal thickness",
-        "value": "9.71909"
+        "value": "4.85955"
       }
     ],
     "section": {

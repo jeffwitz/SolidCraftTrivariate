@@ -16,9 +16,12 @@ from concurrent.futures import ThreadPoolExecutor
 from decimal import Decimal
 from pathlib import Path
 from urllib.parse import urlsplit
+from gallery_curved_patches import build_catalog as build_patch_catalog
+from check_gallery_patch_maps import verify_patch_samples, verify_patch_topology
 
 ROOT = Path(__file__).resolve().parents[1]
 SITE = ROOT / "docs/site"
+POLYGON_COMPARISON = ROOT / "docs/results/sketch-nurbs-comparison.json"
 TIMESTAMP = re.compile(rb"(?m)^(FILE_NAME\('SolidCraft boundary',')\d{4}-\d\d-\d\dT\d\d:\d\d:\d\dZ(')")
 
 def load(data):
@@ -49,8 +52,10 @@ def asset(url):
         raise ValueError(f"stale download hash: {url}")
     return path
 
-def check(cli, entry):
+def check(cli, entry, patch_catalog):
     links = {k: asset(entry[k]) for k in ("source", "model", "audit", "step")}
+    if "representation" in entry:
+        links["representation"] = asset(entry["representation"])
     with tempfile.TemporaryDirectory(prefix="sct-gallery-replay-") as tmp:
         model, step = Path(tmp) / "model.json", Path(tmp) / "solid.step"
         def run(*args):
@@ -68,10 +73,58 @@ def check(cli, entry):
             raise ValueError("published audit differs from native replay")
         metrics = {row["label"]: row["value"] for row in entry["metrics"]}
         if (len(metrics) != len(entry["metrics"])
-                or int(metrics.get("Rust model blocks", -1)) != native["blocks"]
+                or int(metrics.get("Bézier cells", metrics.get("Rust model blocks", -1))) != native["blocks"]
                 or int(metrics.get("Rust shared interfaces", -1)) != native["shared_faces"]):
             raise ValueError("displayed partition counts differ from the native audit")
+        expected_patch = patch_catalog.get(entry["id"])
+        if expected_patch is not None:
+            if "representation" not in links:
+                raise ValueError("exact patch map is absent from the gallery manifest")
+            representation = load(links["representation"].read_bytes())
+            expected_kind = expected_patch[1]
+            row = expected_patch[0]
+            if (representation.get("schema") != "gallery_exact_patch_map_v1"
+                    or representation.get("case_id") != entry["id"]
+                    or representation.get("representation_kind") != expected_kind
+                    or representation.get("patches") != row["patches"]
+                    or representation.get("interfaces") != row["interfaces"]
+                    or representation.get("boundary_faces") != row["boundary_faces"]
+                    or representation.get("source_model_sha256") != hashlib.sha256(links["model"].read_bytes()).hexdigest()
+                    or representation.get("source_recipe_sha256") != hashlib.sha256(links["source"].read_bytes()).hexdigest()):
+                raise ValueError("published exact patch map differs from a fresh extraction")
+            verify_patch_samples(representation["patches"], published)
+            verify_patch_topology(representation, published)
+            recorded = evidence.get("exact_patch_representation", {})
+            if (recorded.get("sha256") != hashlib.sha256(links["representation"].read_bytes()).hexdigest()
+                    or recorded.get("path", "").split("?", 1)[0] != entry["representation"].split("?", 1)[0]):
+                raise ValueError("audit does not identify the published exact patch map")
+        elif "representation" in entry:
+            raise ValueError("unexpected exact patch representation on an unqualified model")
         if entry["id"].startswith("bench_poly_"):
+            comparison = json.loads(POLYGON_COMPARISON.read_bytes())
+            row = next((item for item in comparison["cases"] if item["case"] == entry["id"]), None)
+            if row is None:
+                raise ValueError("polygon case is absent from the frozen NURBS comparison")
+            expected_mode = min(row["modes"], key=lambda mode: (
+                int(row["modes"][mode]["patches"]), int(row["modes"][mode]["cells"]), mode != "assemble"
+            ))
+            selection = evidence.get("partition_selection", {})
+            if (selection.get("selected_mode") != expected_mode
+                    or selection.get("native_model_sha256") != hashlib.sha256(links["model"].read_bytes()).hexdigest()
+                    or metrics.get("NURBS partition choice") != expected_mode):
+                raise ValueError("published NURBS partition choice does not match the frozen two-mode study")
+            recipe = load(links["source"].read_bytes())
+            if recipe.get("nurbs_partition") != expected_mode:
+                raise ValueError("published polygon recipe does not select the audited NURBS partition")
+            expected_patch_count = (len(load(links["representation"].read_bytes())["patches"])
+                                    if "representation" in links else native.get("nurbs_patch_count"))
+            if (metrics.get("NURBS volumes") != expected_patch_count
+                    or ("representation" not in links
+                        and len(published["nurbs_patches"]) != metrics["NURBS volumes"])):
+                raise ValueError("displayed NURBS count differs from the downloaded model")
+            if ("representation" in links
+                    and len(published["nurbs_patches"]) != metrics.get("Native NURBS volumes before assembly")):
+                raise ValueError("native NURBS count differs from the downloaded model")
             report = evidence["extrusion_quality"]
             for label, key in (("Sampled in-plane κ₂ max", "planar_spectral_kappa"),
                                ("Minimum corner sine", "minimum_corner_sine"),
@@ -97,8 +150,11 @@ def main():
     if not ids or len(set(ids)) != len(ids):
         raise SystemExit("empty gallery or duplicate model IDs")
     referenced, failures = set(), []
+    patch_report = build_patch_catalog(SITE / "experiments.json")
+    patch_catalog = {row["id"]: (row, "curved") for row in patch_report["entries"]}
+    patch_catalog.update({row["id"]: (row, "singleton_linear") for row in patch_report["linear_patch_assemblies"]})
     with ThreadPoolExecutor(max_workers=2) as pool:
-        tasks = [(e["id"], pool.submit(check, args.cli.resolve(), e)) for e in entries]
+        tasks = [(e["id"], pool.submit(check, args.cli.resolve(), e, patch_catalog)) for e in entries]
         for name, future in tasks:
             try:
                 referenced.update(future.result())

@@ -5,6 +5,7 @@
     "family": "convex_through_holes"
   },
   "model_audit": {
+    "bezier_span_count": 8,
     "blocks": 8,
     "bounded_sketch_faces": 8,
     "cavities": 0,
@@ -12,6 +13,7 @@
     "exterior_sides": 30,
     "hausdorff_error_upper_bound_mm": 0,
     "method": "certified_sketch_layer_partition",
+    "nurbs_patch_count": 8,
     "shared_faces": 9,
     "status": "valid",
     "volume_exact_mm3": [
@@ -21,12 +23,13 @@
   },
   "kernel_rebuild": {
     "command": "build recipe.json model.json; audit model.json; export-step model.json reference.step",
-    "kernel_revision": "083fdfe14373aadbca0e9d10586e2cce32ba077d",
-    "kernel_binary_sha256": "8f33eeba801e38e56fbe52ad6ccb96a68a28d2f20187a7d67df869af0c0f9ac2",
-    "recipe_sha256": "6ac4940534c1f36cdf3a402378c500a9e51a887a40b6b1318d59af5c719eb4e0",
-    "model_sha256": "327b70f3739d085910700249aa6d61a6092de072beedb094611670883ab4a55d",
+    "kernel_revision": "1177c32dbf148a3960a471cf0a7b7977fd604b4b",
+    "kernel_binary_sha256": "32419887d795e7d3d67178e1c3464fbb590057e3f64be38d5200dc73f7977df8",
+    "recipe_sha256": "9aabe76eea2f9e41cd548f6e4f5c4c51c5b34e4b62de2ee1276a29e8c245b6b1",
+    "model_sha256": "60e4d3e9e168f48e1a37dd18dc78720e7578ea9c58ab7c6b8372327d2ca6e6a4",
     "step_sha256": "cdbfd1c200e63899c1ecb8d4a04cfd4c8ab8fe7e34ae8be4fb73daba26b7b63d",
     "build_report": {
+      "bezier_span_count": 8,
       "blocks": 8,
       "bounded_sketch_faces": 8,
       "cavities": 0,
@@ -34,6 +37,7 @@
       "exterior_sides": 30,
       "hausdorff_error_upper_bound_mm": 0,
       "method": "certified_sketch_layer_partition",
+      "nurbs_patch_count": 8,
       "shared_faces": 9,
       "status": "valid",
       "volume_exact_mm3": [
@@ -53,6 +57,46 @@
     "gallery_height_factor": 2,
     "tag": "latest-release",
     "report": "docs/results/convex-host-rings.json"
+  },
+  "partition_selection": {
+    "selected_mode": "assemble",
+    "selected": {
+      "method": "separated_convex_quad_rings",
+      "patches": 8,
+      "cells": 8,
+      "q1_geometric_nodes": 28,
+      "interfaces_verified": 9,
+      "kappa_planar": 5.288442365668854,
+      "kappa_3d": 6.359409594307201
+    },
+    "alternatives": {
+      "assemble": {
+        "method": "separated_convex_quad_rings",
+        "patches": 8,
+        "cells": 8,
+        "q1_geometric_nodes": 28,
+        "interfaces_verified": 9,
+        "kappa_planar": 5.288442365668854,
+        "kappa_3d": 6.359409594307201
+      },
+      "optimize": {
+        "method": "separated_convex_quad_rings",
+        "patches": 8,
+        "cells": 8,
+        "q1_geometric_nodes": 28,
+        "interfaces_verified": 9,
+        "kappa_planar": 5.288442365668854,
+        "kappa_3d": 6.359409594307201
+      }
+    },
+    "volume_mm3": "102240",
+    "selected_evaluation_model_sha256": "60e4d3e9e168f48e1a37dd18dc78720e7578ea9c58ab7c6b8372327d2ca6e6a4",
+    "evaluation_cli_sha256": "32419887d795e7d3d67178e1c3464fbb590057e3f64be38d5200dc73f7977df8",
+    "comparison_report_sha256": "9105a17738c278afb50ebfa7bbefa59da7d12792e5cd49ade3ea947a7c8d2363",
+    "criterion": "lexicographic (NURBS patches, Bézier cells), with assemble preferred on ties",
+    "native_model_sha256": "60e4d3e9e168f48e1a37dd18dc78720e7578ea9c58ab7c6b8372327d2ca6e6a4",
+    "evaluation_report": "docs/results/sketch-nurbs-comparison.json",
+    "optional_evaluation_model_sha256": "60e4d3e9e168f48e1a37dd18dc78720e7578ea9c58ab7c6b8372327d2ca6e6a4"
   },
   "extrusion_quality": {
     "block_count": 8,
@@ -122,5 +166,17 @@
       ],
       "determinant_mm3": 4536.0
     }
+  },
+  "exact_patch_representation": {
+    "schema": "gallery_exact_patch_map_v1",
+    "kind": "singleton_linear",
+    "path": "data/bench-poly-through_two_rectangles/bench_poly_through_two_rectangles.model.representation.json?v=679de172da2e",
+    "sha256": "679de172da2ef587c1ed8c1a7a765a043f55a6d19e1d60d5a7824d000c43da4d",
+    "model_sha256": "60e4d3e9e168f48e1a37dd18dc78720e7578ea9c58ab7c6b8372327d2ca6e6a4",
+    "recipe_sha256": "9aabe76eea2f9e41cd548f6e4f5c4c51c5b34e4b62de2ee1276a29e8c245b6b1",
+    "patch_count": 4,
+    "source_block_count": 8,
+    "exact_extraction_count": 8,
+    "exact_interface_count": 9
   }
 }

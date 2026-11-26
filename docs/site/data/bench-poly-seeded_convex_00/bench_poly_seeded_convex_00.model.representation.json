@@ -1,0 +1,2322 @@
+{
+  "schema": "gallery_exact_patch_map_v1",
+  "case_id": "bench_poly_seeded_convex_00",
+  "representation_kind": "singleton_linear",
+  "method": "exact_homogeneous_bezier_to_clamped_nurbs",
+  "scope_note": "Final patch sets are disjoint unions of exact single-span Bezier volumes and compatible two-span clamped NURBS volumes. Exact piece extraction and interface traces are checked; no global injectivity, shape, or material coverage certificate is implied.",
+  "source_model_sha256": "6bca8bb122efca654aae4cf26899448810888160b4cbe62db3918fad268f132c",
+  "source_recipe_sha256": "39fa4083223e4aef3fe589c572cb10494a587c23965122616b90dee9fb7191d4",
+  "source_schema": "sketch_layer_partition_v1",
+  "source_block_count": 12,
+  "native_nurbs_patch_count": 12,
+  "patch_count": 6,
+  "exact_extraction_count": 12,
+  "exact_interface_count": 12,
+  "patches": [
+    {
+      "id": "band:quad_-1301d1_-407d1_-931d1_93d1_-205d1_-7d1_-131d1_93d1_z0_459+quad_-1301d1_-777d1_-1301d1_-407d1_-205d1_-81d1_-205d1_-7d1_z0_459",
+      "source_blocks": [
+        "quad_-1301d1_-407d1_-931d1_93d1_-205d1_-7d1_-131d1_93d1_z0_459",
+        "quad_-1301d1_-777d1_-1301d1_-407d1_-205d1_-81d1_-205d1_-7d1_z0_459"
+      ],
+      "cells": [
+        "quad_-1301d1_-407d1_-931d1_93d1_-205d1_-7d1_-131d1_93d1_z0_459",
+        "quad_-1301d1_-777d1_-1301d1_-407d1_-205d1_-81d1_-205d1_-7d1_z0_459"
+      ],
+      "patch_kind": "two_span_nurbs",
+      "degrees": [
+        1,
+        1,
+        1
+      ],
+      "knots": [
+        [
+          0,
+          0,
+          1,
+          2,
+          2
+        ],
+        [
+          0,
+          0,
+          1,
+          1
+        ],
+        [
+          0,
+          0,
+          1,
+          1
+        ]
+      ],
+      "control_shape": [
+        3,
+        2,
+        2
+      ],
+      "controls_homogeneous": [
+        [
+          -931,
+          93,
+          0,
+          1
+        ],
+        [
+          -933,
+          93,
+          459,
+          1
+        ],
+        [
+          -131,
+          93,
+          0,
+          1
+        ],
+        [
+          -133,
+          93,
+          459,
+          1
+        ],
+        [
+          -1301,
+          -407,
+          0,
+          1
+        ],
+        [
+          -1303,
+          -407,
+          459,
+          1
+        ],
+        [
+          -205,
+          -7,
+          0,
+          1
+        ],
+        [
+          -207,
+          -7,
+          459,
+          1
+        ],
+        [
+          -1301,
+          -777,
+          0,
+          1
+        ],
+        [
+          -1303,
+          -777,
+          459,
+          1
+        ],
+        [
+          -205,
+          -81,
+          0,
+          1
+        ],
+        [
+          -207,
+          -81,
+          459,
+          1
+        ]
+      ],
+      "homogeneous_common_scale_denominator": 1,
+      "spans": [
+        {
+          "source_block": "quad_-1301d1_-407d1_-931d1_93d1_-205d1_-7d1_-131d1_93d1_z0_459",
+          "axis_map": [
+            1,
+            0,
+            2
+          ],
+          "flips": [
+            true,
+            false,
+            false
+          ],
+          "degree_elevation": [
+            0,
+            0,
+            0
+          ],
+          "parameter_interval": [
+            0,
+            1
+          ]
+        },
+        {
+          "source_block": "quad_-1301d1_-777d1_-1301d1_-407d1_-205d1_-81d1_-205d1_-7d1_z0_459",
+          "axis_map": [
+            1,
+            0,
+            2
+          ],
+          "flips": [
+            true,
+            false,
+            false
+          ],
+          "degree_elevation": [
+            0,
+            0,
+            0
+          ],
+          "parameter_interval": [
+            1,
+            2
+          ]
+        }
+      ],
+      "exact_piece_extraction_expected": true
+    },
+    {
+      "id": "band:quad_-1301d1_-777d1_-931d1_-907d1_-205d1_-81d1_-131d1_-107d1_z0_459+quad_-931d1_-907d1_-301d1_-777d1_-131d1_-107d1_-5d1_-81d1_z0_459",
+      "source_blocks": [
+        "quad_-1301d1_-777d1_-931d1_-907d1_-205d1_-81d1_-131d1_-107d1_z0_459",
+        "quad_-931d1_-907d1_-301d1_-777d1_-131d1_-107d1_-5d1_-81d1_z0_459"
+      ],
+      "cells": [
+        "quad_-1301d1_-777d1_-931d1_-907d1_-205d1_-81d1_-131d1_-107d1_z0_459",
+        "quad_-931d1_-907d1_-301d1_-777d1_-131d1_-107d1_-5d1_-81d1_z0_459"
+      ],
+      "patch_kind": "two_span_nurbs",
+      "degrees": [
+        1,
+        1,
+        1
+      ],
+      "knots": [
+        [
+          0,
+          0,
+          1,
+          2,
+          2
+        ],
+        [
+          0,
+          0,
+          1,
+          1
+        ],
+        [
+          0,
+          0,
+          1,
+          1
+        ]
+      ],
+      "control_shape": [
+        3,
+        2,
+        2
+      ],
+      "controls_homogeneous": [
+        [
+          -1301,
+          -777,
+          0,
+          1
+        ],
+        [
+          -1303,
+          -777,
+          459,
+          1
+        ],
+        [
+          -205,
+          -81,
+          0,
+          1
+        ],
+        [
+          -207,
+          -81,
+          459,
+          1
+        ],
+        [
+          -931,
+          -907,
+          0,
+          1
+        ],
+        [
+          -933,
+          -907,
+          459,
+          1
+        ],
+        [
+          -131,
+          -107,
+          0,
+          1
+        ],
+        [
+          -133,
+          -107,
+          459,
+          1
+        ],
+        [
+          -301,
+          -777,
+          0,
+          1
+        ],
+        [
+          -303,
+          -777,
+          459,
+          1
+        ],
+        [
+          -5,
+          -81,
+          0,
+          1
+        ],
+        [
+          -7,
+          -81,
+          459,
+          1
+        ]
+      ],
+      "homogeneous_common_scale_denominator": 1,
+      "spans": [
+        {
+          "source_block": "quad_-1301d1_-777d1_-931d1_-907d1_-205d1_-81d1_-131d1_-107d1_z0_459",
+          "axis_map": [
+            0,
+            1,
+            2
+          ],
+          "flips": [
+            false,
+            false,
+            false
+          ],
+          "degree_elevation": [
+            0,
+            0,
+            0
+          ],
+          "parameter_interval": [
+            0,
+            1
+          ]
+        },
+        {
+          "source_block": "quad_-931d1_-907d1_-301d1_-777d1_-131d1_-107d1_-5d1_-81d1_z0_459",
+          "axis_map": [
+            0,
+            1,
+            2
+          ],
+          "flips": [
+            false,
+            false,
+            false
+          ],
+          "degree_elevation": [
+            0,
+            0,
+            0
+          ],
+          "parameter_interval": [
+            1,
+            2
+          ]
+        }
+      ],
+      "exact_piece_extraction_expected": true
+    },
+    {
+      "id": "band:quad_-301d1_-777d1_-5d1_-81d1_143d1_-7d1_439d1_-407d1_z0_459+quad_143d1_-7d1_269d1_93d1_439d1_-407d1_1069d1_93d1_z0_459",
+      "source_blocks": [
+        "quad_-301d1_-777d1_-5d1_-81d1_143d1_-7d1_439d1_-407d1_z0_459",
+        "quad_143d1_-7d1_269d1_93d1_439d1_-407d1_1069d1_93d1_z0_459"
+      ],
+      "cells": [
+        "quad_-301d1_-777d1_-5d1_-81d1_143d1_-7d1_439d1_-407d1_z0_459",
+        "quad_143d1_-7d1_269d1_93d1_439d1_-407d1_1069d1_93d1_z0_459"
+      ],
+      "patch_kind": "two_span_nurbs",
+      "degrees": [
+        1,
+        1,
+        1
+      ],
+      "knots": [
+        [
+          0,
+          0,
+          1,
+          2,
+          2
+        ],
+        [
+          0,
+          0,
+          1,
+          1
+        ],
+        [
+          0,
+          0,
+          1,
+          1
+        ]
+      ],
+      "control_shape": [
+        3,
+        2,
+        2
+      ],
+      "controls_homogeneous": [
+        [
+          -301,
+          -777,
+          0,
+          1
+        ],
+        [
+          -303,
+          -777,
+          459,
+          1
+        ],
+        [
+          -5,
+          -81,
+          0,
+          1
+        ],
+        [
+          -7,
+          -81,
+          459,
+          1
+        ],
+        [
+          439,
+          -407,
+          0,
+          1
+        ],
+        [
+          437,
+          -407,
+          459,
+          1
+        ],
+        [
+          143,
+          -7,
+          0,
+          1
+        ],
+        [
+          141,
+          -7,
+          459,
+          1
+        ],
+        [
+          1069,
+          93,
+          0,
+          1
+        ],
+        [
+          1067,
+          93,
+          459,
+          1
+        ],
+        [
+          269,
+          93,
+          0,
+          1
+        ],
+        [
+          267,
+          93,
+          459,
+          1
+        ]
+      ],
+      "homogeneous_common_scale_denominator": 1,
+      "spans": [
+        {
+          "source_block": "quad_-301d1_-777d1_-5d1_-81d1_143d1_-7d1_439d1_-407d1_z0_459",
+          "axis_map": [
+            0,
+            1,
+            2
+          ],
+          "flips": [
+            false,
+            false,
+            false
+          ],
+          "degree_elevation": [
+            0,
+            0,
+            0
+          ],
+          "parameter_interval": [
+            0,
+            1
+          ]
+        },
+        {
+          "source_block": "quad_143d1_-7d1_269d1_93d1_439d1_-407d1_1069d1_93d1_z0_459",
+          "axis_map": [
+            1,
+            0,
+            2
+          ],
+          "flips": [
+            false,
+            true,
+            false
+          ],
+          "degree_elevation": [
+            0,
+            0,
+            0
+          ],
+          "parameter_interval": [
+            1,
+            2
+          ]
+        }
+      ],
+      "exact_piece_extraction_expected": true
+    },
+    {
+      "id": "band:quad_-301d1_593d1_-5d1_193d1_143d1_267d1_439d1_963d1_z0_459+quad_-931d1_93d1_-301d1_593d1_-131d1_93d1_-5d1_193d1_z0_459",
+      "source_blocks": [
+        "quad_-301d1_593d1_-5d1_193d1_143d1_267d1_439d1_963d1_z0_459",
+        "quad_-931d1_93d1_-301d1_593d1_-131d1_93d1_-5d1_193d1_z0_459"
+      ],
+      "cells": [
+        "quad_-301d1_593d1_-5d1_193d1_143d1_267d1_439d1_963d1_z0_459",
+        "quad_-931d1_93d1_-301d1_593d1_-131d1_93d1_-5d1_193d1_z0_459"
+      ],
+      "patch_kind": "two_span_nurbs",
+      "degrees": [
+        1,
+        1,
+        1
+      ],
+      "knots": [
+        [
+          0,
+          0,
+          1,
+          2,
+          2
+        ],
+        [
+          0,
+          0,
+          1,
+          1
+        ],
+        [
+          0,
+          0,
+          1,
+          1
+        ]
+      ],
+      "control_shape": [
+        3,
+        2,
+        2
+      ],
+      "controls_homogeneous": [
+        [
+          439,
+          963,
+          0,
+          1
+        ],
+        [
+          437,
+          963,
+          459,
+          1
+        ],
+        [
+          143,
+          267,
+          0,
+          1
+        ],
+        [
+          141,
+          267,
+          459,
+          1
+        ],
+        [
+          -301,
+          593,
+          0,
+          1
+        ],
+        [
+          -303,
+          593,
+          459,
+          1
+        ],
+        [
+          -5,
+          193,
+          0,
+          1
+        ],
+        [
+          -7,
+          193,
+          459,
+          1
+        ],
+        [
+          -931,
+          93,
+          0,
+          1
+        ],
+        [
+          -933,
+          93,
+          459,
+          1
+        ],
+        [
+          -131,
+          93,
+          0,
+          1
+        ],
+        [
+          -133,
+          93,
+          459,
+          1
+        ]
+      ],
+      "homogeneous_common_scale_denominator": 1,
+      "spans": [
+        {
+          "source_block": "quad_-301d1_593d1_-5d1_193d1_143d1_267d1_439d1_963d1_z0_459",
+          "axis_map": [
+            1,
+            0,
+            2
+          ],
+          "flips": [
+            true,
+            false,
+            false
+          ],
+          "degree_elevation": [
+            0,
+            0,
+            0
+          ],
+          "parameter_interval": [
+            0,
+            1
+          ]
+        },
+        {
+          "source_block": "quad_-931d1_93d1_-301d1_593d1_-131d1_93d1_-5d1_193d1_z0_459",
+          "axis_map": [
+            1,
+            0,
+            2
+          ],
+          "flips": [
+            true,
+            false,
+            false
+          ],
+          "degree_elevation": [
+            0,
+            0,
+            0
+          ],
+          "parameter_interval": [
+            1,
+            2
+          ]
+        }
+      ],
+      "exact_piece_extraction_expected": true
+    },
+    {
+      "id": "band:quad_143d1_267d1_269d1_293d1_439d1_963d1_1069d1_1093d1_z0_459+quad_269d1_293d1_343d1_267d1_1069d1_1093d1_1439d1_963d1_z0_459",
+      "source_blocks": [
+        "quad_143d1_267d1_269d1_293d1_439d1_963d1_1069d1_1093d1_z0_459",
+        "quad_269d1_293d1_343d1_267d1_1069d1_1093d1_1439d1_963d1_z0_459"
+      ],
+      "cells": [
+        "quad_143d1_267d1_269d1_293d1_439d1_963d1_1069d1_1093d1_z0_459",
+        "quad_269d1_293d1_343d1_267d1_1069d1_1093d1_1439d1_963d1_z0_459"
+      ],
+      "patch_kind": "two_span_nurbs",
+      "degrees": [
+        1,
+        1,
+        1
+      ],
+      "knots": [
+        [
+          0,
+          0,
+          1,
+          2,
+          2
+        ],
+        [
+          0,
+          0,
+          1,
+          1
+        ],
+        [
+          0,
+          0,
+          1,
+          1
+        ]
+      ],
+      "control_shape": [
+        3,
+        2,
+        2
+      ],
+      "controls_homogeneous": [
+        [
+          143,
+          267,
+          0,
+          1
+        ],
+        [
+          141,
+          267,
+          459,
+          1
+        ],
+        [
+          439,
+          963,
+          0,
+          1
+        ],
+        [
+          437,
+          963,
+          459,
+          1
+        ],
+        [
+          269,
+          293,
+          0,
+          1
+        ],
+        [
+          267,
+          293,
+          459,
+          1
+        ],
+        [
+          1069,
+          1093,
+          0,
+          1
+        ],
+        [
+          1067,
+          1093,
+          459,
+          1
+        ],
+        [
+          343,
+          267,
+          0,
+          1
+        ],
+        [
+          341,
+          267,
+          459,
+          1
+        ],
+        [
+          1439,
+          963,
+          0,
+          1
+        ],
+        [
+          1437,
+          963,
+          459,
+          1
+        ]
+      ],
+      "homogeneous_common_scale_denominator": 1,
+      "spans": [
+        {
+          "source_block": "quad_143d1_267d1_269d1_293d1_439d1_963d1_1069d1_1093d1_z0_459",
+          "axis_map": [
+            0,
+            1,
+            2
+          ],
+          "flips": [
+            false,
+            false,
+            false
+          ],
+          "degree_elevation": [
+            0,
+            0,
+            0
+          ],
+          "parameter_interval": [
+            0,
+            1
+          ]
+        },
+        {
+          "source_block": "quad_269d1_293d1_343d1_267d1_1069d1_1093d1_1439d1_963d1_z0_459",
+          "axis_map": [
+            0,
+            1,
+            2
+          ],
+          "flips": [
+            false,
+            false,
+            false
+          ],
+          "degree_elevation": [
+            0,
+            0,
+            0
+          ],
+          "parameter_interval": [
+            1,
+            2
+          ]
+        }
+      ],
+      "exact_piece_extraction_expected": true
+    },
+    {
+      "id": "band:quad_269d1_93d1_343d1_193d1_1069d1_93d1_1439d1_593d1_z0_459+quad_343d1_193d1_343d1_267d1_1439d1_593d1_1439d1_963d1_z0_459",
+      "source_blocks": [
+        "quad_269d1_93d1_343d1_193d1_1069d1_93d1_1439d1_593d1_z0_459",
+        "quad_343d1_193d1_343d1_267d1_1439d1_593d1_1439d1_963d1_z0_459"
+      ],
+      "cells": [
+        "quad_269d1_93d1_343d1_193d1_1069d1_93d1_1439d1_593d1_z0_459",
+        "quad_343d1_193d1_343d1_267d1_1439d1_593d1_1439d1_963d1_z0_459"
+      ],
+      "patch_kind": "two_span_nurbs",
+      "degrees": [
+        1,
+        1,
+        1
+      ],
+      "knots": [
+        [
+          0,
+          0,
+          1,
+          2,
+          2
+        ],
+        [
+          0,
+          0,
+          1,
+          1
+        ],
+        [
+          0,
+          0,
+          1,
+          1
+        ]
+      ],
+      "control_shape": [
+        3,
+        2,
+        2
+      ],
+      "controls_homogeneous": [
+        [
+          1069,
+          93,
+          0,
+          1
+        ],
+        [
+          1067,
+          93,
+          459,
+          1
+        ],
+        [
+          269,
+          93,
+          0,
+          1
+        ],
+        [
+          267,
+          93,
+          459,
+          1
+        ],
+        [
+          1439,
+          593,
+          0,
+          1
+        ],
+        [
+          1437,
+          593,
+          459,
+          1
+        ],
+        [
+          343,
+          193,
+          0,
+          1
+        ],
+        [
+          341,
+          193,
+          459,
+          1
+        ],
+        [
+          1439,
+          963,
+          0,
+          1
+        ],
+        [
+          1437,
+          963,
+          459,
+          1
+        ],
+        [
+          343,
+          267,
+          0,
+          1
+        ],
+        [
+          341,
+          267,
+          459,
+          1
+        ]
+      ],
+      "homogeneous_common_scale_denominator": 1,
+      "spans": [
+        {
+          "source_block": "quad_269d1_93d1_343d1_193d1_1069d1_93d1_1439d1_593d1_z0_459",
+          "axis_map": [
+            1,
+            0,
+            2
+          ],
+          "flips": [
+            false,
+            true,
+            false
+          ],
+          "degree_elevation": [
+            0,
+            0,
+            0
+          ],
+          "parameter_interval": [
+            0,
+            1
+          ]
+        },
+        {
+          "source_block": "quad_343d1_193d1_343d1_267d1_1439d1_593d1_1439d1_963d1_z0_459",
+          "axis_map": [
+            1,
+            0,
+            2
+          ],
+          "flips": [
+            false,
+            true,
+            false
+          ],
+          "degree_elevation": [
+            0,
+            0,
+            0
+          ],
+          "parameter_interval": [
+            1,
+            2
+          ]
+        }
+      ],
+      "exact_piece_extraction_expected": true
+    }
+  ],
+  "interfaces": [
+    {
+      "first": {
+        "patch_id": "band:quad_-1301d1_-407d1_-931d1_93d1_-205d1_-7d1_-131d1_93d1_z0_459+quad_-1301d1_-777d1_-1301d1_-407d1_-205d1_-81d1_-205d1_-7d1_z0_459",
+        "source_block": "quad_-1301d1_-407d1_-931d1_93d1_-205d1_-7d1_-131d1_93d1_z0_459",
+        "side": "v1",
+        "patch_side": "u0",
+        "axis_map": [
+          1,
+          0,
+          2
+        ],
+        "flips": [
+          true,
+          false,
+          false
+        ],
+        "parameter_interval": [
+          0,
+          1
+        ]
+      },
+      "second": {
+        "patch_id": "band:quad_-301d1_593d1_-5d1_193d1_143d1_267d1_439d1_963d1_z0_459+quad_-931d1_93d1_-301d1_593d1_-131d1_93d1_-5d1_193d1_z0_459",
+        "source_block": "quad_-931d1_93d1_-301d1_593d1_-131d1_93d1_-5d1_193d1_z0_459",
+        "side": "v0",
+        "patch_side": "u1",
+        "axis_map": [
+          1,
+          0,
+          2
+        ],
+        "flips": [
+          true,
+          false,
+          false
+        ],
+        "parameter_interval": [
+          1,
+          2
+        ]
+      },
+      "orientation": {
+        "flip_first": false,
+        "flip_second": false,
+        "swap": false
+      },
+      "status": "exact_match"
+    },
+    {
+      "first": {
+        "patch_id": "band:quad_-1301d1_-407d1_-931d1_93d1_-205d1_-7d1_-131d1_93d1_z0_459+quad_-1301d1_-777d1_-1301d1_-407d1_-205d1_-81d1_-205d1_-7d1_z0_459",
+        "source_block": "quad_-1301d1_-777d1_-1301d1_-407d1_-205d1_-81d1_-205d1_-7d1_z0_459",
+        "side": "v0",
+        "patch_side": "u1",
+        "axis_map": [
+          1,
+          0,
+          2
+        ],
+        "flips": [
+          true,
+          false,
+          false
+        ],
+        "parameter_interval": [
+          1,
+          2
+        ]
+      },
+      "second": {
+        "patch_id": "band:quad_-1301d1_-777d1_-931d1_-907d1_-205d1_-81d1_-131d1_-107d1_z0_459+quad_-931d1_-907d1_-301d1_-777d1_-131d1_-107d1_-5d1_-81d1_z0_459",
+        "source_block": "quad_-1301d1_-777d1_-931d1_-907d1_-205d1_-81d1_-131d1_-107d1_z0_459",
+        "side": "u0",
+        "patch_side": "u0",
+        "axis_map": [
+          0,
+          1,
+          2
+        ],
+        "flips": [
+          false,
+          false,
+          false
+        ],
+        "parameter_interval": [
+          0,
+          1
+        ]
+      },
+      "orientation": {
+        "flip_first": false,
+        "flip_second": false,
+        "swap": false
+      },
+      "status": "exact_match"
+    },
+    {
+      "first": {
+        "patch_id": "band:quad_-301d1_-777d1_-5d1_-81d1_143d1_-7d1_439d1_-407d1_z0_459+quad_143d1_-7d1_269d1_93d1_439d1_-407d1_1069d1_93d1_z0_459",
+        "source_block": "quad_-301d1_-777d1_-5d1_-81d1_143d1_-7d1_439d1_-407d1_z0_459",
+        "side": "u0",
+        "patch_side": "u0",
+        "axis_map": [
+          0,
+          1,
+          2
+        ],
+        "flips": [
+          false,
+          false,
+          false
+        ],
+        "parameter_interval": [
+          0,
+          1
+        ]
+      },
+      "second": {
+        "patch_id": "band:quad_-1301d1_-777d1_-931d1_-907d1_-205d1_-81d1_-131d1_-107d1_z0_459+quad_-931d1_-907d1_-301d1_-777d1_-131d1_-107d1_-5d1_-81d1_z0_459",
+        "source_block": "quad_-931d1_-907d1_-301d1_-777d1_-131d1_-107d1_-5d1_-81d1_z0_459",
+        "side": "u1",
+        "patch_side": "u1",
+        "axis_map": [
+          0,
+          1,
+          2
+        ],
+        "flips": [
+          false,
+          false,
+          false
+        ],
+        "parameter_interval": [
+          1,
+          2
+        ]
+      },
+      "orientation": {
+        "flip_first": false,
+        "flip_second": false,
+        "swap": false
+      },
+      "status": "exact_match"
+    },
+    {
+      "first": {
+        "patch_id": "band:quad_-301d1_593d1_-5d1_193d1_143d1_267d1_439d1_963d1_z0_459+quad_-931d1_93d1_-301d1_593d1_-131d1_93d1_-5d1_193d1_z0_459",
+        "source_block": "quad_-301d1_593d1_-5d1_193d1_143d1_267d1_439d1_963d1_z0_459",
+        "side": "v1",
+        "patch_side": "u0",
+        "axis_map": [
+          1,
+          0,
+          2
+        ],
+        "flips": [
+          true,
+          false,
+          false
+        ],
+        "parameter_interval": [
+          0,
+          1
+        ]
+      },
+      "second": {
+        "patch_id": "band:quad_143d1_267d1_269d1_293d1_439d1_963d1_1069d1_1093d1_z0_459+quad_269d1_293d1_343d1_267d1_1069d1_1093d1_1439d1_963d1_z0_459",
+        "source_block": "quad_143d1_267d1_269d1_293d1_439d1_963d1_1069d1_1093d1_z0_459",
+        "side": "u0",
+        "patch_side": "u0",
+        "axis_map": [
+          0,
+          1,
+          2
+        ],
+        "flips": [
+          false,
+          false,
+          false
+        ],
+        "parameter_interval": [
+          0,
+          1
+        ]
+      },
+      "orientation": {
+        "flip_first": true,
+        "flip_second": false,
+        "swap": false
+      },
+      "status": "exact_match"
+    },
+    {
+      "first": {
+        "patch_id": "band:quad_-301d1_-777d1_-5d1_-81d1_143d1_-7d1_439d1_-407d1_z0_459+quad_143d1_-7d1_269d1_93d1_439d1_-407d1_1069d1_93d1_z0_459",
+        "source_block": "quad_143d1_-7d1_269d1_93d1_439d1_-407d1_1069d1_93d1_z0_459",
+        "side": "v1",
+        "patch_side": "u1",
+        "axis_map": [
+          1,
+          0,
+          2
+        ],
+        "flips": [
+          false,
+          true,
+          false
+        ],
+        "parameter_interval": [
+          1,
+          2
+        ]
+      },
+      "second": {
+        "patch_id": "band:quad_269d1_93d1_343d1_193d1_1069d1_93d1_1439d1_593d1_z0_459+quad_343d1_193d1_343d1_267d1_1439d1_593d1_1439d1_963d1_z0_459",
+        "source_block": "quad_269d1_93d1_343d1_193d1_1069d1_93d1_1439d1_593d1_z0_459",
+        "side": "v0",
+        "patch_side": "u0",
+        "axis_map": [
+          1,
+          0,
+          2
+        ],
+        "flips": [
+          false,
+          true,
+          false
+        ],
+        "parameter_interval": [
+          0,
+          1
+        ]
+      },
+      "orientation": {
+        "flip_first": false,
+        "flip_second": false,
+        "swap": false
+      },
+      "status": "exact_match"
+    },
+    {
+      "first": {
+        "patch_id": "band:quad_143d1_267d1_269d1_293d1_439d1_963d1_1069d1_1093d1_z0_459+quad_269d1_293d1_343d1_267d1_1069d1_1093d1_1439d1_963d1_z0_459",
+        "source_block": "quad_269d1_293d1_343d1_267d1_1069d1_1093d1_1439d1_963d1_z0_459",
+        "side": "u1",
+        "patch_side": "u1",
+        "axis_map": [
+          0,
+          1,
+          2
+        ],
+        "flips": [
+          false,
+          false,
+          false
+        ],
+        "parameter_interval": [
+          1,
+          2
+        ]
+      },
+      "second": {
+        "patch_id": "band:quad_269d1_93d1_343d1_193d1_1069d1_93d1_1439d1_593d1_z0_459+quad_343d1_193d1_343d1_267d1_1439d1_593d1_1439d1_963d1_z0_459",
+        "source_block": "quad_343d1_193d1_343d1_267d1_1439d1_593d1_1439d1_963d1_z0_459",
+        "side": "v1",
+        "patch_side": "u1",
+        "axis_map": [
+          1,
+          0,
+          2
+        ],
+        "flips": [
+          false,
+          true,
+          false
+        ],
+        "parameter_interval": [
+          1,
+          2
+        ]
+      },
+      "orientation": {
+        "flip_first": false,
+        "flip_second": false,
+        "swap": false
+      },
+      "status": "exact_match"
+    }
+  ],
+  "boundary_faces": [
+    {
+      "patch_id": "band:quad_-1301d1_-407d1_-931d1_93d1_-205d1_-7d1_-131d1_93d1_z0_459+quad_-1301d1_-777d1_-1301d1_-407d1_-205d1_-81d1_-205d1_-7d1_z0_459",
+      "source_block": "quad_-1301d1_-407d1_-931d1_93d1_-205d1_-7d1_-131d1_93d1_z0_459",
+      "side": "u0",
+      "patch_side": "v0",
+      "axis_map": [
+        1,
+        0,
+        2
+      ],
+      "flips": [
+        true,
+        false,
+        false
+      ],
+      "parameter_interval": [
+        0,
+        1
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:quad_-1301d1_-407d1_-931d1_93d1_-205d1_-7d1_-131d1_93d1_z0_459+quad_-1301d1_-777d1_-1301d1_-407d1_-205d1_-81d1_-205d1_-7d1_z0_459",
+      "source_block": "quad_-1301d1_-407d1_-931d1_93d1_-205d1_-7d1_-131d1_93d1_z0_459",
+      "side": "u1",
+      "patch_side": "v1",
+      "axis_map": [
+        1,
+        0,
+        2
+      ],
+      "flips": [
+        true,
+        false,
+        false
+      ],
+      "parameter_interval": [
+        0,
+        1
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:quad_-1301d1_-407d1_-931d1_93d1_-205d1_-7d1_-131d1_93d1_z0_459+quad_-1301d1_-777d1_-1301d1_-407d1_-205d1_-81d1_-205d1_-7d1_z0_459",
+      "source_block": "quad_-1301d1_-407d1_-931d1_93d1_-205d1_-7d1_-131d1_93d1_z0_459",
+      "side": "w0",
+      "patch_side": "w0",
+      "axis_map": [
+        1,
+        0,
+        2
+      ],
+      "flips": [
+        true,
+        false,
+        false
+      ],
+      "parameter_interval": [
+        0,
+        1
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:quad_-1301d1_-407d1_-931d1_93d1_-205d1_-7d1_-131d1_93d1_z0_459+quad_-1301d1_-777d1_-1301d1_-407d1_-205d1_-81d1_-205d1_-7d1_z0_459",
+      "source_block": "quad_-1301d1_-407d1_-931d1_93d1_-205d1_-7d1_-131d1_93d1_z0_459",
+      "side": "w1",
+      "patch_side": "w1",
+      "axis_map": [
+        1,
+        0,
+        2
+      ],
+      "flips": [
+        true,
+        false,
+        false
+      ],
+      "parameter_interval": [
+        0,
+        1
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:quad_-1301d1_-407d1_-931d1_93d1_-205d1_-7d1_-131d1_93d1_z0_459+quad_-1301d1_-777d1_-1301d1_-407d1_-205d1_-81d1_-205d1_-7d1_z0_459",
+      "source_block": "quad_-1301d1_-777d1_-1301d1_-407d1_-205d1_-81d1_-205d1_-7d1_z0_459",
+      "side": "u0",
+      "patch_side": "v0",
+      "axis_map": [
+        1,
+        0,
+        2
+      ],
+      "flips": [
+        true,
+        false,
+        false
+      ],
+      "parameter_interval": [
+        1,
+        2
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:quad_-1301d1_-407d1_-931d1_93d1_-205d1_-7d1_-131d1_93d1_z0_459+quad_-1301d1_-777d1_-1301d1_-407d1_-205d1_-81d1_-205d1_-7d1_z0_459",
+      "source_block": "quad_-1301d1_-777d1_-1301d1_-407d1_-205d1_-81d1_-205d1_-7d1_z0_459",
+      "side": "u1",
+      "patch_side": "v1",
+      "axis_map": [
+        1,
+        0,
+        2
+      ],
+      "flips": [
+        true,
+        false,
+        false
+      ],
+      "parameter_interval": [
+        1,
+        2
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:quad_-1301d1_-407d1_-931d1_93d1_-205d1_-7d1_-131d1_93d1_z0_459+quad_-1301d1_-777d1_-1301d1_-407d1_-205d1_-81d1_-205d1_-7d1_z0_459",
+      "source_block": "quad_-1301d1_-777d1_-1301d1_-407d1_-205d1_-81d1_-205d1_-7d1_z0_459",
+      "side": "w0",
+      "patch_side": "w0",
+      "axis_map": [
+        1,
+        0,
+        2
+      ],
+      "flips": [
+        true,
+        false,
+        false
+      ],
+      "parameter_interval": [
+        1,
+        2
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:quad_-1301d1_-407d1_-931d1_93d1_-205d1_-7d1_-131d1_93d1_z0_459+quad_-1301d1_-777d1_-1301d1_-407d1_-205d1_-81d1_-205d1_-7d1_z0_459",
+      "source_block": "quad_-1301d1_-777d1_-1301d1_-407d1_-205d1_-81d1_-205d1_-7d1_z0_459",
+      "side": "w1",
+      "patch_side": "w1",
+      "axis_map": [
+        1,
+        0,
+        2
+      ],
+      "flips": [
+        true,
+        false,
+        false
+      ],
+      "parameter_interval": [
+        1,
+        2
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:quad_-1301d1_-777d1_-931d1_-907d1_-205d1_-81d1_-131d1_-107d1_z0_459+quad_-931d1_-907d1_-301d1_-777d1_-131d1_-107d1_-5d1_-81d1_z0_459",
+      "source_block": "quad_-1301d1_-777d1_-931d1_-907d1_-205d1_-81d1_-131d1_-107d1_z0_459",
+      "side": "v0",
+      "patch_side": "v0",
+      "axis_map": [
+        0,
+        1,
+        2
+      ],
+      "flips": [
+        false,
+        false,
+        false
+      ],
+      "parameter_interval": [
+        0,
+        1
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:quad_-1301d1_-777d1_-931d1_-907d1_-205d1_-81d1_-131d1_-107d1_z0_459+quad_-931d1_-907d1_-301d1_-777d1_-131d1_-107d1_-5d1_-81d1_z0_459",
+      "source_block": "quad_-1301d1_-777d1_-931d1_-907d1_-205d1_-81d1_-131d1_-107d1_z0_459",
+      "side": "v1",
+      "patch_side": "v1",
+      "axis_map": [
+        0,
+        1,
+        2
+      ],
+      "flips": [
+        false,
+        false,
+        false
+      ],
+      "parameter_interval": [
+        0,
+        1
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:quad_-1301d1_-777d1_-931d1_-907d1_-205d1_-81d1_-131d1_-107d1_z0_459+quad_-931d1_-907d1_-301d1_-777d1_-131d1_-107d1_-5d1_-81d1_z0_459",
+      "source_block": "quad_-1301d1_-777d1_-931d1_-907d1_-205d1_-81d1_-131d1_-107d1_z0_459",
+      "side": "w0",
+      "patch_side": "w0",
+      "axis_map": [
+        0,
+        1,
+        2
+      ],
+      "flips": [
+        false,
+        false,
+        false
+      ],
+      "parameter_interval": [
+        0,
+        1
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:quad_-1301d1_-777d1_-931d1_-907d1_-205d1_-81d1_-131d1_-107d1_z0_459+quad_-931d1_-907d1_-301d1_-777d1_-131d1_-107d1_-5d1_-81d1_z0_459",
+      "source_block": "quad_-1301d1_-777d1_-931d1_-907d1_-205d1_-81d1_-131d1_-107d1_z0_459",
+      "side": "w1",
+      "patch_side": "w1",
+      "axis_map": [
+        0,
+        1,
+        2
+      ],
+      "flips": [
+        false,
+        false,
+        false
+      ],
+      "parameter_interval": [
+        0,
+        1
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:quad_-301d1_-777d1_-5d1_-81d1_143d1_-7d1_439d1_-407d1_z0_459+quad_143d1_-7d1_269d1_93d1_439d1_-407d1_1069d1_93d1_z0_459",
+      "source_block": "quad_-301d1_-777d1_-5d1_-81d1_143d1_-7d1_439d1_-407d1_z0_459",
+      "side": "v0",
+      "patch_side": "v0",
+      "axis_map": [
+        0,
+        1,
+        2
+      ],
+      "flips": [
+        false,
+        false,
+        false
+      ],
+      "parameter_interval": [
+        0,
+        1
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:quad_-301d1_-777d1_-5d1_-81d1_143d1_-7d1_439d1_-407d1_z0_459+quad_143d1_-7d1_269d1_93d1_439d1_-407d1_1069d1_93d1_z0_459",
+      "source_block": "quad_-301d1_-777d1_-5d1_-81d1_143d1_-7d1_439d1_-407d1_z0_459",
+      "side": "v1",
+      "patch_side": "v1",
+      "axis_map": [
+        0,
+        1,
+        2
+      ],
+      "flips": [
+        false,
+        false,
+        false
+      ],
+      "parameter_interval": [
+        0,
+        1
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:quad_-301d1_-777d1_-5d1_-81d1_143d1_-7d1_439d1_-407d1_z0_459+quad_143d1_-7d1_269d1_93d1_439d1_-407d1_1069d1_93d1_z0_459",
+      "source_block": "quad_-301d1_-777d1_-5d1_-81d1_143d1_-7d1_439d1_-407d1_z0_459",
+      "side": "w0",
+      "patch_side": "w0",
+      "axis_map": [
+        0,
+        1,
+        2
+      ],
+      "flips": [
+        false,
+        false,
+        false
+      ],
+      "parameter_interval": [
+        0,
+        1
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:quad_-301d1_-777d1_-5d1_-81d1_143d1_-7d1_439d1_-407d1_z0_459+quad_143d1_-7d1_269d1_93d1_439d1_-407d1_1069d1_93d1_z0_459",
+      "source_block": "quad_-301d1_-777d1_-5d1_-81d1_143d1_-7d1_439d1_-407d1_z0_459",
+      "side": "w1",
+      "patch_side": "w1",
+      "axis_map": [
+        0,
+        1,
+        2
+      ],
+      "flips": [
+        false,
+        false,
+        false
+      ],
+      "parameter_interval": [
+        0,
+        1
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:quad_-301d1_593d1_-5d1_193d1_143d1_267d1_439d1_963d1_z0_459+quad_-931d1_93d1_-301d1_593d1_-131d1_93d1_-5d1_193d1_z0_459",
+      "source_block": "quad_-301d1_593d1_-5d1_193d1_143d1_267d1_439d1_963d1_z0_459",
+      "side": "u0",
+      "patch_side": "v0",
+      "axis_map": [
+        1,
+        0,
+        2
+      ],
+      "flips": [
+        true,
+        false,
+        false
+      ],
+      "parameter_interval": [
+        0,
+        1
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:quad_-301d1_593d1_-5d1_193d1_143d1_267d1_439d1_963d1_z0_459+quad_-931d1_93d1_-301d1_593d1_-131d1_93d1_-5d1_193d1_z0_459",
+      "source_block": "quad_-301d1_593d1_-5d1_193d1_143d1_267d1_439d1_963d1_z0_459",
+      "side": "u1",
+      "patch_side": "v1",
+      "axis_map": [
+        1,
+        0,
+        2
+      ],
+      "flips": [
+        true,
+        false,
+        false
+      ],
+      "parameter_interval": [
+        0,
+        1
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:quad_-301d1_593d1_-5d1_193d1_143d1_267d1_439d1_963d1_z0_459+quad_-931d1_93d1_-301d1_593d1_-131d1_93d1_-5d1_193d1_z0_459",
+      "source_block": "quad_-301d1_593d1_-5d1_193d1_143d1_267d1_439d1_963d1_z0_459",
+      "side": "w0",
+      "patch_side": "w0",
+      "axis_map": [
+        1,
+        0,
+        2
+      ],
+      "flips": [
+        true,
+        false,
+        false
+      ],
+      "parameter_interval": [
+        0,
+        1
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:quad_-301d1_593d1_-5d1_193d1_143d1_267d1_439d1_963d1_z0_459+quad_-931d1_93d1_-301d1_593d1_-131d1_93d1_-5d1_193d1_z0_459",
+      "source_block": "quad_-301d1_593d1_-5d1_193d1_143d1_267d1_439d1_963d1_z0_459",
+      "side": "w1",
+      "patch_side": "w1",
+      "axis_map": [
+        1,
+        0,
+        2
+      ],
+      "flips": [
+        true,
+        false,
+        false
+      ],
+      "parameter_interval": [
+        0,
+        1
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:quad_-1301d1_-777d1_-931d1_-907d1_-205d1_-81d1_-131d1_-107d1_z0_459+quad_-931d1_-907d1_-301d1_-777d1_-131d1_-107d1_-5d1_-81d1_z0_459",
+      "source_block": "quad_-931d1_-907d1_-301d1_-777d1_-131d1_-107d1_-5d1_-81d1_z0_459",
+      "side": "v0",
+      "patch_side": "v0",
+      "axis_map": [
+        0,
+        1,
+        2
+      ],
+      "flips": [
+        false,
+        false,
+        false
+      ],
+      "parameter_interval": [
+        1,
+        2
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:quad_-1301d1_-777d1_-931d1_-907d1_-205d1_-81d1_-131d1_-107d1_z0_459+quad_-931d1_-907d1_-301d1_-777d1_-131d1_-107d1_-5d1_-81d1_z0_459",
+      "source_block": "quad_-931d1_-907d1_-301d1_-777d1_-131d1_-107d1_-5d1_-81d1_z0_459",
+      "side": "v1",
+      "patch_side": "v1",
+      "axis_map": [
+        0,
+        1,
+        2
+      ],
+      "flips": [
+        false,
+        false,
+        false
+      ],
+      "parameter_interval": [
+        1,
+        2
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:quad_-1301d1_-777d1_-931d1_-907d1_-205d1_-81d1_-131d1_-107d1_z0_459+quad_-931d1_-907d1_-301d1_-777d1_-131d1_-107d1_-5d1_-81d1_z0_459",
+      "source_block": "quad_-931d1_-907d1_-301d1_-777d1_-131d1_-107d1_-5d1_-81d1_z0_459",
+      "side": "w0",
+      "patch_side": "w0",
+      "axis_map": [
+        0,
+        1,
+        2
+      ],
+      "flips": [
+        false,
+        false,
+        false
+      ],
+      "parameter_interval": [
+        1,
+        2
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:quad_-1301d1_-777d1_-931d1_-907d1_-205d1_-81d1_-131d1_-107d1_z0_459+quad_-931d1_-907d1_-301d1_-777d1_-131d1_-107d1_-5d1_-81d1_z0_459",
+      "source_block": "quad_-931d1_-907d1_-301d1_-777d1_-131d1_-107d1_-5d1_-81d1_z0_459",
+      "side": "w1",
+      "patch_side": "w1",
+      "axis_map": [
+        0,
+        1,
+        2
+      ],
+      "flips": [
+        false,
+        false,
+        false
+      ],
+      "parameter_interval": [
+        1,
+        2
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:quad_-301d1_593d1_-5d1_193d1_143d1_267d1_439d1_963d1_z0_459+quad_-931d1_93d1_-301d1_593d1_-131d1_93d1_-5d1_193d1_z0_459",
+      "source_block": "quad_-931d1_93d1_-301d1_593d1_-131d1_93d1_-5d1_193d1_z0_459",
+      "side": "u0",
+      "patch_side": "v0",
+      "axis_map": [
+        1,
+        0,
+        2
+      ],
+      "flips": [
+        true,
+        false,
+        false
+      ],
+      "parameter_interval": [
+        1,
+        2
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:quad_-301d1_593d1_-5d1_193d1_143d1_267d1_439d1_963d1_z0_459+quad_-931d1_93d1_-301d1_593d1_-131d1_93d1_-5d1_193d1_z0_459",
+      "source_block": "quad_-931d1_93d1_-301d1_593d1_-131d1_93d1_-5d1_193d1_z0_459",
+      "side": "u1",
+      "patch_side": "v1",
+      "axis_map": [
+        1,
+        0,
+        2
+      ],
+      "flips": [
+        true,
+        false,
+        false
+      ],
+      "parameter_interval": [
+        1,
+        2
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:quad_-301d1_593d1_-5d1_193d1_143d1_267d1_439d1_963d1_z0_459+quad_-931d1_93d1_-301d1_593d1_-131d1_93d1_-5d1_193d1_z0_459",
+      "source_block": "quad_-931d1_93d1_-301d1_593d1_-131d1_93d1_-5d1_193d1_z0_459",
+      "side": "w0",
+      "patch_side": "w0",
+      "axis_map": [
+        1,
+        0,
+        2
+      ],
+      "flips": [
+        true,
+        false,
+        false
+      ],
+      "parameter_interval": [
+        1,
+        2
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:quad_-301d1_593d1_-5d1_193d1_143d1_267d1_439d1_963d1_z0_459+quad_-931d1_93d1_-301d1_593d1_-131d1_93d1_-5d1_193d1_z0_459",
+      "source_block": "quad_-931d1_93d1_-301d1_593d1_-131d1_93d1_-5d1_193d1_z0_459",
+      "side": "w1",
+      "patch_side": "w1",
+      "axis_map": [
+        1,
+        0,
+        2
+      ],
+      "flips": [
+        true,
+        false,
+        false
+      ],
+      "parameter_interval": [
+        1,
+        2
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:quad_-301d1_-777d1_-5d1_-81d1_143d1_-7d1_439d1_-407d1_z0_459+quad_143d1_-7d1_269d1_93d1_439d1_-407d1_1069d1_93d1_z0_459",
+      "source_block": "quad_143d1_-7d1_269d1_93d1_439d1_-407d1_1069d1_93d1_z0_459",
+      "side": "u0",
+      "patch_side": "v1",
+      "axis_map": [
+        1,
+        0,
+        2
+      ],
+      "flips": [
+        false,
+        true,
+        false
+      ],
+      "parameter_interval": [
+        1,
+        2
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:quad_-301d1_-777d1_-5d1_-81d1_143d1_-7d1_439d1_-407d1_z0_459+quad_143d1_-7d1_269d1_93d1_439d1_-407d1_1069d1_93d1_z0_459",
+      "source_block": "quad_143d1_-7d1_269d1_93d1_439d1_-407d1_1069d1_93d1_z0_459",
+      "side": "u1",
+      "patch_side": "v0",
+      "axis_map": [
+        1,
+        0,
+        2
+      ],
+      "flips": [
+        false,
+        true,
+        false
+      ],
+      "parameter_interval": [
+        1,
+        2
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:quad_-301d1_-777d1_-5d1_-81d1_143d1_-7d1_439d1_-407d1_z0_459+quad_143d1_-7d1_269d1_93d1_439d1_-407d1_1069d1_93d1_z0_459",
+      "source_block": "quad_143d1_-7d1_269d1_93d1_439d1_-407d1_1069d1_93d1_z0_459",
+      "side": "w0",
+      "patch_side": "w0",
+      "axis_map": [
+        1,
+        0,
+        2
+      ],
+      "flips": [
+        false,
+        true,
+        false
+      ],
+      "parameter_interval": [
+        1,
+        2
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:quad_-301d1_-777d1_-5d1_-81d1_143d1_-7d1_439d1_-407d1_z0_459+quad_143d1_-7d1_269d1_93d1_439d1_-407d1_1069d1_93d1_z0_459",
+      "source_block": "quad_143d1_-7d1_269d1_93d1_439d1_-407d1_1069d1_93d1_z0_459",
+      "side": "w1",
+      "patch_side": "w1",
+      "axis_map": [
+        1,
+        0,
+        2
+      ],
+      "flips": [
+        false,
+        true,
+        false
+      ],
+      "parameter_interval": [
+        1,
+        2
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:quad_143d1_267d1_269d1_293d1_439d1_963d1_1069d1_1093d1_z0_459+quad_269d1_293d1_343d1_267d1_1069d1_1093d1_1439d1_963d1_z0_459",
+      "source_block": "quad_143d1_267d1_269d1_293d1_439d1_963d1_1069d1_1093d1_z0_459",
+      "side": "v0",
+      "patch_side": "v0",
+      "axis_map": [
+        0,
+        1,
+        2
+      ],
+      "flips": [
+        false,
+        false,
+        false
+      ],
+      "parameter_interval": [
+        0,
+        1
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:quad_143d1_267d1_269d1_293d1_439d1_963d1_1069d1_1093d1_z0_459+quad_269d1_293d1_343d1_267d1_1069d1_1093d1_1439d1_963d1_z0_459",
+      "source_block": "quad_143d1_267d1_269d1_293d1_439d1_963d1_1069d1_1093d1_z0_459",
+      "side": "v1",
+      "patch_side": "v1",
+      "axis_map": [
+        0,
+        1,
+        2
+      ],
+      "flips": [
+        false,
+        false,
+        false
+      ],
+      "parameter_interval": [
+        0,
+        1
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:quad_143d1_267d1_269d1_293d1_439d1_963d1_1069d1_1093d1_z0_459+quad_269d1_293d1_343d1_267d1_1069d1_1093d1_1439d1_963d1_z0_459",
+      "source_block": "quad_143d1_267d1_269d1_293d1_439d1_963d1_1069d1_1093d1_z0_459",
+      "side": "w0",
+      "patch_side": "w0",
+      "axis_map": [
+        0,
+        1,
+        2
+      ],
+      "flips": [
+        false,
+        false,
+        false
+      ],
+      "parameter_interval": [
+        0,
+        1
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:quad_143d1_267d1_269d1_293d1_439d1_963d1_1069d1_1093d1_z0_459+quad_269d1_293d1_343d1_267d1_1069d1_1093d1_1439d1_963d1_z0_459",
+      "source_block": "quad_143d1_267d1_269d1_293d1_439d1_963d1_1069d1_1093d1_z0_459",
+      "side": "w1",
+      "patch_side": "w1",
+      "axis_map": [
+        0,
+        1,
+        2
+      ],
+      "flips": [
+        false,
+        false,
+        false
+      ],
+      "parameter_interval": [
+        0,
+        1
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:quad_143d1_267d1_269d1_293d1_439d1_963d1_1069d1_1093d1_z0_459+quad_269d1_293d1_343d1_267d1_1069d1_1093d1_1439d1_963d1_z0_459",
+      "source_block": "quad_269d1_293d1_343d1_267d1_1069d1_1093d1_1439d1_963d1_z0_459",
+      "side": "v0",
+      "patch_side": "v0",
+      "axis_map": [
+        0,
+        1,
+        2
+      ],
+      "flips": [
+        false,
+        false,
+        false
+      ],
+      "parameter_interval": [
+        1,
+        2
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:quad_143d1_267d1_269d1_293d1_439d1_963d1_1069d1_1093d1_z0_459+quad_269d1_293d1_343d1_267d1_1069d1_1093d1_1439d1_963d1_z0_459",
+      "source_block": "quad_269d1_293d1_343d1_267d1_1069d1_1093d1_1439d1_963d1_z0_459",
+      "side": "v1",
+      "patch_side": "v1",
+      "axis_map": [
+        0,
+        1,
+        2
+      ],
+      "flips": [
+        false,
+        false,
+        false
+      ],
+      "parameter_interval": [
+        1,
+        2
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:quad_143d1_267d1_269d1_293d1_439d1_963d1_1069d1_1093d1_z0_459+quad_269d1_293d1_343d1_267d1_1069d1_1093d1_1439d1_963d1_z0_459",
+      "source_block": "quad_269d1_293d1_343d1_267d1_1069d1_1093d1_1439d1_963d1_z0_459",
+      "side": "w0",
+      "patch_side": "w0",
+      "axis_map": [
+        0,
+        1,
+        2
+      ],
+      "flips": [
+        false,
+        false,
+        false
+      ],
+      "parameter_interval": [
+        1,
+        2
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:quad_143d1_267d1_269d1_293d1_439d1_963d1_1069d1_1093d1_z0_459+quad_269d1_293d1_343d1_267d1_1069d1_1093d1_1439d1_963d1_z0_459",
+      "source_block": "quad_269d1_293d1_343d1_267d1_1069d1_1093d1_1439d1_963d1_z0_459",
+      "side": "w1",
+      "patch_side": "w1",
+      "axis_map": [
+        0,
+        1,
+        2
+      ],
+      "flips": [
+        false,
+        false,
+        false
+      ],
+      "parameter_interval": [
+        1,
+        2
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:quad_269d1_93d1_343d1_193d1_1069d1_93d1_1439d1_593d1_z0_459+quad_343d1_193d1_343d1_267d1_1439d1_593d1_1439d1_963d1_z0_459",
+      "source_block": "quad_269d1_93d1_343d1_193d1_1069d1_93d1_1439d1_593d1_z0_459",
+      "side": "u0",
+      "patch_side": "v1",
+      "axis_map": [
+        1,
+        0,
+        2
+      ],
+      "flips": [
+        false,
+        true,
+        false
+      ],
+      "parameter_interval": [
+        0,
+        1
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:quad_269d1_93d1_343d1_193d1_1069d1_93d1_1439d1_593d1_z0_459+quad_343d1_193d1_343d1_267d1_1439d1_593d1_1439d1_963d1_z0_459",
+      "source_block": "quad_269d1_93d1_343d1_193d1_1069d1_93d1_1439d1_593d1_z0_459",
+      "side": "u1",
+      "patch_side": "v0",
+      "axis_map": [
+        1,
+        0,
+        2
+      ],
+      "flips": [
+        false,
+        true,
+        false
+      ],
+      "parameter_interval": [
+        0,
+        1
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:quad_269d1_93d1_343d1_193d1_1069d1_93d1_1439d1_593d1_z0_459+quad_343d1_193d1_343d1_267d1_1439d1_593d1_1439d1_963d1_z0_459",
+      "source_block": "quad_269d1_93d1_343d1_193d1_1069d1_93d1_1439d1_593d1_z0_459",
+      "side": "w0",
+      "patch_side": "w0",
+      "axis_map": [
+        1,
+        0,
+        2
+      ],
+      "flips": [
+        false,
+        true,
+        false
+      ],
+      "parameter_interval": [
+        0,
+        1
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:quad_269d1_93d1_343d1_193d1_1069d1_93d1_1439d1_593d1_z0_459+quad_343d1_193d1_343d1_267d1_1439d1_593d1_1439d1_963d1_z0_459",
+      "source_block": "quad_269d1_93d1_343d1_193d1_1069d1_93d1_1439d1_593d1_z0_459",
+      "side": "w1",
+      "patch_side": "w1",
+      "axis_map": [
+        1,
+        0,
+        2
+      ],
+      "flips": [
+        false,
+        true,
+        false
+      ],
+      "parameter_interval": [
+        0,
+        1
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:quad_269d1_93d1_343d1_193d1_1069d1_93d1_1439d1_593d1_z0_459+quad_343d1_193d1_343d1_267d1_1439d1_593d1_1439d1_963d1_z0_459",
+      "source_block": "quad_343d1_193d1_343d1_267d1_1439d1_593d1_1439d1_963d1_z0_459",
+      "side": "u0",
+      "patch_side": "v1",
+      "axis_map": [
+        1,
+        0,
+        2
+      ],
+      "flips": [
+        false,
+        true,
+        false
+      ],
+      "parameter_interval": [
+        1,
+        2
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:quad_269d1_93d1_343d1_193d1_1069d1_93d1_1439d1_593d1_z0_459+quad_343d1_193d1_343d1_267d1_1439d1_593d1_1439d1_963d1_z0_459",
+      "source_block": "quad_343d1_193d1_343d1_267d1_1439d1_593d1_1439d1_963d1_z0_459",
+      "side": "u1",
+      "patch_side": "v0",
+      "axis_map": [
+        1,
+        0,
+        2
+      ],
+      "flips": [
+        false,
+        true,
+        false
+      ],
+      "parameter_interval": [
+        1,
+        2
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:quad_269d1_93d1_343d1_193d1_1069d1_93d1_1439d1_593d1_z0_459+quad_343d1_193d1_343d1_267d1_1439d1_593d1_1439d1_963d1_z0_459",
+      "source_block": "quad_343d1_193d1_343d1_267d1_1439d1_593d1_1439d1_963d1_z0_459",
+      "side": "w0",
+      "patch_side": "w0",
+      "axis_map": [
+        1,
+        0,
+        2
+      ],
+      "flips": [
+        false,
+        true,
+        false
+      ],
+      "parameter_interval": [
+        1,
+        2
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:quad_269d1_93d1_343d1_193d1_1069d1_93d1_1439d1_593d1_z0_459+quad_343d1_193d1_343d1_267d1_1439d1_593d1_1439d1_963d1_z0_459",
+      "source_block": "quad_343d1_193d1_343d1_267d1_1439d1_593d1_1439d1_963d1_z0_459",
+      "side": "w1",
+      "patch_side": "w1",
+      "axis_map": [
+        1,
+        0,
+        2
+      ],
+      "flips": [
+        false,
+        true,
+        false
+      ],
+      "parameter_interval": [
+        1,
+        2
+      ],
+      "status": "extracted_exactly_from_model"
+    }
+  ],
+  "merged_source_blocks": [
+    "quad_-1301d1_-407d1_-931d1_93d1_-205d1_-7d1_-131d1_93d1_z0_459",
+    "quad_-1301d1_-777d1_-1301d1_-407d1_-205d1_-81d1_-205d1_-7d1_z0_459",
+    "quad_-1301d1_-777d1_-931d1_-907d1_-205d1_-81d1_-131d1_-107d1_z0_459",
+    "quad_-301d1_-777d1_-5d1_-81d1_143d1_-7d1_439d1_-407d1_z0_459",
+    "quad_-301d1_593d1_-5d1_193d1_143d1_267d1_439d1_963d1_z0_459",
+    "quad_-931d1_-907d1_-301d1_-777d1_-131d1_-107d1_-5d1_-81d1_z0_459",
+    "quad_-931d1_93d1_-301d1_593d1_-131d1_93d1_-5d1_193d1_z0_459",
+    "quad_143d1_-7d1_269d1_93d1_439d1_-407d1_1069d1_93d1_z0_459",
+    "quad_143d1_267d1_269d1_293d1_439d1_963d1_1069d1_1093d1_z0_459",
+    "quad_269d1_293d1_343d1_267d1_1069d1_1093d1_1439d1_963d1_z0_459",
+    "quad_269d1_93d1_343d1_193d1_1069d1_93d1_1439d1_593d1_z0_459",
+    "quad_343d1_193d1_343d1_267d1_1439d1_593d1_1439d1_963d1_z0_459"
+  ],
+  "errors": []
+}

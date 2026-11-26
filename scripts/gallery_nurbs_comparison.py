@@ -43,7 +43,7 @@ def main():
     assert len(cases) == 46
     (SITE / "comparison-data.json").write_text(json.dumps(cases, separators=(",", ":"))+"\n")
     version_modules("compare.js", ["renderer.js", "comparison-data.json"])
-    version_modules("compare.html", ["compare.js", "style.css", "compare.css"])
+    version_modules("compare.html", ["compare.js", "style.css", "compare.css", "experiments.json"])
 
 
 if __name__ == "__main__":

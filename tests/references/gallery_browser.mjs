@@ -50,8 +50,11 @@ const injectedExpressions = {
     const rect = document.querySelector('#model-canvas').getBoundingClientRect();
     return { x: rect.x, y: rect.y, width: rect.width, height: rect.height, scale: 1 };
   })()`,
-  resources: `fetch(document.getElementById('catalog-url').href).then(response => response.json()).then(async experiments =>
-    Promise.all(experiments.map(async experiment => {
+  resources: `fetch(document.getElementById('catalog-url').href).then(response => response.json()).then(async experiments => {
+    const comparisonResponse = await fetch('./comparison-data.json');
+    const comparisonData = comparisonResponse.ok ? await comparisonResponse.json() : [];
+    const comparisonIds = new Set(comparisonData.map(item => item.id));
+    return Promise.all(experiments.map(async experiment => {
       const assetExtensions = ['.json', '.step', '.vtk', '.vtu', '.stl', '.obj', '.glb', '.gltf', '.png', '.jpg', '.jpeg'];
       const assets = Object.entries(experiment)
         .filter(([key, value]) => typeof value === 'string'
@@ -59,9 +62,29 @@ const injectedExpressions = {
           && !value.startsWith('http://') && !value.startsWith('https://'))
         .map(([key, value]) => ({ key, path: value }));
     const modelResponse = await fetch(experiment.model);
-    const model = await modelResponse.json();
+    const modelBytes = await modelResponse.arrayBuffer();
+    const model = JSON.parse(new TextDecoder().decode(modelBytes));
+    const modelDigest = await crypto.subtle.digest('SHA-256', modelBytes);
+    const modelSha256 = [...new Uint8Array(modelDigest)].map(value => value.toString(16).padStart(2, '0')).join('');
     const auditResponse = experiment.audit ? await fetch(experiment.audit) : null;
     const audit = auditResponse?.ok ? await auditResponse.json() : null;
+    const representationResponse = experiment.representation ? await fetch(experiment.representation) : null;
+    const representation = representationResponse?.ok ? await representationResponse.json() : null;
+    const exactPatchesValid = !representation || representation.patches.every(patch =>
+      Array.isArray(patch.degrees) && patch.degrees.length === 3
+      && Array.isArray(patch.knots) && patch.knots.length === 3
+      && Array.isArray(patch.control_shape) && patch.control_shape.length === 3
+      && patch.knots.every((knots, axis) => Array.isArray(knots)
+        && knots.length === patch.control_shape[axis] + patch.degrees[axis] + 1
+        && knots.every((value, index) => Number.isFinite(value) && (index === 0 || value >= knots[index - 1])))
+      && Array.isArray(patch.controls_homogeneous)
+      && patch.controls_homogeneous.length === patch.control_shape.reduce((product, value) => product * value, 1)
+      && patch.controls_homogeneous.every(control => Array.isArray(control) && control.length === 4
+        && control.every(Number.isFinite) && control[3] > 0));
+    const exactExteriorFaceKeys = representation?.boundary_faces
+      ? representation.boundary_faces.map(face => (face.source_block || face.block) + ':' + face.side).sort()
+      : (model.boundary_faces || model.topology?.exterior || []).map(face => Array.isArray(face)
+        ? face[0] + ':' + face[1] : (face.source_block || face.block) + ':' + face.side).sort();
     const curvedBlocks = (model.blocks || []).filter(block => {
       const degrees = block.degrees || model.degrees;
       if (!Array.isArray(degrees) || !Array.isArray(block.controls || block.xyzw)) return false;
@@ -96,12 +119,27 @@ const injectedExpressions = {
       metrics: experiment.metrics || [],
       modelBlockCount: (model.blocks || []).length,
       modelInterfaceCount: (model.topology?.interfaces || []).length,
+      exactExteriorFaceCount: representation?.boundary_faces
+        ? representation.boundary_faces.length
+        : (model.boundary_faces || model.topology?.exterior || []).length,
+      exactExteriorFaceKeys,
+      representationPatchCount: (representation?.patches || model.nurbs_patches || []).length,
+      representationCellCount: new Set((representation?.patches || model.nurbs_patches || []).flatMap(patch => patch.cells || patch.source_blocks || [])).size,
+      representationCellIds: [...new Set((representation?.patches || []).flatMap(patch => patch.cells || patch.source_blocks || []))].sort(),
+      exactExtractionCount: representation?.exact_extraction_count ?? null,
+      exactInterfaceCount: representation?.exact_interface_count ?? null,
+      nativeNurbsPatchCount: (model.nurbs_patches || []).length,
+      hasExactRepresentation: Boolean(representation),
+      representationSourceMatches: !representation || representation.source_model_sha256 === modelSha256,
+      exactPatchesValid,
+      hasComparison: comparisonIds.has(experiment.id),
       modelAudit: audit?.model_audit || null,
       kernelRebuild: audit?.kernel_rebuild || null,
       representation: experiment.representation || null,
       section: experiment.section || null,
       links: {
         model: Boolean(experiment.model && experiment.model !== experiment.source),
+        representation: Boolean(experiment.representation),
         source: Boolean(experiment.source),
         step: Boolean(experiment.step),
         audit: Boolean(experiment.audit),
@@ -115,7 +153,7 @@ const injectedExpressions = {
       curvedBlockCount: curvedBlocks.length,
       profileCount: (audit?.g1_oval_arcs || []).filter(item => Array.isArray(item.quadratic_arcs_mm)
         && item.quadratic_arcs_mm.length === 4).length,
-    };})))`,
+    };}));})`,
   selectExperiment: id => `(() => {
     const select = document.querySelector('#experiment-select');
     select.value = ${JSON.stringify(id)};
@@ -147,13 +185,25 @@ const injectedExpressions = {
     title: document.querySelector('#view-title').textContent,
     stateHidden: document.querySelector('#canvas-state').hidden,
     stateText: document.querySelector('#canvas-state').textContent,
+    boundaryFaceCount: document.querySelector('#model-canvas').dataset.boundaryFaceCount,
+    exactExteriorFaceCount: document.querySelector('#model-canvas').dataset.exactExteriorFaceCount,
+    excludedInternalFaceCount: document.querySelector('#model-canvas').dataset.excludedInternalFaceCount,
+    boundarySource: document.querySelector('#model-canvas').dataset.boundarySource,
+    boundaryFaceKeys: JSON.parse(document.querySelector('#model-canvas').dataset.boundaryFaceKeys || '[]'),
+    metricText: document.querySelector('#metrics-list').textContent,
+    metrics: Object.fromEntries([...document.querySelectorAll('#metrics-list > div')].map(row => [row.querySelector('dt')?.textContent, row.querySelector('dd')?.textContent])),
+    representationLinkHidden: document.querySelector('#representation-link').hidden,
+    comparisonLinkHidden: document.querySelector('.comparison-link').hidden,
+    comparisonStatus: document.querySelector('.comparison-status').textContent,
+    patchModeHidden: document.querySelector('[data-mode=patches]').hidden,
+    patchModeLabel: document.querySelector('[data-mode=patches]').textContent,
     canvas: (() => {
       const rect = document.querySelector('#model-canvas').getBoundingClientRect();
       return { width: rect.width, height: rect.height };
     })(),
   }))()`,
   visibleVariantLinks: `(() => Object.fromEntries([
-    ['model', '#model-link'], ['source', '#source-link'], ['step', '#step-link'], ['audit', '#audit-link'],
+    ['model', '#model-link'], ['representation', '#representation-link'], ['source', '#source-link'], ['step', '#step-link'], ['audit', '#audit-link'],
     ['figure', '#figure-link'],
   ].map(([name, selector]) => [name, !document.querySelector(selector).hidden])))()`,
   modeControls: `(() => ({
@@ -496,6 +546,17 @@ async function runBrowserChecks() {
     || experiment.assets.some(asset => asset.status !== 200 || asset.bytes < 1))) {
     throw new Error(`Gallery resource requests failed: ${JSON.stringify(resources)}`);
   }
+  const exactRepresentations = resources.filter(experiment => experiment.hasExactRepresentation);
+  if (exactRepresentations.length !== 29 || exactRepresentations.some(experiment =>
+    !experiment.representationSourceMatches
+    || !experiment.exactPatchesValid
+    || experiment.exactExtractionCount !== experiment.modelBlockCount
+    || experiment.representationCellCount !== experiment.modelBlockCount
+    || experiment.representationCellIds.length !== experiment.modelBlockCount
+    || experiment.exactInterfaceCount !== experiment.modelInterfaceCount
+  )) {
+    throw new Error(`Exact NURBS supplements do not match their native models: ${JSON.stringify(exactRepresentations.map(({ id, representationSourceMatches, exactPatchesValid, exactExtractionCount, representationCellCount, modelBlockCount, exactInterfaceCount, modelInterfaceCount }) => ({ id, representationSourceMatches, exactPatchesValid, exactExtractionCount, representationCellCount, modelBlockCount, exactInterfaceCount, modelInterfaceCount })))}`);
+  }
   if (resources.some(experiment => !experiment.modelAudit
     || experiment.modelAudit.status !== 'valid'
     || experiment.modelAudit.blocks !== experiment.modelBlockCount
@@ -555,6 +616,20 @@ async function runBrowserChecks() {
     if (state.id !== experiment.id || !state.stateHidden) {
       throw new Error(`Direct model URL ${experiment.id} did not render: ${JSON.stringify(state)}`);
     }
+    if (experiment.id.startsWith('bench_poly_')) {
+      const merged = await evaluate(`({
+        active: document.querySelector('[data-mode="patches"]').getAttribute('aria-pressed') === 'true',
+        compare: new URL(document.querySelector('.comparison-link').href).searchParams.get('model'),
+        count: document.querySelector('#metrics-list').textContent.includes('NURBS volumes')
+      })`);
+      if (!merged.active || !merged.count || merged.compare !== experiment.id) throw new Error('Missing NURBS view for ' + experiment.id);
+      if (experiment.id === 'bench_poly_seeded_convex_14') {
+        const macro = await capture('seeded-14-volumes', await canvasRegion());
+        await evaluate(injectedExpressions.blocksMode);
+        await pause(100);
+        if (macro === await capture('seeded-14-cells', await canvasRegion())) throw new Error('Seeded NURBS volumes and cells appear identical');
+      }
+    }
     const visibleLinks = await evaluate(injectedExpressions.visibleVariantLinks);
     const controls = await evaluate(injectedExpressions.modeControls);
     const isBoundary = experiment.representation === 'boundary';
@@ -566,9 +641,43 @@ async function runBrowserChecks() {
         throw new Error(`Experiment ${experiment.id} link ${key} visibility mismatch: expected ${experiment.links[key]}, got ${visibleLinks[key]}`);
       }
     }
+    if (state.representationLinkHidden !== !experiment.links.representation) {
+      throw new Error(`Experiment ${experiment.id} representation link visibility mismatch`);
+    }
+    if (state.comparisonLinkHidden !== !experiment.hasComparison) {
+      throw new Error(`Experiment ${experiment.id} comparison availability is misreported`);
+    }
+    if (!experiment.hasComparison && !state.comparisonStatus.includes('No paired partition comparison')) {
+      throw new Error(`Experiment ${experiment.id} does not explain the missing paired comparison`);
+    }
+    const hasPatchView = experiment.representationPatchCount > 0 || experiment.nativeNurbsPatchCount > 0;
+    if (state.patchModeHidden === hasPatchView) throw new Error(`Experiment ${experiment.id} NURBS cover mode visibility is wrong`);
+    if (experiment.representationPatchCount > 0) {
+      const metrics = state.metrics;
+      if (Number(metrics['NURBS volumes']) !== experiment.representationPatchCount
+        || Number(metrics['Bézier cells']) !== experiment.representationCellCount) {
+        throw new Error(`Experiment ${experiment.id} shows incorrect exact cover metrics: ${JSON.stringify(metrics)}`);
+      }
+    }
     if (state.title !== experiment.title) {
       throw new Error(`Experiment ${experiment.id} selected, but title is ${JSON.stringify(state.title)}`);
     }
+    await evaluate(injectedExpressions.surfaceMode);
+    await pause(100);
+    const boundaryState = await evaluate(injectedExpressions.selectedState);
+    if (experiment.exactExteriorFaceCount > 0) {
+      const visibleCount = Number(boundaryState.boundaryFaceCount);
+      const exactCount = Number(boundaryState.exactExteriorFaceCount);
+      const excludedCount = Number(boundaryState.excludedInternalFaceCount);
+      const totalFaces = experiment.modelBlockCount * 6;
+      if (visibleCount !== experiment.exactExteriorFaceCount || exactCount !== visibleCount
+        || excludedCount !== totalFaces - visibleCount
+        || boundaryState.boundarySource === 'interfaces'
+        || JSON.stringify([...boundaryState.boundaryFaceKeys].sort()) !== JSON.stringify(experiment.exactExteriorFaceKeys)) {
+        throw new Error(`Renderer did not draw only the recorded exterior faces for ${experiment.id}: ${JSON.stringify(boundaryState)}`);
+      }
+    }
+    if (hasPatchView) await evaluate("document.querySelector('[data-mode=patches]').click()");
     const profile = await evaluate(injectedExpressions.profileState);
     if (experiment.profileCount > 0 && (profile.hidden || profile.count !== Math.min(2, experiment.profileCount))) {
       throw new Error(`Curved profile vignette did not show audited arcs for ${experiment.id}: ${JSON.stringify({ profile, profileCount: experiment.profileCount })}`);
@@ -663,6 +772,46 @@ async function runBrowserChecks() {
   if ((await views())[1] === unlocked[1]) throw new Error('Relinking views failed');
   await evaluate("document.getElementById('sketch').value='bench_poly_blind_two_levels';document.getElementById('sketch').dispatchEvent(new Event('change'))");
   if (!await evaluate("document.getElementById('optimize-stats').textContent.includes('24 NURBS volumes · 96 Bézier cells')")) throw new Error('Wrong two-depth pocket');
+  const mergedSingleton = resources.find(item => item.hasComparison && item.hasExactRepresentation
+    && /^bench_poly_seeded_convex_00$/.test(item.id));
+  if (mergedSingleton) {
+    await command('Page.navigate', {url: `${serverUrl}compare.html?model=${encodeURIComponent(mergedSingleton.id)}`});
+    for (let i = 0; i < 200 && await evaluate("document.querySelector('#right-title')?.textContent !== 'Published exact NURBS cover'"); i++) await pause(50);
+    const coverState = await evaluate(`({
+      title: document.querySelector('#right-title').textContent,
+      stats: document.querySelector('#optimize-stats').textContent,
+      variant: document.querySelector('#right-variant').value,
+      patchMode: document.querySelector('#colour').value,
+      canvas: (() => { const r=document.getElementById('optimize').getBoundingClientRect(); return {x:r.left,y:r.top,width:r.width,height:r.height,scale:1}; })(),
+    })`);
+    if (coverState.title !== 'Published exact NURBS cover' || coverState.variant !== 'cover'
+      || !coverState.stats.includes(`${mergedSingleton.representationPatchCount} merged NURBS patches`)
+      || !coverState.stats.includes(`${mergedSingleton.representationCellCount} Bézier cells`)) {
+      throw new Error(`Supplemented singleton comparison did not load its exact cover: ${JSON.stringify(coverState)}`);
+    }
+    const coverPixels = await capture('singleton-cover', coverState.canvas, true, true);
+    await evaluate("document.querySelector('#colour').value='cell';document.querySelector('#colour').dispatchEvent(new Event('change'))");
+    await pause(200);
+    const cellPixels = await capture('singleton-cover-cells', coverState.canvas, true, true);
+    if (coverPixels.hash === cellPixels.hash) throw new Error('Merged NURBS cover and Bézier cells look identical');
+    await evaluate("document.querySelector('#cut').click();document.querySelector('#fraction').value='62';document.querySelector('#fraction').dispatchEvent(new Event('input'))");
+    await pause(300);
+    const cutPixels = await capture('singleton-cover-section', coverState.canvas, true, true);
+    if (cutPixels.hash === cellPixels.hash) throw new Error('Exact NURBS cover section did not change the rendered boundary');
+    await evaluate("document.querySelector('#right-variant').value='optimize';document.querySelector('#right-variant').dispatchEvent(new Event('change'))");
+    await pause(150);
+    if (!await evaluate("document.querySelector('#right-title').textContent === 'Native optimized'")) {
+      throw new Error('Native optimized comparison candidate is not selectable');
+    }
+  }
+  const noPair = resources.find(item => !item.hasComparison);
+  if (noPair) {
+    await command('Page.navigate', {url: `${serverUrl}compare.html?model=${encodeURIComponent(noPair.id)}`});
+    const noPairStatus = await evaluate("({text:document.querySelector('#status').textContent,hidden:document.querySelector('.comparison').hidden})");
+    if (!noPairStatus.hidden || !noPairStatus.text.includes('No paired partition comparison')) {
+      throw new Error(`Unpaired model was given an unrelated comparison: ${JSON.stringify(noPairStatus)}`);
+    }
+  }
   await pause(150);
   await capture('nurbs-comparison-desktop', null, false, true);
 

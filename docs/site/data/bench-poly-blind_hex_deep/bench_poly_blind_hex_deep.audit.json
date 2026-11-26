@@ -5,6 +5,7 @@
     "family": "convex_blind_pockets"
   },
   "model_audit": {
+    "bezier_span_count": 14,
     "blocks": 14,
     "bounded_sketch_faces": 8,
     "cavities": 0,
@@ -12,6 +13,7 @@
     "exterior_sides": 34,
     "hausdorff_error_upper_bound_mm": 0,
     "method": "certified_sketch_layer_partition",
+    "nurbs_patch_count": 10,
     "shared_faces": 25,
     "status": "valid",
     "volume_exact_mm3": [
@@ -21,12 +23,13 @@
   },
   "kernel_rebuild": {
     "command": "build recipe.json model.json; audit model.json; export-step model.json reference.step",
-    "kernel_revision": "083fdfe14373aadbca0e9d10586e2cce32ba077d",
-    "kernel_binary_sha256": "8f33eeba801e38e56fbe52ad6ccb96a68a28d2f20187a7d67df869af0c0f9ac2",
-    "recipe_sha256": "21b9fcaa5e9199c381876c5b8d59fb54990e682546478b205e8a20bedb627a9d",
-    "model_sha256": "6b394f590d37016d276b56ea9af543074479062707f579f442b40a8f915d9e2b",
+    "kernel_revision": "1177c32dbf148a3960a471cf0a7b7977fd604b4b",
+    "kernel_binary_sha256": "32419887d795e7d3d67178e1c3464fbb590057e3f64be38d5200dc73f7977df8",
+    "recipe_sha256": "12fd5dbfe15b34d78093d5cf3be5ba123cda4eaff66da24c22d852ee9e814cf1",
+    "model_sha256": "a58d9d3758ce931e8da0fd46c56e0facc27f8e51ef277be2226defa4db7e8a33",
     "step_sha256": "bb4f893709bf3d5cb3eb15851e9f8b00ea4a65365484f5199b83cc4320ee7749",
     "build_report": {
+      "bezier_span_count": 14,
       "blocks": 14,
       "bounded_sketch_faces": 8,
       "cavities": 0,
@@ -34,6 +37,7 @@
       "exterior_sides": 34,
       "hausdorff_error_upper_bound_mm": 0,
       "method": "certified_sketch_layer_partition",
+      "nurbs_patch_count": 10,
       "shared_faces": 25,
       "status": "valid",
       "volume_exact_mm3": [
@@ -53,6 +57,46 @@
     "gallery_height_factor": 2,
     "tag": "latest-release",
     "report": "docs/results/convex-host-rings.json"
+  },
+  "partition_selection": {
+    "selected_mode": "assemble",
+    "selected": {
+      "method": "separated_convex_quad_rings",
+      "patches": 10,
+      "cells": 14,
+      "q1_geometric_nodes": 36,
+      "interfaces_verified": 25,
+      "kappa_planar": 25.49018097222585,
+      "kappa_3d": 25.642530003139218
+    },
+    "alternatives": {
+      "assemble": {
+        "method": "separated_convex_quad_rings",
+        "patches": 10,
+        "cells": 14,
+        "q1_geometric_nodes": 36,
+        "interfaces_verified": 25,
+        "kappa_planar": 25.49018097222585,
+        "kappa_3d": 25.642530003139218
+      },
+      "optimize": {
+        "method": "separated_convex_quad_rings",
+        "patches": 10,
+        "cells": 14,
+        "q1_geometric_nodes": 36,
+        "interfaces_verified": 25,
+        "kappa_planar": 25.49018097222585,
+        "kappa_3d": 25.642530003139218
+      }
+    },
+    "volume_mm3": "138168",
+    "selected_evaluation_model_sha256": "a58d9d3758ce931e8da0fd46c56e0facc27f8e51ef277be2226defa4db7e8a33",
+    "evaluation_cli_sha256": "32419887d795e7d3d67178e1c3464fbb590057e3f64be38d5200dc73f7977df8",
+    "comparison_report_sha256": "9105a17738c278afb50ebfa7bbefa59da7d12792e5cd49ade3ea947a7c8d2363",
+    "criterion": "lexicographic (NURBS patches, Bézier cells), with assemble preferred on ties",
+    "native_model_sha256": "a58d9d3758ce931e8da0fd46c56e0facc27f8e51ef277be2226defa4db7e8a33",
+    "evaluation_report": "docs/results/sketch-nurbs-comparison.json",
+    "optional_evaluation_model_sha256": "a58d9d3758ce931e8da0fd46c56e0facc27f8e51ef277be2226defa4db7e8a33"
   },
   "extrusion_quality": {
     "block_count": 14,

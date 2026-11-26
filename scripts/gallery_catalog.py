@@ -19,6 +19,9 @@ ROOT = Path(__file__).resolve().parents[1]
 SITE = ROOT / "docs/site"
 MANIFEST = SITE / "experiments.json"
 POLYGON_RESULTS = ROOT / "docs/results/convex-host-rings.json"
+POLYGON_COMPARISON = ROOT / "docs/results/sketch-nurbs-comparison.json"
+POLYGON_EVALUATION = ROOT / "build/sketch-nurbs-evaluation.final.json"
+POLYGON_MODELS = ROOT / "build/sketch-nurbs-evaluation"
 BRACKET_RESULTS = ROOT / "docs/results/propagated-bores.json"
 EXPECTED_IDS = 68
 
@@ -110,6 +113,37 @@ def polygon_latest() -> tuple[dict[str, dict], dict]:
     return by_id, latest
 
 
+def polygon_selections() -> tuple[dict[str, dict], dict[str, dict]]:
+    """Select the smallest exact NURBS assembly from the frozen two-mode study."""
+    comparison = read_json(POLYGON_COMPARISON)
+    evaluation = read_json(POLYGON_EVALUATION) if POLYGON_EVALUATION.is_file() else {}
+    evaluated = {case["id"]: case for case in evaluation.get("cases", [])}
+    selections = {}
+    for row in comparison["cases"]:
+        modes = row["modes"]
+        selected = min(modes, key=lambda mode: (
+            int(modes[mode]["patches"]), int(modes[mode]["cells"]), mode != "assemble"
+        ))
+        detail = evaluated.get(row["case"])
+        model_path = POLYGON_MODELS / f"{row['case']}.{selected}.model.json"
+        model_sha = sha256(model_path.read_bytes()) if model_path.is_file() else None
+        if detail is not None and selected in detail and model_sha:
+            if model_sha != detail[selected]["model"]["model_sha256"]:
+                raise ValueError(f"frozen NURBS model digest mismatch: {row['case']} / {selected}")
+        selections[row["case"]] = {
+            "selected_mode": selected,
+            "selected": modes[selected],
+            "alternatives": modes,
+            "volume_mm3": row["volume_mm3"],
+            "selected_evaluation_model_sha256": model_sha,
+            "evaluation_cli_sha256": comparison["kernel_binary_sha256"],
+            "comparison_report_sha256": sha256(POLYGON_COMPARISON.read_bytes()),
+        }
+    if len(selections) != 46:
+        raise ValueError(f"Expected 46 NURBS partition comparisons; found {len(selections)}")
+    return selections, evaluated
+
+
 def bracket_latest() -> tuple[dict[str, dict], dict]:
     report = read_json(BRACKET_RESULTS)
     cases = report["candidate"]["cases"]
@@ -182,32 +216,33 @@ def prepare_audit(case_id: str, old: dict, kernel_audit: dict, build_report: dic
 
 def refresh_entry_metadata(entry: dict, build_report: dict, kernel_audit: dict,
                            model: dict, polygon_record: dict | None,
+                           polygon_selection: dict | None,
                            bracket_record: dict | None, condition: dict, height_factor: int = 1) -> None:
     method = model.get("partition_plan", {}).get("method", build_report.get("method", kernel_audit.get("method", model.get("schema", "native Rust builder"))))
     blocks = int(kernel_audit.get("blocks", len(model.get("blocks", []))))
     interfaces = int(kernel_audit.get("shared_faces", len(model.get("topology", {}).get("interfaces", []))))
     sampled_kappa = condition["maximum_condition_2"]
-    if polygon_record:
-        # The planner may select another partition when the extrusion height changes.
-        if height_factor == 1:
-            old_kappa = max(float(row["max_condition_2"]) for row in polygon_record["condition_grid_5cube_per_block"])
-            if int(polygon_record["block_count"]) != blocks or method != polygon_record["construction_method"]:
-                raise ValueError(f"latest polygon ledger does not match current kernel for {entry['id']}")
-            latest_build = json.loads(polygon_record["build_stdout"])
-            if int(latest_build["shared_faces"]) != interfaces:
-                raise ValueError(f"latest polygon interface count does not match current kernel for {entry['id']}")
-            if abs(sampled_kappa - old_kappa) > 1e-10 * max(1.0, old_kappa):
-                raise ValueError(f"latest polygon condition measurement differs for {entry['id']}: {sampled_kappa} != {old_kappa}")
-            current_det = float(kernel_audit["determinant_lower_bound_mm3"])
-            latest_det = height_factor * float(polygon_record["closed_domain_certificate"]["determinant_lower_bound_mm3"])
-            if abs(current_det - latest_det) > 1e-10 * max(1.0, abs(latest_det)):
-                raise ValueError(f"latest polygon determinant bound differs for {entry['id']}")
-        entry["metrics"] = [
+    if polygon_selection:
+        selected = polygon_selection["selected"]
+        if (int(selected["patches"]) != int(kernel_audit["nurbs_patch_count"])
+                or int(selected["cells"]) != blocks
+                or int(selected["interfaces_verified"]) != interfaces):
+            raise ValueError(f"selected NURBS partition differs from the native model: {entry['id']}")
+        if abs(sampled_kappa - float(selected["kappa_3d"])) > 1e-10 * max(1.0, sampled_kappa):
+            raise ValueError(f"selected NURBS condition measurement differs for {entry['id']}")
+        current_volume = Fraction(*kernel_audit["volume_exact_mm3"])
+        if current_volume != Fraction(polygon_selection["volume_mm3"]):
+            raise ValueError(f"scaled polygon volume differs from the frozen NURBS comparison: {entry['id']}")
+        retained = [row for row in entry.get("metrics", []) if row.get("label") in {
+            "X projection overlap", "Y projection overlap", "Through-holes",
+        }] if entry.get("id") == "bench_poly_projection_diamonds" else []
+        entry["metrics"] = retained + [
+            {"label": "NURBS partition choice", "value": polygon_selection["selected_mode"]},
             {"label": "Partition method", "value": method},
             {"label": "Rust model blocks", "value": blocks},
             {"label": "Rust shared interfaces", "value": interfaces},
             {"label": "Sampled κ₂ max", "value": f"{sampled_kappa:.6g}"},
-            {"label": "Certified determinant lower bound", "value": format_bound(kernel_audit.get("determinant_lower_bound_mm3", polygon_record.get("closed_domain_certificate", {}).get("determinant_lower_bound_mm3")))},
+            {"label": "Certified determinant lower bound", "value": format_bound(kernel_audit.get("determinant_lower_bound_mm3"))},
             {"label": "Exact volume", "value": format_exact_volume(kernel_audit.get("volume_exact_mm3", build_report.get("volume_exact_mm3")))},
         ]
         entry["description"] = (
@@ -239,7 +274,7 @@ def refresh_entry_metadata(entry: dict, build_report: dict, kernel_audit: dict,
             {"label": "Certified determinant lower bound", "value": format_bound(kernel_audit.get("determinant_lower_bound_mm3"))},
             {"label": "Exact volume", "value": format_exact_volume(kernel_audit.get("volume_exact_mm3", build_report.get("volume_exact_mm3")))},
         ]
-    if not (polygon_record or bracket_record or entry.get("id", "").startswith("bench-bracket-")):
+    if not (polygon_selection or polygon_record or bracket_record or entry.get("id", "").startswith("bench-bracket-")):
         # Geometry facts are regenerated from the native report. Keep only the
         # projection overlap annotations that are independent of the partition.
         retained = []
@@ -266,13 +301,16 @@ def refresh_entry_metadata(entry: dict, build_report: dict, kernel_audit: dict,
         entry["stepLabel"] = "OCCT-checked boundary export (STEP)"
 
 
-def rebuild(entries: list[dict], cli: Path) -> None:
+def rebuild(entries: list[dict], cli: Path, kernel_revision: str | None = None) -> None:
     if not cli.is_file():
         raise FileNotFoundError(f"Rust CLI not found: {cli}; run cargo build --release --locked --offline")
     kernel_sha = sha256(cli.read_bytes())
-    revision = subprocess.run(["git", "log", "-1", "--format=%H", "--", "src", "Cargo.toml", "Cargo.lock"], cwd=ROOT, check=True,
-                              text=True, capture_output=True).stdout.strip()
+    revision = kernel_revision or subprocess.run(
+        ["git", "log", "-1", "--format=%H", "--", "src", "Cargo.toml", "Cargo.lock"],
+        cwd=ROOT, check=True, text=True, capture_output=True,
+    ).stdout.strip()
     polygon_records, polygon_run = polygon_latest()
+    polygon_choice, _ = polygon_selections()
     frozen = read_json(ROOT / "docs/results/sketch-planner-polygon-evaluation/cases.json")
     original_recipes = {case["id"]: case["recipe"] for case in frozen["cases"]}
     bracket_records, bracket_report = bracket_latest()
@@ -286,16 +324,48 @@ def rebuild(entries: list[dict], cli: Path) -> None:
         old_audit = read_json(audit)
         old_step = step.read_bytes()
         polygon_record = polygon_records.get(case_id.removeprefix("bench_poly_")) if case_id.startswith("bench_poly_") else None
+        polygon_selection = polygon_choice.get(case_id) if case_id.startswith("bench_poly_") else None
         bracket_name = case_id.removeprefix("bench-bracket-").replace("-", "_")
         bracket_record = bracket_records.get(bracket_name)
 
         with tempfile.TemporaryDirectory(prefix="gallery-regenerate-", dir=model.parent) as temp_name:
             temp = Path(temp_name)
             staged_model, staged_step, staged_audit = temp / "model.json", temp / "reference.step", temp / "audit.json"
-            build_report = json.loads(run(cli, "build", recipe, staged_model))
+            staged_recipe = temp / "recipe.json"
+            build_recipe = recipe
+            if polygon_selection:
+                expected_mode = polygon_selection["selected_mode"]
+                current = read_json(recipe)
+                if polygon_record:
+                    original = original_recipes[polygon_record["id"]]
+                    height_factor, remainder = divmod(current["height_mm"], original["height_mm"])
+                    expected = dict(original, nurbs_partition=expected_mode,
+                                    height_mm=original["height_mm"] * height_factor,
+                                    cuts=[dict(cut, z_interval_mm=[z * height_factor for z in cut["z_interval_mm"]])
+                                          for cut in original["cuts"]])
+                    legacy = dict(expected, nurbs_partition=current.get("nurbs_partition"))
+                    if remainder or height_factor < 1 or current not in (expected, legacy):
+                        raise ValueError(f"gallery recipe differs from the frozen planar benchmark: {case_id}")
+                else:
+                    height_factor = 1
+                    expected = dict(current, nurbs_partition=expected_mode)
+                    legacy = dict(expected, nurbs_partition=current.get("nurbs_partition"))
+                    if current not in (expected, legacy):
+                        raise ValueError(f"projection-only recipe differs from its tracked comparison: {case_id}")
+                write_json(staged_recipe, expected)
+                build_recipe = staged_recipe
+            build_report = json.loads(run(cli, "build", build_recipe, staged_model))
             kernel_audit = json.loads(run(cli, "audit", staged_model))
             run(cli, "export-step", staged_model, staged_step)
             model_bytes = staged_model.read_bytes()
+            if polygon_selection:
+                selected_path = POLYGON_MODELS / f"{case_id}.{polygon_selection['selected_mode']}.model.json"
+                if selected_path.is_file():
+                    if model_bytes != selected_path.read_bytes():
+                        raise ValueError(f"native model differs byte-for-byte from frozen {polygon_selection['selected_mode']} evaluation: {case_id}")
+                    expected_sha = polygon_selection["selected_evaluation_model_sha256"]
+                    if expected_sha and sha256(model_bytes) != expected_sha:
+                        raise ValueError(f"native model digest differs from frozen evaluation: {case_id}")
             fresh_step = staged_step.read_bytes()
             same_step_except_timestamp = step_content(old_step) == step_content(fresh_step)
             if same_step_except_timestamp:
@@ -307,19 +377,14 @@ def rebuild(entries: list[dict], cli: Path) -> None:
             condition = sample_condition(cli, staged_model, temp, len(model_doc.get("blocks", [])))
             audit_doc = prepare_audit(
                 case_id, old_audit, kernel_audit, build_report,
-                polygon_record, kernel_sha, revision, recipe,
+                polygon_record, kernel_sha, revision, build_recipe,
                 model_bytes, published_step, condition, bracket_records, bracket_report,
             )
             height_factor = 1
             if polygon_record:
                 original = original_recipes[polygon_record["id"]]
-                current = read_json(recipe)
+                current = read_json(build_recipe)
                 height_factor, remainder = divmod(current["height_mm"], original["height_mm"])
-                expected = dict(original, height_mm=original["height_mm"] * height_factor,
-                                cuts=[dict(cut, z_interval_mm=[z * height_factor for z in cut["z_interval_mm"]])
-                                      for cut in original["cuts"]])
-                if remainder or height_factor < 1 or current != expected:
-                    raise ValueError(f"gallery recipe differs from the frozen planar benchmark: {case_id}")
                 old_volume = Fraction(*polygon_record["volume_exact_cli_mm3"])
                 if Fraction(*kernel_audit["volume_exact_mm3"]) != height_factor * old_volume:
                     raise ValueError(f"scaled polygon volume mismatch: {case_id}")
@@ -328,15 +393,33 @@ def rebuild(entries: list[dict], cli: Path) -> None:
                     "height_mm": original["height_mm"], "gallery_height_factor": height_factor,
                     "tag": polygon_run["tag"], "report": "docs/results/convex-host-rings.json",
                 }
-            refresh_entry_metadata(entry, build_report, kernel_audit, model_doc, polygon_record, bracket_record, condition, height_factor)
+            elif polygon_selection:
+                if Fraction(*kernel_audit["volume_exact_mm3"]) != Fraction(polygon_selection["volume_mm3"]):
+                    raise ValueError(f"projection-control volume differs from the frozen comparison: {case_id}")
+            if polygon_selection:
+                audit_doc["partition_selection"] = dict(polygon_selection)
+                audit_doc["partition_selection"].update({
+                    "criterion": "lexicographic (NURBS patches, Bézier cells), with assemble preferred on ties",
+                    "native_model_sha256": sha256(model_bytes),
+                    "evaluation_report": "docs/results/sketch-nurbs-comparison.json",
+                    "optional_evaluation_model_sha256": polygon_selection["selected_evaluation_model_sha256"],
+                })
+            refresh_entry_metadata(entry, build_report, kernel_audit, model_doc, polygon_record,
+                                   polygon_selection, bracket_record, condition, height_factor)
             if case_id.startswith("bench_poly_"):
                 height = read_json(recipe)["height_mm"]
                 entry["metrics"].insert(0, {"label": "Stock thickness", "value": f"{height} mm"})
-                if polygon_record:
-                    entry["description"] = (
-                        f"{height} mm extrusion of the benchmark sketch, with {build_report['blocks']} blocks "
-                        f"and {kernel_audit['shared_faces']} shared interfaces."
-                    )
+                patches = kernel_audit["nurbs_patch_count"]
+                spans = kernel_audit["bezier_span_count"]
+                entry["metrics"].insert(1, {"label": "NURBS volumes", "value": patches})
+                for metric in entry["metrics"]:
+                    if metric["label"] == "Rust model blocks":
+                        metric["label"] = "Bézier cells"
+                entry["description"] = (
+                    f"{height} mm extrusion. {spans} Bézier cells form {patches} NURBS volumes."
+                    if patches < spans else
+                    f"{height} mm extrusion. Each of the {spans} Bézier cells forms a single-span NURBS volume."
+                )
                 planar = summarize_model(model_doc)
                 audit_doc["extrusion_quality"] = planar
                 for metric in entry["metrics"]:
@@ -352,6 +435,8 @@ def rebuild(entries: list[dict], cli: Path) -> None:
 
             # Do not replace a fresh STEP whose only difference is its generated timestamp.
             os.replace(staged_model, model)
+            if polygon_selection:
+                os.replace(staged_recipe, recipe)
             if not same_step_except_timestamp:
                 os.replace(staged_step, step)
             os.replace(staged_audit, audit)
@@ -359,6 +444,131 @@ def rebuild(entries: list[dict], cli: Path) -> None:
         for key in ("model", "source", "step", "audit"):
             path = entry[key].split("?", 1)[0]
             entry[key] = f"{path}?v={sha256(site_path(path).read_bytes())[:12]}"
+
+    refresh_patch_representations(entries)
+
+
+def refresh_patch_representations(entries: list[dict]) -> None:
+    """Publish exact disjoint NURBS covers for the curved and singleton cases."""
+    from gallery_curved_patches import build_catalog
+
+    catalog = build_catalog(MANIFEST)
+    curved = catalog["entries"]
+    linear = catalog["linear_patch_assemblies"]
+    if len(curved) != 22 or len(linear) != 7:
+        raise ValueError(f"Expected 22 curved and 7 singleton representations; got {len(curved)} and {len(linear)}")
+    by_id = {row["id"]: (row, "curved") for row in curved}
+    by_id.update({row["id"]: (row, "singleton_linear") for row in linear})
+    if sum(row["source_block_count"] for row in curved) != 330:
+        raise ValueError("Curved exact extraction source block count changed")
+
+    for entry in entries:
+        case_id = entry["id"]
+        if case_id not in by_id:
+            entry.pop("representation", None)
+            continue
+        row, family = by_id[case_id]
+        model_path, recipe_path, audit_path = (site_path(entry[key]) for key in ("model", "source", "audit"))
+        model_doc, audit_doc = read_json(model_path), read_json(audit_path)
+        source_blocks = set(block["id"] for block in model_doc.get("blocks", []))
+        covered = [cell for patch in row["patches"] for cell in patch.get("cells", [])]
+        if (row["exact_extraction_count"] != row["source_block_count"]
+                or len(covered) != len(source_blocks) or set(covered) != source_blocks
+                or len(covered) != len(set(covered))):
+            raise ValueError(f"Exact patch map does not cover every source block once: {case_id}")
+        if any(interface.get("status") != "exact_match" for interface in row["interfaces"]):
+            raise ValueError(f"Unverified patch-map interface: {case_id}")
+        native_patches = int(audit_doc["model_audit"].get("nurbs_patch_count", row["source_block_count"]))
+        if family == "singleton_linear" and (native_patches != row["source_block_count"]
+                                                or row["patch_count"] >= native_patches):
+            raise ValueError(f"Singleton cover does not reduce native NURBS patches: {case_id}")
+        if row["model_sha256"] != sha256(model_path.read_bytes()) or row["recipe_sha256"] != sha256(recipe_path.read_bytes()):
+            raise ValueError(f"Patch-map source digests are stale: {case_id}")
+
+        payload = {
+            "schema": "gallery_exact_patch_map_v1",
+            "case_id": case_id,
+            "representation_kind": family,
+            "method": catalog["method"],
+            "scope_note": catalog["scope_note"],
+            "source_model_sha256": row["model_sha256"],
+            "source_recipe_sha256": row["recipe_sha256"],
+            "source_schema": row["source_schema"],
+            "source_block_count": row["source_block_count"],
+            "native_nurbs_patch_count": native_patches,
+            "patch_count": row["patch_count"],
+            "exact_extraction_count": row["exact_extraction_count"],
+            "exact_interface_count": row["exact_interface_count"] if "exact_interface_count" in row else len(row["interfaces"]),
+            "patches": row["patches"],
+            "interfaces": row["interfaces"],
+            "boundary_faces": row["boundary_faces"],
+            "merged_source_blocks": row.get("merged_source_blocks", []),
+            "errors": row["errors"],
+        }
+        path = model_path.with_name(model_path.stem + ".representation.json")
+        write_json(path, payload)
+        entry["representation"] = f"{path.relative_to(SITE)}?v={sha256(path.read_bytes())[:12]}"
+        audit_doc["exact_patch_representation"] = {
+            "schema": payload["schema"],
+            "kind": family,
+            "path": entry["representation"],
+            "sha256": sha256(path.read_bytes()),
+            "model_sha256": payload["source_model_sha256"],
+            "recipe_sha256": payload["source_recipe_sha256"],
+            "patch_count": payload["patch_count"],
+            "source_block_count": payload["source_block_count"],
+            "exact_extraction_count": payload["exact_extraction_count"],
+            "exact_interface_count": payload["exact_interface_count"],
+        }
+        write_json(audit_path, audit_doc)
+        audit_url = entry["audit"].split("?", 1)[0]
+        entry["audit"] = f"{audit_url}?v={sha256(site_path(audit_url).read_bytes())[:12]}"
+    normalize_cover_metrics(entries, by_id)
+
+
+def normalize_cover_metrics(entries: list[dict], representation_rows: dict | None = None) -> None:
+    """Use one primary patch count, while retaining native counts when assembly reduces them."""
+    representation_rows = representation_rows or {}
+    for entry in entries:
+        audit = read_json(site_path(entry["audit"]))
+        native = audit["model_audit"]
+        native_patches = int(native.get("nurbs_patch_count", native.get("blocks", 0)))
+        native_cells = int(native.get("blocks", 0))
+        row_pair = representation_rows.get(entry["id"])
+        cover_patches = int(row_pair[0]["patch_count"]) if row_pair else native_patches
+        source_cells = int(row_pair[0]["source_block_count"]) if row_pair else native_cells
+        other_metrics = []
+        for metric in entry["metrics"]:
+            label = metric["label"]
+            if label in {"Exact merged NURBS cover patches", "Source Bézier cells"}:
+                continue
+            if label in {"Rust model blocks", "Bézier cells"}:
+                continue
+            if label == "NURBS volumes":
+                continue
+            if label == "Native NURBS volumes before assembly":
+                continue
+            other_metrics.append(metric)
+        normalized = [
+            {"label": "NURBS volumes", "value": cover_patches},
+            {"label": "Bézier cells", "value": source_cells},
+        ]
+        if native_patches != cover_patches:
+            normalized.append({"label": "Native NURBS volumes before assembly", "value": native_patches})
+        selection = audit.get("partition_selection")
+        if selection and not any(metric["label"] == "NURBS partition choice" for metric in other_metrics):
+            other_metrics.insert(0, {"label": "NURBS partition choice", "value": selection["selected_mode"]})
+        entry["metrics"] = normalized + other_metrics
+        summary = (f"The displayed NURBS representation groups {source_cells} Bézier cells into "
+                   f"{cover_patches} volumes." if cover_patches < source_cells else
+                   f"The displayed NURBS representation uses {cover_patches} volumes across {source_cells} Bézier cells.")
+        if entry["id"].startswith("bench_poly_"):
+            thickness = next((metric["value"] for metric in entry["metrics"] if metric["label"] == "Stock thickness"), None)
+            entry["description"] = (f"{thickness} extrusion. {summary}" if thickness else summary)
+        else:
+            old = entry.get("description", "")
+            if not old.startswith("The displayed NURBS representation"):
+                entry["description"] = summary + (" " + old if old else "")
 
 
 def remove_unreferenced_data(entries: list[dict]) -> int:
@@ -403,16 +613,17 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--cli", type=Path, default=ROOT / "target/release/solidcraft-trivariate",
                         help="Current release binary produced by cargo build --release --locked --offline")
+    parser.add_argument("--kernel-revision", help="Override the source revision recorded in regeneration audits")
     args = parser.parse_args()
     entries = read_json(MANIFEST)
     if len(entries) != EXPECTED_IDS or len({entry["id"] for entry in entries}) != EXPECTED_IDS:
         raise ValueError(f"Expected {EXPECTED_IDS} unique published gallery entries")
-    rebuild(entries, args.cli.resolve())
+    rebuild(entries, args.cli.resolve(), args.kernel_revision)
     removed = remove_unreferenced_data(entries)
     write_json(MANIFEST, entries)
     version_modules("app.js", ["renderer.js"])
     version_modules("compare.js", ["renderer.js", "comparison-data.json"])
-    version_modules("compare.html", ["compare.js", "style.css", "compare.css"])
+    version_modules("compare.html", ["compare.js", "style.css", "compare.css", "experiments.json"])
     version_modules("index.html", ["app.js", "experiments.json", "style.css"])
     print(f"Regenerated {len(entries)} gallery bundles from tracked recipes with {args.cli}; removed {removed} unreferenced assets")
 

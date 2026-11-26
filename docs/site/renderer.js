@@ -143,6 +143,18 @@ function splineBasisVector(degree, parameter, knots, count) {
   return Array.from({ length: count }, (_, index) => recurse(index, degree));
 }
 
+export function partitionColour(index) {
+  const hue = (index * 0.61803398875 + 0.04) % 1;
+  return [0, 4, 2].map(phase => {
+    const x = (hue * 6 + phase) % 6;
+    return 0.61 - 0.31 * Math.max(-1, Math.min(x - 1, 3 - x, 1));
+  });
+}
+
+function partitionColor(block, mode) {
+  return mode === 'patches' && block.patchColor ? block.patchColor : (block.displayColor ?? blockColor(block.id));
+}
+
 function blockColor(identifier) {
   let hash = 2166136261;
   for (let index = 0; index < identifier.length; index++) {
@@ -206,6 +218,28 @@ function validateModel(model) {
     }
   }
   const blockIds = new Set(model.blocks.map(block => block.id));
+  const exterior = model.boundary_faces || model.topology?.boundary_faces || model.topology?.exterior;
+  if (exterior !== undefined && exterior !== null) {
+    if (!Array.isArray(exterior)) throw new TypeError('Certified exterior faces must be an array');
+    const faceKeys = new Set();
+    for (const face of exterior) {
+      const block = Array.isArray(face) ? face[0] : face?.source_block ?? face?.block;
+      const side = Array.isArray(face) ? face[1] : face?.side;
+      const key = `${block}:${side}`;
+      if (typeof block !== 'string' || !blockIds.has(block)
+        || !['u0', 'u1', 'v0', 'v1', 'w0', 'w1'].includes(side) || faceKeys.has(key)) {
+        throw new TypeError('Certified exterior contains an invalid or repeated block face');
+      }
+      if (!Array.isArray(face) && face.status && face.status !== 'extracted_exactly_from_model') {
+        throw new TypeError('Exterior face has an unsupported extraction status');
+      }
+      faceKeys.add(key);
+    }
+    const expected = model.blocks.length * 6 - (model.topology?.interfaces || []).length * 2;
+    if (model.topology?.interfaces && faceKeys.size !== expected) {
+      throw new TypeError(`Exterior face count ${faceKeys.size} does not close the interface graph (${expected} expected)`);
+    }
+  }
   for (const item of model.topology?.interfaces || []) {
     for (const side of [item.first, item.second]) {
       if (!Array.isArray(side) || side.length !== 2 || !blockIds.has(side[0])
@@ -366,31 +400,66 @@ function meshDivisions(model, block, standard) {
 
 function buildSurfaceMeshes(model, mode) {
   const interfaces = model.topology?.interfaces || inferChartInterfaces(model);
+  const blockIds = new Set(model.blocks.map(block => block.id));
+  const recordedExterior = model.boundary_faces || model.topology?.boundary_faces || model.topology?.exterior || null;
+  const exteriorKeys = recordedExterior && new Set(recordedExterior.map(face => {
+    const side = Array.isArray(face) ? face : [face?.source_block ?? face?.block, face?.side];
+    if (!Array.isArray(side) || side.length < 2 || !blockIds.has(String(side[0]))
+      || !['u0', 'u1', 'v0', 'v1', 'w0', 'w1'].includes(side[1])) {
+      throw new TypeError('Recorded exterior contains an invalid block face');
+    }
+    return `${side[0]}:${side[1]}`;
+  }));
   const hiddenSides = new Map();
+  const samePatchSides = new Map();
   const duplicateSides = new Map();
+  const patchForCell = new Map();
+  for (const [patchIndex, patch] of (model.nurbs_patches || []).entries()) {
+    for (const cell of patch.cells || []) patchForCell.set(cell, patch.id ?? String(patchIndex));
+  }
   for (const item of interfaces) {
+    const [duplicateBlock, duplicateSide] = item.second;
+    const [firstBlock, firstSide] = item.first;
     for (const [id, side] of [item.first, item.second]) {
       if (!hiddenSides.has(id)) hiddenSides.set(id, new Set());
       hiddenSides.get(id).add(side);
     }
-    const [duplicateBlock, duplicateSide] = item.second;
+    if (mode === 'patches' && patchForCell.has(firstBlock) && patchForCell.get(firstBlock) === patchForCell.get(duplicateBlock)) {
+      for (const [id, side] of [item.first, item.second]) {
+        if (!samePatchSides.has(id)) samePatchSides.set(id, new Set());
+        samePatchSides.get(id).add(side);
+      }
+    }
     if (!duplicateSides.has(duplicateBlock)) duplicateSides.set(duplicateBlock, new Set());
     duplicateSides.get(duplicateBlock).add(duplicateSide);
   }
 
   const meshes = [];
+  let renderedBoundaryFaces = 0;
+  const renderedFaceKeys = [];
   for (const block of model.blocks) {
     const evaluate = makeEvaluator(block);
     const divisions = meshDivisions(model, block, GRID);
     const axes = [0, 1, 2].map(axis => parameterStations(block, axis, divisions));
-    const color = mode === 'surface' ? SURFACE_COLOR : (block.displayColor ?? blockColor(block.id));
+    const color = mode === 'surface' ? SURFACE_COLOR : partitionColor(block, mode);
     const skip = mode === 'surface'
-      ? hiddenSides.get(block.id) || new Set()
+      ? (exteriorKeys
+        ? new Set(FACE_SIDES.map(([name]) => name).filter(name => !exteriorKeys.has(`${block.id}:${name}`)))
+        : hiddenSides.get(block.id) || new Set())
+      : mode === 'patches'
+        ? new Set([
+          ...(samePatchSides.get(block.id) || []),
+          ...(duplicateSides.get(block.id) || []),
+        ])
       : duplicateSides.get(block.id) || new Set();
     const output = [];
 
     for (const [name, axis, side] of FACE_SIDES) {
       if (skip.has(name)) continue;
+      if (mode === 'surface') {
+        renderedBoundaryFaces++;
+        renderedFaceKeys.push(`${block.id}:${name}`);
+      }
       const otherAxes = [0, 1, 2].filter(value => value !== axis);
       const first = axes[otherAxes[0]];
       const second = axes[otherAxes[1]];
@@ -414,6 +483,13 @@ function buildSurfaceMeshes(model, mode) {
     }
     if (output.length) meshes.push({ id: block.id, values: new Float32Array(output), count: output.length / 9 });
   }
+  meshes.boundaryStats = {
+    renderedFaces: mode === 'surface' ? renderedBoundaryFaces : null,
+    exteriorFaceCount: exteriorKeys?.size ?? null,
+    excludedFaceCount: mode === 'surface' ? model.blocks.length * FACE_SIDES.length - renderedBoundaryFaces : null,
+    source: exteriorKeys ? (model.boundary_faces || model.topology?.boundary_faces ? 'boundary_faces' : 'topology.exterior') : 'interfaces',
+    faceKeys: renderedFaceKeys,
+  };
   return meshes;
 }
 
@@ -584,11 +660,11 @@ function buildCapMeshes(model, axis, fraction, bounds, mode) {
     if (coplanar) {
       const interfaceFace = interfaces.get(block.id)?.has(coplanar.sideName) || false;
       const duplicateFace = duplicateSides.get(block.id)?.has(coplanar.sideName) || false;
-      const faceVisible = mode === 'blocks' ? !duplicateFace : !interfaceFace;
+      const faceVisible = mode !== 'surface' ? !duplicateFace : !interfaceFace;
       if (faceVisible || !coplanar.retainedSide) continue;
       // The retained side needs one cap where its shared interface is hidden.
     }
-    const color = mode === 'blocks' ? (block.displayColor ?? blockColor(block.id)) : SECTION_COLOR;
+    const color = mode !== 'surface' ? partitionColor(block, mode) : SECTION_COLOR;
     if (zSlices?.[blockIndex]) {
       const { z0, z1 } = zSlices[blockIndex];
       const w = (plane - z0) / (z1 - z0);
@@ -696,6 +772,7 @@ export function createViewer(canvas, onCameraChange = () => {}) {
   let surfaceMeshes = [];
   let capMeshes = [];
   let triangleMesh = null;
+  let surfaceStats = null;
   const activePointers = new Map();
 
   if (typeof ResizeObserver === 'function') {
@@ -781,11 +858,19 @@ export function createViewer(canvas, onCameraChange = () => {}) {
 
   function rebuildSurfaces() {
     deleteMeshes(surfaceMeshes);
+    surfaceStats = null;
     if (isTriangleModel(model)) {
       surfaceMeshes = uploadMeshes([{ values: triangleMesh.values, count: triangleMesh.count }]);
     } else {
-      surfaceMeshes = uploadMeshes(buildSurfaceMeshes(model, mode));
+      const generated = buildSurfaceMeshes(model, mode);
+      surfaceStats = generated.boundaryStats;
+      surfaceMeshes = uploadMeshes(generated);
     }
+    canvas.dataset.boundaryFaceCount = surfaceStats?.renderedFaces == null ? '' : String(surfaceStats.renderedFaces);
+    canvas.dataset.exactExteriorFaceCount = surfaceStats?.exteriorFaceCount == null ? '' : String(surfaceStats.exteriorFaceCount);
+    canvas.dataset.excludedInternalFaceCount = surfaceStats?.excludedFaceCount == null ? '' : String(surfaceStats.excludedFaceCount);
+    canvas.dataset.boundarySource = surfaceStats?.source || (isTriangleModel(model) ? 'triangulated-surface' : '');
+    canvas.dataset.boundaryFaceKeys = JSON.stringify(surfaceStats?.faceKeys || []);
   }
 
   function rebuildCaps() {
@@ -900,16 +985,126 @@ export function createViewer(canvas, onCameraChange = () => {}) {
       dragTool = tool;
     },
     getCamera() { return { ...camera }; },
+    getSurfaceStats() { return surfaceStats ? { ...surfaceStats } : null; },
     setCamera(next) {
       camera = { ...next };
       cameraAdjusted = true;
       scheduleDraw();
     },
-    setModel(value) {
+    setModel(value, representation = null) {
       validateModel(value);
       model = isTriangleModel(value) ? value : normalizeTrivariateModel(value);
       if (!isTriangleModel(model) && !model.topology && model.blocks?.some(block => block.shape)) {
         model = { ...model, topology: { interfaces: inferChartInterfaces(model) } };
+      }
+      if (Array.isArray(model.nurbs_patches)) {
+        const colors = new Map();
+        model.nurbs_patches.forEach((patch, index) => {
+          const color = partitionColour(index);
+          patch.cells.forEach(id => colors.set(id, color));
+        });
+        model = {...model, blocks: model.blocks.map(block => ({...block, patchColor: colors.get(block.id)}))};
+      }
+      if (representation) {
+        if (!Array.isArray(representation.patches) || !Array.isArray(representation.boundary_faces)) {
+          throw new TypeError('Exact NURBS representation needs patches and boundary_faces arrays');
+        }
+        const blockIds = new Set(model.blocks.map(block => block.id));
+        const patchIds = new Set();
+        const assignedBlocks = new Set();
+        const patchForBlock = new Map();
+        const patchRecords = representation.patches.map(patch => {
+          if (!patch || typeof patch.id !== 'string' || patchIds.has(patch.id)) {
+            throw new TypeError('Exact NURBS representation has a missing or repeated patch id');
+          }
+          patchIds.add(patch.id);
+          const cells = patch.source_blocks || patch.cells;
+          if (!Array.isArray(cells) || cells.length === 0 || cells.some(id => !blockIds.has(id))) {
+            throw new TypeError(`NURBS patch ${patch.id} has an invalid source cell list`);
+          }
+          for (const id of cells) {
+            if (assignedBlocks.has(id)) throw new TypeError(`Source block ${id} appears in more than one NURBS patch`);
+            assignedBlocks.add(id);
+            patchForBlock.set(id, patch.id);
+          }
+          return { id: patch.id, cells };
+        });
+        if (assignedBlocks.size !== blockIds.size) throw new TypeError('NURBS patches do not cover every native model block');
+        for (const face of representation.boundary_faces) {
+          const sourceBlock = face?.source_block ?? face?.block;
+          if (!face || !blockIds.has(sourceBlock) || !patchIds.has(face.patch_id)
+            || !['u0', 'u1', 'v0', 'v1', 'w0', 'w1'].includes(face.side)
+            || face.status !== 'extracted_exactly_from_model') {
+            throw new TypeError('Exact NURBS representation has an invalid exterior face reference');
+          }
+          if (patchForBlock.get(sourceBlock) !== face.patch_id) {
+            throw new TypeError('Exterior face is assigned to the wrong NURBS patch');
+          }
+        }
+        const nativeInterfaces = model.topology?.interfaces || [];
+        const sourceFaceKey = (block, side) => `${block}:${side}`;
+        const nativeExterior = new Set((model.topology?.exterior || []).map(face => sourceFaceKey(face[0], face[1])));
+        const supplementExterior = new Set(representation.boundary_faces.map(face => sourceFaceKey(face.source_block ?? face.block, face.side)));
+        if (nativeExterior.size && (nativeExterior.size !== supplementExterior.size
+          || [...nativeExterior].some(key => !supplementExterior.has(key)))) {
+          throw new TypeError('Exact NURBS boundary does not match the native model exterior faces');
+        }
+        const interfaceSides = new Set(nativeInterfaces.flatMap(item => [
+          sourceFaceKey(item.first[0], item.first[1]), sourceFaceKey(item.second[0], item.second[1]),
+        ]));
+        if ([...supplementExterior].some(key => interfaceSides.has(key))
+          || supplementExterior.size !== blockIds.size * 6 - nativeInterfaces.length * 2) {
+          throw new TypeError('Exact NURBS boundary does not close the native cell interface graph');
+        }
+        const endpoint = value => Array.isArray(value)
+          ? { patch_id: value[0], source_block: value[0], side: value[1] } : value;
+        const sourcePairKey = (first, second) => [sourceFaceKey(first.source_block, first.side), sourceFaceKey(second.source_block, second.side)].sort().join('|');
+        const sourceInterfacePairs = new Set(nativeInterfaces.map(item => sourcePairKey(
+          { source_block: item.first[0], side: item.first[1] },
+          { source_block: item.second[0], side: item.second[1] },
+        )));
+        const expectedPatchInterfaces = new Set();
+        for (const item of nativeInterfaces) {
+          if (patchForBlock.get(item.first[0]) !== patchForBlock.get(item.second[0])) {
+            expectedPatchInterfaces.add(sourcePairKey(
+              { source_block: item.first[0], side: item.first[1] },
+              { source_block: item.second[0], side: item.second[1] },
+            ));
+          }
+        }
+        const observedPatchInterfaces = new Set();
+        for (const item of representation.interfaces || []) {
+          if (item.status !== 'exact_match') {
+            throw new TypeError('NURBS representation contains an unjoined patch interface');
+          }
+          for (const value of [item.first, item.second]) {
+            const side = endpoint(value);
+            if (!side || !patchIds.has(side.patch_id) || !blockIds.has(side.source_block)
+              || !['u0', 'u1', 'v0', 'v1', 'w0', 'w1'].includes(side.side)
+              || patchForBlock.get(side.source_block) !== side.patch_id) {
+              throw new TypeError('NURBS representation contains an invalid patch interface');
+            }
+          }
+          const first = endpoint(item.first);
+          const second = endpoint(item.second);
+          const pair = sourcePairKey(first, second);
+          if (!sourceInterfacePairs.has(pair) || patchForBlock.get(first.source_block) === patchForBlock.get(second.source_block)) {
+            throw new TypeError('NURBS patch interface does not match a cross-patch native cell interface');
+          }
+          observedPatchInterfaces.add(pair);
+        }
+        if (observedPatchInterfaces.size !== (representation.interfaces || []).length
+          || observedPatchInterfaces.size !== expectedPatchInterfaces.size
+          || [...expectedPatchInterfaces].some(key => !observedPatchInterfaces.has(key))) {
+          throw new TypeError('NURBS patch interfaces do not cover all cross-patch cell joins');
+        }
+        const boundaryFaces = representation.boundary_faces.map(face => ({
+          ...face, block: face.source_block ?? face.block,
+        }));
+        model = { ...model, boundary_faces: boundaryFaces, nurbs_patches: patchRecords, nurbs_representation: representation };
+        const colors = new Map();
+        patchRecords.forEach((patch, index) => patch.cells.forEach(id => colors.set(id, partitionColour(index))));
+        model = { ...model, blocks: model.blocks.map(block => ({ ...block, patchColor: colors.get(block.id) })) };
       }
       triangleMesh = isTriangleModel(model) ? surfaceMesh(model) : null;
       bounds = triangleMesh ? triangleMesh.bounds : boundsOf(model);
@@ -923,7 +1118,7 @@ export function createViewer(canvas, onCameraChange = () => {}) {
       scheduleDraw();
     },
     setMode(value) {
-      if (value !== 'surface' && value !== 'blocks') throw new TypeError("Mode must be 'surface' or 'blocks'");
+      if (!['surface', 'blocks', 'patches'].includes(value)) throw new TypeError('Unknown display mode');
       if (isTriangleModel(model) && value !== 'surface') throw new TypeError('Triangle surfaces have no logical block color mode');
       if (mode === value) return;
       mode = value;

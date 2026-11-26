@@ -1,0 +1,1173 @@
+{
+  "schema": "gallery_exact_patch_map_v1",
+  "case_id": "bench_poly_concave_u_stock_offset_hole",
+  "representation_kind": "singleton_linear",
+  "method": "exact_homogeneous_bezier_to_clamped_nurbs",
+  "scope_note": "Final patch sets are disjoint unions of exact single-span Bezier volumes and compatible two-span clamped NURBS volumes. Exact piece extraction and interface traces are checked; no global injectivity, shape, or material coverage certificate is implied.",
+  "source_model_sha256": "8852b62fe2aeeb7eb03a7d0777110c4dd0e0e6a3065ae9019bf763bf1b61c3d2",
+  "source_recipe_sha256": "86743a2aeb8266f68ffa32e6443e695e12f92519aa43bbaa7695f54277297dc3",
+  "source_schema": "sketch_layer_partition_v1",
+  "source_block_count": 6,
+  "native_nurbs_patch_count": 6,
+  "patch_count": 3,
+  "exact_extraction_count": 6,
+  "exact_interface_count": 6,
+  "patches": [
+    {
+      "id": "band:quad_-32d1_-22d1_-18d1_-8d1_18d1_-8d1_32d1_-22d1_z0_38+quad_-32d1_-22d1_-32d1_22d1_-18d1_-8d1_-18d1_22d1_z0_38",
+      "source_blocks": [
+        "quad_-32d1_-22d1_-18d1_-8d1_18d1_-8d1_32d1_-22d1_z0_38",
+        "quad_-32d1_-22d1_-32d1_22d1_-18d1_-8d1_-18d1_22d1_z0_38"
+      ],
+      "cells": [
+        "quad_-32d1_-22d1_-18d1_-8d1_18d1_-8d1_32d1_-22d1_z0_38",
+        "quad_-32d1_-22d1_-32d1_22d1_-18d1_-8d1_-18d1_22d1_z0_38"
+      ],
+      "patch_kind": "two_span_nurbs",
+      "degrees": [
+        1,
+        1,
+        1
+      ],
+      "knots": [
+        [
+          0,
+          0,
+          1,
+          2,
+          2
+        ],
+        [
+          0,
+          0,
+          1,
+          1
+        ],
+        [
+          0,
+          0,
+          1,
+          1
+        ]
+      ],
+      "control_shape": [
+        3,
+        2,
+        2
+      ],
+      "controls_homogeneous": [
+        [
+          18,
+          -8,
+          0,
+          1
+        ],
+        [
+          16,
+          -5,
+          38,
+          1
+        ],
+        [
+          32,
+          -22,
+          0,
+          1
+        ],
+        [
+          30,
+          -19,
+          38,
+          1
+        ],
+        [
+          -18,
+          -8,
+          0,
+          1
+        ],
+        [
+          -20,
+          -5,
+          38,
+          1
+        ],
+        [
+          -32,
+          -22,
+          0,
+          1
+        ],
+        [
+          -34,
+          -19,
+          38,
+          1
+        ],
+        [
+          -18,
+          22,
+          0,
+          1
+        ],
+        [
+          -20,
+          25,
+          38,
+          1
+        ],
+        [
+          -32,
+          22,
+          0,
+          1
+        ],
+        [
+          -34,
+          25,
+          38,
+          1
+        ]
+      ],
+      "homogeneous_common_scale_denominator": 1,
+      "spans": [
+        {
+          "source_block": "quad_-32d1_-22d1_-18d1_-8d1_18d1_-8d1_32d1_-22d1_z0_38",
+          "axis_map": [
+            0,
+            1,
+            2
+          ],
+          "flips": [
+            true,
+            true,
+            false
+          ],
+          "degree_elevation": [
+            0,
+            0,
+            0
+          ],
+          "parameter_interval": [
+            0,
+            1
+          ]
+        },
+        {
+          "source_block": "quad_-32d1_-22d1_-32d1_22d1_-18d1_-8d1_-18d1_22d1_z0_38",
+          "axis_map": [
+            1,
+            0,
+            2
+          ],
+          "flips": [
+            false,
+            true,
+            false
+          ],
+          "degree_elevation": [
+            0,
+            0,
+            0
+          ],
+          "parameter_interval": [
+            1,
+            2
+          ]
+        }
+      ],
+      "exact_piece_extraction_expected": true
+    },
+    {
+      "id": "band:quad_18d1_-8d1_18d1_22d1_21d1_-3d1_21d1_4d1_z0_38+quad_18d1_-8d1_21d1_-3d1_27d1_-3d1_32d1_-22d1_z0_38",
+      "source_blocks": [
+        "quad_18d1_-8d1_18d1_22d1_21d1_-3d1_21d1_4d1_z0_38",
+        "quad_18d1_-8d1_21d1_-3d1_27d1_-3d1_32d1_-22d1_z0_38"
+      ],
+      "cells": [
+        "quad_18d1_-8d1_18d1_22d1_21d1_-3d1_21d1_4d1_z0_38",
+        "quad_18d1_-8d1_21d1_-3d1_27d1_-3d1_32d1_-22d1_z0_38"
+      ],
+      "patch_kind": "two_span_nurbs",
+      "degrees": [
+        1,
+        1,
+        1
+      ],
+      "knots": [
+        [
+          0,
+          0,
+          1,
+          2,
+          2
+        ],
+        [
+          0,
+          0,
+          1,
+          1
+        ],
+        [
+          0,
+          0,
+          1,
+          1
+        ]
+      ],
+      "control_shape": [
+        3,
+        2,
+        2
+      ],
+      "controls_homogeneous": [
+        [
+          18,
+          22,
+          0,
+          1
+        ],
+        [
+          16,
+          25,
+          38,
+          1
+        ],
+        [
+          21,
+          4,
+          0,
+          1
+        ],
+        [
+          19,
+          7,
+          38,
+          1
+        ],
+        [
+          18,
+          -8,
+          0,
+          1
+        ],
+        [
+          16,
+          -5,
+          38,
+          1
+        ],
+        [
+          21,
+          -3,
+          0,
+          1
+        ],
+        [
+          19,
+          0,
+          38,
+          1
+        ],
+        [
+          32,
+          -22,
+          0,
+          1
+        ],
+        [
+          30,
+          -19,
+          38,
+          1
+        ],
+        [
+          27,
+          -3,
+          0,
+          1
+        ],
+        [
+          25,
+          0,
+          38,
+          1
+        ]
+      ],
+      "homogeneous_common_scale_denominator": 1,
+      "spans": [
+        {
+          "source_block": "quad_18d1_-8d1_18d1_22d1_21d1_-3d1_21d1_4d1_z0_38",
+          "axis_map": [
+            1,
+            0,
+            2
+          ],
+          "flips": [
+            true,
+            false,
+            false
+          ],
+          "degree_elevation": [
+            0,
+            0,
+            0
+          ],
+          "parameter_interval": [
+            0,
+            1
+          ]
+        },
+        {
+          "source_block": "quad_18d1_-8d1_21d1_-3d1_27d1_-3d1_32d1_-22d1_z0_38",
+          "axis_map": [
+            0,
+            1,
+            2
+          ],
+          "flips": [
+            false,
+            false,
+            false
+          ],
+          "degree_elevation": [
+            0,
+            0,
+            0
+          ],
+          "parameter_interval": [
+            1,
+            2
+          ]
+        }
+      ],
+      "exact_piece_extraction_expected": true
+    },
+    {
+      "id": "band:quad_18d1_22d1_21d1_4d1_27d1_4d1_32d1_22d1_z0_38+quad_27d1_-3d1_27d1_4d1_32d1_-22d1_32d1_22d1_z0_38",
+      "source_blocks": [
+        "quad_18d1_22d1_21d1_4d1_27d1_4d1_32d1_22d1_z0_38",
+        "quad_27d1_-3d1_27d1_4d1_32d1_-22d1_32d1_22d1_z0_38"
+      ],
+      "cells": [
+        "quad_18d1_22d1_21d1_4d1_27d1_4d1_32d1_22d1_z0_38",
+        "quad_27d1_-3d1_27d1_4d1_32d1_-22d1_32d1_22d1_z0_38"
+      ],
+      "patch_kind": "two_span_nurbs",
+      "degrees": [
+        1,
+        1,
+        1
+      ],
+      "knots": [
+        [
+          0,
+          0,
+          1,
+          2,
+          2
+        ],
+        [
+          0,
+          0,
+          1,
+          1
+        ],
+        [
+          0,
+          0,
+          1,
+          1
+        ]
+      ],
+      "control_shape": [
+        3,
+        2,
+        2
+      ],
+      "controls_homogeneous": [
+        [
+          21,
+          4,
+          0,
+          1
+        ],
+        [
+          19,
+          7,
+          38,
+          1
+        ],
+        [
+          18,
+          22,
+          0,
+          1
+        ],
+        [
+          16,
+          25,
+          38,
+          1
+        ],
+        [
+          27,
+          4,
+          0,
+          1
+        ],
+        [
+          25,
+          7,
+          38,
+          1
+        ],
+        [
+          32,
+          22,
+          0,
+          1
+        ],
+        [
+          30,
+          25,
+          38,
+          1
+        ],
+        [
+          27,
+          -3,
+          0,
+          1
+        ],
+        [
+          25,
+          0,
+          38,
+          1
+        ],
+        [
+          32,
+          -22,
+          0,
+          1
+        ],
+        [
+          30,
+          -19,
+          38,
+          1
+        ]
+      ],
+      "homogeneous_common_scale_denominator": 1,
+      "spans": [
+        {
+          "source_block": "quad_18d1_22d1_21d1_4d1_27d1_4d1_32d1_22d1_z0_38",
+          "axis_map": [
+            1,
+            0,
+            2
+          ],
+          "flips": [
+            false,
+            true,
+            false
+          ],
+          "degree_elevation": [
+            0,
+            0,
+            0
+          ],
+          "parameter_interval": [
+            0,
+            1
+          ]
+        },
+        {
+          "source_block": "quad_27d1_-3d1_27d1_4d1_32d1_-22d1_32d1_22d1_z0_38",
+          "axis_map": [
+            1,
+            0,
+            2
+          ],
+          "flips": [
+            true,
+            false,
+            false
+          ],
+          "degree_elevation": [
+            0,
+            0,
+            0
+          ],
+          "parameter_interval": [
+            1,
+            2
+          ]
+        }
+      ],
+      "exact_piece_extraction_expected": true
+    }
+  ],
+  "interfaces": [
+    {
+      "first": {
+        "patch_id": "band:quad_-32d1_-22d1_-18d1_-8d1_18d1_-8d1_32d1_-22d1_z0_38+quad_-32d1_-22d1_-32d1_22d1_-18d1_-8d1_-18d1_22d1_z0_38",
+        "source_block": "quad_-32d1_-22d1_-18d1_-8d1_18d1_-8d1_32d1_-22d1_z0_38",
+        "side": "u1",
+        "patch_side": "u0",
+        "axis_map": [
+          0,
+          1,
+          2
+        ],
+        "flips": [
+          true,
+          true,
+          false
+        ],
+        "parameter_interval": [
+          0,
+          1
+        ]
+      },
+      "second": {
+        "patch_id": "band:quad_18d1_-8d1_18d1_22d1_21d1_-3d1_21d1_4d1_z0_38+quad_18d1_-8d1_21d1_-3d1_27d1_-3d1_32d1_-22d1_z0_38",
+        "source_block": "quad_18d1_-8d1_21d1_-3d1_27d1_-3d1_32d1_-22d1_z0_38",
+        "side": "v0",
+        "patch_side": "v0",
+        "axis_map": [
+          0,
+          1,
+          2
+        ],
+        "flips": [
+          false,
+          false,
+          false
+        ],
+        "parameter_interval": [
+          1,
+          2
+        ]
+      },
+      "orientation": {
+        "flip_first": true,
+        "flip_second": false,
+        "swap": false
+      },
+      "status": "exact_match"
+    },
+    {
+      "first": {
+        "patch_id": "band:quad_18d1_-8d1_18d1_22d1_21d1_-3d1_21d1_4d1_z0_38+quad_18d1_-8d1_21d1_-3d1_27d1_-3d1_32d1_-22d1_z0_38",
+        "source_block": "quad_18d1_-8d1_18d1_22d1_21d1_-3d1_21d1_4d1_z0_38",
+        "side": "v1",
+        "patch_side": "u0",
+        "axis_map": [
+          1,
+          0,
+          2
+        ],
+        "flips": [
+          true,
+          false,
+          false
+        ],
+        "parameter_interval": [
+          0,
+          1
+        ]
+      },
+      "second": {
+        "patch_id": "band:quad_18d1_22d1_21d1_4d1_27d1_4d1_32d1_22d1_z0_38+quad_27d1_-3d1_27d1_4d1_32d1_-22d1_32d1_22d1_z0_38",
+        "source_block": "quad_18d1_22d1_21d1_4d1_27d1_4d1_32d1_22d1_z0_38",
+        "side": "v0",
+        "patch_side": "u0",
+        "axis_map": [
+          1,
+          0,
+          2
+        ],
+        "flips": [
+          false,
+          true,
+          false
+        ],
+        "parameter_interval": [
+          0,
+          1
+        ]
+      },
+      "orientation": {
+        "flip_first": false,
+        "flip_second": false,
+        "swap": false
+      },
+      "status": "exact_match"
+    },
+    {
+      "first": {
+        "patch_id": "band:quad_18d1_-8d1_18d1_22d1_21d1_-3d1_21d1_4d1_z0_38+quad_18d1_-8d1_21d1_-3d1_27d1_-3d1_32d1_-22d1_z0_38",
+        "source_block": "quad_18d1_-8d1_21d1_-3d1_27d1_-3d1_32d1_-22d1_z0_38",
+        "side": "u1",
+        "patch_side": "u1",
+        "axis_map": [
+          0,
+          1,
+          2
+        ],
+        "flips": [
+          false,
+          false,
+          false
+        ],
+        "parameter_interval": [
+          1,
+          2
+        ]
+      },
+      "second": {
+        "patch_id": "band:quad_18d1_22d1_21d1_4d1_27d1_4d1_32d1_22d1_z0_38+quad_27d1_-3d1_27d1_4d1_32d1_-22d1_32d1_22d1_z0_38",
+        "source_block": "quad_27d1_-3d1_27d1_4d1_32d1_-22d1_32d1_22d1_z0_38",
+        "side": "v0",
+        "patch_side": "u1",
+        "axis_map": [
+          1,
+          0,
+          2
+        ],
+        "flips": [
+          true,
+          false,
+          false
+        ],
+        "parameter_interval": [
+          1,
+          2
+        ]
+      },
+      "orientation": {
+        "flip_first": true,
+        "flip_second": false,
+        "swap": false
+      },
+      "status": "exact_match"
+    }
+  ],
+  "boundary_faces": [
+    {
+      "patch_id": "band:quad_-32d1_-22d1_-18d1_-8d1_18d1_-8d1_32d1_-22d1_z0_38+quad_-32d1_-22d1_-32d1_22d1_-18d1_-8d1_-18d1_22d1_z0_38",
+      "source_block": "quad_-32d1_-22d1_-18d1_-8d1_18d1_-8d1_32d1_-22d1_z0_38",
+      "side": "v0",
+      "patch_side": "v1",
+      "axis_map": [
+        0,
+        1,
+        2
+      ],
+      "flips": [
+        true,
+        true,
+        false
+      ],
+      "parameter_interval": [
+        0,
+        1
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:quad_-32d1_-22d1_-18d1_-8d1_18d1_-8d1_32d1_-22d1_z0_38+quad_-32d1_-22d1_-32d1_22d1_-18d1_-8d1_-18d1_22d1_z0_38",
+      "source_block": "quad_-32d1_-22d1_-18d1_-8d1_18d1_-8d1_32d1_-22d1_z0_38",
+      "side": "v1",
+      "patch_side": "v0",
+      "axis_map": [
+        0,
+        1,
+        2
+      ],
+      "flips": [
+        true,
+        true,
+        false
+      ],
+      "parameter_interval": [
+        0,
+        1
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:quad_-32d1_-22d1_-18d1_-8d1_18d1_-8d1_32d1_-22d1_z0_38+quad_-32d1_-22d1_-32d1_22d1_-18d1_-8d1_-18d1_22d1_z0_38",
+      "source_block": "quad_-32d1_-22d1_-18d1_-8d1_18d1_-8d1_32d1_-22d1_z0_38",
+      "side": "w0",
+      "patch_side": "w0",
+      "axis_map": [
+        0,
+        1,
+        2
+      ],
+      "flips": [
+        true,
+        true,
+        false
+      ],
+      "parameter_interval": [
+        0,
+        1
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:quad_-32d1_-22d1_-18d1_-8d1_18d1_-8d1_32d1_-22d1_z0_38+quad_-32d1_-22d1_-32d1_22d1_-18d1_-8d1_-18d1_22d1_z0_38",
+      "source_block": "quad_-32d1_-22d1_-18d1_-8d1_18d1_-8d1_32d1_-22d1_z0_38",
+      "side": "w1",
+      "patch_side": "w1",
+      "axis_map": [
+        0,
+        1,
+        2
+      ],
+      "flips": [
+        true,
+        true,
+        false
+      ],
+      "parameter_interval": [
+        0,
+        1
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:quad_-32d1_-22d1_-18d1_-8d1_18d1_-8d1_32d1_-22d1_z0_38+quad_-32d1_-22d1_-32d1_22d1_-18d1_-8d1_-18d1_22d1_z0_38",
+      "source_block": "quad_-32d1_-22d1_-32d1_22d1_-18d1_-8d1_-18d1_22d1_z0_38",
+      "side": "u0",
+      "patch_side": "v1",
+      "axis_map": [
+        1,
+        0,
+        2
+      ],
+      "flips": [
+        false,
+        true,
+        false
+      ],
+      "parameter_interval": [
+        1,
+        2
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:quad_-32d1_-22d1_-18d1_-8d1_18d1_-8d1_32d1_-22d1_z0_38+quad_-32d1_-22d1_-32d1_22d1_-18d1_-8d1_-18d1_22d1_z0_38",
+      "source_block": "quad_-32d1_-22d1_-32d1_22d1_-18d1_-8d1_-18d1_22d1_z0_38",
+      "side": "u1",
+      "patch_side": "v0",
+      "axis_map": [
+        1,
+        0,
+        2
+      ],
+      "flips": [
+        false,
+        true,
+        false
+      ],
+      "parameter_interval": [
+        1,
+        2
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:quad_-32d1_-22d1_-18d1_-8d1_18d1_-8d1_32d1_-22d1_z0_38+quad_-32d1_-22d1_-32d1_22d1_-18d1_-8d1_-18d1_22d1_z0_38",
+      "source_block": "quad_-32d1_-22d1_-32d1_22d1_-18d1_-8d1_-18d1_22d1_z0_38",
+      "side": "v1",
+      "patch_side": "u1",
+      "axis_map": [
+        1,
+        0,
+        2
+      ],
+      "flips": [
+        false,
+        true,
+        false
+      ],
+      "parameter_interval": [
+        1,
+        2
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:quad_-32d1_-22d1_-18d1_-8d1_18d1_-8d1_32d1_-22d1_z0_38+quad_-32d1_-22d1_-32d1_22d1_-18d1_-8d1_-18d1_22d1_z0_38",
+      "source_block": "quad_-32d1_-22d1_-32d1_22d1_-18d1_-8d1_-18d1_22d1_z0_38",
+      "side": "w0",
+      "patch_side": "w0",
+      "axis_map": [
+        1,
+        0,
+        2
+      ],
+      "flips": [
+        false,
+        true,
+        false
+      ],
+      "parameter_interval": [
+        1,
+        2
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:quad_-32d1_-22d1_-18d1_-8d1_18d1_-8d1_32d1_-22d1_z0_38+quad_-32d1_-22d1_-32d1_22d1_-18d1_-8d1_-18d1_22d1_z0_38",
+      "source_block": "quad_-32d1_-22d1_-32d1_22d1_-18d1_-8d1_-18d1_22d1_z0_38",
+      "side": "w1",
+      "patch_side": "w1",
+      "axis_map": [
+        1,
+        0,
+        2
+      ],
+      "flips": [
+        false,
+        true,
+        false
+      ],
+      "parameter_interval": [
+        1,
+        2
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:quad_18d1_-8d1_18d1_22d1_21d1_-3d1_21d1_4d1_z0_38+quad_18d1_-8d1_21d1_-3d1_27d1_-3d1_32d1_-22d1_z0_38",
+      "source_block": "quad_18d1_-8d1_18d1_22d1_21d1_-3d1_21d1_4d1_z0_38",
+      "side": "u0",
+      "patch_side": "v0",
+      "axis_map": [
+        1,
+        0,
+        2
+      ],
+      "flips": [
+        true,
+        false,
+        false
+      ],
+      "parameter_interval": [
+        0,
+        1
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:quad_18d1_-8d1_18d1_22d1_21d1_-3d1_21d1_4d1_z0_38+quad_18d1_-8d1_21d1_-3d1_27d1_-3d1_32d1_-22d1_z0_38",
+      "source_block": "quad_18d1_-8d1_18d1_22d1_21d1_-3d1_21d1_4d1_z0_38",
+      "side": "u1",
+      "patch_side": "v1",
+      "axis_map": [
+        1,
+        0,
+        2
+      ],
+      "flips": [
+        true,
+        false,
+        false
+      ],
+      "parameter_interval": [
+        0,
+        1
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:quad_18d1_-8d1_18d1_22d1_21d1_-3d1_21d1_4d1_z0_38+quad_18d1_-8d1_21d1_-3d1_27d1_-3d1_32d1_-22d1_z0_38",
+      "source_block": "quad_18d1_-8d1_18d1_22d1_21d1_-3d1_21d1_4d1_z0_38",
+      "side": "w0",
+      "patch_side": "w0",
+      "axis_map": [
+        1,
+        0,
+        2
+      ],
+      "flips": [
+        true,
+        false,
+        false
+      ],
+      "parameter_interval": [
+        0,
+        1
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:quad_18d1_-8d1_18d1_22d1_21d1_-3d1_21d1_4d1_z0_38+quad_18d1_-8d1_21d1_-3d1_27d1_-3d1_32d1_-22d1_z0_38",
+      "source_block": "quad_18d1_-8d1_18d1_22d1_21d1_-3d1_21d1_4d1_z0_38",
+      "side": "w1",
+      "patch_side": "w1",
+      "axis_map": [
+        1,
+        0,
+        2
+      ],
+      "flips": [
+        true,
+        false,
+        false
+      ],
+      "parameter_interval": [
+        0,
+        1
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:quad_18d1_-8d1_18d1_22d1_21d1_-3d1_21d1_4d1_z0_38+quad_18d1_-8d1_21d1_-3d1_27d1_-3d1_32d1_-22d1_z0_38",
+      "source_block": "quad_18d1_-8d1_21d1_-3d1_27d1_-3d1_32d1_-22d1_z0_38",
+      "side": "v1",
+      "patch_side": "v1",
+      "axis_map": [
+        0,
+        1,
+        2
+      ],
+      "flips": [
+        false,
+        false,
+        false
+      ],
+      "parameter_interval": [
+        1,
+        2
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:quad_18d1_-8d1_18d1_22d1_21d1_-3d1_21d1_4d1_z0_38+quad_18d1_-8d1_21d1_-3d1_27d1_-3d1_32d1_-22d1_z0_38",
+      "source_block": "quad_18d1_-8d1_21d1_-3d1_27d1_-3d1_32d1_-22d1_z0_38",
+      "side": "w0",
+      "patch_side": "w0",
+      "axis_map": [
+        0,
+        1,
+        2
+      ],
+      "flips": [
+        false,
+        false,
+        false
+      ],
+      "parameter_interval": [
+        1,
+        2
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:quad_18d1_-8d1_18d1_22d1_21d1_-3d1_21d1_4d1_z0_38+quad_18d1_-8d1_21d1_-3d1_27d1_-3d1_32d1_-22d1_z0_38",
+      "source_block": "quad_18d1_-8d1_21d1_-3d1_27d1_-3d1_32d1_-22d1_z0_38",
+      "side": "w1",
+      "patch_side": "w1",
+      "axis_map": [
+        0,
+        1,
+        2
+      ],
+      "flips": [
+        false,
+        false,
+        false
+      ],
+      "parameter_interval": [
+        1,
+        2
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:quad_18d1_22d1_21d1_4d1_27d1_4d1_32d1_22d1_z0_38+quad_27d1_-3d1_27d1_4d1_32d1_-22d1_32d1_22d1_z0_38",
+      "source_block": "quad_18d1_22d1_21d1_4d1_27d1_4d1_32d1_22d1_z0_38",
+      "side": "u0",
+      "patch_side": "v1",
+      "axis_map": [
+        1,
+        0,
+        2
+      ],
+      "flips": [
+        false,
+        true,
+        false
+      ],
+      "parameter_interval": [
+        0,
+        1
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:quad_18d1_22d1_21d1_4d1_27d1_4d1_32d1_22d1_z0_38+quad_27d1_-3d1_27d1_4d1_32d1_-22d1_32d1_22d1_z0_38",
+      "source_block": "quad_18d1_22d1_21d1_4d1_27d1_4d1_32d1_22d1_z0_38",
+      "side": "u1",
+      "patch_side": "v0",
+      "axis_map": [
+        1,
+        0,
+        2
+      ],
+      "flips": [
+        false,
+        true,
+        false
+      ],
+      "parameter_interval": [
+        0,
+        1
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:quad_18d1_22d1_21d1_4d1_27d1_4d1_32d1_22d1_z0_38+quad_27d1_-3d1_27d1_4d1_32d1_-22d1_32d1_22d1_z0_38",
+      "source_block": "quad_18d1_22d1_21d1_4d1_27d1_4d1_32d1_22d1_z0_38",
+      "side": "w0",
+      "patch_side": "w0",
+      "axis_map": [
+        1,
+        0,
+        2
+      ],
+      "flips": [
+        false,
+        true,
+        false
+      ],
+      "parameter_interval": [
+        0,
+        1
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:quad_18d1_22d1_21d1_4d1_27d1_4d1_32d1_22d1_z0_38+quad_27d1_-3d1_27d1_4d1_32d1_-22d1_32d1_22d1_z0_38",
+      "source_block": "quad_18d1_22d1_21d1_4d1_27d1_4d1_32d1_22d1_z0_38",
+      "side": "w1",
+      "patch_side": "w1",
+      "axis_map": [
+        1,
+        0,
+        2
+      ],
+      "flips": [
+        false,
+        true,
+        false
+      ],
+      "parameter_interval": [
+        0,
+        1
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:quad_18d1_22d1_21d1_4d1_27d1_4d1_32d1_22d1_z0_38+quad_27d1_-3d1_27d1_4d1_32d1_-22d1_32d1_22d1_z0_38",
+      "source_block": "quad_27d1_-3d1_27d1_4d1_32d1_-22d1_32d1_22d1_z0_38",
+      "side": "u0",
+      "patch_side": "v0",
+      "axis_map": [
+        1,
+        0,
+        2
+      ],
+      "flips": [
+        true,
+        false,
+        false
+      ],
+      "parameter_interval": [
+        1,
+        2
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:quad_18d1_22d1_21d1_4d1_27d1_4d1_32d1_22d1_z0_38+quad_27d1_-3d1_27d1_4d1_32d1_-22d1_32d1_22d1_z0_38",
+      "source_block": "quad_27d1_-3d1_27d1_4d1_32d1_-22d1_32d1_22d1_z0_38",
+      "side": "u1",
+      "patch_side": "v1",
+      "axis_map": [
+        1,
+        0,
+        2
+      ],
+      "flips": [
+        true,
+        false,
+        false
+      ],
+      "parameter_interval": [
+        1,
+        2
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:quad_18d1_22d1_21d1_4d1_27d1_4d1_32d1_22d1_z0_38+quad_27d1_-3d1_27d1_4d1_32d1_-22d1_32d1_22d1_z0_38",
+      "source_block": "quad_27d1_-3d1_27d1_4d1_32d1_-22d1_32d1_22d1_z0_38",
+      "side": "w0",
+      "patch_side": "w0",
+      "axis_map": [
+        1,
+        0,
+        2
+      ],
+      "flips": [
+        true,
+        false,
+        false
+      ],
+      "parameter_interval": [
+        1,
+        2
+      ],
+      "status": "extracted_exactly_from_model"
+    },
+    {
+      "patch_id": "band:quad_18d1_22d1_21d1_4d1_27d1_4d1_32d1_22d1_z0_38+quad_27d1_-3d1_27d1_4d1_32d1_-22d1_32d1_22d1_z0_38",
+      "source_block": "quad_27d1_-3d1_27d1_4d1_32d1_-22d1_32d1_22d1_z0_38",
+      "side": "w1",
+      "patch_side": "w1",
+      "axis_map": [
+        1,
+        0,
+        2
+      ],
+      "flips": [
+        true,
+        false,
+        false
+      ],
+      "parameter_interval": [
+        1,
+        2
+      ],
+      "status": "extracted_exactly_from_model"
+    }
+  ],
+  "merged_source_blocks": [
+    "quad_-32d1_-22d1_-18d1_-8d1_18d1_-8d1_32d1_-22d1_z0_38",
+    "quad_-32d1_-22d1_-32d1_22d1_-18d1_-8d1_-18d1_22d1_z0_38",
+    "quad_18d1_-8d1_18d1_22d1_21d1_-3d1_21d1_4d1_z0_38",
+    "quad_18d1_-8d1_21d1_-3d1_27d1_-3d1_32d1_-22d1_z0_38",
+    "quad_18d1_22d1_21d1_4d1_27d1_4d1_32d1_22d1_z0_38",
+    "quad_27d1_-3d1_27d1_4d1_32d1_-22d1_32d1_22d1_z0_38"
+  ],
+  "errors": []
+}

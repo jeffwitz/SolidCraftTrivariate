@@ -5,14 +5,16 @@
     "family": "seeded_convex_blind_pockets"
   },
   "model_audit": {
-    "blocks": 57,
-    "bounded_sketch_faces": 33,
+    "bezier_span_count": 65,
+    "blocks": 65,
+    "bounded_sketch_faces": 37,
     "cavities": 0,
-    "determinant_lower_bound_mm3": 339012.3076923075,
-    "exterior_sides": 114,
+    "determinant_lower_bound_mm3": 322163.07692307676,
+    "exterior_sides": 126,
     "hausdorff_error_upper_bound_mm": 0,
     "method": "certified_sketch_layer_partition",
-    "shared_faces": 114,
+    "nurbs_patch_count": 33,
+    "shared_faces": 132,
     "status": "valid",
     "volume_exact_mm3": [
       1224380800,
@@ -21,20 +23,22 @@
   },
   "kernel_rebuild": {
     "command": "build recipe.json model.json; audit model.json; export-step model.json reference.step",
-    "kernel_revision": "083fdfe14373aadbca0e9d10586e2cce32ba077d",
-    "kernel_binary_sha256": "8f33eeba801e38e56fbe52ad6ccb96a68a28d2f20187a7d67df869af0c0f9ac2",
-    "recipe_sha256": "9e3836b96a220ca0b696083ebc299f0e66137a93ee81fadc630243ba22decedb",
-    "model_sha256": "b8e97074c5e494f160ec53cc60e97e7063a9df5612859997402b14f2a4b5b806",
-    "step_sha256": "1b575e994317024585d6c5d00e5a469f73eb718f0b17f1a33f7d12bd281d72d6",
+    "kernel_revision": "1177c32dbf148a3960a471cf0a7b7977fd604b4b",
+    "kernel_binary_sha256": "32419887d795e7d3d67178e1c3464fbb590057e3f64be38d5200dc73f7977df8",
+    "recipe_sha256": "1eeff241fd76987c06c6fb506c28abfcee8e06e9930d19d82452ce874c1468a7",
+    "model_sha256": "c9ff3e82517dc3e4a9d2e7064a97ef3c4e43bfe55ae48b3c26050ea3020d0535",
+    "step_sha256": "26d042d29b8ec38d8459158d9f3f220db9eef0b684e9c85c67711071627f2638",
     "build_report": {
-      "blocks": 57,
-      "bounded_sketch_faces": 33,
+      "bezier_span_count": 65,
+      "blocks": 65,
+      "bounded_sketch_faces": 37,
       "cavities": 0,
-      "determinant_lower_bound_mm3": 339012.3076923075,
-      "exterior_sides": 114,
+      "determinant_lower_bound_mm3": 322163.07692307676,
+      "exterior_sides": 126,
       "hausdorff_error_upper_bound_mm": 0,
       "method": "certified_sketch_layer_partition",
-      "shared_faces": 114,
+      "nurbs_patch_count": 33,
+      "shared_faces": 132,
       "status": "valid",
       "volume_exact_mm3": [
         1224380800,
@@ -44,8 +48,8 @@
     "sampled_condition": {
       "method": "maximum spectral Jacobian condition number on the closed 5x5x5 parameter grid per block; diagnostic only",
       "points_per_block": 125,
-      "sample_count": 7125,
-      "maximum_condition_2": 18.95022801737727
+      "sample_count": 8125,
+      "maximum_condition_2": 35.26539961279618
     }
   },
   "frozen_reference": {
@@ -54,22 +58,62 @@
     "tag": "latest-release",
     "report": "docs/results/convex-host-rings.json"
   },
-  "extrusion_quality": {
-    "block_count": 57,
-    "planar_spectral_kappa": 15.366314327690844,
-    "planar_spectral_kappa_witness": {
-      "block": "quad_-4312396d2941_-4846660d8823_-413864d519_-61475d173_-756d1_-480d1_-556d1_-338d1_z0_102",
-      "param": [
-        0.0,
-        1.0,
-        0.75
-      ],
-      "sigma_max_mm": 735.7424913596413,
-      "sigma_min_mm": 47.88021874795296
+  "partition_selection": {
+    "selected_mode": "optimize",
+    "selected": {
+      "method": "separated_convex_quad_rings",
+      "patches": 33,
+      "cells": 65,
+      "q1_geometric_nodes": 135,
+      "interfaces_verified": 132,
+      "kappa_planar": 32.290100834688,
+      "kappa_3d": 35.26539961279617
     },
-    "minimum_corner_sine": 0.14739436241933662,
+    "alternatives": {
+      "assemble": {
+        "method": "separated_convex_quad_rings",
+        "patches": 41,
+        "cells": 57,
+        "q1_geometric_nodes": 120,
+        "interfaces_verified": 114,
+        "kappa_planar": 15.366314327690844,
+        "kappa_3d": 18.9502280173774
+      },
+      "optimize": {
+        "method": "separated_convex_quad_rings",
+        "patches": 33,
+        "cells": 65,
+        "q1_geometric_nodes": 135,
+        "interfaces_verified": 132,
+        "kappa_planar": 32.290100834688,
+        "kappa_3d": 35.26539961279617
+      }
+    },
+    "volume_mm3": "1224380800",
+    "selected_evaluation_model_sha256": "c9ff3e82517dc3e4a9d2e7064a97ef3c4e43bfe55ae48b3c26050ea3020d0535",
+    "evaluation_cli_sha256": "32419887d795e7d3d67178e1c3464fbb590057e3f64be38d5200dc73f7977df8",
+    "comparison_report_sha256": "9105a17738c278afb50ebfa7bbefa59da7d12792e5cd49ade3ea947a7c8d2363",
+    "criterion": "lexicographic (NURBS patches, Bézier cells), with assemble preferred on ties",
+    "native_model_sha256": "c9ff3e82517dc3e4a9d2e7064a97ef3c4e43bfe55ae48b3c26050ea3020d0535",
+    "evaluation_report": "docs/results/sketch-nurbs-comparison.json",
+    "optional_evaluation_model_sha256": "c9ff3e82517dc3e4a9d2e7064a97ef3c4e43bfe55ae48b3c26050ea3020d0535"
+  },
+  "extrusion_quality": {
+    "block_count": 65,
+    "planar_spectral_kappa": 32.290100834688,
+    "planar_spectral_kappa_witness": {
+      "block": "quad_-156d1_20d1_-25776d221_-29080d221_-72d1_162d1_65912d663_270860d663_z0_102",
+      "param": [
+        1.0,
+        1.0,
+        0.5
+      ],
+      "sigma_max_mm": 342.4485693080921,
+      "sigma_min_mm": 10.605373178030245
+    },
+    "minimum_corner_sine": 0.07330977353775389,
     "minimum_corner_sine_witness": {
-      "block": "quad_-96156d221_-205030d221_-356d1_-480d1_-272d1_-338d1_-6556d51_-8230d51_z0_102",
+      "block": "quad_-156d1_20d1_-25776d221_-29080d221_-72d1_162d1_65912d663_270860d663_z0_102",
       "param": [
         1.0,
         1.0,
@@ -81,46 +125,46 @@
         0.0
       ],
       "dv_mm": [
-        -143.45098039215685,
-        -176.62745098039215,
+        -171.41478129713425,
+        -246.53695324283558,
         0.0
       ]
     },
-    "thickness_direction_aspect": 14.60517836604682,
+    "thickness_direction_aspect": 12.048554485528403,
     "thickness_direction_aspect_witness": {
-      "block": "quad_-236d1_-870d1_244d1_-122d1_444d1_20d1_764d1_-160d1_z0_102",
+      "block": "quad_-96156d221_-205030d221_-25776d221_-29080d221_-40d1_-122d1_44d1_-180d1_z0_102",
       "param": [
         0.0,
         0.0,
         0.0
       ],
-      "planar_sigma_max_mm": 1489.7281933367756,
+      "planar_sigma_max_mm": 1228.952557523897,
       "normal_thickness_per_parameter_mm": 102.0,
       "thickness_tangent_3d_mm": 102.00022508978765
     },
-    "max_3d_spectral_kappa": 18.9502280173774,
+    "max_3d_spectral_kappa": 35.26539961279617,
     "max_3d_spectral_kappa_witness": {
-      "block": "quad_-96156d221_-205030d221_-356d1_-480d1_-272d1_-338d1_-6556d51_-8230d51_z102_476",
+      "block": "quad_-156d1_20d1_-25776d221_-29080d221_-72d1_162d1_65912d663_270860d663_z102_476",
+      "param": [
+        1.0,
+        1.0,
+        0.0
+      ],
+      "singular_values_mm": [
+        374.00215327933955,
+        342.447119499171,
+        10.60535701809066
+      ]
+    },
+    "minimum_sampled_jacobian_determinant_mm3": 322163.0769230763,
+    "minimum_sampled_jacobian_determinant_mm3_witness": {
+      "block": "quad_-42621498d38233_-32195785d76466_-29900748d38233_-12408875d38233_-640d1_-122d1_-556d1_20d1_z0_102",
       "param": [
         1.0,
         1.0,
         0.25
       ],
-      "singular_values_mm": [
-        374.0011956480168,
-        280.3669997894512,
-        19.735973377473712
-      ]
-    },
-    "minimum_sampled_jacobian_determinant_mm3": 339012.30769230775,
-    "minimum_sampled_jacobian_determinant_mm3_witness": {
-      "block": "quad_-156d1_220d1_-72d1_162d1_-1693d663_203695d1326_45844d221_149970d221_z0_102",
-      "param": [
-        0.0,
-        1.0,
-        0.0
-      ],
-      "determinant_mm3": 339012.30769230775
+      "determinant_mm3": 322163.0769230763
     }
   }
 }

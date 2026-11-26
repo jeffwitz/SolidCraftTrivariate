@@ -80,6 +80,8 @@ def main(binary):
             row["reduced_equilibrium_residual"],
         )
         assert row["free_vector_dofs"] == old["free_vector_dofs"]
+        assert row["partial_trace_rank"] == old["partial_trace_rank"]
+        assert row["partial_trace_rank_rcond_1e_10"] == row["partial_trace_rank"]
         assert row["rigid_modes"] == 6
         assert row["affine_energy_error"] < 1e-8
         assert row["max_partial_face_geometry_mismatch_mm"] < 1e-8

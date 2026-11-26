@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f4ef">
+  <meta name="description" content="Explore sketch partitions, pierced brackets and curved parts as interactive 3D solids.">
+  <title>Trivariate parts · SolidCraft</title>
+  <link rel="stylesheet" href="./style.css?v=4c80dc8c8d5c">
+  <link id="catalog-url" rel="alternate" type="application/json" href="./experiments.json?v=686fe6d7c056">
+  <script type="module" src="./app.js?v=b6b734cc1213"></script>
+  <link rel="stylesheet" href="./hub.css">
+</head>
+<body>
+  <header class="topbar"><a class="wordmark" href="./"><span class="mark" aria-hidden="true">S</span>SolidCraft <span class="wordmark-light">/ Trivariate</span></a><nav class="site-nav" aria-label="Gallery navigation"><a href="./">Home</a><a aria-current="page" href="./shapes.html">Shapes</a><a href="./compare.html">Compare</a><a href="./edges.html">Fillets &amp; chamfers</a><a href="./booleans.html">Boolean operations</a></nav></header>
+
+  <main>
+    <section class="intro" aria-labelledby="page-title">
+      <h1 id="page-title">Sketch partitions in 3D</h1>
+      <p class="lede">Inspect the bore stacks, polygonal holes and blind pockets. Switch between the outer surface and the individual blocks, or take a section through the solid.</p>
+      <p><a class="comparison-link" href="./compare.html" hidden>Compare both partitions of this sketch →</a><span class="comparison-status" aria-live="polite"></span></p>
+    </section>
+
+    <section class="workspace" aria-label="Model explorer">
+      <div class="viewport-panel">
+        <div class="viewport-head">
+          <div><h2 id="view-title">Loading model…</h2></div>
+          <span class="view-coordinate">X&nbsp;·&nbsp;Y&nbsp;·&nbsp;Z <span class="dot" aria-hidden="true"></span> mm</span>
+        </div>
+        <div class="canvas-wrap" id="canvas-wrap">
+          <canvas id="model-canvas" tabindex="0" aria-label="Interactive 3D model. Use the arrow keys to rotate, and plus or minus to zoom." aria-describedby="viewport-caption"></canvas>
+          <div class="canvas-state" id="canvas-state" role="status">Loading experiments…</div>
+          <div class="axis-key" aria-hidden="true"><span><i class="axis-x"></i>X</span><span><i class="axis-y"></i>Y</span><span><i class="axis-z"></i>Z</span></div>
+          <div class="viewport-caption" id="viewport-caption">Drag to rotate · Scroll or use +/− to zoom · Arrow keys to rotate</div>
+        </div>
+        <div class="viewport-toolbar" aria-label="Viewer controls">
+          <fieldset class="segmented">
+            <legend>Display</legend>
+            <button type="button" class="segment" data-mode="surface" aria-pressed="false">Surface</button>
+            <button type="button" class="segment" data-mode="patches" hidden aria-pressed="false">NURBS volumes</button>
+            <button type="button" class="segment is-active" data-mode="blocks" aria-pressed="true">Blocks</button>
+          </fieldset>
+          <div class="clip-control">
+            <label for="clip-axis">Section</label>
+            <select id="clip-axis" aria-label="Section axis"><option value="">Off</option><option value="x">X</option><option value="y">Y</option><option value="z">Z</option></select>
+            <label class="sr-only" for="clip-fraction">Section position</label>
+            <input id="clip-fraction" type="range" min="5" max="95" value="50" disabled>
+            <output id="clip-value" for="clip-fraction">50&nbsp;%</output>
+          </div>
+          <button type="button" class="section-button" id="s3-face-pocket" hidden>Show pocket section</button>
+          <button type="button" class="reset-button" id="reset-view"><span aria-hidden="true">↺</span> Reset view</button>
+        </div>
+      </div>
+
+      <aside class="side-panel" aria-label="Experiments and measurements">
+        <div class="experiment-head"><label for="experiment-select">Experiment</label><select id="experiment-select" disabled><option>Loading…</option></select></div>
+        <nav class="model-navigation" aria-label="Browse models"><button id="previous-model" type="button" disabled>← Previous</button><output id="model-position" aria-live="polite"></output><button id="next-model" type="button" disabled>Next →</button></nav>
+        <div class="experiment-copy"><p id="experiment-description"></p></div>
+        <figure class="profile-card" id="profile-card" hidden aria-label="Actual hole profiles"></figure>
+        <div class="metrics-section"><div class="section-rule"><span>Model data</span><span class="rule-line"></span></div><dl id="metrics-list" class="metrics-list"><div class="metric-empty">Waiting for data.</div></dl></div>
+        <nav class="source-links" aria-label="Experiment files"><a id="model-link" href="#" hidden><span>Native trivariate model (JSON)</span><span aria-hidden="true">↗</span></a><a id="representation-link" href="#" hidden><span>Exact NURBS cover supplement (JSON)</span><span aria-hidden="true">↗</span></a><a id="source-link" href="#" hidden><span>Source recipe</span><span aria-hidden="true">↗</span></a><a id="step-link" href="#" hidden><span>STEP model</span><span aria-hidden="true">↗</span></a><a id="audit-link" href="#" hidden><span>Model audit</span><span aria-hidden="true">↗</span></a><a id="figure-link" href="#" hidden><span>Annotated figure</span><span aria-hidden="true">↗</span></a><a class="campaign-link" href="https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/galerie-esquisses-courbes.md" target="_blank" rel="noopener noreferrer">Protocol and results <span aria-hidden="true">↗</span></a></nav>
+      </aside>
+    </section>
+
+    <details class="proof"><summary>How should I read these values?</summary>
+      <p>Block and interface counts describe the downloadable trivariate model. For the six curved profiles, the minimum block counts apply to layer-aligned partitions with the prescribed arc junctions. The sampled condition number measures map distortion. A lower block count can coincide with higher distortion.</p>
+      <p>The surface view draws only the model’s recorded exterior cell faces. The exact NURBS cover groups those source cells and records their extracted controls and joins; this documents extraction fidelity without claiming a new global shape proof. Section caps are visual previews. Counts distinguish merged NURBS cover patches from their Bézier cells; paired comparisons appear only where two candidates are published.</p>
+    </details>
+    <footer class="page-footer"><span>SolidCraft Trivariate</span><span></span><a href="https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/architecture.md" target="_blank" rel="noopener noreferrer">Project architecture ↗</a></footer>
+  </main>
+</body>
+</html>

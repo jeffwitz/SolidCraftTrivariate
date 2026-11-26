@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Evidence and limits for fillet and chamfer representations in trivariate geometry.">
+  <title>Edges: fillets and chamfers · SolidCraft</title>
+  <link rel="stylesheet" href="./style.css?v=4c80dc8c8d5c">
+  <link rel="stylesheet" href="./hub.css?v=00a2f3124805">
+  <link rel="stylesheet" href="./edges.css?v=421ef5b7170f">
+  <script type="module" src="./edges.js?v=2b8e9d4ecd5a"></script>
+</head>
+<body>
+  <header class="topbar"><a class="wordmark" href="./"><span class="mark" aria-hidden="true">S</span>SolidCraft <span class="wordmark-light">/ Trivariate</span></a><nav class="site-nav" aria-label="Gallery navigation"><a href="./">Home</a><a href="./shapes.html">Shapes</a><a href="./compare.html">Compare</a><a aria-current="page" href="./edges.html">Fillets &amp; chamfers</a><a href="./booleans.html">Boolean operations</a></nav></header>
+
+  <main class="edge-page">
+    <section class="intro edge-intro" aria-labelledby="page-title">
+      <p class="eyebrow">Geometry audit · fixed topology</p>
+      <h1 id="page-title">What does an edge treatment require?</h1>
+      <p class="lede">Fillets and chamfers change the boundary where faces meet. These studies separate exact geometry evidence from what the existing trivariate partitions can represent and certify.</p>
+    </section>
+
+    <section class="edge-viewer-card" aria-labelledby="viewer-title">
+      <div class="edge-viewer-copy">
+        <p class="eyebrow">Recorded annulus constructions</p>
+        <h2 id="viewer-title">Compare two partition families</h2>
+        <p>These are recorded NURBS chart nets for the original four sectors and a prepared ten-volume construction. Switch the family and boundary state to inspect each actual dataset.</p>
+        <label class="edge-state-control" for="edge-partition-select">Partition family
+          <select id="edge-partition-select"><option value="four">Original · four sectors</option><option value="ten">Prepared · ten volumes</option></select>
+        </label>
+        <label class="edge-state-control" for="edge-state-select">Boundary state
+          <select id="edge-state-select">
+            <option value="sharp">Sharp baseline</option>
+            <option value="chamfer">0.25 mm chamfer</option>
+            <option value="fillet">0.25 mm fillet</option>
+          </select>
+        </label>
+        <p class="edge-family-note">Four-sector fillet data show the exact singular variant. The ten-volume fillet data show the separate regular construction.</p>
+        <p class="edge-ready" id="edge-view-state" role="status" aria-live="polite">Loading recorded annulus geometry…</p>
+      </div>
+      <div class="edge-viewport-panel">
+        <div class="edge-viewport-head"><span>Recorded trivariate charts</span><span>X · Y · Z / mm</span></div>
+        <canvas id="edge-model-canvas" tabindex="0" aria-label="Interactive WebGL view of the recorded annulus geometry. Drag to rotate; scroll to zoom."></canvas>
+        <div class="edge-viewer-controls"><span>Drag to rotate · Scroll to zoom · Arrow keys to rotate</span><button id="edge-reset-view" type="button">Reset view</button></div>
+      </div>
+    </section>
+
+    <section class="edge-summary" aria-label="Original four-sector annulus results">
+      <div><span>Original volumes</span><strong>4</strong><small>Same identities in all three states</small></div>
+      <div><span>Extracted cells</span><strong>12</strong><small>Three axial spans per sector</small></div>
+      <div><span>Sector interfaces</span><strong>4</strong><small>All four joins audited</small></div>
+      <div><span>Treatment</span><strong>0.25 mm</strong><small>Radius or equal setback</small></div>
+    </section>
+
+    <section class="edge-family" aria-labelledby="four-title">
+      <div class="edge-family-heading"><p class="eyebrow">Original family · four sectors</p><h2 id="four-title">Four volumes keep the original incidence</h2><p>The sharp and chamfered charts are regular. An exact smooth fillet across the four physical corners forces a zero Jacobian on the boundary, so this family cannot meet the strict closed-domain Jacobian condition for that fillet.</p><div class="edge-family-links"><a href="https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/examples/annulus_original_edges.rs" target="_blank" rel="noopener noreferrer">Four-sector fillet constructor ↗</a><a href="https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/examples/annulus_four_block_chamfer.rs" target="_blank" rel="noopener noreferrer">Four-sector chamfer constructor ↗</a><a href="https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/tests/references/annulus_original_edge_states.py" target="_blank" rel="noopener noreferrer">Independent profile and volume audit ↗</a><a href="https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/tests/annulus_four_sector_obstruction.rs" target="_blank" rel="noopener noreferrer">Strict-Jacobian witness ↗</a></div></div>
+      <div class="edge-state-grid">
+        <article class="edge-state-card"><p class="eyebrow">Four sectors · baseline</p><h3>Sharp</h3><p class="edge-number">301.592894744620 mm³</p><p>Positive determinant on the closed spans; analytic reference is <code>96π</code>.</p><a href="https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/site/edges-four-sharp.json" target="_blank" rel="noopener noreferrer">Download four-volume sharp data ↗</a></article>
+        <article class="edge-state-card"><p class="eyebrow">Four sectors · regular edit</p><h3>Chamfer</h3><p class="edge-number">299.236700254428 mm³</p><p>Certified determinant lower bound exceeds 0.69254 mm³ on the twelve closed cells.</p><a href="https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/site/edges-four-chamfer.json" target="_blank" rel="noopener noreferrer">Download four-volume chamfer data ↗</a></article>
+        <article class="edge-state-card edge-state-caution"><p class="eyebrow">Four sectors · singular boundary</p><h3>Fillet</h3><p class="edge-number">300.581607414644 mm³</p><p>Exact radius-0.25 mm profile; determinant is zero on four contact circles. IGA qualification remains open.</p><a href="https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/site/edges-four-fillet.json" target="_blank" rel="noopener noreferrer">Download four-volume fillet data ↗</a></article>
+      </div>
+    </section>
+
+    <section class="edge-family" aria-labelledby="ten-title">
+      <div class="edge-family-heading"><p class="eyebrow">Prepared family · ten volumes</p><h2 id="ten-title">The prepared partition keeps the fillet regular</h2><p>A five-patch section swept in two rational half-turns gives a different map topology. All three states preserve its ten volume identities and incidences; every one of the 128 Bézier cells has strictly positive determinant on its closed domain.</p><div class="edge-family-links"><a href="https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/examples/annulus_prepared_volumes.rs" target="_blank" rel="noopener noreferrer">Ten-volume constructor ↗</a><a href="https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/tests/references/annulus_prepared_volumes.py" target="_blank" rel="noopener noreferrer">Independent volume audit ↗</a><a href="https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/tests/references/annulus_prepared_profile.py" target="_blank" rel="noopener noreferrer">Exact profile audit ↗</a></div></div>
+      <div class="edge-summary" aria-label="Prepared ten-volume annulus results">
+        <div><span>Prepared volumes</span><strong>10</strong><small>Same identities in all three states</small></div>
+        <div><span>Extracted cells</span><strong>128</strong><small>Positive determinant in all states</small></div>
+        <div><span>Cell interfaces</span><strong>352</strong><small>Coefficient-matched joins</small></div>
+        <div><span>Treatment</span><strong>0.25 mm</strong><small>Radius or equal setback</small></div>
+      </div>
+      <div class="edge-state-grid">
+        <article class="edge-state-card"><p class="eyebrow">Ten volumes · baseline</p><h3>Sharp</h3><p class="edge-number">301.592894744620 mm³</p><p>Gauss-16 agrees with the analytic <code>96π</code> volume.</p><a href="https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/annulus-fixed-topology/ten-sharp.json" target="_blank" rel="noopener noreferrer">Download ten-volume sharp data ↗</a></article>
+        <article class="edge-state-card"><p class="eyebrow">Ten volumes · chamfer</p><h3>Chamfer</h3><p class="edge-number">299.236700254428 mm³</p><p>Positive determinant and matching joins; STEP volume differs by about 6×10⁻¹² mm³.</p><a href="https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/annulus-fixed-topology/ten-chamfer.json" target="_blank" rel="noopener noreferrer">Download ten-volume chamfer data ↗</a></article>
+        <article class="edge-state-card"><p class="eyebrow">Ten volumes · regular fillet</p><h3>Fillet</h3><p class="edge-number">300.581607414644 mm³</p><p>Exact radius-0.25 mm circle profile and positive determinant on every closed cell. IGA field performance has not been measured.</p><a href="https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/annulus-fixed-topology/ten-fillet.json" target="_blank" rel="noopener noreferrer">Download ten-volume fillet data ↗</a></article>
+      </div>
+    </section>
+
+    <section class="edge-evidence edge-latest" aria-labelledby="latest-title">
+      <div class="edge-section-heading"><p class="eyebrow">Latest fixed-rim results · replayed on main</p><h2 id="latest-title">Selected rim edits now have native constructions</h2><p>These successful local treatments keep the source chart identities. Their scope is deliberately limited to named rims; other edges and faces retain their previous geometry.</p><a href="https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/fixed-rims/README.md" target="_blank" rel="noopener noreferrer">Read the complete fixed-rims report ↗</a></div>
+      <div class="edge-evidence-grid">
+        <article class="edge-evidence-card">
+          <span class="evidence-index">FIELDCRAFT · FOUR BORE MOUTHS</span><h3>Chamfer and fillet on the compact bracket</h3>
+          <p>At the published x64/y64 case, the four circular mouths of two transverse bores receive 0.25&nbsp;mm treatments. All 10 chart IDs and 11 neighbors are preserved; the parent intervals align into 30 Bézier spans with 53 matching span joins. Five bore-radius variants pass the independent volume oracle. For x64/y64, all 288 targeted probes per state agree and both STEP files re-import as valid closed solids.</p>
+          <p class="evidence-limit">Rim-only scope: the bracket bend radius and all other exterior edges are unchanged. Chamfer spans are regular; the fillet has 16 spans singular only on cap contact rails, so it does not have a strict positive closed-domain Jacobian.</p>
+          <div class="evidence-downloads"><a href="https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/fixed-rims/fieldcraft-chamfer.step" target="_blank" rel="noopener noreferrer">Chamfer STEP</a><a href="https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/fixed-rims/fieldcraft-fillet.step" target="_blank" rel="noopener noreferrer">Fillet STEP</a><a href="https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/fixed-rims/fieldcraft-series.json" target="_blank" rel="noopener noreferrer">Five-variant audit JSON</a><a href="https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/fixed-rims/fieldcraft-step-check.json" target="_blank" rel="noopener noreferrer">CAD re-import checks</a><a href="https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/tests/references/fieldcraft_rim_series.py" target="_blank" rel="noopener noreferrer">Reproduction script</a></div>
+        </article>
+        <article class="edge-evidence-card">
+          <span class="evidence-index">S3 POCKET · EIGHT HORIZONTAL STOCK RIMS</span><h3>Stock perimeter treatment with pocket retained</h3>
+          <p>The two horizontal outside perimeters are chamfered or filleted at 0.25&nbsp;mm with mitred corners. The model retains all 93 logical charts, 191 interfaces and internal cut features. All 72 targeted material/void probes per state agree; each STEP re-imports as one valid closed solid.</p>
+          <p class="evidence-limit">Rim-only scope: vertical stock edges and bore, pocket and through-hole creases stay sharp. The fillet has 26 spans singular at cap contact edges; strict positive closed-domain Jacobian qualification does not pass.</p>
+          <div class="evidence-downloads"><a href="https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/fixed-rims/s3-stock-chamfer.step" target="_blank" rel="noopener noreferrer">Stock chamfer STEP</a><a href="https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/fixed-rims/s3-stock-fillet.step" target="_blank" rel="noopener noreferrer">Stock fillet STEP</a><a href="https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/fixed-rims/s3-step-check.json" target="_blank" rel="noopener noreferrer">CAD re-import checks</a><a href="https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/s3-stock-rim.md" target="_blank" rel="noopener noreferrer">Construction and Jacobian audit</a></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="edge-evidence" aria-labelledby="evidence-title">
+      <div class="edge-section-heading"><p class="eyebrow">Other edge questions · distinct scopes</p><h2 id="evidence-title">Keep full-edge edits separate from local rim results</h2><p>The newer rim results above do not treat every crease. Full-edge operations, individual contact rails and local rim edits are different geometric claims.</p></div>
+      <div class="edge-evidence-grid">
+        <article class="edge-evidence-card">
+          <span class="evidence-index">EARLIER STUDY · 36-BLOCK BRACKET · FULL CREASE SET</span><h3>One exact fixed-incidence obstruction</h3>
+          <p>For the earlier full target of 23 selected creases, the independent radius-0.25&nbsp;mm operation is valid and closed. In that unchanged 36-block source partition, one named same-block edge cannot be smoothed while keeping both exterior sides and a strictly positive closed-cube Jacobian: tangent-plane agreement forces the determinant to zero there.</p>
+          <p class="evidence-limit">This is not the newer four-bore-mouth treatment above. It is a complete-crease target on a different source model. The other 22 edges had no individual native feasibility result in that study; a redesigned partition was outside its scope.</p>
+          <a href="https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/bracket-native-feasibility.md" target="_blank" rel="noopener noreferrer">Read the earlier bracket audit ↗</a>
+        </article>
+        <article class="edge-evidence-card">
+          <span class="evidence-index">02 / S3 TOP-LIP CONTACT RAIL</span><h3>A bounded rail is now available</h3>
+          <p>For the named through-hole lip, cubic Bézier approximations use 11 spans per side. Interval Taylor bounds certify maximum physical errors of 0.0008137 mm and 0.0007849 mm, below the 0.001 mm target. The rail controls share endpoints and are checked against the exact source curve.</p>
+          <p class="evidence-limit">Rail-only scope: this is not a fillet surface or an updated volume chart. Adjacent-face maps, positive chart Jacobians, corner closure and a complete hole-edge treatment remain open.</p>
+          <a href="https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/s3-offset-rail.md" target="_blank" rel="noopener noreferrer">Read the rail construction and certificate ↗</a>
+          <div class="evidence-downloads"><a href="https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/fixed-rims/s3-contact-rails.json" target="_blank" rel="noopener noreferrer">Certified rail controls and bounds</a><a href="https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/examples/s3_offset_rail.rs" target="_blank" rel="noopener noreferrer">Rail constructor</a><a href="https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/tests/s3_offset_rail.rs" target="_blank" rel="noopener noreferrer">Rail tests</a></div>
+        </article>
+      </div>
+      <article class="edge-evidence-card edge-mechanics-card">
+        <span class="evidence-index">03 / MECHANICS · RELATED SINGULAR-MAP STUDY</span><h3>Singular charts need their own field qualification</h3>
+        <p>A separate manufactured antiplane elasticity study compares one injective singular IGA chart with regular P2 finite elements. Its energy error converges at about second order, while local shear near the singular rail remains inaccurate. This is evidence about that specified map and load; it does not qualify either annulus fillet representation.</p>
+        <a href="https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/contact-rail-mechanics/README.md" target="_blank" rel="noopener noreferrer">Read the mechanics study and limits ↗</a>
+        <div class="evidence-downloads"><a href="https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/contact-rail-mechanics/results.json" target="_blank" rel="noopener noreferrer">Study results JSON</a><a href="https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/contact-rail-mechanics/run.py" target="_blank" rel="noopener noreferrer">Reproduction script</a></div>
+      </article>
+    </section>
+
+    <details class="edge-method"><summary>How the annulus qualification is scoped</summary>
+      <p>The ten-volume construction starts from a prepared five-patch disk section and two rational half-turns. Exact-fraction checks recover all four meridional profiles and their joins. The fillet circle identity holds across both complete spans per corner; the independent volume oracle compares quadrature against analytic or STEP references. Positive determinant, oriented joins and a degree-one section boundary establish the stated cover for these models.</p>
+      <p>The lower-bound argument applies only to regular, conforming quadrangulations of a disk section with regular corners and to injective product sweeps. It proves ten volumes minimal in that stated construction class; it is not a minimum over all possible 3D hexahedral partitions. IGA degrees of freedom and mechanical performance for this ten-volume family remain unmeasured.</p>
+    </details>
+
+    <nav class="edge-bottom-nav" aria-label="Explore more"><a href="./shapes.html">Explore shape partitions →</a><a href="./compare.html">Compare NURBS partitions →</a><a href="./booleans.html">Explore Boolean features →</a></nav>
+    <footer class="page-footer"><span>SolidCraft Trivariate</span><span>Geometry evidence with explicit scope</span><a href="https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/annulus-four-block-topology.md" target="_blank" rel="noopener noreferrer">Annulus construction report ↗</a></footer>
+  </main>
+</body>
+</html>

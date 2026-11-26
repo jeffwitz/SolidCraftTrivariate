@@ -1,0 +1,20 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Crossed sketch tools · SolidCraft</title>
+<link rel="stylesheet" href="./style.css?v=4c80dc8c8d5c"><link rel="stylesheet" href="./hub.css">
+<script type="module" src="./crossed-tools/view.js"></script></head><body>
+<header class="topbar"><a class="wordmark" href="./"><span class="mark">S</span>SolidCraft <span class="wordmark-light">/ Trivariate</span></a>
+<nav class="site-nav" aria-label="Gallery navigation"><a href="./">Home</a><a href="./shapes.html">Shapes</a><a href="./compare.html">Compare</a><a href="./edges.html">Fillets &amp; chamfers</a><a href="./booleans.html">Boolean operations</a></nav></header>
+<main><section class="intro"><a href="./booleans.html">← Boolean operations</a><h1>Crossed sketch tools</h1><p class="lede">A periodic cubic profile sweeps vertically (A). A rectangular profile crosses it over a 100 mm run (B). Change the result or tilt the transverse sweep.</p></section>
+<section class="workspace"><div class="viewport-panel"><div class="viewport-head"><h2 id="result-title">Intersection</h2><span>mm</span></div>
+<div class="canvas-wrap"><canvas id="crossed-model" tabindex="0" aria-label="Crossed-tool result. Drag to rotate. Shift-drag to pan. Scroll to zoom."></canvas><div class="canvas-state" id="model-state" role="status">Loading model…</div></div>
+<div class="viewport-toolbar"><button class="reset-button" id="reset">Reset view</button></div></div>
+<aside class="side-panel" style="padding:20px"><label for="operation">Result</label><select id="operation"><option value="intersection">Intersection (A ∩ B)</option><option value="union">Union (A ∪ B)</option><option value="a-minus-b">A minus B</option><option value="b-minus-a">B minus A</option></select>
+<p><label for="rise">Transverse rise</label> <select id="rise"><option value="-3">−3 mm</option><option selected value="0">0 mm</option><option value="3">+3 mm</option></select></p>
+<p id="counts" aria-live="polite"></p><p><a id="model-file" href="./crossed-tools/intersection-0.json">Result control nets (JSON)</a></p><p><a id="recipe-file" href="./crossed-tools/rise-0.recipe.json">Operand sketches and sweep (JSON)</a></p>
+<a href="./crossed-tools/verification.txt">Verification of all 12 results</a></aside></section>
+<section class="study-notes"><h2>Geometry and analysis checks</h2><p>The independent oracle compares the rational charts with de Boor evaluation of both operands at 5,145 points per result. It also compares volumes at Gauss orders 12 and 20 against the reference volumes within 10⁻⁶ mm³. Changing the rise shifts the transverse interval vertically while preserving its height and the overlap volume in these cases.</p>
+<p>The union contains partial-face interfaces. Its mechanics study measures displacement and traction jumps across those interfaces under refinement. <a href="https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/crossed-interface-iga/hexahedral-comparison.md">IGA versus HEX8 and HEX20</a> · <a href="https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/crossed-interface-iga/hexahedral-results.json">Hexahedral results</a> · <a href="https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/crossed-interface-iga/nodal-forces.json">Nodal forces</a></p>
+<details><summary>Reproduce the study</summary><p>From a clone of <a href="https://github.com/jeffwitz/SolidCraftTrivariate">the repository</a>, build the CLI on <code>main</code> and run the geometry oracle.</p>
+<pre>cargo build --locked --offline
+python3 tests/references/crossed_tool_oracle.py target/debug/solidcraft-trivariate</pre><p><a href="https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/crossed-tool-boolean.md">Construction and qualification</a> · <a href="https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/tests/references/crossed_tool_oracle.py">Oracle source</a>. The oracle requires NumPy and SciPy. The study covers paired, monotone profile arcs with matching ordinate parametrizations.</p></details></section>
+</main></body></html>

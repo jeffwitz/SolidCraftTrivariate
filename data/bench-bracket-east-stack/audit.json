@@ -1,0 +1,58 @@
+{
+  "baseline_binary_sha256": "ea0bbf8609bb575cc5ac5f8dec6c8c1659a85050a95f7f0db86869d15160786c",
+  "candidate": {
+    "blocks": 17,
+    "closed_valid": true,
+    "cut_comparison": {
+      "previous": {
+        "blocks": 112
+      },
+      "propagated": {
+        "blocks": 17
+      }
+    },
+    "cut_rounds": [
+      {
+        "blocks": 17,
+        "closed_cuts": 3,
+        "requests": 2
+      }
+    ],
+    "cut_source_records": 3,
+    "det_lower_mm3": 21.308571428563937,
+    "interfaces": 22,
+    "labels_match": true,
+    "max_sampled_kappa": 8.102909222133583,
+    "method": "propagated_isoparametric_cuts",
+    "probe_mismatches": 0,
+    "probes": 208,
+    "reason": null,
+    "status": "qualified",
+    "volume_relative_error": 3.4005614201572855e-16
+  },
+  "candidate_binary_sha256": "684c7c6a89423f798648800e28c53d1065c23b8aaa7e5407409714cea4a36f70",
+  "candidate_revision": "4e8a3944cd5aa85f8ba0984b109b6649b2d54b6f",
+  "case": "east_stack",
+  "oracle": {
+    "candidate_max_relative_analytic_volume_error": 5.652919380994498e-16,
+    "candidate_probe_mismatches_total": 0,
+    "candidate_step_solids_valid_closed_total": 10,
+    "exact_oriented_interfaces_total": 253,
+    "material_probes_total": 2096
+  },
+  "reference": {
+    "blocks": 112,
+    "closed_valid": true,
+    "det_lower_mm3": 0.006696428571417738,
+    "interfaces": 192,
+    "labels_match": true,
+    "max_sampled_kappa": 128.0,
+    "method": "axis_planes_and_disjoint_local_sweeps",
+    "probe_mismatches": 0,
+    "probes": 208,
+    "reason": "compact_bracket_error:uncoupled_orthogonal_sketch_interface",
+    "status": "qualified",
+    "volume_relative_error": 7.934643313700333e-16
+  },
+  "schema": "bracket_propagation_gallery_audit_v1"
+}

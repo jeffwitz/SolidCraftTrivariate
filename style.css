@@ -69,6 +69,10 @@ select { max-width: 100%; padding: 7px 25px 7px 9px; border: 1px solid var(--lin
 .experiment-head .eyebrow { margin-bottom: 2px; }
 .experiment-head label { font-size: 10px; color: var(--muted); }
 .experiment-head select { width: 100%; font-size: 12px; padding: 9px 28px 9px 10px; }
+.model-navigation { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 8px; }
+.model-navigation button { color: var(--green); border: 1px solid var(--line); background: var(--panel); border-radius: 5px; padding: 5px 8px; font-size: 11px; cursor: pointer; }
+.model-navigation button:disabled { opacity: .4; cursor: default; }
+.model-navigation output { font-size: 11px; color: var(--muted); font-variant-numeric: tabular-nums; }
 .experiment-copy { padding: 24px 0 21px; }
 .experiment-copy h2 { font-size: 21px; }
 .experiment-copy p { margin: 10px 0 0; color: #6f776f; font-size: 12px; line-height: 1.65; }

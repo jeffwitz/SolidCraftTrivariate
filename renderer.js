@@ -357,6 +357,13 @@ function buildBlockGrid(evaluate, divisions, block = null) {
   return { grid, index, divisions: sizes.map(size => size - 1), axes };
 }
 
+// Polygonal sketch layers extrude convex quadrilaterals by translation.
+// Their faces and plane sections are straight-sided, including sheared layers.
+function meshDivisions(model, block, standard) {
+  return model.schema === 'sketch_layer_partition_v1' && !block.knots
+    && block.degrees.every(degree => degree === 1) ? 1 : standard;
+}
+
 function buildSurfaceMeshes(model, mode) {
   const interfaces = model.topology?.interfaces || inferChartInterfaces(model);
   const hiddenSides = new Map();
@@ -374,9 +381,8 @@ function buildSurfaceMeshes(model, mode) {
   const meshes = [];
   for (const block of model.blocks) {
     const evaluate = makeEvaluator(block);
-    const axes = block.knots
-      ? [0, 1, 2].map(axis => parameterStations(block, axis, GRID))
-      : [0, 1, 2].map(() => Array.from({ length: GRID + 1 }, (_, index) => index / GRID));
+    const divisions = meshDivisions(model, block, GRID);
+    const axes = [0, 1, 2].map(axis => parameterStations(block, axis, divisions));
     const color = mode === 'surface' ? SURFACE_COLOR : blockColor(block.id);
     const skip = mode === 'surface'
       ? hiddenSides.get(block.id) || new Set()
@@ -587,8 +593,9 @@ function buildCapMeshes(model, axis, fraction, bounds, mode) {
       const { z0, z1 } = zSlices[blockIndex];
       const w = (plane - z0) / (z1 - z0);
       if (w < -1e-12 || w > 1 + 1e-12) continue;
-      const axisU = parameterStations(block, 0, GRID);
-      const axisV = parameterStations(block, 1, GRID);
+      const divisions = meshDivisions(model, block, GRID);
+      const axisU = parameterStations(block, 0, divisions);
+      const axisV = parameterStations(block, 1, divisions);
       const evaluateHomogeneous = makeHomogeneousEvaluator(block);
       const points = axisU.map(u => axisV.map(v => {
         const first = evaluateHomogeneous(u, v, 0);
@@ -612,7 +619,7 @@ function buildCapMeshes(model, axis, fraction, bounds, mode) {
       continue;
     }
 
-    const { grid, index, divisions } = buildBlockGrid(evaluate, CAP_GRID, block);
+    const { grid, index, divisions } = buildBlockGrid(evaluate, meshDivisions(model, block, CAP_GRID), block);
     const point = (u, v, w) => grid[index(u, v, w)];
     for (let i = 0; i < divisions[0]; i++) {
       for (let j = 0; j < divisions[1]; j++) {
@@ -912,6 +919,7 @@ export function createViewer(canvas) {
     setClip(axis, fraction) {
       if (axis !== null && !['x', 'y', 'z'].includes(axis)) throw new TypeError('Clip axis must be x, y, z, or null');
       if (!Number.isFinite(fraction) || fraction < 0 || fraction > 1) throw new RangeError('Clip fraction must be in [0,1]');
+      if (clipAxis === axis && clipFraction === fraction) return;
       clipAxis = axis;
       clipFraction = fraction;
       if (model) rebuildCaps();

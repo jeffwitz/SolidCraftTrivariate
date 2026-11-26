@@ -1,0 +1,397 @@
+{
+  "schema": "polygon_gallery_case_audit_v1",
+  "case": {
+    "id": "blind_triangle_shallow",
+    "family": "convex_blind_pockets",
+    "paired_outcome": "common_success",
+    "baseline_admitted": true,
+    "candidate_admitted": true,
+    "baseline_geometry_pass": true,
+    "candidate_geometry_pass": true,
+    "baseline_method": "triangulated_feature_footprint",
+    "candidate_method": "radial_convex_footprint",
+    "baseline_blocks": 105,
+    "candidate_blocks": 56,
+    "baseline_input_vertex_euler_gap": 100,
+    "candidate_input_vertex_euler_gap": 51,
+    "block_delta_candidate_minus_baseline": -49,
+    "baseline_build_s": 0.05909248098032549,
+    "candidate_build_s": 0.04587911500129849,
+    "baseline_total_s": 0.07223724998766556,
+    "candidate_total_s": 0.06882725399918854,
+    "baseline_condition_max": 53.94464855767231,
+    "candidate_condition_max": 908.6958000898202,
+    "cut_count": 1
+  },
+  "candidate": {
+    "id": "blind_triangle_shallow",
+    "family": "convex_blind_pockets",
+    "build_elapsed_s": 0.04587911500129849,
+    "build_stdout": "{\"blocks\":56,\"bounded_sketch_faces\":40,\"cavities\":0,\"determinant_lower_bound_mm3\":0.635834189791024,\"exterior_sides\":128,\"hausdorff_error_upper_bound_mm\":0,\"method\":\"certified_sketch_layer_partition\",\"shared_faces\":104,\"status\":\"valid\",\"volume_exact_mm3\":[44592,1]}",
+    "build_stderr": "",
+    "admitted": true,
+    "geometry_pass": true,
+    "construction_method": "radial_convex_footprint",
+    "block_count": 56,
+    "condition_grid_5cube_per_block": [
+      {
+        "block_id": "quad_-7d1_-5d1_-9843d2005_-433d401_-3d1_-7d3_-17681d6015_-2197d3609_z0_12",
+        "max_condition_2": 8.765113693925473
+      },
+      {
+        "block_id": "quad_-9843d2005_-433d401_-17681d6015_-2197d3609_-5651d2005_1139d401_-1823d2005_1909d1203_z0_12",
+        "max_condition_2": 12.395742661691543
+      },
+      {
+        "block_id": "quad_-3d1_-7d3_-17681d6015_-2197d3609_-1823d2005_1909d1203_1d1_1d3_z0_12",
+        "max_condition_2": 11.749283510331152
+      },
+      {
+        "block_id": "quad_-6747d973_-4861d973_-6683d973_-4857d973_-12521d2919_-28193d8757_-2855d973_-6799d2919_z0_12",
+        "max_condition_2": 809.6045940116181
+      },
+      {
+        "block_id": "quad_-12521d2919_-28193d8757_-3d1_-7d3_-2855d973_-6799d2919_1d1_1d3_z0_12",
+        "max_condition_2": 572.4768985053963
+      },
+      {
+        "block_id": "quad_-7d1_-5d1_-6747d973_-4861d973_-12521d2919_-28193d8757_-3d1_-7d3_z0_12",
+        "max_condition_2": 803.8422425458454
+      },
+      {
+        "block_id": "quad_-32d1_1d6_-32d1_22d1_-9843d2005_-433d401_-5651d2005_1139d401_z0_12",
+        "max_condition_2": 7.89104851757888
+      },
+      {
+        "block_id": "quad_-32d1_-65d3_-32d1_1d6_-7d1_-5d1_-9843d2005_-433d401_z0_12",
+        "max_condition_2": 14.537530503646328
+      },
+      {
+        "block_id": "quad_-32d1_-22d1_-32d1_-131d6_-6747d973_-4861d973_-6683d973_-4857d973_z0_12",
+        "max_condition_2": 907.753141203716
+      },
+      {
+        "block_id": "quad_-32d1_-131d6_-32d1_-65d3_-7d1_-5d1_-6747d973_-4861d973_z0_12",
+        "max_condition_2": 908.6958000898202
+      },
+      {
+        "block_id": "quad_-32d1_-22d1_-6683d973_-4857d973_0d1_-22d1_172833d1133545_-5160997d1133545_z0_12",
+        "max_condition_2": 8.839740851389717
+      },
+      {
+        "block_id": "quad_-6683d973_-4857d973_-2855d973_-6799d2919_172833d1133545_-5160997d1133545_1479211d3400635_-29832437d10201905_z0_12",
+        "max_condition_2": 7.474502655383381
+      },
+      {
+        "block_id": "quad_-5651d2005_1139d401_-1823d2005_1909d1203_-1823d2005_5149d802_-547d2005_15848d3609_z0_12",
+        "max_condition_2": 13.515815460343724
+      },
+      {
+        "block_id": "quad_-32d1_22d1_-31d2_22d1_-5651d2005_1139d401_-1823d2005_5149d802_z0_12",
+        "max_condition_2": 8.641201139138968
+      },
+      {
+        "block_id": "quad_-2855d973_-6799d2919_1479211d3400635_-29832437d10201905_1d1_1d3_4761d1165_-6607d3495_z0_12",
+        "max_condition_2": 10.570543027236887
+      },
+      {
+        "block_id": "quad_-1823d2005_1909d1203_-547d2005_15848d3609_1d1_1d3_1d1_31d6_z0_12",
+        "max_condition_2": 12.020724910063803
+      },
+      {
+        "block_id": "quad_-1823d2005_5149d802_-547d2005_15848d3609_1d1_31d6_1d1_10d1_z0_12",
+        "max_condition_2": 9.557124765275027
+      },
+      {
+        "block_id": "quad_-31d2_22d1_-1823d2005_5149d802_1d1_10d1_1d1_22d1_z0_12",
+        "max_condition_2": 6.85789519515501
+      },
+      {
+        "block_id": "quad_0d1_-22d1_172833d1133545_-5160997d1133545_8357d1165_-4793d1165_32d1_-22d1_z0_12",
+        "max_condition_2": 7.082040365104772
+      },
+      {
+        "block_id": "quad_1d1_1d3_2709d911_4681d2733_4539d911_-1570d8199_5d1_-11d6_z0_12",
+        "max_condition_2": 11.148235936492627
+      },
+      {
+        "block_id": "quad_1d1_1d3_1d1_31d6_4531d2733_92263d16398_1810d911_37603d10932_z0_12",
+        "max_condition_2": 18.32415844121527
+      },
+      {
+        "block_id": "quad_1d1_1d3_1810d911_37603d10932_2709d911_4681d2733_2709d911_54505d16398_z0_12",
+        "max_condition_2": 12.322883658967484
+      },
+      {
+        "block_id": "quad_1d1_1d3_4761d1165_-6607d3495_5d1_-11d6_6669d1165_-27194d10485_z0_12",
+        "max_condition_2": 37.98788868270403
+      },
+      {
+        "block_id": "quad_1d1_31d6_1d1_10d1_4531d2733_92263d16398_1810d911_30147d3644_z0_12",
+        "max_condition_2": 20.5540524899533
+      },
+      {
+        "block_id": "quad_1d1_10d1_1d1_22d1_1810d911_30147d3644_35d4_22d1_z0_12",
+        "max_condition_2": 12.413704123938837
+      },
+      {
+        "block_id": "quad_4539d911_-1570d8199_5d1_-11d6_6353d911_-827d1822_9d1_-4d1_z0_12",
+        "max_condition_2": 8.501582952186675
+      },
+      {
+        "block_id": "quad_5d1_-11d6_6669d1165_-27194d10485_9421d1165_-9453d2330_9d1_-4d1_z0_12",
+        "max_condition_2": 48.28320942886386
+      },
+      {
+        "block_id": "quad_6353d911_-827d1822_9d1_-4d1_32d1_-395d24_32d1_133d48_z0_12",
+        "max_condition_2": 12.364918798873838
+      },
+      {
+        "block_id": "quad_9421d1165_-9453d2330_9d1_-4d1_32d1_-923d48_32d1_-395d24_z0_12",
+        "max_condition_2": 53.959911189163044
+      },
+      {
+        "block_id": "quad_8357d1165_-4793d1165_9421d1165_-9453d2330_32d1_-22d1_32d1_-923d48_z0_12",
+        "max_condition_2": 52.76845642284055
+      },
+      {
+        "block_id": "quad_3608d911_17561d3644_4507d911_2817d911_97d4_22d1_32d1_22d1_z0_12",
+        "max_condition_2": 16.663043668542922
+      },
+      {
+        "block_id": "quad_4507d911_2817d911_6353d911_-827d1822_32d1_133d48_32d1_22d1_z0_12",
+        "max_condition_2": 8.115679440387165
+      },
+      {
+        "block_id": "quad_1810d911_30147d3644_2709d911_11927d1822_35d4_22d1_33d2_22d1_z0_12",
+        "max_condition_2": 10.935364285110756
+      },
+      {
+        "block_id": "quad_2709d911_11927d1822_3608d911_17561d3644_33d2_22d1_97d4_22d1_z0_12",
+        "max_condition_2": 13.597441840644036
+      },
+      {
+        "block_id": "quad_4531d2733_92263d16398_1810d911_37603d10932_1810d911_30147d3644_2709d911_11927d1822_z0_12",
+        "max_condition_2": 25.914273386640065
+      },
+      {
+        "block_id": "quad_1810d911_37603d10932_2709d911_54505d16398_2709d911_11927d1822_3608d911_17561d3644_z0_12",
+        "max_condition_2": 14.055857085476521
+      },
+      {
+        "block_id": "quad_2709d911_4681d2733_2709d911_54505d16398_3608d911_17561d3644_4507d911_2817d911_z0_12",
+        "max_condition_2": 17.42718919805761
+      },
+      {
+        "block_id": "quad_2709d911_4681d2733_4507d911_2817d911_4539d911_-1570d8199_6353d911_-827d1822_z0_12",
+        "max_condition_2": 12.023053912622295
+      },
+      {
+        "block_id": "quad_4761d1165_-6607d3495_6669d1165_-27194d10485_8357d1165_-4793d1165_9421d1165_-9453d2330_z0_12",
+        "max_condition_2": 53.72298738099943
+      },
+      {
+        "block_id": "quad_172833d1133545_-5160997d1133545_1479211d3400635_-29832437d10201905_4761d1165_-6607d3495_8357d1165_-4793d1165_z0_12",
+        "max_condition_2": 8.218713703767708
+      },
+      {
+        "block_id": "quad_-32d1_1d6_-32d1_22d1_-9843d2005_-433d401_-5651d2005_1139d401_z12_16",
+        "max_condition_2": 9.376813158330492
+      },
+      {
+        "block_id": "quad_-32d1_-65d3_-32d1_1d6_-7d1_-5d1_-9843d2005_-433d401_z12_16",
+        "max_condition_2": 14.537530503646328
+      },
+      {
+        "block_id": "quad_-32d1_-22d1_-32d1_-131d6_-6747d973_-4861d973_-6683d973_-4857d973_z12_16",
+        "max_condition_2": 907.753141203716
+      },
+      {
+        "block_id": "quad_-32d1_-131d6_-32d1_-65d3_-7d1_-5d1_-6747d973_-4861d973_z12_16",
+        "max_condition_2": 908.6958000898202
+      },
+      {
+        "block_id": "quad_-32d1_-22d1_-6683d973_-4857d973_0d1_-22d1_172833d1133545_-5160997d1133545_z12_16",
+        "max_condition_2": 10.542468351851609
+      },
+      {
+        "block_id": "quad_-32d1_22d1_-31d2_22d1_-5651d2005_1139d401_-1823d2005_5149d802_z12_16",
+        "max_condition_2": 9.42254496800309
+      },
+      {
+        "block_id": "quad_-31d2_22d1_-1823d2005_5149d802_1d1_10d1_1d1_22d1_z12_16",
+        "max_condition_2": 6.85789519515501
+      },
+      {
+        "block_id": "quad_0d1_-22d1_172833d1133545_-5160997d1133545_8357d1165_-4793d1165_32d1_-22d1_z12_16",
+        "max_condition_2": 10.535041494971185
+      },
+      {
+        "block_id": "quad_1d1_10d1_1d1_22d1_1810d911_30147d3644_35d4_22d1_z12_16",
+        "max_condition_2": 12.413704123938837
+      },
+      {
+        "block_id": "quad_6353d911_-827d1822_9d1_-4d1_32d1_-395d24_32d1_133d48_z12_16",
+        "max_condition_2": 12.364918798873838
+      },
+      {
+        "block_id": "quad_9421d1165_-9453d2330_9d1_-4d1_32d1_-923d48_32d1_-395d24_z12_16",
+        "max_condition_2": 53.959911189163044
+      },
+      {
+        "block_id": "quad_8357d1165_-4793d1165_9421d1165_-9453d2330_32d1_-22d1_32d1_-923d48_z12_16",
+        "max_condition_2": 52.76845642284055
+      },
+      {
+        "block_id": "quad_3608d911_17561d3644_4507d911_2817d911_97d4_22d1_32d1_22d1_z12_16",
+        "max_condition_2": 16.663043668542922
+      },
+      {
+        "block_id": "quad_4507d911_2817d911_6353d911_-827d1822_32d1_133d48_32d1_22d1_z12_16",
+        "max_condition_2": 8.807200729975113
+      },
+      {
+        "block_id": "quad_1810d911_30147d3644_2709d911_11927d1822_35d4_22d1_33d2_22d1_z12_16",
+        "max_condition_2": 10.935364285110756
+      },
+      {
+        "block_id": "quad_2709d911_11927d1822_3608d911_17561d3644_33d2_22d1_97d4_22d1_z12_16",
+        "max_condition_2": 13.597441840644036
+      }
+    ],
+    "reported_method": "certified_sketch_layer_partition",
+    "audit_elapsed_s": 0.022948138997890055,
+    "closed_domain_certificate": {
+      "status": "valid",
+      "method": "certified_sketch_layer_partition",
+      "determinant_lower_bound_mm3": 0.635834189791024,
+      "hausdorff_error_upper_bound_mm": 0
+    },
+    "volume_exact_expected_mm3": [
+      44592,
+      1
+    ],
+    "volume_exact_cli_mm3": [
+      44592,
+      1
+    ],
+    "volume_match": true,
+    "input_vertex_lower_bound_total_blocks": 5,
+    "layers": [
+      {
+        "cells": 40,
+        "vertices": 49,
+        "edges": 88,
+        "euler": 1,
+        "boundary_edges": 16,
+        "internal_edges": 72,
+        "area_exact_mm2": [
+          2816,
+          1
+        ],
+        "area_sum_mm2": 2816.0,
+        "pairwise_overlap_pairs": 0,
+        "z_interval_mm": [
+          0.0,
+          12.0
+        ],
+        "expected_area_exact_mm2": [
+          2816,
+          1
+        ],
+        "area_gap_exact_mm2": [
+          0,
+          1
+        ],
+        "contained_in_expected_material": true,
+        "expected_euler_characteristic": 1,
+        "active_hole_count": 0,
+        "quadrilateral_lower_bounds": {
+          "assumption": "one connected conforming quadrilateral section; all input contour corners mandatory",
+          "input_vertex_count": 4,
+          "input_only_bound_blocks": 1,
+          "actual_boundary_vertex_count": 16,
+          "actual_interior_vertex_count": 33,
+          "with_inserted_host_vertices_bound_blocks": "40",
+          "observed_quads": 40,
+          "attains_conditional_bound": true
+        }
+      },
+      {
+        "cells": 16,
+        "vertices": 32,
+        "edges": 48,
+        "euler": 0,
+        "boundary_edges": 32,
+        "internal_edges": 16,
+        "area_exact_mm2": [
+          2700,
+          1
+        ],
+        "area_sum_mm2": 2700.0,
+        "pairwise_overlap_pairs": 0,
+        "z_interval_mm": [
+          12.0,
+          16.0
+        ],
+        "expected_area_exact_mm2": [
+          2700,
+          1
+        ],
+        "area_gap_exact_mm2": [
+          0,
+          1
+        ],
+        "contained_in_expected_material": true,
+        "expected_euler_characteristic": 0,
+        "active_hole_count": 1,
+        "quadrilateral_lower_bounds": {
+          "assumption": "one connected conforming quadrilateral section; all input contour corners mandatory",
+          "input_vertex_count": 7,
+          "input_only_bound_blocks": 4,
+          "actual_boundary_vertex_count": 32,
+          "actual_interior_vertex_count": 0,
+          "with_inserted_host_vertices_bound_blocks": "16",
+          "observed_quads": 16,
+          "attains_conditional_bound": true
+        }
+      }
+    ],
+    "outcome": "valid_model"
+  },
+  "rebuild": {
+    "blocks": 56,
+    "bounded_sketch_faces": 40,
+    "cavities": 0,
+    "determinant_lower_bound_mm3": 0.635834189791024,
+    "exterior_sides": 128,
+    "hausdorff_error_upper_bound_mm": 0,
+    "method": "certified_sketch_layer_partition",
+    "shared_faces": 104,
+    "status": "valid",
+    "volume_exact_mm3": [
+      44592,
+      1
+    ]
+  },
+  "model_audit": {
+    "blocks": 56,
+    "bounded_sketch_faces": 40,
+    "cavities": 0,
+    "determinant_lower_bound_mm3": 0.635834189791024,
+    "exterior_sides": 128,
+    "hausdorff_error_upper_bound_mm": 0,
+    "method": "certified_sketch_layer_partition",
+    "shared_faces": 104,
+    "status": "valid",
+    "volume_exact_mm3": [
+      44592,
+      1
+    ]
+  },
+  "provenance": {
+    "recipe_sha256": "c06e28c2b9e48bc11e3d8eb0f5698cf1791722cf09cd76af08a9b653438c1be6",
+    "model_sha256": "a7ee9ccd6f785b06ee6eba27e45b2dd9d4cc9a53cd2bded403a77e9b4c223b55",
+    "step_sha256": "6c84bb4218c04971e30afd4e765b313c927253248d4675ed6dc7e394aaab594f"
+  }
+}

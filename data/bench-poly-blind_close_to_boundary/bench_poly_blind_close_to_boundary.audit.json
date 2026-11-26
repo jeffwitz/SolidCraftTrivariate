@@ -1,0 +1,397 @@
+{
+  "schema": "polygon_gallery_case_audit_v1",
+  "case": {
+    "id": "blind_close_to_boundary",
+    "family": "convex_blind_pockets",
+    "paired_outcome": "common_success",
+    "baseline_admitted": true,
+    "candidate_admitted": true,
+    "baseline_geometry_pass": true,
+    "candidate_geometry_pass": true,
+    "baseline_method": "triangulated_feature_footprint",
+    "candidate_method": "radial_convex_footprint",
+    "baseline_blocks": 114,
+    "candidate_blocks": 56,
+    "baseline_input_vertex_euler_gap": 109,
+    "candidate_input_vertex_euler_gap": 51,
+    "block_delta_candidate_minus_baseline": -58,
+    "baseline_build_s": 0.06255502201383933,
+    "candidate_build_s": 0.08797175798099488,
+    "baseline_total_s": 0.07743955199839547,
+    "candidate_total_s": 0.13710325001738966,
+    "baseline_condition_max": 48.844788345510146,
+    "candidate_condition_max": 45.78842117410807,
+    "cut_count": 1
+  },
+  "candidate": {
+    "id": "blind_close_to_boundary",
+    "family": "convex_blind_pockets",
+    "build_elapsed_s": 0.08797175798099488,
+    "build_stdout": "{\"blocks\":56,\"bounded_sketch_faces\":40,\"cavities\":0,\"determinant_lower_bound_mm3\":4.53066914498141,\"exterior_sides\":128,\"hausdorff_error_upper_bound_mm\":0,\"method\":\"certified_sketch_layer_partition\",\"shared_faces\":104,\"status\":\"valid\",\"volume_exact_mm3\":[29240,1]}",
+    "build_stderr": "",
+    "admitted": true,
+    "geometry_pass": true,
+    "construction_method": "radial_convex_footprint",
+    "block_count": 56,
+    "condition_grid_5cube_per_block": [
+      {
+        "block_id": "quad_-30d1_18d1_-285d28_18d1_6249d341_1523d682_6360d341_-182d341_z0_6",
+        "max_condition_2": 21.092979322347414
+      },
+      {
+        "block_id": "quad_-285d28_18d1_135d14_18d1_18d1_5d1_6249d341_1523d682_z0_6",
+        "max_condition_2": 14.42644151321247
+      },
+      {
+        "block_id": "quad_-30d1_-18d1_-23d4_-18d1_35040d1849_-5698d1849_36010d1849_-13943d1849_z0_6",
+        "max_condition_2": 11.584733419267467
+      },
+      {
+        "block_id": "quad_-30d1_-18d1_-30d1_0d1_11854140d630509_-1139768d630509_35040d1849_-5698d1849_z0_6",
+        "max_condition_2": 40.539888818860604
+      },
+      {
+        "block_id": "quad_-30d1_0d1_-30d1_18d1_6360d341_-182d341_11854140d630509_-1139768d630509_z0_6",
+        "max_condition_2": 45.78842117410807
+      },
+      {
+        "block_id": "quad_-23d4_-18d1_37d2_-18d1_36010d1849_-13943d1849_20d1_-12d1_z0_6",
+        "max_condition_2": 6.334167888516377
+      },
+      {
+        "block_id": "quad_135d14_18d1_18d1_5d1_130d7_18d1_43d2_13d2_z0_6",
+        "max_condition_2": 4.122716190103038
+      },
+      {
+        "block_id": "quad_18d1_5d1_81d4_3d2_43d2_13d2_131d6_11d3_z0_6",
+        "max_condition_2": 4.201373463635
+      },
+      {
+        "block_id": "quad_18d1_5d1_6249d341_1523d682_13447d682_841d1023_81d4_3d2_z0_6",
+        "max_condition_2": 7.38020660198531
+      },
+      {
+        "block_id": "quad_37d2_-18d1_20d1_-12d1_6185d269_-2883d269_97d4_-18d1_z0_6",
+        "max_condition_2": 2.673018525245535
+      },
+      {
+        "block_id": "quad_36010d1849_-13943d1849_20d1_-12d1_227245d11094_-10528d1849_85d4_-7d1_z0_6",
+        "max_condition_2": 5.787094725186343
+      },
+      {
+        "block_id": "quad_20d1_-12d1_85d4_-7d1_36845d1614_-6304d807_6185d269_-2883d269_z0_6",
+        "max_condition_2": 4.162090544081038
+      },
+      {
+        "block_id": "quad_43d2_13d2_131d6_11d3_95d4_3d1_25d1_8d1_z0_6",
+        "max_condition_2": 3.5241119570278236
+      },
+      {
+        "block_id": "quad_130d7_18d1_43d2_13d2_25d1_8d1_55d2_18d1_z0_6",
+        "max_condition_2": 3.5850650319936
+      },
+      {
+        "block_id": "quad_95d4_3d1_9755d402_256d67_25d1_8d1_1685d67_451d67_z0_6",
+        "max_condition_2": 24.567314130124306
+      },
+      {
+        "block_id": "quad_25d1_8d1_1685d67_451d67_55d2_18d1_115d4_18d1_z0_6",
+        "max_condition_2": 23.086535455330534
+      },
+      {
+        "block_id": "quad_1752d67_-237d134_27d1_-9d1_30d1_-41d3_30d1_13d6_z0_6",
+        "max_condition_2": 5.751874631834021
+      },
+      {
+        "block_id": "quad_99d4_-11d2_13537d538_-5497d807_14253d538_-4959d538_27d1_-9d1_z0_6",
+        "max_condition_2": 24.34640990066101
+      },
+      {
+        "block_id": "quad_99d4_-11d2_3341d134_-371d201_1752d67_-237d134_27d1_-9d1_z0_6",
+        "max_condition_2": 5.9829464284794245
+      },
+      {
+        "block_id": "quad_14253d538_-4959d538_27d1_-9d1_30d1_-95d6_30d1_-41d3_z0_6",
+        "max_condition_2": 13.610515244399886
+      },
+      {
+        "block_id": "quad_6990d269_-2538d269_14253d538_-4959d538_30d1_-18d1_30d1_-95d6_z0_6",
+        "max_condition_2": 17.143903091847815
+      },
+      {
+        "block_id": "quad_6185d269_-2883d269_97d4_-18d1_6990d269_-2538d269_30d1_-18d1_z0_6",
+        "max_condition_2": 2.907435285273038
+      },
+      {
+        "block_id": "quad_1695d67_366d67_1752d67_-237d134_30d1_13d6_30d1_18d1_z0_6",
+        "max_condition_2": 5.5975594787881375
+      },
+      {
+        "block_id": "quad_1685d67_451d67_1695d67_366d67_115d4_18d1_30d1_18d1_z0_6",
+        "max_condition_2": 23.04544899136311
+      },
+      {
+        "block_id": "quad_13447d682_841d1023_81d4_3d2_28065d1364_-432d341_45d2_-2d1_z0_6",
+        "max_condition_2": 8.149227483165525
+      },
+      {
+        "block_id": "quad_85d4_-7d1_45d2_-2d1_36845d1614_-6304d807_26085d1076_-1538d269_z0_6",
+        "max_condition_2": 3.484036214725777
+      },
+      {
+        "block_id": "quad_81d4_3d2_131d6_11d3_45d2_-2d1_95d4_3d1_z0_6",
+        "max_condition_2": 3.232711544341864
+      },
+      {
+        "block_id": "quad_45d2_-2d1_6405d268_116d67_99d4_-11d2_3341d134_-371d201_z0_6",
+        "max_condition_2": 6.97203237858046
+      },
+      {
+        "block_id": "quad_45d2_-2d1_95d4_3d1_6405d268_116d67_9755d402_256d67_z0_6",
+        "max_condition_2": 20.20637801532917
+      },
+      {
+        "block_id": "quad_45d2_-2d1_26085d1076_-1538d269_99d4_-11d2_13537d538_-5497d807_z0_6",
+        "max_condition_2": 17.355311750090767
+      },
+      {
+        "block_id": "quad_25263155d1261018_-3540554d1891527_28065d1364_-432d341_153285d7396_-4698d1849_45d2_-2d1_z0_6",
+        "max_condition_2": 8.004896669816668
+      },
+      {
+        "block_id": "quad_227245d11094_-10528d1849_153285d7396_-4698d1849_85d4_-7d1_45d2_-2d1_z0_6",
+        "max_condition_2": 7.496074917868139
+      },
+      {
+        "block_id": "quad_6405d268_116d67_9755d402_256d67_1685d67_451d67_1695d67_366d67_z0_6",
+        "max_condition_2": 28.576133835716018
+      },
+      {
+        "block_id": "quad_6405d268_116d67_3341d134_-371d201_1695d67_366d67_1752d67_-237d134_z0_6",
+        "max_condition_2": 5.982946428479424
+      },
+      {
+        "block_id": "quad_36845d1614_-6304d807_6185d269_-2883d269_26085d1076_-1538d269_6990d269_-2538d269_z0_6",
+        "max_condition_2": 4.927171266664215
+      },
+      {
+        "block_id": "quad_6249d341_1523d682_6360d341_-182d341_13447d682_841d1023_28065d1364_-432d341_z0_6",
+        "max_condition_2": 10.437188269643075
+      },
+      {
+        "block_id": "quad_6360d341_-182d341_11854140d630509_-1139768d630509_25263155d1261018_-3540554d1891527_28065d1364_-432d341_z0_6",
+        "max_condition_2": 10.469265678574011
+      },
+      {
+        "block_id": "quad_26085d1076_-1538d269_13537d538_-5497d807_6990d269_-2538d269_14253d538_-4959d538_z0_6",
+        "max_condition_2": 24.54411725619149
+      },
+      {
+        "block_id": "quad_35040d1849_-5698d1849_36010d1849_-13943d1849_227245d11094_-10528d1849_153285d7396_-4698d1849_z0_6",
+        "max_condition_2": 8.184187847096327
+      },
+      {
+        "block_id": "quad_11854140d630509_-1139768d630509_35040d1849_-5698d1849_25263155d1261018_-3540554d1891527_153285d7396_-4698d1849_z0_6",
+        "max_condition_2": 11.320633435849953
+      },
+      {
+        "block_id": "quad_-30d1_18d1_-285d28_18d1_6249d341_1523d682_6360d341_-182d341_z6_14",
+        "max_condition_2": 21.092979322347414
+      },
+      {
+        "block_id": "quad_-285d28_18d1_135d14_18d1_18d1_5d1_6249d341_1523d682_z6_14",
+        "max_condition_2": 14.42644151321247
+      },
+      {
+        "block_id": "quad_-30d1_-18d1_-23d4_-18d1_35040d1849_-5698d1849_36010d1849_-13943d1849_z6_14",
+        "max_condition_2": 11.584733419267467
+      },
+      {
+        "block_id": "quad_-30d1_-18d1_-30d1_0d1_11854140d630509_-1139768d630509_35040d1849_-5698d1849_z6_14",
+        "max_condition_2": 40.539888818860604
+      },
+      {
+        "block_id": "quad_-30d1_0d1_-30d1_18d1_6360d341_-182d341_11854140d630509_-1139768d630509_z6_14",
+        "max_condition_2": 45.78842117410807
+      },
+      {
+        "block_id": "quad_-23d4_-18d1_37d2_-18d1_36010d1849_-13943d1849_20d1_-12d1_z6_14",
+        "max_condition_2": 6.334167888516377
+      },
+      {
+        "block_id": "quad_135d14_18d1_18d1_5d1_130d7_18d1_43d2_13d2_z6_14",
+        "max_condition_2": 4.122716190103038
+      },
+      {
+        "block_id": "quad_37d2_-18d1_20d1_-12d1_6185d269_-2883d269_97d4_-18d1_z6_14",
+        "max_condition_2": 3.266649639611127
+      },
+      {
+        "block_id": "quad_130d7_18d1_43d2_13d2_25d1_8d1_55d2_18d1_z6_14",
+        "max_condition_2": 3.5850650319936
+      },
+      {
+        "block_id": "quad_25d1_8d1_1685d67_451d67_55d2_18d1_115d4_18d1_z6_14",
+        "max_condition_2": 23.086535455330534
+      },
+      {
+        "block_id": "quad_1752d67_-237d134_27d1_-9d1_30d1_-41d3_30d1_13d6_z6_14",
+        "max_condition_2": 5.751874631834021
+      },
+      {
+        "block_id": "quad_14253d538_-4959d538_27d1_-9d1_30d1_-95d6_30d1_-41d3_z6_14",
+        "max_condition_2": 14.695931481285236
+      },
+      {
+        "block_id": "quad_6990d269_-2538d269_14253d538_-4959d538_30d1_-18d1_30d1_-95d6_z6_14",
+        "max_condition_2": 17.143903091847815
+      },
+      {
+        "block_id": "quad_6185d269_-2883d269_97d4_-18d1_6990d269_-2538d269_30d1_-18d1_z6_14",
+        "max_condition_2": 2.907435285273038
+      },
+      {
+        "block_id": "quad_1695d67_366d67_1752d67_-237d134_30d1_13d6_30d1_18d1_z6_14",
+        "max_condition_2": 5.5975594787881375
+      },
+      {
+        "block_id": "quad_1685d67_451d67_1695d67_366d67_115d4_18d1_30d1_18d1_z6_14",
+        "max_condition_2": 23.04544899136311
+      }
+    ],
+    "reported_method": "certified_sketch_layer_partition",
+    "audit_elapsed_s": 0.049131492036394775,
+    "closed_domain_certificate": {
+      "status": "valid",
+      "method": "certified_sketch_layer_partition",
+      "determinant_lower_bound_mm3": 4.53066914498141,
+      "hausdorff_error_upper_bound_mm": 0
+    },
+    "volume_exact_expected_mm3": [
+      29240,
+      1
+    ],
+    "volume_exact_cli_mm3": [
+      29240,
+      1
+    ],
+    "volume_match": true,
+    "input_vertex_lower_bound_total_blocks": 5,
+    "layers": [
+      {
+        "cells": 40,
+        "vertices": 49,
+        "edges": 88,
+        "euler": 1,
+        "boundary_edges": 16,
+        "internal_edges": 72,
+        "area_exact_mm2": [
+          2160,
+          1
+        ],
+        "area_sum_mm2": 2160.0,
+        "pairwise_overlap_pairs": 0,
+        "z_interval_mm": [
+          0.0,
+          6.0
+        ],
+        "expected_area_exact_mm2": [
+          2160,
+          1
+        ],
+        "area_gap_exact_mm2": [
+          0,
+          1
+        ],
+        "contained_in_expected_material": true,
+        "expected_euler_characteristic": 1,
+        "active_hole_count": 0,
+        "quadrilateral_lower_bounds": {
+          "assumption": "one connected conforming quadrilateral section; all input contour corners mandatory",
+          "input_vertex_count": 4,
+          "input_only_bound_blocks": 1,
+          "actual_boundary_vertex_count": 16,
+          "actual_interior_vertex_count": 33,
+          "with_inserted_host_vertices_bound_blocks": "40",
+          "observed_quads": 40,
+          "attains_conditional_bound": true
+        }
+      },
+      {
+        "cells": 16,
+        "vertices": 32,
+        "edges": 48,
+        "euler": 0,
+        "boundary_edges": 32,
+        "internal_edges": 16,
+        "area_exact_mm2": [
+          2035,
+          1
+        ],
+        "area_sum_mm2": 2035.0,
+        "pairwise_overlap_pairs": 0,
+        "z_interval_mm": [
+          6.0,
+          14.0
+        ],
+        "expected_area_exact_mm2": [
+          2035,
+          1
+        ],
+        "area_gap_exact_mm2": [
+          0,
+          1
+        ],
+        "contained_in_expected_material": true,
+        "expected_euler_characteristic": 0,
+        "active_hole_count": 1,
+        "quadrilateral_lower_bounds": {
+          "assumption": "one connected conforming quadrilateral section; all input contour corners mandatory",
+          "input_vertex_count": 8,
+          "input_only_bound_blocks": 4,
+          "actual_boundary_vertex_count": 32,
+          "actual_interior_vertex_count": 0,
+          "with_inserted_host_vertices_bound_blocks": "16",
+          "observed_quads": 16,
+          "attains_conditional_bound": true
+        }
+      }
+    ],
+    "outcome": "valid_model"
+  },
+  "rebuild": {
+    "blocks": 56,
+    "bounded_sketch_faces": 40,
+    "cavities": 0,
+    "determinant_lower_bound_mm3": 4.53066914498141,
+    "exterior_sides": 128,
+    "hausdorff_error_upper_bound_mm": 0,
+    "method": "certified_sketch_layer_partition",
+    "shared_faces": 104,
+    "status": "valid",
+    "volume_exact_mm3": [
+      29240,
+      1
+    ]
+  },
+  "model_audit": {
+    "blocks": 56,
+    "bounded_sketch_faces": 40,
+    "cavities": 0,
+    "determinant_lower_bound_mm3": 4.53066914498141,
+    "exterior_sides": 128,
+    "hausdorff_error_upper_bound_mm": 0,
+    "method": "certified_sketch_layer_partition",
+    "shared_faces": 104,
+    "status": "valid",
+    "volume_exact_mm3": [
+      29240,
+      1
+    ]
+  },
+  "provenance": {
+    "recipe_sha256": "7b9b339d4cbb4192103c83139b0150f61596ee49fb1ba34bb26f1f5f9e61f8af",
+    "model_sha256": "df68c83aa1439995bce29685f3a54b411f1b89b879e8be68d621f350ab706437",
+    "step_sha256": "c877ab8d1004a8addfdb4133514cb3c85e950a30d9b135c1733a43618b8e0f89"
+  }
+}

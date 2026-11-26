@@ -1,0 +1,74 @@
+{
+  "schema": "overlapping_projection_diagnostic_v1",
+  "claim": "Two disjoint through-diamond holes have overlapping X and Y coordinate projections. Their planar regions and 3D voids remain disjoint.",
+  "hole_x_projection_overlap_mm": 8,
+  "hole_y_projection_overlap_mm": 8,
+  "z_intervals_mm": [
+    [
+      0,
+      12
+    ],
+    [
+      0,
+      12
+    ]
+  ],
+  "expected_3d_hole_intersection_volume_mm3": 0,
+  "rebuild": {
+    "blocks": 72,
+    "bounded_sketch_faces": 18,
+    "cavities": 0,
+    "determinant_lower_bound_mm3": 31.999999999999986,
+    "exterior_sides": 188,
+    "hausdorff_error_upper_bound_mm": 0,
+    "method": "certified_sketch_layer_partition",
+    "shared_faces": 122,
+    "status": "valid",
+    "volume_exact_mm3": [
+      113088,
+      1
+    ]
+  },
+  "model_audit": {
+    "blocks": 72,
+    "bounded_sketch_faces": 18,
+    "cavities": 0,
+    "determinant_lower_bound_mm3": 31.999999999999986,
+    "exterior_sides": 188,
+    "hausdorff_error_upper_bound_mm": 0,
+    "method": "certified_sketch_layer_partition",
+    "shared_faces": 122,
+    "status": "valid",
+    "volume_exact_mm3": [
+      113088,
+      1
+    ]
+  },
+  "paired_benchmark_summary": {
+    "paired_case_count": 45,
+    "geometry_common_success_count": 45,
+    "new_admissions": 0,
+    "regressions": 0,
+    "family_counts": {
+      "convex_through_holes": 5,
+      "convex_blind_pockets": 5,
+      "concave_stock_or_cut": 5,
+      "seeded_convex_through_holes": 15,
+      "seeded_convex_blind_pockets": 15
+    },
+    "candidate_sampled_kappa2_max_median_p95_worst": [
+      218.0454462587007,
+      4534.385859639157,
+      49185.00826535531
+    ],
+    "baseline_sampled_kappa2_max_median_p95_worst": [
+      285.97290288907664,
+      4534.385859639157,
+      49185.00826535531
+    ],
+    "kappa_method": "Per-block Jacobian spectral condition number sampled on the closed 5x5x5 parameter grid; diagnostic only, not a continuous certificate."
+  },
+  "recipe_sha256": "50b46c8a50c8bda9ec1f548ed897174ad9475f8f17f181e139708a34fdc22689",
+  "model_sha256": "30de53e4b1326f0a7dedb5de2b21336ce431c9421e6064a200a5b127a39a17af",
+  "step_sha256": "f1d6abf798ebdb11593a15954cfe70f6657b54064a1eaff9ee897e1caea4124e"
+}

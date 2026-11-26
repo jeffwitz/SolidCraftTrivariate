@@ -118,47 +118,16 @@ def bracket_latest() -> tuple[dict[str, dict], dict]:
 
 
 def preserve_independent_record(case_id: str, old: dict, bracket_cases: dict, bracket_report: dict) -> dict:
-    if case_id.startswith("bench-bracket-"):
-        name = case_id.removeprefix("bench-bracket-").replace("-", "_")
-        if name in bracket_cases:
-            return {
-                "scope": "Latest frozen bracket benchmark record. Its STEP checks concern the benchmark candidate STEP, not the regenerated gallery STEP.",
-                "candidate_revision": bracket_report.get("candidate_revision"),
-                "baseline_revision": bracket_report.get("baseline_revision"),
-                "candidate": bracket_cases[name],
-                "reference": bracket_report.get("baseline", {}).get("cases", {}).get(name),
-            }
-        existing = old.get("independent_reference_validation")
-        if existing and "record" not in existing:
-            return existing
-        if existing:
-            return existing
-        if "step_readback" in old:
-            return {
-                "scope": "Frozen FreeCAD/OCCT readback for its original candidate STEP; it does not validate the regenerated gallery STEP.",
-                "record": old["step_readback"],
-            }
-        return old.get("historical_independent_validation", {})
-    if case_id.startswith("bench_poly_"):
-        return {}
-    if old.get("kernel_rebuild"):
-        # A previous run already separated prior STEP checks from current kernel output.
-        if old.get("historical_independent_validation"):
-            return old["historical_independent_validation"]
-        if old.get("historical_step_readback"):
-            return {
-                "scope": old.get("historical_step_readback_scope", "Historical readback for the former gallery STEP; not evidence about the regenerated STEP."),
-                "record": old["historical_step_readback"],
-            }
-        return old.get("independent_source_certificate", {})
-    if "step_readback" in old:
-        record = dict(old)
-        record.pop("model_audit", None)
-        record["scope"] = "Historical independent record for the former gallery STEP; it does not validate the regenerated STEP."
-        return record
-    if case_id.startswith("fieldcraft_"):
-        return old.get("independent_source_certificate", old)
-    return old.get("historical_independent_validation", {})
+    name = case_id.removeprefix("bench-bracket-").replace("-", "_")
+    if name in bracket_cases:
+        return {
+            "scope": "Frozen bracket comparison at the recorded candidate and baseline revisions.",
+            "candidate_revision": bracket_report.get("candidate_revision"),
+            "baseline_revision": bracket_report.get("baseline_revision"),
+            "candidate": bracket_cases[name],
+            "reference": bracket_report.get("baseline", {}).get("cases", {}).get(name),
+        }
+    return old.get("independent_reference_validation", {})
 
 
 def prepare_audit(case_id: str, old: dict, kernel_audit: dict, build_report: dict,
@@ -169,11 +138,6 @@ def prepare_audit(case_id: str, old: dict, kernel_audit: dict, build_report: dic
         audit = {
             "schema": "polygon_gallery_case_audit_v1",
             "case": metadata if metadata else {"id": case_id, "diagnostic": "projection-only control"},
-            "latest_release": {
-                "tag": read_json(POLYGON_RESULTS)["latest_run_details"].get("tag"),
-                "cli_sha256": read_json(POLYGON_RESULTS)["latest_run_details"].get("cli_sha256"),
-                "measurement_scope": "Latest tracked 45-case release run; its condition grid is a sampled diagnostic.",
-            },
         }
     elif case_id.startswith("bench-bracket-"):
         audit = {
@@ -342,14 +306,9 @@ def rebuild(entries: list[dict], cli: Path) -> None:
                 model_bytes, published_step, condition, bracket_records, bracket_report,
             )
             if polygon_record:
-                audit_doc["latest_run_details_case"] = polygon_record
-                audit_doc["latest_run_details_metadata"] = {
-                    "tag": polygon_run.get("tag"),
-                    "cli_sha256": polygon_run.get("cli_sha256"),
-                    "source_checkout_head": read_json(POLYGON_RESULTS).get("latest_release", {}).get("source_checkout_head"),
+                audit_doc["measurement_release"] = {
+                    "tag": polygon_run["tag"], "cli_sha256": polygon_run["cli_sha256"],
                 }
-            elif bracket_record:
-                audit_doc["latest_benchmark_case"] = bracket_record
             refresh_entry_metadata(entry, build_report, kernel_audit, model_doc, polygon_record, bracket_record, condition)
             sync_volume_metric(entry, audit_doc)
             write_json(staged_audit, audit_doc)

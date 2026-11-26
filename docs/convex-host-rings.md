@@ -6,7 +6,7 @@ The trial splits hosts, constructs rational quadrilateral rings and fills blind 
 
 ## Sketch and volume construction
 
-A separator trial first considers stock diagonals and support directions from the convex hulls of two cutter groups. A chord must strictly separate the groups. The planner tries balanced splits and, for up to six holes, another ordering that rewards clearance. It propagates the endpoints of later chords to neighboring hosts. Both searches are bounded to 64 recursive split nodes each.
+A separator trial first considers stock diagonals and support directions from the convex hulls of two cutter groups. A chord must strictly separate the groups. The planner tries balanced splits and, for up to six holes, another ordering that rewards clearance. It propagates the endpoints of later chords to neighboring hosts. Both searches are bounded to 64 recursive split nodes each. The clearance score uses a compensated chord length with explicit fused multiply-add operations. On the seeded case 05, different system implementations of `hypot` previously chose different separators at the same count of 57 blocks. The publication check now compares every rational control coordinate of the chosen partition.
 
 For each host, the cyclic dynamic program can join one host side to one hole side or two host sides to a hole vertex. It compares balanced mandatory vertices with optional rational splits. Optional positions include quarters and projected cutter vertices rounded to sixteenths along a host edge. These fractions locate construction points on the unmodified side. Both traversals reuse the chosen points on shared edges. The native incidence and area checks assess the resulting geometry in exact arithmetic. The optimizer samples Jacobians to rank equal-count candidates.
 
@@ -24,11 +24,11 @@ target/release/solidcraft-trivariate audit build/demo/diamonds.json
 python3 scripts/evaluate_convex_host_rings.py --work build/convex-ring-study
 ```
 
-The diamond sketch builds in 10 blocks with 12 interfaces and exact volume 113,088 mm³. The previously archived construction used 72 blocks. All 45 archived polygon models also pass replay with the new kernel.
+The diamond sketch builds in 10 blocks with 12 interfaces and exact volume 113,088 mm³. The previously archived construction used 72 blocks. The evaluation rebuilds the 45 frozen polygon recipes with the current planner.
 
 ## Measured results
 
-The release executable built from `7d37353` passed the independent section and volume oracle on all 45 frozen polygon recipes and the 12 additional seeded recipes. The latter use two or three convex cutters and include blind intervals. The tests are reproducible public benchmarks. They measure the best certified candidate selected by this implementation.
+The release executable built from `083fdfe` passed the independent section and volume oracle on all 45 frozen polygon recipes and the 12 additional seeded recipes. The latter use two or three convex cutters and include blind intervals. The tests are reproducible public benchmarks. They measure the best certified candidate selected by this implementation.
 
 | Set | Valid | Previous kernel blocks | Prototype blocks | Native automatic blocks |
 |---|---:|---:|---:|---:|

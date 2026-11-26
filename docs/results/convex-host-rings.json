@@ -18,14 +18,14 @@
   },
   "latest_release": {
     "binary": "solidcraft-trivariate",
-    "binary_sha256_before": "0690e67c5077228d880f3002d2fef06d081dd612aba500855264599f20e8ef38",
-    "binary_sha256_after": "0690e67c5077228d880f3002d2fef06d081dd612aba500855264599f20e8ef38",
-    "source_checkout_head": "7d37353900e86345ed8ef176fc2c987bf06a8d5b",
+    "binary_sha256_before": "8f33eeba801e38e56fbe52ad6ccb96a68a28d2f20187a7d67df869af0c0f9ac2",
+    "binary_sha256_after": "8f33eeba801e38e56fbe52ad6ccb96a68a28d2f20187a7d67df869af0c0f9ac2",
+    "source_checkout_head": "083fdfe14373aadbca0e9d10586e2cce32ba077d",
     "source_worktree_dirty": true,
-    "source_worktree_status_sha256": "87461b4b01416ba19bafcd8f06a55e783de1308cc1ec4bc2d375cfaf541792b9",
-    "evaluator_script_sha256": "d8729c4f20a7f8a8567c73bfb271d21e808f8ac981338aaf16a8b3d0f5a2030a",
+    "source_worktree_status_sha256": "1677288689be82cce1951ef5d2651b5fb07a0fb5ff4be06d5c6ac5e367ea3cb1",
+    "evaluator_script_sha256": "18387fe3ae81f7fd01bb0f143c8ce5d3feaccbdd1b9be1fc1d31bf004ff807a7",
     "timeout_s_per_build_or_audit": 60.0,
-    "elapsed_s": 162.38403751095757
+    "elapsed_s": 170.1417063829722
   },
   "environment": {
     "python": "3.12.3",
@@ -2383,13 +2383,13 @@
   ],
   "latest_run_details": {
     "tag": "latest-release",
-    "cli_sha256": "0690e67c5077228d880f3002d2fef06d081dd612aba500855264599f20e8ef38",
-    "elapsed_s": 162.38403751095757,
+    "cli_sha256": "8f33eeba801e38e56fbe52ad6ccb96a68a28d2f20187a7d67df869af0c0f9ac2",
+    "elapsed_s": 170.1417063829722,
     "cases": [
       {
         "id": "through_diamond_center",
         "family": "convex_through_holes",
-        "build_elapsed_s": 0.03924379695672542,
+        "build_elapsed_s": 0.12994100904325023,
         "build_stdout": "{\"blocks\":6,\"bounded_sketch_faces\":6,\"cavities\":0,\"determinant_lower_bound_mm3\":1715.999999999999,\"exterior_sides\":24,\"hausdorff_error_upper_bound_mm\":0,\"method\":\"certified_sketch_layer_partition\",\"shared_faces\":6,\"status\":\"valid\",\"volume_exact_mm3\":[31416,1]}",
         "build_stderr": "",
         "admitted": true,
@@ -2423,7 +2423,7 @@
           }
         ],
         "reported_method": "certified_sketch_layer_partition",
-        "audit_elapsed_s": 0.016823453013785183,
+        "audit_elapsed_s": 0.04439680598443374,
         "closed_domain_certificate": {
           "status": "valid",
           "method": "certified_sketch_layer_partition",
@@ -2486,7 +2486,7 @@
       {
         "id": "through_hex_offset",
         "family": "convex_through_holes",
-        "build_elapsed_s": 0.04706290998728946,
+        "build_elapsed_s": 0.07053030404495075,
         "build_stdout": "{\"blocks\":6,\"bounded_sketch_faces\":6,\"cavities\":0,\"determinant_lower_bound_mm3\":929.9999999999995,\"exterior_sides\":24,\"hausdorff_error_upper_bound_mm\":0,\"method\":\"certified_sketch_layer_partition\",\"shared_faces\":6,\"status\":\"valid\",\"volume_exact_mm3\":[78555,2]}",
         "build_stderr": "",
         "admitted": true,
@@ -2520,7 +2520,7 @@
           }
         ],
         "reported_method": "certified_sketch_layer_partition",
-        "audit_elapsed_s": 0.022843009035568684,
+        "audit_elapsed_s": 0.058018209994770586,
         "closed_domain_certificate": {
           "status": "valid",
           "method": "certified_sketch_layer_partition",
@@ -2583,7 +2583,7 @@
       {
         "id": "through_pentagon_tight_clearance",
         "family": "convex_through_holes",
-        "build_elapsed_s": 0.06437123700743541,
+        "build_elapsed_s": 0.15355609694961458,
         "build_stdout": "{\"blocks\":6,\"bounded_sketch_faces\":6,\"cavities\":0,\"determinant_lower_bound_mm3\":98.99999999999994,\"exterior_sides\":24,\"hausdorff_error_upper_bound_mm\":0,\"method\":\"certified_sketch_layer_partition\",\"shared_faces\":6,\"status\":\"valid\",\"volume_exact_mm3\":[11943,2]}",
         "build_stderr": "",
         "admitted": true,
@@ -2617,7 +2617,7 @@
           }
         ],
         "reported_method": "certified_sketch_layer_partition",
-        "audit_elapsed_s": 0.029148095985874534,
+        "audit_elapsed_s": 0.060916274960618466,
         "closed_domain_certificate": {
           "status": "valid",
           "method": "certified_sketch_layer_partition",
@@ -2680,7 +2680,7 @@
       {
         "id": "through_two_rectangles",
         "family": "convex_through_holes",
-        "build_elapsed_s": 0.07844952895538881,
+        "build_elapsed_s": 0.23447068297537044,
         "build_stdout": "{\"blocks\":8,\"bounded_sketch_faces\":10,\"cavities\":0,\"determinant_lower_bound_mm3\":2267.9999999999986,\"exterior_sides\":30,\"hausdorff_error_upper_bound_mm\":0,\"method\":\"certified_sketch_layer_partition\",\"shared_faces\":9,\"status\":\"valid\",\"volume_exact_mm3\":[51120,1]}",
         "build_stderr": "",
         "admitted": true,
@@ -2722,7 +2722,7 @@
           }
         ],
         "reported_method": "certified_sketch_layer_partition",
-        "audit_elapsed_s": 0.04213181004161015,
+        "audit_elapsed_s": 0.11777309596072882,
         "closed_domain_certificate": {
           "status": "valid",
           "method": "certified_sketch_layer_partition",
@@ -2785,7 +2785,7 @@
       {
         "id": "through_octagon_high_aspect",
         "family": "convex_through_holes",
-        "build_elapsed_s": 0.05128229403635487,
+        "build_elapsed_s": 0.15032045904081315,
         "build_stdout": "{\"blocks\":8,\"bounded_sketch_faces\":8,\"cavities\":0,\"determinant_lower_bound_mm3\":289.99999999999983,\"exterior_sides\":32,\"hausdorff_error_upper_bound_mm\":0,\"method\":\"certified_sketch_layer_partition\",\"shared_faces\":8,\"status\":\"valid\",\"volume_exact_mm3\":[25440,1]}",
         "build_stderr": "",
         "admitted": true,
@@ -2827,7 +2827,7 @@
           }
         ],
         "reported_method": "certified_sketch_layer_partition",
-        "audit_elapsed_s": 0.02534834702964872,
+        "audit_elapsed_s": 0.0908734270487912,
         "closed_domain_certificate": {
           "status": "valid",
           "method": "certified_sketch_layer_partition",
@@ -2890,7 +2890,7 @@
       {
         "id": "blind_rotated_quad",
         "family": "convex_blind_pockets",
-        "build_elapsed_s": 0.08000073302537203,
+        "build_elapsed_s": 0.07257398997899145,
         "build_stdout": "{\"blocks\":11,\"bounded_sketch_faces\":6,\"cavities\":0,\"determinant_lower_bound_mm3\":27.999999999999986,\"exterior_sides\":28,\"hausdorff_error_upper_bound_mm\":0,\"method\":\"certified_sketch_layer_partition\",\"shared_faces\":19,\"status\":\"valid\",\"volume_exact_mm3\":[54948,1]}",
         "build_stderr": "",
         "admitted": true,
@@ -2944,7 +2944,7 @@
           }
         ],
         "reported_method": "certified_sketch_layer_partition",
-        "audit_elapsed_s": 0.036271699995268136,
+        "audit_elapsed_s": 0.12874993798322976,
         "closed_domain_certificate": {
           "status": "valid",
           "method": "certified_sketch_layer_partition",
@@ -3046,7 +3046,7 @@
       {
         "id": "blind_triangle_shallow",
         "family": "convex_blind_pockets",
-        "build_elapsed_s": 0.04402054997626692,
+        "build_elapsed_s": 0.10338262800360098,
         "build_stdout": "{\"blocks\":15,\"bounded_sketch_faces\":9,\"cavities\":0,\"determinant_lower_bound_mm3\":163.99999999999991,\"exterior_sides\":36,\"hausdorff_error_upper_bound_mm\":0,\"method\":\"certified_sketch_layer_partition\",\"shared_faces\":27,\"status\":\"valid\",\"volume_exact_mm3\":[44592,1]}",
         "build_stderr": "",
         "admitted": true,
@@ -3116,7 +3116,7 @@
           }
         ],
         "reported_method": "certified_sketch_layer_partition",
-        "audit_elapsed_s": 0.020045948040205985,
+        "audit_elapsed_s": 0.0545815090299584,
         "closed_domain_certificate": {
           "status": "valid",
           "method": "certified_sketch_layer_partition",
@@ -3218,7 +3218,7 @@
       {
         "id": "blind_hex_deep",
         "family": "convex_blind_pockets",
-        "build_elapsed_s": 0.07396906800568104,
+        "build_elapsed_s": 0.22771694901166484,
         "build_stdout": "{\"blocks\":14,\"bounded_sketch_faces\":8,\"cavities\":0,\"determinant_lower_bound_mm3\":271.99999999999983,\"exterior_sides\":34,\"hausdorff_error_upper_bound_mm\":0,\"method\":\"certified_sketch_layer_partition\",\"shared_faces\":25,\"status\":\"valid\",\"volume_exact_mm3\":[69084,1]}",
         "build_stderr": "",
         "admitted": true,
@@ -3284,7 +3284,7 @@
           }
         ],
         "reported_method": "certified_sketch_layer_partition",
-        "audit_elapsed_s": 0.03181451704585925,
+        "audit_elapsed_s": 0.0877604850102216,
         "closed_domain_certificate": {
           "status": "valid",
           "method": "certified_sketch_layer_partition",
@@ -3386,7 +3386,7 @@
       {
         "id": "blind_two_levels",
         "family": "convex_blind_pockets",
-        "build_elapsed_s": 0.21186250896425918,
+        "build_elapsed_s": 1.0337788659962825,
         "build_stdout": "{\"blocks\":36,\"bounded_sketch_faces\":10,\"cavities\":1,\"determinant_lower_bound_mm3\":719.9999999999997,\"exterior_sides\":62,\"hausdorff_error_upper_bound_mm\":0,\"method\":\"certified_sketch_layer_partition\",\"shared_faces\":77,\"status\":\"valid\",\"volume_exact_mm3\":[96720,1]}",
         "build_stderr": "",
         "admitted": true,
@@ -3540,7 +3540,7 @@
           }
         ],
         "reported_method": "certified_sketch_layer_partition",
-        "audit_elapsed_s": 0.10667229600949213,
+        "audit_elapsed_s": 0.5347864470095374,
         "closed_domain_certificate": {
           "status": "valid",
           "method": "certified_sketch_layer_partition",
@@ -3720,7 +3720,7 @@
       {
         "id": "blind_close_to_boundary",
         "family": "convex_blind_pockets",
-        "build_elapsed_s": 0.04203602595953271,
+        "build_elapsed_s": 0.04494821501430124,
         "build_stdout": "{\"blocks\":11,\"bounded_sketch_faces\":6,\"cavities\":0,\"determinant_lower_bound_mm3\":121.49999999999994,\"exterior_sides\":28,\"hausdorff_error_upper_bound_mm\":0,\"method\":\"certified_sketch_layer_partition\",\"shared_faces\":19,\"status\":\"valid\",\"volume_exact_mm3\":[29240,1]}",
         "build_stderr": "",
         "admitted": true,
@@ -3774,7 +3774,7 @@
           }
         ],
         "reported_method": "certified_sketch_layer_partition",
-        "audit_elapsed_s": 0.018933660991024226,
+        "audit_elapsed_s": 0.026039324002340436,
         "closed_domain_certificate": {
           "status": "valid",
           "method": "certified_sketch_layer_partition",
@@ -3876,7 +3876,7 @@
       {
         "id": "concave_c_stock_two_holes",
         "family": "concave_stock_or_cut",
-        "build_elapsed_s": 0.09576887503499165,
+        "build_elapsed_s": 0.06475865194806829,
         "build_stdout": "{\"blocks\":21,\"bounded_sketch_faces\":54,\"cavities\":0,\"determinant_lower_bound_mm3\":77.99999999999996,\"exterior_sides\":78,\"hausdorff_error_upper_bound_mm\":0,\"method\":\"certified_sketch_layer_partition\",\"shared_faces\":24,\"status\":\"valid\",\"volume_exact_mm3\":[12350,1]}",
         "build_stderr": "",
         "admitted": true,
@@ -3970,7 +3970,7 @@
           }
         ],
         "reported_method": "certified_sketch_layer_partition",
-        "audit_elapsed_s": 0.009981674025766551,
+        "audit_elapsed_s": 0.021175299014430493,
         "closed_domain_certificate": {
           "status": "valid",
           "method": "certified_sketch_layer_partition",
@@ -4033,7 +4033,7 @@
       {
         "id": "concave_l_stock_pocket",
         "family": "concave_stock_or_cut",
-        "build_elapsed_s": 0.017889934009872377,
+        "build_elapsed_s": 0.04980709298979491,
         "build_stdout": "{\"blocks\":39,\"bounded_sketch_faces\":49,\"cavities\":0,\"determinant_lower_bound_mm3\":127.99999999999994,\"exterior_sides\":90,\"hausdorff_error_upper_bound_mm\":0,\"method\":\"certified_sketch_layer_partition\",\"shared_faces\":72,\"status\":\"valid\",\"volume_exact_mm3\":[20088,1]}",
         "build_stderr": "",
         "admitted": true,
@@ -4199,7 +4199,7 @@
           }
         ],
         "reported_method": "certified_sketch_layer_partition",
-        "audit_elapsed_s": 0.009345379017759115,
+        "audit_elapsed_s": 0.014012057974468917,
         "closed_domain_certificate": {
           "status": "valid",
           "method": "certified_sketch_layer_partition",
@@ -4301,7 +4301,7 @@
       {
         "id": "concave_cut_in_rectangle",
         "family": "concave_stock_or_cut",
-        "build_elapsed_s": 0.014235771028324962,
+        "build_elapsed_s": 0.044322191970422864,
         "build_stdout": "{\"blocks\":45,\"bounded_sketch_faces\":36,\"cavities\":1,\"determinant_lower_bound_mm3\":59.99999999999997,\"exterior_sides\":94,\"hausdorff_error_upper_bound_mm\":0,\"method\":\"certified_sketch_layer_partition\",\"shared_faces\":88,\"status\":\"valid\",\"volume_exact_mm3\":[30038,1]}",
         "build_stderr": "",
         "admitted": true,
@@ -4491,7 +4491,7 @@
           }
         ],
         "reported_method": "certified_sketch_layer_partition",
-        "audit_elapsed_s": 0.009309889981523156,
+        "audit_elapsed_s": 0.013945346989203244,
         "closed_domain_certificate": {
           "status": "valid",
           "method": "certified_sketch_layer_partition",
@@ -4632,7 +4632,7 @@
       {
         "id": "concave_u_stock_offset_hole",
         "family": "concave_stock_or_cut",
-        "build_elapsed_s": 0.076030449999962,
+        "build_elapsed_s": 0.015509693010244519,
         "build_stdout": "{\"blocks\":6,\"bounded_sketch_faces\":7,\"cavities\":0,\"determinant_lower_bound_mm3\":398.9999999999998,\"exterior_sides\":24,\"hausdorff_error_upper_bound_mm\":0,\"method\":\"certified_sketch_layer_partition\",\"shared_faces\":6,\"status\":\"valid\",\"volume_exact_mm3\":[32186,1]}",
         "build_stderr": "",
         "admitted": true,
@@ -4666,7 +4666,7 @@
           }
         ],
         "reported_method": "certified_sketch_layer_partition",
-        "audit_elapsed_s": 0.007628756982740015,
+        "audit_elapsed_s": 0.010662570013664663,
         "closed_domain_certificate": {
           "status": "valid",
           "method": "certified_sketch_layer_partition",
@@ -4729,7 +4729,7 @@
       {
         "id": "concave_stock_blind_two_profiles",
         "family": "concave_stock_or_cut",
-        "build_elapsed_s": 0.026064386998768896,
+        "build_elapsed_s": 0.06547397002577782,
         "build_stdout": "{\"blocks\":66,\"bounded_sketch_faces\":72,\"cavities\":0,\"determinant_lower_bound_mm3\":31.999999999999986,\"exterior_sides\":150,\"hausdorff_error_upper_bound_mm\":0,\"method\":\"certified_sketch_layer_partition\",\"shared_faces\":123,\"status\":\"valid\",\"volume_exact_mm3\":[41800,1]}",
         "build_stderr": "",
         "admitted": true,
@@ -5003,7 +5003,7 @@
           }
         ],
         "reported_method": "certified_sketch_layer_partition",
-        "audit_elapsed_s": 0.012026307987980545,
+        "audit_elapsed_s": 0.015223561960738152,
         "closed_domain_certificate": {
           "status": "valid",
           "method": "certified_sketch_layer_partition",
@@ -5105,7 +5105,7 @@
       {
         "id": "seeded_convex_00",
         "family": "seeded_convex_through_holes",
-        "build_elapsed_s": 0.11607456399360672,
+        "build_elapsed_s": 0.15425012598279864,
         "build_stdout": "{\"blocks\":12,\"bounded_sketch_faces\":12,\"cavities\":0,\"determinant_lower_bound_mm3\":719999.9999999997,\"exterior_sides\":48,\"hausdorff_error_upper_bound_mm\":0,\"method\":\"certified_sketch_layer_partition\",\"shared_faces\":12,\"status\":\"valid\",\"volume_exact_mm3\":[26039232,1]}",
         "build_stderr": "",
         "admitted": true,
@@ -5163,7 +5163,7 @@
           }
         ],
         "reported_method": "certified_sketch_layer_partition",
-        "audit_elapsed_s": 0.05273768398910761,
+        "audit_elapsed_s": 0.06097605999093503,
         "closed_domain_certificate": {
           "status": "valid",
           "method": "certified_sketch_layer_partition",
@@ -5226,7 +5226,7 @@
       {
         "id": "seeded_convex_01",
         "family": "seeded_convex_blind_pockets",
-        "build_elapsed_s": 1.3698803759762086,
+        "build_elapsed_s": 1.5312251760042273,
         "build_stdout": "{\"blocks\":48,\"bounded_sketch_faces\":28,\"cavities\":0,\"determinant_lower_bound_mm3\":1024.1265853187028,\"exterior_sides\":100,\"hausdorff_error_upper_bound_mm\":0,\"method\":\"certified_sketch_layer_partition\",\"shared_faces\":94,\"status\":\"valid\",\"volume_exact_mm3\":[27291984,1]}",
         "build_stderr": "",
         "admitted": true,
@@ -5428,7 +5428,7 @@
           }
         ],
         "reported_method": "certified_sketch_layer_partition",
-        "audit_elapsed_s": 0.6716987400432117,
+        "audit_elapsed_s": 0.7043057680130005,
         "closed_domain_certificate": {
           "status": "valid",
           "method": "certified_sketch_layer_partition",
@@ -5530,7 +5530,7 @@
       {
         "id": "seeded_convex_02",
         "family": "seeded_convex_through_holes",
-        "build_elapsed_s": 1.4690988520160317,
+        "build_elapsed_s": 1.4922744809882715,
         "build_stdout": "{\"blocks\":17,\"bounded_sketch_faces\":17,\"cavities\":0,\"determinant_lower_bound_mm3\":61236.49097381132,\"exterior_sides\":60,\"hausdorff_error_upper_bound_mm\":0,\"method\":\"certified_sketch_layer_partition\",\"shared_faces\":21,\"status\":\"valid\",\"volume_exact_mm3\":[23041304,1]}",
         "build_stderr": "",
         "admitted": true,
@@ -5608,7 +5608,7 @@
           }
         ],
         "reported_method": "certified_sketch_layer_partition",
-        "audit_elapsed_s": 0.7355242870398797,
+        "audit_elapsed_s": 0.7307905260240659,
         "closed_domain_certificate": {
           "status": "valid",
           "method": "certified_sketch_layer_partition",
@@ -5671,7 +5671,7 @@
       {
         "id": "seeded_convex_03",
         "family": "seeded_convex_blind_pockets",
-        "build_elapsed_s": 0.028307395987212658,
+        "build_elapsed_s": 0.028698268986772746,
         "build_stdout": "{\"blocks\":14,\"bounded_sketch_faces\":8,\"cavities\":0,\"determinant_lower_bound_mm3\":131099.9999999999,\"exterior_sides\":34,\"hausdorff_error_upper_bound_mm\":0,\"method\":\"certified_sketch_layer_partition\",\"shared_faces\":25,\"status\":\"valid\",\"volume_exact_mm3\":[27897116,1]}",
         "build_stderr": "",
         "admitted": true,
@@ -5737,7 +5737,7 @@
           }
         ],
         "reported_method": "certified_sketch_layer_partition",
-        "audit_elapsed_s": 0.019168022030498832,
+        "audit_elapsed_s": 0.014862406009342521,
         "closed_domain_certificate": {
           "status": "valid",
           "method": "certified_sketch_layer_partition",
@@ -5839,7 +5839,7 @@
       {
         "id": "seeded_convex_04",
         "family": "seeded_convex_through_holes",
-        "build_elapsed_s": 0.16043672303203493,
+        "build_elapsed_s": 0.16093243000796065,
         "build_stdout": "{\"blocks\":12,\"bounded_sketch_faces\":12,\"cavities\":0,\"determinant_lower_bound_mm3\":180959.9999999999,\"exterior_sides\":44,\"hausdorff_error_upper_bound_mm\":0,\"method\":\"certified_sketch_layer_partition\",\"shared_faces\":14,\"status\":\"valid\",\"volume_exact_mm3\":[31215600,1]}",
         "build_stderr": "",
         "admitted": true,
@@ -5897,7 +5897,7 @@
           }
         ],
         "reported_method": "certified_sketch_layer_partition",
-        "audit_elapsed_s": 0.08240041701355949,
+        "audit_elapsed_s": 0.08593999000731856,
         "closed_domain_certificate": {
           "status": "valid",
           "method": "certified_sketch_layer_partition",
@@ -5960,7 +5960,7 @@
       {
         "id": "seeded_convex_05",
         "family": "seeded_convex_blind_pockets",
-        "build_elapsed_s": 4.229860959982034,
+        "build_elapsed_s": 3.7621271869866177,
         "build_stdout": "{\"blocks\":57,\"bounded_sketch_faces\":33,\"cavities\":0,\"determinant_lower_bound_mm3\":6169.230769230767,\"exterior_sides\":114,\"hausdorff_error_upper_bound_mm\":0,\"method\":\"certified_sketch_layer_partition\",\"shared_faces\":114,\"status\":\"valid\",\"volume_exact_mm3\":[36011200,1]}",
         "build_stderr": "",
         "admitted": true,
@@ -6198,7 +6198,7 @@
           }
         ],
         "reported_method": "certified_sketch_layer_partition",
-        "audit_elapsed_s": 2.3088772670016624,
+        "audit_elapsed_s": 1.8909330999595113,
         "closed_domain_certificate": {
           "status": "valid",
           "method": "certified_sketch_layer_partition",
@@ -6300,7 +6300,7 @@
       {
         "id": "seeded_convex_06",
         "family": "seeded_convex_through_holes",
-        "build_elapsed_s": 0.08866828598547727,
+        "build_elapsed_s": 0.09595700801583007,
         "build_stdout": "{\"blocks\":9,\"bounded_sketch_faces\":9,\"cavities\":0,\"determinant_lower_bound_mm3\":1530959.9999999993,\"exterior_sides\":36,\"hausdorff_error_upper_bound_mm\":0,\"method\":\"certified_sketch_layer_partition\",\"shared_faces\":9,\"status\":\"valid\",\"volume_exact_mm3\":[41631840,1]}",
         "build_stderr": "",
         "admitted": true,
@@ -6346,7 +6346,7 @@
           }
         ],
         "reported_method": "certified_sketch_layer_partition",
-        "audit_elapsed_s": 0.030612141999881715,
+        "audit_elapsed_s": 0.031561234034597874,
         "closed_domain_certificate": {
           "status": "valid",
           "method": "certified_sketch_layer_partition",
@@ -6409,7 +6409,7 @@
       {
         "id": "seeded_convex_07",
         "family": "seeded_convex_blind_pockets",
-        "build_elapsed_s": 0.5809126180247404,
+        "build_elapsed_s": 0.6219983929768205,
         "build_stdout": "{\"blocks\":28,\"bounded_sketch_faces\":16,\"cavities\":0,\"determinant_lower_bound_mm3\":2671.4433246128974,\"exterior_sides\":60,\"hausdorff_error_upper_bound_mm\":0,\"method\":\"certified_sketch_layer_partition\",\"shared_faces\":54,\"status\":\"valid\",\"volume_exact_mm3\":[35990136,1]}",
         "build_stderr": "",
         "admitted": true,
@@ -6531,7 +6531,7 @@
           }
         ],
         "reported_method": "certified_sketch_layer_partition",
-        "audit_elapsed_s": 0.27181542100152,
+        "audit_elapsed_s": 0.27577283198479563,
         "closed_domain_certificate": {
           "status": "valid",
           "method": "certified_sketch_layer_partition",
@@ -6633,7 +6633,7 @@
       {
         "id": "seeded_convex_08",
         "family": "seeded_convex_through_holes",
-        "build_elapsed_s": 8.487824484007433,
+        "build_elapsed_s": 8.130802271014545,
         "build_stdout": "{\"blocks\":33,\"bounded_sketch_faces\":33,\"cavities\":0,\"determinant_lower_bound_mm3\":13749.222222222215,\"exterior_sides\":114,\"hausdorff_error_upper_bound_mm\":0,\"method\":\"certified_sketch_layer_partition\",\"shared_faces\":42,\"status\":\"valid\",\"volume_exact_mm3\":[44495528,1]}",
         "build_stderr": "",
         "admitted": true,
@@ -6775,7 +6775,7 @@
           }
         ],
         "reported_method": "certified_sketch_layer_partition",
-        "audit_elapsed_s": 4.3789873190107755,
+        "audit_elapsed_s": 4.008713065995835,
         "closed_domain_certificate": {
           "status": "valid",
           "method": "certified_sketch_layer_partition",
@@ -6838,7 +6838,7 @@
       {
         "id": "seeded_convex_09",
         "family": "seeded_convex_blind_pockets",
-        "build_elapsed_s": 0.3399606429738924,
+        "build_elapsed_s": 0.06354280299274251,
         "build_stdout": "{\"blocks\":14,\"bounded_sketch_faces\":8,\"cavities\":0,\"determinant_lower_bound_mm3\":104399.99999999994,\"exterior_sides\":34,\"hausdorff_error_upper_bound_mm\":0,\"method\":\"certified_sketch_layer_partition\",\"shared_faces\":25,\"status\":\"valid\",\"volume_exact_mm3\":[45414000,1]}",
         "build_stderr": "",
         "admitted": true,
@@ -6904,7 +6904,7 @@
           }
         ],
         "reported_method": "certified_sketch_layer_partition",
-        "audit_elapsed_s": 0.028626441955566406,
+        "audit_elapsed_s": 0.014138904982246459,
         "closed_domain_certificate": {
           "status": "valid",
           "method": "certified_sketch_layer_partition",
@@ -7006,7 +7006,7 @@
       {
         "id": "seeded_convex_10",
         "family": "seeded_convex_through_holes",
-        "build_elapsed_s": 1.392712611996103,
+        "build_elapsed_s": 1.0858769179903902,
         "build_stdout": "{\"blocks\":24,\"bounded_sketch_faces\":24,\"cavities\":0,\"determinant_lower_bound_mm3\":3995.999999999998,\"exterior_sides\":88,\"hausdorff_error_upper_bound_mm\":0,\"method\":\"certified_sketch_layer_partition\",\"shared_faces\":28,\"status\":\"valid\",\"volume_exact_mm3\":[24954264,1]}",
         "build_stderr": "",
         "admitted": true,
@@ -7112,7 +7112,7 @@
           }
         ],
         "reported_method": "certified_sketch_layer_partition",
-        "audit_elapsed_s": 0.8534989149775356,
+        "audit_elapsed_s": 0.526201099040918,
         "closed_domain_certificate": {
           "status": "valid",
           "method": "certified_sketch_layer_partition",
@@ -7175,7 +7175,7 @@
       {
         "id": "seeded_convex_11",
         "family": "seeded_convex_blind_pockets",
-        "build_elapsed_s": 14.843704736034852,
+        "build_elapsed_s": 11.220064346969593,
         "build_stdout": "{\"blocks\":74,\"bounded_sketch_faces\":43,\"cavities\":0,\"determinant_lower_bound_mm3\":6768.3473258706435,\"exterior_sides\":144,\"hausdorff_error_upper_bound_mm\":0,\"method\":\"certified_sketch_layer_partition\",\"shared_faces\":150,\"status\":\"valid\",\"volume_exact_mm3\":[27176340,1]}",
         "build_stderr": "",
         "admitted": true,
@@ -7481,7 +7481,7 @@
           }
         ],
         "reported_method": "certified_sketch_layer_partition",
-        "audit_elapsed_s": 6.6913815200096,
+        "audit_elapsed_s": 5.796477065014187,
         "closed_domain_certificate": {
           "status": "valid",
           "method": "certified_sketch_layer_partition",
@@ -7583,7 +7583,7 @@
       {
         "id": "seeded_convex_12",
         "family": "seeded_convex_through_holes",
-        "build_elapsed_s": 0.03963800397468731,
+        "build_elapsed_s": 0.05774064501747489,
         "build_stdout": "{\"blocks\":5,\"bounded_sketch_faces\":5,\"cavities\":0,\"determinant_lower_bound_mm3\":1671999.999999999,\"exterior_sides\":20,\"hausdorff_error_upper_bound_mm\":0,\"method\":\"certified_sketch_layer_partition\",\"shared_faces\":5,\"status\":\"valid\",\"volume_exact_mm3\":[25135968,1]}",
         "build_stderr": "",
         "admitted": true,
@@ -7613,7 +7613,7 @@
           }
         ],
         "reported_method": "certified_sketch_layer_partition",
-        "audit_elapsed_s": 0.013225075032096356,
+        "audit_elapsed_s": 0.013040361984167248,
         "closed_domain_certificate": {
           "status": "valid",
           "method": "certified_sketch_layer_partition",
@@ -7676,7 +7676,7 @@
       {
         "id": "seeded_convex_13",
         "family": "seeded_convex_blind_pockets",
-        "build_elapsed_s": 0.7755004290374927,
+        "build_elapsed_s": 0.70840004197089,
         "build_stdout": "{\"blocks\":48,\"bounded_sketch_faces\":28,\"cavities\":0,\"determinant_lower_bound_mm3\":26783.999999999985,\"exterior_sides\":100,\"hausdorff_error_upper_bound_mm\":0,\"method\":\"certified_sketch_layer_partition\",\"shared_faces\":94,\"status\":\"valid\",\"volume_exact_mm3\":[33188016,1]}",
         "build_stderr": "",
         "admitted": true,
@@ -7878,7 +7878,7 @@
           }
         ],
         "reported_method": "certified_sketch_layer_partition",
-        "audit_elapsed_s": 0.34371327300323173,
+        "audit_elapsed_s": 0.3368681449792348,
         "closed_domain_certificate": {
           "status": "valid",
           "method": "certified_sketch_layer_partition",
@@ -7980,7 +7980,7 @@
       {
         "id": "seeded_convex_14",
         "family": "seeded_convex_through_holes",
-        "build_elapsed_s": 13.255263862025458,
+        "build_elapsed_s": 11.960997877002228,
         "build_stdout": "{\"blocks\":30,\"bounded_sketch_faces\":30,\"cavities\":0,\"determinant_lower_bound_mm3\":5544.608938547483,\"exterior_sides\":106,\"hausdorff_error_upper_bound_mm\":0,\"method\":\"certified_sketch_layer_partition\",\"shared_faces\":37,\"status\":\"valid\",\"volume_exact_mm3\":[33658768,1]}",
         "build_stderr": "",
         "admitted": true,
@@ -8110,7 +8110,7 @@
           }
         ],
         "reported_method": "certified_sketch_layer_partition",
-        "audit_elapsed_s": 4.519144163990859,
+        "audit_elapsed_s": 5.832809986022767,
         "closed_domain_certificate": {
           "status": "valid",
           "method": "certified_sketch_layer_partition",
@@ -8173,7 +8173,7 @@
       {
         "id": "seeded_convex_15",
         "family": "seeded_convex_blind_pockets",
-        "build_elapsed_s": 0.13765462703304365,
+        "build_elapsed_s": 0.1327482100459747,
         "build_stdout": "{\"blocks\":29,\"bounded_sketch_faces\":17,\"cavities\":0,\"determinant_lower_bound_mm3\":33919.99999999998,\"exterior_sides\":70,\"hausdorff_error_upper_bound_mm\":0,\"method\":\"certified_sketch_layer_partition\",\"shared_faces\":52,\"status\":\"valid\",\"volume_exact_mm3\":[40569452,1]}",
         "build_stderr": "",
         "admitted": true,
@@ -8299,7 +8299,7 @@
           }
         ],
         "reported_method": "certified_sketch_layer_partition",
-        "audit_elapsed_s": 0.06315714603988454,
+        "audit_elapsed_s": 0.06238201801897958,
         "closed_domain_certificate": {
           "status": "valid",
           "method": "certified_sketch_layer_partition",
@@ -8401,7 +8401,7 @@
       {
         "id": "seeded_convex_16",
         "family": "seeded_convex_through_holes",
-        "build_elapsed_s": 1.0725056549999863,
+        "build_elapsed_s": 1.0814770010183565,
         "build_stdout": "{\"blocks\":22,\"bounded_sketch_faces\":22,\"cavities\":0,\"determinant_lower_bound_mm3\":15961.455852793328,\"exterior_sides\":80,\"hausdorff_error_upper_bound_mm\":0,\"method\":\"certified_sketch_layer_partition\",\"shared_faces\":26,\"status\":\"valid\",\"volume_exact_mm3\":[41045340,1]}",
         "build_stderr": "",
         "admitted": true,
@@ -8499,7 +8499,7 @@
           }
         ],
         "reported_method": "certified_sketch_layer_partition",
-        "audit_elapsed_s": 0.5238712040008977,
+        "audit_elapsed_s": 0.545249340008013,
         "closed_domain_certificate": {
           "status": "valid",
           "method": "certified_sketch_layer_partition",
@@ -8562,7 +8562,7 @@
       {
         "id": "seeded_convex_17",
         "family": "seeded_convex_blind_pockets",
-        "build_elapsed_s": 1.1436300660134293,
+        "build_elapsed_s": 1.1976292379549704,
         "build_stdout": "{\"blocks\":42,\"bounded_sketch_faces\":24,\"cavities\":0,\"determinant_lower_bound_mm3\":37124.99999999998,\"exterior_sides\":86,\"hausdorff_error_upper_bound_mm\":0,\"method\":\"certified_sketch_layer_partition\",\"shared_faces\":83,\"status\":\"valid\",\"volume_exact_mm3\":[37688400,1]}",
         "build_stderr": "",
         "admitted": true,
@@ -8740,7 +8740,7 @@
           }
         ],
         "reported_method": "certified_sketch_layer_partition",
-        "audit_elapsed_s": 0.5572726629907265,
+        "audit_elapsed_s": 0.5872145330067724,
         "closed_domain_certificate": {
           "status": "valid",
           "method": "certified_sketch_layer_partition",
@@ -8842,7 +8842,7 @@
       {
         "id": "seeded_convex_18",
         "family": "seeded_convex_through_holes",
-        "build_elapsed_s": 0.11806168698240072,
+        "build_elapsed_s": 0.17631695501040667,
         "build_stdout": "{\"blocks\":12,\"bounded_sketch_faces\":12,\"cavities\":0,\"determinant_lower_bound_mm3\":1359999.9999999993,\"exterior_sides\":48,\"hausdorff_error_upper_bound_mm\":0,\"method\":\"certified_sketch_layer_partition\",\"shared_faces\":12,\"status\":\"valid\",\"volume_exact_mm3\":[49185216,1]}",
         "build_stderr": "",
         "admitted": true,
@@ -8900,7 +8900,7 @@
           }
         ],
         "reported_method": "certified_sketch_layer_partition",
-        "audit_elapsed_s": 0.05795451800804585,
+        "audit_elapsed_s": 0.07551178697030991,
         "closed_domain_certificate": {
           "status": "valid",
           "method": "certified_sketch_layer_partition",
@@ -8963,7 +8963,7 @@
       {
         "id": "seeded_convex_19",
         "family": "seeded_convex_blind_pockets",
-        "build_elapsed_s": 0.6537787669803947,
+        "build_elapsed_s": 0.7605365989729762,
         "build_stdout": "{\"blocks\":48,\"bounded_sketch_faces\":28,\"cavities\":0,\"determinant_lower_bound_mm3\":44639.99999999998,\"exterior_sides\":100,\"hausdorff_error_upper_bound_mm\":0,\"method\":\"certified_sketch_layer_partition\",\"shared_faces\":94,\"status\":\"valid\",\"volume_exact_mm3\":[49899712,1]}",
         "build_stderr": "",
         "admitted": true,
@@ -9165,7 +9165,7 @@
           }
         ],
         "reported_method": "certified_sketch_layer_partition",
-        "audit_elapsed_s": 0.3297305680462159,
+        "audit_elapsed_s": 0.3666547309840098,
         "closed_domain_certificate": {
           "status": "valid",
           "method": "certified_sketch_layer_partition",
@@ -9267,7 +9267,7 @@
       {
         "id": "seeded_convex_20",
         "family": "seeded_convex_through_holes",
-        "build_elapsed_s": 11.252056198951323,
+        "build_elapsed_s": 11.195236061001197,
         "build_stdout": "{\"blocks\":27,\"bounded_sketch_faces\":27,\"cavities\":0,\"determinant_lower_bound_mm3\":32835.83490800912,\"exterior_sides\":94,\"hausdorff_error_upper_bound_mm\":0,\"method\":\"certified_sketch_layer_partition\",\"shared_faces\":34,\"status\":\"valid\",\"volume_exact_mm3\":[22897512,1]}",
         "build_stderr": "",
         "admitted": true,
@@ -9385,7 +9385,7 @@
           }
         ],
         "reported_method": "certified_sketch_layer_partition",
-        "audit_elapsed_s": 5.58711702603614,
+        "audit_elapsed_s": 5.690264709002804,
         "closed_domain_certificate": {
           "status": "valid",
           "method": "certified_sketch_layer_partition",
@@ -9448,7 +9448,7 @@
       {
         "id": "seeded_convex_21",
         "family": "seeded_convex_blind_pockets",
-        "build_elapsed_s": 0.08088543603662401,
+        "build_elapsed_s": 0.08513228205265477,
         "build_stdout": "{\"blocks\":24,\"bounded_sketch_faces\":14,\"cavities\":0,\"determinant_lower_bound_mm3\":26783.999999999985,\"exterior_sides\":58,\"hausdorff_error_upper_bound_mm\":0,\"method\":\"certified_sketch_layer_partition\",\"shared_faces\":43,\"status\":\"valid\",\"volume_exact_mm3\":[28598184,1]}",
         "build_stderr": "",
         "admitted": true,
@@ -9554,7 +9554,7 @@
           }
         ],
         "reported_method": "certified_sketch_layer_partition",
-        "audit_elapsed_s": 0.049013937008567154,
+        "audit_elapsed_s": 0.042888308002147824,
         "closed_domain_certificate": {
           "status": "valid",
           "method": "certified_sketch_layer_partition",
@@ -9656,7 +9656,7 @@
       {
         "id": "seeded_convex_22",
         "family": "seeded_convex_through_holes",
-        "build_elapsed_s": 7.392951909045223,
+        "build_elapsed_s": 7.3736154430080205,
         "build_stdout": "{\"blocks\":22,\"bounded_sketch_faces\":22,\"cavities\":0,\"determinant_lower_bound_mm3\":59993.8532699005,\"exterior_sides\":80,\"hausdorff_error_upper_bound_mm\":0,\"method\":\"certified_sketch_layer_partition\",\"shared_faces\":26,\"status\":\"valid\",\"volume_exact_mm3\":[30099916,1]}",
         "build_stderr": "",
         "admitted": true,
@@ -9754,7 +9754,7 @@
           }
         ],
         "reported_method": "certified_sketch_layer_partition",
-        "audit_elapsed_s": 3.701964706007857,
+        "audit_elapsed_s": 3.761624087987002,
         "closed_domain_certificate": {
           "status": "valid",
           "method": "certified_sketch_layer_partition",
@@ -9817,7 +9817,7 @@
       {
         "id": "seeded_convex_23",
         "family": "seeded_convex_blind_pockets",
-        "build_elapsed_s": 4.219826829968952,
+        "build_elapsed_s": 4.325161073997151,
         "build_stdout": "{\"blocks\":72,\"bounded_sketch_faces\":42,\"cavities\":0,\"determinant_lower_bound_mm3\":13243.983050847452,\"exterior_sides\":142,\"hausdorff_error_upper_bound_mm\":0,\"method\":\"certified_sketch_layer_partition\",\"shared_faces\":145,\"status\":\"valid\",\"volume_exact_mm3\":[32834952,1]}",
         "build_stderr": "",
         "admitted": true,
@@ -10115,7 +10115,7 @@
           }
         ],
         "reported_method": "certified_sketch_layer_partition",
-        "audit_elapsed_s": 2.113440958026331,
+        "audit_elapsed_s": 2.1376130339922383,
         "closed_domain_certificate": {
           "status": "valid",
           "method": "certified_sketch_layer_partition",
@@ -10217,7 +10217,7 @@
       {
         "id": "seeded_convex_24",
         "family": "seeded_convex_through_holes",
-        "build_elapsed_s": 0.055832548008766025,
+        "build_elapsed_s": 0.09294485597638413,
         "build_stdout": "{\"blocks\":9,\"bounded_sketch_faces\":9,\"cavities\":0,\"determinant_lower_bound_mm3\":1326831.9999999993,\"exterior_sides\":36,\"hausdorff_error_upper_bound_mm\":0,\"method\":\"certified_sketch_layer_partition\",\"shared_faces\":9,\"status\":\"valid\",\"volume_exact_mm3\":[36080928,1]}",
         "build_stderr": "",
         "admitted": true,
@@ -10263,7 +10263,7 @@
           }
         ],
         "reported_method": "certified_sketch_layer_partition",
-        "audit_elapsed_s": 0.02750793902669102,
+        "audit_elapsed_s": 0.03163083700928837,
         "closed_domain_certificate": {
           "status": "valid",
           "method": "certified_sketch_layer_partition",
@@ -10326,7 +10326,7 @@
       {
         "id": "seeded_convex_25",
         "family": "seeded_convex_blind_pockets",
-        "build_elapsed_s": 1.2878667209879495,
+        "build_elapsed_s": 1.3071627040044405,
         "build_stdout": "{\"blocks\":28,\"bounded_sketch_faces\":16,\"cavities\":0,\"determinant_lower_bound_mm3\":37619.99999999998,\"exterior_sides\":60,\"hausdorff_error_upper_bound_mm\":0,\"method\":\"certified_sketch_layer_partition\",\"shared_faces\":54,\"status\":\"valid\",\"volume_exact_mm3\":[31229536,1]}",
         "build_stderr": "",
         "admitted": true,
@@ -10448,7 +10448,7 @@
           }
         ],
         "reported_method": "certified_sketch_layer_partition",
-        "audit_elapsed_s": 0.6560816449928097,
+        "audit_elapsed_s": 0.6254486350226216,
         "closed_domain_certificate": {
           "status": "valid",
           "method": "certified_sketch_layer_partition",
@@ -10550,7 +10550,7 @@
       {
         "id": "seeded_convex_26",
         "family": "seeded_convex_through_holes",
-        "build_elapsed_s": 6.702176214021165,
+        "build_elapsed_s": 6.7892612789873965,
         "build_stdout": "{\"blocks\":33,\"bounded_sketch_faces\":33,\"cavities\":0,\"determinant_lower_bound_mm3\":22986.388888888876,\"exterior_sides\":114,\"hausdorff_error_upper_bound_mm\":0,\"method\":\"certified_sketch_layer_partition\",\"shared_faces\":42,\"status\":\"valid\",\"volume_exact_mm3\":[39260760,1]}",
         "build_stderr": "",
         "admitted": true,
@@ -10692,7 +10692,7 @@
           }
         ],
         "reported_method": "certified_sketch_layer_partition",
-        "audit_elapsed_s": 3.252393209026195,
+        "audit_elapsed_s": 3.4649598249816336,
         "closed_domain_certificate": {
           "status": "valid",
           "method": "certified_sketch_layer_partition",
@@ -10755,7 +10755,7 @@
       {
         "id": "seeded_convex_27",
         "family": "seeded_convex_blind_pockets",
-        "build_elapsed_s": 0.15053792000981048,
+        "build_elapsed_s": 0.18822354200528935,
         "build_stdout": "{\"blocks\":29,\"bounded_sketch_faces\":17,\"cavities\":0,\"determinant_lower_bound_mm3\":25999.999999999985,\"exterior_sides\":70,\"hausdorff_error_upper_bound_mm\":0,\"method\":\"certified_sketch_layer_partition\",\"shared_faces\":52,\"status\":\"valid\",\"volume_exact_mm3\":[46894728,1]}",
         "build_stderr": "",
         "admitted": true,
@@ -10881,7 +10881,7 @@
           }
         ],
         "reported_method": "certified_sketch_layer_partition",
-        "audit_elapsed_s": 0.0821481219609268,
+        "audit_elapsed_s": 0.07325655402382836,
         "closed_domain_certificate": {
           "status": "valid",
           "method": "certified_sketch_layer_partition",
@@ -10983,7 +10983,7 @@
       {
         "id": "seeded_convex_28",
         "family": "seeded_convex_through_holes",
-        "build_elapsed_s": 0.6578521829796955,
+        "build_elapsed_s": 0.6604713910492137,
         "build_stdout": "{\"blocks\":16,\"bounded_sketch_faces\":16,\"cavities\":0,\"determinant_lower_bound_mm3\":193119.9999999999,\"exterior_sides\":60,\"hausdorff_error_upper_bound_mm\":0,\"method\":\"certified_sketch_layer_partition\",\"shared_faces\":18,\"status\":\"valid\",\"volume_exact_mm3\":[44417600,1]}",
         "build_stderr": "",
         "admitted": true,
@@ -11057,7 +11057,7 @@
           }
         ],
         "reported_method": "certified_sketch_layer_partition",
-        "audit_elapsed_s": 0.318365785991773,
+        "audit_elapsed_s": 0.3067831019870937,
         "closed_domain_certificate": {
           "status": "valid",
           "method": "certified_sketch_layer_partition",
@@ -11120,7 +11120,7 @@
       {
         "id": "seeded_convex_29",
         "family": "seeded_convex_blind_pockets",
-        "build_elapsed_s": 6.734224370040465,
+        "build_elapsed_s": 6.602023899031337,
         "build_stdout": "{\"blocks\":72,\"bounded_sketch_faces\":42,\"cavities\":0,\"determinant_lower_bound_mm3\":7469.999999999996,\"exterior_sides\":142,\"hausdorff_error_upper_bound_mm\":0,\"method\":\"certified_sketch_layer_partition\",\"shared_faces\":145,\"status\":\"valid\",\"volume_exact_mm3\":[47663640,1]}",
         "build_stderr": "",
         "admitted": true,
@@ -11418,7 +11418,7 @@
           }
         ],
         "reported_method": "certified_sketch_layer_partition",
-        "audit_elapsed_s": 3.3262427499867044,
+        "audit_elapsed_s": 3.380474009027239,
         "closed_domain_certificate": {
           "status": "valid",
           "method": "certified_sketch_layer_partition",
@@ -11607,7 +11607,7 @@
       {
         "id": "fresh_convex_00",
         "family": "fresh_convex_host_rings",
-        "build_elapsed_s": 0.7145797729608603,
+        "build_elapsed_s": 0.6274931939551607,
         "build_stdout": "{\"blocks\":31,\"bounded_sketch_faces\":17,\"cavities\":0,\"determinant_lower_bound_mm3\":7.9999999999999964,\"exterior_sides\":74,\"hausdorff_error_upper_bound_mm\":0,\"method\":\"certified_sketch_layer_partition\",\"shared_faces\":56,\"status\":\"valid\",\"volume_exact_mm3\":[138771,1]}",
         "build_stderr": "",
         "admitted": true,
@@ -11741,7 +11741,7 @@
           }
         ],
         "reported_method": "certified_sketch_layer_partition",
-        "audit_elapsed_s": 0.3076390289934352,
+        "audit_elapsed_s": 0.31285492598544806,
         "closed_domain_certificate": {
           "status": "valid",
           "method": "certified_sketch_layer_partition",
@@ -12034,7 +12034,7 @@
       {
         "id": "fresh_convex_01",
         "family": "fresh_convex_host_rings",
-        "build_elapsed_s": 2.755061256000772,
+        "build_elapsed_s": 2.906129795999732,
         "build_stdout": "{\"blocks\":44,\"bounded_sketch_faces\":23,\"cavities\":0,\"determinant_lower_bound_mm3\":63.99999999999997,\"exterior_sides\":108,\"hausdorff_error_upper_bound_mm\":0,\"method\":\"certified_sketch_layer_partition\",\"shared_faces\":78,\"status\":\"valid\",\"volume_exact_mm3\":[136183,1]}",
         "build_stderr": "",
         "admitted": true,
@@ -12220,7 +12220,7 @@
           }
         ],
         "reported_method": "certified_sketch_layer_partition",
-        "audit_elapsed_s": 1.393208158959169,
+        "audit_elapsed_s": 1.3879631939926185,
         "closed_domain_certificate": {
           "status": "valid",
           "method": "certified_sketch_layer_partition",
@@ -12560,7 +12560,7 @@
       {
         "id": "fresh_convex_02",
         "family": "fresh_convex_host_rings",
-        "build_elapsed_s": 0.851219623000361,
+        "build_elapsed_s": 0.8895007679820992,
         "build_stdout": "{\"blocks\":30,\"bounded_sketch_faces\":16,\"cavities\":0,\"determinant_lower_bound_mm3\":51.99999999999997,\"exterior_sides\":74,\"hausdorff_error_upper_bound_mm\":0,\"method\":\"certified_sketch_layer_partition\",\"shared_faces\":53,\"status\":\"valid\",\"volume_exact_mm3\":[138624,1]}",
         "build_stderr": "",
         "admitted": true,
@@ -12690,7 +12690,7 @@
           }
         ],
         "reported_method": "certified_sketch_layer_partition",
-        "audit_elapsed_s": 0.4246085460181348,
+        "audit_elapsed_s": 0.4178104299935512,
         "closed_domain_certificate": {
           "status": "valid",
           "method": "certified_sketch_layer_partition",
@@ -12983,7 +12983,7 @@
       {
         "id": "fresh_convex_03",
         "family": "fresh_convex_host_rings",
-        "build_elapsed_s": 2.7748724260018207,
+        "build_elapsed_s": 2.717463281005621,
         "build_stdout": "{\"blocks\":47,\"bounded_sketch_faces\":25,\"cavities\":0,\"determinant_lower_bound_mm3\":27.999999999999986,\"exterior_sides\":118,\"hausdorff_error_upper_bound_mm\":0,\"method\":\"certified_sketch_layer_partition\",\"shared_faces\":82,\"status\":\"valid\",\"volume_exact_mm3\":[134765,1]}",
         "build_stderr": "",
         "admitted": true,
@@ -13181,7 +13181,7 @@
           }
         ],
         "reported_method": "certified_sketch_layer_partition",
-        "audit_elapsed_s": 1.3690845029777847,
+        "audit_elapsed_s": 1.3685065829777159,
         "closed_domain_certificate": {
           "status": "valid",
           "method": "certified_sketch_layer_partition",
@@ -13529,7 +13529,7 @@
       {
         "id": "fresh_convex_04",
         "family": "fresh_convex_host_rings",
-        "build_elapsed_s": 1.47322060004808,
+        "build_elapsed_s": 1.496691625972744,
         "build_stdout": "{\"blocks\":14,\"bounded_sketch_faces\":14,\"cavities\":0,\"determinant_lower_bound_mm3\":369.99999999999983,\"exterior_sides\":52,\"hausdorff_error_upper_bound_mm\":0,\"method\":\"certified_sketch_layer_partition\",\"shared_faces\":16,\"status\":\"valid\",\"volume_exact_mm3\":[137575,1]}",
         "build_stderr": "",
         "admitted": true,
@@ -13595,7 +13595,7 @@
           }
         ],
         "reported_method": "certified_sketch_layer_partition",
-        "audit_elapsed_s": 0.7519907510140911,
+        "audit_elapsed_s": 0.7527159489691257,
         "closed_domain_certificate": {
           "status": "valid",
           "method": "certified_sketch_layer_partition",
@@ -13822,7 +13822,7 @@
       {
         "id": "fresh_convex_05",
         "family": "fresh_convex_host_rings",
-        "build_elapsed_s": 3.4894008029950783,
+        "build_elapsed_s": 3.4856600090279244,
         "build_stdout": "{\"blocks\":49,\"bounded_sketch_faces\":26,\"cavities\":0,\"determinant_lower_bound_mm3\":20.549273021001603,\"exterior_sides\":116,\"hausdorff_error_upper_bound_mm\":0,\"method\":\"certified_sketch_layer_partition\",\"shared_faces\":89,\"status\":\"valid\",\"volume_exact_mm3\":[136058,1]}",
         "build_stderr": "",
         "admitted": true,
@@ -14028,7 +14028,7 @@
           }
         ],
         "reported_method": "certified_sketch_layer_partition",
-        "audit_elapsed_s": 1.7472330059972592,
+        "audit_elapsed_s": 1.717396476014983,
         "closed_domain_certificate": {
           "status": "valid",
           "method": "certified_sketch_layer_partition",
@@ -14376,7 +14376,7 @@
       {
         "id": "fresh_convex_06",
         "family": "fresh_convex_host_rings",
-        "build_elapsed_s": 0.5100000720121898,
+        "build_elapsed_s": 0.5486789830029011,
         "build_stdout": "{\"blocks\":26,\"bounded_sketch_faces\":14,\"cavities\":0,\"determinant_lower_bound_mm3\":43.99999999999998,\"exterior_sides\":66,\"hausdorff_error_upper_bound_mm\":0,\"method\":\"certified_sketch_layer_partition\",\"shared_faces\":45,\"status\":\"valid\",\"volume_exact_mm3\":[139176,1]}",
         "build_stderr": "",
         "admitted": true,
@@ -14490,7 +14490,7 @@
           }
         ],
         "reported_method": "certified_sketch_layer_partition",
-        "audit_elapsed_s": 0.2458389660459943,
+        "audit_elapsed_s": 0.2526754270074889,
         "closed_domain_certificate": {
           "status": "valid",
           "method": "certified_sketch_layer_partition",
@@ -14771,7 +14771,7 @@
       {
         "id": "fresh_convex_07",
         "family": "fresh_convex_host_rings",
-        "build_elapsed_s": 1.2061644780333154,
+        "build_elapsed_s": 1.1858721519820392,
         "build_stdout": "{\"blocks\":40,\"bounded_sketch_faces\":21,\"cavities\":0,\"determinant_lower_bound_mm3\":83.99999999999996,\"exterior_sides\":96,\"hausdorff_error_upper_bound_mm\":0,\"method\":\"certified_sketch_layer_partition\",\"shared_faces\":72,\"status\":\"valid\",\"volume_exact_mm3\":[136504,1]}",
         "build_stderr": "",
         "admitted": true,
@@ -14941,7 +14941,7 @@
           }
         ],
         "reported_method": "certified_sketch_layer_partition",
-        "audit_elapsed_s": 0.6060094339773059,
+        "audit_elapsed_s": 0.5890701260068454,
         "closed_domain_certificate": {
           "status": "valid",
           "method": "certified_sketch_layer_partition",
@@ -15277,7 +15277,7 @@
       {
         "id": "fresh_convex_08",
         "family": "fresh_convex_host_rings",
-        "build_elapsed_s": 1.3492745240218937,
+        "build_elapsed_s": 1.3452380339731462,
         "build_stdout": "{\"blocks\":33,\"bounded_sketch_faces\":18,\"cavities\":0,\"determinant_lower_bound_mm3\":55.99999999999997,\"exterior_sides\":84,\"hausdorff_error_upper_bound_mm\":0,\"method\":\"certified_sketch_layer_partition\",\"shared_faces\":57,\"status\":\"valid\",\"volume_exact_mm3\":[137722,1]}",
         "build_stderr": "",
         "admitted": true,
@@ -15419,7 +15419,7 @@
           }
         ],
         "reported_method": "certified_sketch_layer_partition",
-        "audit_elapsed_s": 0.7015469169709831,
+        "audit_elapsed_s": 0.6590964749921113,
         "closed_domain_certificate": {
           "status": "valid",
           "method": "certified_sketch_layer_partition",
@@ -15712,7 +15712,7 @@
       {
         "id": "fresh_convex_09",
         "family": "fresh_convex_host_rings",
-        "build_elapsed_s": 2.302594174980186,
+        "build_elapsed_s": 2.057745535974391,
         "build_stdout": "{\"blocks\":47,\"bounded_sketch_faces\":25,\"cavities\":0,\"determinant_lower_bound_mm3\":39.99999999999998,\"exterior_sides\":114,\"hausdorff_error_upper_bound_mm\":0,\"method\":\"certified_sketch_layer_partition\",\"shared_faces\":84,\"status\":\"valid\",\"volume_exact_mm3\":[136044,1]}",
         "build_stderr": "",
         "admitted": true,
@@ -15910,7 +15910,7 @@
           }
         ],
         "reported_method": "certified_sketch_layer_partition",
-        "audit_elapsed_s": 1.2929738269886002,
+        "audit_elapsed_s": 1.0371438739821315,
         "closed_domain_certificate": {
           "status": "valid",
           "method": "certified_sketch_layer_partition",
@@ -16258,7 +16258,7 @@
       {
         "id": "fresh_convex_10",
         "family": "fresh_convex_host_rings",
-        "build_elapsed_s": 2.308579500997439,
+        "build_elapsed_s": 1.9443741859868169,
         "build_stdout": "{\"blocks\":14,\"bounded_sketch_faces\":14,\"cavities\":0,\"determinant_lower_bound_mm3\":269.99999999999983,\"exterior_sides\":52,\"hausdorff_error_upper_bound_mm\":0,\"method\":\"certified_sketch_layer_partition\",\"shared_faces\":16,\"status\":\"valid\",\"volume_exact_mm3\":[137605,1]}",
         "build_stderr": "",
         "admitted": true,
@@ -16324,7 +16324,7 @@
           }
         ],
         "reported_method": "certified_sketch_layer_partition",
-        "audit_elapsed_s": 1.1987726159859449,
+        "audit_elapsed_s": 0.9435122750001028,
         "closed_domain_certificate": {
           "status": "valid",
           "method": "certified_sketch_layer_partition",
@@ -16559,7 +16559,7 @@
       {
         "id": "fresh_convex_11",
         "family": "fresh_convex_host_rings",
-        "build_elapsed_s": 2.2940695360302925,
+        "build_elapsed_s": 2.2501768909860402,
         "build_stdout": "{\"blocks\":45,\"bounded_sketch_faces\":24,\"cavities\":0,\"determinant_lower_bound_mm3\":35.99999999999998,\"exterior_sides\":108,\"hausdorff_error_upper_bound_mm\":0,\"method\":\"certified_sketch_layer_partition\",\"shared_faces\":81,\"status\":\"valid\",\"volume_exact_mm3\":[134329,1]}",
         "build_stderr": "",
         "admitted": true,
@@ -16749,7 +16749,7 @@
           }
         ],
         "reported_method": "certified_sketch_layer_partition",
-        "audit_elapsed_s": 1.4136499220039696,
+        "audit_elapsed_s": 1.0748996189795434,
         "closed_domain_certificate": {
           "status": "valid",
           "method": "certified_sketch_layer_partition",

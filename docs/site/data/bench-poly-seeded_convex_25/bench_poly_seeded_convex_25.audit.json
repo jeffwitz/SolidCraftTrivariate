@@ -3,7 +3,7 @@
   "case": {
     "id": "seeded_convex_25",
     "family": "seeded_convex_blind_pockets",
-    "build_elapsed_s": 1.2878667209879495,
+    "build_elapsed_s": 1.3071627040044405,
     "build_stdout": "{\"blocks\":28,\"bounded_sketch_faces\":16,\"cavities\":0,\"determinant_lower_bound_mm3\":37619.99999999998,\"exterior_sides\":60,\"hausdorff_error_upper_bound_mm\":0,\"method\":\"certified_sketch_layer_partition\",\"shared_faces\":54,\"status\":\"valid\",\"volume_exact_mm3\":[31229536,1]}",
     "build_stderr": "",
     "admitted": true,
@@ -125,7 +125,7 @@
       }
     ],
     "reported_method": "certified_sketch_layer_partition",
-    "audit_elapsed_s": 0.6560816449928097,
+    "audit_elapsed_s": 0.6254486350226216,
     "closed_domain_certificate": {
       "status": "valid",
       "method": "certified_sketch_layer_partition",
@@ -224,11 +224,6 @@
     ],
     "outcome": "valid_model"
   },
-  "latest_release": {
-    "tag": "latest-release",
-    "cli_sha256": "0690e67c5077228d880f3002d2fef06d081dd612aba500855264599f20e8ef38",
-    "measurement_scope": "Latest tracked 45-case release run; its condition grid is a sampled diagnostic."
-  },
   "model_audit": {
     "blocks": 28,
     "bounded_sketch_faces": 16,
@@ -246,8 +241,8 @@
   },
   "kernel_rebuild": {
     "command": "build recipe.json model.json; audit model.json; export-step model.json reference.step",
-    "kernel_revision": "7d37353900e86345ed8ef176fc2c987bf06a8d5b",
-    "kernel_binary_sha256": "0690e67c5077228d880f3002d2fef06d081dd612aba500855264599f20e8ef38",
+    "kernel_revision": "083fdfe14373aadbca0e9d10586e2cce32ba077d",
+    "kernel_binary_sha256": "8f33eeba801e38e56fbe52ad6ccb96a68a28d2f20187a7d67df869af0c0f9ac2",
     "recipe_sha256": "515631da3d75f04a135eda7459f35d0bdbc725e309f69095786b3900446c379e",
     "model_sha256": "f73c58334bb130188405b37cc98f2e25588665e53ea0e129b9277d5aa82c879a",
     "step_sha256": "d988cc839b633c9cd99e027ac761b2a7c1416bf210d5462aef2560d888dd1f78",
@@ -273,233 +268,8 @@
       "maximum_condition_2": 450.10992613227563
     }
   },
-  "latest_run_details_case": {
-    "id": "seeded_convex_25",
-    "family": "seeded_convex_blind_pockets",
-    "build_elapsed_s": 1.2878667209879495,
-    "build_stdout": "{\"blocks\":28,\"bounded_sketch_faces\":16,\"cavities\":0,\"determinant_lower_bound_mm3\":37619.99999999998,\"exterior_sides\":60,\"hausdorff_error_upper_bound_mm\":0,\"method\":\"certified_sketch_layer_partition\",\"shared_faces\":54,\"status\":\"valid\",\"volume_exact_mm3\":[31229536,1]}",
-    "build_stderr": "",
-    "admitted": true,
-    "geometry_pass": true,
-    "construction_method": "separated_convex_quad_rings",
-    "block_count": 28,
-    "condition_grid_5cube_per_block": [
-      {
-        "block_id": "quad_-813d1_-526d1_-813d1_64d1_-445d1_-54d1_-445d1_64d1_z0_3",
-        "max_condition_2": 264.928035788423
-      },
-      {
-        "block_id": "quad_-813d1_-526d1_-445d1_-54d1_-221d1_-126d1_-17d1_-5473d7_z0_3",
-        "max_condition_2": 322.25350368626033
-      },
-      {
-        "block_id": "quad_-813d1_64d1_-813d1_654d1_-445d1_64d1_-445d1_182d1_z0_3",
-        "max_condition_2": 264.9278804914958
-      },
-      {
-        "block_id": "quad_-813d1_654d1_-445d1_182d1_-221d1_254d1_-17d1_6369d7_z0_3",
-        "max_condition_2": 322.25356356215354
-      },
-      {
-        "block_id": "quad_-445d1_-54d1_-445d1_64d1_-221d1_-126d1_-83d1_64d1_z0_3",
-        "max_condition_2": 131.58467200850438
-      },
-      {
-        "block_id": "quad_-445d1_64d1_-445d1_182d1_-221d1_254d1_-83d1_64d1_z0_3",
-        "max_condition_2": 131.58457041847865
-      },
-      {
-        "block_id": "quad_-221d1_-126d1_-83d1_64d1_-17d1_-5473d7_-17d1_64d1_z0_3",
-        "max_condition_2": 359.2605876249129
-      },
-      {
-        "block_id": "quad_-221d1_254d1_-83d1_64d1_-17d1_64d1_-17d1_6369d7_z0_3",
-        "max_condition_2": 359.2608775498159
-      },
-      {
-        "block_id": "quad_-17d1_-5473d7_-17d1_64d1_115d1_-54d1_115d1_64d1_z0_3",
-        "max_condition_2": 373.08738274295496
-      },
-      {
-        "block_id": "quad_-17d1_-5473d7_115d1_-54d1_307d1_-886d1_339d1_-126d1_z0_3",
-        "max_condition_2": 255.74092464585593
-      },
-      {
-        "block_id": "quad_-17d1_64d1_-17d1_6369d7_115d1_64d1_115d1_182d1_z0_3",
-        "max_condition_2": 373.0868583770835
-      },
-      {
-        "block_id": "quad_-17d1_6369d7_115d1_182d1_307d1_1014d1_339d1_254d1_z0_3",
-        "max_condition_2": 255.74093019493841
-      },
-      {
-        "block_id": "quad_115d1_-54d1_115d1_64d1_339d1_-126d1_477d1_64d1_z0_3",
-        "max_condition_2": 131.58467200850438
-      },
-      {
-        "block_id": "quad_115d1_64d1_115d1_182d1_339d1_254d1_477d1_64d1_z0_3",
-        "max_condition_2": 131.58457041847865
-      },
-      {
-        "block_id": "quad_307d1_-886d1_339d1_-126d1_477d1_64d1_997d1_64d1_z0_3",
-        "max_condition_2": 450.10992613227546
-      },
-      {
-        "block_id": "quad_307d1_1014d1_339d1_254d1_477d1_64d1_997d1_64d1_z0_3",
-        "max_condition_2": 450.1097140536957
-      },
-      {
-        "block_id": "quad_-813d1_-526d1_-813d1_64d1_-445d1_-54d1_-445d1_64d1_z3_14",
-        "max_condition_2": 72.25446919988543
-      },
-      {
-        "block_id": "quad_-813d1_-526d1_-445d1_-54d1_-221d1_-126d1_-17d1_-5473d7_z3_14",
-        "max_condition_2": 87.88759744570444
-      },
-      {
-        "block_id": "quad_-813d1_64d1_-813d1_654d1_-445d1_64d1_-445d1_182d1_z3_14",
-        "max_condition_2": 72.25389869910586
-      },
-      {
-        "block_id": "quad_-813d1_654d1_-445d1_182d1_-221d1_254d1_-17d1_6369d7_z3_14",
-        "max_condition_2": 87.88781717328277
-      },
-      {
-        "block_id": "quad_-221d1_-126d1_-83d1_64d1_-17d1_-5473d7_-17d1_64d1_z3_14",
-        "max_condition_2": 97.98406041411096
-      },
-      {
-        "block_id": "quad_-221d1_254d1_-83d1_64d1_-17d1_64d1_-17d1_6369d7_z3_14",
-        "max_condition_2": 97.98512829916189
-      },
-      {
-        "block_id": "quad_-17d1_-5473d7_-17d1_64d1_115d1_-54d1_115d1_64d1_z3_14",
-        "max_condition_2": 101.76383809057195
-      },
-      {
-        "block_id": "quad_-17d1_-5473d7_115d1_-54d1_307d1_-886d1_339d1_-126d1_z3_14",
-        "max_condition_2": 69.74833728074982
-      },
-      {
-        "block_id": "quad_-17d1_64d1_-17d1_6369d7_115d1_64d1_115d1_182d1_z3_14",
-        "max_condition_2": 101.76189340074083
-      },
-      {
-        "block_id": "quad_-17d1_6369d7_115d1_182d1_307d1_1014d1_339d1_254d1_z3_14",
-        "max_condition_2": 69.7483576585088
-      },
-      {
-        "block_id": "quad_307d1_-886d1_339d1_-126d1_477d1_64d1_997d1_64d1_z3_14",
-        "max_condition_2": 122.75856413887809
-      },
-      {
-        "block_id": "quad_307d1_1014d1_339d1_254d1_477d1_64d1_997d1_64d1_z3_14",
-        "max_condition_2": 122.75778576891778
-      }
-    ],
-    "reported_method": "certified_sketch_layer_partition",
-    "audit_elapsed_s": 0.6560816449928097,
-    "closed_domain_certificate": {
-      "status": "valid",
-      "method": "certified_sketch_layer_partition",
-      "determinant_lower_bound_mm3": 37619.99999999998,
-      "hausdorff_error_upper_bound_mm": 0
-    },
-    "volume_exact_expected_mm3": [
-      31229536,
-      1
-    ],
-    "volume_exact_cli_mm3": [
-      31229536,
-      1
-    ],
-    "volume_match": true,
-    "input_vertex_lower_bound_total_blocks": 11,
-    "layers": [
-      {
-        "cells": 16,
-        "vertices": 21,
-        "edges": 36,
-        "euler": 1,
-        "boundary_edges": 8,
-        "internal_edges": 28,
-        "area_exact_mm2": [
-          2380300,
-          1
-        ],
-        "area_sum_mm2": 2380300.0,
-        "pairwise_overlap_pairs": 0,
-        "z_interval_mm": [
-          0.0,
-          3.0
-        ],
-        "expected_area_exact_mm2": [
-          2380300,
-          1
-        ],
-        "area_gap_exact_mm2": [
-          0,
-          1
-        ],
-        "contained_in_expected_material": true,
-        "expected_euler_characteristic": 1,
-        "active_hole_count": 0,
-        "quadrilateral_lower_bounds": {
-          "assumption": "one connected conforming quadrilateral section; all input contour corners mandatory",
-          "input_vertex_count": 5,
-          "input_only_bound_blocks": 2,
-          "actual_boundary_vertex_count": 8,
-          "actual_interior_vertex_count": 13,
-          "with_inserted_host_vertices_bound_blocks": "16",
-          "observed_quads": 16,
-          "attains_conditional_bound": true
-        }
-      },
-      {
-        "cells": 12,
-        "vertices": 21,
-        "edges": 34,
-        "euler": -1,
-        "boundary_edges": 20,
-        "internal_edges": 14,
-        "area_exact_mm2": [
-          2189876,
-          1
-        ],
-        "area_sum_mm2": 2189876.0,
-        "pairwise_overlap_pairs": 0,
-        "z_interval_mm": [
-          3.0,
-          14.0
-        ],
-        "expected_area_exact_mm2": [
-          2189876,
-          1
-        ],
-        "area_gap_exact_mm2": [
-          0,
-          1
-        ],
-        "contained_in_expected_material": true,
-        "expected_euler_characteristic": -1,
-        "active_hole_count": 2,
-        "quadrilateral_lower_bounds": {
-          "assumption": "one connected conforming quadrilateral section; all input contour corners mandatory",
-          "input_vertex_count": 15,
-          "input_only_bound_blocks": 9,
-          "actual_boundary_vertex_count": 20,
-          "actual_interior_vertex_count": 1,
-          "with_inserted_host_vertices_bound_blocks": "12",
-          "observed_quads": 12,
-          "attains_conditional_bound": true
-        }
-      }
-    ],
-    "outcome": "valid_model"
-  },
-  "latest_run_details_metadata": {
+  "measurement_release": {
     "tag": "latest-release",
-    "cli_sha256": "0690e67c5077228d880f3002d2fef06d081dd612aba500855264599f20e8ef38",
-    "source_checkout_head": "7d37353900e86345ed8ef176fc2c987bf06a8d5b"
+    "cli_sha256": "8f33eeba801e38e56fbe52ad6ccb96a68a28d2f20187a7d67df869af0c0f9ac2"
   }
 }

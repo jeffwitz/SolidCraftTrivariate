@@ -3,7 +3,7 @@
   "case": {
     "id": "seeded_convex_28",
     "family": "seeded_convex_through_holes",
-    "build_elapsed_s": 0.6578521829796955,
+    "build_elapsed_s": 0.6604713910492137,
     "build_stdout": "{\"blocks\":16,\"bounded_sketch_faces\":16,\"cavities\":0,\"determinant_lower_bound_mm3\":193119.9999999999,\"exterior_sides\":60,\"hausdorff_error_upper_bound_mm\":0,\"method\":\"certified_sketch_layer_partition\",\"shared_faces\":18,\"status\":\"valid\",\"volume_exact_mm3\":[44417600,1]}",
     "build_stderr": "",
     "admitted": true,
@@ -77,7 +77,7 @@
       }
     ],
     "reported_method": "certified_sketch_layer_partition",
-    "audit_elapsed_s": 0.318365785991773,
+    "audit_elapsed_s": 0.3067831019870937,
     "closed_domain_certificate": {
       "status": "valid",
       "method": "certified_sketch_layer_partition",
@@ -137,11 +137,6 @@
     ],
     "outcome": "valid_model"
   },
-  "latest_release": {
-    "tag": "latest-release",
-    "cli_sha256": "0690e67c5077228d880f3002d2fef06d081dd612aba500855264599f20e8ef38",
-    "measurement_scope": "Latest tracked 45-case release run; its condition grid is a sampled diagnostic."
-  },
   "model_audit": {
     "blocks": 16,
     "bounded_sketch_faces": 16,
@@ -159,8 +154,8 @@
   },
   "kernel_rebuild": {
     "command": "build recipe.json model.json; audit model.json; export-step model.json reference.step",
-    "kernel_revision": "7d37353900e86345ed8ef176fc2c987bf06a8d5b",
-    "kernel_binary_sha256": "0690e67c5077228d880f3002d2fef06d081dd612aba500855264599f20e8ef38",
+    "kernel_revision": "083fdfe14373aadbca0e9d10586e2cce32ba077d",
+    "kernel_binary_sha256": "8f33eeba801e38e56fbe52ad6ccb96a68a28d2f20187a7d67df869af0c0f9ac2",
     "recipe_sha256": "8965e4074b44066ee732a796a49dd767c6ca4bfd3ccc453bfc22ddb4ddbf9713",
     "model_sha256": "0cc00fec717c329090c6377576c817a7c1433e8d4fae900a4fac89b114a9435e",
     "step_sha256": "0db7ae51c6c1d9c42112cf5ccd33026b2b54ef3042a2aea7af11ba62c9a22378",
@@ -186,146 +181,8 @@
       "maximum_condition_2": 77.96461356603604
     }
   },
-  "latest_run_details_case": {
-    "id": "seeded_convex_28",
-    "family": "seeded_convex_through_holes",
-    "build_elapsed_s": 0.6578521829796955,
-    "build_stdout": "{\"blocks\":16,\"bounded_sketch_faces\":16,\"cavities\":0,\"determinant_lower_bound_mm3\":193119.9999999999,\"exterior_sides\":60,\"hausdorff_error_upper_bound_mm\":0,\"method\":\"certified_sketch_layer_partition\",\"shared_faces\":18,\"status\":\"valid\",\"volume_exact_mm3\":[44417600,1]}",
-    "build_stderr": "",
-    "admitted": true,
-    "geometry_pass": true,
-    "construction_method": "separated_convex_quad_rings",
-    "block_count": 16,
-    "condition_grid_5cube_per_block": [
-      {
-        "block_id": "quad_-1097d1_-968d1_-2805777d2941_-1396888d2941_-297d1_-448d1_-239d1_-248d1_z0_17",
-        "max_condition_2": 61.10362338608727
-      },
-      {
-        "block_id": "quad_-2805777d2941_-1396888d2941_-239d1_-248d1_-97d1_-48d1_-97d1_32d1_z0_17",
-        "max_condition_2": 72.91103858838058
-      },
-      {
-        "block_id": "quad_-2805777d2941_-1396888d2941_-807d1_32d1_-297d1_112d1_-239d1_28d1_z0_17",
-        "max_condition_2": 57.509024514660794
-      },
-      {
-        "block_id": "quad_-2805777d2941_-1396888d2941_-239d1_28d1_-97d1_32d1_-97d1_112d1_z0_17",
-        "max_condition_2": 77.96461356603604
-      },
-      {
-        "block_id": "quad_-1097d1_-968d1_-807d1_-1388d1_-297d1_-448d1_-239d1_-532d1_z0_17",
-        "max_condition_2": 61.71015894661577
-      },
-      {
-        "block_id": "quad_-807d1_-1388d1_-239d1_-532d1_-97d1_-968d1_-97d1_-448d1_z0_17",
-        "max_condition_2": 75.64050951889291
-      },
-      {
-        "block_id": "quad_-807d1_32d1_-452d1_532d1_-297d1_112d1_-239d1_312d1_z0_17",
-        "max_condition_2": 43.58596120631109
-      },
-      {
-        "block_id": "quad_-452d1_532d1_-239d1_312d1_-97d1_512d1_-97d1_1032d1_z0_17",
-        "max_condition_2": 45.12782416980431
-      },
-      {
-        "block_id": "quad_-97d1_-968d1_-97d1_-448d1_45d1_-248d1_258d1_-468d1_z0_17",
-        "max_condition_2": 45.127824169804306
-      },
-      {
-        "block_id": "quad_-97d1_-48d1_-97d1_32d1_45d1_36d1_2235223d2941_1585112d2941_z0_17",
-        "max_condition_2": 77.96461356603604
-      },
-      {
-        "block_id": "quad_-97d1_32d1_-97d1_112d1_45d1_312d1_2235223d2941_1585112d2941_z0_17",
-        "max_condition_2": 72.9110385883806
-      },
-      {
-        "block_id": "quad_-97d1_512d1_-97d1_1032d1_45d1_596d1_613d1_1452d1_z0_17",
-        "max_condition_2": 75.64050951889291
-      },
-      {
-        "block_id": "quad_45d1_-248d1_103d1_-48d1_258d1_-468d1_613d1_32d1_z0_17",
-        "max_condition_2": 43.58596120631109
-      },
-      {
-        "block_id": "quad_45d1_36d1_103d1_-48d1_613d1_32d1_2235223d2941_1585112d2941_z0_17",
-        "max_condition_2": 57.50902451466079
-      },
-      {
-        "block_id": "quad_45d1_312d1_103d1_512d1_2235223d2941_1585112d2941_903d1_1032d1_z0_17",
-        "max_condition_2": 61.103623386087285
-      },
-      {
-        "block_id": "quad_45d1_596d1_103d1_512d1_613d1_1452d1_903d1_1032d1_z0_17",
-        "max_condition_2": 61.71015894661577
-      }
-    ],
-    "reported_method": "certified_sketch_layer_partition",
-    "audit_elapsed_s": 0.318365785991773,
-    "closed_domain_certificate": {
-      "status": "valid",
-      "method": "certified_sketch_layer_partition",
-      "determinant_lower_bound_mm3": 193119.9999999999,
-      "hausdorff_error_upper_bound_mm": 0
-    },
-    "volume_exact_expected_mm3": [
-      44417600,
-      1
-    ],
-    "volume_exact_cli_mm3": [
-      44417600,
-      1
-    ],
-    "volume_match": true,
-    "input_vertex_lower_bound_total_blocks": 13,
-    "layers": [
-      {
-        "cells": 16,
-        "vertices": 29,
-        "edges": 46,
-        "euler": -1,
-        "boundary_edges": 28,
-        "internal_edges": 18,
-        "area_exact_mm2": [
-          2612800,
-          1
-        ],
-        "area_sum_mm2": 2612800.0,
-        "pairwise_overlap_pairs": 0,
-        "z_interval_mm": [
-          0.0,
-          17.0
-        ],
-        "expected_area_exact_mm2": [
-          2612800,
-          1
-        ],
-        "area_gap_exact_mm2": [
-          0,
-          1
-        ],
-        "contained_in_expected_material": true,
-        "expected_euler_characteristic": -1,
-        "active_hole_count": 2,
-        "quadrilateral_lower_bounds": {
-          "assumption": "one connected conforming quadrilateral section; all input contour corners mandatory",
-          "input_vertex_count": 24,
-          "input_only_bound_blocks": 13,
-          "actual_boundary_vertex_count": 28,
-          "actual_interior_vertex_count": 1,
-          "with_inserted_host_vertices_bound_blocks": "16",
-          "observed_quads": 16,
-          "attains_conditional_bound": true
-        }
-      }
-    ],
-    "outcome": "valid_model"
-  },
-  "latest_run_details_metadata": {
+  "measurement_release": {
     "tag": "latest-release",
-    "cli_sha256": "0690e67c5077228d880f3002d2fef06d081dd612aba500855264599f20e8ef38",
-    "source_checkout_head": "7d37353900e86345ed8ef176fc2c987bf06a8d5b"
+    "cli_sha256": "8f33eeba801e38e56fbe52ad6ccb96a68a28d2f20187a7d67df869af0c0f9ac2"
   }
 }

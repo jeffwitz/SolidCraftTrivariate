@@ -62,8 +62,8 @@
   },
   "kernel_rebuild": {
     "command": "build recipe.json model.json; audit model.json; export-step model.json reference.step",
-    "kernel_revision": "7d37353900e86345ed8ef176fc2c987bf06a8d5b",
-    "kernel_binary_sha256": "0690e67c5077228d880f3002d2fef06d081dd612aba500855264599f20e8ef38",
+    "kernel_revision": "083fdfe14373aadbca0e9d10586e2cce32ba077d",
+    "kernel_binary_sha256": "8f33eeba801e38e56fbe52ad6ccb96a68a28d2f20187a7d67df869af0c0f9ac2",
     "recipe_sha256": "1a574737d5f14ceaee1125763c7f33b19adeef53095b691a9dc768746d41496f",
     "model_sha256": "7206ee7dd1be69bd666b9691e42a58e1e0d94bf8ef938ba996144940ac84fd84",
     "step_sha256": "64dfd3f2e841a19beb7cd6601424c8c7730ef224ff43e5aa4f0d148a1d000d84",
@@ -91,27 +91,5 @@
       "sample_count": 1250,
       "maximum_condition_2": 13.333333333333334
     }
-  },
-  "latest_benchmark_case": {
-    "status": "qualified",
-    "method": "four_sector_local_sweeps",
-    "blocks": 10,
-    "reason": null,
-    "det_lower_mm3": 67.7333333333291,
-    "cut_comparison": {
-      "previous": {
-        "blocks": 10
-      },
-      "propagated": {
-        "blocks": 10
-      }
-    },
-    "interfaces": 11,
-    "max_sampled_kappa": 13.333333333333334,
-    "volume_relative_error": 4.526991852127318e-16,
-    "probes": 192,
-    "probe_mismatches": 0,
-    "closed_valid": true,
-    "labels_match": true
   }
 }

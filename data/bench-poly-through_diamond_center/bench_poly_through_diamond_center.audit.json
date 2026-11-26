@@ -2,113 +2,20 @@
   "schema": "polygon_gallery_case_audit_v1",
   "case": {
     "id": "through_diamond_center",
-    "family": "convex_through_holes",
-    "build_elapsed_s": 0.05262430995935574,
-    "build_stdout": "{\"blocks\":6,\"bounded_sketch_faces\":6,\"cavities\":0,\"determinant_lower_bound_mm3\":1715.999999999999,\"exterior_sides\":24,\"hausdorff_error_upper_bound_mm\":0,\"method\":\"certified_sketch_layer_partition\",\"shared_faces\":6,\"status\":\"valid\",\"volume_exact_mm3\":[31416,1]}",
-    "build_stderr": "",
-    "admitted": true,
-    "geometry_pass": true,
-    "construction_method": "separated_convex_quad_rings",
-    "block_count": 6,
-    "condition_grid_5cube_per_block": [
-      {
-        "block_id": "quad_-32d1_-22d1_-32d1_22d1_-12d1_22d1_-11d1_0d1_z0_12",
-        "max_condition_2": 4.185408949286256
-      },
-      {
-        "block_id": "quad_-32d1_-22d1_-11d1_0d1_0d1_-22d1_0d1_-9d1_z0_12",
-        "max_condition_2": 3.383292935279579
-      },
-      {
-        "block_id": "quad_-12d1_22d1_-11d1_0d1_0d1_9d1_0d1_22d1_z0_12",
-        "max_condition_2": 2.3027973393883205
-      },
-      {
-        "block_id": "quad_0d1_-22d1_0d1_-9d1_11d1_0d1_12d1_-22d1_z0_12",
-        "max_condition_2": 2.3027973393883214
-      },
-      {
-        "block_id": "quad_0d1_9d1_0d1_22d1_11d1_0d1_32d1_22d1_z0_12",
-        "max_condition_2": 3.383292935279579
-      },
-      {
-        "block_id": "quad_11d1_0d1_12d1_-22d1_32d1_-22d1_32d1_22d1_z0_12",
-        "max_condition_2": 4.185408949286256
-      }
-    ],
-    "reported_method": "certified_sketch_layer_partition",
-    "audit_elapsed_s": 0.02632082998752594,
-    "closed_domain_certificate": {
-      "status": "valid",
-      "method": "certified_sketch_layer_partition",
-      "determinant_lower_bound_mm3": 1715.999999999999,
-      "hausdorff_error_upper_bound_mm": 0
-    },
-    "volume_exact_expected_mm3": [
-      31416,
-      1
-    ],
-    "volume_exact_cli_mm3": [
-      31416,
-      1
-    ],
-    "volume_match": true,
-    "input_vertex_lower_bound_total_blocks": 4,
-    "layers": [
-      {
-        "cells": 6,
-        "vertices": 12,
-        "edges": 18,
-        "euler": 0,
-        "boundary_edges": 12,
-        "internal_edges": 6,
-        "area_exact_mm2": [
-          2618,
-          1
-        ],
-        "area_sum_mm2": 2618.0,
-        "pairwise_overlap_pairs": 0,
-        "z_interval_mm": [
-          0.0,
-          12.0
-        ],
-        "expected_area_exact_mm2": [
-          2618,
-          1
-        ],
-        "area_gap_exact_mm2": [
-          0,
-          1
-        ],
-        "contained_in_expected_material": true,
-        "expected_euler_characteristic": 0,
-        "active_hole_count": 1,
-        "quadrilateral_lower_bounds": {
-          "assumption": "one connected conforming quadrilateral section; all input contour corners mandatory",
-          "input_vertex_count": 8,
-          "input_only_bound_blocks": 4,
-          "actual_boundary_vertex_count": 12,
-          "actual_interior_vertex_count": 0,
-          "with_inserted_host_vertices_bound_blocks": "6",
-          "observed_quads": 6,
-          "attains_conditional_bound": true
-        }
-      }
-    ],
-    "outcome": "valid_model"
+    "family": "convex_through_holes"
   },
   "model_audit": {
     "blocks": 6,
     "bounded_sketch_faces": 6,
     "cavities": 0,
-    "determinant_lower_bound_mm3": 1715.999999999999,
+    "determinant_lower_bound_mm3": 3431.999999999998,
     "exterior_sides": 24,
     "hausdorff_error_upper_bound_mm": 0,
     "method": "certified_sketch_layer_partition",
     "shared_faces": 6,
     "status": "valid",
     "volume_exact_mm3": [
-      31416,
+      62832,
       1
     ]
   },
@@ -116,21 +23,21 @@
     "command": "build recipe.json model.json; audit model.json; export-step model.json reference.step",
     "kernel_revision": "083fdfe14373aadbca0e9d10586e2cce32ba077d",
     "kernel_binary_sha256": "8f33eeba801e38e56fbe52ad6ccb96a68a28d2f20187a7d67df869af0c0f9ac2",
-    "recipe_sha256": "715925020ceb509754242c29e5c5efff4da1a948c4585a320ee38e510f8e5f91",
-    "model_sha256": "db7be92d4979c89998b08569c0b954f54d560c9e4900b57c48a0b752db615bf5",
-    "step_sha256": "2ef376b6107a01e14f64baccb739c0b74182a9856c8185c2c86321ce08c261a2",
+    "recipe_sha256": "c2c424c59b60a229a771d3b5e52b486f80f387b9ced9b26ccd3b0dfd88205eec",
+    "model_sha256": "5d353b1c17659b212112390f7f20ca536379bfa37e622a790242ccc332ebb4a0",
+    "step_sha256": "14dcc15a2dbd09c3467f46bd9b36e5b0b3afd4145b5670aba14f9cc08f803b30",
     "build_report": {
       "blocks": 6,
       "bounded_sketch_faces": 6,
       "cavities": 0,
-      "determinant_lower_bound_mm3": 1715.999999999999,
+      "determinant_lower_bound_mm3": 3431.999999999998,
       "exterior_sides": 24,
       "hausdorff_error_upper_bound_mm": 0,
       "method": "certified_sketch_layer_partition",
       "shared_faces": 6,
       "status": "valid",
       "volume_exact_mm3": [
-        31416,
+        62832,
         1
       ]
     },
@@ -138,18 +45,20 @@
       "method": "maximum spectral Jacobian condition number on the closed 5x5x5 parameter grid per block; diagnostic only",
       "points_per_block": 125,
       "sample_count": 750,
-      "maximum_condition_2": 4.185408949286256
+      "maximum_condition_2": 2.92460607216046
     }
   },
-  "measurement_release": {
+  "frozen_reference": {
+    "height_mm": 12,
+    "gallery_height_factor": 2,
     "tag": "latest-release",
-    "cli_sha256": "8f33eeba801e38e56fbe52ad6ccb96a68a28d2f20187a7d67df869af0c0f9ac2"
+    "report": "docs/results/convex-host-rings.json"
   },
   "extrusion_quality": {
     "block_count": 6,
     "planar_spectral_kappa": 2.73002307627514,
     "planar_spectral_kappa_witness": {
-      "block": "quad_-32d1_-22d1_-32d1_22d1_-12d1_22d1_-11d1_0d1_z0_12",
+      "block": "quad_-32d1_-22d1_-32d1_22d1_-12d1_22d1_-11d1_0d1_z0_24",
       "param": [
         0.0,
         0.0,
@@ -160,7 +69,7 @@
     },
     "minimum_corner_sine": 0.6904757466825006,
     "minimum_corner_sine_witness": {
-      "block": "quad_-32d1_-22d1_-32d1_22d1_-12d1_22d1_-11d1_0d1_z0_12",
+      "block": "quad_-32d1_-22d1_-32d1_22d1_-12d1_22d1_-11d1_0d1_z0_24",
       "param": [
         0.0,
         0.0,
@@ -177,41 +86,41 @@
         0.0
       ]
     },
-    "thickness_direction_aspect": 4.1854089492862565,
+    "thickness_direction_aspect": 2.0927044746431283,
     "thickness_direction_aspect_witness": {
-      "block": "quad_-32d1_-22d1_-32d1_22d1_-12d1_22d1_-11d1_0d1_z0_12",
+      "block": "quad_-32d1_-22d1_-32d1_22d1_-12d1_22d1_-11d1_0d1_z0_24",
       "param": [
         0.0,
         0.0,
         0.0
       ],
       "planar_sigma_max_mm": 50.224907391435075,
-      "normal_thickness_per_parameter_mm": 12.0,
-      "thickness_tangent_3d_mm": 12.0
+      "normal_thickness_per_parameter_mm": 24.0,
+      "thickness_tangent_3d_mm": 24.0
     },
-    "max_3d_spectral_kappa": 4.185408949286256,
+    "max_3d_spectral_kappa": 2.92460607216046,
     "max_3d_spectral_kappa_witness": {
-      "block": "quad_-32d1_-22d1_-32d1_22d1_-12d1_22d1_-11d1_0d1_z0_12",
+      "block": "quad_-32d1_-22d1_-11d1_0d1_0d1_-22d1_0d1_-9d1_z0_24",
       "param": [
-        0.0,
-        0.0,
+        1.0,
+        1.0,
         0.0
       ],
       "singular_values_mm": [
-        50.22490739143507,
-        18.397246465755973,
-        12.0
+        24.0,
+        17.42577784662274,
+        8.206233389329853
       ]
     },
-    "minimum_sampled_jacobian_determinant_mm3": 1716.0,
+    "minimum_sampled_jacobian_determinant_mm3": 3432.0,
     "minimum_sampled_jacobian_determinant_mm3_witness": {
-      "block": "quad_-32d1_-22d1_-11d1_0d1_0d1_-22d1_0d1_-9d1_z0_12",
+      "block": "quad_-32d1_-22d1_-11d1_0d1_0d1_-22d1_0d1_-9d1_z0_24",
       "param": [
         1.0,
         1.0,
         0.0
       ],
-      "determinant_mm3": 1716.0
+      "determinant_mm3": 3432.0
     }
   }
 }

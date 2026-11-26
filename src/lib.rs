@@ -136,6 +136,10 @@ pub mod sketch_layers;
 mod sketch_layers_json;
 pub mod sketch_arrangement;
 pub mod sketch_quads;
+mod sketch_convex_hosts;
+mod sketch_convex_rings;
+mod sketch_optional_ring;
+mod sketch_ring_footprint;
 mod sketch_radial;
 mod sketch_quad_separators;
 

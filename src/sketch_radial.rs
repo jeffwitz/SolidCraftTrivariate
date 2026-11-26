@@ -114,7 +114,11 @@ fn cells(
     }
     Ok(out)
 }
-fn graph(job: &SketchLayers, cells: Vec<Cell>) -> Result<Arrangement, &'static str> {
+pub(crate) fn graph(
+    job: &SketchLayers,
+    cells: Vec<Cell>,
+    guide: &str,
+) -> Result<Arrangement, &'static str> {
     let mut result = Arrangement {
         vertices: vec![],
         edges: vec![],
@@ -144,7 +148,7 @@ fn graph(job: &SketchLayers, cells: Vec<Cell>) -> Result<Arrangement, &'static s
             } else {
                 let [p, q] = key.map(|v| result.vertices[v]);
                 let mut source = None;
-                for contour in [&job.outer, &job.cuts[0].0] {
+                for contour in std::iter::once(&job.outer).chain(job.cuts.iter().map(|(l, _)| l)) {
                     for (j, (u, v)) in edges(contour).enumerate() {
                         let [u, v] = [u, v].map(|p| p.map(|x| Ratio::new(x.into(), 1).unwrap()));
                         if cross(u, v, p)?.numerator() == 0 && cross(u, v, q)?.numerator() == 0 {
@@ -177,7 +181,7 @@ fn graph(job: &SketchLayers, cells: Vec<Cell>) -> Result<Arrangement, &'static s
                 result.edges.push(ArrangementEdge {
                     vertices: key,
                     provenance: vec![source.unwrap_or_else(|| Provenance {
-                        segment_id: format!("guide/radial/{id}"),
+                        segment_id: format!("guide/{guide}/{id}"),
                         role: Role::Construction,
                         forward: true,
                     })],
@@ -197,9 +201,17 @@ fn graph(job: &SketchLayers, cells: Vec<Cell>) -> Result<Arrangement, &'static s
         });
     }
     let stock = format!("boundary/{}/", job.outer.id);
+    let through: Vec<_> = job
+        .cuts
+        .iter()
+        .filter(|(_, z)| *z == [0, job.height])
+        .map(|(l, _)| format!("boundary/{}/", l.id))
+        .collect();
     for (edge, directions) in result.edges.iter().zip(uses) {
         let exterior = edge.provenance[0].segment_id.starts_with(&stock)
-            || (job.cuts[0].1 == [0, job.height] && edge.provenance[0].role == Role::Boundary);
+            || through
+                .iter()
+                .any(|prefix| edge.provenance[0].segment_id.starts_with(prefix));
         if (exterior && directions.iter().sum::<usize>() != 1)
             || (!exterior && directions != [1, 1])
         {
@@ -250,7 +262,12 @@ pub(crate) fn footprint(job: &SketchLayers) -> Result<Option<Arrangement>, &'sta
         rays.push((exit(inner, si, c, n, d)?, exit(&job.outer, so, c, n, d)?));
     }
     let center = [Ratio::new(c[0], n)?, Ratio::new(c[1], n)?];
-    graph(job, cells(rays, center, job.cuts[0].1 == [0, job.height])?).map(Some)
+    graph(
+        job,
+        cells(rays, center, job.cuts[0].1 == [0, job.height])?,
+        "radial",
+    )
+    .map(Some)
 }
 
 #[cfg(test)]

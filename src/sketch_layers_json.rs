@@ -31,7 +31,10 @@ fn parse(j: &Json, model: bool) -> Result<SketchLayers, &'static str> {
     let boolean = j.field(if model { "schema" } else { "family" })?.text()? == BOOLEAN_FAMILY;
     let features = if boolean { "operations" } else { "cuts" };
     let mut operations = boolean.then(Vec::new);
-    let mut keys = vec!["outer", features, "construction", "height_mm"];
+    let mut keys = vec!["outer", features, "height_mm"];
+    if j.field("construction").is_ok() {
+        keys.push("construction");
+    }
     if j.field("top_shift_mm").is_ok() {
         keys.push("top_shift_mm");
     }
@@ -74,7 +77,13 @@ fn parse(j: &Json, model: bool) -> Result<SketchLayers, &'static str> {
         cuts.push((curve(c)?, pair(c.field("z_interval_mm")?)?));
     }
     let mut guides = Vec::new();
-    for g in j.field("construction")?.items()? {
+    for g in j
+        .field("construction")
+        .ok()
+        .map(Json::items)
+        .transpose()?
+        .unwrap_or(&[])
+    {
         g.keys(&["id", "a", "b"])?;
         guides.push(Segment {
             id: g.field("id")?.text()?.into(),
@@ -203,6 +212,10 @@ fn plan(p: &Partition) -> Json {
     }
     result
 }
+pub(crate) fn plan_sketch(recipe: &Json) -> Result<Json, &'static str> {
+    Ok(plan(&partition(&parse(recipe, false)?)?))
+}
+
 pub(crate) fn build(recipe: &Json) -> Result<Json, &'static str> {
     let p = partition(&parse(recipe, false)?)?;
     let ledger = plan(&p);
@@ -238,6 +251,7 @@ pub(crate) fn audit(model: &Json) -> Result<Json, &'static str> {
     // Replay all coefficients, design labels, incidence and ledger together.
     let planners = [
         partition,
+        crate::sketch_layers::partition_before_rings,
         crate::sketch_layers::partition_rectangular_hosts,
         crate::sketch_layers::partition_classic,
         crate::sketch_layers::partition_legacy,

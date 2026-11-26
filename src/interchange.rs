@@ -255,6 +255,9 @@ pub fn build(recipe: &Json) -> Result<Json, &'static str> {
 
 /// Report planar junctions and transverse cuts before creating any volume blocks.
 pub fn plan_sketch(recipe: &Json) -> Result<Json, &'static str> {
+    if recipe.field("family")?.text()? == "sketch_layer_partition_v1" {
+        return crate::sketch_layers_json::plan_sketch(recipe);
+    }
     if recipe.field("family")?.text()? == "primitive_sweep_v1" {
         return crate::primitive_template_json::plan(recipe);
     }

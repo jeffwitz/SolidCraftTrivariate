@@ -548,8 +548,12 @@ fn rectangular_host_candidates(job: &SketchLayers) -> Result<Partition, &'static
     best
 }
 
-pub fn partition(job: &SketchLayers) -> Result<Partition, &'static str> {
+pub(crate) fn partition_before_rings(job: &SketchLayers) -> Result<Partition, &'static str> {
     validate(job)?;
+    pre_ring_candidates(job)
+}
+
+fn pre_ring_candidates(job: &SketchLayers) -> Result<Partition, &'static str> {
     let mut best = rectangular_host_candidates(job);
     for scale in [1, 2, 4, 8] {
         let graph = crate::sketch_quads::scaled_guided_arrangement(job, scale, |scaled| {
@@ -580,6 +584,24 @@ pub fn partition(job: &SketchLayers) -> Result<Partition, &'static str> {
             }
         }
     }
+    best
+}
+
+pub fn partition(job: &SketchLayers) -> Result<Partition, &'static str> {
+    validate(job)?;
+    let mut best = pre_ring_candidates(job);
+    crate::sketch_ring_footprint::visit(job, |graph| {
+        if let Ok(candidate) =
+            partition_from_graph(job, Some((graph, "separated_convex_quad_rings")))
+        {
+            if best
+                .as_ref()
+                .map_or(true, |old| prefer(&candidate, old, true))
+            {
+                best = Ok(candidate);
+            }
+        }
+    });
     best
 }
 

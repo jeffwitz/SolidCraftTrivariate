@@ -6,7 +6,7 @@ Start with the [project README](../README.md) to build the Rust CLI and run a sk
 
 | Question | Where to look |
 | --- | --- |
-| What are the requirements and acceptance criteria? | [Kernel specification](../CdC_noyau_trivarie_sans_trim_corrige.md) |
+| What are the requirements and acceptance criteria? | [Kernel specification](kernel-requirements.md) |
 | How does a sketch become a volumetric model? | [Architecture](architecture.md), [partitioning from construction lines](partition-esquisses.md), [prepartitioning NURBS sketches](prepartition-esquisse-nurbs.md) |
 | Which native profiles and imported curves are supported? | [Primitive templates](gabarits-primitives-nurbs.md), [NURBS strip extrusion](nurbs-sketch.md), [crossed NURBS profiles](nurbs-cross.md), [intersecting cylinders](steinmetz.md) |
 | How is a partition selected? | [Current convex-host planner and measured results](convex-host-rings.md), [pocket partition comparison and lower bounds](partition-poche-comparaison.md), [curved sketch corpus](galerie-esquisses-courbes.md), [FieldCraft bracket comparison](results/fieldcraft-compact.md) |
@@ -27,6 +27,6 @@ The [current polygon study](convex-host-rings.md) covers 45 corpus cases and 12 
 
 The [campaign summary](bilan-campagne-20261125.md) gives the outcomes of the initial ten-hour run. The [chronological log](campagne-20261125.md) explains its intermediate results and failures. The [detailed run ledger](campaign-run-ledger.md) retains the individual protocols, implementation revisions, budgets and outcomes. Later work on sketch loops, crossed extrusions and face pockets is recorded in the [multi-loop campaign](cycle-nurbs-multiboucles.md).
 
-The [research positioning](positionnement-campagne-20261125.md), [development workflow study](../ArtcratAdaptation.md) and [FieldCraft and SolidCraft design study](../LienSolidecraft.md) document the project's starting assumptions. For current development conventions, see the [repository instructions](../AGENTS.md) and [Luna guide](LUNA.md).
+The [research positioning](positionnement-campagne-20261125.md), [development workflow study](archive/development-workflow-study.md) and [FieldCraft and SolidCraft design study](archive/fieldcraft-design-study.md) document the project's starting assumptions. For current development conventions, see the [repository instructions](../AGENTS.md) and [Luna guide](LUNA.md).
 
 The [blind sketch-planner evaluation protocol](sketch-planner-blind-evaluation.md) includes the paired comparison against revision `e5bd5c6`. The [bracket propagation study](results/propagated-bores.md) records block counts, map quality and independent STEP readback for ten controls.

@@ -1,6 +1,6 @@
 # Development instructions
 
-From the repository root, read the [architecture contracts](docs/architecture.md) and [Luna roadmap](docs/LUNA.md). The [specification](CdC_noyau_trivarie_sans_trim_corrige.md) defines the scientific guarantees. Historical discussion notes preserve the context for the original choices.
+From the repository root, read the [architecture contracts](docs/architecture.md) and [Luna roadmap](docs/LUNA.md). The [specification](docs/kernel-requirements.md) defines the scientific guarantees. Historical discussion notes preserve the context for the original choices.
 
 When the code graph is available, prefer its index, symbol search, and call tracing. If those results are insufficient, search text and source files. Project commands run from a standard clone. On systems with RTK, follow its local command conventions as well.
 

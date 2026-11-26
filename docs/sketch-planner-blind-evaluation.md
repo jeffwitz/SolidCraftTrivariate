@@ -2,6 +2,12 @@
 
 The reference executable is built from `e5bd5c6`. The evaluation owner keeps the generator, seeds, cases and measurements outside the implementation workspace until the candidate revision is frozen. The owner can publish a SHA-256 commitment to a private bundle containing the generator version, seeds and scoring script before development. Specify the family definitions, units, tolerances, time budget and acceptance thresholds in advance. Disclose the bundle after scoring so that others can reproduce the comparison. Cases disclosed during development become regressions for subsequent runs.
 
+## Frozen comparison
+
+The independent evaluator retained the 45 recipes until the kernel was frozen and then published the generator, inputs and paired scores. Both executables passed all 45 geometry gates. The new planner reduced the block count on 15 cases and kept it on 30. Among the 30 randomly generated convex stocks it improved nine of ten single-footprint cases and used the historical triangulation on all twenty multi-footprint cases. Five solids had a larger sampled maximum condition number. [Polygon evaluation and data](results/sketch-planner-polygon-evaluation/README.md) · [Ten public 3D controls](results/propagated-bores.md)
+
+The release checks passed 464 Rust tests, the separately invoked release-mode bracket stiffness test, 58 Python tests, the demonstration commands and strict Clippy on all targets. The candidate also replayed the 45 archived polygon models, the six baseline bracket controls that previously built successfully and the eleven models in the published gallery.
+
 ## Paired comparison
 
 Run both executables on exactly the same recipes under the same limits. Report counts and paired changes separately for convex polygonal through-holes, blind pockets, concave stock or cut profiles, and nonparallel or stacked bores. Within each family, vary feature count, vertex count, clearance, aspect ratio, relative placement and orientation. Include rotations or rational-coordinate equivalents supported by the input format. Mark inputs outside its coordinate contract separately. A rejected valid input, timeout or fallback remains in its family's denominator.
@@ -37,3 +43,7 @@ done
 ```
 
 Set `RECIPE` to the path of one private recipe. Use a fresh output directory per recipe when collecting a corpus. Record unsuccessful builds and run the independent geometry checks before comparing block counts. The [public 3D controls](results/propagated-bores.md) include the corresponding STEP readback.
+
+### Additional oblique-separation diagnostic
+
+After the freeze, a separate through-hole diagnostic used a 100 × 100 × 12 mm square with diamond centers at (42, 42) and (58, 58) and half-diagonal 12 mm. The X and Y projections overlap. The two holes are strictly separated by the line x + y = 100. Both executables returned 72 blocks and exact volume 113088 mm³. This example shows why finding a separating line alone does not settle the host shapes, corner correspondence or admissibility of the ring maps. The diagnostic has a separate denominator from the 45-case evaluation. [Reproducible recipe](../tests/regressions/overlapping_projections_diamonds.recipe.json)

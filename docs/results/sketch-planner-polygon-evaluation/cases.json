@@ -1,0 +1,5492 @@
+{
+  "schema": "polygonal_paired_eval_v1",
+  "generator_seed": 20261126,
+  "coordinate_contract": "integer millimetres, each coordinate in [-4096,4096]",
+  "cases": [
+    {
+      "id": "through_diamond_center",
+      "family": "convex_through_holes",
+      "admissible": true,
+      "recipe": {
+        "family": "sketch_layer_partition_v1",
+        "height_mm": 12,
+        "outer": {
+          "id": "stock",
+          "vertices": [
+            [
+              -32,
+              -22
+            ],
+            [
+              32,
+              -22
+            ],
+            [
+              32,
+              22
+            ],
+            [
+              -32,
+              22
+            ]
+          ]
+        },
+        "cuts": [
+          {
+            "id": "cut_1",
+            "vertices": [
+              [
+                0,
+                -9
+              ],
+              [
+                11,
+                0
+              ],
+              [
+                0,
+                9
+              ],
+              [
+                -11,
+                0
+              ]
+            ],
+            "z_interval_mm": [
+              0,
+              12
+            ]
+          }
+        ],
+        "construction": []
+      },
+      "design_notes": ""
+    },
+    {
+      "id": "through_hex_offset",
+      "family": "convex_through_holes",
+      "admissible": true,
+      "recipe": {
+        "family": "sketch_layer_partition_v1",
+        "height_mm": 15,
+        "outer": {
+          "id": "stock",
+          "vertices": [
+            [
+              -32,
+              -22
+            ],
+            [
+              32,
+              -22
+            ],
+            [
+              32,
+              22
+            ],
+            [
+              -32,
+              22
+            ]
+          ]
+        },
+        "cuts": [
+          {
+            "id": "cut_1",
+            "vertices": [
+              [
+                7,
+                -8
+              ],
+              [
+                15,
+                -5
+              ],
+              [
+                18,
+                2
+              ],
+              [
+                11,
+                9
+              ],
+              [
+                3,
+                7
+              ],
+              [
+                0,
+                0
+              ]
+            ],
+            "z_interval_mm": [
+              0,
+              15
+            ]
+          }
+        ],
+        "construction": [],
+        "top_shift_mm": [
+          2,
+          -1
+        ]
+      },
+      "design_notes": ""
+    },
+    {
+      "id": "through_pentagon_tight_clearance",
+      "family": "convex_through_holes",
+      "admissible": true,
+      "recipe": {
+        "family": "sketch_layer_partition_v1",
+        "height_mm": 9,
+        "outer": {
+          "id": "stock",
+          "vertices": [
+            [
+              -18,
+              -12
+            ],
+            [
+              18,
+              -12
+            ],
+            [
+              18,
+              12
+            ],
+            [
+              -18,
+              12
+            ]
+          ]
+        },
+        "cuts": [
+          {
+            "id": "cut_1",
+            "vertices": [
+              [
+                0,
+                -8
+              ],
+              [
+                9,
+                -2
+              ],
+              [
+                6,
+                7
+              ],
+              [
+                -5,
+                9
+              ],
+              [
+                -10,
+                1
+              ]
+            ],
+            "z_interval_mm": [
+              0,
+              9
+            ]
+          }
+        ],
+        "construction": []
+      },
+      "design_notes": ""
+    },
+    {
+      "id": "through_two_rectangles",
+      "family": "convex_through_holes",
+      "admissible": true,
+      "recipe": {
+        "family": "sketch_layer_partition_v1",
+        "height_mm": 18,
+        "outer": {
+          "id": "stock",
+          "vertices": [
+            [
+              -40,
+              -20
+            ],
+            [
+              40,
+              -20
+            ],
+            [
+              40,
+              20
+            ],
+            [
+              -40,
+              20
+            ]
+          ]
+        },
+        "cuts": [
+          {
+            "id": "cut_1",
+            "vertices": [
+              [
+                -28,
+                -6
+              ],
+              [
+                -19,
+                -6
+              ],
+              [
+                -19,
+                6
+              ],
+              [
+                -28,
+                6
+              ]
+            ],
+            "z_interval_mm": [
+              0,
+              18
+            ]
+          },
+          {
+            "id": "cut_2",
+            "vertices": [
+              [
+                13,
+                -9
+              ],
+              [
+                27,
+                -9
+              ],
+              [
+                27,
+                9
+              ],
+              [
+                13,
+                9
+              ]
+            ],
+            "z_interval_mm": [
+              0,
+              18
+            ]
+          }
+        ],
+        "construction": []
+      },
+      "design_notes": ""
+    },
+    {
+      "id": "through_octagon_high_aspect",
+      "family": "convex_through_holes",
+      "admissible": true,
+      "recipe": {
+        "family": "sketch_layer_partition_v1",
+        "height_mm": 10,
+        "outer": {
+          "id": "stock",
+          "vertices": [
+            [
+              -50,
+              -14
+            ],
+            [
+              50,
+              -14
+            ],
+            [
+              50,
+              14
+            ],
+            [
+              -50,
+              14
+            ]
+          ]
+        },
+        "cuts": [
+          {
+            "id": "cut_1",
+            "vertices": [
+              [
+                -5,
+                -8
+              ],
+              [
+                5,
+                -8
+              ],
+              [
+                9,
+                -4
+              ],
+              [
+                9,
+                4
+              ],
+              [
+                5,
+                8
+              ],
+              [
+                -5,
+                8
+              ],
+              [
+                -9,
+                4
+              ],
+              [
+                -9,
+                -4
+              ]
+            ],
+            "z_interval_mm": [
+              0,
+              10
+            ]
+          }
+        ],
+        "construction": []
+      },
+      "design_notes": ""
+    },
+    {
+      "id": "blind_rotated_quad",
+      "family": "convex_blind_pockets",
+      "admissible": true,
+      "recipe": {
+        "family": "sketch_layer_partition_v1",
+        "height_mm": 20,
+        "outer": {
+          "id": "stock",
+          "vertices": [
+            [
+              -32,
+              -22
+            ],
+            [
+              32,
+              -22
+            ],
+            [
+              32,
+              22
+            ],
+            [
+              -32,
+              22
+            ]
+          ]
+        },
+        "cuts": [
+          {
+            "id": "cut_1",
+            "vertices": [
+              [
+                8,
+                5
+              ],
+              [
+                23,
+                9
+              ],
+              [
+                19,
+                21
+              ],
+              [
+                4,
+                17
+              ]
+            ],
+            "z_interval_mm": [
+              13,
+              20
+            ]
+          }
+        ],
+        "construction": []
+      },
+      "design_notes": ""
+    },
+    {
+      "id": "blind_triangle_shallow",
+      "family": "convex_blind_pockets",
+      "admissible": true,
+      "recipe": {
+        "family": "sketch_layer_partition_v1",
+        "height_mm": 16,
+        "outer": {
+          "id": "stock",
+          "vertices": [
+            [
+              -32,
+              -22
+            ],
+            [
+              32,
+              -22
+            ],
+            [
+              32,
+              22
+            ],
+            [
+              -32,
+              22
+            ]
+          ]
+        },
+        "cuts": [
+          {
+            "id": "cut_1",
+            "vertices": [
+              [
+                -7,
+                -5
+              ],
+              [
+                9,
+                -4
+              ],
+              [
+                1,
+                10
+              ]
+            ],
+            "z_interval_mm": [
+              12,
+              16
+            ]
+          }
+        ],
+        "construction": []
+      },
+      "design_notes": ""
+    },
+    {
+      "id": "blind_hex_deep",
+      "family": "convex_blind_pockets",
+      "admissible": true,
+      "recipe": {
+        "family": "sketch_layer_partition_v1",
+        "height_mm": 22,
+        "outer": {
+          "id": "stock",
+          "vertices": [
+            [
+              -36,
+              -24
+            ],
+            [
+              36,
+              -24
+            ],
+            [
+              36,
+              24
+            ],
+            [
+              -36,
+              24
+            ]
+          ]
+        },
+        "cuts": [
+          {
+            "id": "cut_1",
+            "vertices": [
+              [
+                3,
+                -12
+              ],
+              [
+                13,
+                -10
+              ],
+              [
+                19,
+                -1
+              ],
+              [
+                14,
+                10
+              ],
+              [
+                2,
+                12
+              ],
+              [
+                -5,
+                3
+              ]
+            ],
+            "z_interval_mm": [
+              4,
+              22
+            ]
+          }
+        ],
+        "construction": [],
+        "top_shift_mm": [
+          3,
+          2
+        ]
+      },
+      "design_notes": ""
+    },
+    {
+      "id": "blind_two_levels",
+      "family": "convex_blind_pockets",
+      "admissible": true,
+      "recipe": {
+        "family": "sketch_layer_partition_v1",
+        "height_mm": 24,
+        "outer": {
+          "id": "stock",
+          "vertices": [
+            [
+              -44,
+              -24
+            ],
+            [
+              44,
+              -24
+            ],
+            [
+              44,
+              24
+            ],
+            [
+              -44,
+              24
+            ]
+          ]
+        },
+        "cuts": [
+          {
+            "id": "cut_1",
+            "vertices": [
+              [
+                -31,
+                -12
+              ],
+              [
+                -19,
+                -12
+              ],
+              [
+                -19,
+                2
+              ],
+              [
+                -31,
+                2
+              ]
+            ],
+            "z_interval_mm": [
+              5,
+              16
+            ]
+          },
+          {
+            "id": "cut_2",
+            "vertices": [
+              [
+                12,
+                4
+              ],
+              [
+                30,
+                4
+              ],
+              [
+                30,
+                16
+              ],
+              [
+                12,
+                16
+              ]
+            ],
+            "z_interval_mm": [
+              11,
+              24
+            ]
+          }
+        ],
+        "construction": []
+      },
+      "design_notes": ""
+    },
+    {
+      "id": "blind_close_to_boundary",
+      "family": "convex_blind_pockets",
+      "admissible": true,
+      "recipe": {
+        "family": "sketch_layer_partition_v1",
+        "height_mm": 14,
+        "outer": {
+          "id": "stock",
+          "vertices": [
+            [
+              -30,
+              -18
+            ],
+            [
+              30,
+              -18
+            ],
+            [
+              30,
+              18
+            ],
+            [
+              -30,
+              18
+            ]
+          ]
+        },
+        "cuts": [
+          {
+            "id": "cut_1",
+            "vertices": [
+              [
+                20,
+                -12
+              ],
+              [
+                27,
+                -9
+              ],
+              [
+                25,
+                8
+              ],
+              [
+                18,
+                5
+              ]
+            ],
+            "z_interval_mm": [
+              6,
+              14
+            ]
+          }
+        ],
+        "construction": []
+      },
+      "design_notes": ""
+    },
+    {
+      "id": "concave_c_stock_two_holes",
+      "family": "concave_stock_or_cut",
+      "admissible": true,
+      "recipe": {
+        "family": "sketch_layer_partition_v1",
+        "height_mm": 13,
+        "outer": {
+          "id": "stock",
+          "vertices": [
+            [
+              -24,
+              -20
+            ],
+            [
+              24,
+              -20
+            ],
+            [
+              24,
+              -13
+            ],
+            [
+              -11,
+              -13
+            ],
+            [
+              -11,
+              13
+            ],
+            [
+              24,
+              13
+            ],
+            [
+              24,
+              20
+            ],
+            [
+              -24,
+              20
+            ]
+          ]
+        },
+        "cuts": [
+          {
+            "id": "cut_1",
+            "vertices": [
+              [
+                -21,
+                -17
+              ],
+              [
+                -16,
+                -17
+              ],
+              [
+                -16,
+                -11
+              ],
+              [
+                -21,
+                -11
+              ]
+            ],
+            "z_interval_mm": [
+              0,
+              13
+            ]
+          },
+          {
+            "id": "cut_2",
+            "vertices": [
+              [
+                -21,
+                11
+              ],
+              [
+                -16,
+                11
+              ],
+              [
+                -16,
+                17
+              ],
+              [
+                -21,
+                17
+              ]
+            ],
+            "z_interval_mm": [
+              0,
+              13
+            ]
+          }
+        ],
+        "construction": []
+      },
+      "design_notes": ""
+    },
+    {
+      "id": "concave_l_stock_pocket",
+      "family": "concave_stock_or_cut",
+      "admissible": true,
+      "recipe": {
+        "family": "sketch_layer_partition_v1",
+        "height_mm": 17,
+        "outer": {
+          "id": "stock",
+          "vertices": [
+            [
+              -28,
+              -22
+            ],
+            [
+              28,
+              -22
+            ],
+            [
+              28,
+              -12
+            ],
+            [
+              -8,
+              -12
+            ],
+            [
+              -8,
+              22
+            ],
+            [
+              -28,
+              22
+            ]
+          ]
+        },
+        "cuts": [
+          {
+            "id": "cut_1",
+            "vertices": [
+              [
+                -23,
+                4
+              ],
+              [
+                -12,
+                4
+              ],
+              [
+                -12,
+                13
+              ],
+              [
+                -18,
+                13
+              ],
+              [
+                -18,
+                18
+              ],
+              [
+                -23,
+                18
+              ]
+            ],
+            "z_interval_mm": [
+              9,
+              17
+            ]
+          }
+        ],
+        "construction": []
+      },
+      "design_notes": ""
+    },
+    {
+      "id": "concave_cut_in_rectangle",
+      "family": "concave_stock_or_cut",
+      "admissible": true,
+      "recipe": {
+        "family": "sketch_layer_partition_v1",
+        "height_mm": 11,
+        "outer": {
+          "id": "stock",
+          "vertices": [
+            [
+              -32,
+              -22
+            ],
+            [
+              32,
+              -22
+            ],
+            [
+              32,
+              22
+            ],
+            [
+              -32,
+              22
+            ]
+          ]
+        },
+        "cuts": [
+          {
+            "id": "cut_1",
+            "vertices": [
+              [
+                -19,
+                -12
+              ],
+              [
+                -5,
+                -12
+              ],
+              [
+                -5,
+                -7
+              ],
+              [
+                -11,
+                -7
+              ],
+              [
+                -11,
+                1
+              ],
+              [
+                -19,
+                1
+              ]
+            ],
+            "z_interval_mm": [
+              2,
+              9
+            ]
+          }
+        ],
+        "construction": []
+      },
+      "design_notes": ""
+    },
+    {
+      "id": "concave_u_stock_offset_hole",
+      "family": "concave_stock_or_cut",
+      "admissible": true,
+      "recipe": {
+        "family": "sketch_layer_partition_v1",
+        "height_mm": 19,
+        "outer": {
+          "id": "stock",
+          "vertices": [
+            [
+              -32,
+              -22
+            ],
+            [
+              32,
+              -22
+            ],
+            [
+              32,
+              22
+            ],
+            [
+              18,
+              22
+            ],
+            [
+              18,
+              -8
+            ],
+            [
+              -18,
+              -8
+            ],
+            [
+              -18,
+              22
+            ],
+            [
+              -32,
+              22
+            ]
+          ]
+        },
+        "cuts": [
+          {
+            "id": "cut_1",
+            "vertices": [
+              [
+                21,
+                -3
+              ],
+              [
+                27,
+                -3
+              ],
+              [
+                27,
+                4
+              ],
+              [
+                21,
+                4
+              ]
+            ],
+            "z_interval_mm": [
+              0,
+              19
+            ]
+          }
+        ],
+        "construction": [],
+        "top_shift_mm": [
+          -2,
+          3
+        ]
+      },
+      "design_notes": ""
+    },
+    {
+      "id": "concave_stock_blind_two_profiles",
+      "family": "concave_stock_or_cut",
+      "admissible": true,
+      "recipe": {
+        "family": "sketch_layer_partition_v1",
+        "height_mm": 21,
+        "outer": {
+          "id": "stock",
+          "vertices": [
+            [
+              -40,
+              -24
+            ],
+            [
+              40,
+              -24
+            ],
+            [
+              40,
+              -16
+            ],
+            [
+              -14,
+              -16
+            ],
+            [
+              -14,
+              16
+            ],
+            [
+              40,
+              16
+            ],
+            [
+              40,
+              24
+            ],
+            [
+              -40,
+              24
+            ]
+          ]
+        },
+        "cuts": [
+          {
+            "id": "cut_1",
+            "vertices": [
+              [
+                -34,
+                -20
+              ],
+              [
+                -25,
+                -20
+              ],
+              [
+                -25,
+                -12
+              ],
+              [
+                -34,
+                -12
+              ]
+            ],
+            "z_interval_mm": [
+              0,
+              21
+            ]
+          },
+          {
+            "id": "cut_2",
+            "vertices": [
+              [
+                -33,
+                12
+              ],
+              [
+                -23,
+                12
+              ],
+              [
+                -23,
+                20
+              ],
+              [
+                -33,
+                20
+              ]
+            ],
+            "z_interval_mm": [
+              8,
+              21
+            ]
+          }
+        ],
+        "construction": []
+      },
+      "design_notes": ""
+    },
+    {
+      "id": "seeded_convex_00",
+      "family": "seeded_convex_through_holes",
+      "admissible": true,
+      "recipe": {
+        "family": "sketch_layer_partition_v1",
+        "height_mm": 9,
+        "outer": {
+          "id": "stock",
+          "vertices": [
+            [
+              1069,
+              93
+            ],
+            [
+              1439,
+              593
+            ],
+            [
+              1439,
+              963
+            ],
+            [
+              1069,
+              1093
+            ],
+            [
+              439,
+              963
+            ],
+            [
+              -301,
+              593
+            ],
+            [
+              -931,
+              93
+            ],
+            [
+              -1301,
+              -407
+            ],
+            [
+              -1301,
+              -777
+            ],
+            [
+              -931,
+              -907
+            ],
+            [
+              -301,
+              -777
+            ],
+            [
+              439,
+              -407
+            ]
+          ]
+        },
+        "cuts": [
+          {
+            "id": "cut_1",
+            "vertices": [
+              [
+                269,
+                93
+              ],
+              [
+                343,
+                193
+              ],
+              [
+                343,
+                267
+              ],
+              [
+                269,
+                293
+              ],
+              [
+                143,
+                267
+              ],
+              [
+                -5,
+                193
+              ],
+              [
+                -131,
+                93
+              ],
+              [
+                -205,
+                -7
+              ],
+              [
+                -205,
+                -81
+              ],
+              [
+                -131,
+                -107
+              ],
+              [
+                -5,
+                -81
+              ],
+              [
+                143,
+                -7
+              ]
+            ],
+            "z_interval_mm": [
+              0,
+              9
+            ]
+          }
+        ],
+        "construction": [],
+        "top_shift_mm": [
+          -2,
+          0
+        ]
+      },
+      "design_notes": "seed=20261126; n=12; cuts=1; shear=1; quarter_turn=0"
+    },
+    {
+      "id": "seeded_convex_01",
+      "family": "seeded_convex_blind_pockets",
+      "admissible": true,
+      "recipe": {
+        "family": "sketch_layer_partition_v1",
+        "height_mm": 10,
+        "outer": {
+          "id": "stock",
+          "vertices": [
+            [
+              -1197,
+              -42
+            ],
+            [
+              -327,
+              -682
+            ],
+            [
+              613,
+              -1022
+            ],
+            [
+              1173,
+              -912
+            ],
+            [
+              1083,
+              -382
+            ],
+            [
+              403,
+              298
+            ],
+            [
+              -567,
+              828
+            ],
+            [
+              -1347,
+              938
+            ],
+            [
+              -1607,
+              598
+            ]
+          ]
+        },
+        "cuts": [
+          {
+            "id": "cut_1",
+            "vertices": [
+              [
+                -117,
+                -42
+              ],
+              [
+                57,
+                -170
+              ],
+              [
+                245,
+                -238
+              ],
+              [
+                357,
+                -216
+              ],
+              [
+                339,
+                -110
+              ],
+              [
+                203,
+                26
+              ],
+              [
+                9,
+                132
+              ],
+              [
+                -147,
+                154
+              ],
+              [
+                -199,
+                86
+              ]
+            ],
+            "z_interval_mm": [
+              3,
+              10
+            ]
+          },
+          {
+            "id": "cut_2",
+            "vertices": [
+              [
+                -677,
+                -42
+              ],
+              [
+                -503,
+                -170
+              ],
+              [
+                -315,
+                -238
+              ],
+              [
+                -203,
+                -216
+              ],
+              [
+                -221,
+                -110
+              ],
+              [
+                -357,
+                26
+              ],
+              [
+                -551,
+                132
+              ],
+              [
+                -707,
+                154
+              ],
+              [
+                -759,
+                86
+              ]
+            ],
+            "z_interval_mm": [
+              3,
+              10
+            ]
+          }
+        ],
+        "construction": [],
+        "top_shift_mm": [
+          0,
+          -1
+        ]
+      },
+      "design_notes": "seed=20261126; n=9; cuts=2; shear=-1; quarter_turn=2"
+    },
+    {
+      "id": "seeded_convex_02",
+      "family": "seeded_convex_through_holes",
+      "admissible": true,
+      "recipe": {
+        "family": "sketch_layer_partition_v1",
+        "height_mm": 11,
+        "outer": {
+          "id": "stock",
+          "vertices": [
+            [
+              -49,
+              -896
+            ],
+            [
+              901,
+              -2106
+            ],
+            [
+              541,
+              -266
+            ],
+            [
+              -639,
+              2094
+            ],
+            [
+              -999,
+              1694
+            ]
+          ]
+        },
+        "cuts": [
+          {
+            "id": "cut_1",
+            "vertices": [
+              [
+                -229,
+                564
+              ],
+              [
+                -39,
+                322
+              ],
+              [
+                -111,
+                690
+              ],
+              [
+                -347,
+                1162
+              ],
+              [
+                -419,
+                1082
+              ]
+            ],
+            "z_interval_mm": [
+              0,
+              11
+            ]
+          },
+          {
+            "id": "cut_2",
+            "vertices": [
+              [
+                -229,
+                -36
+              ],
+              [
+                -39,
+                -278
+              ],
+              [
+                -111,
+                90
+              ],
+              [
+                -347,
+                562
+              ],
+              [
+                -419,
+                482
+              ]
+            ],
+            "z_interval_mm": [
+              0,
+              11
+            ]
+          },
+          {
+            "id": "cut_3",
+            "vertices": [
+              [
+                271,
+                -736
+              ],
+              [
+                461,
+                -978
+              ],
+              [
+                389,
+                -610
+              ],
+              [
+                153,
+                -138
+              ],
+              [
+                81,
+                -218
+              ]
+            ],
+            "z_interval_mm": [
+              0,
+              11
+            ]
+          }
+        ],
+        "construction": []
+      },
+      "design_notes": "seed=20261126; n=5; cuts=3; shear=2; quarter_turn=3"
+    },
+    {
+      "id": "seeded_convex_03",
+      "family": "seeded_convex_blind_pockets",
+      "admissible": true,
+      "recipe": {
+        "family": "sketch_layer_partition_v1",
+        "height_mm": 12,
+        "outer": {
+          "id": "stock",
+          "vertices": [
+            [
+              1043,
+              121
+            ],
+            [
+              1303,
+              1071
+            ],
+            [
+              -177,
+              711
+            ],
+            [
+              -1357,
+              -469
+            ],
+            [
+              -597,
+              -829
+            ]
+          ]
+        },
+        "cuts": [
+          {
+            "id": "cut_1",
+            "vertices": [
+              [
+                243,
+                121
+              ],
+              [
+                295,
+                311
+              ],
+              [
+                -1,
+                239
+              ],
+              [
+                -237,
+                3
+              ],
+              [
+                -85,
+                -69
+              ]
+            ],
+            "z_interval_mm": [
+              5,
+              12
+            ]
+          }
+        ],
+        "construction": [],
+        "top_shift_mm": [
+          -1,
+          -2
+        ]
+      },
+      "design_notes": "seed=20261126; n=5; cuts=1; shear=1; quarter_turn=0"
+    },
+    {
+      "id": "seeded_convex_04",
+      "family": "seeded_convex_through_holes",
+      "admissible": true,
+      "recipe": {
+        "family": "sketch_layer_partition_v1",
+        "height_mm": 13,
+        "outer": {
+          "id": "stock",
+          "vertices": [
+            [
+              -119,
+              -981
+            ],
+            [
+              751,
+              -2221
+            ],
+            [
+              751,
+              -1221
+            ],
+            [
+              -119,
+              1019
+            ],
+            [
+              -989,
+              2259
+            ],
+            [
+              -989,
+              1259
+            ]
+          ]
+        },
+        "cuts": [
+          {
+            "id": "cut_1",
+            "vertices": [
+              [
+                -119,
+                99
+              ],
+              [
+                55,
+                -149
+              ],
+              [
+                55,
+                51
+              ],
+              [
+                -119,
+                499
+              ],
+              [
+                -293,
+                747
+              ],
+              [
+                -293,
+                547
+              ]
+            ],
+            "z_interval_mm": [
+              0,
+              13
+            ]
+          },
+          {
+            "id": "cut_2",
+            "vertices": [
+              [
+                -119,
+                -461
+              ],
+              [
+                55,
+                -709
+              ],
+              [
+                55,
+                -509
+              ],
+              [
+                -119,
+                -61
+              ],
+              [
+                -293,
+                187
+              ],
+              [
+                -293,
+                -13
+              ]
+            ],
+            "z_interval_mm": [
+              0,
+              13
+            ]
+          }
+        ],
+        "construction": []
+      },
+      "design_notes": "seed=20261126; n=6; cuts=2; shear=2; quarter_turn=3"
+    },
+    {
+      "id": "seeded_convex_05",
+      "family": "seeded_convex_blind_pockets",
+      "admissible": true,
+      "recipe": {
+        "family": "sketch_layer_partition_v1",
+        "height_mm": 14,
+        "outer": {
+          "id": "stock",
+          "vertices": [
+            [
+              -1236,
+              -160
+            ],
+            [
+              -1656,
+              -870
+            ],
+            [
+              -1236,
+              -1160
+            ],
+            [
+              -236,
+              -870
+            ],
+            [
+              764,
+              -160
+            ],
+            [
+              1184,
+              550
+            ],
+            [
+              764,
+              840
+            ],
+            [
+              -236,
+              550
+            ]
+          ]
+        },
+        "cuts": [
+          {
+            "id": "cut_1",
+            "vertices": [
+              [
+                44,
+                20
+              ],
+              [
+                -40,
+                -122
+              ],
+              [
+                44,
+                -180
+              ],
+              [
+                244,
+                -122
+              ],
+              [
+                444,
+                20
+              ],
+              [
+                528,
+                162
+              ],
+              [
+                444,
+                220
+              ],
+              [
+                244,
+                162
+              ]
+            ],
+            "z_interval_mm": [
+              3,
+              14
+            ]
+          },
+          {
+            "id": "cut_2",
+            "vertices": [
+              [
+                -556,
+                20
+              ],
+              [
+                -640,
+                -122
+              ],
+              [
+                -556,
+                -180
+              ],
+              [
+                -356,
+                -122
+              ],
+              [
+                -156,
+                20
+              ],
+              [
+                -72,
+                162
+              ],
+              [
+                -156,
+                220
+              ],
+              [
+                -356,
+                162
+              ]
+            ],
+            "z_interval_mm": [
+              3,
+              14
+            ]
+          },
+          {
+            "id": "cut_3",
+            "vertices": [
+              [
+                -756,
+                -480
+              ],
+              [
+                -840,
+                -622
+              ],
+              [
+                -756,
+                -680
+              ],
+              [
+                -556,
+                -622
+              ],
+              [
+                -356,
+                -480
+              ],
+              [
+                -272,
+                -338
+              ],
+              [
+                -356,
+                -280
+              ],
+              [
+                -556,
+                -338
+              ]
+            ],
+            "z_interval_mm": [
+              3,
+              14
+            ]
+          }
+        ],
+        "construction": [],
+        "top_shift_mm": [
+          1,
+          0
+        ]
+      },
+      "design_notes": "seed=20261126; n=8; cuts=3; shear=1; quarter_turn=2"
+    },
+    {
+      "id": "seeded_convex_06",
+      "family": "seeded_convex_through_holes",
+      "admissible": true,
+      "recipe": {
+        "family": "sketch_layer_partition_v1",
+        "height_mm": 15,
+        "outer": {
+          "id": "stock",
+          "vertices": [
+            [
+              -142,
+              1230
+            ],
+            [
+              -782,
+              360
+            ],
+            [
+              -1122,
+              -580
+            ],
+            [
+              -1012,
+              -1140
+            ],
+            [
+              -482,
+              -1050
+            ],
+            [
+              198,
+              -370
+            ],
+            [
+              728,
+              600
+            ],
+            [
+              838,
+              1380
+            ],
+            [
+              498,
+              1640
+            ]
+          ]
+        },
+        "cuts": [
+          {
+            "id": "cut_1",
+            "vertices": [
+              [
+                -142,
+                430
+              ],
+              [
+                -270,
+                256
+              ],
+              [
+                -338,
+                68
+              ],
+              [
+                -316,
+                -44
+              ],
+              [
+                -210,
+                -26
+              ],
+              [
+                -74,
+                110
+              ],
+              [
+                32,
+                304
+              ],
+              [
+                54,
+                460
+              ],
+              [
+                -14,
+                512
+              ]
+            ],
+            "z_interval_mm": [
+              0,
+              15
+            ]
+          }
+        ],
+        "construction": [],
+        "top_shift_mm": [
+          2,
+          0
+        ]
+      },
+      "design_notes": "seed=20261126; n=9; cuts=1; shear=-1; quarter_turn=1"
+    },
+    {
+      "id": "seeded_convex_07",
+      "family": "seeded_convex_blind_pockets",
+      "admissible": true,
+      "recipe": {
+        "family": "sketch_layer_partition_v1",
+        "height_mm": 16,
+        "outer": {
+          "id": "stock",
+          "vertices": [
+            [
+              -1044,
+              59
+            ],
+            [
+              -2254,
+              -891
+            ],
+            [
+              -414,
+              -531
+            ],
+            [
+              1946,
+              649
+            ],
+            [
+              1546,
+              1009
+            ]
+          ]
+        },
+        "cuts": [
+          {
+            "id": "cut_1",
+            "vertices": [
+              [
+                36,
+                59
+              ],
+              [
+                -206,
+                -131
+              ],
+              [
+                162,
+                -59
+              ],
+              [
+                634,
+                177
+              ],
+              [
+                554,
+                249
+              ]
+            ],
+            "z_interval_mm": [
+              5,
+              16
+            ]
+          },
+          {
+            "id": "cut_2",
+            "vertices": [
+              [
+                -524,
+                59
+              ],
+              [
+                -766,
+                -131
+              ],
+              [
+                -398,
+                -59
+              ],
+              [
+                74,
+                177
+              ],
+              [
+                -6,
+                249
+              ]
+            ],
+            "z_interval_mm": [
+              5,
+              16
+            ]
+          }
+        ],
+        "construction": [],
+        "top_shift_mm": [
+          2,
+          1
+        ]
+      },
+      "design_notes": "seed=20261126; n=5; cuts=2; shear=2; quarter_turn=2"
+    },
+    {
+      "id": "seeded_convex_08",
+      "family": "seeded_convex_through_holes",
+      "admissible": true,
+      "recipe": {
+        "family": "sketch_layer_partition_v1",
+        "height_mm": 17,
+        "outer": {
+          "id": "stock",
+          "vertices": [
+            [
+              113,
+              -981
+            ],
+            [
+              653,
+              259
+            ],
+            [
+              1023,
+              1419
+            ],
+            [
+              1103,
+              2139
+            ],
+            [
+              873,
+              2189
+            ],
+            [
+              393,
+              1539
+            ],
+            [
+              -167,
+              419
+            ],
+            [
+              -647,
+              -851
+            ],
+            [
+              -877,
+              -1821
+            ],
+            [
+              -797,
+              -2221
+            ],
+            [
+              -427,
+              -1901
+            ]
+          ]
+        },
+        "cuts": [
+          {
+            "id": "cut_1",
+            "vertices": [
+              [
+                -67,
+                -241
+              ],
+              [
+                41,
+                7
+              ],
+              [
+                115,
+                239
+              ],
+              [
+                131,
+                383
+              ],
+              [
+                85,
+                393
+              ],
+              [
+                -11,
+                263
+              ],
+              [
+                -123,
+                39
+              ],
+              [
+                -219,
+                -215
+              ],
+              [
+                -265,
+                -409
+              ],
+              [
+                -249,
+                -489
+              ],
+              [
+                -175,
+                -425
+              ]
+            ],
+            "z_interval_mm": [
+              0,
+              17
+            ]
+          },
+          {
+            "id": "cut_2",
+            "vertices": [
+              [
+                -67,
+                -841
+              ],
+              [
+                41,
+                -593
+              ],
+              [
+                115,
+                -361
+              ],
+              [
+                131,
+                -217
+              ],
+              [
+                85,
+                -207
+              ],
+              [
+                -11,
+                -337
+              ],
+              [
+                -123,
+                -561
+              ],
+              [
+                -219,
+                -815
+              ],
+              [
+                -265,
+                -1009
+              ],
+              [
+                -249,
+                -1089
+              ],
+              [
+                -175,
+                -1025
+              ]
+            ],
+            "z_interval_mm": [
+              0,
+              17
+            ]
+          },
+          {
+            "id": "cut_3",
+            "vertices": [
+              [
+                433,
+                459
+              ],
+              [
+                541,
+                707
+              ],
+              [
+                615,
+                939
+              ],
+              [
+                631,
+                1083
+              ],
+              [
+                585,
+                1093
+              ],
+              [
+                489,
+                963
+              ],
+              [
+                377,
+                739
+              ],
+              [
+                281,
+                485
+              ],
+              [
+                235,
+                291
+              ],
+              [
+                251,
+                211
+              ],
+              [
+                325,
+                275
+              ]
+            ],
+            "z_interval_mm": [
+              0,
+              17
+            ]
+          }
+        ],
+        "construction": [],
+        "top_shift_mm": [
+          -2,
+          1
+        ]
+      },
+      "design_notes": "seed=20261126; n=11; cuts=3; shear=-2; quarter_turn=3"
+    },
+    {
+      "id": "seeded_convex_09",
+      "family": "seeded_convex_blind_pockets",
+      "admissible": true,
+      "recipe": {
+        "family": "sketch_layer_partition_v1",
+        "height_mm": 18,
+        "outer": {
+          "id": "stock",
+          "vertices": [
+            [
+              1022,
+              -148
+            ],
+            [
+              2262,
+              722
+            ],
+            [
+              1262,
+              722
+            ],
+            [
+              -978,
+              -148
+            ],
+            [
+              -2218,
+              -1018
+            ],
+            [
+              -1218,
+              -1018
+            ]
+          ]
+        },
+        "cuts": [
+          {
+            "id": "cut_1",
+            "vertices": [
+              [
+                222,
+                -148
+              ],
+              [
+                470,
+                26
+              ],
+              [
+                270,
+                26
+              ],
+              [
+                -178,
+                -148
+              ],
+              [
+                -426,
+                -322
+              ],
+              [
+                -226,
+                -322
+              ]
+            ],
+            "z_interval_mm": [
+              3,
+              18
+            ]
+          }
+        ],
+        "construction": [],
+        "top_shift_mm": [
+          2,
+          2
+        ]
+      },
+      "design_notes": "seed=20261126; n=6; cuts=1; shear=2; quarter_turn=0"
+    },
+    {
+      "id": "seeded_convex_10",
+      "family": "seeded_convex_through_holes",
+      "admissible": true,
+      "recipe": {
+        "family": "sketch_layer_partition_v1",
+        "height_mm": 9,
+        "outer": {
+          "id": "stock",
+          "vertices": [
+            [
+              -893,
+              52
+            ],
+            [
+              -1263,
+              -448
+            ],
+            [
+              -1263,
+              -818
+            ],
+            [
+              -893,
+              -948
+            ],
+            [
+              -263,
+              -818
+            ],
+            [
+              477,
+              -448
+            ],
+            [
+              1107,
+              52
+            ],
+            [
+              1477,
+              552
+            ],
+            [
+              1477,
+              922
+            ],
+            [
+              1107,
+              1052
+            ],
+            [
+              477,
+              922
+            ],
+            [
+              -263,
+              552
+            ]
+          ]
+        },
+        "cuts": [
+          {
+            "id": "cut_1",
+            "vertices": [
+              [
+                187,
+                52
+              ],
+              [
+                113,
+                -48
+              ],
+              [
+                113,
+                -122
+              ],
+              [
+                187,
+                -148
+              ],
+              [
+                313,
+                -122
+              ],
+              [
+                461,
+                -48
+              ],
+              [
+                587,
+                52
+              ],
+              [
+                661,
+                152
+              ],
+              [
+                661,
+                226
+              ],
+              [
+                587,
+                252
+              ],
+              [
+                461,
+                226
+              ],
+              [
+                313,
+                152
+              ]
+            ],
+            "z_interval_mm": [
+              0,
+              9
+            ]
+          },
+          {
+            "id": "cut_2",
+            "vertices": [
+              [
+                -373,
+                52
+              ],
+              [
+                -447,
+                -48
+              ],
+              [
+                -447,
+                -122
+              ],
+              [
+                -373,
+                -148
+              ],
+              [
+                -247,
+                -122
+              ],
+              [
+                -99,
+                -48
+              ],
+              [
+                27,
+                52
+              ],
+              [
+                101,
+                152
+              ],
+              [
+                101,
+                226
+              ],
+              [
+                27,
+                252
+              ],
+              [
+                -99,
+                226
+              ],
+              [
+                -247,
+                152
+              ]
+            ],
+            "z_interval_mm": [
+              0,
+              9
+            ]
+          }
+        ],
+        "construction": [],
+        "top_shift_mm": [
+          1,
+          -2
+        ]
+      },
+      "design_notes": "seed=20261126; n=12; cuts=2; shear=1; quarter_turn=2"
+    },
+    {
+      "id": "seeded_convex_11",
+      "family": "seeded_convex_blind_pockets",
+      "admissible": true,
+      "recipe": {
+        "family": "sketch_layer_partition_v1",
+        "height_mm": 10,
+        "outer": {
+          "id": "stock",
+          "vertices": [
+            [
+              -1047,
+              249
+            ],
+            [
+              -1457,
+              -391
+            ],
+            [
+              -1197,
+              -731
+            ],
+            [
+              -417,
+              -621
+            ],
+            [
+              553,
+              -91
+            ],
+            [
+              1233,
+              589
+            ],
+            [
+              1323,
+              1119
+            ],
+            [
+              763,
+              1229
+            ],
+            [
+              -177,
+              889
+            ]
+          ]
+        },
+        "cuts": [
+          {
+            "id": "cut_1",
+            "vertices": [
+              [
+                233,
+                429
+              ],
+              [
+                151,
+                301
+              ],
+              [
+                203,
+                233
+              ],
+              [
+                359,
+                255
+              ],
+              [
+                553,
+                361
+              ],
+              [
+                689,
+                497
+              ],
+              [
+                707,
+                603
+              ],
+              [
+                595,
+                625
+              ],
+              [
+                407,
+                557
+              ]
+            ],
+            "z_interval_mm": [
+              5,
+              10
+            ]
+          },
+          {
+            "id": "cut_2",
+            "vertices": [
+              [
+                -367,
+                429
+              ],
+              [
+                -449,
+                301
+              ],
+              [
+                -397,
+                233
+              ],
+              [
+                -241,
+                255
+              ],
+              [
+                -47,
+                361
+              ],
+              [
+                89,
+                497
+              ],
+              [
+                107,
+                603
+              ],
+              [
+                -5,
+                625
+              ],
+              [
+                -193,
+                557
+              ]
+            ],
+            "z_interval_mm": [
+              5,
+              10
+            ]
+          },
+          {
+            "id": "cut_3",
+            "vertices": [
+              [
+                -567,
+                -71
+              ],
+              [
+                -649,
+                -199
+              ],
+              [
+                -597,
+                -267
+              ],
+              [
+                -441,
+                -245
+              ],
+              [
+                -247,
+                -139
+              ],
+              [
+                -111,
+                -3
+              ],
+              [
+                -93,
+                103
+              ],
+              [
+                -205,
+                125
+              ],
+              [
+                -393,
+                57
+              ]
+            ],
+            "z_interval_mm": [
+              5,
+              10
+            ]
+          }
+        ],
+        "construction": [],
+        "top_shift_mm": [
+          2,
+          -2
+        ]
+      },
+      "design_notes": "seed=20261126; n=9; cuts=3; shear=1; quarter_turn=2"
+    },
+    {
+      "id": "seeded_convex_12",
+      "family": "seeded_convex_through_holes",
+      "admissible": true,
+      "recipe": {
+        "family": "sketch_layer_partition_v1",
+        "height_mm": 11,
+        "outer": {
+          "id": "stock",
+          "vertices": [
+            [
+              -1160,
+              -80
+            ],
+            [
+              -470,
+              -1030
+            ],
+            [
+              650,
+              -670
+            ],
+            [
+              650,
+              510
+            ],
+            [
+              -470,
+              870
+            ]
+          ]
+        },
+        "cuts": [
+          {
+            "id": "cut_1",
+            "vertices": [
+              [
+                -360,
+                -80
+              ],
+              [
+                -222,
+                -270
+              ],
+              [
+                2,
+                -198
+              ],
+              [
+                2,
+                38
+              ],
+              [
+                -222,
+                110
+              ]
+            ],
+            "z_interval_mm": [
+              0,
+              11
+            ]
+          }
+        ],
+        "construction": [],
+        "top_shift_mm": [
+          0,
+          2
+        ]
+      },
+      "design_notes": "seed=20261126; n=5; cuts=1; shear=0; quarter_turn=2"
+    },
+    {
+      "id": "seeded_convex_13",
+      "family": "seeded_convex_blind_pockets",
+      "admissible": true,
+      "recipe": {
+        "family": "sketch_layer_partition_v1",
+        "height_mm": 12,
+        "outer": {
+          "id": "stock",
+          "vertices": [
+            [
+              -1142,
+              33
+            ],
+            [
+              -362,
+              -557
+            ],
+            [
+              498,
+              -917
+            ],
+            [
+              1118,
+              -917
+            ],
+            [
+              1258,
+              -557
+            ],
+            [
+              858,
+              33
+            ],
+            [
+              78,
+              623
+            ],
+            [
+              -782,
+              983
+            ],
+            [
+              -1402,
+              983
+            ],
+            [
+              -1542,
+              623
+            ]
+          ]
+        },
+        "cuts": [
+          {
+            "id": "cut_1",
+            "vertices": [
+              [
+                -62,
+                33
+              ],
+              [
+                94,
+                -85
+              ],
+              [
+                266,
+                -157
+              ],
+              [
+                390,
+                -157
+              ],
+              [
+                418,
+                -85
+              ],
+              [
+                338,
+                33
+              ],
+              [
+                182,
+                151
+              ],
+              [
+                10,
+                223
+              ],
+              [
+                -114,
+                223
+              ],
+              [
+                -142,
+                151
+              ]
+            ],
+            "z_interval_mm": [
+              3,
+              12
+            ]
+          },
+          {
+            "id": "cut_2",
+            "vertices": [
+              [
+                -622,
+                33
+              ],
+              [
+                -466,
+                -85
+              ],
+              [
+                -294,
+                -157
+              ],
+              [
+                -170,
+                -157
+              ],
+              [
+                -142,
+                -85
+              ],
+              [
+                -222,
+                33
+              ],
+              [
+                -378,
+                151
+              ],
+              [
+                -550,
+                223
+              ],
+              [
+                -674,
+                223
+              ],
+              [
+                -702,
+                151
+              ]
+            ],
+            "z_interval_mm": [
+              3,
+              12
+            ]
+          }
+        ],
+        "construction": [],
+        "top_shift_mm": [
+          2,
+          2
+        ]
+      },
+      "design_notes": "seed=20261126; n=10; cuts=2; shear=-1; quarter_turn=2"
+    },
+    {
+      "id": "seeded_convex_14",
+      "family": "seeded_convex_through_holes",
+      "admissible": true,
+      "recipe": {
+        "family": "sketch_layer_partition_v1",
+        "height_mm": 13,
+        "outer": {
+          "id": "stock",
+          "vertices": [
+            [
+              -1238,
+              -19
+            ],
+            [
+              -1638,
+              -609
+            ],
+            [
+              -1498,
+              -969
+            ],
+            [
+              -878,
+              -969
+            ],
+            [
+              -18,
+              -609
+            ],
+            [
+              762,
+              -19
+            ],
+            [
+              1162,
+              571
+            ],
+            [
+              1022,
+              931
+            ],
+            [
+              402,
+              931
+            ],
+            [
+              -458,
+              571
+            ]
+          ]
+        },
+        "cuts": [
+          {
+            "id": "cut_1",
+            "vertices": [
+              [
+                42,
+                161
+              ],
+              [
+                -38,
+                43
+              ],
+              [
+                -10,
+                -29
+              ],
+              [
+                114,
+                -29
+              ],
+              [
+                286,
+                43
+              ],
+              [
+                442,
+                161
+              ],
+              [
+                522,
+                279
+              ],
+              [
+                494,
+                351
+              ],
+              [
+                370,
+                351
+              ],
+              [
+                198,
+                279
+              ]
+            ],
+            "z_interval_mm": [
+              0,
+              13
+            ]
+          },
+          {
+            "id": "cut_2",
+            "vertices": [
+              [
+                -558,
+                161
+              ],
+              [
+                -638,
+                43
+              ],
+              [
+                -610,
+                -29
+              ],
+              [
+                -486,
+                -29
+              ],
+              [
+                -314,
+                43
+              ],
+              [
+                -158,
+                161
+              ],
+              [
+                -78,
+                279
+              ],
+              [
+                -106,
+                351
+              ],
+              [
+                -230,
+                351
+              ],
+              [
+                -402,
+                279
+              ]
+            ],
+            "z_interval_mm": [
+              0,
+              13
+            ]
+          },
+          {
+            "id": "cut_3",
+            "vertices": [
+              [
+                -758,
+                -339
+              ],
+              [
+                -838,
+                -457
+              ],
+              [
+                -810,
+                -529
+              ],
+              [
+                -686,
+                -529
+              ],
+              [
+                -514,
+                -457
+              ],
+              [
+                -358,
+                -339
+              ],
+              [
+                -278,
+                -221
+              ],
+              [
+                -306,
+                -149
+              ],
+              [
+                -430,
+                -149
+              ],
+              [
+                -602,
+                -221
+              ]
+            ],
+            "z_interval_mm": [
+              0,
+              13
+            ]
+          }
+        ],
+        "construction": [],
+        "top_shift_mm": [
+          -1,
+          1
+        ]
+      },
+      "design_notes": "seed=20261126; n=10; cuts=3; shear=1; quarter_turn=2"
+    },
+    {
+      "id": "seeded_convex_15",
+      "family": "seeded_convex_blind_pockets",
+      "admissible": true,
+      "recipe": {
+        "family": "sketch_layer_partition_v1",
+        "height_mm": 14,
+        "outer": {
+          "id": "stock",
+          "vertices": [
+            [
+              -110,
+              -881
+            ],
+            [
+              430,
+              -1261
+            ],
+            [
+              800,
+              -1211
+            ],
+            [
+              880,
+              -731
+            ],
+            [
+              650,
+              9
+            ],
+            [
+              170,
+              799
+            ],
+            [
+              -390,
+              1359
+            ],
+            [
+              -870,
+              1529
+            ],
+            [
+              -1100,
+              1249
+            ],
+            [
+              -1020,
+              609
+            ],
+            [
+              -650,
+              -181
+            ]
+          ]
+        },
+        "cuts": [
+          {
+            "id": "cut_1",
+            "vertices": [
+              [
+                -110,
+                -81
+              ],
+              [
+                -2,
+                -157
+              ],
+              [
+                72,
+                -147
+              ],
+              [
+                88,
+                -51
+              ],
+              [
+                42,
+                97
+              ],
+              [
+                -54,
+                255
+              ],
+              [
+                -166,
+                367
+              ],
+              [
+                -262,
+                401
+              ],
+              [
+                -308,
+                345
+              ],
+              [
+                -292,
+                217
+              ],
+              [
+                -218,
+                59
+              ]
+            ],
+            "z_interval_mm": [
+              5,
+              14
+            ]
+          }
+        ],
+        "construction": [],
+        "top_shift_mm": [
+          -2,
+          -2
+        ]
+      },
+      "design_notes": "seed=20261126; n=11; cuts=1; shear=1; quarter_turn=3"
+    },
+    {
+      "id": "seeded_convex_16",
+      "family": "seeded_convex_through_holes",
+      "admissible": true,
+      "recipe": {
+        "family": "sketch_layer_partition_v1",
+        "height_mm": 15,
+        "outer": {
+          "id": "stock",
+          "vertices": [
+            [
+              1237,
+              72
+            ],
+            [
+              2157,
+              612
+            ],
+            [
+              2477,
+              982
+            ],
+            [
+              2077,
+              1062
+            ],
+            [
+              1107,
+              832
+            ],
+            [
+              -163,
+              352
+            ],
+            [
+              -1283,
+              -208
+            ],
+            [
+              -1933,
+              -688
+            ],
+            [
+              -1883,
+              -918
+            ],
+            [
+              -1163,
+              -838
+            ],
+            [
+              -3,
+              -468
+            ]
+          ]
+        },
+        "cuts": [
+          {
+            "id": "cut_1",
+            "vertices": [
+              [
+                157,
+                72
+              ],
+              [
+                341,
+                180
+              ],
+              [
+                405,
+                254
+              ],
+              [
+                325,
+                270
+              ],
+              [
+                131,
+                224
+              ],
+              [
+                -123,
+                128
+              ],
+              [
+                -347,
+                16
+              ],
+              [
+                -477,
+                -80
+              ],
+              [
+                -467,
+                -126
+              ],
+              [
+                -323,
+                -110
+              ],
+              [
+                -91,
+                -36
+              ]
+            ],
+            "z_interval_mm": [
+              0,
+              15
+            ]
+          },
+          {
+            "id": "cut_2",
+            "vertices": [
+              [
+                717,
+                72
+              ],
+              [
+                901,
+                180
+              ],
+              [
+                965,
+                254
+              ],
+              [
+                885,
+                270
+              ],
+              [
+                691,
+                224
+              ],
+              [
+                437,
+                128
+              ],
+              [
+                213,
+                16
+              ],
+              [
+                83,
+                -80
+              ],
+              [
+                93,
+                -126
+              ],
+              [
+                237,
+                -110
+              ],
+              [
+                469,
+                -36
+              ]
+            ],
+            "z_interval_mm": [
+              0,
+              15
+            ]
+          }
+        ],
+        "construction": [],
+        "top_shift_mm": [
+          2,
+          0
+        ]
+      },
+      "design_notes": "seed=20261126; n=11; cuts=2; shear=2; quarter_turn=0"
+    },
+    {
+      "id": "seeded_convex_17",
+      "family": "seeded_convex_blind_pockets",
+      "admissible": true,
+      "recipe": {
+        "family": "sketch_layer_partition_v1",
+        "height_mm": 16,
+        "outer": {
+          "id": "stock",
+          "vertices": [
+            [
+              243,
+              980
+            ],
+            [
+              -627,
+              1350
+            ],
+            [
+              -627,
+              350
+            ],
+            [
+              243,
+              -1020
+            ],
+            [
+              1113,
+              -1390
+            ],
+            [
+              1113,
+              -390
+            ]
+          ]
+        },
+        "cuts": [
+          {
+            "id": "cut_1",
+            "vertices": [
+              [
+                423,
+                -300
+              ],
+              [
+                249,
+                -226
+              ],
+              [
+                249,
+                -426
+              ],
+              [
+                423,
+                -700
+              ],
+              [
+                597,
+                -774
+              ],
+              [
+                597,
+                -574
+              ]
+            ],
+            "z_interval_mm": [
+              3,
+              16
+            ]
+          },
+          {
+            "id": "cut_2",
+            "vertices": [
+              [
+                423,
+                300
+              ],
+              [
+                249,
+                374
+              ],
+              [
+                249,
+                174
+              ],
+              [
+                423,
+                -100
+              ],
+              [
+                597,
+                -174
+              ],
+              [
+                597,
+                26
+              ]
+            ],
+            "z_interval_mm": [
+              3,
+              16
+            ]
+          },
+          {
+            "id": "cut_3",
+            "vertices": [
+              [
+                -77,
+                500
+              ],
+              [
+                -251,
+                574
+              ],
+              [
+                -251,
+                374
+              ],
+              [
+                -77,
+                100
+              ],
+              [
+                97,
+                26
+              ],
+              [
+                97,
+                226
+              ]
+            ],
+            "z_interval_mm": [
+              3,
+              16
+            ]
+          }
+        ],
+        "construction": [],
+        "top_shift_mm": [
+          -1,
+          -2
+        ]
+      },
+      "design_notes": "seed=20261126; n=6; cuts=3; shear=1; quarter_turn=1"
+    },
+    {
+      "id": "seeded_convex_18",
+      "family": "seeded_convex_through_holes",
+      "admissible": true,
+      "recipe": {
+        "family": "sketch_layer_partition_v1",
+        "height_mm": 17,
+        "outer": {
+          "id": "stock",
+          "vertices": [
+            [
+              -825,
+              48
+            ],
+            [
+              -195,
+              -452
+            ],
+            [
+              545,
+              -822
+            ],
+            [
+              1175,
+              -952
+            ],
+            [
+              1545,
+              -822
+            ],
+            [
+              1545,
+              -452
+            ],
+            [
+              1175,
+              48
+            ],
+            [
+              545,
+              548
+            ],
+            [
+              -195,
+              918
+            ],
+            [
+              -825,
+              1048
+            ],
+            [
+              -1195,
+              918
+            ],
+            [
+              -1195,
+              548
+            ]
+          ]
+        },
+        "cuts": [
+          {
+            "id": "cut_1",
+            "vertices": [
+              [
+                -25,
+                48
+              ],
+              [
+                101,
+                -52
+              ],
+              [
+                249,
+                -126
+              ],
+              [
+                375,
+                -152
+              ],
+              [
+                449,
+                -126
+              ],
+              [
+                449,
+                -52
+              ],
+              [
+                375,
+                48
+              ],
+              [
+                249,
+                148
+              ],
+              [
+                101,
+                222
+              ],
+              [
+                -25,
+                248
+              ],
+              [
+                -99,
+                222
+              ],
+              [
+                -99,
+                148
+              ]
+            ],
+            "z_interval_mm": [
+              0,
+              17
+            ]
+          }
+        ],
+        "construction": [],
+        "top_shift_mm": [
+          -2,
+          -2
+        ]
+      },
+      "design_notes": "seed=20261126; n=12; cuts=1; shear=-1; quarter_turn=2"
+    },
+    {
+      "id": "seeded_convex_19",
+      "family": "seeded_convex_blind_pockets",
+      "admissible": true,
+      "recipe": {
+        "family": "sketch_layer_partition_v1",
+        "height_mm": 18,
+        "outer": {
+          "id": "stock",
+          "vertices": [
+            [
+              167,
+              -754
+            ],
+            [
+              757,
+              -1744
+            ],
+            [
+              1117,
+              -1964
+            ],
+            [
+              1117,
+              -1344
+            ],
+            [
+              757,
+              -124
+            ],
+            [
+              167,
+              1246
+            ],
+            [
+              -423,
+              2236
+            ],
+            [
+              -783,
+              2456
+            ],
+            [
+              -783,
+              1836
+            ],
+            [
+              -423,
+              616
+            ]
+          ]
+        },
+        "cuts": [
+          {
+            "id": "cut_1",
+            "vertices": [
+              [
+                167,
+                326
+              ],
+              [
+                285,
+                128
+              ],
+              [
+                357,
+                84
+              ],
+              [
+                357,
+                208
+              ],
+              [
+                285,
+                452
+              ],
+              [
+                167,
+                726
+              ],
+              [
+                49,
+                924
+              ],
+              [
+                -23,
+                968
+              ],
+              [
+                -23,
+                844
+              ],
+              [
+                49,
+                600
+              ]
+            ],
+            "z_interval_mm": [
+              5,
+              18
+            ]
+          },
+          {
+            "id": "cut_2",
+            "vertices": [
+              [
+                167,
+                -234
+              ],
+              [
+                285,
+                -432
+              ],
+              [
+                357,
+                -476
+              ],
+              [
+                357,
+                -352
+              ],
+              [
+                285,
+                -108
+              ],
+              [
+                167,
+                166
+              ],
+              [
+                49,
+                364
+              ],
+              [
+                -23,
+                408
+              ],
+              [
+                -23,
+                284
+              ],
+              [
+                49,
+                40
+              ]
+            ],
+            "z_interval_mm": [
+              5,
+              18
+            ]
+          }
+        ],
+        "construction": [],
+        "top_shift_mm": [
+          -2,
+          2
+        ]
+      },
+      "design_notes": "seed=20261126; n=10; cuts=2; shear=2; quarter_turn=3"
+    },
+    {
+      "id": "seeded_convex_20",
+      "family": "seeded_convex_through_holes",
+      "admissible": true,
+      "recipe": {
+        "family": "sketch_layer_partition_v1",
+        "height_mm": 9,
+        "outer": {
+          "id": "stock",
+          "vertices": [
+            [
+              -1157,
+              71
+            ],
+            [
+              -287,
+              -569
+            ],
+            [
+              653,
+              -909
+            ],
+            [
+              1213,
+              -799
+            ],
+            [
+              1123,
+              -269
+            ],
+            [
+              443,
+              411
+            ],
+            [
+              -527,
+              941
+            ],
+            [
+              -1307,
+              1051
+            ],
+            [
+              -1567,
+              711
+            ]
+          ]
+        },
+        "cuts": [
+          {
+            "id": "cut_1",
+            "vertices": [
+              [
+                -237,
+                251
+              ],
+              [
+                -63,
+                123
+              ],
+              [
+                125,
+                55
+              ],
+              [
+                237,
+                77
+              ],
+              [
+                219,
+                183
+              ],
+              [
+                83,
+                319
+              ],
+              [
+                -111,
+                425
+              ],
+              [
+                -267,
+                447
+              ],
+              [
+                -319,
+                379
+              ]
+            ],
+            "z_interval_mm": [
+              0,
+              9
+            ]
+          },
+          {
+            "id": "cut_2",
+            "vertices": [
+              [
+                -837,
+                251
+              ],
+              [
+                -663,
+                123
+              ],
+              [
+                -475,
+                55
+              ],
+              [
+                -363,
+                77
+              ],
+              [
+                -381,
+                183
+              ],
+              [
+                -517,
+                319
+              ],
+              [
+                -711,
+                425
+              ],
+              [
+                -867,
+                447
+              ],
+              [
+                -919,
+                379
+              ]
+            ],
+            "z_interval_mm": [
+              0,
+              9
+            ]
+          },
+          {
+            "id": "cut_3",
+            "vertices": [
+              [
+                -37,
+                -249
+              ],
+              [
+                137,
+                -377
+              ],
+              [
+                325,
+                -445
+              ],
+              [
+                437,
+                -423
+              ],
+              [
+                419,
+                -317
+              ],
+              [
+                283,
+                -181
+              ],
+              [
+                89,
+                -75
+              ],
+              [
+                -67,
+                -53
+              ],
+              [
+                -119,
+                -121
+              ]
+            ],
+            "z_interval_mm": [
+              0,
+              9
+            ]
+          }
+        ],
+        "construction": [],
+        "top_shift_mm": [
+          2,
+          -1
+        ]
+      },
+      "design_notes": "seed=20261126; n=9; cuts=3; shear=-1; quarter_turn=2"
+    },
+    {
+      "id": "seeded_convex_21",
+      "family": "seeded_convex_blind_pockets",
+      "admissible": true,
+      "recipe": {
+        "family": "sketch_layer_partition_v1",
+        "height_mm": 10,
+        "outer": {
+          "id": "stock",
+          "vertices": [
+            [
+              229,
+              -1025
+            ],
+            [
+              819,
+              345
+            ],
+            [
+              1179,
+              1565
+            ],
+            [
+              1179,
+              2185
+            ],
+            [
+              819,
+              1965
+            ],
+            [
+              229,
+              975
+            ],
+            [
+              -361,
+              -395
+            ],
+            [
+              -721,
+              -1615
+            ],
+            [
+              -721,
+              -2235
+            ],
+            [
+              -361,
+              -2015
+            ]
+          ]
+        },
+        "cuts": [
+          {
+            "id": "cut_1",
+            "vertices": [
+              [
+                229,
+                -225
+              ],
+              [
+                347,
+                49
+              ],
+              [
+                419,
+                293
+              ],
+              [
+                419,
+                417
+              ],
+              [
+                347,
+                373
+              ],
+              [
+                229,
+                175
+              ],
+              [
+                111,
+                -99
+              ],
+              [
+                39,
+                -343
+              ],
+              [
+                39,
+                -467
+              ],
+              [
+                111,
+                -423
+              ]
+            ],
+            "z_interval_mm": [
+              3,
+              10
+            ]
+          }
+        ],
+        "construction": []
+      },
+      "design_notes": "seed=20261126; n=10; cuts=1; shear=-2; quarter_turn=3"
+    },
+    {
+      "id": "seeded_convex_22",
+      "family": "seeded_convex_through_holes",
+      "admissible": true,
+      "recipe": {
+        "family": "sketch_layer_partition_v1",
+        "height_mm": 11,
+        "outer": {
+          "id": "stock",
+          "vertices": [
+            [
+              1211,
+              -70
+            ],
+            [
+              -29,
+              470
+            ],
+            [
+              -1189,
+              840
+            ],
+            [
+              -1909,
+              920
+            ],
+            [
+              -1959,
+              690
+            ],
+            [
+              -1309,
+              210
+            ],
+            [
+              -189,
+              -350
+            ],
+            [
+              1081,
+              -830
+            ],
+            [
+              2051,
+              -1060
+            ],
+            [
+              2451,
+              -980
+            ],
+            [
+              2131,
+              -610
+            ]
+          ]
+        },
+        "cuts": [
+          {
+            "id": "cut_1",
+            "vertices": [
+              [
+                131,
+                -70
+              ],
+              [
+                -117,
+                38
+              ],
+              [
+                -349,
+                112
+              ],
+              [
+                -493,
+                128
+              ],
+              [
+                -503,
+                82
+              ],
+              [
+                -373,
+                -14
+              ],
+              [
+                -149,
+                -126
+              ],
+              [
+                105,
+                -222
+              ],
+              [
+                299,
+                -268
+              ],
+              [
+                379,
+                -252
+              ],
+              [
+                315,
+                -178
+              ]
+            ],
+            "z_interval_mm": [
+              0,
+              11
+            ]
+          },
+          {
+            "id": "cut_2",
+            "vertices": [
+              [
+                691,
+                -70
+              ],
+              [
+                443,
+                38
+              ],
+              [
+                211,
+                112
+              ],
+              [
+                67,
+                128
+              ],
+              [
+                57,
+                82
+              ],
+              [
+                187,
+                -14
+              ],
+              [
+                411,
+                -126
+              ],
+              [
+                665,
+                -222
+              ],
+              [
+                859,
+                -268
+              ],
+              [
+                939,
+                -252
+              ],
+              [
+                875,
+                -178
+              ]
+            ],
+            "z_interval_mm": [
+              0,
+              11
+            ]
+          }
+        ],
+        "construction": [],
+        "top_shift_mm": [
+          2,
+          2
+        ]
+      },
+      "design_notes": "seed=20261126; n=11; cuts=2; shear=-2; quarter_turn=0"
+    },
+    {
+      "id": "seeded_convex_23",
+      "family": "seeded_convex_blind_pockets",
+      "admissible": true,
+      "recipe": {
+        "family": "sketch_layer_partition_v1",
+        "height_mm": 12,
+        "outer": {
+          "id": "stock",
+          "vertices": [
+            [
+              245,
+              -1074
+            ],
+            [
+              835,
+              296
+            ],
+            [
+              1195,
+              1516
+            ],
+            [
+              1195,
+              2136
+            ],
+            [
+              835,
+              1916
+            ],
+            [
+              245,
+              926
+            ],
+            [
+              -345,
+              -444
+            ],
+            [
+              -705,
+              -1664
+            ],
+            [
+              -705,
+              -2284
+            ],
+            [
+              -345,
+              -2064
+            ]
+          ]
+        },
+        "cuts": [
+          {
+            "id": "cut_1",
+            "vertices": [
+              [
+                65,
+                -334
+              ],
+              [
+                183,
+                -60
+              ],
+              [
+                255,
+                184
+              ],
+              [
+                255,
+                308
+              ],
+              [
+                183,
+                264
+              ],
+              [
+                65,
+                66
+              ],
+              [
+                -53,
+                -208
+              ],
+              [
+                -125,
+                -452
+              ],
+              [
+                -125,
+                -576
+              ],
+              [
+                -53,
+                -532
+              ]
+            ],
+            "z_interval_mm": [
+              5,
+              12
+            ]
+          },
+          {
+            "id": "cut_2",
+            "vertices": [
+              [
+                65,
+                -934
+              ],
+              [
+                183,
+                -660
+              ],
+              [
+                255,
+                -416
+              ],
+              [
+                255,
+                -292
+              ],
+              [
+                183,
+                -336
+              ],
+              [
+                65,
+                -534
+              ],
+              [
+                -53,
+                -808
+              ],
+              [
+                -125,
+                -1052
+              ],
+              [
+                -125,
+                -1176
+              ],
+              [
+                -53,
+                -1132
+              ]
+            ],
+            "z_interval_mm": [
+              5,
+              12
+            ]
+          },
+          {
+            "id": "cut_3",
+            "vertices": [
+              [
+                565,
+                366
+              ],
+              [
+                683,
+                640
+              ],
+              [
+                755,
+                884
+              ],
+              [
+                755,
+                1008
+              ],
+              [
+                683,
+                964
+              ],
+              [
+                565,
+                766
+              ],
+              [
+                447,
+                492
+              ],
+              [
+                375,
+                248
+              ],
+              [
+                375,
+                124
+              ],
+              [
+                447,
+                168
+              ]
+            ],
+            "z_interval_mm": [
+              5,
+              12
+            ]
+          }
+        ],
+        "construction": [],
+        "top_shift_mm": [
+          0,
+          -2
+        ]
+      },
+      "design_notes": "seed=20261126; n=10; cuts=3; shear=-2; quarter_turn=3"
+    },
+    {
+      "id": "seeded_convex_24",
+      "family": "seeded_convex_through_holes",
+      "admissible": true,
+      "recipe": {
+        "family": "sketch_layer_partition_v1",
+        "height_mm": 13,
+        "outer": {
+          "id": "stock",
+          "vertices": [
+            [
+              -915,
+              -49
+            ],
+            [
+              595,
+              -689
+            ],
+            [
+              1875,
+              -1029
+            ],
+            [
+              2325,
+              -919
+            ],
+            [
+              1705,
+              -389
+            ],
+            [
+              345,
+              291
+            ],
+            [
+              -1155,
+              821
+            ],
+            [
+              -2045,
+              931
+            ],
+            [
+              -1965,
+              591
+            ]
+          ]
+        },
+        "cuts": [
+          {
+            "id": "cut_1",
+            "vertices": [
+              [
+                -115,
+                -49
+              ],
+              [
+                187,
+                -177
+              ],
+              [
+                443,
+                -245
+              ],
+              [
+                533,
+                -223
+              ],
+              [
+                409,
+                -117
+              ],
+              [
+                137,
+                19
+              ],
+              [
+                -163,
+                125
+              ],
+              [
+                -341,
+                147
+              ],
+              [
+                -325,
+                79
+              ]
+            ],
+            "z_interval_mm": [
+              0,
+              13
+            ]
+          }
+        ],
+        "construction": [],
+        "top_shift_mm": [
+          1,
+          -1
+        ]
+      },
+      "design_notes": "seed=20261126; n=9; cuts=1; shear=-2; quarter_turn=2"
+    },
+    {
+      "id": "seeded_convex_25",
+      "family": "seeded_convex_blind_pockets",
+      "admissible": true,
+      "recipe": {
+        "family": "sketch_layer_partition_v1",
+        "height_mm": 14,
+        "outer": {
+          "id": "stock",
+          "vertices": [
+            [
+              997,
+              64
+            ],
+            [
+              307,
+              1014
+            ],
+            [
+              -813,
+              654
+            ],
+            [
+              -813,
+              -526
+            ],
+            [
+              307,
+              -886
+            ]
+          ]
+        },
+        "cuts": [
+          {
+            "id": "cut_1",
+            "vertices": [
+              [
+                -83,
+                64
+              ],
+              [
+                -221,
+                254
+              ],
+              [
+                -445,
+                182
+              ],
+              [
+                -445,
+                -54
+              ],
+              [
+                -221,
+                -126
+              ]
+            ],
+            "z_interval_mm": [
+              3,
+              14
+            ]
+          },
+          {
+            "id": "cut_2",
+            "vertices": [
+              [
+                477,
+                64
+              ],
+              [
+                339,
+                254
+              ],
+              [
+                115,
+                182
+              ],
+              [
+                115,
+                -54
+              ],
+              [
+                339,
+                -126
+              ]
+            ],
+            "z_interval_mm": [
+              3,
+              14
+            ]
+          }
+        ],
+        "construction": [],
+        "top_shift_mm": [
+          2,
+          -1
+        ]
+      },
+      "design_notes": "seed=20261126; n=5; cuts=2; shear=0; quarter_turn=0"
+    },
+    {
+      "id": "seeded_convex_26",
+      "family": "seeded_convex_through_holes",
+      "admissible": true,
+      "recipe": {
+        "family": "sketch_layer_partition_v1",
+        "height_mm": 15,
+        "outer": {
+          "id": "stock",
+          "vertices": [
+            [
+              -976,
+              213
+            ],
+            [
+              264,
+              -327
+            ],
+            [
+              1424,
+              -697
+            ],
+            [
+              2144,
+              -777
+            ],
+            [
+              2194,
+              -547
+            ],
+            [
+              1544,
+              -67
+            ],
+            [
+              424,
+              493
+            ],
+            [
+              -846,
+              973
+            ],
+            [
+              -1816,
+              1203
+            ],
+            [
+              -2216,
+              1123
+            ],
+            [
+              -1896,
+              753
+            ]
+          ]
+        },
+        "cuts": [
+          {
+            "id": "cut_1",
+            "vertices": [
+              [
+                -236,
+                393
+              ],
+              [
+                12,
+                285
+              ],
+              [
+                244,
+                211
+              ],
+              [
+                388,
+                195
+              ],
+              [
+                398,
+                241
+              ],
+              [
+                268,
+                337
+              ],
+              [
+                44,
+                449
+              ],
+              [
+                -210,
+                545
+              ],
+              [
+                -404,
+                591
+              ],
+              [
+                -484,
+                575
+              ],
+              [
+                -420,
+                501
+              ]
+            ],
+            "z_interval_mm": [
+              0,
+              15
+            ]
+          },
+          {
+            "id": "cut_2",
+            "vertices": [
+              [
+                -836,
+                393
+              ],
+              [
+                -588,
+                285
+              ],
+              [
+                -356,
+                211
+              ],
+              [
+                -212,
+                195
+              ],
+              [
+                -202,
+                241
+              ],
+              [
+                -332,
+                337
+              ],
+              [
+                -556,
+                449
+              ],
+              [
+                -810,
+                545
+              ],
+              [
+                -1004,
+                591
+              ],
+              [
+                -1084,
+                575
+              ],
+              [
+                -1020,
+                501
+              ]
+            ],
+            "z_interval_mm": [
+              0,
+              15
+            ]
+          },
+          {
+            "id": "cut_3",
+            "vertices": [
+              [
+                464,
+                -107
+              ],
+              [
+                712,
+                -215
+              ],
+              [
+                944,
+                -289
+              ],
+              [
+                1088,
+                -305
+              ],
+              [
+                1098,
+                -259
+              ],
+              [
+                968,
+                -163
+              ],
+              [
+                744,
+                -51
+              ],
+              [
+                490,
+                45
+              ],
+              [
+                296,
+                91
+              ],
+              [
+                216,
+                75
+              ],
+              [
+                280,
+                1
+              ]
+            ],
+            "z_interval_mm": [
+              0,
+              15
+            ]
+          }
+        ],
+        "construction": [],
+        "top_shift_mm": [
+          -2,
+          1
+        ]
+      },
+      "design_notes": "seed=20261126; n=11; cuts=3; shear=-2; quarter_turn=2"
+    },
+    {
+      "id": "seeded_convex_27",
+      "family": "seeded_convex_blind_pockets",
+      "admissible": true,
+      "recipe": {
+        "family": "sketch_layer_partition_v1",
+        "height_mm": 16,
+        "outer": {
+          "id": "stock",
+          "vertices": [
+            [
+              168,
+              -873
+            ],
+            [
+              668,
+              -1743
+            ],
+            [
+              1038,
+              -2113
+            ],
+            [
+              1168,
+              -1873
+            ],
+            [
+              1038,
+              -1113
+            ],
+            [
+              668,
+              -3
+            ],
+            [
+              168,
+              1127
+            ],
+            [
+              -332,
+              1997
+            ],
+            [
+              -702,
+              2367
+            ],
+            [
+              -832,
+              2127
+            ],
+            [
+              -702,
+              1367
+            ],
+            [
+              -332,
+              257
+            ]
+          ]
+        },
+        "cuts": [
+          {
+            "id": "cut_1",
+            "vertices": [
+              [
+                168,
+                -73
+              ],
+              [
+                268,
+                -247
+              ],
+              [
+                342,
+                -321
+              ],
+              [
+                368,
+                -273
+              ],
+              [
+                342,
+                -121
+              ],
+              [
+                268,
+                101
+              ],
+              [
+                168,
+                327
+              ],
+              [
+                68,
+                501
+              ],
+              [
+                -6,
+                575
+              ],
+              [
+                -32,
+                527
+              ],
+              [
+                -6,
+                375
+              ],
+              [
+                68,
+                153
+              ]
+            ],
+            "z_interval_mm": [
+              5,
+              16
+            ]
+          }
+        ],
+        "construction": [],
+        "top_shift_mm": [
+          -2,
+          -1
+        ]
+      },
+      "design_notes": "seed=20261126; n=12; cuts=1; shear=2; quarter_turn=3"
+    },
+    {
+      "id": "seeded_convex_28",
+      "family": "seeded_convex_through_holes",
+      "admissible": true,
+      "recipe": {
+        "family": "sketch_layer_partition_v1",
+        "height_mm": 17,
+        "outer": {
+          "id": "stock",
+          "vertices": [
+            [
+              -97,
+              -968
+            ],
+            [
+              613,
+              32
+            ],
+            [
+              903,
+              1032
+            ],
+            [
+              613,
+              1452
+            ],
+            [
+              -97,
+              1032
+            ],
+            [
+              -807,
+              32
+            ],
+            [
+              -1097,
+              -968
+            ],
+            [
+              -807,
+              -1388
+            ]
+          ]
+        },
+        "cuts": [
+          {
+            "id": "cut_1",
+            "vertices": [
+              [
+                -97,
+                112
+              ],
+              [
+                45,
+                312
+              ],
+              [
+                103,
+                512
+              ],
+              [
+                45,
+                596
+              ],
+              [
+                -97,
+                512
+              ],
+              [
+                -239,
+                312
+              ],
+              [
+                -297,
+                112
+              ],
+              [
+                -239,
+                28
+              ]
+            ],
+            "z_interval_mm": [
+              0,
+              17
+            ]
+          },
+          {
+            "id": "cut_2",
+            "vertices": [
+              [
+                -97,
+                -448
+              ],
+              [
+                45,
+                -248
+              ],
+              [
+                103,
+                -48
+              ],
+              [
+                45,
+                36
+              ],
+              [
+                -97,
+                -48
+              ],
+              [
+                -239,
+                -248
+              ],
+              [
+                -297,
+                -448
+              ],
+              [
+                -239,
+                -532
+              ]
+            ],
+            "z_interval_mm": [
+              0,
+              17
+            ]
+          }
+        ],
+        "construction": [],
+        "top_shift_mm": [
+          -1,
+          2
+        ]
+      },
+      "design_notes": "seed=20261126; n=8; cuts=2; shear=-1; quarter_turn=3"
+    },
+    {
+      "id": "seeded_convex_29",
+      "family": "seeded_convex_blind_pockets",
+      "admissible": true,
+      "recipe": {
+        "family": "sketch_layer_partition_v1",
+        "height_mm": 18,
+        "outer": {
+          "id": "stock",
+          "vertices": [
+            [
+              114,
+              -1013
+            ],
+            [
+              704,
+              -823
+            ],
+            [
+              1064,
+              -323
+            ],
+            [
+              1064,
+              297
+            ],
+            [
+              704,
+              797
+            ],
+            [
+              114,
+              987
+            ],
+            [
+              -476,
+              797
+            ],
+            [
+              -836,
+              297
+            ],
+            [
+              -836,
+              -323
+            ],
+            [
+              -476,
+              -823
+            ]
+          ]
+        },
+        "cuts": [
+          {
+            "id": "cut_1",
+            "vertices": [
+              [
+                -66,
+                87
+              ],
+              [
+                52,
+                125
+              ],
+              [
+                124,
+                225
+              ],
+              [
+                124,
+                349
+              ],
+              [
+                52,
+                449
+              ],
+              [
+                -66,
+                487
+              ],
+              [
+                -184,
+                449
+              ],
+              [
+                -256,
+                349
+              ],
+              [
+                -256,
+                225
+              ],
+              [
+                -184,
+                125
+              ]
+            ],
+            "z_interval_mm": [
+              3,
+              18
+            ]
+          },
+          {
+            "id": "cut_2",
+            "vertices": [
+              [
+                -66,
+                -513
+              ],
+              [
+                52,
+                -475
+              ],
+              [
+                124,
+                -375
+              ],
+              [
+                124,
+                -251
+              ],
+              [
+                52,
+                -151
+              ],
+              [
+                -66,
+                -113
+              ],
+              [
+                -184,
+                -151
+              ],
+              [
+                -256,
+                -251
+              ],
+              [
+                -256,
+                -375
+              ],
+              [
+                -184,
+                -475
+              ]
+            ],
+            "z_interval_mm": [
+              3,
+              18
+            ]
+          },
+          {
+            "id": "cut_3",
+            "vertices": [
+              [
+                434,
+                -213
+              ],
+              [
+                552,
+                -175
+              ],
+              [
+                624,
+                -75
+              ],
+              [
+                624,
+                49
+              ],
+              [
+                552,
+                149
+              ],
+              [
+                434,
+                187
+              ],
+              [
+                316,
+                149
+              ],
+              [
+                244,
+                49
+              ],
+              [
+                244,
+                -75
+              ],
+              [
+                316,
+                -175
+              ]
+            ],
+            "z_interval_mm": [
+              3,
+              18
+            ]
+          }
+        ],
+        "construction": [],
+        "top_shift_mm": [
+          0,
+          -1
+        ]
+      },
+      "design_notes": "seed=20261126; n=10; cuts=3; shear=0; quarter_turn=3"
+    }
+  ]
+}

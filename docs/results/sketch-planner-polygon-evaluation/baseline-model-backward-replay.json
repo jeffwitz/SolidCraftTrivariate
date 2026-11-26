@@ -1,0 +1,713 @@
+{
+  "schema": "baseline_model_backward_replay_v1",
+  "cli_sha256": "684c7c6a89423f798648800e28c53d1065c23b8aaa7e5407409714cea4a36f70",
+  "baseline_cli_sha256": "ea0bbf8609bb575cc5ac5f8dec6c8c1659a85050a95f7f0db86869d15160786c",
+  "corpus_sha256": "f10964bb0417a702a394f66aa96e148b6ead67685a3a9f9f541cea8d6ab98e7b",
+  "elapsed_s": 1.3710840500425547,
+  "denominator": 45,
+  "summary": {
+    "concave_stock_or_cut": {
+      "denominator": 5,
+      "valid": 5,
+      "nonvalid": 0
+    },
+    "convex_blind_pockets": {
+      "denominator": 5,
+      "valid": 5,
+      "nonvalid": 0
+    },
+    "convex_through_holes": {
+      "denominator": 5,
+      "valid": 5,
+      "nonvalid": 0
+    },
+    "seeded_convex_blind_pockets": {
+      "denominator": 15,
+      "valid": 15,
+      "nonvalid": 0
+    },
+    "seeded_convex_through_holes": {
+      "denominator": 15,
+      "valid": 15,
+      "nonvalid": 0
+    }
+  },
+  "cases": [
+    {
+      "id": "through_diamond_center",
+      "family": "convex_through_holes",
+      "returncode": 0,
+      "elapsed_s": 0.014299264003057033,
+      "status": "valid",
+      "method": "certified_sketch_layer_partition",
+      "determinant_lower_bound_mm3": 127.99999999999994,
+      "volume_exact_mm3": [
+        31416,
+        1
+      ],
+      "stdout": null,
+      "stderr": ""
+    },
+    {
+      "id": "through_hex_offset",
+      "family": "convex_through_holes",
+      "returncode": 0,
+      "elapsed_s": 0.017747633042745292,
+      "status": "valid",
+      "method": "certified_sketch_layer_partition",
+      "determinant_lower_bound_mm3": 209.9999999999999,
+      "volume_exact_mm3": [
+        78555,
+        2
+      ],
+      "stdout": null,
+      "stderr": ""
+    },
+    {
+      "id": "through_pentagon_tight_clearance",
+      "family": "convex_through_holes",
+      "returncode": 0,
+      "elapsed_s": 0.018062448012642562,
+      "status": "valid",
+      "method": "certified_sketch_layer_partition",
+      "determinant_lower_bound_mm3": 3.2083333333333317,
+      "volume_exact_mm3": [
+        11943,
+        2
+      ],
+      "stdout": null,
+      "stderr": ""
+    },
+    {
+      "id": "through_two_rectangles",
+      "family": "convex_through_holes",
+      "returncode": 0,
+      "elapsed_s": 0.033326124015729874,
+      "status": "valid",
+      "method": "certified_sketch_layer_partition",
+      "determinant_lower_bound_mm3": 2267.9999999999986,
+      "volume_exact_mm3": [
+        51120,
+        1
+      ],
+      "stdout": null,
+      "stderr": ""
+    },
+    {
+      "id": "through_octagon_high_aspect",
+      "family": "convex_through_holes",
+      "returncode": 0,
+      "elapsed_s": 0.02784374402835965,
+      "status": "valid",
+      "method": "certified_sketch_layer_partition",
+      "determinant_lower_bound_mm3": 49.99999999999997,
+      "volume_exact_mm3": [
+        25440,
+        1
+      ],
+      "stdout": null,
+      "stderr": ""
+    },
+    {
+      "id": "blind_rotated_quad",
+      "family": "convex_blind_pockets",
+      "returncode": 0,
+      "elapsed_s": 0.036645748012233526,
+      "status": "valid",
+      "method": "certified_sketch_layer_partition",
+      "determinant_lower_bound_mm3": 4.666666666666664,
+      "volume_exact_mm3": [
+        54948,
+        1
+      ],
+      "stdout": null,
+      "stderr": ""
+    },
+    {
+      "id": "blind_triangle_shallow",
+      "family": "convex_blind_pockets",
+      "returncode": 0,
+      "elapsed_s": 0.034301752981264144,
+      "status": "valid",
+      "method": "certified_sketch_layer_partition",
+      "determinant_lower_bound_mm3": 16.952380952380942,
+      "volume_exact_mm3": [
+        44592,
+        1
+      ],
+      "stdout": null,
+      "stderr": ""
+    },
+    {
+      "id": "blind_hex_deep",
+      "family": "convex_blind_pockets",
+      "returncode": 0,
+      "elapsed_s": 0.02513376798015088,
+      "status": "valid",
+      "method": "certified_sketch_layer_partition",
+      "determinant_lower_bound_mm3": 167.99999999999991,
+      "volume_exact_mm3": [
+        69084,
+        1
+      ],
+      "stdout": null,
+      "stderr": ""
+    },
+    {
+      "id": "blind_two_levels",
+      "family": "convex_blind_pockets",
+      "returncode": 0,
+      "elapsed_s": 0.0513989320024848,
+      "status": "valid",
+      "method": "certified_sketch_layer_partition",
+      "determinant_lower_bound_mm3": 719.9999999999997,
+      "volume_exact_mm3": [
+        96720,
+        1
+      ],
+      "stdout": null,
+      "stderr": ""
+    },
+    {
+      "id": "blind_close_to_boundary",
+      "family": "convex_blind_pockets",
+      "returncode": 0,
+      "elapsed_s": 0.03827998402994126,
+      "status": "valid",
+      "method": "certified_sketch_layer_partition",
+      "determinant_lower_bound_mm3": 3.823529411764704,
+      "volume_exact_mm3": [
+        29240,
+        1
+      ],
+      "stdout": null,
+      "stderr": ""
+    },
+    {
+      "id": "concave_c_stock_two_holes",
+      "family": "concave_stock_or_cut",
+      "returncode": 0,
+      "elapsed_s": 0.01485959195997566,
+      "status": "valid",
+      "method": "certified_sketch_layer_partition",
+      "determinant_lower_bound_mm3": 77.99999999999996,
+      "volume_exact_mm3": [
+        12350,
+        1
+      ],
+      "stdout": null,
+      "stderr": ""
+    },
+    {
+      "id": "concave_l_stock_pocket",
+      "family": "concave_stock_or_cut",
+      "returncode": 0,
+      "elapsed_s": 0.00903306296095252,
+      "status": "valid",
+      "method": "certified_sketch_layer_partition",
+      "determinant_lower_bound_mm3": 127.99999999999994,
+      "volume_exact_mm3": [
+        20088,
+        1
+      ],
+      "stdout": null,
+      "stderr": ""
+    },
+    {
+      "id": "concave_cut_in_rectangle",
+      "family": "concave_stock_or_cut",
+      "returncode": 0,
+      "elapsed_s": 0.008548116020392627,
+      "status": "valid",
+      "method": "certified_sketch_layer_partition",
+      "determinant_lower_bound_mm3": 59.99999999999997,
+      "volume_exact_mm3": [
+        30038,
+        1
+      ],
+      "stdout": null,
+      "stderr": ""
+    },
+    {
+      "id": "concave_u_stock_offset_hole",
+      "family": "concave_stock_or_cut",
+      "returncode": 0,
+      "elapsed_s": 0.007200793013907969,
+      "status": "valid",
+      "method": "certified_sketch_layer_partition",
+      "determinant_lower_bound_mm3": 398.9999999999998,
+      "volume_exact_mm3": [
+        32186,
+        1
+      ],
+      "stdout": null,
+      "stderr": ""
+    },
+    {
+      "id": "concave_stock_blind_two_profiles",
+      "family": "concave_stock_or_cut",
+      "returncode": 0,
+      "elapsed_s": 0.012328187003731728,
+      "status": "valid",
+      "method": "certified_sketch_layer_partition",
+      "determinant_lower_bound_mm3": 31.999999999999986,
+      "volume_exact_mm3": [
+        41800,
+        1
+      ],
+      "stdout": null,
+      "stderr": ""
+    },
+    {
+      "id": "seeded_convex_00",
+      "family": "seeded_convex_through_holes",
+      "returncode": 0,
+      "elapsed_s": 0.02271215000655502,
+      "status": "valid",
+      "method": "certified_sketch_layer_partition",
+      "determinant_lower_bound_mm3": 5534.999999999997,
+      "volume_exact_mm3": [
+        26039232,
+        1
+      ],
+      "stdout": null,
+      "stderr": ""
+    },
+    {
+      "id": "seeded_convex_01",
+      "family": "seeded_convex_blind_pockets",
+      "returncode": 0,
+      "elapsed_s": 0.032400102994870394,
+      "status": "valid",
+      "method": "certified_sketch_layer_partition",
+      "determinant_lower_bound_mm3": 1349.9999999999993,
+      "volume_exact_mm3": [
+        27291984,
+        1
+      ],
+      "stdout": null,
+      "stderr": ""
+    },
+    {
+      "id": "seeded_convex_02",
+      "family": "seeded_convex_through_holes",
+      "returncode": 0,
+      "elapsed_s": 0.029965225025080144,
+      "status": "valid",
+      "method": "certified_sketch_layer_partition",
+      "determinant_lower_bound_mm3": 3724.710424710423,
+      "volume_exact_mm3": [
+        23041304,
+        1
+      ],
+      "stdout": null,
+      "stderr": ""
+    },
+    {
+      "id": "seeded_convex_03",
+      "family": "seeded_convex_blind_pockets",
+      "returncode": 0,
+      "elapsed_s": 0.025887045019771904,
+      "status": "valid",
+      "method": "certified_sketch_layer_partition",
+      "determinant_lower_bound_mm3": 8426.666666666662,
+      "volume_exact_mm3": [
+        27897116,
+        1
+      ],
+      "stdout": null,
+      "stderr": ""
+    },
+    {
+      "id": "seeded_convex_04",
+      "family": "seeded_convex_through_holes",
+      "returncode": 0,
+      "elapsed_s": 0.017887790978420526,
+      "status": "valid",
+      "method": "certified_sketch_layer_partition",
+      "determinant_lower_bound_mm3": 3662.285714285713,
+      "volume_exact_mm3": [
+        31215600,
+        1
+      ],
+      "stdout": null,
+      "stderr": ""
+    },
+    {
+      "id": "seeded_convex_05",
+      "family": "seeded_convex_blind_pockets",
+      "returncode": 0,
+      "elapsed_s": 0.03950200299732387,
+      "status": "valid",
+      "method": "certified_sketch_layer_partition",
+      "determinant_lower_bound_mm3": 489.6551724137929,
+      "volume_exact_mm3": [
+        36011200,
+        1
+      ],
+      "stdout": null,
+      "stderr": ""
+    },
+    {
+      "id": "seeded_convex_06",
+      "family": "seeded_convex_through_holes",
+      "returncode": 0,
+      "elapsed_s": 0.033665467984974384,
+      "status": "valid",
+      "method": "certified_sketch_layer_partition",
+      "determinant_lower_bound_mm3": 4122.127659574466,
+      "volume_exact_mm3": [
+        41631840,
+        1
+      ],
+      "stdout": null,
+      "stderr": ""
+    },
+    {
+      "id": "seeded_convex_07",
+      "family": "seeded_convex_blind_pockets",
+      "returncode": 0,
+      "elapsed_s": 0.022456136997789145,
+      "status": "valid",
+      "method": "certified_sketch_layer_partition",
+      "determinant_lower_bound_mm3": 9133.333333333328,
+      "volume_exact_mm3": [
+        35990136,
+        1
+      ],
+      "stdout": null,
+      "stderr": ""
+    },
+    {
+      "id": "seeded_convex_08",
+      "family": "seeded_convex_through_holes",
+      "returncode": 0,
+      "elapsed_s": 0.03737797000212595,
+      "status": "valid",
+      "method": "certified_sketch_layer_partition",
+      "determinant_lower_bound_mm3": 714.4461942257215,
+      "volume_exact_mm3": [
+        44495528,
+        1
+      ],
+      "stdout": null,
+      "stderr": ""
+    },
+    {
+      "id": "seeded_convex_09",
+      "family": "seeded_convex_blind_pockets",
+      "returncode": 0,
+      "elapsed_s": 0.021146025974303484,
+      "status": "valid",
+      "method": "certified_sketch_layer_partition",
+      "determinant_lower_bound_mm3": 8699.999999999995,
+      "volume_exact_mm3": [
+        45414000,
+        1
+      ],
+      "stdout": null,
+      "stderr": ""
+    },
+    {
+      "id": "seeded_convex_10",
+      "family": "seeded_convex_through_holes",
+      "returncode": 0,
+      "elapsed_s": 0.019486997043713927,
+      "status": "valid",
+      "method": "certified_sketch_layer_partition",
+      "determinant_lower_bound_mm3": 74.99999999999996,
+      "volume_exact_mm3": [
+        24954264,
+        1
+      ],
+      "stdout": null,
+      "stderr": ""
+    },
+    {
+      "id": "seeded_convex_11",
+      "family": "seeded_convex_blind_pockets",
+      "returncode": 0,
+      "elapsed_s": 0.044796055008191615,
+      "status": "valid",
+      "method": "certified_sketch_layer_partition",
+      "determinant_lower_bound_mm3": 837.9322638146164,
+      "volume_exact_mm3": [
+        27176340,
+        1
+      ],
+      "stdout": null,
+      "stderr": ""
+    },
+    {
+      "id": "seeded_convex_12",
+      "family": "seeded_convex_through_holes",
+      "returncode": 0,
+      "elapsed_s": 0.019325216999277472,
+      "status": "valid",
+      "method": "certified_sketch_layer_partition",
+      "determinant_lower_bound_mm3": 70091.99999999996,
+      "volume_exact_mm3": [
+        25135968,
+        1
+      ],
+      "stdout": null,
+      "stderr": ""
+    },
+    {
+      "id": "seeded_convex_13",
+      "family": "seeded_convex_blind_pockets",
+      "returncode": 0,
+      "elapsed_s": 0.027384251006878912,
+      "status": "valid",
+      "method": "certified_sketch_layer_partition",
+      "determinant_lower_bound_mm3": 2231.9999999999986,
+      "volume_exact_mm3": [
+        33188016,
+        1
+      ],
+      "stdout": null,
+      "stderr": ""
+    },
+    {
+      "id": "seeded_convex_14",
+      "family": "seeded_convex_through_holes",
+      "returncode": 0,
+      "elapsed_s": 0.04377675295108929,
+      "status": "valid",
+      "method": "certified_sketch_layer_partition",
+      "determinant_lower_bound_mm3": 3712.2222222222204,
+      "volume_exact_mm3": [
+        33658768,
+        1
+      ],
+      "stdout": null,
+      "stderr": ""
+    },
+    {
+      "id": "seeded_convex_15",
+      "family": "seeded_convex_blind_pockets",
+      "returncode": 0,
+      "elapsed_s": 0.05173762299818918,
+      "status": "valid",
+      "method": "certified_sketch_layer_partition",
+      "determinant_lower_bound_mm3": 457.54219409282683,
+      "volume_exact_mm3": [
+        40569452,
+        1
+      ],
+      "stdout": null,
+      "stderr": ""
+    },
+    {
+      "id": "seeded_convex_16",
+      "family": "seeded_convex_through_holes",
+      "returncode": 0,
+      "elapsed_s": 0.03094594500726089,
+      "status": "valid",
+      "method": "certified_sketch_layer_partition",
+      "determinant_lower_bound_mm3": 2719.9999999999986,
+      "volume_exact_mm3": [
+        41045340,
+        1
+      ],
+      "stdout": null,
+      "stderr": ""
+    },
+    {
+      "id": "seeded_convex_17",
+      "family": "seeded_convex_blind_pockets",
+      "returncode": 0,
+      "elapsed_s": 0.042997843003831804,
+      "status": "valid",
+      "method": "certified_sketch_layer_partition",
+      "determinant_lower_bound_mm3": 549.9999999999997,
+      "volume_exact_mm3": [
+        37688400,
+        1
+      ],
+      "stdout": null,
+      "stderr": ""
+    },
+    {
+      "id": "seeded_convex_18",
+      "family": "seeded_convex_through_holes",
+      "returncode": 0,
+      "elapsed_s": 0.026642274984624237,
+      "status": "valid",
+      "method": "certified_sketch_layer_partition",
+      "determinant_lower_bound_mm3": 8499.999999999995,
+      "volume_exact_mm3": [
+        49185216,
+        1
+      ],
+      "stdout": null,
+      "stderr": ""
+    },
+    {
+      "id": "seeded_convex_19",
+      "family": "seeded_convex_blind_pockets",
+      "returncode": 0,
+      "elapsed_s": 0.04974709899397567,
+      "status": "valid",
+      "method": "certified_sketch_layer_partition",
+      "determinant_lower_bound_mm3": 1023.3333333333329,
+      "volume_exact_mm3": [
+        49899712,
+        1
+      ],
+      "stdout": null,
+      "stderr": ""
+    },
+    {
+      "id": "seeded_convex_20",
+      "family": "seeded_convex_through_holes",
+      "returncode": 0,
+      "elapsed_s": 0.031060421955771744,
+      "status": "valid",
+      "method": "certified_sketch_layer_partition",
+      "determinant_lower_bound_mm3": 2134.3957219251324,
+      "volume_exact_mm3": [
+        22897512,
+        1
+      ],
+      "stdout": null,
+      "stderr": ""
+    },
+    {
+      "id": "seeded_convex_21",
+      "family": "seeded_convex_blind_pockets",
+      "returncode": 0,
+      "elapsed_s": 0.04084910498932004,
+      "status": "valid",
+      "method": "certified_sketch_layer_partition",
+      "determinant_lower_bound_mm3": 611.9854014598536,
+      "volume_exact_mm3": [
+        28598184,
+        1
+      ],
+      "stdout": null,
+      "stderr": ""
+    },
+    {
+      "id": "seeded_convex_22",
+      "family": "seeded_convex_through_holes",
+      "returncode": 0,
+      "elapsed_s": 0.028695846966002136,
+      "status": "valid",
+      "method": "certified_sketch_layer_partition",
+      "determinant_lower_bound_mm3": 9137.333333333328,
+      "volume_exact_mm3": [
+        30099916,
+        1
+      ],
+      "stdout": null,
+      "stderr": ""
+    },
+    {
+      "id": "seeded_convex_23",
+      "family": "seeded_convex_blind_pockets",
+      "returncode": 0,
+      "elapsed_s": 0.06635959900449961,
+      "status": "valid",
+      "method": "certified_sketch_layer_partition",
+      "determinant_lower_bound_mm3": 247.20194647201936,
+      "volume_exact_mm3": [
+        32834952,
+        1
+      ],
+      "stdout": null,
+      "stderr": ""
+    },
+    {
+      "id": "seeded_convex_24",
+      "family": "seeded_convex_through_holes",
+      "returncode": 0,
+      "elapsed_s": 0.028123838012106717,
+      "status": "valid",
+      "method": "certified_sketch_layer_partition",
+      "determinant_lower_bound_mm3": 22983.99999999999,
+      "volume_exact_mm3": [
+        36080928,
+        1
+      ],
+      "stdout": null,
+      "stderr": ""
+    },
+    {
+      "id": "seeded_convex_25",
+      "family": "seeded_convex_blind_pockets",
+      "returncode": 0,
+      "elapsed_s": 0.016973085002973676,
+      "status": "valid",
+      "method": "certified_sketch_layer_partition",
+      "determinant_lower_bound_mm3": 15.999999999999993,
+      "volume_exact_mm3": [
+        31229536,
+        1
+      ],
+      "stdout": null,
+      "stderr": ""
+    },
+    {
+      "id": "seeded_convex_26",
+      "family": "seeded_convex_through_holes",
+      "returncode": 0,
+      "elapsed_s": 0.031149267044384032,
+      "status": "valid",
+      "method": "certified_sketch_layer_partition",
+      "determinant_lower_bound_mm3": 1114.5417156286717,
+      "volume_exact_mm3": [
+        39260760,
+        1
+      ],
+      "stdout": null,
+      "stderr": ""
+    },
+    {
+      "id": "seeded_convex_27",
+      "family": "seeded_convex_blind_pockets",
+      "returncode": 0,
+      "elapsed_s": 0.05120446695946157,
+      "status": "valid",
+      "method": "certified_sketch_layer_partition",
+      "determinant_lower_bound_mm3": 1221.194690265486,
+      "volume_exact_mm3": [
+        46894728,
+        1
+      ],
+      "stdout": null,
+      "stderr": ""
+    },
+    {
+      "id": "seeded_convex_28",
+      "family": "seeded_convex_through_holes",
+      "returncode": 0,
+      "elapsed_s": 0.020810418005567044,
+      "status": "valid",
+      "method": "certified_sketch_layer_partition",
+      "determinant_lower_bound_mm3": 1532.698412698412,
+      "volume_exact_mm3": [
+        44417600,
+        1
+      ],
+      "stdout": null,
+      "stderr": ""
+    },
+    {
+      "id": "seeded_convex_29",
+      "family": "seeded_convex_blind_pockets",
+      "returncode": 0,
+      "elapsed_s": 0.04684981098398566,
+      "status": "valid",
+      "method": "certified_sketch_layer_partition",
+      "determinant_lower_bound_mm3": 84.99999999999996,
+      "volume_exact_mm3": [
+        47663640,
+        1
+      ],
+      "stdout": null,
+      "stderr": ""
+    }
+  ],
+  "note": "This replay audits the archived baseline models. It is reported separately and does not alter fresh-recipe geometry scores."
+}

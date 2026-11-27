@@ -1,7 +1,10 @@
 {
   "entry": "fillet",
-  "params": {},
-  "design": "ribbon-bracket.sc",
+  "params": {
+    "selection": [],
+    "radius_mm": 0.25
+  },
+  "design": "face-box-add.sc",
   "grants": {
     "folders": [
       {
@@ -11,15 +14,15 @@
         "from": "companion"
       }
     ],
-    "command_groups": [
-      "file"
-    ]
+    "command_groups": ["file"]
   },
   "expect": {
+    "error": "invalid_input",
+    "message": "select at least one edge or face",
     "model": {
       "body_count": 1,
       "total": {
-        "volume_mm3": 32143.411718185
+        "volume_mm3": 36000
       }
     }
   }

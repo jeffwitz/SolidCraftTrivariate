@@ -1,7 +1,7 @@
 {
   "id": "solidcraft-trivariate",
   "name": "SolidCraft Trivariate",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Builds and displays audited SolidCraft Trivariate sketch, recipe and preview geometry using SolidCraft native features.",
   "capabilities": [
     "commands@0.2"
@@ -19,7 +19,11 @@
       "model.faces",
       "solid.remove",
       "solid.combine",
-      "inspect.measure"
+      "inspect.measure",
+      "model.edges",
+      "inspect.classify_points",
+      "solid.fillet",
+      "solid.chamfer"
     ],
     "entries": [
       {
@@ -251,19 +255,30 @@
         "input_schema": {
           "type": "object",
           "properties": {
-            "target_body": {
+            "selection": {
               "type": "array",
-              "title": "Target body",
-              "maxItems": 1,
+              "title": "Edges or boundary of a face",
+              "description": "Pick on the finished solid in the viewport. Uses SolidCraft B-rep edge treatment.",
+              "minItems": 1,
               "x-solidcraft-selection": {
                 "version": 1,
                 "accept": [
-                  "body"
+                  "edge",
+                  "face"
                 ]
               }
+            },
+            "distance_mm": {
+              "type": "number",
+              "title": "Distance (mm)",
+              "default": 0.25,
+              "exclusiveMinimum": 0
             }
           },
-          "x-solidcraft-icon": "icons/chamfer.svg"
+          "x-solidcraft-icon": "icons/chamfer.svg",
+          "required": [
+            "selection"
+          ]
         }
       },
       {
@@ -278,19 +293,30 @@
         "input_schema": {
           "type": "object",
           "properties": {
-            "target_body": {
+            "selection": {
               "type": "array",
-              "title": "Target body",
-              "maxItems": 1,
+              "title": "Edges or boundary of a face",
+              "description": "Pick on the finished solid in the viewport. Uses SolidCraft B-rep edge treatment.",
+              "minItems": 1,
               "x-solidcraft-selection": {
                 "version": 1,
                 "accept": [
-                  "body"
+                  "edge",
+                  "face"
                 ]
               }
+            },
+            "radius_mm": {
+              "type": "number",
+              "title": "Radius (mm)",
+              "default": 0.25,
+              "exclusiveMinimum": 0
             }
           },
-          "x-solidcraft-icon": "icons/fillet.svg"
+          "x-solidcraft-icon": "icons/fillet.svg",
+          "required": [
+            "selection"
+          ]
         }
       },
       {

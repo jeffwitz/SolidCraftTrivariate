@@ -32,6 +32,33 @@ def click_handle(port, token, name):
     raise RuntimeError(f"unavailable desktop control: {name}")
 
 
+def execute(port, token, command, params=None):
+    return control(port, token, "engine.execute", {"command": command, "params": params or {}})
+
+
+def open_stock(port, token, fixture):
+    execute(port, token, "doc.open", {"path": str(fixture)})
+    time.sleep(0.75)
+
+
+def wait_volume(port, token, expected, label):
+    for _ in range(120):
+        measure = execute(port, token, "inspect.measure")
+        if abs(measure["total"]["volume_mm3"] - expected) < 1e-5:
+            return measure
+        time.sleep(0.25)
+    raise RuntimeError(f"{label} volume did not reach its reference: {measure['total']}")
+
+
+def save_and_reopen(port, token, out, label, expected, env):
+    document = out / f"clicked-{label}.sc"
+    execute(port, token, "file.save_as", {"path": str(document)})
+    reopened = json.loads(subprocess.check_output(["solidcraft-cli", "eval", str(document)],
+                                                   env=env))
+    if reopened["body_count"] != 1 or abs(reopened["total"]["volume_mm3"] - expected) > 1e-5:
+        raise RuntimeError(f"saved {label} differs from its qualified reference: {reopened}")
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("package", type=Path)
@@ -46,8 +73,9 @@ def main():
                     "--profile", str(out), "--prepare-only"], check=True)
     port = 27893
     with (out / "desktop.log").open("w") as log:
+        fixture = Path("plugins/solidcraft-trivariate/tests/face-box-add.sc").resolve()
         app = subprocess.Popen(["solidcraft", "--new-instance", "--control", str(port),
-                                "plugins/solidcraft-trivariate/tests/ribbon-bracket.sc"], env=env, stdout=log, stderr=log)
+                                str(fixture)], env=env, stdout=log, stderr=log)
         try:
             expected = {"solidcraft-trivariate." + name for name in
                         ("drill", "boolean", "fillet", "chamfer", "extrude")}
@@ -73,55 +101,50 @@ def main():
             tabs = names & {"tab:"+s for s in "MODEL SURFACE ASSEMBLE INSERT MANAGE VIEW INSPECT WELDMENTS".split()+["SHEET METAL"]}
             if unwanted or tabs:
                 raise RuntimeError(f"unexpected ribbon commands or tabs: {unwanted}, {tabs}")
-            source = control(port, token, "engine.execute", {"command": "timeline.export_script", "params": {}})
-            original = source["script"]["commands"][0]["params"]["feature"]["step"]
+            # Select a real vertical box edge through the host picker contract.
+            # The plugin must turn this into the host's sparse edge reference.
+            execute(port, token, "select.set", {"items": [{"type": "edge", "body": "FaceIntegrationBox",
+                                                            "index": 8, "point": [0, 0, 6]}]})
             click_handle(port, token, "button:solidcraft-trivariate.fillet")
             time.sleep(1)
             screenshot(windows[-1], out / "dialog.png")
+            # The dialog reads the selection and defaults radius_mm to 0.25.
             click_handle(port, token, "plugin_dialog:run")
-            # The GUI applies plugin edits asynchronously. Observe the change on
-            # the original feature before saving and independently reopening it.
-            for _ in range(120):
-                export = control(port, token, "engine.execute", {"command": "timeline.export_script", "params": {}})
-                steps = export["script"]["commands"]
-                if any(f.get("id") == 1 and f.get("step", original) != original for f in
-                       (s.get("params", {}).get("feature", {}) for s in steps) if isinstance(f, dict)):
-                    break
-                time.sleep(0.25)
-            else:
-                screenshot(windows[-1], out / "after-run.png")
-                print("Dialog after click:", str(control(port, token, "ui.inspect")).split("parameters")[0][:4000])
-                print("Command stream:", [s["command"] for s in steps])
-                raise RuntimeError("the Fillet ribbon click did not update the bracket import")
-            document = out / "clicked-fillet.sc"
-            control(port, token, "engine.execute", {"command": "file.save_as", "params": {"path": str(document)}})
-            measurement = json.loads(subprocess.check_output(["solidcraft-cli", "eval", str(document)],env=env))
-            if measurement["body_count"] != 1 or abs(measurement["total"]["volume_mm3"] - 32143.411718185) > 1e-6:
-                raise RuntimeError("reopened GUI fillet differs from the qualified trivariate result")
-            # Open the real face sketch, apply the default (outward) extrusion
-            # through the same ribbon, then remeasure the saved part off-line.
-            fixture = Path("plugins/solidcraft-trivariate/tests/face-box-add.sc").resolve()
-            control(port, token, "engine.execute", {"command": "doc.open", "params": {"path": str(fixture)}})
+            fillet_volume = 35999.83904862254
+            wait_volume(port, token, fillet_volume, "edge fillet")
+            save_and_reopen(port, token, out, "fillet", fillet_volume, env)
+            screenshot(windows[-1], out / "fillet-result.png")
+
+            # Reload the unmodified stock, select the top face and chamfer its
+            # boundary with the default 0.25 mm distance.
+            open_stock(port, token, fixture)
+            execute(port, token, "select.set", {"items": [{"type": "face", "body": "FaceIntegrationBox",
+                                                            "index": 0,
+                                                            "point": [15.94875162046673, 15.94875162046673, 12]}]})
+            click_handle(port, token, "button:solidcraft-trivariate.chamfer")
             time.sleep(1)
+            screenshot(windows[-1], out / "chamfer-dialog.png")
+            click_handle(port, token, "plugin_dialog:run")
+            chamfer_volume = 35993.14583333333
+            wait_volume(port, token, chamfer_volume, "face chamfer")
+            save_and_reopen(port, token, out, "chamfer", chamfer_volume, env)
+            screenshot(windows[-1], out / "chamfer-result.png")
+
+            # Finally exercise the face-attached sketch extrusion with its
+            # default direction and length, then remeasure after reopening.
+            open_stock(port, token, fixture)
             click_handle(port, token, "button:solidcraft-trivariate.extrude")
             time.sleep(1)
             screenshot(windows[-1], out / "face-extrude-dialog.png")
             click_handle(port, token, "plugin_dialog:run")
             # The fixture oracle measures +21.68888888889 mm³ at 2 mm.
             expected_volume = 36000 + (36021.68888888889 - 36000) * (12 / 2)
-            for _ in range(120):
-                measure = control(port, token, "engine.execute", {"command": "inspect.measure", "params": {}})
-                if abs(measure["total"]["volume_mm3"] - expected_volume) < 1e-4:
-                    break
-                time.sleep(0.25)
-            else:
+            try:
+                wait_volume(port, token, expected_volume, "face extrusion")
+            except RuntimeError:
                 screenshot(windows[-1], out / "face-extrude-failure.png")
-                raise RuntimeError(f"face extrusion did not reach its reference volume: {measure['total']}")
-            document = out / "clicked-face-extrude.sc"
-            control(port, token, "engine.execute", {"command": "file.save_as", "params": {"path": str(document)}})
-            reopened = json.loads(subprocess.check_output(["solidcraft-cli", "eval", str(document)], env=env))
-            if reopened["body_count"] != 1 or abs(reopened["total"]["volume_mm3"] - expected_volume) > 1e-4:
-                raise RuntimeError("saved face extrusion differs from the reference")
+                raise
+            save_and_reopen(port, token, out, "face-extrude", expected_volume, env)
             screenshot(windows[-1], out / "face-extrude-result.png")
         finally:
             app.terminate()

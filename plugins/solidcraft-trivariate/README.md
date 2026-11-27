@@ -68,7 +68,7 @@ SolidCraft 0.48.1 CLI, tests the entries, and packages `plugin.json` with the co
 
 ## Install in SolidCraft
 
-1. Download `solidcraft-trivariate-0.3.0.zip` from the successful **SolidCraft Trivariate plugin** workflow artifact.
+1. Download `solidcraft-trivariate-0.4.0.zip` from the successful **SolidCraft Trivariate plugin** workflow artifact.
 2. In SolidCraft, open **Preferences > Plugins > Install plugin…** and choose the ZIP.
 3. Approve the `file` command group and choose a folder named `companion` with read/write access. The plugin reads recipes and writes `timeline.json`, `partition.json`, and `result.step` there.
 4. Use the entries in the Model ribbon or Plugins menu. Place a recipe JSON in the approved folder and run **Build Recipe**. `operation` defaults to `from_recipe`; choose one of the four operations for the tall box-cylinder suite. `rim` defaults to `sharp` and also offers `chamfer` or `fillet` for the supported FieldCraft recipe. Incompatible operation overrides are refused before a feature is added.
@@ -87,7 +87,7 @@ redistribution of the WIT-derived interface.
 From the repository root, run:
 
 ```sh
-python3 scripts/solidcraft_compact_desktop.py /path/to/solidcraft-trivariate-0.3.0.zip
+python3 scripts/solidcraft_compact_desktop.py /path/to/solidcraft-trivariate-0.4.0.zip
 ```
 
 The launcher installs the package in its own desktop profile and opens the sharp
@@ -100,11 +100,8 @@ Five modeling buttons occupy the plugin group. Extrusion reads an existing
 sketch. Choose Add or Remove on a planar face and enter the depth. Admitted profiles on rectangular stock with a certified outer partition produce a full trivariate result; on FieldCraft the trivariate tool is combined by the host. See [the face extrusion contract](../../docs/face-sketch-extrusion.md). Drill replaces a matching box with a centered through-bore. For a box
 created by sketch extrusion, enter its source sketch ID and extrusion height.
 Boolean edits the box and suppresses the selected cylinder. The qualified
-Boolean operand pair is the tall box/cylinder example. Chamfer and
-Fillet edit the two bore rims of the qualified sharp FieldCraft bracket.
-Pick the target body in the viewport. For a Boolean operation, activate the tool field and pick the cylinder. The supplied bracket and box examples default to feature 1; the two-body example defaults to features 1 and 2. The commands
-check its full STEP data against the regenerated operand before modifying the
-timeline. Each operation uses SolidCraft's original viewport and undo history.
+Boolean operand pair is the tall box/cylinder example. Fillet and Chamfer accept edges or the boundary of a selected face on one body, including a body edited by multiple features. Finish the sketch, open the operation, click the selection field and pick in the viewport. Set the radius or distance in millimetres. SolidCraft applies this selection to the host B-rep and records a feature in its timeline. The native reference bore-rim treatments remain available through Build Recipe.
+For a Boolean operation, activate the tool field and pick the cylinder. Each operation uses SolidCraft's original viewport and undo history.
 
 Open `tests/ribbon-bracket.sc` for the bore treatments, `tests/ribbon-box.sc` for
 drilling, or `tests/ribbon-pair.sc` for Boolean combinations (features 1 and 2).

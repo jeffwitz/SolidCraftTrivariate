@@ -1,5 +1,7 @@
 //! Solid editing commands for the compact sketch ribbon.
 use super::*;
+#[path = "selected_edges.rs"]
+mod selected_edges;
 type Model = solidcraft_trivariate::json::Json;
 
 fn build(source: &Value) -> Result<Model, PluginError> {
@@ -91,28 +93,11 @@ fn suite() -> Value {
 }
 
 pub(super) fn apply(entry: &str, params: &Value) -> Result<String, PluginError> {
+    if matches!(entry, "chamfer" | "fillet") {
+        return selected_edges::apply(entry, params);
+    }
     let id = picked_feature(params, "target_body", 1)?;
     let timeline = export_timeline()?;
-    if matches!(entry, "chamfer" | "fillet") {
-        let recipe =
-            serde_json::from_str(include_str!("../examples/fieldcraft_x64_y64.recipe.json"))
-                .expect("reference fixture");
-        let model = build(&recipe)?;
-        verify_operand(&timeline, id, &boundary(&model)?)?;
-        let state = if entry == "chamfer" {
-            "chamfer"
-        } else {
-            "fillet"
-        };
-        solidcraft_trivariate::fieldcraft_rims::construct(&model, state)
-            .map_err(|e| invalid("rim", e))?;
-        return replace(
-            id,
-            solidcraft_trivariate::fieldcraft_rims::export_step(&model, state)
-                .map_err(|e| invalid("rim", e))?,
-        );
-    }
-
     let mut recipe = suite();
     recipe["operation"] = json!("box");
     let from_sketch = params

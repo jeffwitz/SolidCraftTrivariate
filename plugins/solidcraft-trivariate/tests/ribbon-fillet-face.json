@@ -1,0 +1,34 @@
+{
+  "entry": "fillet",
+  "params": {
+    "selection": [
+      {
+        "type": "face",
+        "body": "FaceIntegrationBox",
+        "index": 0,
+        "point": [15.94875162046673, 15.94875162046673, 12]
+      }
+    ],
+    "radius_mm": 0.25
+  },
+  "design": "face-box-add.sc",
+  "grants": {
+    "folders": [
+      {
+        "name": "companion",
+        "read": true,
+        "write": true,
+        "from": "companion"
+      }
+    ],
+    "command_groups": ["file"]
+  },
+  "expect": {
+    "model": {
+      "body_count": 1,
+      "total": {
+        "volume_mm3": 35997.055216642955
+      }
+    }
+  }
+}

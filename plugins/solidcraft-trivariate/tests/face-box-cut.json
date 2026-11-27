@@ -1,0 +1,33 @@
+{
+  "entry": "extrude",
+  "params": {
+    "source_feature_id": 3,
+    "height_mm": 2,
+    "operation": "cut"
+  },
+  "design": "face-box-cut.sc",
+  "grants": {
+    "folders": [
+      {
+        "name": "companion",
+        "read": true,
+        "write": true,
+        "from": "companion"
+      }
+    ],
+    "command_groups": [
+      "file"
+    ]
+  },
+  "expect": {
+    "files": [
+      "companion/face-3-cut-5.result.model.json"
+    ],
+    "model": {
+      "body_count": 1,
+      "total": {
+        "volume_mm3": 35908.5
+      }
+    }
+  }
+}

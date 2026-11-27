@@ -1,7 +1,7 @@
 {
   "id": "solidcraft-trivariate",
   "name": "SolidCraft Trivariate",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Builds and displays audited SolidCraft Trivariate sketch, recipe and preview geometry using SolidCraft native features.",
   "capabilities": [
     "commands@0.2"
@@ -15,7 +15,11 @@
       "view.visual_style",
       "timeline.edit",
       "timeline.suppress",
-      "model.body_features"
+      "model.body_features",
+      "model.faces",
+      "solid.remove",
+      "solid.combine",
+      "inspect.measure"
     ],
     "entries": [
       {
@@ -297,16 +301,39 @@
           "properties": {
             "source_feature_id": {
               "type": "integer",
-              "title": "Sketch feature id",
-              "default": 1,
-              "minimum": 1
+              "title": "Sketch (0 = latest)",
+              "default": 0,
+              "minimum": 0
             },
             "height_mm": {
-              "type": "integer",
-              "title": "Extrusion height (mm)",
+              "type": "number",
+              "title": "Depth (mm)",
               "default": 12,
-              "minimum": 1,
-              "maximum": 64
+              "minimum": 1e-06,
+              "maximum": 4096
+            },
+            "operation": {
+              "type": "string",
+              "title": "Material",
+              "oneOf": [
+                {
+                  "const": "auto",
+                  "title": "Add on face / new on origin plane"
+                },
+                {
+                  "const": "add",
+                  "title": "Add material"
+                },
+                {
+                  "const": "cut",
+                  "title": "Remove material"
+                },
+                {
+                  "const": "new",
+                  "title": "New body"
+                }
+              ],
+              "default": "auto"
             }
           },
           "x-solidcraft-icon": "icons/extrude.svg"

@@ -93,7 +93,7 @@ jobs:
           from zipfile import ZIP_DEFLATED, ZipFile
 
           source = Path(__import__("os").environ["PACKAGE_DIR"])
-          target = Path("dist/solidcraft-trivariate-0.2.0.zip")
+          target = Path("dist/solidcraft-trivariate-0.3.0.zip")
           target.parent.mkdir(parents=True, exist_ok=True)
           with ZipFile(target, "w", compression=ZIP_DEFLATED, compresslevel=9) as archive:
               archive.write(source / "plugin.json", "plugin.json")
@@ -105,7 +105,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: solidcraft-trivariate-plugin
-          path: dist/solidcraft-trivariate-0.2.0.zip
+          path: dist/solidcraft-trivariate-0.3.0.zip
           if-no-files-found: error
           retention-days: 14
 
@@ -113,7 +113,7 @@ jobs:
         run: |
           sudo apt-get update -qq
           sudo apt-get install -y "$RUNNER_TEMP/solidcraft-0.48.1-linux-x86_64.deb" xvfb xauth xdotool x11-apps imagemagick mesa-vulkan-drivers
-          xvfb-run -a -s '-screen 0 1920x1200x24' python3 scripts/check_compact_ribbon.py dist/solidcraft-trivariate-0.2.0.zip build/compact-ribbon
+          xvfb-run -a -s '-screen 0 1920x1200x24' python3 scripts/check_compact_ribbon.py dist/solidcraft-trivariate-0.3.0.zip build/compact-ribbon
         env:
           LIBGL_ALWAYS_SOFTWARE: '1'
       - uses: actions/upload-artifact@v4

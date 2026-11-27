@@ -1,0 +1,33 @@
+{
+  "entry": "extrude",
+  "params": {
+    "source_feature_id": 3,
+    "height_mm": 2,
+    "operation": "add"
+  },
+  "design": "face-box-add.sc",
+  "grants": {
+    "folders": [
+      {
+        "name": "companion",
+        "read": true,
+        "write": true,
+        "from": "companion"
+      }
+    ],
+    "command_groups": [
+      "file"
+    ]
+  },
+  "expect": {
+    "files": [
+      "companion/face-3-add-5.result.model.json"
+    ],
+    "model": {
+      "body_count": 1,
+      "total": {
+        "volume_mm3": 36021.68888888889
+      }
+    }
+  }
+}

@@ -7,7 +7,8 @@ from pathlib import Path
 def seed(folder):
     hidden = ["MODEL", "SURFACE", "ASSEMBLE", "INSERT", "INSPECT", "MANAGE",
               "VIEW", "SHEET METAL", "WELDMENTS"]
-    buttons = {"CREATE": ["sketch.create", "sketch.line", "sketch.rectangle.two_point"],
+    buttons = {"CREATE": ["sketch.create", "sketch.line", "sketch.rectangle.two_point",
+                          "sketch.spline.fit_point", "sketch.spline.control_point"],
                "MODIFY": [], "PATTERN": [], "REFERENCE": [], "INSPECT": [], "CONFIGURE": [],
                "CONSTRAIN": ["sketch.constraint.coincident", "sketch.constraint.horizontal_vertical"],
                "FINISH SKETCH": ["sketch.finish", "sketch.cancel"]}

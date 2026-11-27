@@ -205,6 +205,7 @@ fn audit_affine(m: &Json) -> Result<Json, &'static str> {
 
 pub fn build(recipe: &Json) -> Result<Json, &'static str> {
     match recipe.field("family")?.text()? {
+        "face_profile_extrusion_v1" => crate::face_profile_audit::build_recipe(recipe),
         crate::curved_sketch_audit::FAMILY => crate::curved_sketch_audit::build(recipe),
         super::affine_image::FAMILY => super::affine_image::build(recipe),
         "ruled_section_sweep_v1" => super::ruled_json::build(recipe),
@@ -272,6 +273,7 @@ pub fn plan_sketch(recipe: &Json) -> Result<Json, &'static str> {
 
 pub fn audit(model: &Json) -> Result<Json, &'static str> {
     match model.field("schema")?.text()? {
+        "face_profile_extrusion_v1" => crate::face_profile_audit::audit(model),
         crate::curved_sketch_audit::FAMILY => crate::curved_sketch_audit::audit(model),
         super::affine_image::FAMILY => super::affine_image::audit(model),
         "ruled_section_sweep_v1" => super::ruled_json::audit(model),

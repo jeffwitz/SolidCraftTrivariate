@@ -223,3 +223,8 @@ pub mod annulus_edges;
 pub mod solidcraft_preview;
 pub mod oblique_pockets;
 mod oblique_pockets_json;
+
+pub mod face_profile_extrusion;
+mod face_profile_stock;
+mod face_profile_audit;
+mod face_profile_frame;

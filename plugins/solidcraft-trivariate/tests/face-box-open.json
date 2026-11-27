@@ -1,0 +1,32 @@
+{
+  "entry": "extrude",
+  "params": {
+    "source_feature_id": 3,
+    "height_mm": 2,
+    "operation": "cut"
+  },
+  "design": "face-box-open.sc",
+  "grants": {
+    "folders": [
+      {
+        "name": "companion",
+        "read": true,
+        "write": true,
+        "from": "companion"
+      }
+    ],
+    "command_groups": [
+      "file"
+    ]
+  },
+  "expect": {
+    "error": "invalid_input",
+    "message": "profile_spans_must_join_at_shared_exact_points",
+    "model": {
+      "body_count": 1,
+      "total": {
+        "volume_mm3": 36000.0
+      }
+    }
+  }
+}

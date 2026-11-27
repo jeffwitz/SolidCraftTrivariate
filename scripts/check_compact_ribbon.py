@@ -98,6 +98,31 @@ def main():
             measurement = json.loads(subprocess.check_output(["solidcraft-cli", "eval", str(document)],env=env))
             if measurement["body_count"] != 1 or abs(measurement["total"]["volume_mm3"] - 32143.411718185) > 1e-6:
                 raise RuntimeError("reopened GUI fillet differs from the qualified trivariate result")
+            # Open the real face sketch, apply the default (outward) extrusion
+            # through the same ribbon, then remeasure the saved part off-line.
+            fixture = Path("plugins/solidcraft-trivariate/tests/face-box-add.sc").resolve()
+            control(port, token, "engine.execute", {"command": "file.open", "params": {"path": str(fixture)}})
+            time.sleep(1)
+            click_handle(port, token, "button:solidcraft-trivariate.extrude")
+            time.sleep(1)
+            screenshot(windows[-1], out / "face-extrude-dialog.png")
+            click_handle(port, token, "plugin_dialog:run")
+            # The fixture oracle measures +21.68888888889 mm³ at 2 mm.
+            expected_volume = 36000 + (36021.68888888889 - 36000) * (12 / 2)
+            for _ in range(120):
+                measure = control(port, token, "engine.execute", {"command": "inspect.measure", "params": {}})
+                if abs(measure["total"]["volume_mm3"] - expected_volume) < 1e-4:
+                    break
+                time.sleep(0.25)
+            else:
+                screenshot(windows[-1], out / "face-extrude-failure.png")
+                raise RuntimeError(f"face extrusion did not reach its reference volume: {measure['total']}")
+            document = out / "clicked-face-extrude.sc"
+            control(port, token, "engine.execute", {"command": "file.save_as", "params": {"path": str(document)}})
+            reopened = json.loads(subprocess.check_output(["solidcraft-cli", "eval", str(document)], env=env))
+            if reopened["body_count"] != 1 or abs(reopened["total"]["volume_mm3"] - expected_volume) > 1e-4:
+                raise RuntimeError("saved face extrusion differs from the reference")
+            screenshot(windows[-1], out / "face-extrude-result.png")
         finally:
             app.terminate()
             app.wait(timeout=10)

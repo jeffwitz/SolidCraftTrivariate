@@ -151,7 +151,7 @@ pub fn enumerate_faces(blocks: &[BracketBlock]) -> Result<Incidence, &'static st
         if block.id.is_empty() || !ids.insert(&block.id) {
             return Err("invalid block identity");
         }
-        if block.degrees.iter().any(|d| !(1..=3).contains(d))
+        if (block.degrees.iter().any(|d| !(1..=3).contains(d)) && !matches!(block.degrees, [4 | 5, 1, 1]))
             || block.controls.len() != block.degrees.iter().map(|d| d + 1).product::<usize>()
             || block.controls.iter().any(|p| p[3] <= 0)
         {

@@ -11,6 +11,8 @@ const DESCRIPTOR_SCHEMA: &str = "solidcraft_sketch_preview_v1";
 const MAX_DESCRIPTOR_BYTES: usize = 1_048_576;
 
 mod ribbon;
+mod face_spline;
+mod face_extrude;
 
 struct Plugin;
 
@@ -23,7 +25,8 @@ impl Guest for Plugin {
             "show-sketch-stage" => set_sketch_stage(&params, true),
             "hide-sketch-stage" => set_sketch_stage(&params, false),
             "insert-result" => insert_result(),
-            "extrude" | "extrude-active-sketch" => extrude_active_sketch(&params),
+            "extrude" => face_extrude::run(&params),
+            "extrude-active-sketch" => extrude_active_sketch(&params),
             "extrude-active-timeline" => extrude_active_timeline(),
             "build-recipe" => build_recipe(&params),
             _ => Err(invalid("entry", format!("unknown entry `{entry}`"))),

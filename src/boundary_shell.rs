@@ -40,9 +40,9 @@ fn vertex(p: [i64; 4]) -> [i128; 4] {
     let g = p.into_iter().fold(0, gcd);
     p.map(|x| x / g)
 }
-fn canonical_edge(points: &[[i64; 4]]) -> Vec<[i128; 4]> {
+fn canonical_edge(points: &[[i64; 4]], size: usize) -> Vec<[i128; 4]> {
     let mut net: Vec<_> = points.iter().map(|p| p.map(i128::from)).collect();
-    while net.len() < 4 {
+    while net.len() < size {
         let n = net.len();
         net = (0..=n)
             .map(|i| {
@@ -98,7 +98,7 @@ fn reachable(start: usize, adjacent: &BTreeMap<usize, Vec<usize>>) -> BTreeSet<u
 pub(crate) fn supports_source_method(method: &str) -> bool {
     matches!(
         method,
-        "certified_fixed_extrusion_partition"
+        "certified_face_profile_extrusion" | "certified_fixed_extrusion_partition"
             | "certified_ruled_similarity_sweep"
             | "certified_coaxial_feature_program"
             | "certified_circular_bend"
@@ -199,11 +199,12 @@ pub(crate) fn shell_from_faces(
                 edges.len() - 1
             });
             let forward = edges[e].vertices == endpoints;
-            let mut net = canonical_edge(&curve);
+            let size = curve.len().max(edges[e].controls.len());
+            let mut net = canonical_edge(&curve, size);
             if !forward {
                 net.reverse();
             }
-            if net != canonical_edge(&edges[e].controls) {
+            if net != canonical_edge(&edges[e].controls, size) {
                 return Err("incompatible_boundary_edge_trace");
             }
             uses[e].push((faces.len(), forward));

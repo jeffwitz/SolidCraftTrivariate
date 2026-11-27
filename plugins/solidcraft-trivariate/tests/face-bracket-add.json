@@ -1,0 +1,33 @@
+{
+  "entry": "extrude",
+  "params": {
+    "source_feature_id": 2,
+    "height_mm": 2,
+    "operation": "add"
+  },
+  "design": "face-bracket-add.sc",
+  "grants": {
+    "folders": [
+      {
+        "name": "companion",
+        "read": true,
+        "write": true,
+        "from": "companion"
+      }
+    ],
+    "command_groups": [
+      "file"
+    ]
+  },
+  "expect": {
+    "files": [
+      "companion/face-2-add-3.tool.model.json"
+    ],
+    "model": {
+      "body_count": 1,
+      "total": {
+        "volume_mm3": 32166.467814277577
+      }
+    }
+  }
+}

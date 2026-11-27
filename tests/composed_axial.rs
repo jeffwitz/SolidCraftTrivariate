@@ -1,5 +1,4 @@
-#[path = "../examples/composed_axial.rs"]
-mod composed_axial;
+use solidcraft_trivariate::composed_axial;
 
 fn map_bounds(block: &solidcraft_trivariate::bracket::BracketBlock, axis: usize) -> [f64; 2] {
     let mut values = block
@@ -250,4 +249,45 @@ fn disconnected_intermediate_is_not_silently_reduced_to_its_bounding_interval() 
     // This union is connected only if its operands touch or overlap; it cannot be
     // represented by the single-interval AxialOperand consumed by stage two.
     assert!(composed_axial::compose([0, 2], [5, 8], [1, 6]).is_err());
+}
+
+#[test]
+fn recipe_entrypoint_retains_original_owners_and_unchanged_map_data() {
+    use solidcraft_trivariate::json::{parse, Json};
+    let recipe = parse(include_str!("jobs/composed_axial.job.json")).unwrap();
+    let document = composed_axial::build_document(&recipe).unwrap();
+    let expected = composed_axial::compose([0, 8], [4, 12], [5, 9]).unwrap();
+    assert_eq!(
+        document
+            .field("volume_mm3")
+            .unwrap()
+            .number::<f64>()
+            .unwrap(),
+        expected.second.volume_mm3
+    );
+    let maps = document.field("maps").unwrap().items().unwrap();
+    assert_eq!(maps.len(), expected.carried_maps.len());
+    for (map, source) in maps.iter().zip(&expected.carried_maps) {
+        assert_eq!(
+            map.field("source_block_id").unwrap().text().unwrap(),
+            source.source_block_id
+        );
+        let controls = map.field("controls").unwrap().items().unwrap();
+        assert_eq!(controls.len(), source.block.controls.len());
+        for (actual, row) in controls.iter().zip(&source.block.controls) {
+            let values: Vec<i64> = actual
+                .items()
+                .unwrap()
+                .iter()
+                .map(|v| v.number().unwrap())
+                .collect();
+            assert_eq!(values, row);
+        }
+    }
+    let mut bad = recipe;
+    let Json::Object(ref mut fields) = bad else {
+        unreachable!()
+    };
+    fields.insert("b_mm".into(), parse("[15,19]").unwrap());
+    assert!(composed_axial::build_document(&bad).is_err());
 }

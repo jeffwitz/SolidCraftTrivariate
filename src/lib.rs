@@ -115,6 +115,8 @@ pub mod solidcraft_oriented_plane;
 pub mod adaptive_traction;
 pub mod geometry_vtu;
 pub mod nurbs_knot_reduction;
+pub mod transverse_transitions;
+
 
 pub mod rational_sector;
 pub mod rational_sector_audit;
@@ -172,6 +174,7 @@ mod steinmetz_partition;
 
 pub mod nurbs_curve;
 pub mod nurbs_tensor_assembly;
+pub mod gallery_patch_planner;
 pub mod nurbs_extrusion;
 mod nurbs_sketch_json;
 pub mod nurbs_space;
@@ -209,3 +212,6 @@ pub mod spline_load;
 mod spline_reconstruction;
 pub mod thb_job;
 pub mod thb_strip;
+pub mod composed_axial;
+pub mod cylinder_tensor_covers;
+pub mod annulus_edges;

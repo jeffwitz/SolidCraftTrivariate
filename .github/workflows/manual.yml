@@ -1,0 +1,130 @@
+name: Scientific manual
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'docs/rtd/**'
+      - 'docs/native-coverage.md'
+      - 'src/**'
+      - 'tests/references/**'
+      - 'scripts/prepare_manual.py'
+      - 'scripts/check_manual.py'
+      - 'docs/site/**/*.recipe.json'
+      - 'docs/site/index.html'
+      - 'docs/site/box-cylinder/tall/*.patches.json'
+      - 'Cargo.*'
+      - 'Makefile'
+      - '.readthedocs.yaml'
+      - '.github/workflows/manual.yml'
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: manual-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -r docs/rtd/requirements.txt
+      - run: make docs
+      - run: python3 scripts/prepare_manual.py --replay
+      - name: Check the manual and API entry points
+        run: |
+          test -s build/manual/index.html
+          test -s build/manual/reference/catalog.html
+          test -s build/manual/api/solidcraft_trivariate/index.html
+      - uses: actions/upload-artifact@v4
+        with:
+          name: scientific-manual
+          path: build/manual
+          include-hidden-files: true
+
+      - name: Stage gallery entry and native covers
+        working-directory: docs/site
+        run: |
+          mkdir -p ../../build/manual-gallery-links
+          cp --parents index.html box-cylinder/tall/*.patches.json ../../build/manual-gallery-links/
+      - uses: actions/upload-artifact@v4
+        with:
+          name: manual-gallery-links
+          path: build/manual-gallery-links
+
+  publish:
+    needs: build
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pages: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+      - uses: actions/download-artifact@v4
+        with:
+          name: scientific-manual
+          path: ${{ runner.temp }}/manual
+      - uses: actions/download-artifact@v4
+        with:
+          name: manual-gallery-links
+          path: ${{ runner.temp }}/gallery-links
+      - name: Publish the manual beside the gallery
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          mkdir -p manual
+          rsync -a --delete "$RUNNER_TEMP/manual/" manual/
+          test -s "$RUNNER_TEMP/gallery-links/index.html"
+          cp "$RUNNER_TEMP/gallery-links/index.html" index.html
+          cp "$RUNNER_TEMP/gallery-links/box-cylinder/tall/"*.patches.json box-cylinder/tall/
+          git add -f -- manual index.html box-cylinder/tall/*.patches.json
+          if ! git diff --cached --quiet; then
+            git commit -m "Publish scientific manual from ${GITHUB_SHA}"
+            git pull --rebase origin gh-pages
+            git push origin HEAD:gh-pages
+          fi
+          gh api --method POST "repos/$GITHUB_REPOSITORY/pages/builds"
+      - name: Verify public manual, API and a downloadable recipe
+        env:
+          MANUAL_SOURCE: ${{ runner.temp }}/manual
+        run: |
+          python3 - <<'PY'
+          import hashlib
+          import os
+          import time
+          import urllib.error
+          import urllib.request
+          from pathlib import Path
+
+          root = Path(os.environ["MANUAL_SOURCE"])
+          owner, repo = os.environ["GITHUB_REPOSITORY"].split("/")
+          base = f"https://{owner.lower()}.github.io/{repo}/manual/"
+          recipe = next(root.glob("_downloads/*/nurbs_sketch_strip_v1.json"))
+          paths = ["index.html", "reference/catalog.html", "api/solidcraft_trivariate/index.html",
+                   recipe.relative_to(root).as_posix()]
+          expected = {p: hashlib.sha256((root / p).read_bytes()).digest() for p in paths}
+          for attempt in range(36):
+              try:
+                  for path in paths:
+                      with urllib.request.urlopen(base + path + "?revision=" + os.environ["GITHUB_SHA"], timeout=15) as reply:
+                          if hashlib.sha256(reply.read()).digest() != expected[path]:
+                              raise ValueError(f"Deployment still serves other bytes at {path}")
+                  print("Public pages match the source artifact:", *paths, sep="\n")
+                  break
+              except (ValueError, OSError) as error:
+                  if attempt == 35:
+                      raise
+                  print(error, flush=True)
+                  time.sleep(10)
+          PY

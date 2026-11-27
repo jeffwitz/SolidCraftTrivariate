@@ -19,6 +19,9 @@ pub fn object<const N: usize>(pairs: [(&str, Json); N]) -> Json {
 }
 
 impl Json {
+    pub fn bool(&self) -> Result<bool, &'static str> {
+        match self { Self::Bool(value) => Ok(*value), _ => Err("expected a JSON boolean") }
+    }
     pub fn text(&self) -> Result<&str, &'static str> {
         match self {
             Self::String(s) => Ok(s),

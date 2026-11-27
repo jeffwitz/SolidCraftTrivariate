@@ -1,7 +1,7 @@
 //! Analytic event and boundary-measure semantics for a translating circular bore.
 //!
 //! The fixed body is the 20×20×8 mm plate with a blind rectangular pocket
-//! [-6,-2]×[-4,4] mm over z=[4,8] mm. A radius-2 mm vertical bore is centered
+//! [-6,-2]×[-4,4] mm over z=`[4,8]` mm. A radius-2 mm vertical bore is centered
 //! at (c,0). The integer input is c in micrometres. All event classification
 //! uses integer comparisons; transcendental measures are reported as f64
 //! evaluations of the exact circular-segment formulae below.
@@ -88,9 +88,9 @@ pub struct TangencyEvent {
 /// Surface measures grouped by their geometric provenance, in mm².
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub struct BoundaryAreas {
-    /// Lower cylindrical bore wall, z=[0,4].
+    /// Lower cylindrical bore wall, z=`[0,4]`.
     pub bore_wall_below_pocket_mm2: f64,
-    /// Upper exposed cylindrical bore wall, z=[4,8], excluding the pocket.
+    /// Upper exposed cylindrical bore wall, z=`[4,8]`, excluding the pocket.
     pub bore_wall_above_pocket_mm2: f64,
     /// Four vertical walls of the pocket, including bore truncation at x walls.
     pub pocket_vertical_walls_mm2: f64,

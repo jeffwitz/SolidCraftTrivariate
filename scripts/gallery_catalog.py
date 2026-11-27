@@ -445,12 +445,13 @@ def rebuild(entries: list[dict], cli: Path, kernel_revision: str | None = None) 
             path = entry[key].split("?", 1)[0]
             entry[key] = f"{path}?v={sha256(site_path(path).read_bytes())[:12]}"
 
-    refresh_patch_representations(entries)
+    refresh_patch_representations(entries, cli)
 
 
-def refresh_patch_representations(entries: list[dict]) -> None:
-    """Publish exact disjoint NURBS covers for the curved and singleton cases."""
+def refresh_patch_representations(entries: list[dict], cli: Path) -> None:
+    """Publish native exact covers and independently check each source span."""
     from gallery_curved_patches import build_catalog
+    from check_gallery_patch_maps import verify_patch_samples, verify_patch_topology
 
     catalog = build_catalog(MANIFEST)
     curved = catalog["entries"]
@@ -462,68 +463,100 @@ def refresh_patch_representations(entries: list[dict]) -> None:
     if sum(row["source_block_count"] for row in curved) != 330:
         raise ValueError("Curved exact extraction source block count changed")
 
-    for entry in entries:
-        case_id = entry["id"]
-        if case_id not in by_id:
-            entry.pop("representation", None)
-            continue
-        row, family = by_id[case_id]
-        model_path, recipe_path, audit_path = (site_path(entry[key]) for key in ("model", "source", "audit"))
-        model_doc, audit_doc = read_json(model_path), read_json(audit_path)
-        source_blocks = set(block["id"] for block in model_doc.get("blocks", []))
-        covered = [cell for patch in row["patches"] for cell in patch.get("cells", [])]
-        if (row["exact_extraction_count"] != row["source_block_count"]
-                or len(covered) != len(source_blocks) or set(covered) != source_blocks
-                or len(covered) != len(set(covered))):
-            raise ValueError(f"Exact patch map does not cover every source block once: {case_id}")
-        if any(interface.get("status") != "exact_match" for interface in row["interfaces"]):
-            raise ValueError(f"Unverified patch-map interface: {case_id}")
-        native_patches = int(audit_doc["model_audit"].get("nurbs_patch_count", row["source_block_count"]))
-        if family == "singleton_linear" and (native_patches != row["source_block_count"]
-                                                or row["patch_count"] >= native_patches):
-            raise ValueError(f"Singleton cover does not reduce native NURBS patches: {case_id}")
-        if row["model_sha256"] != sha256(model_path.read_bytes()) or row["recipe_sha256"] != sha256(recipe_path.read_bytes()):
-            raise ValueError(f"Patch-map source digests are stale: {case_id}")
+    with tempfile.TemporaryDirectory(prefix="gallery-native-patches-") as temporary:
+        temporary = Path(temporary)
+        for entry in entries:
+            case_id = entry["id"]
+            if case_id not in by_id:
+                entry.pop("representation", None)
+                continue
+            row, family = by_id[case_id]
+            model_path, recipe_path, audit_path = (
+                site_path(entry[key]) for key in ("model", "source", "audit")
+            )
+            model_doc, audit_doc = read_json(model_path), read_json(audit_path)
+            layout_path = temporary / f"{case_id}.representation.json"
+            subprocess.run(
+                [str(cli), "plan-patches", str(model_path), str(layout_path)],
+                check=True,
+                cwd=ROOT,
+                stdout=subprocess.DEVNULL,
+            )
+            native = read_json(layout_path)
+            verify_patch_samples(native["patches"], model_doc)
+            verify_patch_topology(native, model_doc)
+            native_merged = sorted({
+                cell for patch in native["patches"] if len(patch.get("cells", [])) > 1
+                for cell in patch["cells"]
+            })
+            row = dict(row)
+            row.update({
+                "patches": native["patches"],
+                "interfaces": native["interfaces"],
+                "boundary_faces": native["boundary_faces"],
+                "patch_count": len(native["patches"]),
+                "source_block_count": native["source_block_count"],
+                "exact_extraction_count": native["source_block_count"],
+                "exact_interface_count": len(model_doc.get("topology", {}).get("interfaces", [])),
+                "merged_source_blocks": native_merged,
+                "errors": [],
+            })
+            by_id[case_id] = (row, family)
+            source_blocks = {block["id"] for block in model_doc.get("blocks", [])}
+            covered = [cell for patch in row["patches"] for cell in patch.get("cells", [])]
+            if (row["exact_extraction_count"] != row["source_block_count"]
+                    or len(covered) != len(source_blocks) or set(covered) != source_blocks
+                    or len(covered) != len(set(covered))):
+                raise ValueError(f"Exact patch map does not cover every source block once: {case_id}")
+            if any(interface.get("status") != "exact_match" for interface in row["interfaces"]):
+                raise ValueError(f"Unverified patch-map interface: {case_id}")
+            native_patches = int(audit_doc["model_audit"].get("nurbs_patch_count", row["source_block_count"]))
+            if family == "singleton_linear" and (native_patches != row["source_block_count"]
+                                                    or row["patch_count"] >= native_patches):
+                raise ValueError(f"Singleton cover does not reduce native NURBS patches: {case_id}")
+            if row["model_sha256"] != sha256(model_path.read_bytes()) or row["recipe_sha256"] != sha256(recipe_path.read_bytes()):
+                raise ValueError(f"Patch-map source digests are stale: {case_id}")
 
-        payload = {
-            "schema": "gallery_exact_patch_map_v1",
-            "case_id": case_id,
-            "representation_kind": family,
-            "method": catalog["method"],
-            "scope_note": catalog["scope_note"],
-            "source_model_sha256": row["model_sha256"],
-            "source_recipe_sha256": row["recipe_sha256"],
-            "source_schema": row["source_schema"],
-            "source_block_count": row["source_block_count"],
-            "native_nurbs_patch_count": native_patches,
-            "patch_count": row["patch_count"],
-            "exact_extraction_count": row["exact_extraction_count"],
-            "exact_interface_count": row["exact_interface_count"] if "exact_interface_count" in row else len(row["interfaces"]),
-            "patches": row["patches"],
-            "interfaces": row["interfaces"],
-            "boundary_faces": row["boundary_faces"],
-            "merged_source_blocks": row.get("merged_source_blocks", []),
-            "errors": row["errors"],
-        }
-        path = model_path.with_name(model_path.stem + ".representation.json")
-        write_json(path, payload)
-        entry["representation"] = f"{path.relative_to(SITE)}?v={sha256(path.read_bytes())[:12]}"
-        audit_doc["exact_patch_representation"] = {
-            "schema": payload["schema"],
-            "kind": family,
-            "path": entry["representation"],
-            "sha256": sha256(path.read_bytes()),
-            "model_sha256": payload["source_model_sha256"],
-            "recipe_sha256": payload["source_recipe_sha256"],
-            "patch_count": payload["patch_count"],
-            "source_block_count": payload["source_block_count"],
-            "exact_extraction_count": payload["exact_extraction_count"],
-            "exact_interface_count": payload["exact_interface_count"],
-        }
-        write_json(audit_path, audit_doc)
-        audit_url = entry["audit"].split("?", 1)[0]
-        entry["audit"] = f"{audit_url}?v={sha256(site_path(audit_url).read_bytes())[:12]}"
-    normalize_cover_metrics(entries, by_id)
+            payload = {
+                "schema": "gallery_exact_patch_map_v1",
+                "case_id": case_id,
+                "representation_kind": family,
+                "method": native.get("method", catalog["method"]),
+                "scope_note": native.get("scope_note", catalog["scope_note"]),
+                "source_model_sha256": row["model_sha256"],
+                "source_recipe_sha256": row["recipe_sha256"],
+                "source_schema": row["source_schema"],
+                "source_block_count": row["source_block_count"],
+                "native_nurbs_patch_count": native_patches,
+                "patch_count": row["patch_count"],
+                "exact_extraction_count": row["exact_extraction_count"],
+                "exact_interface_count": row["exact_interface_count"],
+                "patches": row["patches"],
+                "interfaces": row["interfaces"],
+                "boundary_faces": row["boundary_faces"],
+                "self_seams": native.get("self_seams", []),
+                "merged_source_blocks": row.get("merged_source_blocks", []),
+                "errors": row["errors"],
+            }
+            path = model_path.with_name(model_path.stem + ".representation.json")
+            write_json(path, payload)
+            entry["representation"] = f"{path.relative_to(SITE)}?v={sha256(path.read_bytes())[:12]}"
+            audit_doc["exact_patch_representation"] = {
+                "schema": payload["schema"],
+                "kind": family,
+                "path": entry["representation"],
+                "sha256": sha256(path.read_bytes()),
+                "model_sha256": payload["source_model_sha256"],
+                "recipe_sha256": payload["source_recipe_sha256"],
+                "patch_count": payload["patch_count"],
+                "source_block_count": payload["source_block_count"],
+                "exact_extraction_count": payload["exact_extraction_count"],
+                "exact_interface_count": payload["exact_interface_count"],
+            }
+            write_json(audit_path, audit_doc)
+            audit_url = entry["audit"].split("?", 1)[0]
+            entry["audit"] = f"{audit_url}?v={sha256(site_path(audit_url).read_bytes())[:12]}"
+        normalize_cover_metrics(entries, by_id)
 
 
 def normalize_cover_metrics(entries: list[dict], representation_rows: dict | None = None) -> None:

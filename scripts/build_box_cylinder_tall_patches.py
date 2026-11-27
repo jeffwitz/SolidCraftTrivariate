@@ -11,7 +11,6 @@ face, and surviving interface.
 from __future__ import annotations
 
 import argparse
-import copy
 import hashlib
 import json
 import math
@@ -24,10 +23,10 @@ from pathlib import Path
 STATES = ("box", "cylinder", "union", "intersection", "a-minus-b", "b-minus-a", "xor")
 SCHEMA = "gallery_exact_patch_map_v1"
 NOTE = (
-    "Exact single-span extraction, maximal compatible w-axis chains, and exact "
-    "pairwise NURBS assembly of remaining cells. Candidate merges are not a "
-    "global optimality claim. This is a representation and trace check, not a "
-    "global injectivity or material-coverage certificate."
+    "Exact homogeneous extraction and deterministic axial-chain/pair planning. "
+    "The native plan is checked against every source span and topology record. "
+    "Candidate merges are not a global optimality claim. This is a representation "
+    "and trace check, not a global injectivity or material-coverage certificate."
 )
 
 
@@ -366,18 +365,27 @@ def verify_cylinder_seams(cover, model, expected_segments):
 
 
 def publish_cylinder(root, outdir, check):
-    """Rebuild both tensor covers and independently verify extraction and topology."""
+    """Use the native periodic cylinder planner and independently verify it."""
     from check_gallery_patch_maps import verify_patch_samples, verify_patch_topology
 
     model_path = outdir / "cylinder.model.json"
     model = json.loads(model_path.read_bytes())
-    binary = root / "target/release/examples/cylinder_tensor_covers"
+    recipe_path = outdir / "cylinder.recipe.json"
+    cli = root / "target/release/solidcraft-trivariate"
     with tempfile.TemporaryDirectory() as tmp:
-        subprocess.run([binary, model_path, tmp], check=True)
+        tmp = Path(tmp)
         for count in (2, 3):
             filename = f"cylinder-{count}.patches.json"
-            data = (Path(tmp) / filename).read_bytes()
-            cover = json.loads(data)
+            temp_path = tmp / filename
+            subprocess.run(
+                [cli, "cover-cylinder", str(model_path), str(count), str(temp_path)],
+                check=True,
+                stdout=subprocess.DEVNULL,
+            )
+            cover = json.loads(temp_path.read_bytes())
+            cover["source_model_sha256"] = sha(model_path)
+            cover["source_recipe_sha256"] = sha(recipe_path)
+            data = (json.dumps(cover, separators=(",", ":"), sort_keys=True) + "\n").encode()
             if len(cover["patches"]) != count:
                 raise ValueError(f"Unexpected cylinder cover size for {filename}")
             verify_patch_samples(cover["patches"], model)
@@ -397,94 +405,82 @@ def publish_cylinder(root, outdir, check):
             )
 
 
-def assemble_native(root: Path, state: str, layout_payload: dict) -> dict:
-    """Build the coefficient nets with the release CLI from model and layout."""
+def assemble_native(root: Path, state: str, compare_legacy: bool = False) -> dict:
+    """Plan and assemble a tall Boolean cover natively, then verify independently."""
     from check_gallery_patch_maps import verify_patch_samples, verify_patch_topology
 
     model_path = root / "docs/site/box-cylinder/tall" / f"{state}.model.json"
+    recipe_path = root / "docs/site/box-cylinder/tall" / f"{state}.recipe.json"
     model = json.loads(model_path.read_bytes())
-    layout = copy.deepcopy(layout_payload)
-    for patch in layout["patches"]:
-        for key in (
-            "controls_homogeneous",
-            "control_shape",
-            "knots",
-            "homogeneous_common_scale_denominator",
-        ):
-            patch.pop(key, None)
-
     cli = root / "target/release/solidcraft-trivariate"
     if not cli.is_file():
         raise FileNotFoundError(f"release CLI is required for native patch assembly: {cli}")
     with tempfile.TemporaryDirectory() as temporary:
         temporary = Path(temporary)
-        layout_path = temporary / f"{state}.layout.json"
         result_path = temporary / f"{state}.patches.json"
-        layout_path.write_text(json.dumps(layout))
         subprocess.run(
-            [cli, "assemble-patches", model_path, layout_path, result_path],
+            [cli, "plan-patches", model_path, result_path],
             check=True,
             stdout=subprocess.DEVNULL,
         )
-        result = json.loads(result_path.read_bytes())
+        native = json.loads(result_path.read_bytes())
 
+    sample_count = verify_patch_samples(native["patches"], model)
+    verify_patch_topology(native, model)
+    patches = native["patches"]
+    if compare_legacy:
+        # The historical Python algorithm is retained as a validation-only
+        # comparison. Its nets never contribute to published output.
+        legacy = build_one(root, state)
+        verify_patch_samples(legacy["patches"], model)
+        verify_patch_topology(legacy, model)
+        legacy_groups = {frozenset(patch["cells"]) for patch in legacy["patches"]}
+        native_groups = {frozenset(patch["cells"]) for patch in patches}
+        print(
+            f"{state}: legacy partition "
+            f"{'matches' if legacy_groups == native_groups else 'differs from'} native"
+        )
+
+    # Preserve the versioned public map contract while making the Rust nets,
+    # ordering, knots, orientation and source maps the sole generated data.
+    merged = sorted(
+        cell for patch in patches if len(patch["cells"]) > 1 for cell in patch["cells"]
+    )
+    result = {
+        "schema": SCHEMA,
+        "case_id": f"box-cylinder-tall-{state}",
+        "representation_kind": "exact_tall_cylinder_axial_nurbs_cover",
+        "method": "native_exact_pair_and_axial_chain_planning",
+        "scope_note": NOTE,
+        "source_model": f"{state}.model.json",
+        "source_model_sha256": sha(model_path),
+        "source_recipe": f"{state}.recipe.json",
+        "source_recipe_sha256": sha(recipe_path),
+        "source_schema": model.get("schema"),
+        "source_block_count": len(model.get("blocks", [])),
+        "native_nurbs_patch_count": len(model.get("blocks", [])),
+        "patch_count": len(patches),
+        "exact_extraction_count": len(model.get("blocks", [])),
+        "exact_interface_count": len(model.get("topology", {}).get("interfaces", [])),
+        "source_interface_count": len(model.get("topology", {}).get("interfaces", [])),
+        "independent_sample_evaluations": sample_count,
+        "axial_chain_patch_count": sum(patch["id"].startswith("axial:") for patch in patches),
+        "axial_chain_source_block_count": sum(
+            len(patch["cells"]) for patch in patches if patch["id"].startswith("axial:")
+        ),
+        "additional_exact_pair_patch_count": sum(
+            patch["patch_kind"] == "two_span_nurbs" for patch in patches
+        ),
+        "patches": patches,
+        "interfaces": native["interfaces"],
+        "boundary_faces": native["boundary_faces"],
+        "self_seams": native.get("self_seams", []),
+        "merged_source_blocks": merged,
+        "errors": [],
+    }
     verify_patch_samples(result["patches"], model)
     verify_patch_topology(result, model)
-    _preserve_existing_normalization(layout_payload, result)
     return result
-
-
-def _preserve_existing_normalization(planned: dict, assembled: dict) -> None:
-    """Require complete net equality before restoring legacy homogeneous scale metadata."""
-    if {key: value for key, value in planned.items() if key != "patches"} != {
-        key: value for key, value in assembled.items() if key != "patches"
-    }:
-        raise ValueError("Native patch assembly changed cover-level layout metadata")
-    reference_patches = {patch["id"]: patch for patch in planned["patches"]}
-    result_patches = {patch["id"]: patch for patch in assembled["patches"]}
-    if reference_patches.keys() != result_patches.keys():
-        raise ValueError("Native patch assembly changed patch identities")
-
-    geometry_keys = {
-        "controls_homogeneous",
-        "control_shape",
-        "knots",
-        "homogeneous_common_scale_denominator",
-    }
-    for patch_id, reference in reference_patches.items():
-        result = result_patches[patch_id]
-        if {k: v for k, v in reference.items() if k not in geometry_keys} != {
-            k: v for k, v in result.items() if k not in geometry_keys
-        }:
-            raise ValueError(f"Native assembly changed layout metadata for {patch_id}")
-        for key in ("control_shape", "knots"):
-            if result.get(key) != reference.get(key):
-                raise ValueError(f"Native assembly changed {key} for {patch_id}")
-
-        native_net = result["controls_homogeneous"]
-        previous_net = reference["controls_homogeneous"]
-        if native_net != previous_net:
-            # The first positive weight fixes the only admissible global scale.
-            ratio = Fraction(previous_net[0][3], native_net[0][3])
-            if ratio <= 0:
-                raise ValueError(f"Nonpositive homogeneous scale for {patch_id}")
-            if any(
-                Fraction(native_value) * ratio != old_value
-                for native_point, old_point in zip(native_net, previous_net, strict=True)
-                for native_value, old_value in zip(native_point, old_point, strict=True)
-            ):
-                raise ValueError(f"Native homogeneous net differs beyond a common scale: {patch_id}")
-            # Restore the published integer normalization only after the whole net passed.
-            result["controls_homogeneous"] = [
-                [int(value * ratio) for value in point] for point in native_net
-            ]
-
-        if "homogeneous_common_scale_denominator" in reference:
-            result["homogeneous_common_scale_denominator"] = reference[
-                "homogeneous_common_scale_denominator"
-            ]
-        else:
-            result.pop("homogeneous_common_scale_denominator", None)
 
 
 def main() -> None:
@@ -505,8 +501,7 @@ def main() -> None:
         if state == "cylinder":
             publish_cylinder(root, outdir, args.check)
             continue
-        layout = build_one(root, state)
-        payload = assemble_native(root, state, layout)
+        payload = assemble_native(root, state, compare_legacy=args.check)
         path = outdir / f"{state}.patches.json"
         encoded = json.dumps(payload, separators=(",", ":"), sort_keys=True) + "\n"
         if args.check:

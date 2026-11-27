@@ -1,5 +1,7 @@
 # Documentation
 
+[Scientific manual and Rust API](https://jeffwitz.github.io/SolidCraftTrivariate/manual/) · [Documentation source](rtd/index.rst)
+
 Start with the [project README](../README.md) to build the Rust CLI and run a sketch through planning, construction and audit. The [interactive gallery](https://jeffwitz.github.io/SolidCraftTrivariate/) lets you inspect published models and download their inputs.
 
 ## Design and implementation

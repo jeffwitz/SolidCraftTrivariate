@@ -1,5 +1,7 @@
 # SolidCraftTrivariate
 
+[Scientific manual and Rust API](https://jeffwitz.github.io/SolidCraftTrivariate/manual/) · [Documentation source](docs/rtd/index.rst)
+
 A native Rust volumetric kernel for building and auditing rational trivariate maps, exporting STEP, and preparing their IGA analysis spaces. The geometry workflow starts from a sketch or recipe, derives its partition lines, then builds and audits the volumes in the same crate. Python supplies independent oracles and historical references. [Documentation index](docs/README.md)
 
 ## Continuity of the analysis field

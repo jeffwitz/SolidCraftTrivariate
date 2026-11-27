@@ -3,7 +3,7 @@
 //! The audit inverts the exact inner-row homothety to the frozen E6 bracket
 //! profile, then delegates only the restored reference net to its existing
 //! independent fixed-family audit. The eight edited planar maps are certified
-//! separately. Within qx,qy in [40,80] sixteenths of a millimetre, each inner
+//! separately. Within qx,qy in `[40,80]` sixteenths of a millimetre, each inner
 //! loop is a positive homothety (scale 5/8..5/4) of the simple E6 loop, remains
 //! strictly inside its unchanged 10 mm square boundary, and joins that boundary
 //! on the same four radial rays. Positive planar Jacobians and the simple

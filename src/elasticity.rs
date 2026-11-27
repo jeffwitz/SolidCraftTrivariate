@@ -18,7 +18,7 @@ fn cross(a: Vector, b: Vector) -> Vector {
     ]
 }
 
-/// Gauss-Legendre abscissas and weights on [0,1].
+/// Gauss-Legendre abscissas and weights on `[0,1]`.
 pub fn gauss(order: usize) -> Result<Vec<(f64, f64)>, &'static str> {
     if !(1..=32).contains(&order) {
         return Err("quadrature order must be in 1..=32");

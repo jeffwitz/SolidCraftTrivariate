@@ -206,7 +206,7 @@ pub fn extract_bezier(
     Ok(spans)
 }
 
-/// Extract each nonzero span on the active parameter interval [U[p], U[n+1]].
+/// Extract each nonzero span on the active parameter interval `[U[p], U[n+1]]`.
 /// Open, clamped and periodically extended input use the same local blossom.
 /// Each extracted net retains its original interval and an exact integral gauge.
 pub fn extract_active_bezier(

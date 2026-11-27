@@ -27,7 +27,22 @@ def run(cli, sources, work):
     for name, (fingerprint, width) in CASES.items():
         model_path = sources / (fingerprint + ".model.json")
         model = json.loads(model_path.read_bytes())
-        records = list(classify(model))
+        oracle_records = list(classify(model))
+        native_report = work / name / "transverse-transitions.json"
+        native_report.parent.mkdir(parents=True, exist_ok=True)
+        classified = subprocess.run(
+            [cli, "classify-transverse-transitions", model_path, native_report],
+            capture_output=True,
+            text=True,
+        )
+        if classified.returncode:
+            raise RuntimeError(
+                f"native transverse classification failed for {name}: "
+                f"{classified.stdout}{classified.stderr}"
+            )
+        records = json.loads(native_report.read_bytes())
+        if records != oracle_records:
+            raise AssertionError(f"native/Fraction transition mismatch for {name}")
         qualifying = {"constant_transition", "affine_transition"}
         eligible = [
             r for r in records if {r["status"], r.get("reversed_status")} & qualifying
@@ -120,6 +135,7 @@ def run(cli, sources, work):
         results[name] = dict(
             recipe_fingerprint=fingerprint,
             eligible_lateral_count=len(eligible),
+            transition_oracle_parity="exact",
             outcomes=outcomes,
         )
     (work / "results.json").write_text(json.dumps(results, indent=2) + "\n")

@@ -83,3 +83,13 @@ check-local-thb:
 	target/release/solidcraft-trivariate export-thb-extraction build/thb-mechanics/package.json build/thb-mechanics/extraction.json
 	python3 scripts/check_thb_function_values.py build/thb-mechanics/extraction.json --model build/thb-mechanics/model.json > build/thb-mechanics/function-values.json
 	python3 scripts/check_thb_traction.py
+
+.PHONY: docs docs-inputs
+SPHINXBUILD ?= sphinx-build
+docs-inputs:
+	cargo build --locked --offline --bin solidcraft-trivariate
+	RUSTDOCFLAGS="-D rustdoc::broken_intra_doc_links" cargo doc --locked --offline --no-deps --lib --target-dir build/docs-cargo
+	python3 scripts/prepare_manual.py
+docs: docs-inputs
+	$(SPHINXBUILD) -E -a -W --keep-going -b html docs/rtd build/manual
+	python3 scripts/check_manual.py

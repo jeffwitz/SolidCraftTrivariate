@@ -22,13 +22,15 @@ def compare(data, path):
 
 def check():
     states = ("sharp", "chamfer", "fillet")
-    for state in states:
-        original = "annulus_original_edges" if state == "fillet" else "annulus_four_block_chamfer"
-        for example, prefix in [(original, "edges-four"), ("annulus_prepared_volumes", "edges")]:
-            compare(subprocess.check_output([RELEASE / "examples" / example, state]), SITE / f"{prefix}-{state}.json")
-
     with tempfile.TemporaryDirectory() as directory:
         model = Path(directory) / "model.json"
+        for state in states:
+            original = "four-quadratic" if state == "fillet" else "four-linear"
+            for layout, prefix in [(original, "edges-four"), ("prepared-ten", "edges")]:
+                subprocess.run([CLI, "annulus-edges", layout, state, model],
+                               check=True, capture_output=True)
+                compare(model.read_bytes(), SITE / f"{prefix}-{state}.json")
+
         for family in ("reference_rectangle", "pierced_square"):
             for state in ("a", "b", "intersection", "union", "difference"):
                 base = SITE / f"booleans-{family}-{state}"

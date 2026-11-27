@@ -24,7 +24,7 @@ pub struct AxialEvent {
     pub moving_cap: String,
     pub fixed_plane: String,
     pub height_mm: i32,
-    /// Reduced exact fraction in [0,1], including departures from coincidences.
+    /// Reduced exact fraction in `[0,1]`, including departures from coincidences.
     pub time: [i32; 2],
 }
 

@@ -1,0 +1,28 @@
+{
+  "entry": "build-recipe",
+  "params": {
+    "recipe": "fieldcraft_x64_y64.recipe.json",
+    "operation": "union"
+  },
+  "design": "sketch-only.sc",
+  "grants": {
+    "command_groups": [
+      "file"
+    ],
+    "folders": [
+      {
+        "name": "companion",
+        "read": true,
+        "write": true,
+        "from": "companion"
+      }
+    ]
+  },
+  "expect": {
+    "error": "invalid_input",
+    "message": "operation overrides require family `box_cylinder_boolean_suite_v1`",
+    "model": {
+      "body_count": 0
+    }
+  }
+}

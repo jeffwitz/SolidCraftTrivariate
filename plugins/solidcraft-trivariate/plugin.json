@@ -28,7 +28,8 @@
         "effect": "edit",
         "input_schema": {"type": "object", "properties": {
           "recipe": {"type": "string", "title": "Recipe file", "default": "recipe.json"},
-          "rim": {"type": "string", "title": "Bore rim", "enum": ["sharp", "chamfer", "fillet"], "default": "sharp"}
+          "rim": {"type": "string", "title": "Bore rim", "enum": ["sharp", "chamfer", "fillet"], "default": "sharp"},
+          "operation": {"type": "string", "title": "Boolean operation", "enum": ["from_recipe", "union", "intersection", "a_minus_b", "b_minus_a"], "default": "from_recipe"}
         }},
         "slots": [{"kind": "ribbon", "name": "Model"}]
       },

@@ -12,7 +12,7 @@ STEP result through SolidCraft's own STEP importer.
 | `snapshot-timeline` | Calls `timeline.export_script`, refuses a script with omitted design content, and writes `timeline.json` to the approved `companion` folder. |
 | `extrude-active-sketch` | Builds the selected pre-extrusion sketch as a new native-kernel body using `height_mm` (default 12, allowed 1–64 mm), audits it, and inserts its STEP payload as a native import feature. |
 | `extrude-active-timeline` | Uses the existing sketch-plus-extrusion timeline importer. This is separate from sketch-only extrusion so it cannot duplicate an existing body by default. |
-| `build-recipe` | Reads a JSON family recipe from the approved companion folder, builds and audits it with the shared Rust constructor, exports STEP, and inserts it as a native import feature. For the qualified `fieldcraft_x64_y64` recipe, `rim` can be `sharp` (default), `chamfer`, or `fillet`. |
+| `build-recipe` | Reads a JSON family recipe from the approved companion folder, builds and audits it with the shared Rust constructor, exports STEP, and inserts it as a native import feature. The `operation` dropdown defaults to `from_recipe`; it can override the tall box-cylinder suite with `union`, `intersection`, `a_minus_b`, or `b_minus_a`. For the qualified `fieldcraft_x64_y64` recipe, `rim` can be `sharp` (default), `chamfer`, or `fillet`. |
 | `show-sketch-stage` | Reads `partition.json`, verifies the complete source script against the open document, adds the companion's ordinary sketch feature with `timeline.add`, and shows it with `browser.visibility`. |
 | `hide-sketch-stage` | Rechecks the current timeline and preview feature, then hides that sketch with `browser.visibility`. |
 | `insert-result` | Reads `result.step` from the approved `companion` folder and adds it through SolidCraft's native timeline import feature, then sets the active viewport to native `shaded` style. |
@@ -71,7 +71,7 @@ SolidCraft 0.48.1 CLI, tests the entries, and packages `plugin.json` with the co
 1. Download `solidcraft-trivariate-0.1.0.zip` from the successful **SolidCraft Trivariate plugin** workflow artifact.
 2. In SolidCraft, open **Preferences > Plugins > Install plugin…** and choose the ZIP.
 3. Approve the `file` command group and choose a folder named `companion` with read/write access. The plugin reads recipes and writes `timeline.json`, `partition.json`, and `result.step` there.
-4. Use the entries in the Model ribbon or Plugins menu. For a pocket recipe, place its JSON file in the approved folder and run **Build Recipe**; `rim` defaults to `sharp` and also offers `chamfer` or `fillet` for the supported FieldCraft recipe.
+4. Use the entries in the Model ribbon or Plugins menu. Place a recipe JSON in the approved folder and run **Build Recipe**. `operation` defaults to `from_recipe`; choose one of the four operations for the tall box-cylinder suite. `rim` defaults to `sharp` and also offers `chamfer` or `fillet` for the supported FieldCraft recipe. Incompatible operation overrides are refused before a feature is added.
 
 ## Upstream contract provenance
 

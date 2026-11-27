@@ -378,7 +378,30 @@ fn build_recipe(params: &Value) -> Result<String, PluginError> {
     if bytes.len() > MAX_DESCRIPTOR_BYTES {
         return Err(invalid("recipe", "recipe exceeds 1 MiB"));
     }
-    let source: Value = serde_json::from_slice(&bytes).map_err(|e| invalid("recipe", e))?;
+    let mut source: Value = serde_json::from_slice(&bytes).map_err(|e| invalid("recipe", e))?;
+    let operation = params
+        .get("operation")
+        .and_then(Value::as_str)
+        .unwrap_or("from_recipe");
+    match operation {
+        "from_recipe" => {}
+        "union" | "intersection" | "a_minus_b" | "b_minus_a" => {
+            if source.get("family").and_then(Value::as_str) != Some("box_cylinder_boolean_suite_v1")
+            {
+                return Err(invalid(
+                    "operation",
+                    "operation overrides require family `box_cylinder_boolean_suite_v1`; no feature was added",
+                ));
+            }
+            source["operation"] = json!(operation);
+        }
+        _ => {
+            return Err(invalid(
+                "operation",
+                "choose from_recipe, union, intersection, a_minus_b or b_minus_a",
+            ));
+        }
+    }
     let recipe = solidcraft_trivariate::json::parse(&source.to_string())
         .map_err(|e| invalid("recipe", e))?;
     let model =

@@ -1,0 +1,32 @@
+{
+  "entry": "build-recipe",
+  "params": {
+    "recipe": "box-cylinder-tall.recipe.json",
+    "operation": "b_minus_a"
+  },
+  "design": "sketch-only.sc",
+  "grants": {
+    "command_groups": [
+      "file"
+    ],
+    "folders": [
+      {
+        "name": "companion",
+        "read": true,
+        "write": true,
+        "from": "companion"
+      }
+    ]
+  },
+  "expect": {
+    "files": [
+      "companion/result.step"
+    ],
+    "model": {
+      "body_count": 2,
+      "total": {
+        "volume_mm3": 1884.9555921538758
+      }
+    }
+  }
+}

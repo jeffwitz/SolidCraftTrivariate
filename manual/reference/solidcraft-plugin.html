@@ -127,6 +127,16 @@ The preview accepts integral polygon coordinates in the planner’s ±4096 mm
 range and coincident, horizontal and vertical line constraints. The extrusion path accepts a
 positive new-body extrusion of 1 through 64 mm with the supported profile
 selection. It applies the same planar planner through the actual thickness.</p>
+<figure class="align-default" id="id1">
+<a class="reference internal image-reference" href="../_images/native-sketch-toggle.png"><img alt="Two crops of the same native SolidCraft viewport, with the dashed diagonal hidden and shown." src="../_images/native-sketch-toggle.png" style="width: 400px;" />
+</a>
+<figcaption>
+<p><span class="caption-text">Identical crops of the SolidCraft desktop. The partition is hidden on
+the left. On the right the dashed construction line joins the origin
+to the reentrant corner. The solid and source profile are hidden in both
+captures to isolate the overlay.</span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
+</figcaption>
+</figure>
 <p>For a captured two-feature timeline, these commands build the exact result for
 inspection in either SolidCraft or FieldCraft:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>target/release/solidcraft-trivariate<span class="w"> </span>sketch-preview<span class="w"> </span>timeline.json<span class="w"> </span><span class="m">1</span><span class="w"> </span>partition.json
@@ -158,12 +168,12 @@ the cube and their volumes intersect below the top surface.</p>
 solidcraft<span class="w"> </span>build/solidcraft-oblique-reference/both.sc
 </pre></div>
 </div>
-<figure class="align-default" id="id1">
+<figure class="align-default" id="id2">
 <a class="reference internal image-reference" href="../_images/oblique-cube-section.png"><img alt="Native section through two oblique blind pockets that meet below separate openings." src="../_images/oblique-cube-section.png" style="width: 520px;" />
 </a>
 <figcaption>
 <p><span class="caption-text">SolidCraft section at y = 20 mm. The hatched material separates the mouths
-and remains below both floors. The two swept voids communicate at depth.</span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
+and remains below both floors. The two swept voids communicate at depth.</span><a class="headerlink" href="#id2" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 <p>The script rebuilds both single cuts and the combined cut as independent

@@ -37,6 +37,15 @@ range and coincident, horizontal and vertical line constraints. The extrusion pa
 positive new-body extrusion of 1 through 64 mm with the supported profile
 selection. It applies the same planar planner through the actual thickness.
 
+.. figure:: ../../results/solidcraft-plugin/native-sketch-toggle.png
+   :alt: Two crops of the same native SolidCraft viewport, with the dashed diagonal hidden and shown.
+   :width: 400px
+
+   Identical crops of the SolidCraft desktop. The partition is hidden on
+   the left. On the right the dashed construction line joins the origin
+   to the reentrant corner. The solid and source profile are hidden in both
+   captures to isolate the overlay.
+
 For a captured two-feature timeline, these commands build the exact result for
 inspection in either SolidCraft or FieldCraft:
 

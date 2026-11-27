@@ -610,6 +610,38 @@ fn solve(
         .sum();
     let dofs = 3 * lift.free_roots.len();
     Ok(object([
+        (
+            "schema",
+            Json::String("conforming_crossed_bending_result_v1".into()),
+        ),
+        ("rise_mm", Json::Number("3".into())),
+        (
+            "degrees_uvw",
+            Json::Array(
+                [3, 2, 2]
+                    .into_iter()
+                    .map(|d| Json::Number(d.to_string()))
+                    .collect(),
+            ),
+        ),
+        (
+            "subdivisions_vw",
+            Json::Array(
+                [nv, nw]
+                    .into_iter()
+                    .map(|d| Json::Number(d.to_string()))
+                    .collect(),
+            ),
+        ),
+        ("quadrature_order", Json::Number(q.to_string())),
+        ("geometry_charts", Json::Number("22".into())),
+        (
+            "continuity_scope",
+            Json::String(
+                "C0 chart interfaces; selected continuity applies only to interior v/w cell seams"
+                    .into(),
+            ),
+        ),
         ("continuity", Json::String(continuity.into())),
         ("free_vector_dofs", Json::Number(dofs.to_string())),
         ("mean_ux_mm", Json::Number((work / ftotal).to_string())),
@@ -618,6 +650,10 @@ fn solve(
             Json::Number(solution.strain_energy_n_mm.to_string()),
         ),
         ("force_N", Json::Number(ftotal.to_string())),
+        (
+            "volume_mm3",
+            Json::Number(assembled.stiffness.integrated_volume.to_string()),
+        ),
         (
             "relative_residual",
             Json::Number(solution.relative_residual.to_string()),

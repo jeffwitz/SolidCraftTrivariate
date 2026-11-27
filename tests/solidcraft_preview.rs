@@ -76,3 +76,21 @@ fn extrusion_with_or_without_its_reference_sketch_builds_identical_cells() {
     );
     assert_eq!(audit.field("blocks").unwrap().number::<usize>(), Ok(2));
 }
+
+#[test]
+fn direct_extrusion_needs_only_the_source_sketch_and_depth() {
+    let full = parse(TIMELINE).unwrap();
+    let command = full.field("commands").unwrap().items().unwrap()[0].clone();
+    let script = object([("commands", Json::Array(vec![command]))]);
+    let input = object([("script", script), ("omitted", Json::Array(vec![]))]);
+    let result =
+        solidcraft_trivariate::solidcraft_polygon::extrude_source_sketch(&input, 1, 12).unwrap();
+    let report = solidcraft_trivariate::interchange::audit(&result).unwrap();
+    assert_eq!(
+        report.field("volume_exact_mm3").unwrap(),
+        &parse("[9792,1]").unwrap()
+    );
+    assert!(
+        solidcraft_trivariate::solidcraft_polygon::extrude_source_sketch(&input, 1, 0).is_err()
+    );
+}

@@ -157,8 +157,20 @@ fn parse_loops(sketch_feature: &Json) -> Result<Vec<ProfileLoop>, &'static str> 
         return Err("SolidCraft polygon sketch size out of range");
     }
     let counters = sketch.field("counters")?;
-    counters.keys(&["k", "l"])?;
-    let kc: usize = counters.field("k")?.number()?;
+    let Json::Object(counts) = counters else {
+        return Err("invalid sketch counters");
+    };
+    for (key, count) in counts {
+        if !matches!(key.as_str(), "k" | "l" | "p") {
+            return Err("unsupported sketch counter");
+        }
+        count.number::<usize>()?;
+    }
+    let kc = counts
+        .get("k")
+        .map(Json::number::<usize>)
+        .transpose()?
+        .unwrap_or(0);
     let lc: usize = counters.field("l")?.number()?;
     if kc < constraints.len() || lc < curves_json.len() {
         return Err("invalid SolidCraft sketch counters");
@@ -184,12 +196,24 @@ fn parse_loops(sketch_feature: &Json) -> Result<Vec<ProfileLoop>, &'static str> 
     let mut dsu = DisjointSet::new(points.len());
     let mut constraint_ids = BTreeSet::new();
     for c in constraints {
-        c.keys(&["id", "p", "q", "type"])?;
         let id = text(c.field("id")?)?;
         if id.is_empty() || !constraint_ids.insert(id.to_owned()) {
             return Err("duplicate SolidCraft sketch constraint id");
         }
-        if text(c.field("type")?)? != "coincident" {
+        let kind = text(c.field("type")?)?;
+        if matches!(kind, "horizontal" | "vertical") {
+            c.keys(&["id", "l", "type"])?;
+            let line = &curves_json[index(c.field("l")?, curves_json.len())?];
+            let a = coords[index(line.field("a")?, coords.len())?];
+            let b = coords[index(line.field("b")?, coords.len())?];
+            let axis = usize::from(kind == "horizontal");
+            if a[axis] != b[axis] {
+                return Err("inconsistent SolidCraft line direction constraint");
+            }
+            continue;
+        }
+        c.keys(&["id", "p", "q", "type"])?;
+        if kind != "coincident" {
             return Err("unsupported SolidCraft sketch constraint");
         }
         let p = index(c.field("p")?, points.len())?;
@@ -616,6 +640,25 @@ fn extrusion_profiles(
 pub fn extrude_preview(input: &Json) -> Result<Json, &'static str> {
     let script = crate::solidcraft_preview::snapshot_script(input)?;
     let (profiles, height) = extrusion_profiles(script, true)?;
+    extrude_profiles(profiles, height)
+}
+
+/// Create a new native body directly from a selected sketch without needing a host extrusion.
+pub fn extrude_source_sketch(
+    input: &Json,
+    source_id: u32,
+    height: i32,
+) -> Result<Json, &'static str> {
+    if !(1..=64).contains(&height) {
+        return Err("SolidCraft extrusion height outside native range");
+    }
+    let script = crate::solidcraft_preview::snapshot_script(input)?;
+    let source = crate::solidcraft_preview::source_feature(script, source_id)?.0;
+    check_preview_coordinates(source)?;
+    extrude_profiles(parse_loops(source)?, height)
+}
+
+fn extrude_profiles(profiles: Vec<ProfileLoop>, height: i32) -> Result<Json, &'static str> {
     let n = |i: i32| Json::Number(i.to_string());
     let mut contours = profiles.into_iter().enumerate().map(|(i, profile)| {
         object([

@@ -35,7 +35,8 @@ jobs:
           target/release/solidcraft-trivariate build docs/site/box-cylinder/tall/a-minus-b.recipe.json build/native-viewport/body.json
           target/release/solidcraft-trivariate export-step build/native-viewport/body.json build/native-viewport/body.step
           cd build/native-viewport
-          echo '[{"command":"geometry.open","params":{"path":"body.step"}}]' > fieldcraft.json
+          solidcraft-cli run body.step --save body.sc --quiet
+          echo '[{"command":"geometry.open","params":{"path":"body.sc"}}]' > fieldcraft.json
           fieldcraft-cli run fieldcraft.json
           fieldcraft-cli snapshot fieldcraft.json --out fieldcraft.png
           solidcraft-cli snapshot --in body.step --out solidcraft.png

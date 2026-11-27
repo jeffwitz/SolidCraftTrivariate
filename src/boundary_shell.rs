@@ -115,6 +115,7 @@ pub(crate) fn supports_source_method(method: &str) -> bool {
             | crate::g2_cross_plate_json::FACE_POCKET_METHOD
             | crate::nurbs_sketch_json::METHOD
             | crate::orthogonal_sketch_json::METHOD
+            | crate::oblique_pockets_json::METHOD
             | "certified_box_cylinder_boolean_suite"
             | crate::box_cylinder_boolean_json::METHOD
             | crate::interval_bores_json::METHOD

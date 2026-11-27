@@ -224,3 +224,13 @@ fn boolean_suite_supports_translated_stock_and_a_different_height() {
         "valid"
     );
 }
+
+#[test]
+fn step_exports_axially_disconnected_material_as_two_solid_bodies() {
+    for (operation, components) in [("a_minus_b", 1), ("b_minus_a", 2), ("union", 1), ("intersection", 1)] {
+        let model = interchange::build(&suite_recipe(operation)).unwrap();
+        let step = solidcraft_trivariate::step_boundary::export_step(&model).unwrap();
+        assert_eq!(step.matches(" = MANIFOLD_SOLID_BREP(").count(), components);
+        assert!(!step.contains(" = BREP_WITH_VOIDS("));
+    }
+}

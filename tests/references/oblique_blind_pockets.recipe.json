@@ -1,0 +1,43 @@
+{
+  "family": "oblique_blind_pockets_v1",
+  "stock_bounds_xyz_mm": [[0, 10], [0, 10], [0, 10]],
+  "sketch_plane": "z=10",
+  "footprint_x_mm": [1, 9],
+  "profile_a": {
+    "id": "quadratic_c1",
+    "degree": 2,
+    "knots": [0, 0, 0, 1, 2, 2, 2],
+    "parameter_spans": [[0, 1], [1, 2]],
+    "lower_wall_homogeneous_controls": [
+      [[1000, 2016, 1000], [3000, 2000, 1000], [5000, 2000, 1000]],
+      [[5000, 2000, 1000], [7000, 2000, 1000], [9000, 2032, 1000]]
+    ],
+    "upper_wall_offset_mm": 2,
+    "internal_join": "C1_not_C2",
+    "whole_loop_corner_order": "G0"
+  },
+  "profile_b": {
+    "id": "linear_rectangle",
+    "degree": 1,
+    "x_interval_mm": [1, 9],
+    "y_interval_mm": [3, 5],
+    "whole_loop_corner_order": "G0"
+  },
+  "tools": [
+    {
+      "profile": "quadratic_c1",
+      "direction_per_depth": [0, [1, 5], -1],
+      "depth_mm": 7
+    },
+    {
+      "profile": "linear_rectangle",
+      "direction_per_depth": [0, [-1, 10], -1],
+      "depth_mm": 5
+    }
+  ],
+  "scope": {
+    "method": "whole untrimmed rational tensor-product cells",
+    "partition": "profile interior plus two swept arrangement wings",
+    "unsupported_smooth_oval_profile": "oblique_blind_smooth_oval.counterexample.json"
+  }
+}

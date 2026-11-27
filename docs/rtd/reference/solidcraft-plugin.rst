@@ -33,7 +33,7 @@ the following from the repository root:
 Open the design and toggle **SCT Partition 1** in the SolidCraft browser.
 The preview can also be generated when the timeline contains only the sketch.
 The preview accepts integral polygon coordinates in the planner's ±4096 mm
-range and the supported coincident constraints. The extrusion path accepts a
+range and coincident, horizontal and vertical line constraints. The extrusion path accepts a
 positive new-body extrusion of 1 through 64 mm with the supported profile
 selection. It applies the same planar planner through the actual thickness.
 
@@ -49,8 +49,10 @@ inspection in either SolidCraft or FieldCraft:
 SolidCraft exposes sketch visibility and shaded body display separately. The
 stock shaded setting suppresses the body's edge overlay. Switching display
 styles can expose edges between adjacent STEP boundary faces. The volume
-partition remains recorded in the model JSON. FieldCraft can open the STEP
-through its CAD geometry import. Its own mesher then operates on that boundary.
+partition remains recorded in the model JSON. For FieldCraft 0.8.1, save the imported body as a SolidCraft document
+(``solidcraft-cli run result.step --save body.sc``) and open that document
+with ``geometry.open``. Direct STEP input to this release's headless
+``geometry.open`` failed its design-resource check.
 
 Intersecting oblique pockets
 ---------------------------
@@ -81,6 +83,30 @@ volumes gives a tool overlap of 440.91218 mm³ and a remaining volume of
 60,497.17099 mm³. The B-rep reference uses the host's modeling kernel. Its
 volume and classifications qualify the reference geometry; qualification of
 trivariate charts requires a separate construction and determinant audit.
+
+A separate native trivariate fixture, ``oblique_blind_pockets_v1``, uses a
+10 mm cube, two interior footprints, and independent shear slopes +1/5 and
+−1/10 in y per millimetre of depth. The floor depths are 7 and 5 mm.
+The first profile has a true C¹ quadratic span joint with unequal second
+derivatives. The other profile is rectangular. Both closed profiles have
+corners. The openings overlap at the surface in this fixture. The planar
+wall envelopes change order at an interior depth that varies with x.
+
+The construction has 64 whole tensor-product charts and 122 shared faces.
+Their Bernstein certificates bound the Jacobian determinant from below by
+0.29583 mm³. The source-profile inequalities agree with the cell coverage on
+616 off-boundary probes. SolidCraft opens the exported STEP as one closed
+solid with 140 boundary faces and volume 871.43658667 mm³.
+
+.. code-block:: bash
+
+   target/release/solidcraft-trivariate build tests/references/oblique_blind_pockets.recipe.json pockets.json
+   target/release/solidcraft-trivariate export-step pockets.json pockets.step
+   solidcraft pockets.step
+
+The qualified constructor checks the complete fixed recipe. Smooth periodic
+profiles with disjoint openings as in the 40 mm reference require an extension
+of this arrangement.
 
 Native rendering checks
 -----------------------

@@ -43,20 +43,26 @@ fn internal_edges(job: &SketchLayers) -> Result<(Vec<[Point; 2]>, usize), &'stat
 }
 
 pub fn snapshot_script(script: &Json) -> Result<&Json, &'static str> {
-    Ok(if script.field("schema").is_ok() {
-        if script.field("schema")?.text()? != "solidcraft_trivariate_timeline_v1"
-            || !script.field("omitted")?.items()?.is_empty()
-        {
-            return Err("unsupported or incomplete SolidCraft snapshot");
-        }
-        script.field("script")?
-    } else {
-        script
-    })
+    Ok(
+        if script.field("script").is_ok() || script.field("schema").is_ok() {
+            if script
+                .field("schema")
+                .ok()
+                .map(Json::text)
+                .transpose()?
+                .is_some_and(|s| s != "solidcraft_trivariate_timeline_v1")
+                || !script.field("omitted")?.items()?.is_empty()
+            {
+                return Err("unsupported or incomplete SolidCraft snapshot");
+            }
+            script.field("script")?
+        } else {
+            script
+        },
+    )
 }
 
-pub fn descriptor(input: &Json, source_id: u32) -> Result<Json, &'static str> {
-    let script = snapshot_script(input)?;
+pub(crate) fn source_feature(script: &Json, source_id: u32) -> Result<(&Json, u32), &'static str> {
     let mut ids = BTreeSet::new();
     let mut source = None;
     for cmd in script.field("commands")?.items()? {
@@ -76,6 +82,16 @@ pub fn descriptor(input: &Json, source_id: u32) -> Result<Json, &'static str> {
     if source.field("type")?.text()? != "sketch" {
         return Err("expected a sketch feature");
     }
+    let target_id = ids
+        .last()
+        .and_then(|id| id.checked_add(1))
+        .ok_or("feature id overflow")?;
+    Ok((source, target_id))
+}
+
+pub fn descriptor(input: &Json, source_id: u32) -> Result<Json, &'static str> {
+    let script = snapshot_script(input)?;
+    let (source, target_id) = source_feature(script, source_id)?;
     let mut loops = crate::solidcraft_polygon::preview_contours(source)?
         .into_iter()
         .enumerate()
@@ -94,10 +110,6 @@ pub fn descriptor(input: &Json, source_id: u32) -> Result<Json, &'static str> {
         strategy: Default::default(),
     };
     let (edges, blocks) = internal_edges(&job)?;
-    let target_id = ids
-        .last()
-        .and_then(|id| id.checked_add(1))
-        .ok_or("feature id overflow")?;
     let mut points = vec![object([
         ("id", string("origin")),
         ("pos", Json::Array(vec![num("0.0"), num("0.0")])),

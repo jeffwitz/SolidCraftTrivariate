@@ -99,6 +99,7 @@ fn capabilities() -> Result<Json, String> {
         "curved_sketch_layers_v1",
         "box_cylinder_boolean_v1",
         "box_cylinder_boolean_suite_v1",
+        "oblique_blind_pockets_v1",
     ]
     .into_iter()
     .chain(SECTION_FAMILIES)

@@ -221,3 +221,5 @@ pub mod cylinder_tensor_covers;
 pub mod annulus_edges;
 
 pub mod solidcraft_preview;
+pub mod oblique_pockets;
+mod oblique_pockets_json;

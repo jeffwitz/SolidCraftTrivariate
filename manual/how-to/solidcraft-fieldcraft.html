@@ -48,6 +48,7 @@
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Run a native analysis and inspect it in FieldCraft</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#choose-the-domain-and-job">Choose the domain and job</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#inspect-the-result">Inspect the result</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#find-the-files-for-a-run">Find the files for a run</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#if-the-operation-stops">If the operation stops</a></li>
 </ul>
 </li>
@@ -117,15 +118,30 @@ scale amplifies the motion for display. For values in physical units, read
 the contour legend or export the field. Keep the original mechanical result
 JSON for reactions, residual and energy. See <a class="reference internal" href="../reference/fieldcraft-plugin.html"><span class="doc">FieldCraft analysis exchange</span></a>.</p>
 <figure class="align-default" id="id1">
-<a class="reference internal image-reference" href="../_images/fieldcraft-displacement.png"><img alt="FieldCraft contour on the two-hole bracket, blue at the clamp and red at the loaded end." src="../_images/fieldcraft-displacement.png" style="width: 85%;" />
+<a class="reference internal image-reference" href="../_images/fieldcraft-displacement.png"><img alt="FieldCraft Results workspace showing the bracket, the displacement legend in mm, and the IGA step." src="../_images/fieldcraft-displacement.png" style="width: 85%;" />
 </a>
 <figcaption>
 <p><span class="caption-text">Displacement magnitude on the undeformed bracket, from 0 mm (blue) to
 0.13814 mm (red). FieldCraft 0.8.1 drew this view after reopening the
-sample archive. Four subdivisions per chart direction give 640 display
+sample archive in a desktop window. The Results panel at the right selects
+the step, component and deformation scale. Four subdivisions per chart direction give 640 display
 hexahedra; the native analysis still has ten charts.</span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
 </figcaption>
 </figure>
+</section>
+<section id="find-the-files-for-a-run">
+<h2>Find the files for a run<a class="headerlink" href="#find-the-files-for-a-run" title="Link to this heading"></a></h2>
+<p>The default profile is <code class="docutils literal notranslate"><span class="pre">build/compact-solidcraft</span></code> under the kit. If you use
+<code class="docutils literal notranslate"><span class="pre">--profile</span></code>, open that directory instead. Read
+<code class="docutils literal notranslate"><span class="pre">companion/fieldcraft-analysis-status.json</span></code> for the archive path and input
+hashes. The launcher gives each request its own directory under
+<code class="docutils literal notranslate"><span class="pre">companion/results/</span></code>, including repeated runs with the same case name.
+The native result ends in <code class="docutils literal notranslate"><span class="pre">.result.json</span></code>; the sampled native field ends in
+<code class="docutils literal notranslate"><span class="pre">.field.vtu</span></code>. The <code class="docutils literal notranslate"><span class="pre">.manifest.json</span></code> records units, sample density,
+field readback errors and checksums. Open the <code class="docutils literal notranslate"><span class="pre">.fieldcraft</span></code> file again to
+inspect the same result after closing the desktop.</p>
+<p>The complete reference run, with the installable kit and the original window
+capture, is available in the <a class="reference external" href="https://github.com/jeffwitz/SolidCraftTrivariate/actions/runs/46067535896">qualified workflow artifacts</a>.</p>
 </section>
 <section id="if-the-operation-stops">
 <h2>If the operation stops<a class="headerlink" href="#if-the-operation-stops" title="Link to this heading"></a></h2>

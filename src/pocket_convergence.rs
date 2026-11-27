@@ -216,7 +216,7 @@ struct Basis {
     spans: Vec<Vec<Row>>,
 }
 impl Basis {
-    fn value_trace(&self, side: Side, k: usize, t: Q, row: &mut Row) -> Result<()> {
+    fn value_trace(&self, side: Side, k: usize, t: Q, sign: Q, row: &mut Row) -> Result<()> {
         let (chart, axis, endpoint) = side;
         let mut cells = [k; 2];
         cells[axis] = endpoint * (self.n - 1);
@@ -229,7 +229,7 @@ impl Basis {
                 add(
                     row,
                     self.ids[chart][i * self.dim + j].0,
-                    x.checked_mul(y)?
+                    sign.checked_mul(x.checked_mul(y)?)?
                         .checked_mul(self.ids[chart][i * self.dim + j].1)?,
                 )?;
             }
@@ -700,8 +700,8 @@ pub fn solve_model_selected(
                         (k, t)
                     };
                     let mut value = Row::new();
-                    basis.value_trace(a, k, t, &mut value)?;
-                    basis.value_trace(b, kb, tb, &mut value)?;
+                    basis.value_trace(a, k, t, Q::one(), &mut value)?;
+                    basis.value_trace(b, kb, tb, Q::new(-1, 1)?, &mut value)?;
                     value_probe_rows.push(value);
                     for x_component in [false, true] {
                         let mut gradient = Row::new();

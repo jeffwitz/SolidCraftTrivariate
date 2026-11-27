@@ -84,9 +84,14 @@ redistribution of the WIT-derived interface.
 
 ## Compact desktop ribbon
 
-Run `python3 scripts/solidcraft_compact_profile.py /absolute/path/to/compact-settings`
-once. Set `SOLIDCRAFT_SETTINGS_DIR` to that directory when launching the desktop
-with this plugin installed. The profile keeps Sketch visible from startup. Its
+From the repository root, run:
+
+```sh
+python3 scripts/solidcraft_compact_desktop.py /path/to/solidcraft-trivariate-0.2.0.zip
+```
+
+The launcher installs the package in its own desktop profile and opens the sharp
+bracket. Pass a second argument to open another design. The profile keeps Sketch visible from startup. Its
 pinned sketch controls create a sketch, draw straight sides and rectangles,
 constrain them, and finish or cancel. SolidCraft retains its dropdown menus and
 command search. Its standalone sketch editor accepts more curve types than the

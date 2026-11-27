@@ -8,7 +8,6 @@ import socket
 import subprocess
 import time
 
-from solidcraft_compact_profile import seed
 from solidcraft_desktop_smoke import screenshot
 
 
@@ -27,20 +26,11 @@ def main():
     args = parser.parse_args()
     out = args.out.resolve()
     out.mkdir(parents=True, exist_ok=True)
-    companion = out / "companion"
-    companion.mkdir(exist_ok=True)
     token = secrets.token_hex(32)
     env = dict(os.environ, XDG_DATA_HOME=str(out / "data"), SOLIDCRAFT_SETTINGS_DIR=str(out / "settings"),
                SOLIDCRAFT_CONTROL_DIR=str(out / "control"), SOLIDCRAFT_CONTROL_TOKEN=token)
-    seed(out / "settings")
-    package = str(args.package.resolve())
-    def install(params):
-        return json.loads(subprocess.check_output(["solidcraft-cli", "--keep-plugin-approvals", "exec", "plugin.install",
-                                                   json.dumps({"path": package, **params})], env=env))
-    reviewed = install({"dry_run": True})
-    install({"approval": reviewed["approval"], "archive": reviewed["archive"],
-             "approve": {"command_groups": ["file"], "folders": [{"name":"companion", "path":str(companion),
-                                                                    "read":True, "write":True}]}})
+    subprocess.run(["python3", "scripts/solidcraft_compact_desktop.py", str(args.package.resolve()),
+                    "--profile", str(out), "--prepare-only"], check=True)
     port = 27893
     with (out / "desktop.log").open("w") as log:
         app = subprocess.Popen(["solidcraft", "--new-instance", "--control", str(port),

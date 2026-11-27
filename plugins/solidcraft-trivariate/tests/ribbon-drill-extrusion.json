@@ -1,0 +1,31 @@
+{
+  "entry": "drill",
+  "params": {
+    "body_id": 2,
+    "source_feature_id": 1,
+    "height_mm": 12,
+    "radius_mm": 2
+  },
+  "design": "ribbon-rect-extrusion.sc",
+  "grants": {
+    "folders": [
+      {
+        "name": "companion",
+        "read": true,
+        "write": true,
+        "from": "companion"
+      }
+    ],
+    "command_groups": [
+      "file"
+    ]
+  },
+  "expect": {
+    "model": {
+      "body_count": 1,
+      "total": {
+        "volume_mm3": 2249.20355262769
+      }
+    }
+  }
+}

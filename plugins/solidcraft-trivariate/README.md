@@ -56,7 +56,7 @@ solidcraft-cli plugin test . --require-cases
 ```
 
 `extrude-active-sketch` reads the specified sketch before any host extrusion and accepts
-the native line-and-arc profile subset supported by `solidcraft_polygon::extrude_source_sketch`.
+the native straight-segment profile subset supported by `solidcraft_polygon::extrude_source_sketch`.
 `extrude-active-timeline` is the separate path for an already extruded sketch. The plugin
 does not make a separate mesh; SolidCraft imports the STEP text as a native timeline
 feature and renders the resulting body itself.

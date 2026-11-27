@@ -680,8 +680,15 @@ pub fn solve_model_selected(
                 // Clearing the physical-map Jacobian denominators gives a
                 // univariate numerator of degree at most p+5 on each span.
                 // p+6 exact points therefore imply equality throughout it.
-                for r in 0..=p + 5 {
-                    let t = Q::new(r as i128, (p + 5) as i128)?;
+                // Bilinear pairs have the sharper bound p+1. Keeping their
+                // original sample grid preserves the conditioned Hermite lift.
+                let jet_degree = if blocks.iter().all(|block| block.degrees == [1, 1, 1]) {
+                    p + 1
+                } else {
+                    p + 5
+                };
+                for r in 0..=jet_degree {
+                    let t = Q::new(r as i128, jet_degree as i128)?;
                     let mut row = Row::new();
                     basis.jet(a, k, t, x_component, Q::one(), &mut row)?;
                     let (kb, tb) = if reverse {

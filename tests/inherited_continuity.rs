@@ -149,3 +149,138 @@ fn source_g2_sketch_only_restores_lateral_faces_with_complete_normal_jets() {
         (16, 4, 26)
     );
 }
+
+#[test]
+fn automatic_inherited_plan_reuses_only_the_qualified_radial_family() {
+    let model = parse(include_str!(
+        "../docs/site/data/plate_blind_pocket/plate_blind_pocket.model.json"
+    ))
+    .unwrap();
+    let package = solidcraft_trivariate::inherited_space::compile_automatic(&model, 2).unwrap();
+    let audit = solidcraft_trivariate::inherited_space::audit_package(&package).unwrap();
+    assert_eq!(audit.field("status").unwrap().text().unwrap(), "valid");
+    let field = package.field("field").unwrap();
+    assert_eq!(
+        field
+            .field("continuity_selection")
+            .unwrap()
+            .field("selected_degree")
+            .unwrap()
+            .number::<usize>()
+            .unwrap(),
+        2
+    );
+    assert_eq!(
+        field
+            .field("continuity_selection")
+            .unwrap()
+            .field("plane_degree")
+            .unwrap()
+            .number::<usize>()
+            .unwrap(),
+        3
+    );
+    assert_eq!(
+        field
+            .field("continuity_selection")
+            .unwrap()
+            .field("qualified_radial_join_count")
+            .unwrap()
+            .number::<usize>()
+            .unwrap(),
+        8
+    );
+    assert_eq!(
+        field
+            .field("transverse_c1_join_count")
+            .unwrap()
+            .number::<usize>()
+            .unwrap(),
+        8
+    );
+    let interfaces = field.field("interfaces").unwrap().items().unwrap();
+    assert_eq!(
+        interfaces
+            .iter()
+            .filter(|x| x.field("role").unwrap().text().unwrap() == "distinct_support_join")
+            .count(),
+        8
+    );
+    assert!(interfaces.iter().all(|x| x.field("reason").is_ok()));
+}
+
+#[test]
+fn automatic_inheritance_keeps_parent_c2_but_generic_lateral_joins_at_c0() {
+    let recipe = parse(include_str!("references/nurbs_strip.recipe.json")).unwrap();
+    let strip = solidcraft_trivariate::interchange::build(&recipe).unwrap();
+    let strip_package =
+        solidcraft_trivariate::inherited_space::compile_automatic(&strip, 2).unwrap();
+    let strip_field = strip_package.field("field").unwrap();
+    assert_eq!(strip_field.field("inherited_join_count").unwrap().number::<usize>().unwrap(), 1);
+    let inherited = strip_field.field("interfaces").unwrap().items().unwrap().iter()
+        .find(|v| v.field("role").unwrap().text().unwrap() == "common_parent_subdivision").unwrap();
+    assert_eq!(inherited.field("field_order").unwrap().number::<usize>().unwrap(), 2);
+
+    let model = cylinder();
+    let generic = solidcraft_trivariate::inherited_space::compile_automatic(&model, 2).unwrap();
+    let interfaces = generic.field("field").unwrap().field("interfaces").unwrap().items().unwrap();
+    assert!(interfaces.iter().any(|v| {
+        let first = v.field("first").unwrap().items().unwrap();
+        first[1].text().unwrap().starts_with('u') || first[1].text().unwrap().starts_with('v')
+    }));
+    assert!(interfaces.iter().filter(|v| {
+        let first = v.field("first").unwrap().items().unwrap();
+        first[1].text().unwrap().starts_with('u') || first[1].text().unwrap().starts_with('v')
+    }).all(|v| v.field("role").unwrap().text().unwrap() == "whole_face_join"));
+}
+
+#[test]
+fn automatic_raw_load_rejects_declared_contact_and_unsupported_material_fields() {
+    let model = pocket();
+    let mut job = parse(include_str!("references/s3_inherited_stress.job.json")).unwrap();
+    if let Json::Object(fields) = &mut job {
+        fields.insert("clamp_feature".into(), Json::String("start".into()));
+    }
+    if let Json::Object(fields) = &mut job {
+        fields.insert(
+            "contact".into(),
+            parse(r#"{"feature":"pocket/wall"}"#).unwrap(),
+        );
+    }
+    assert_eq!(
+        solidcraft_trivariate::mechanical_job::solve_job(&model, &job).unwrap_err(),
+        "contact mechanics is unsupported by spline_feature_load_v1"
+    );
+    if let Json::Object(fields) = &mut job {
+        fields.remove("contact");
+        if let Json::Object(material) = fields.get_mut("material").unwrap() {
+            material.insert("density_kg_per_mm3".into(), Json::Number("1".into()));
+        }
+    }
+    assert_eq!(
+        solidcraft_trivariate::mechanical_job::solve_job(&model, &job).unwrap_err(),
+        "unexpected object fields"
+    );
+}
+
+#[test]
+fn manual_inherited_exports_keep_their_versioned_document_shape() {
+    let recipe = parse(include_str!("references/g2_cross_sketches.recipe.json")).unwrap();
+    let model = solidcraft_trivariate::interchange::build(&recipe).unwrap();
+    let plan = parse(include_str!("references/matched_chart_jets.plan.json")).unwrap();
+    let package = solidcraft_trivariate::inherited_space::compile(&model, &plan).unwrap();
+    assert!(package
+        .field("field")
+        .unwrap()
+        .field("continuity_selection")
+        .is_err());
+    assert!(package
+        .field("field")
+        .unwrap()
+        .field("interfaces")
+        .unwrap()
+        .items()
+        .unwrap()
+        .iter()
+        .all(|x| x.field("reason").is_err()));
+}

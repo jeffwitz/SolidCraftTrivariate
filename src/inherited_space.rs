@@ -130,6 +130,8 @@ pub struct InheritedSpace {
     pub retained_faces: usize,
     pub transverse_faces: usize,
     pub interface_evidence: Vec<Json>,
+    /// Deterministic audit trail for automatically selected regularity.
+    pub selection_audit: Option<Json>,
     /// Full C0 coefficient rows, in the same canonical ordering for any continuity.
     pub lift: Vec<Row>,
 }
@@ -169,7 +171,7 @@ impl InheritedSpace {
                 ])
             })
             .collect();
-        object([
+        let mut result = object([
             (
                 "schema",
                 Json::String("inherited_extrusion_field_v1".into()),
@@ -181,7 +183,13 @@ impl InheritedSpace {
             ("retained_c0_join_count", n(self.retained_faces)),
             ("interfaces", Json::Array(self.interface_evidence.clone())),
             ("cells", Json::Array(cells)),
-        ])
+        ]);
+        if let Some(selection) = &self.selection_audit {
+            if let Json::Object(fields) = &mut result {
+                fields.insert("continuity_selection".into(), selection.clone());
+            }
+        }
+        result
     }
 }
 
@@ -258,6 +266,12 @@ fn section(block: &BracketBlock, p: usize, offset: usize) -> Result<Section<'_>>
         shear: direction.ok_or("empty extrusion")?,
         offset,
     })
+}
+
+#[derive(Clone, Copy)]
+struct CompilePolicy {
+    match_chart_jets: bool,
+    record_decisions: bool,
 }
 
 pub(crate) fn face_coord(side: &BlockSide, i: usize, j: usize, d: [usize; 3]) -> [usize; 3] {
@@ -412,7 +426,10 @@ pub fn build_plane_space(
         restore_strip,
         transverse,
         plane_degree,
-        false,
+        CompilePolicy {
+            match_chart_jets: false,
+            record_decisions: false,
+        },
     )
 }
 
@@ -423,8 +440,12 @@ fn compile_extrusion(
     restore_strip: bool,
     transverse: &[(String, String)],
     plane_degree: usize,
-    match_chart_jets: bool,
+    policy: CompilePolicy,
 ) -> Result<InheritedSpace> {
+    let CompilePolicy {
+        match_chart_jets,
+        record_decisions,
+    } = policy;
     if plane_degree > 3 {
         return Err("unsupported transverse degree");
     }
@@ -575,6 +596,16 @@ fn compile_extrusion(
                 Json::String("oriented_proportional_homogeneous_face".into()),
             ),
         ]);
+        if record_decisions {
+            interface_reason(
+                &mut record,
+                if link.first.axis == 2 && link.second.axis == 2 {
+                    "C0 retained: section maps or physical extrusion directions do not certify a common-parent join"
+                } else {
+                    "C0 retained: no qualified lateral smoothing rule applies to this interface"
+                },
+            );
+        }
         let mut set_evidence = |role: &str, method: &str, r: usize| {
             if let Json::Object(fields) = &mut record {
                 fields.insert("role".into(), Json::String(role.into()));
@@ -616,11 +647,13 @@ fn compile_extrusion(
                     "exact_proportional_complete_homogeneous_normal_jet",
                     1,
                 );
-                if let Json::Object(fields) = &mut record {
-                    fields.insert(
-                        "normal_interval_ratio".into(),
-                        Json::Array(vec![n(scale.numerator()), n(scale.denominator())]),
-                    );
+                if record_decisions {
+                    if let Json::Object(fields) = &mut record {
+                        fields.insert(
+                            "normal_interval_ratio".into(),
+                            Json::Array(vec![n(scale.numerator()), n(scale.denominator())]),
+                        );
+                    }
                 }
                 coupled += 1;
                 evidence.push(record);
@@ -641,6 +674,12 @@ fn compile_extrusion(
                 "exact_physical_gradient_unisolvence",
                 1,
             );
+            if record_decisions {
+                interface_reason(
+                    &mut record,
+                    "qualified cubic radial face: exact physical-gradient constraints applied",
+                );
+            }
             evidence.push(record);
             continue;
         }
@@ -680,6 +719,12 @@ fn compile_extrusion(
                 .count();
             let smooth = a.d[0].checked_sub(m).ok_or("invalid knot multiplicity")?;
             if smooth == 0 {
+                if record_decisions {
+                    interface_reason(
+                        &mut record,
+                        "C0 retained: recovered source knot multiplicity permits no higher order",
+                    );
+                }
                 evidence.push(record);
                 continue;
             }
@@ -712,6 +757,12 @@ fn compile_extrusion(
             },
             r,
         );
+        if record_decisions {
+            interface_reason(
+                &mut record,
+                "exact inherited-parent coefficient and mapping certificate",
+            );
+        }
         evidence.push(record);
         inherited += 1;
     }
@@ -802,8 +853,93 @@ fn compile_extrusion(
         retained_faces: links.interfaces.len() - inherited - coupled,
         transverse_faces: coupled,
         interface_evidence: evidence,
+        selection_audit: None,
         lift,
     })
+}
+
+/// Select only continuity supported by exact inherited mappings and
+/// certificates. Uncertified lateral interfaces remain C0 with an audit reason.
+pub fn build_automatic_space(model: &Json, degree: usize) -> Result<InheritedSpace> {
+    if !(1..=3).contains(&degree) {
+        return Err("invalid field degree");
+    }
+    let qualified_pocket = crate::pocket_convergence::matches_qualified_layout(model)?;
+    let radial_joins = if qualified_pocket {
+        crate::pocket_convergence::radial_interfaces_after_qualification(model)?
+            .into_iter()
+            .map(|face| (face.first_block, face.second_block))
+            .collect::<Vec<_>>()
+    } else {
+        Vec::new()
+    };
+    let selected_degree = degree;
+    let selected_plane_degree = if qualified_pocket { 3 } else { 0 };
+    let restore_strip = model.field("schema")?.text()? == "nurbs_sketch_strip_v1";
+    let parent_decision = if restore_strip {
+        "exact recovered source-parent restrictions available"
+    } else {
+        "no supported exact source-parent recovery; retain C0 on uncertified interfaces"
+    };
+    // Translation across a shared section proves an exact C1 match. Higher
+    // axial order is inherited only when the source-parent knot certificate
+    // establishes it.
+    let axial_order = usize::from(selected_degree > 0);
+    let mut space = compile_extrusion(
+        model,
+        selected_degree,
+        axial_order,
+        restore_strip,
+        &radial_joins,
+        selected_plane_degree,
+        CompilePolicy {
+            match_chart_jets: false,
+            record_decisions: true,
+        },
+    )?;
+    space.selection_audit = Some(object([
+        (
+            "policy",
+            Json::String("conservative_exact_inheritance_v1".into()),
+        ),
+        (
+            "outcome",
+            Json::String(
+                if space.common_parent_faces + space.transverse_faces > 0 {
+                    "exact_certificates_applied"
+                } else {
+                    "retain_c0"
+                }
+                .into(),
+            ),
+        ),
+        ("requested_degree", n(degree)),
+        ("selected_degree", n(selected_degree)),
+        ("axial_order_cap", n(selected_degree.min(1))),
+        ("plane_degree", n(selected_plane_degree)),
+        (
+            "parent_mapping_decision",
+            Json::String(parent_decision.into()),
+        ),
+        ("qualified_radial_join_count", n(radial_joins.len())),
+        (
+            "geometry_qualification",
+            Json::String(
+                if qualified_pocket {
+                    "exact qualified cubic pocket layout"
+                } else {
+                    "outside the qualified pocket layout"
+                }
+                .into(),
+            ),
+        ),
+        ("fallback_reason", Json::Null),
+        (
+            "contact_physics",
+            Json::String("unsupported; no contact model is assembled".into()),
+        ),
+    ]));
+    Ok(space)
 }
 
 fn link_side(s: &BlockSide) -> Json {
@@ -817,8 +953,18 @@ fn link_side(s: &BlockSide) -> Json {
     ])
 }
 
+fn interface_reason(record: &mut Json, reason: &str) {
+    if let Json::Object(fields) = record {
+        fields.insert("reason".into(), Json::String(reason.into()));
+    }
+}
+
 /// Compile an independently replayable field descriptor, retaining geometry, boundaries and job plan.
 pub fn space_from_plan(model: &Json, plan: &Json) -> Result<InheritedSpace> {
+    if plan.field("schema")?.text()? == "inherited_field_auto_plan_v1" {
+        plan.keys(&["schema", "axial_degree"])?;
+        return build_automatic_space(model, plan.field("axial_degree")?.number()?);
+    }
     if plan.field("schema")?.text()? == "matched_chart_jets_v1" {
         plan.keys(&["schema", "axial_degree", "axial_continuity"])?;
         return compile_extrusion(
@@ -828,7 +974,10 @@ pub fn space_from_plan(model: &Json, plan: &Json) -> Result<InheritedSpace> {
             false,
             &[],
             0,
-            true,
+            CompilePolicy {
+                match_chart_jets: true,
+                record_decisions: false,
+            },
         );
     }
     let plane = if let Ok(p) = plan.field("plane_degree") {
@@ -878,6 +1027,18 @@ pub fn space_from_plan(model: &Json, plan: &Json) -> Result<InheritedSpace> {
         &pairs,
         plane,
     )
+}
+pub fn automatic_plan(degree: usize) -> Json {
+    object([
+        (
+            "schema",
+            Json::String("inherited_field_auto_plan_v1".into()),
+        ),
+        ("axial_degree", n(degree)),
+    ])
+}
+pub fn compile_automatic(model: &Json, degree: usize) -> Result<Json> {
+    compile(model, &automatic_plan(degree))
 }
 pub fn compile(model: &Json, plan: &Json) -> Result<Json> {
     let space = space_from_plan(model, plan)?;

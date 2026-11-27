@@ -27,6 +27,11 @@ cuts are rejected. With explicit Boolean history nested loops are allowed,
 but touching or crossing loops remain outside this contract. This family
 represents line segments exactly; arcs and NURBS require other schemas.
 
+.. figure:: ../../results/planar-lookahead/mixed-sizes.svg
+   :alt: Two partitions of one three-hole sketch with fourteen blocks each.
+
+   Moving a separator endpoint changes the angle at a triangular hole. On this sketch the maximum sampled planar condition number drops from 559.00 to 45.48. Both layouts use fourteen blocks.
+
 For polygon inputs, candidate arrangements include rectangular strips,
 radial constructions, quadrilateral separators, and convex hosts. The
 automatic planner builds and audits each supported candidate and selects by

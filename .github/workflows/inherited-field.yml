@@ -124,6 +124,7 @@ jobs:
           python-version: '3.12'
       - run: python -m pip install sympy
       - run: make check-curved-pocket-fields
+      - run: python -m unittest discover -s tests -p test_automatic_pocket_load.py
       - uses: actions/upload-artifact@v4
         with:
           name: curved-pocket-fields

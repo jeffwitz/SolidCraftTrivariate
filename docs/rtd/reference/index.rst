@@ -12,6 +12,7 @@ admission limits.
    construction
    geometry
    operations
+   automatic-continuity
    interface-fields
    continuity-experiments
    spline-fields

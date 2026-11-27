@@ -27,6 +27,37 @@ fn select(surfaces: &Surfaces, name: &str) -> Result<Vec<Face>> {
 
 /// Both saved field types replay their exact coefficient maps before assembly.
 pub fn solve(package: &Json, job: &Json) -> Result<Json> {
+    solve_with_field(package, job, None)
+}
+
+/// Compile raw geometry once, then solve one feature-load job directly on the
+/// in-memory automatic field. Persisted packages continue to use canonical replay.
+pub fn solve_raw_inherited(model: &Json, job: &Json, degree: usize) -> Result<Json> {
+    let compile_start = std::time::Instant::now();
+    let plan = crate::inherited_space::automatic_plan(degree);
+    let field = crate::inherited_space::space_from_plan(model, &plan)?;
+    let field_compilation_ms = compile_start.elapsed().as_secs_f64() * 1000.;
+    let package = object([
+        ("schema", string("solidcraft_inherited_analysis_v1")),
+        ("geometry", model.clone()),
+        ("plan", plan),
+        ("field", field.document()),
+    ]);
+    let mut result = solve_with_field(&package, job, Some(field))?;
+    if let Json::Object(fields) = &mut result {
+        fields.insert("field_compilation_ms".into(), n(field_compilation_ms));
+    }
+    Ok(result)
+}
+
+fn solve_with_field(
+    package: &Json,
+    job: &Json,
+    mut prebuilt: Option<crate::inherited_space::InheritedSpace>,
+) -> Result<Json> {
+    if job.field("contact").is_ok() || job.field("contact_model").is_ok() {
+        return Err("contact mechanics is unsupported by spline_feature_load_v1");
+    }
     let clamp = job.field("clamp_feature")?.text()?;
     let mut surfaces = Surfaces::new();
     match package.field("schema")?.text()? {
@@ -56,7 +87,10 @@ pub fn solve(package: &Json, job: &Json) -> Result<Json> {
             )
         }
         "solidcraft_inherited_analysis_v1" => {
-            let field = crate::inherited_space::replay(package)?;
+            let field = match prebuilt.take() {
+                Some(field) => field,
+                None => crate::inherited_space::replay(package)?,
+            };
             let model = package.field("geometry")?;
             let cells: BTreeMap<_, _> = field
                 .cells
@@ -126,6 +160,9 @@ where
         support_id,
     } = domain;
     let select = |name| select(surfaces, name);
+    if job.field("contact").is_ok() || job.field("contact_model").is_ok() {
+        return Err("contact mechanics is unsupported by spline_feature_load_v1");
+    }
     job.keys(&[
         "schema",
         "material",
@@ -208,7 +245,7 @@ where
                 .collect(),
         )
     };
-    Ok(object([
+    let mut result = object([
         ("schema", string("spline_feature_result_v1")),
         ("support_id", support_id),
         ("plan", package.field("plan")?.clone()),
@@ -236,5 +273,22 @@ where
                     .collect(),
             ),
         ),
-    ]))
+    ]);
+    if let Ok(selection) = package
+        .field("field")
+        .and_then(|field| field.field("continuity_selection"))
+    {
+        if let Json::Object(fields) = &mut result {
+            fields.insert("continuity_selection".into(), selection.clone());
+            fields.insert(
+                "interface_decisions".into(),
+                package.field("field")?.field("interfaces")?.clone(),
+            );
+            fields.insert(
+                "physics_scope".into(),
+                Json::String("small_strain_linear_isotropic_elasticity; homogeneous young_mpa and poisson; constant body force and prescribed traction; no contact".into()),
+            );
+        }
+    }
+    Ok(result)
 }

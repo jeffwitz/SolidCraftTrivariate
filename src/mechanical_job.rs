@@ -224,6 +224,17 @@ fn mounting_rank(points: &[Vector], fixed: &[BTreeMap<usize, Ratio>; 3]) -> usiz
 /// Build the effective space, apply essential conditions, solve,
 /// and return a reproducible result document. Publication is the caller's job.
 pub fn solve_job(model: &Json, job: &Json) -> Result<Json, &'static str> {
+    if job.field("schema").and_then(Json::text) == Ok("spline_feature_load_v1") {
+        if matches!(
+            model.field("schema").and_then(Json::text),
+            Ok("solidcraft_inherited_analysis_v1" | "local_thb_analysis_v1")
+        ) {
+            return crate::spline_load::solve(model, job);
+        }
+        // Raw geometry uses one deterministic automatic field compilation and
+        // then the same feature-load solver as an explicitly exported package.
+        return crate::spline_load::solve_raw_inherited(model, job, 2);
+    }
     if matches!(
         model.field("schema").and_then(Json::text),
         Ok("local_thb_analysis_v1" | "solidcraft_inherited_analysis_v1")

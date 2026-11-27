@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="405" viewBox="0 0 1000 405">
+<rect width="100%" height="100%" fill="white"/>
+<style>text{font-family:Arial,sans-serif;fill:#172b3a}.title{font-size:22px;font-weight:700}.sub{font-size:16px;font-weight:700}.label{font-size:13px}.small{font-size:12px}.edge{stroke:#087f8c;stroke-width:4;fill:none}.curve{stroke:#345a73;stroke-width:2.5;fill:none}.ghost{stroke:#b6c5ce;stroke-width:1.2;fill:none;stroke-dasharray:5 4}.guide{stroke:#c34d3e;stroke-width:2;stroke-dasharray:5 4}</style><defs><marker id="a" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#647985"/></marker></defs>
+<text x="32" y="34" class="title">Two meanings of a shared interface</text><line x1="500" y1="52" x2="500" y2="370" stroke="#d9e1e6"/>
+<text x="35" y="70" class="sub">Inherited parent</text><text x="35" y="92" class="label">Both volume maps are exact restrictions of one parent map.</text>
+<path d="M75,230 C165,115 315,115 420,230" class="ghost"/>
+<path d="M75,230 C130,160 190,138 245,145" class="patch"/><path d="M245,145 C310,153 370,180 420,230" class="patch"/>
+<circle cx="245" cy="145" r="6" fill="#d44a37"/><text x="214" y="126" class="small">split</text>
+<path d="M75,230 C130,160 190,138 245,145 L245,300 L75,315 Z" fill="#e8f0f4" stroke="#345a73" stroke-width="2"/><path d="M245,145 C310,153 370,180 420,230 L420,315 L245,300 Z" fill="#dce8ef" stroke="#345a73" stroke-width="2"/>
+<line x1="245" y1="145" x2="245" y2="300" class="edge"/><text x="98" y="341" class="label">One parent trace; interval-width-scaled jets match at the split.</text><text x="98" y="361" class="small">Admit only after exact coefficient reconstruction of both children.</text>
+<text x="530" y="70" class="sub">Independent supports</text><text x="530" y="92" class="label">The boundary trace matches, but each map has its own interior jet.</text>
+<path d="M570,230 C655,145 745,145 830,230" class="edge"/>
+<path d="M570,150 L700,170 C715,200 685,255 700,290 L570,310 Z" fill="#e8f0f4" stroke="#345a73" stroke-width="2"/><path d="M700,170 C715,200 685,255 700,290 L830,310 L830,150 Z" fill="#dce8ef" stroke="#345a73" stroke-width="2"/>
+<path d="M700,170 C715,200 685,255 700,290" class="edge"/><path d="M700,230 L645,210" class="guide"/><path d="M700,230 L746,205" class="guide"/>
+<text x="620" y="334" class="label">Same trace alone gives C⁰.</text><text x="620" y="354" class="label">Physical C¹ adds a gradient constraint.</text><text x="636" y="157" class="small">independent transverse jets</text>
+<text x="32" y="391" class="small">A recovered parent is a geometric relation between maps; continuity selection for an analysis field is a separate choice.</text>
+</svg>

@@ -29,6 +29,126 @@ fn affine_power_job(degree: usize, quadrature: usize) -> Json {
     .unwrap()
 }
 
+#[test]
+fn automatic_selection_reuses_only_the_exact_audited_geometry() {
+    use solidcraft_trivariate::{json::parse, pocket_convergence::SectionJoins};
+    let model = parse(include_str!(
+        "../docs/site/data/plate_blind_pocket/plate_blind_pocket.model.json"
+    ))
+    .unwrap();
+    let selected = pocket_convergence::plan_auto(&model, 8).unwrap();
+    assert!(selected.qualified_geometry_reused);
+    assert_eq!(
+        (selected.degree, selected.intervals, selected.joins),
+        (3, 8, SectionJoins::Radial)
+    );
+
+    assert_eq!(
+        pocket_convergence::qualified_radial_interfaces(&model)
+            .unwrap()
+            .len(),
+        8
+    );
+    let result = pocket_convergence::solve_model_auto(&model, 1, &affine_power_job(5, 8)).unwrap();
+    assert_eq!(
+        result
+            .field("trial_solve_count")
+            .unwrap()
+            .number::<usize>()
+            .unwrap(),
+        0
+    );
+    assert_eq!(
+        result
+            .field("final_solve_count")
+            .unwrap()
+            .number::<usize>()
+            .unwrap(),
+        1
+    );
+    assert_eq!(
+        result
+            .field("selection_model_block_count")
+            .unwrap()
+            .number::<usize>()
+            .unwrap(),
+        9
+    );
+    assert_eq!(
+        result
+            .field("selection_model_interface_count")
+            .unwrap()
+            .number::<usize>()
+            .unwrap(),
+        16
+    );
+    assert_eq!(
+        result
+            .field("selection_model_exterior_side_count")
+            .unwrap()
+            .number::<usize>()
+            .unwrap(),
+        22
+    );
+    assert!(result
+        .field("qualified_geometry_reused")
+        .unwrap()
+        .bool()
+        .unwrap());
+
+    let recipe = parse(include_str!("references/blind_bilinear_pocket.recipe.json")).unwrap();
+    let other_geometry = solidcraft_trivariate::interchange::build(&recipe).unwrap();
+    assert!(
+        !pocket_convergence::plan_auto(&other_geometry, 1)
+            .unwrap()
+            .qualified_geometry_reused
+    );
+}
+
+#[test]
+fn automatic_solve_reports_one_conservative_fallback_solve() {
+    let recipe = solidcraft_trivariate::json::parse(include_str!(
+        "references/blind_bilinear_pocket.recipe.json"
+    ))
+    .unwrap();
+    let model = solidcraft_trivariate::interchange::build(&recipe).unwrap();
+    let job = affine_power_job(1, 8);
+    let result = pocket_convergence::solve_model_auto(&model, 1, &job).unwrap();
+    assert_eq!(
+        result.field("selection_mode").unwrap().text().unwrap(),
+        "automatic_single_solve"
+    );
+    assert_eq!(
+        result
+            .field("trial_solve_count")
+            .unwrap()
+            .number::<usize>()
+            .unwrap(),
+        0
+    );
+    assert_eq!(
+        result
+            .field("final_solve_count")
+            .unwrap()
+            .number::<usize>()
+            .unwrap(),
+        1
+    );
+    assert!(!result
+        .field("qualified_geometry_reused")
+        .unwrap()
+        .bool()
+        .unwrap());
+    assert_eq!(
+        result
+            .field("selection_intervals")
+            .unwrap()
+            .number::<usize>()
+            .unwrap(),
+        1
+    );
+}
+
 fn save_control(name: &str, p: usize, c1: bool, degree: usize, q: usize) -> Json {
     let row = pocket_convergence::solve_published(p, 1, c1, &affine_power_job(degree, q)).unwrap();
     let dir = Path::new("build/curved-pocket-vector/controls");

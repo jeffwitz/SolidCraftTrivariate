@@ -10,17 +10,286 @@ use crate::{
     spline_constraints::{add, conditioned_kernel, Result, Row},
     transverse_jets::bernstein,
 };
-use std::collections::{BTreeMap, BTreeSet};
+use std::{
+    collections::{BTreeMap, BTreeSet},
+    sync::OnceLock,
+};
 
 type Point = [i64; 2];
 type Quad = [Point; 4];
 type Side = (usize, usize, usize);
+type GeometrySignature = (Vec<String>, Vec<String>, Vec<String>);
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum SectionJoins {
     None,
     Radial,
     Footprint,
     All,
+}
+
+/// One conservative or geometry-qualified choice for a single field solve.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct AutoSelection {
+    pub degree: usize,
+    pub intervals: usize,
+    pub joins: SectionJoins,
+    pub qualified_geometry_reused: bool,
+    pub reason: &'static str,
+}
+
+/// One exact radial seam in the qualified model's current identity namespace.
+#[derive(Clone, Debug, PartialEq)]
+pub struct QualifiedInterface {
+    pub first_block: String,
+    pub first_side: String,
+    pub second_block: String,
+    pub second_side: String,
+    pub orientation: Json,
+}
+
+/// Select one solve from the measured curved-pocket family. Reuse is based on
+/// exact block controls and incidence topology, not names or a sampled hash.
+/// The interval count is caller-selected; no candidate field is solved here.
+pub fn plan_auto(model: &Json, intervals: usize) -> Result<AutoSelection> {
+    if ![1, 2, 4, 8].contains(&intervals) {
+        return Err("unsupported automatic pocket interval count");
+    }
+    if is_qualified_geometry(model)? {
+        Ok(AutoSelection {
+            degree: 3,
+            intervals,
+            joins: SectionJoins::Radial,
+            qualified_geometry_reused: true,
+            reason: "exact published geometry and qualified cubic radial-join field family",
+        })
+    } else {
+        Ok(AutoSelection {
+            degree: 3,
+            intervals,
+            joins: SectionJoins::None,
+            qualified_geometry_reused: false,
+            reason:
+                "geometry is outside the exact qualified model; use conservative C0 field family",
+        })
+    }
+}
+
+/// Exact identity predicate shared with other automatic analysis policies.
+pub fn is_qualified_geometry(model: &Json) -> Result<bool> {
+    if crate::interchange::audit(model)?.field("status")?.text()? != "valid" {
+        return Err("source geometry is not certified");
+    }
+    matches_qualified_layout(model)
+}
+
+/// The caller must audit before using the selected field. The inherited
+/// compiler performs that audit while constructing its space.
+pub(crate) fn matches_qualified_layout(model: &Json) -> Result<bool> {
+    if model.field("schema")?.text()? != "curved_sketch_layers_v1"
+        || model.field("blocks")?.items()?.len() != 9
+        || model.field("topology")?.field("interfaces")?.items()?.len() != 16
+        || model.field("topology")?.field("exterior")?.items()?.len() != 22
+    {
+        return Ok(false);
+    }
+    let signature = match exact_geometry_signature(model) {
+        Ok(signature) => signature,
+        Err(_) => return Ok(false),
+    };
+    Ok(signature == *reference_geometry_signature()?)
+}
+
+fn reference_geometry_signature() -> Result<&'static GeometrySignature> {
+    static SIGNATURE: OnceLock<Result<GeometrySignature>> = OnceLock::new();
+    SIGNATURE
+        .get_or_init(|| {
+            let reference = crate::json::parse(include_str!(
+                "../docs/site/data/plate_blind_pocket/plate_blind_pocket.model.json"
+            ))?;
+            exact_geometry_signature(&reference)
+        })
+        .as_ref()
+        .map_err(|error| *error)
+}
+
+/// Return the straight lateral volume faces on the four qualified radial
+/// section seams (eight block interfaces across the two axial layers). IDs are
+/// resolved from the supplied model after exact geometry and topology match.
+pub fn qualified_radial_interfaces(model: &Json) -> Result<Vec<QualifiedInterface>> {
+    if !is_qualified_geometry(model)? {
+        return Err("radial join reuse requires the exact qualified curved pocket geometry");
+    }
+    radial_interfaces_after_qualification(model)
+}
+
+/// Derive the radial faces after a caller has already qualified this model
+/// with [`is_qualified_geometry`] or [`plan_auto`].
+pub(crate) fn radial_interfaces_after_qualification(
+    model: &Json,
+) -> Result<Vec<QualifiedInterface>> {
+    let blocks = decode_blocks(model)?;
+    let mut charts = BTreeMap::new();
+    for block in &blocks {
+        charts.insert(block.id.clone(), chart_from_block(block)?);
+    }
+    let mut selected = Vec::new();
+    for interface in model.field("topology")?.field("interfaces")?.items()? {
+        let first = interface.field("first")?.items()?;
+        let second = interface.field("second")?.items()?;
+        if first.len() != 2 || second.len() != 2 {
+            return Err("invalid interface side in qualified geometry");
+        }
+        let (first_axis, first_upper) = decode_side_name(first[1].text()?)?;
+        let (second_axis, second_upper) = decode_side_name(second[1].text()?)?;
+        if first_axis == 2 || second_axis == 2 {
+            continue;
+        }
+        let first_id = first[0].text()?;
+        let second_id = second[0].text()?;
+        let a = charts
+            .get(first_id)
+            .ok_or("unknown first block in qualified interface")?;
+        let b = charts
+            .get(second_id)
+            .ok_or("unknown second block in qualified interface")?;
+        if a.edge_is_straight(first_axis, usize::from(first_upper))
+            && b.edge_is_straight(second_axis, usize::from(second_upper))
+        {
+            selected.push(QualifiedInterface {
+                first_block: first_id.to_owned(),
+                first_side: first[1].text()?.to_owned(),
+                second_block: second_id.to_owned(),
+                second_side: second[1].text()?.to_owned(),
+                orientation: interface.field("orientation")?.clone(),
+            });
+        }
+    }
+    if selected.len() != 8 {
+        return Err("qualified radial interface inventory differs from eight lateral faces");
+    }
+    Ok(selected)
+}
+
+/// Run exactly one solve using [`plan_auto`], then attach the selection plan.
+pub fn solve_model_auto(model: &Json, intervals: usize, job: &Json) -> Result<Json> {
+    let plan = plan_auto(model, intervals)?;
+    let mut result =
+        solve_model_selected_audited(model, plan.degree, plan.intervals, plan.joins, job)?;
+    if let Json::Object(fields) = &mut result {
+        fields.insert(
+            "selection_mode".into(),
+            Json::String("automatic_single_solve".into()),
+        );
+        fields.insert("selection_reason".into(), Json::String(plan.reason.into()));
+        fields.insert(
+            "qualified_geometry_reused".into(),
+            Json::Bool(plan.qualified_geometry_reused),
+        );
+        fields.insert("trial_solve_count".into(), Json::Number("0".into()));
+        fields.insert("final_solve_count".into(), Json::Number("1".into()));
+        fields.insert(
+            "selection_model_block_count".into(),
+            Json::Number(model.field("blocks")?.items()?.len().to_string()),
+        );
+        fields.insert(
+            "selection_model_interface_count".into(),
+            Json::Number(
+                model
+                    .field("topology")?
+                    .field("interfaces")?
+                    .items()?
+                    .len()
+                    .to_string(),
+            ),
+        );
+        fields.insert(
+            "selection_model_exterior_side_count".into(),
+            Json::Number(
+                model
+                    .field("topology")?
+                    .field("exterior")?
+                    .items()?
+                    .len()
+                    .to_string(),
+            ),
+        );
+        fields.insert(
+            "selection_degree".into(),
+            Json::Number(plan.degree.to_string()),
+        );
+        fields.insert(
+            "selection_intervals".into(),
+            Json::Number(plan.intervals.to_string()),
+        );
+        fields.insert(
+            "selection_joins".into(),
+            Json::String(format!("{:?}", plan.joins)),
+        );
+    }
+    Ok(result)
+}
+
+/// Canonical exact geometry identity. Block IDs are replaced by their full
+/// degree/control-net records before topology is compared. Duplicate maps are
+/// rejected because their references would otherwise be ambiguous.
+fn exact_geometry_signature(model: &Json) -> Result<GeometrySignature> {
+    let mut blocks_by_id = Vec::new();
+    for block in model.field("blocks")?.items()? {
+        let id = block.field("id")?.text()?.to_owned();
+        let signature = Json::Object(
+            [
+                ("degrees".into(), block.field("degrees")?.clone()),
+                ("controls".into(), block.field("controls")?.clone()),
+            ]
+            .into_iter()
+            .collect(),
+        )
+        .to_string();
+        blocks_by_id.push((id, signature));
+    }
+    blocks_by_id.sort_by(|a, b| a.1.cmp(&b.1));
+    if blocks_by_id.windows(2).any(|pair| pair[0].0 == pair[1].0) {
+        return Err("duplicate block identity in geometry signature");
+    }
+    let blocks: Vec<_> = blocks_by_id
+        .iter()
+        .map(|(_, signature)| signature.clone())
+        .collect();
+    if blocks.windows(2).any(|pair| pair[0] == pair[1]) {
+        return Err("duplicate block geometry in geometry signature");
+    }
+    let ids: BTreeMap<_, _> = blocks_by_id
+        .into_iter()
+        .enumerate()
+        .map(|(index, (id, _))| (id, index))
+        .collect();
+    let side_signature = |side: &Json| -> Result<String> {
+        let pair = side.items()?;
+        if pair.len() != 2 {
+            return Err("invalid side in geometry signature");
+        }
+        let key = ids
+            .get(pair[0].text()?)
+            .ok_or("unknown block in geometry signature")?;
+        Ok(format!("{key}:{}", pair[1].text()?))
+    };
+    let topology = model.field("topology")?;
+    let mut interfaces = Vec::new();
+    for interface in topology.field("interfaces")?.items()? {
+        let a = side_signature(interface.field("first")?)?;
+        let b = side_signature(interface.field("second")?)?;
+        let orientation = interface.field("orientation")?.to_string();
+        interfaces.push(format!("{a}|{b}|{orientation}"));
+    }
+    interfaces.sort();
+    let mut exterior = topology
+        .field("exterior")?
+        .items()?
+        .iter()
+        .map(side_signature)
+        .collect::<Result<Vec<_>>>()?;
+    exterior.sort();
+    Ok((blocks, interfaces, exterior))
 }
 #[derive(Clone, PartialEq, Eq)]
 struct Chart {
@@ -571,10 +840,20 @@ pub fn solve_model_selected(
     joins: SectionJoins,
     job: &Json,
 ) -> Result<Json> {
+    crate::interchange::audit(model)?;
+    solve_model_selected_audited(model, p, n, joins, job)
+}
+
+fn solve_model_selected_audited(
+    model: &Json,
+    p: usize,
+    n: usize,
+    joins: SectionJoins,
+    job: &Json,
+) -> Result<Json> {
     if ![3, 4].contains(&p) || ![1, 2, 4, 8].contains(&n) {
         return Err("unsupported pocket study parameters");
     }
-    crate::interchange::audit(model)?;
     let blocks = decode_blocks(model)?;
     let mut z_bounds = [f64::INFINITY, f64::NEG_INFINITY];
     for b in &blocks {

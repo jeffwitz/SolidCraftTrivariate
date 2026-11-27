@@ -9,6 +9,36 @@ application. Changing the viewport quality requires no change to the volume
 maps. The STEP file carries the boundary; retain the model JSON for interior
 charts, exact weights and analysis.
 
+Compact sketch ribbon
+---------------------
+
+Launch the separate compact profile to open the sharp FieldCraft bracket:
+
+.. code-block:: bash
+
+   python3 scripts/solidcraft_compact_desktop.py /path/to/solidcraft-trivariate-0.2.0.zip
+
+Its Sketch tab pins new sketch, line, two-point rectangle, coincidence,
+horizontal/vertical, finish and cancel. The same ribbon adds **extrude**,
+**drill**, **boolean**, **chamfer** and **fillet**. Standard modeling tabs are
+hidden. SolidCraft still provides its sketch section menus and global search.
+On SolidCraft 0.48.1 the Sketch-tab plugin buttons use the host's plug glyph;
+the entry dialogs use the package's operation icons.
+
+* **Extrude** builds a positive extrusion from an admitted XY sketch.
+* **Drill** cuts a centered through-bore. On the reference box enter a radius.
+  On a rectangular sketch extrusion also identify the original sketch and height.
+* **Boolean** accepts the reference box and crossing cylinder as two viewport
+  picks. The chosen operation updates the stock feature and suppresses the tool.
+* **Chamfer** and **fillet** treat the bore rims on the sharp reference bracket.
+  The picked body is checked against the reconstructed trivariate parent.
+
+Edits compare the complete STEP data section of the target with the regenerated
+operand before changing the existing feature. Undo or reopening the sharp
+example allows comparison of alternative treatments. These commands cover the
+families above; general edge-by-edge selection and parametric history replay
+remain outside this bridge.
+
 Sketch and extrusion
 --------------------
 

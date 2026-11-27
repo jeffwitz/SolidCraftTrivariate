@@ -61,6 +61,8 @@
 <li class="toctree-l2"><a class="reference internal" href="interface-fields.html">Recovering parents and choosing interface continuity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="spline-fields.html">Spline fields, extraction, and local refinement</a></li>
 <li class="toctree-l2"><a class="reference internal" href="analysis.html">Analysis on audited trivariate models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="crossed-mechanics.html">Crossed-tool partial-interface mechanics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fitted-bending.html">Fitted crossed-tool bending</a></li>
 <li class="toctree-l2"><a class="reference internal" href="solver-design.html">Adaptive solves, pressure and design derivatives</a></li>
 <li class="toctree-l2"><a class="reference internal" href="verification.html">Verification and evidence scope</a></li>
 </ul>
@@ -239,23 +241,33 @@ or vertex-only contact does not establish a volume interface. Euler counts
 and sampled classifications are useful consistency checks, but neither proves
 local manifoldness, injectivity, or complete coverage by itself.</p>
 <p>This distinction is also visible in a precise topological existence theorem.
-For a connected domain with a topological quadrilateral boundary mesh <code class="docutils literal notranslate"><span class="pre">Q</span></code>,
-Erickson proves that <code class="docutils literal notranslate"><span class="pre">Q</span></code> extends to a topological hexahedral mesh if and
-only if <code class="docutils literal notranslate"><span class="pre">Q</span></code> has an even number of quadrilaterals and no odd cycle in <code class="docutils literal notranslate"><span class="pre">Q</span></code>
-bounds a surface inside the domain. This concerns existence of a topological
-mesh; it is not a geometric parameterization or a rational-map certificate.
+For a connected domain whose boundary is a connected surface with topological
+quadrilateral mesh <code class="docutils literal notranslate"><span class="pre">Q</span></code>, Erickson proves that <code class="docutils literal notranslate"><span class="pre">Q</span></code> extends to a topological
+hexahedral mesh of the interior if and only if <code class="docutils literal notranslate"><span class="pre">Q</span></code> has an even number of
+quadrilaterals and no odd cycle in <code class="docutils literal notranslate"><span class="pre">Q</span></code> bounds a surface inside the domain.
+The paper also states that the results extend to domains with disconnected
+boundaries. This concerns existence of a topological mesh; it is not a
+geometric parameterization or a rational-map certificate.
 SolidCraft’s family certificates remain specific to their represented blocks.
 See Erickson, <em>Efficiently Hex-Meshing Things with Topology</em>, <em>Discrete &amp;
 Computational Geometry</em> 52(3) (2014), 427–449,
-<a class="reference external" href="https://doi.org/10.1007/s00454-014-9624-3">DOI 10.1007/s00454-014-9624-3</a>.</p>
+<a class="reference external" href="https://doi.org/10.1007/s00454-014-9624-3">DOI 10.1007/s00454-014-9624-3</a>
+(<a class="reference external" href="https://jeffe.cs.illinois.edu/pubs/hexmesh.html">author’s paper page</a>).</p>
 </section>
 <section id="from-design-features-to-volume-maps">
 <h2>From design features to volume maps<a class="headerlink" href="#from-design-features-to-volume-maps" title="Link to this heading"></a></h2>
-<p>Chen, Bu, Jin, Xu, and Li describe a segmentation–mapping–merging pipeline:
-they partition a semantic design-feature network into feature subnetworks,
-map complete feature networks to volume patches, then merge and adjust the
-patches for IGA. The corresponding stages here are sketch arrangement, construction
-of the rational control nets and coefficient-checked patch assembly.
+<p>Chen, Bu, Jin, Xu, and Li describe a segmentation–mapping–merging pipeline
+whose input is a semantic design-feature network, supplied interactively or
+extracted from an existing model. They derive geometric feature networks,
+segment these into complete feature networks, map each complete network to a
+volume patch, then merge and adjust the patches for IGA. The comparison with
+SolidCraft is at the workflow level: selected SolidCraft families arrange
+explicit sketch features, construct rational control nets, and assemble
+patches subject to their own coefficient checks. SolidCraft does not claim to
+implement Chen et al.’s semantic feature extraction, network segmentation, or
+patch-optimization method. The cited paper demonstrates its method on complex
+mechanical and free-form models; it does not establish the correctness of a
+SolidCraft construction.
 Each admitted family also specifies which input configurations it can
 certify and what a refused edit does to its prior state. Compare the
 geometric representations and admission conditions when translating an

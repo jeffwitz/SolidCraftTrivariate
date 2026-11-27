@@ -1,0 +1,338 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Crossed-tool partial-interface mechanics &mdash; SolidCraft Trivariate</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Fitted crossed-tool bending" href="fitted-bending.html" />
+    <link rel="prev" title="Analysis on audited trivariate models" href="analysis.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            SolidCraft Trivariate
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../how-to/index.html">How-to guides</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Technical reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="catalog.html">Command and recipe catalogue</a></li>
+<li class="toctree-l2"><a class="reference internal" href="construction.html">Construction from native sketches</a></li>
+<li class="toctree-l2"><a class="reference internal" href="geometry.html">Geometry representation and certificates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="operations.html">Boolean operations and edge treatments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="interface-fields.html">Recovering parents and choosing interface continuity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spline-fields.html">Spline fields, extraction, and local refinement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="analysis.html">Analysis on audited trivariate models</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Crossed-tool partial-interface mechanics</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#model-field-and-loading">Model, field, and loading</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#numerical-parity">Numerical parity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#scope-and-failure-interpretation">Scope and failure interpretation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#method-context">Method context</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="fitted-bending.html">Fitted crossed-tool bending</a></li>
+<li class="toctree-l2"><a class="reference internal" href="solver-design.html">Adaptive solves, pressure and design derivatives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="verification.html">Verification and evidence scope</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../explanation/index.html">Explanation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">SolidCraft Trivariate</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Technical reference</a></li>
+      <li class="breadcrumb-item active">Crossed-tool partial-interface mechanics</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/reference/crossed-mechanics.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="crossed-tool-partial-interface-mechanics">
+<h1>Crossed-tool partial-interface mechanics<a class="headerlink" href="#crossed-tool-partial-interface-mechanics" title="Link to this heading"></a></h1>
+<p>This reference describes the native elasticity check for the ten-chart S2
+union of two crossing tools. Here <code class="docutils literal notranslate"><span class="pre">S2</span></code> names the crossed-tool geometry
+experiment in <code class="docutils literal notranslate"><span class="pre">docs/results/crossed-interface-iga</span></code>; it is unrelated to
+roadmap stage labels elsewhere in this repository.</p>
+<p>The native entry point is <code class="docutils literal notranslate"><span class="pre">crossed_bending::analyze</span></code> in
+<code class="docutils literal notranslate"><span class="pre">src/crossed_bending.rs</span></code>. The filesystem command routes through the same
+function:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">cargo build --release --locked --offline</span>
+<span class="go">mkdir -p build</span>
+<span class="go">cli=target/release/solidcraft-trivariate</span>
+<span class="go">"$cli" crossed-boolean tests/jobs/crossed_partial_rise3.recipe.json union build/inclined-cross.model.json</span>
+<span class="go">"$cli" crossed-bending build/inclined-cross.model.json 1 1 8 build/crossed-bending-v1w1q8.json</span>
+</pre></div>
+</div>
+<p>The stored recipe is
+<code class="docutils literal notranslate"><span class="pre">tests/jobs/crossed_partial_rise3.recipe.json</span></code>. It embeds the S2 sketch pair
+and the positive 3 mm transverse rise. The API replays its embedded
+<code class="docutils literal notranslate"><span class="pre">source_recipe</span></code> through <code class="docutils literal notranslate"><span class="pre">g2_cross_plate::boolean::report</span></code> and
+requires exact JSON equality with the saved model before accepting its charts.
+Changing chart identifiers while leaving the source recipe untouched is
+therefore rejected. The CLI publishes the analysis result atomically only
+after a successful solve.</p>
+<section id="model-field-and-loading">
+<h2>Model, field, and loading<a class="headerlink" href="#model-field-and-loading" title="Link to this heading"></a></h2>
+<p>The analysis raises the source geometry’s degree-(3,1,1) homogeneous maps to a
+Q(3,2,2) analysis basis. It subdivides the chart coordinates in <code class="docutils literal notranslate"><span class="pre">v</span></code> and
+<code class="docutils literal notranslate"><span class="pre">w</span></code>; <code class="docutils literal notranslate"><span class="pre">u</span></code> remains unrefined. The implementation currently accepts
+<code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">&lt;=</span> <span class="pre">refine_v</span> <span class="pre">&lt;=</span> <span class="pre">4</span></code>, <code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">&lt;=</span> <span class="pre">refine_w</span> <span class="pre">&lt;=</span> <span class="pre">2</span></code> and tensor Gauss orders 4
+through 14. The chart geometry remains the replayed source geometry. Positive
+homogeneous weights are required.</p>
+<p>The constitutive model is small-strain, three-dimensional isotropic linear
+elasticity with Young’s modulus <code class="docutils literal notranslate"><span class="pre">E</span> <span class="pre">=</span> <span class="pre">1000</span> <span class="pre">MPa</span></code> and Poisson ratio <code class="docutils literal notranslate"><span class="pre">nu</span> <span class="pre">=</span> <span class="pre">0.3</span></code>.
+The left end at <code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">=</span> <span class="pre">0</span></code> is clamped. A uniform outward traction of
+<code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">MPa</span></code> in the positive x direction is integrated over the right end; all
+other boundaries are traction-free. The reported displacement is the
+traction-weighted mean x displacement on that loaded end. Thus its work
+conjugate is the reported total x force, <code class="docutils literal notranslate"><span class="pre">40.2222222222</span> <span class="pre">N</span></code> for the checked
+geometry.</p>
+<p>Interior chart interfaces and within-chart subdivisions identify their full
+Q(3,2,2) coefficient traces. The four wing-to-core interfaces are partial:
+the wing and core parameterizations have different interface coverage. The
+current route constrains these traces by overdetermined, preimage-aware
+collocation and then computes a numerical nullspace of the resulting trace
+matrix. It samples 21 points in <code class="docutils literal notranslate"><span class="pre">u</span></code> and 4 in each slave <code class="docutils literal notranslate"><span class="pre">w</span></code> cell. This is
+not an exact mortar method, a proof of trace compatibility, or a general
+nonmatching-interface algorithm. Its mapping assumptions are specific to the
+recorded ten-chart S2 geometry, including the physical height relation used
+to locate the master <code class="docutils literal notranslate"><span class="pre">w</span></code> cell. To resolve child-knot crossings, the native
+path samples 65 points along each relevant edge, bisects sign-changing
+brackets, then uses 21 points in each resulting <code class="docutils literal notranslate"><span class="pre">u</span></code> segment. At each <code class="docutils literal notranslate"><span class="pre">u</span></code>
+it splits the slave <code class="docutils literal notranslate"><span class="pre">w</span></code> interval at uniform child knots and at physical
+<code class="docutils literal notranslate"><span class="pre">z</span> <span class="pre">=</span> <span class="pre">12</span> <span class="pre">k</span> <span class="pre">/</span> <span class="pre">refine_w</span></code> crossings, and places four points on every resulting
+subinterval.</p>
+</section>
+<section id="numerical-parity">
+<h2>Numerical parity<a class="headerlink" href="#numerical-parity" title="Link to this heading"></a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">partial_bending_study.py</span></code> is the independent SciPy reference. It builds
+its own tensor Bernstein basis, quadrature, global identification, collocated
+trace matrix, singular-value nullspace and elasticity assembly. The checked
+oracle data are in <code class="docutils literal notranslate"><span class="pre">partial_bending_study.json</span></code>. Values below are for the
+positive 3 mm transverse rise, <code class="docutils literal notranslate"><span class="pre">refine_w</span> <span class="pre">=</span> <span class="pre">1</span></code> and quadrature order 8 unless
+otherwise stated:</p>
+<table class="docutils align-default" id="id4">
+<caption><span class="caption-text">Native parity against the independent S2 study</span><a class="headerlink" href="#id4" title="Link to this table"></a></caption>
+<thead>
+<tr class="row-odd"><th class="head"><p><code class="docutils literal notranslate"><span class="pre">refine_v</span></code></p></th>
+<th class="head"><p>Free vector DOFs</p></th>
+<th class="head"><p>Independent tip mean (mm)</p></th>
+<th class="head"><p>Native tip mean (mm)</p></th>
+<th class="head"><p>Relative difference</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>594</p></td>
+<td><p>0.2780814181868228</p></td>
+<td><p>0.2780814184139097</p></td>
+<td><p>8.15e-10</p></td>
+</tr>
+<tr class="row-odd"><td><p>2</p></td>
+<td><p>1152</p></td>
+<td><p>0.2943430322223048</p></td>
+<td><p>0.2943430316017827</p></td>
+<td><p>1.74e-9</p></td>
+</tr>
+<tr class="row-even"><td><p>4</p></td>
+<td><p>2268</p></td>
+<td><p>0.3012717740825558</p></td>
+<td><p>0.3012717752323149</p></td>
+<td><p>3.81e-9</p></td>
+</tr>
+</tbody>
+</table>
+<p>The two published <code class="docutils literal notranslate"><span class="pre">refine_w</span> <span class="pre">=</span> <span class="pre">2</span></code> rows are also included in the independent
+native CLI gate. Their partial trace matrices contain 840 rows and have rank
+108, compared with 336 rows and rank 66 at <code class="docutils literal notranslate"><span class="pre">refine_w</span> <span class="pre">=</span> <span class="pre">1</span></code>:</p>
+<table class="docutils align-default" id="id5">
+<caption><span class="caption-text">Positive-rise S2 with two w subdivisions</span><a class="headerlink" href="#id5" title="Link to this table"></a></caption>
+<thead>
+<tr class="row-odd"><th class="head"><p><code class="docutils literal notranslate"><span class="pre">refine_v</span></code></p></th>
+<th class="head"><p>Free vector DOFs</p></th>
+<th class="head"><p>Independent tip mean (mm)</p></th>
+<th class="head"><p>Native tip mean (mm)</p></th>
+<th class="head"><p>Native trace rank</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>996</p></td>
+<td><p>0.2784237912858544</p></td>
+<td><p>0.2784237914304856</p></td>
+<td><p>108</p></td>
+</tr>
+<tr class="row-odd"><td><p>2</p></td>
+<td><p>1926</p></td>
+<td><p>0.2948563732415402</p></td>
+<td><p>0.2948563726691059</p></td>
+<td><p>108</p></td>
+</tr>
+</tbody>
+</table>
+<p>The finest <code class="docutils literal notranslate"><span class="pre">v=4,w=1</span></code> row was also repeated with quadrature order 14: the
+native tip mean is <code class="docutils literal notranslate"><span class="pre">0.3012717756853457</span> <span class="pre">mm</span></code> versus <code class="docutils literal notranslate"><span class="pre">0.3012717819154872</span> <span class="pre">mm</span></code>
+in the reference (relative difference <code class="docutils literal notranslate"><span class="pre">2.07e-8</span></code>). The native q8-to-q14
+change is <code class="docutils literal notranslate"><span class="pre">4.53e-10</span> <span class="pre">mm</span></code>. On the q14 run, the measured projected equilibrium
+residual is <code class="docutils literal notranslate"><span class="pre">1.06e-10</span></code>, affine patch energy error <code class="docutils literal notranslate"><span class="pre">2.90e-13</span></code>, geometry
+mismatch <code class="docutils literal notranslate"><span class="pre">7.19e-14</span> <span class="pre">mm</span></code>, integrated volume <code class="docutils literal notranslate"><span class="pre">6799.604725802254</span> <span class="pre">mm^3</span></code> and
+applied force <code class="docutils literal notranslate"><span class="pre">40.22222222222224</span> <span class="pre">N</span></code>. The matrix-free reduced stiffness
+symmetry diagnostic is <code class="docutils literal notranslate"><span class="pre">3.88e-17</span></code> from six bilinear probes. At v=1,w=1,q8,
+the dense reduced matrix’s pre-symmetrization relative skew is measured
+directly and is <code class="docutils literal notranslate"><span class="pre">6.54e-16</span></code>; roundoff symmetrization is performed only after
+this check. For the two v=1,w=2,q8 and v=2,w=2,q8 cases, measured symmetry
+probes are <code class="docutils literal notranslate"><span class="pre">4.86e-17</span></code> and <code class="docutils literal notranslate"><span class="pre">1.32e-16</span></code>, respectively; projected residuals
+are <code class="docutils literal notranslate"><span class="pre">1.03e-10</span></code> and <code class="docutils literal notranslate"><span class="pre">9.09e-11</span></code>.</p>
+<p>The native test covers v=1,w=1,q8; v=4,w=1,q8/q14; and the two published
+w=2 rows. It also checks a real CLI invocation and that malformed geometry
+leaves an existing output file byte-for-byte intact. The dedicated CLI parity
+script replays all 13 published rows, including zero and negative transverse
+rise. Run the bounded native plus independent Python gate from the root:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">cargo test --locked --offline --release --test crossed_bending</span>
+<span class="go">make check-crossed-bending</span>
+</pre></div>
+</div>
+</section>
+<section id="scope-and-failure-interpretation">
+<h2>Scope and failure interpretation<a class="headerlink" href="#scope-and-failure-interpretation" title="Link to this heading"></a></h2>
+<p>The trace rank is determined numerically with relative cutoff <code class="docutils literal notranslate"><span class="pre">1e-12</span></code>. The
+native result reports that rank, the maximum sampled geometric gap, an affine
+patch energy error, a projected equilibrium residual, and a stiffness
+symmetry diagnostic. These are checks on this particular discretization and
+run, not certificates of injectivity, global trace equality, mesh
+convergence, or solution error. The Python study additionally reports
+held-out trace samples, six rigid modes and an off-collocation displacement
+jump; those independent diagnostics are not yet reproduced by the native
+API. A matrix-free symmetry check uses six prescribed bilinear probes; it is
+not an exhaustive matrix symmetry test.</p>
+<p>The native route does not currently solve a manufactured-solution problem
+(MMS) with a prescribed exact field and matching body force. Its affine energy
+patch check and agreement with the independent S2 model are complementary
+diagnostics, not an MMS substitute. They do not establish general-order
+convergence for arbitrary loads or geometries.</p>
+<p>Native parity is measured for rises <code class="docutils literal notranslate"><span class="pre">-3,</span> <span class="pre">0,</span> <span class="pre">+3</span> <span class="pre">mm</span></code> at <code class="docutils literal notranslate"><span class="pre">(v,w)</span></code> refinements
+<code class="docutils literal notranslate"><span class="pre">(1,1)</span></code>, <code class="docutils literal notranslate"><span class="pre">(2,1)</span></code>, and <code class="docutils literal notranslate"><span class="pre">(4,1)</span></code>; positive-rise cases additionally cover
+<code class="docutils literal notranslate"><span class="pre">(1,2)</span></code> and <code class="docutils literal notranslate"><span class="pre">(2,2)</span></code>. The finest supported inclined row for <code class="docutils literal notranslate"><span class="pre">w=2</span></code> in the
+published study is v=2; no v=4,w=2 oracle row exists. Nonlinear material
+response, contact, and arbitrary partial interfaces remain unqualified.
+Singular fillets are outside this smooth crossed-tool mechanics case; their
+stress convergence needs separate local refinement and an independent
+reference.</p>
+</section>
+<section id="method-context">
+<h2>Method context<a class="headerlink" href="#method-context" title="Link to this heading"></a></h2>
+<p>The shared spline basis and geometry refinement follow the general
+isogeometric-analysis formulation introduced by Hughes, Cottrell and Bazilevs
+(<a class="reference internal" href="#crossedhughes2005" id="id1"><span>[CrossedHughes2005]</span></a>). Bézier extraction is the element-local representation used
+by the native extracted-space assembly (<a class="reference internal" href="#crossedborden2011" id="id2"><span>[CrossedBorden2011]</span></a>). For nonmatching patch
+interfaces, established isogeometric mortar methods formulate and analyze a
+weak coupling with multiplier spaces; their stability depends on the choice
+of trace and multiplier spaces (<a class="reference internal" href="#crossedbrivadis2015" id="id3"><span>[CrossedBrivadis2015]</span></a>). The present S2 calculation
+uses collocation for a fixed partial-interface geometry and does not claim
+those mortar stability properties.</p>
+<div role="list" class="citation-list">
+<div class="citation" id="crossedhughes2005" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">CrossedHughes2005</a><span class="fn-bracket">]</span></span>
+<p>T. J. R. Hughes, J. A. Cottrell and Y. Bazilevs,
+<code class="docutils literal notranslate"><span class="pre">Isogeometric</span> <span class="pre">analysis:</span> <span class="pre">CAD,</span> <span class="pre">finite</span> <span class="pre">elements,</span> <span class="pre">NURBS,</span> <span class="pre">exact</span> <span class="pre">geometry</span> <span class="pre">and</span>
+<span class="pre">mesh</span> <span class="pre">refinement</span></code>, <em>Computer Methods in Applied Mechanics and Engineering</em>
+194 (2005), 4135–4195. DOI
+<a class="reference external" href="https://doi.org/10.1016/j.cma.2004.10.008">10.1016/j.cma.2004.10.008</a>.</p>
+</div>
+<div class="citation" id="crossedborden2011" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">CrossedBorden2011</a><span class="fn-bracket">]</span></span>
+<p>M. J. Borden, M. A. Scott, J. A. Evans and T. J. R. Hughes,
+<code class="docutils literal notranslate"><span class="pre">Isogeometric</span> <span class="pre">finite</span> <span class="pre">element</span> <span class="pre">data</span> <span class="pre">structures</span> <span class="pre">based</span> <span class="pre">on</span> <span class="pre">Bézier</span> <span class="pre">extraction</span>
+<span class="pre">of</span> <span class="pre">NURBS</span></code>, <em>International Journal for Numerical Methods in Engineering</em>
+87 (2011), 15–47. DOI
+<a class="reference external" href="https://doi.org/10.1002/nme.2968">10.1002/nme.2968</a>.</p>
+</div>
+<div class="citation" id="crossedbrivadis2015" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id3">CrossedBrivadis2015</a><span class="fn-bracket">]</span></span>
+<p>E. Brivadis, A. Buffa, B. Wohlmuth and L. Wunderlich,
+<code class="docutils literal notranslate"><span class="pre">Isogeometric</span> <span class="pre">mortar</span> <span class="pre">methods</span></code>, <em>Computer Methods in Applied Mechanics and
+Engineering</em> 284 (2015), 292–319. DOI
+<a class="reference external" href="https://doi.org/10.1016/j.cma.2014.09.012">10.1016/j.cma.2014.09.012</a>.</p>
+</div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="analysis.html" class="btn btn-neutral float-left" title="Analysis on audited trivariate models" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="fitted-bending.html" class="btn btn-neutral float-right" title="Fitted crossed-tool bending" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright .</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

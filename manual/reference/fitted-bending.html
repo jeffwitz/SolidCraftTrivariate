@@ -1,0 +1,215 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fitted crossed-tool bending &mdash; SolidCraft Trivariate</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Adaptive solves, pressure and design derivatives" href="solver-design.html" />
+    <link rel="prev" title="Crossed-tool partial-interface mechanics" href="crossed-mechanics.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            SolidCraft Trivariate
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../how-to/index.html">How-to guides</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Technical reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="catalog.html">Command and recipe catalogue</a></li>
+<li class="toctree-l2"><a class="reference internal" href="construction.html">Construction from native sketches</a></li>
+<li class="toctree-l2"><a class="reference internal" href="geometry.html">Geometry representation and certificates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="operations.html">Boolean operations and edge treatments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="interface-fields.html">Recovering parents and choosing interface continuity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spline-fields.html">Spline fields, extraction, and local refinement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="analysis.html">Analysis on audited trivariate models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="crossed-mechanics.html">Crossed-tool partial-interface mechanics</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Fitted crossed-tool bending</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#field-construction">Field construction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#reproduce-the-comparison">Reproduce the comparison</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="solver-design.html">Adaptive solves, pressure and design derivatives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="verification.html">Verification and evidence scope</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../explanation/index.html">Explanation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">SolidCraft Trivariate</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Technical reference</a></li>
+      <li class="breadcrumb-item active">Fitted crossed-tool bending</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/reference/fitted-bending.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="fitted-crossed-tool-bending">
+<h1>Fitted crossed-tool bending<a class="headerlink" href="#fitted-crossed-tool-bending" title="Link to this heading"></a></h1>
+<p>The fitted control uses the same physical union, clamp, traction and material as
+<a class="reference internal" href="crossed-mechanics.html"><span class="doc">Crossed-tool partial-interface mechanics</span></a>. Along the inclined wing the core meets only part of
+each wing-facing chart. Fitting the core to the two wing faces produces 22
+charts with full interface traces. This gives a mechanical control for the
+ten-chart partial-interface calculation. The source geometry for the measured
+comparison is the recorded S2 union with a 3 mm rise over a 100 mm length.</p>
+<section id="field-construction">
+<h2>Field construction<a class="headerlink" href="#field-construction" title="Link to this heading"></a></h2>
+<p>Each integration cell carries a rational displacement field of degree
+(3,2,2). A full chart interface shares trace coefficients. Within each chart,
+uniform subdivision in directions <em>v</em> and <em>w</em> supports two field choices:</p>
+<ul class="simple">
+<li><p><strong>C0</strong> identifies trace values at each new subdivision.</p></li>
+<li><p><strong>C1</strong> also identifies the parametric derivative across each new subdivision.
+If the two spans have the same parameter length and the same degree, the
+last interior, seam and first interior homogeneous controls satisfy
+<span class="math notranslate nohighlight">\(H_L + H_R = 2 H_M\)</span>. The corresponding field relation is
+<span class="math notranslate nohighlight">\(2 w_M d_M = w_L d_L + w_R d_R\)</span>, where <span class="math notranslate nohighlight">\(w\)</span> is a geometry weight
+and <span class="math notranslate nohighlight">\(d\)</span> is a displacement coefficient. The native signed lift applies
+these relations to the shared elasticity operator. The 22 original chart
+interfaces retain their shared value traces.</p></li>
+</ul>
+</section>
+<section id="reproduce-the-comparison">
+<h2>Reproduce the comparison<a class="headerlink" href="#reproduce-the-comparison" title="Link to this heading"></a></h2>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>cargo<span class="w"> </span>build<span class="w"> </span>--release<span class="w"> </span>--locked<span class="w"> </span>--offline
+<span class="nv">cli</span><span class="o">=</span>target/release/solidcraft-trivariate
+mkdir<span class="w"> </span>-p<span class="w"> </span>build
+<span class="s2">"</span><span class="nv">$cli</span><span class="s2">"</span><span class="w"> </span>crossed-boolean<span class="w"> </span>tests/jobs/crossed_partial_rise3.recipe.json<span class="w"> </span>union<span class="w"> </span>build/inclined-cross.json
+<span class="s2">"</span><span class="nv">$cli</span><span class="s2">"</span><span class="w"> </span>conforming-bending<span class="w"> </span>build/inclined-cross.json<span class="w"> </span><span class="m">2</span><span class="w"> </span><span class="m">2</span><span class="w"> </span><span class="m">8</span><span class="w"> </span>C0<span class="w"> </span>build/fitted-c0.json
+<span class="s2">"</span><span class="nv">$cli</span><span class="s2">"</span><span class="w"> </span>conforming-bending<span class="w"> </span>build/inclined-cross.json<span class="w"> </span><span class="m">3</span><span class="w"> </span><span class="m">3</span><span class="w"> </span><span class="m">8</span><span class="w"> </span>C1<span class="w"> </span>build/fitted-c1.json
+</pre></div>
+</div>
+<p>At order 8 the independent solutions below give the mean axial displacement
+of the loaded end. The table lists free vector displacement coefficients
+after imposing the clamp and the field constraints.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Subdivisions (<em>v</em>, <em>w</em>)</p></th>
+<th class="head"><p>Integration cells</p></th>
+<th class="head"><p>Free DOFs</p></th>
+<th class="head"><p>Mean displacement (mm)</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>C0</p></td>
+<td><p>(2, 2)</p></td>
+<td><p>88</p></td>
+<td><p>4,128</p></td>
+<td><p>0.297294</p></td>
+</tr>
+<tr class="row-odd"><td><p>C1 within charts</p></td>
+<td><p>(2, 2)</p></td>
+<td><p>88</p></td>
+<td><p>2,520</p></td>
+<td><p>0.289699</p></td>
+</tr>
+<tr class="row-even"><td><p>C1 within charts</p></td>
+<td><p>(3, 3)</p></td>
+<td><p>198</p></td>
+<td><p>4,128</p></td>
+<td><p>0.298178</p></td>
+</tr>
+<tr class="row-odd"><td><p>C0</p></td>
+<td><p>(6, 2)</p></td>
+<td><p>264</p></td>
+<td><p>11,112</p></td>
+<td><p>0.305584</p></td>
+</tr>
+</tbody>
+</table>
+<p>The first and third rows have the same field dimension. The third requires
+110 additional integration cells. The last row can be compared with the
+matched HEX20 result of 0.306089 mm and the finer HEX20 value of 0.307772 mm.
+Agreement of this integral observable does not bound a local stress error.</p>
+<p>The native regression suite is <code class="docutils literal notranslate"><span class="pre">tests/conforming_bending.rs</span></code>. For the
+independent reference see the
+<a class="reference external" href="https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/crossed-interface-iga/smooth_bending.json">continuity study</a>
+and the
+<a class="reference external" href="https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/crossed-interface-iga/bending-enrichment.md">matched IGA and HEX20 comparison</a>.
+For the relation between spline continuity, field dimension and refinement
+see the isogeometric analysis formulation of
+<a class="reference external" href="https://doi.org/10.1016/j.cma.2004.10.008">Hughes, Cottrell and Bazilevs</a>.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="crossed-mechanics.html" class="btn btn-neutral float-left" title="Crossed-tool partial-interface mechanics" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="solver-design.html" class="btn btn-neutral float-right" title="Adaptive solves, pressure and design derivatives" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright .</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

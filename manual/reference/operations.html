@@ -61,6 +61,8 @@
 <li class="toctree-l2"><a class="reference internal" href="interface-fields.html">Recovering parents and choosing interface continuity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="spline-fields.html">Spline fields, extraction, and local refinement</a></li>
 <li class="toctree-l2"><a class="reference internal" href="analysis.html">Analysis on audited trivariate models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="crossed-mechanics.html">Crossed-tool partial-interface mechanics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fitted-bending.html">Fitted crossed-tool bending</a></li>
 <li class="toctree-l2"><a class="reference internal" href="solver-design.html">Adaptive solves, pressure and design derivatives</a></li>
 <li class="toctree-l2"><a class="reference internal" href="verification.html">Verification and evidence scope</a></li>
 </ul>
@@ -151,14 +153,21 @@ documented in the
 </section>
 <section id="relation-to-volumetric-untrimming">
 <h2>Relation to volumetric untrimming<a class="headerlink" href="#relation-to-volumetric-untrimming" title="Link to this heading"></a></h2>
-<p>Massarwi, Antolin and Elber start with a trimmed trivariate and decompose
-its domain into tensor-product trivariates with disjoint interiors. Here
-the crossed-tool constructor starts with two source sketches. It first
+<p>Massarwi, Antolin and Elber’s volumetric-untrimming method starts with an
+already trimmed B-spline trivariate and decomposes its trimmed domain into
+mutually exclusive tensor-product trivariates (which may be singular on the
+boundary). This is a related decomposition approach, not a general B-rep
+Boolean algorithm and not the input route used here. The crossed-tool
+constructor instead starts with two source sketches. It first
 splits and pairs their monotone arcs, then chooses material columns in a
-shared arrangement. The published intersection has two charts, and the
-union has ten. Both preserve original profile intervals. Partial faces
-remain where a column continues through a neighboring cut plane.
-<a class="reference external" href="https://doi.org/10.1016/j.cagd.2019.04.005">Volumetric untrimming (2019)</a>.</p>
+shared arrangement. In the published SolidCraft crossed-tool fixtures, the
+intersection has two charts and the union has ten; both preserve original
+profile intervals. Partial faces
+remain where a column continues through a neighboring cut plane. F. Massarwi,
+P. Antolin, and G. Elber, “Volumetric untrimming: Precise decomposition of
+trimmed trivariates into tensor products,” <em>Computer Aided Geometric Design</em>
+71 (2019), 1–15,
+<a class="reference external" href="https://doi.org/10.1016/j.cagd.2019.04.005">DOI 10.1016/j.cagd.2019.04.005</a>.</p>
 </section>
 <section id="edge-treatments">
 <h2>Edge treatments<a class="headerlink" href="#edge-treatments" title="Link to this heading"></a></h2>
@@ -189,24 +198,38 @@ zero-height material, and supports that collapse or reverse a chart are
 rejected. The exact failure mode is schema- and constructor-specific; consult
 the matching audit and <code class="docutils literal notranslate"><span class="pre">tests/counterexamples/</span></code> rather than inferring a
 universal tolerance.</p>
-<p>Masalha, Cirillo and Elber construct volumetric fillet patches and
-describe degeneracies on blend rails. For the reference annulus a radius
-check and tangent agreement on the boundary establish the blend geometry.
-Testing the volume determinant at the same rail answers a different
+<p>Masalha, Cirillo, and Elber present several methods for constructing
+trivariate fillets between input trivariates, including functional-composition
+and half-volumetric-Boolean-sum approaches. This is related volumetric-fillet
+work; it does not certify the annulus charts described here. For the reference
+annulus, a radius check and tangent agreement on the boundary establish the
+blend geometry. Testing the volume determinant at the same rail answers a different
 question. A strictly positive lower bound on every closed integration span
 is required for the regular ten-volume result.
-<a class="reference external" href="https://doi.org/10.1016/j.cagd.2021.101970">Heterogeneous Parametric Trivariate Fillets (2021)</a>.</p>
+R. Masalha, E. Cirillo, and G. Elber, “Heterogeneous parametric trivariate
+fillets,” <em>Computer Aided Geometric Design</em> 86 (2021), article 101970,
+<a class="reference external" href="https://doi.org/10.1016/j.cagd.2021.101970">DOI 10.1016/j.cagd.2021.101970</a>.</p>
 </section>
 <section id="exact-simplification-and-geometric-identity">
 <h2>Exact simplification and geometric identity<a class="headerlink" href="#exact-simplification-and-geometric-identity" title="Link to this heading"></a></h2>
 <p>Exact operations include rational knot insertion, Bézier extraction,
-degree elevation, restriction to rational subintervals, and supported
-homogeneous subdivision. These transformations preserve the represented
-curve/map algebraically, subject to checked integer arithmetic and the
-family’s common-scale convention. They can refine the representation without
-changing a logical design-volume identity. Knot reduction is a different
-operation: unless the reduced result is proved equal, it must carry a bounded
-approximation contract and audit. Point sampling cannot establish exactness.</p>
+degree elevation, restriction to rational subintervals, supported
+homogeneous subdivision, and the crate’s restricted degree-one knot removal
+when reinsertion recovers all homogeneous controls exactly. These
+transformations preserve the represented curve/map algebraically, subject to
+checked integer arithmetic and the family’s common-scale convention. They can
+refine the representation without changing a logical design-volume identity.
+Approximate knot removal is a different operation and needs an explicit error
+contract and audit. Tiller’s NURBS curve/surface algorithms include error
+analysis, while Eck and Hadenfeld optimize a local single-knot removal under
+several norms; neither reference describes the crate’s exact-only operation.
+Point sampling cannot establish exactness. See Tiller, “Knot-removal
+algorithms for NURBS curves and surfaces,” <em>Computer-Aided Design</em> 24(8)
+(1992), 445–453,
+<a class="reference external" href="https://doi.org/10.1016/0010-4485(92)90012-Y">DOI 10.1016/0010-4485(92)90012-Y</a>,
+and Eck and Hadenfeld, “Knot removal for B-spline curves,” <em>Computer Aided
+Geometric Design</em> 12(3) (1995), 259–282,
+<a class="reference external" href="https://doi.org/10.1016/0167-8396(94)00012-H">DOI 10.1016/0167-8396(94)00012-H</a>.</p>
 <p>For model edits, persistent keys are based on canonical rational geometry and
 feature provenance in the families that support them. Unchanged cells can
 retain IDs across a local edit; cells incident to moved geometry may receive

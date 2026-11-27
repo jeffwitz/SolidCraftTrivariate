@@ -127,7 +127,13 @@ python3<span class="w"> </span>-m<span class="w"> </span>http.server<span class=
 </div>
 <p>Open <code class="docutils literal notranslate"><span class="pre">http://localhost:8000/</span></code>. The build generates the command and recipe
 catalogue from the Rust executable and includes the crate’s rustdoc. Read the
-Docs uses the repository’s <code class="docutils literal notranslate"><span class="pre">.readthedocs.yaml</span></code> to prepare the same inputs.</p>
+Docs uses the repository’s <code class="docutils literal notranslate"><span class="pre">.readthedocs.yaml</span></code> to prepare the same inputs.
+For a hosted Read the Docs project, import the public GitHub repository
+<code class="docutils literal notranslate"><span class="pre">jeffwitz/SolidCraftTrivariate</span></code>, select <code class="docutils literal notranslate"><span class="pre">main</span></code> and use the configuration
+in the repository root. The import requires access to a Read the Docs
+account. The public GitHub Pages build also runs the recipe replay and
+compares downloaded HTML, rustdoc and recipe files with the build artifacts.
+<a class="reference external" href="https://docs.readthedocs.com/platform/stable/intro/add-project.html">Read the Docs project import</a>.</p>
 </section>
 </section>
 

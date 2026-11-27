@@ -55,3 +55,9 @@ Rebuild the manual and API
 Open ``http://localhost:8000/``. The build generates the command and recipe
 catalogue from the Rust executable and includes the crate's rustdoc. Read the
 Docs uses the repository's ``.readthedocs.yaml`` to prepare the same inputs.
+For a hosted Read the Docs project, import the public GitHub repository
+``jeffwitz/SolidCraftTrivariate``, select ``main`` and use the configuration
+in the repository root. The import requires access to a Read the Docs
+account. The public GitHub Pages build also runs the recipe replay and
+compares downloaded HTML, rustdoc and recipe files with the build artifacts.
+`Read the Docs project import <https://docs.readthedocs.com/platform/stable/intro/add-project.html>`_.

@@ -38,7 +38,9 @@ jobs:
           python-version: '3.12'
       - run: python -m pip install numpy
       - if: matrix.evaluation == 'corpus'
-        run: cargo clippy --all-targets --locked --offline -- -D warnings
+        run: |
+          rustup toolchain install 1.99.1 --profile minimal --component clippy
+          cargo +1.99.1 clippy --all-targets --locked --offline -- -D warnings
       - if: matrix.evaluation == 'corpus'
         run: |
           cargo test --release --locked --offline --test inherited_continuity --test extracted_space --test pair_parent

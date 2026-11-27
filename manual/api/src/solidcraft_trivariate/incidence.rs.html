@@ -151,7 +151,7 @@
 <a href=#151 id=151 data-nosnippet>151</a>        <span class="kw">if </span>block.id.is_empty() || !ids.insert(<span class="kw-2">&amp;</span>block.id) {
 <a href=#152 id=152 data-nosnippet>152</a>            <span class="kw">return </span><span class="prelude-val">Err</span>(<span class="string">"invalid block identity"</span>);
 <a href=#153 id=153 data-nosnippet>153</a>        }
-<a href=#154 id=154 data-nosnippet>154</a>        <span class="kw">if </span>block.degrees.iter().any(|d| !(<span class="number">1</span>..=<span class="number">3</span>).contains(d))
+<a href=#154 id=154 data-nosnippet>154</a>        <span class="kw">if </span>(block.degrees.iter().any(|d| !(<span class="number">1</span>..=<span class="number">3</span>).contains(d)) &amp;&amp; !<span class="macro">matches!</span>(block.degrees, [<span class="number">4 </span>| <span class="number">5</span>, <span class="number">1</span>, <span class="number">1</span>]))
 <a href=#155 id=155 data-nosnippet>155</a>            || block.controls.len() != block.degrees.iter().map(|d| d + <span class="number">1</span>).product::&lt;usize&gt;()
 <a href=#156 id=156 data-nosnippet>156</a>            || block.controls.iter().any(|p| p[<span class="number">3</span>] &lt;= <span class="number">0</span>)
 <a href=#157 id=157 data-nosnippet>157</a>        {

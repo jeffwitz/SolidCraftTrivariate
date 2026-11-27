@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["audit","build","curved_ring_section","lift_sections"],"struct":["FaceProfileExtrusion","SectionPatch"]};

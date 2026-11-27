@@ -88,7 +88,7 @@
 <a href=#88 id=88 data-nosnippet>88</a>    <span class="macro">format!</span>(<span class="string">"({},{}),(0.,1.)"</span>, degree + <span class="number">1</span>, degree + <span class="number">1</span>)
 <a href=#89 id=89 data-nosnippet>89</a>}
 <a href=#90 id=90 data-nosnippet>90</a><span class="kw">fn </span>curve_entity(w: <span class="kw-2">&amp;mut </span>Writer, controls: <span class="kw-2">&amp;</span>[[i64; <span class="number">4</span>]]) -&gt; <span class="prelude-ty">Result</span>&lt;usize, <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str&gt; {
-<a href=#91 id=91 data-nosnippet>91</a>    <span class="kw">if </span>controls.len() &lt; <span class="number">2 </span>|| controls.len() &gt; <span class="number">4 </span>|| controls.iter().any(|p| p[<span class="number">3</span>] &lt;= <span class="number">0</span>) {
+<a href=#91 id=91 data-nosnippet>91</a>    <span class="kw">if </span>controls.len() &lt; <span class="number">2 </span>|| controls.len() &gt; <span class="number">6 </span>|| controls.iter().any(|p| p[<span class="number">3</span>] &lt;= <span class="number">0</span>) {
 <a href=#92 id=92 data-nosnippet>92</a>        <span class="kw">return </span><span class="prelude-val">Err</span>(<span class="string">"unsupported_boundary_curve"</span>);
 <a href=#93 id=93 data-nosnippet>93</a>    }
 <a href=#94 id=94 data-nosnippet>94</a>    <span class="kw">let </span>max_weight = controls.iter().map(|p| p[<span class="number">3</span>]).max().unwrap() <span class="kw">as </span>f64;
@@ -136,7 +136,7 @@
 <a href=#136 id=136 data-nosnippet>136</a>        }
 <a href=#137 id=137 data-nosnippet>137</a>    }
 <a href=#138 id=138 data-nosnippet>138</a>    <span class="kw">let </span>[du, dv] = face.degrees;
-<a href=#139 id=139 data-nosnippet>139</a>    <span class="kw">if </span>du &gt; <span class="number">3 </span>|| dv &gt; <span class="number">3 </span>|| face.controls.len() != (du + <span class="number">1</span>) * (dv + <span class="number">1</span>) {
+<a href=#139 id=139 data-nosnippet>139</a>    <span class="kw">if </span>du &gt; <span class="number">5 </span>|| dv &gt; <span class="number">5 </span>|| face.controls.len() != (du + <span class="number">1</span>) * (dv + <span class="number">1</span>) {
 <a href=#140 id=140 data-nosnippet>140</a>        <span class="kw">return </span><span class="prelude-val">Err</span>(<span class="string">"unsupported_boundary_surface"</span>);
 <a href=#141 id=141 data-nosnippet>141</a>    }
 <a href=#142 id=142 data-nosnippet>142</a>    <span class="kw">let </span>controls = face.controls.chunks(dv + <span class="number">1</span>).collect::&lt;Vec&lt;<span class="kw">_</span>&gt;&gt;();

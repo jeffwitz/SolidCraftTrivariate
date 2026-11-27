@@ -16,16 +16,29 @@ Launch the separate compact profile to open the sharp FieldCraft bracket:
 
 .. code-block:: bash
 
-   python3 scripts/solidcraft_compact_desktop.py /path/to/solidcraft-trivariate-0.2.0.zip
+   python3 scripts/solidcraft_compact_desktop.py /path/to/solidcraft-trivariate-0.3.0.zip
 
 Its Sketch tab pins new sketch, line, two-point rectangle, coincidence,
-horizontal/vertical, finish and cancel. The same ribbon adds **extrude**,
+horizontal/vertical, fit-point spline, control-point spline, finish and cancel. The same ribbon adds **extrude**,
 **drill**, **boolean**, **chamfer** and **fillet**. Standard modeling tabs are
 hidden. SolidCraft still provides its sketch section menus and global search.
 On SolidCraft 0.48.1 the Sketch-tab plugin buttons use the host's plug glyph;
 the entry dialogs use the package's operation icons.
 
-* **Extrude** builds a positive extrusion from an admitted XY sketch.
+* **Extrude** takes the latest authored sketch by default. On an attached planar
+  face choose **Add material** or **Remove material**, then enter a positive
+  depth in millimetres. The attachment identifies the body; its outward normal
+  sets the sign. **New body** creates a separate solid. Linked face outlines
+  and construction geometry are excluded from the authored profile.
+
+  The native constructor accepts a single regular loop with a certified curved
+  partition. A rectangular stock can carry the complete addition or pocket as
+  trivariate charts. For another supported face, including the FieldCraft
+  bracket, the plugin imports the boundary of the trivariate extrusion tool
+  and SolidCraft combines it with the owning body. The companion output name
+  distinguishes a complete result from a tool. Each operation records the
+  contour snapshot at execution time; editing the sketch later requires
+  rebuilding the extrusion.
 * **Drill** cuts a centered through-bore. On the reference box enter a radius.
   On a rectangular sketch extrusion also identify the original sketch and height.
 * **Boolean** accepts the reference box and crossing cylinder as two viewport

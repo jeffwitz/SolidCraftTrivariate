@@ -40,9 +40,9 @@
 <a href=#40 id=40 data-nosnippet>40</a>    <span class="kw">let </span>g = p.into_iter().fold(<span class="number">0</span>, gcd);
 <a href=#41 id=41 data-nosnippet>41</a>    p.map(|x| x / g)
 <a href=#42 id=42 data-nosnippet>42</a>}
-<a href=#43 id=43 data-nosnippet>43</a><span class="kw">fn </span>canonical_edge(points: <span class="kw-2">&amp;</span>[[i64; <span class="number">4</span>]]) -&gt; Vec&lt;[i128; <span class="number">4</span>]&gt; {
+<a href=#43 id=43 data-nosnippet>43</a><span class="kw">fn </span>canonical_edge(points: <span class="kw-2">&amp;</span>[[i64; <span class="number">4</span>]], size: usize) -&gt; Vec&lt;[i128; <span class="number">4</span>]&gt; {
 <a href=#44 id=44 data-nosnippet>44</a>    <span class="kw">let </span><span class="kw-2">mut </span>net: Vec&lt;<span class="kw">_</span>&gt; = points.iter().map(|p| p.map(i128::from)).collect();
-<a href=#45 id=45 data-nosnippet>45</a>    <span class="kw">while </span>net.len() &lt; <span class="number">4 </span>{
+<a href=#45 id=45 data-nosnippet>45</a>    <span class="kw">while </span>net.len() &lt; size {
 <a href=#46 id=46 data-nosnippet>46</a>        <span class="kw">let </span>n = net.len();
 <a href=#47 id=47 data-nosnippet>47</a>        net = (<span class="number">0</span>..=n)
 <a href=#48 id=48 data-nosnippet>48</a>            .map(|i| {
@@ -98,7 +98,7 @@
 <a href=#98 id=98 data-nosnippet>98</a><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>supports_source_method(method: <span class="kw-2">&amp;</span>str) -&gt; bool {
 <a href=#99 id=99 data-nosnippet>99</a>    <span class="macro">matches!</span>(
 <a href=#100 id=100 data-nosnippet>100</a>        method,
-<a href=#101 id=101 data-nosnippet>101</a>        <span class="string">"certified_fixed_extrusion_partition"
+<a href=#101 id=101 data-nosnippet>101</a>        <span class="string">"certified_face_profile_extrusion" </span>| <span class="string">"certified_fixed_extrusion_partition"
 <a href=#102 id=102 data-nosnippet>102</a>            </span>| <span class="string">"certified_ruled_similarity_sweep"
 <a href=#103 id=103 data-nosnippet>103</a>            </span>| <span class="string">"certified_coaxial_feature_program"
 <a href=#104 id=104 data-nosnippet>104</a>            </span>| <span class="string">"certified_circular_bend"
@@ -199,149 +199,150 @@
 <a href=#199 id=199 data-nosnippet>199</a>                edges.len() - <span class="number">1
 <a href=#200 id=200 data-nosnippet>200</a>            </span>});
 <a href=#201 id=201 data-nosnippet>201</a>            <span class="kw">let </span>forward = edges[e].vertices == endpoints;
-<a href=#202 id=202 data-nosnippet>202</a>            <span class="kw">let </span><span class="kw-2">mut </span>net = canonical_edge(<span class="kw-2">&amp;</span>curve);
-<a href=#203 id=203 data-nosnippet>203</a>            <span class="kw">if </span>!forward {
-<a href=#204 id=204 data-nosnippet>204</a>                net.reverse();
-<a href=#205 id=205 data-nosnippet>205</a>            }
-<a href=#206 id=206 data-nosnippet>206</a>            <span class="kw">if </span>net != canonical_edge(<span class="kw-2">&amp;</span>edges[e].controls) {
-<a href=#207 id=207 data-nosnippet>207</a>                <span class="kw">return </span><span class="prelude-val">Err</span>(<span class="string">"incompatible_boundary_edge_trace"</span>);
-<a href=#208 id=208 data-nosnippet>208</a>            }
-<a href=#209 id=209 data-nosnippet>209</a>            uses[e].push((faces.len(), forward));
-<a href=#210 id=210 data-nosnippet>210</a>            corners.push(a);
-<a href=#211 id=211 data-nosnippet>211</a>            loop_edges.push((e, forward));
-<a href=#212 id=212 data-nosnippet>212</a>        }
-<a href=#213 id=213 data-nosnippet>213</a>        <span class="kw">for </span>(j, v) <span class="kw">in </span>corners.into_iter().enumerate() {
-<a href=#214 id=214 data-nosnippet>214</a>            <span class="kw">let </span>a = loop_edges[(j + <span class="number">3</span>) % <span class="number">4</span>].<span class="number">0</span>;
-<a href=#215 id=215 data-nosnippet>215</a>            <span class="kw">let </span>b = loop_edges[j].<span class="number">0</span>;
-<a href=#216 id=216 data-nosnippet>216</a>            <span class="kw">let </span>graph = links.entry(v).or_default();
-<a href=#217 id=217 data-nosnippet>217</a>            graph.entry(a).or_default().push(b);
-<a href=#218 id=218 data-nosnippet>218</a>            graph.entry(b).or_default().push(a);
-<a href=#219 id=219 data-nosnippet>219</a>        }
-<a href=#220 id=220 data-nosnippet>220</a>        faces.push(ShellFace {
-<a href=#221 id=221 data-nosnippet>221</a>            feature: face.field(<span class="string">"feature"</span>)<span class="question-mark">?</span>.text()<span class="question-mark">?</span>.into(),
-<a href=#222 id=222 data-nosnippet>222</a>            block: id.into(),
-<a href=#223 id=223 data-nosnippet>223</a>            side: side.into(),
-<a href=#224 id=224 data-nosnippet>224</a>            degrees,
-<a href=#225 id=225 data-nosnippet>225</a>            controls,
-<a href=#226 id=226 data-nosnippet>226</a>            loop_edges,
-<a href=#227 id=227 data-nosnippet>227</a>            same_sense,
-<a href=#228 id=228 data-nosnippet>228</a>        });
-<a href=#229 id=229 data-nosnippet>229</a>    }
-<a href=#230 id=230 data-nosnippet>230</a>    <span class="kw">if </span>faces.is_empty() {
-<a href=#231 id=231 data-nosnippet>231</a>        <span class="kw">return </span><span class="prelude-val">Err</span>(<span class="string">"empty_boundary_shell"</span>);
-<a href=#232 id=232 data-nosnippet>232</a>    }
-<a href=#233 id=233 data-nosnippet>233</a>    <span class="kw">let </span><span class="kw-2">mut </span>adjacent = BTreeMap::&lt;usize, Vec&lt;usize&gt;&gt;::new();
-<a href=#234 id=234 data-nosnippet>234</a>    <span class="kw">for </span>entries <span class="kw">in </span>uses {
-<a href=#235 id=235 data-nosnippet>235</a>        <span class="kw">let </span>[(a, first), (b, second)] = entries.as_slice() <span class="kw">else </span>{
-<a href=#236 id=236 data-nosnippet>236</a>            <span class="kw">return </span><span class="prelude-val">Err</span>(<span class="string">"nonmanifold_boundary_edge"</span>);
-<a href=#237 id=237 data-nosnippet>237</a>        };
-<a href=#238 id=238 data-nosnippet>238</a>        <span class="kw">if </span>a == b || first == second {
-<a href=#239 id=239 data-nosnippet>239</a>            <span class="kw">return </span><span class="prelude-val">Err</span>(<span class="string">"inconsistent_boundary_winding"</span>);
-<a href=#240 id=240 data-nosnippet>240</a>        }
-<a href=#241 id=241 data-nosnippet>241</a>        adjacent.entry(<span class="kw-2">*</span>a).or_default().push(<span class="kw-2">*</span>b);
-<a href=#242 id=242 data-nosnippet>242</a>        adjacent.entry(<span class="kw-2">*</span>b).or_default().push(<span class="kw-2">*</span>a);
-<a href=#243 id=243 data-nosnippet>243</a>    }
-<a href=#244 id=244 data-nosnippet>244</a>    <span class="kw">let </span>expected_voids = <span class="kw">if </span><span class="macro">matches!</span>(
-<a href=#245 id=245 data-nosnippet>245</a>        method,
-<a href=#246 id=246 data-nosnippet>246</a>        <span class="kw">crate</span>::affine_image::METHOD
-<a href=#247 id=247 data-nosnippet>247</a>            | <span class="kw">crate</span>::counterbores_json::METHOD
-<a href=#248 id=248 data-nosnippet>248</a>            | <span class="kw">crate</span>::countersinks_json::METHOD
-<a href=#249 id=249 data-nosnippet>249</a>            | <span class="kw">crate</span>::sketch_layers_json::METHOD | <span class="kw">crate</span>::curved_sketch_audit::METHOD
-<a href=#250 id=250 data-nosnippet>250</a>            | <span class="kw">crate</span>::nurbs_multiloop_json::METHOD
-<a href=#251 id=251 data-nosnippet>251</a>            | <span class="kw">crate</span>::nurbs_sketch_json::METHOD
-<a href=#252 id=252 data-nosnippet>252</a>            | <span class="kw">crate</span>::orthogonal_sketch_json::METHOD
-<a href=#253 id=253 data-nosnippet>253</a>            | <span class="kw">crate</span>::interval_bores_json::METHOD
-<a href=#254 id=254 data-nosnippet>254</a>            | <span class="string">"certified_coaxial_feature_program"
-<a href=#255 id=255 data-nosnippet>255</a>            </span>| <span class="string">"certified_circular_bend"
-<a href=#256 id=256 data-nosnippet>256</a>            </span>| <span class="string">"certified_orthogonal_feature_program"
-<a href=#257 id=257 data-nosnippet>257</a>    </span>) {
-<a href=#258 id=258 data-nosnippet>258</a>        report.field(<span class="string">"cavities"</span>)<span class="question-mark">?</span>.number::&lt;usize&gt;()<span class="question-mark">?
-<a href=#259 id=259 data-nosnippet>259</a>    </span>} <span class="kw">else </span>{
-<a href=#260 id=260 data-nosnippet>260</a>        <span class="number">0
-<a href=#261 id=261 data-nosnippet>261</a>    </span>};
-<a href=#262 id=262 data-nosnippet>262</a>    <span class="kw">let </span><span class="kw-2">mut </span>components = Vec::new();
-<a href=#263 id=263 data-nosnippet>263</a>    <span class="kw">let </span><span class="kw-2">mut </span>pending: BTreeSet&lt;<span class="kw">_</span>&gt; = (<span class="number">0</span>..faces.len()).collect();
-<a href=#264 id=264 data-nosnippet>264</a>    <span class="kw">while let </span><span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span>seed) = pending.first() {
-<a href=#265 id=265 data-nosnippet>265</a>        <span class="kw">let </span>connected = reachable(seed, <span class="kw-2">&amp;</span>adjacent);
-<a href=#266 id=266 data-nosnippet>266</a>        <span class="kw">for </span>i <span class="kw">in </span><span class="kw-2">&amp;</span>connected {
-<a href=#267 id=267 data-nosnippet>267</a>            pending.remove(i);
-<a href=#268 id=268 data-nosnippet>268</a>        }
-<a href=#269 id=269 data-nosnippet>269</a>        components.push(connected.into_iter().collect::&lt;Vec&lt;<span class="kw">_</span>&gt;&gt;());
-<a href=#270 id=270 data-nosnippet>270</a>    }
-<a href=#271 id=271 data-nosnippet>271</a>    <span class="kw">let </span>exterior_count = <span class="kw">if </span>method == <span class="string">"certified_box_cylinder_boolean_suite" </span>{
-<a href=#272 id=272 data-nosnippet>272</a>        report.field(<span class="string">"face_connected_components"</span>)<span class="question-mark">?</span>.number::&lt;usize&gt;()<span class="question-mark">?
-<a href=#273 id=273 data-nosnippet>273</a>    </span>} <span class="kw">else </span>{
-<a href=#274 id=274 data-nosnippet>274</a>        <span class="number">1
-<a href=#275 id=275 data-nosnippet>275</a>    </span>};
-<a href=#276 id=276 data-nosnippet>276</a>    <span class="kw">if </span>components.len() != expected_voids + exterior_count {
-<a href=#277 id=277 data-nosnippet>277</a>        <span class="kw">return </span><span class="prelude-val">Err</span>(<span class="string">"unexpected_boundary_shell_count"</span>);
-<a href=#278 id=278 data-nosnippet>278</a>    }
-<a href=#279 id=279 data-nosnippet>279</a>    <span class="kw">if </span>expected_voids &gt; <span class="number">0 </span>{
-<a href=#280 id=280 data-nosnippet>280</a>        <span class="comment">// A coaxial plate retains its x=10 wall. For a periodic bend the
-<a href=#281 id=281 data-nosnippet>281</a>        // outer section curve is certified by its independent section audit.
-<a href=#282 id=282 data-nosnippet>282</a>        </span><span class="kw">let </span>bend_anchor = <span class="kw">if </span>method == <span class="string">"certified_circular_bend" </span>{
-<a href=#283 id=283 data-nosnippet>283</a>            <span class="kw">match </span>model.field(<span class="string">"section"</span>)<span class="question-mark">?</span>.text()<span class="question-mark">? </span>{
-<a href=#284 id=284 data-nosnippet>284</a>                <span class="string">"full_annulus_v1" </span>=&gt; <span class="prelude-val">Some</span>(<span class="string">"section_circle_r4"</span>),
-<a href=#285 id=285 data-nosnippet>285</a>                <span class="string">"pierced_square_v1" </span>=&gt; <span class="prelude-val">Some</span>(<span class="string">"section_x10"</span>),
-<a href=#286 id=286 data-nosnippet>286</a>                <span class="kw">_ </span>=&gt; <span class="kw">return </span><span class="prelude-val">Err</span>(<span class="string">"unexpected_bend_void"</span>),
-<a href=#287 id=287 data-nosnippet>287</a>            }
-<a href=#288 id=288 data-nosnippet>288</a>        } <span class="kw">else </span>{
-<a href=#289 id=289 data-nosnippet>289</a>            <span class="prelude-val">None
-<a href=#290 id=290 data-nosnippet>290</a>        </span>};
-<a href=#291 id=291 data-nosnippet>291</a>        <span class="kw">let </span>anchor_x = <span class="kw">if </span>method == <span class="string">"certified_orthogonal_feature_program" </span>{
-<a href=#292 id=292 data-nosnippet>292</a>            i128::from(report.field(<span class="string">"minimum_x_mm"</span>)<span class="question-mark">?</span>.number::&lt;i32&gt;()<span class="question-mark">?</span>)
-<a href=#293 id=293 data-nosnippet>293</a>        } <span class="kw">else </span>{
-<a href=#294 id=294 data-nosnippet>294</a>            <span class="number">10
-<a href=#295 id=295 data-nosnippet>295</a>        </span>};
-<a href=#296 id=296 data-nosnippet>296</a>        <span class="comment">// Design face order is checked against the source during affine audit.
-<a href=#297 id=297 data-nosnippet>297</a>        </span><span class="kw">let </span>source_anchor = <span class="kw">if </span>method == <span class="kw">crate</span>::affine_image::METHOD {
-<a href=#298 id=298 data-nosnippet>298</a>            <span class="kw">let </span>original = boundary_shell(model.field(<span class="string">"source_model"</span>)<span class="question-mark">?</span>)<span class="question-mark">?</span>;
-<a href=#299 id=299 data-nosnippet>299</a>            <span class="prelude-val">Some</span>(original.components[<span class="number">0</span>][<span class="number">0</span>])
-<a href=#300 id=300 data-nosnippet>300</a>        } <span class="kw">else </span>{
-<a href=#301 id=301 data-nosnippet>301</a>            <span class="prelude-val">None
-<a href=#302 id=302 data-nosnippet>302</a>        </span>};
-<a href=#303 id=303 data-nosnippet>303</a>        <span class="kw">let </span><span class="kw-2">mut </span>outer = components.iter().enumerate().filter(|(<span class="kw">_</span>, component)| {
-<a href=#304 id=304 data-nosnippet>304</a>            component.iter().any(|<span class="kw-2">&amp;</span>f| {
-<a href=#305 id=305 data-nosnippet>305</a>                <span class="kw">if let </span><span class="prelude-val">Some</span>(anchor) = source_anchor {
-<a href=#306 id=306 data-nosnippet>306</a>                    <span class="kw">return </span>f == anchor;
-<a href=#307 id=307 data-nosnippet>307</a>                }
-<a href=#308 id=308 data-nosnippet>308</a>                <span class="kw">if </span><span class="macro">matches!</span>(
-<a href=#309 id=309 data-nosnippet>309</a>                    method,
-<a href=#310 id=310 data-nosnippet>310</a>                    <span class="kw">crate</span>::interval_bores_json::METHOD | <span class="kw">crate</span>::sketch_layers_json::METHOD | <span class="kw">crate</span>::curved_sketch_audit::METHOD
-<a href=#311 id=311 data-nosnippet>311</a>                ) {
-<a href=#312 id=312 data-nosnippet>312</a>                    <span class="kw">return </span>faces[f].feature == <span class="string">"start"</span>;
-<a href=#313 id=313 data-nosnippet>313</a>                }
-<a href=#314 id=314 data-nosnippet>314</a>                <span class="kw">if </span>method == <span class="kw">crate</span>::nurbs_multiloop_json::METHOD {
-<a href=#315 id=315 data-nosnippet>315</a>                    <span class="kw">return </span>faces[f].feature == <span class="string">"stock:xmin"</span>;
-<a href=#316 id=316 data-nosnippet>316</a>                }
-<a href=#317 id=317 data-nosnippet>317</a>                <span class="kw">if let </span><span class="prelude-val">Some</span>(tag) = bend_anchor {
-<a href=#318 id=318 data-nosnippet>318</a>                    <span class="kw">return </span>faces[f].feature == tag;
-<a href=#319 id=319 data-nosnippet>319</a>                }
-<a href=#320 id=320 data-nosnippet>320</a>                faces[f]
-<a href=#321 id=321 data-nosnippet>321</a>                    .controls
-<a href=#322 id=322 data-nosnippet>322</a>                    .iter()
-<a href=#323 id=323 data-nosnippet>323</a>                    .all(|p| i128::from(p[<span class="number">0</span>]) == anchor_x * i128::from(p[<span class="number">3</span>]))
-<a href=#324 id=324 data-nosnippet>324</a>            })
-<a href=#325 id=325 data-nosnippet>325</a>        });
-<a href=#326 id=326 data-nosnippet>326</a>        <span class="kw">let </span>index = outer.next().ok_or(<span class="string">"outer_shell_missing"</span>)<span class="question-mark">?</span>.<span class="number">0</span>;
-<a href=#327 id=327 data-nosnippet>327</a>        <span class="kw">if </span>outer.next().is_some() {
-<a href=#328 id=328 data-nosnippet>328</a>            <span class="kw">return </span><span class="prelude-val">Err</span>(<span class="string">"ambiguous_outer_shell"</span>);
-<a href=#329 id=329 data-nosnippet>329</a>        }
-<a href=#330 id=330 data-nosnippet>330</a>        components.swap(<span class="number">0</span>, index);
-<a href=#331 id=331 data-nosnippet>331</a>    }
-<a href=#332 id=332 data-nosnippet>332</a>    <span class="kw">for </span>link <span class="kw">in </span>links.values() {
-<a href=#333 id=333 data-nosnippet>333</a>        <span class="kw">if </span>link.values().any(|v| v.len() != <span class="number">2</span>)
-<a href=#334 id=334 data-nosnippet>334</a>            || reachable(<span class="kw-2">*</span>link.keys().next().unwrap(), link).len() != link.len()
-<a href=#335 id=335 data-nosnippet>335</a>        {
-<a href=#336 id=336 data-nosnippet>336</a>            <span class="kw">return </span><span class="prelude-val">Err</span>(<span class="string">"nonmanifold_boundary_vertex"</span>);
-<a href=#337 id=337 data-nosnippet>337</a>        }
-<a href=#338 id=338 data-nosnippet>338</a>    }
-<a href=#339 id=339 data-nosnippet>339</a>    <span class="prelude-val">Ok</span>(BoundaryShell {
-<a href=#340 id=340 data-nosnippet>340</a>        vertices,
-<a href=#341 id=341 data-nosnippet>341</a>        edges,
-<a href=#342 id=342 data-nosnippet>342</a>        faces,
-<a href=#343 id=343 data-nosnippet>343</a>        components,
-<a href=#344 id=344 data-nosnippet>344</a>        exterior_count,
-<a href=#345 id=345 data-nosnippet>345</a>    })
-<a href=#346 id=346 data-nosnippet>346</a>}
+<a href=#202 id=202 data-nosnippet>202</a>            <span class="kw">let </span>size = curve.len().max(edges[e].controls.len());
+<a href=#203 id=203 data-nosnippet>203</a>            <span class="kw">let </span><span class="kw-2">mut </span>net = canonical_edge(<span class="kw-2">&amp;</span>curve, size);
+<a href=#204 id=204 data-nosnippet>204</a>            <span class="kw">if </span>!forward {
+<a href=#205 id=205 data-nosnippet>205</a>                net.reverse();
+<a href=#206 id=206 data-nosnippet>206</a>            }
+<a href=#207 id=207 data-nosnippet>207</a>            <span class="kw">if </span>net != canonical_edge(<span class="kw-2">&amp;</span>edges[e].controls, size) {
+<a href=#208 id=208 data-nosnippet>208</a>                <span class="kw">return </span><span class="prelude-val">Err</span>(<span class="string">"incompatible_boundary_edge_trace"</span>);
+<a href=#209 id=209 data-nosnippet>209</a>            }
+<a href=#210 id=210 data-nosnippet>210</a>            uses[e].push((faces.len(), forward));
+<a href=#211 id=211 data-nosnippet>211</a>            corners.push(a);
+<a href=#212 id=212 data-nosnippet>212</a>            loop_edges.push((e, forward));
+<a href=#213 id=213 data-nosnippet>213</a>        }
+<a href=#214 id=214 data-nosnippet>214</a>        <span class="kw">for </span>(j, v) <span class="kw">in </span>corners.into_iter().enumerate() {
+<a href=#215 id=215 data-nosnippet>215</a>            <span class="kw">let </span>a = loop_edges[(j + <span class="number">3</span>) % <span class="number">4</span>].<span class="number">0</span>;
+<a href=#216 id=216 data-nosnippet>216</a>            <span class="kw">let </span>b = loop_edges[j].<span class="number">0</span>;
+<a href=#217 id=217 data-nosnippet>217</a>            <span class="kw">let </span>graph = links.entry(v).or_default();
+<a href=#218 id=218 data-nosnippet>218</a>            graph.entry(a).or_default().push(b);
+<a href=#219 id=219 data-nosnippet>219</a>            graph.entry(b).or_default().push(a);
+<a href=#220 id=220 data-nosnippet>220</a>        }
+<a href=#221 id=221 data-nosnippet>221</a>        faces.push(ShellFace {
+<a href=#222 id=222 data-nosnippet>222</a>            feature: face.field(<span class="string">"feature"</span>)<span class="question-mark">?</span>.text()<span class="question-mark">?</span>.into(),
+<a href=#223 id=223 data-nosnippet>223</a>            block: id.into(),
+<a href=#224 id=224 data-nosnippet>224</a>            side: side.into(),
+<a href=#225 id=225 data-nosnippet>225</a>            degrees,
+<a href=#226 id=226 data-nosnippet>226</a>            controls,
+<a href=#227 id=227 data-nosnippet>227</a>            loop_edges,
+<a href=#228 id=228 data-nosnippet>228</a>            same_sense,
+<a href=#229 id=229 data-nosnippet>229</a>        });
+<a href=#230 id=230 data-nosnippet>230</a>    }
+<a href=#231 id=231 data-nosnippet>231</a>    <span class="kw">if </span>faces.is_empty() {
+<a href=#232 id=232 data-nosnippet>232</a>        <span class="kw">return </span><span class="prelude-val">Err</span>(<span class="string">"empty_boundary_shell"</span>);
+<a href=#233 id=233 data-nosnippet>233</a>    }
+<a href=#234 id=234 data-nosnippet>234</a>    <span class="kw">let </span><span class="kw-2">mut </span>adjacent = BTreeMap::&lt;usize, Vec&lt;usize&gt;&gt;::new();
+<a href=#235 id=235 data-nosnippet>235</a>    <span class="kw">for </span>entries <span class="kw">in </span>uses {
+<a href=#236 id=236 data-nosnippet>236</a>        <span class="kw">let </span>[(a, first), (b, second)] = entries.as_slice() <span class="kw">else </span>{
+<a href=#237 id=237 data-nosnippet>237</a>            <span class="kw">return </span><span class="prelude-val">Err</span>(<span class="string">"nonmanifold_boundary_edge"</span>);
+<a href=#238 id=238 data-nosnippet>238</a>        };
+<a href=#239 id=239 data-nosnippet>239</a>        <span class="kw">if </span>a == b || first == second {
+<a href=#240 id=240 data-nosnippet>240</a>            <span class="kw">return </span><span class="prelude-val">Err</span>(<span class="string">"inconsistent_boundary_winding"</span>);
+<a href=#241 id=241 data-nosnippet>241</a>        }
+<a href=#242 id=242 data-nosnippet>242</a>        adjacent.entry(<span class="kw-2">*</span>a).or_default().push(<span class="kw-2">*</span>b);
+<a href=#243 id=243 data-nosnippet>243</a>        adjacent.entry(<span class="kw-2">*</span>b).or_default().push(<span class="kw-2">*</span>a);
+<a href=#244 id=244 data-nosnippet>244</a>    }
+<a href=#245 id=245 data-nosnippet>245</a>    <span class="kw">let </span>expected_voids = <span class="kw">if </span><span class="macro">matches!</span>(
+<a href=#246 id=246 data-nosnippet>246</a>        method,
+<a href=#247 id=247 data-nosnippet>247</a>        <span class="kw">crate</span>::affine_image::METHOD
+<a href=#248 id=248 data-nosnippet>248</a>            | <span class="kw">crate</span>::counterbores_json::METHOD
+<a href=#249 id=249 data-nosnippet>249</a>            | <span class="kw">crate</span>::countersinks_json::METHOD
+<a href=#250 id=250 data-nosnippet>250</a>            | <span class="kw">crate</span>::sketch_layers_json::METHOD | <span class="kw">crate</span>::curved_sketch_audit::METHOD
+<a href=#251 id=251 data-nosnippet>251</a>            | <span class="kw">crate</span>::nurbs_multiloop_json::METHOD
+<a href=#252 id=252 data-nosnippet>252</a>            | <span class="kw">crate</span>::nurbs_sketch_json::METHOD
+<a href=#253 id=253 data-nosnippet>253</a>            | <span class="kw">crate</span>::orthogonal_sketch_json::METHOD
+<a href=#254 id=254 data-nosnippet>254</a>            | <span class="kw">crate</span>::interval_bores_json::METHOD
+<a href=#255 id=255 data-nosnippet>255</a>            | <span class="string">"certified_coaxial_feature_program"
+<a href=#256 id=256 data-nosnippet>256</a>            </span>| <span class="string">"certified_circular_bend"
+<a href=#257 id=257 data-nosnippet>257</a>            </span>| <span class="string">"certified_orthogonal_feature_program"
+<a href=#258 id=258 data-nosnippet>258</a>    </span>) {
+<a href=#259 id=259 data-nosnippet>259</a>        report.field(<span class="string">"cavities"</span>)<span class="question-mark">?</span>.number::&lt;usize&gt;()<span class="question-mark">?
+<a href=#260 id=260 data-nosnippet>260</a>    </span>} <span class="kw">else </span>{
+<a href=#261 id=261 data-nosnippet>261</a>        <span class="number">0
+<a href=#262 id=262 data-nosnippet>262</a>    </span>};
+<a href=#263 id=263 data-nosnippet>263</a>    <span class="kw">let </span><span class="kw-2">mut </span>components = Vec::new();
+<a href=#264 id=264 data-nosnippet>264</a>    <span class="kw">let </span><span class="kw-2">mut </span>pending: BTreeSet&lt;<span class="kw">_</span>&gt; = (<span class="number">0</span>..faces.len()).collect();
+<a href=#265 id=265 data-nosnippet>265</a>    <span class="kw">while let </span><span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span>seed) = pending.first() {
+<a href=#266 id=266 data-nosnippet>266</a>        <span class="kw">let </span>connected = reachable(seed, <span class="kw-2">&amp;</span>adjacent);
+<a href=#267 id=267 data-nosnippet>267</a>        <span class="kw">for </span>i <span class="kw">in </span><span class="kw-2">&amp;</span>connected {
+<a href=#268 id=268 data-nosnippet>268</a>            pending.remove(i);
+<a href=#269 id=269 data-nosnippet>269</a>        }
+<a href=#270 id=270 data-nosnippet>270</a>        components.push(connected.into_iter().collect::&lt;Vec&lt;<span class="kw">_</span>&gt;&gt;());
+<a href=#271 id=271 data-nosnippet>271</a>    }
+<a href=#272 id=272 data-nosnippet>272</a>    <span class="kw">let </span>exterior_count = <span class="kw">if </span>method == <span class="string">"certified_box_cylinder_boolean_suite" </span>{
+<a href=#273 id=273 data-nosnippet>273</a>        report.field(<span class="string">"face_connected_components"</span>)<span class="question-mark">?</span>.number::&lt;usize&gt;()<span class="question-mark">?
+<a href=#274 id=274 data-nosnippet>274</a>    </span>} <span class="kw">else </span>{
+<a href=#275 id=275 data-nosnippet>275</a>        <span class="number">1
+<a href=#276 id=276 data-nosnippet>276</a>    </span>};
+<a href=#277 id=277 data-nosnippet>277</a>    <span class="kw">if </span>components.len() != expected_voids + exterior_count {
+<a href=#278 id=278 data-nosnippet>278</a>        <span class="kw">return </span><span class="prelude-val">Err</span>(<span class="string">"unexpected_boundary_shell_count"</span>);
+<a href=#279 id=279 data-nosnippet>279</a>    }
+<a href=#280 id=280 data-nosnippet>280</a>    <span class="kw">if </span>expected_voids &gt; <span class="number">0 </span>{
+<a href=#281 id=281 data-nosnippet>281</a>        <span class="comment">// A coaxial plate retains its x=10 wall. For a periodic bend the
+<a href=#282 id=282 data-nosnippet>282</a>        // outer section curve is certified by its independent section audit.
+<a href=#283 id=283 data-nosnippet>283</a>        </span><span class="kw">let </span>bend_anchor = <span class="kw">if </span>method == <span class="string">"certified_circular_bend" </span>{
+<a href=#284 id=284 data-nosnippet>284</a>            <span class="kw">match </span>model.field(<span class="string">"section"</span>)<span class="question-mark">?</span>.text()<span class="question-mark">? </span>{
+<a href=#285 id=285 data-nosnippet>285</a>                <span class="string">"full_annulus_v1" </span>=&gt; <span class="prelude-val">Some</span>(<span class="string">"section_circle_r4"</span>),
+<a href=#286 id=286 data-nosnippet>286</a>                <span class="string">"pierced_square_v1" </span>=&gt; <span class="prelude-val">Some</span>(<span class="string">"section_x10"</span>),
+<a href=#287 id=287 data-nosnippet>287</a>                <span class="kw">_ </span>=&gt; <span class="kw">return </span><span class="prelude-val">Err</span>(<span class="string">"unexpected_bend_void"</span>),
+<a href=#288 id=288 data-nosnippet>288</a>            }
+<a href=#289 id=289 data-nosnippet>289</a>        } <span class="kw">else </span>{
+<a href=#290 id=290 data-nosnippet>290</a>            <span class="prelude-val">None
+<a href=#291 id=291 data-nosnippet>291</a>        </span>};
+<a href=#292 id=292 data-nosnippet>292</a>        <span class="kw">let </span>anchor_x = <span class="kw">if </span>method == <span class="string">"certified_orthogonal_feature_program" </span>{
+<a href=#293 id=293 data-nosnippet>293</a>            i128::from(report.field(<span class="string">"minimum_x_mm"</span>)<span class="question-mark">?</span>.number::&lt;i32&gt;()<span class="question-mark">?</span>)
+<a href=#294 id=294 data-nosnippet>294</a>        } <span class="kw">else </span>{
+<a href=#295 id=295 data-nosnippet>295</a>            <span class="number">10
+<a href=#296 id=296 data-nosnippet>296</a>        </span>};
+<a href=#297 id=297 data-nosnippet>297</a>        <span class="comment">// Design face order is checked against the source during affine audit.
+<a href=#298 id=298 data-nosnippet>298</a>        </span><span class="kw">let </span>source_anchor = <span class="kw">if </span>method == <span class="kw">crate</span>::affine_image::METHOD {
+<a href=#299 id=299 data-nosnippet>299</a>            <span class="kw">let </span>original = boundary_shell(model.field(<span class="string">"source_model"</span>)<span class="question-mark">?</span>)<span class="question-mark">?</span>;
+<a href=#300 id=300 data-nosnippet>300</a>            <span class="prelude-val">Some</span>(original.components[<span class="number">0</span>][<span class="number">0</span>])
+<a href=#301 id=301 data-nosnippet>301</a>        } <span class="kw">else </span>{
+<a href=#302 id=302 data-nosnippet>302</a>            <span class="prelude-val">None
+<a href=#303 id=303 data-nosnippet>303</a>        </span>};
+<a href=#304 id=304 data-nosnippet>304</a>        <span class="kw">let </span><span class="kw-2">mut </span>outer = components.iter().enumerate().filter(|(<span class="kw">_</span>, component)| {
+<a href=#305 id=305 data-nosnippet>305</a>            component.iter().any(|<span class="kw-2">&amp;</span>f| {
+<a href=#306 id=306 data-nosnippet>306</a>                <span class="kw">if let </span><span class="prelude-val">Some</span>(anchor) = source_anchor {
+<a href=#307 id=307 data-nosnippet>307</a>                    <span class="kw">return </span>f == anchor;
+<a href=#308 id=308 data-nosnippet>308</a>                }
+<a href=#309 id=309 data-nosnippet>309</a>                <span class="kw">if </span><span class="macro">matches!</span>(
+<a href=#310 id=310 data-nosnippet>310</a>                    method,
+<a href=#311 id=311 data-nosnippet>311</a>                    <span class="kw">crate</span>::interval_bores_json::METHOD | <span class="kw">crate</span>::sketch_layers_json::METHOD | <span class="kw">crate</span>::curved_sketch_audit::METHOD
+<a href=#312 id=312 data-nosnippet>312</a>                ) {
+<a href=#313 id=313 data-nosnippet>313</a>                    <span class="kw">return </span>faces[f].feature == <span class="string">"start"</span>;
+<a href=#314 id=314 data-nosnippet>314</a>                }
+<a href=#315 id=315 data-nosnippet>315</a>                <span class="kw">if </span>method == <span class="kw">crate</span>::nurbs_multiloop_json::METHOD {
+<a href=#316 id=316 data-nosnippet>316</a>                    <span class="kw">return </span>faces[f].feature == <span class="string">"stock:xmin"</span>;
+<a href=#317 id=317 data-nosnippet>317</a>                }
+<a href=#318 id=318 data-nosnippet>318</a>                <span class="kw">if let </span><span class="prelude-val">Some</span>(tag) = bend_anchor {
+<a href=#319 id=319 data-nosnippet>319</a>                    <span class="kw">return </span>faces[f].feature == tag;
+<a href=#320 id=320 data-nosnippet>320</a>                }
+<a href=#321 id=321 data-nosnippet>321</a>                faces[f]
+<a href=#322 id=322 data-nosnippet>322</a>                    .controls
+<a href=#323 id=323 data-nosnippet>323</a>                    .iter()
+<a href=#324 id=324 data-nosnippet>324</a>                    .all(|p| i128::from(p[<span class="number">0</span>]) == anchor_x * i128::from(p[<span class="number">3</span>]))
+<a href=#325 id=325 data-nosnippet>325</a>            })
+<a href=#326 id=326 data-nosnippet>326</a>        });
+<a href=#327 id=327 data-nosnippet>327</a>        <span class="kw">let </span>index = outer.next().ok_or(<span class="string">"outer_shell_missing"</span>)<span class="question-mark">?</span>.<span class="number">0</span>;
+<a href=#328 id=328 data-nosnippet>328</a>        <span class="kw">if </span>outer.next().is_some() {
+<a href=#329 id=329 data-nosnippet>329</a>            <span class="kw">return </span><span class="prelude-val">Err</span>(<span class="string">"ambiguous_outer_shell"</span>);
+<a href=#330 id=330 data-nosnippet>330</a>        }
+<a href=#331 id=331 data-nosnippet>331</a>        components.swap(<span class="number">0</span>, index);
+<a href=#332 id=332 data-nosnippet>332</a>    }
+<a href=#333 id=333 data-nosnippet>333</a>    <span class="kw">for </span>link <span class="kw">in </span>links.values() {
+<a href=#334 id=334 data-nosnippet>334</a>        <span class="kw">if </span>link.values().any(|v| v.len() != <span class="number">2</span>)
+<a href=#335 id=335 data-nosnippet>335</a>            || reachable(<span class="kw-2">*</span>link.keys().next().unwrap(), link).len() != link.len()
+<a href=#336 id=336 data-nosnippet>336</a>        {
+<a href=#337 id=337 data-nosnippet>337</a>            <span class="kw">return </span><span class="prelude-val">Err</span>(<span class="string">"nonmanifold_boundary_vertex"</span>);
+<a href=#338 id=338 data-nosnippet>338</a>        }
+<a href=#339 id=339 data-nosnippet>339</a>    }
+<a href=#340 id=340 data-nosnippet>340</a>    <span class="prelude-val">Ok</span>(BoundaryShell {
+<a href=#341 id=341 data-nosnippet>341</a>        vertices,
+<a href=#342 id=342 data-nosnippet>342</a>        edges,
+<a href=#343 id=343 data-nosnippet>343</a>        faces,
+<a href=#344 id=344 data-nosnippet>344</a>        components,
+<a href=#345 id=345 data-nosnippet>345</a>        exterior_count,
+<a href=#346 id=346 data-nosnippet>346</a>    })
+<a href=#347 id=347 data-nosnippet>347</a>}
 </code></pre></div></section></main></body></html>

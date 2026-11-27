@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":["audit_package","build_axial_space","build_plane_space","build_space","compile","replay","space_from_plan"],"struct":["InheritedCell","InheritedSpace"]};
+window.SIDEBAR_ITEMS = {"fn":["audit_package","automatic_plan","build_automatic_space","build_axial_space","build_plane_space","build_space","compile","compile_automatic","replay","space_from_plan"],"struct":["InheritedCell","InheritedSpace"]};

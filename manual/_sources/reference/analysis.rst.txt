@@ -76,3 +76,11 @@ Foundational and coupling references
    patch coupling,” *Computational Mechanics*, 53(6) (2014), 1163--1182.
    `DOI 10.1007/s00466-013-0955-3
    <https://doi.org/10.1007/s00466-013-0955-3>`_.
+
+
+.. figure:: ../../results/fieldcraft-bracket-pa5-energy-dof.svg
+   :alt: Three strain-energy curves versus scalar field dimension for the same loaded bracket.
+
+   Uniform refinement on three geometric partitions of the FieldCraft bracket.
+   Follow one curve to see the change with field dimension; compare curves at
+   similar dimensions to assess the effect of the partition. Energy is in N·mm.

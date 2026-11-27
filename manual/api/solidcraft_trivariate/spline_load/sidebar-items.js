@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":["solve"]};
+window.SIDEBAR_ITEMS = {"fn":["solve","solve_raw_inherited"]};

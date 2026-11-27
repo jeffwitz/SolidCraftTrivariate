@@ -4,6 +4,13 @@ Recovering parents and choosing interface continuity
 A recovered support
 -------------------
 
+.. figure:: interface-joins.svg
+   :alt: Comparison of adjacent maps inherited by an exact split of one parent and independent maps that only share a boundary trace.
+
+   A parent split carries its transverse jets through the split ratio. For
+   independent supports, matching values establish C⁰ only; physical C¹ is
+   an additional analysis constraint.
+
 Take two adjacent homogeneous Bézier nets with an audited complete face.
 Orient their tangential axes consistently and elevate their traces to
 common degrees. On the whole face, the two nets must agree up to one

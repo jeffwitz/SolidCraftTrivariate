@@ -47,6 +47,7 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">How-to guides</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#find-a-recipe-your-executable-supports">Find a recipe your executable supports</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#build-a-bracket-from-its-feature-history">Build a bracket from its feature history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#run-a-bonded-solid-with-automatic-joins">Run a bonded solid with automatic joins</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#test-a-continuity-change-on-an-existing-part">Test a continuity change on an existing part</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#rebuild-the-manual-and-api">Rebuild the manual and API</a></li>
 </ul>
@@ -100,6 +101,12 @@ same source revision as the executable used to build this manual.</p>
 equal-leg history the compact construction gives ten cells. The historical
 <code class="docutils literal notranslate"><span class="pre">import-solidcraft</span></code> adapter consumes a different input format.
 See <a class="reference internal" href="../reference/construction.html"><span class="doc">Construction from native sketches</span></a> for fallback conditions.</p>
+</section>
+<section id="run-a-bonded-solid-with-automatic-joins">
+<h2>Run a bonded solid with automatic joins<a class="headerlink" href="#run-a-bonded-solid-with-automatic-joins" title="Link to this heading"></a></h2>
+<p>Use the ordinary <code class="docutils literal notranslate"><span class="pre">solve-job</span></code> command with the raw model and a
+<code class="docutils literal notranslate"><span class="pre">spline_feature_load_v1</span></code> job. <a class="reference internal" href="../reference/automatic-continuity.html"><span class="doc">Automatic displacement continuity</span></a>
+includes a runnable tension case, the expected reaction and the field rules.</p>
 </section>
 <section id="test-a-continuity-change-on-an-existing-part">
 <h2>Test a continuity change on an existing part<a class="headerlink" href="#test-a-continuity-change-on-an-existing-part" title="Link to this heading"></a></h2>

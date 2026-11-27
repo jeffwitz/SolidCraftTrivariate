@@ -54,6 +54,11 @@ publisher retains the two- and three-cover constructions in
 ``scripts/build_box_cylinder_tall_patches.py`` and the native
 ``src/cylinder_tensor_covers.rs`` implementation.
 
+.. figure:: ../../site/box-cylinder/parameter-lines.png
+   :alt: Side-by-side sections of the Boolean difference and the classical four-sector through-hole.
+
+   At mid-height the Boolean difference and the sketch-based through-hole produce the same four sector maps. The interior curves are images of constant parameter lines. The two panels use the same physical scale.
+
 Exact command arguments for the current executable are available with ``--help``. The
 general Boolean experiment and its independent classification protocol are
 documented in the

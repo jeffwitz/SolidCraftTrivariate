@@ -123,6 +123,15 @@ fixed corner boxes qualify one multilevel schedule.
 The curved gallery pocket
 -------------------------
 
+.. figure:: curved-pocket-sections.svg
+   :alt: Actual quadratic plan sections below and above the curved pocket floor, with radial and footprint seams distinguished.
+
+   The section curves are extracted from the nine-map gallery model. At z=7 mm,
+   the central footprint is solid material; above the z=14 mm floor it is the
+   open pocket, and its curved boundary is a free wall. The radial-only field
+   constrains all eight radial faces (four at each level) to physical C¹; the
+   four footprint joins retain C⁰ continuity.
+
 The gallery pocket has nine polynomial maps of degree (2,2,1). Its bottom
 section consists of five footprints. Four radial interfaces continue above
 the floor, where the curved footprint of the void disappears. An interface

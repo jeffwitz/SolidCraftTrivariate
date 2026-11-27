@@ -1,0 +1,273 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Automatic displacement continuity &mdash; SolidCraft Trivariate</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Recovering parents and choosing interface continuity" href="interface-fields.html" />
+    <link rel="prev" title="Boolean operations and edge treatments" href="operations.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            SolidCraft Trivariate
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../how-to/index.html">How-to guides</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Technical reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="catalog.html">Command and recipe catalogue</a></li>
+<li class="toctree-l2"><a class="reference internal" href="construction.html">Construction from native sketches</a></li>
+<li class="toctree-l2"><a class="reference internal" href="geometry.html">Geometry representation and certificates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="operations.html">Boolean operations and edge treatments</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Automatic displacement continuity</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#run-one-load-case">Run one load case</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#read-the-results">Read the results</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#selection-before-assembly">Selection before assembly</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#inspecting-a-decision">Inspecting a decision</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#why-the-rules-depend-on-the-interface">Why the rules depend on the interface</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="interface-fields.html">Recovering parents and choosing interface continuity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="continuity-experiments.html">Selecting displacement continuity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spline-fields.html">Spline fields, extraction, and local refinement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="analysis.html">Analysis on audited trivariate models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="crossed-mechanics.html">Crossed-tool partial-interface mechanics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fitted-bending.html">Fitted crossed-tool bending</a></li>
+<li class="toctree-l2"><a class="reference internal" href="solver-design.html">Adaptive solves, pressure and design derivatives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="verification.html">Verification and evidence scope</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../explanation/index.html">Explanation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">SolidCraft Trivariate</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Technical reference</a></li>
+      <li class="breadcrumb-item active">Automatic displacement continuity</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/reference/automatic-continuity.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="automatic-displacement-continuity">
+<h1>Automatic displacement continuity<a class="headerlink" href="#automatic-displacement-continuity" title="Link to this heading"></a></h1>
+<p>For a homogeneous bonded elastic solid, give the native solver a geometry model,
+a material, a support and loads. The field compiler chooses the supported joins
+before stiffness assembly. It never solves a trial load case to choose a join.
+This decision sets the approximation space. Solver residual tolerance controls
+algebraic equilibrium in that space; it does not specify displacement accuracy.</p>
+<section id="run-one-load-case">
+<h2>Run one load case<a class="headerlink" href="#run-one-load-case" title="Link to this heading"></a></h2>
+<p>From a checkout, run:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>mkdir<span class="w"> </span>-p<span class="w"> </span>build
+cargo<span class="w"> </span>build<span class="w"> </span>--release<span class="w"> </span>--locked<span class="w"> </span>--offline
+target/release/solidcraft-trivariate<span class="w"> </span>solve-job<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>docs/site/data/plate_blind_pocket/plate_blind_pocket.model.json<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>tests/references/automatic_pocket_tension.job.json<span class="w"> </span>build/tension.json
+</pre></div>
+</div>
+<p>The <a class="reference download internal" download="" href="../_downloads/58868372fea9f831f57ce1f9738518e3/automatic_pocket_tension.job.json"><code class="xref download docutils literal notranslate"><span class="pre">input</span> <span class="pre">job</span></code></a>
+names the support and loaded design faces. The <a class="reference download internal" download="" href="../_downloads/b5a0fc8afd6912a2e33f1d44daadbdcd/plate_blind_pocket.model.json"><code class="xref download docutils literal notranslate"><span class="pre">audited</span> <span class="pre">geometry</span></code></a> supplies the
+maps, incidences and surface names. No degree, constraint list or comparison
+solve appears in the job.</p>
+<figure class="align-default" id="id1">
+<img alt="Section with upward traction on the upper terraces and pocket floor and a clamp across the whole bottom face." src="../_images/pocket-load.svg" />
+<figcaption>
+<p><span class="caption-text">At zero Poisson ratio, unit axial stress solves this loading exactly.
+The floor contributes 512/3 N to the resultant. Omitting it changes the
+physical problem.</span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="read-the-results">
+<h2>Read the results<a class="headerlink" href="#read-the-results" title="Link to this heading"></a></h2>
+<p>The job specifies Young’s modulus 10 MPa and Poisson ratio zero. The exact
+displacement is <span class="math notranslate nohighlight">\(u_z=z/10\)</span> mm. The projected loaded area is 2,500 mm².
+With a volume of 48,976 mm³ and strain-energy density of 0.05 N/mm², check
+<code class="docutils literal notranslate"><span class="pre">energy_n_mm</span></code> against 2,448.8 and <code class="docutils literal notranslate"><span class="pre">reaction_n</span></code> against (0, 0, −2500).
+This regression exercises the real clamp, both tractions and the selected
+space in a single solve. The analytic comparison belongs to qualification.</p>
+</section>
+<section id="selection-before-assembly">
+<h2>Selection before assembly<a class="headerlink" href="#selection-before-assembly" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 31.0%" />
+<col style="width: 30.0%" />
+<col style="width: 39.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Interface presented to the field compiler</p></th>
+<th class="head"><p>Automatic action</p></th>
+<th class="head"><p>Evidence used</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Internal split of the recovered NURBS strip</p></td>
+<td><p>Restore the continuity available in the source basis.</p></td>
+<td><p>Source coefficients, knot multiplicity, true parameter intervals and oriented trace.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Qualifying axial split of translated sections</p></td>
+<td><p>Couple the first axial derivative.</p></td>
+<td><p>Identical section mapping and physical interval lengths.</p></td>
+</tr>
+<tr class="row-even"><td><p>Qualified radial seam in the published curved pocket</p></td>
+<td><p>Use a cubic section field and couple its physical gradient.</p></td>
+<td><p>Exact model controls and face incidence, matched to the qualified seam layout.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Other conforming lateral joins, including the curved footprint</p></td>
+<td><p>Retain the shared displacement trace (C⁰).</p></td>
+<td><p>Physical gradient matching has no qualified selection rule there.</p></td>
+</tr>
+<tr class="row-even"><td><p>Contact, slip, cracking or multiple material laws</p></td>
+<td><p>Outside this homogeneous bonded job contract.</p></td>
+<td><p>The input needs a solver implementing the intended interface law.</p></td>
+</tr>
+</tbody>
+</table>
+<figure class="align-default" id="id2">
+<img alt="Physical sections below and above the pocket floor showing radial and footprint seams." src="../_images/curved-pocket-sections.svg" />
+<figcaption>
+<p><span class="caption-text">The four radial lines appear in both layers (eight shared block faces).
+The footprint is an internal join below the floor and a free wall above it.
+A boundary face carries a load or a boundary condition; it has no
+neighbouring displacement field to smooth.</span><a class="headerlink" href="#id2" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p>Geometry edits that change the pocket controls or incidence invalidate its
+specialized rule. An admitted matching interface then receives the conservative
+rule for its class. A failed geometry audit or an unsupported volume family
+stops the analysis. Saved field packages continue to use their recorded plan.
+Legacy fixed-Q2 mechanical jobs retain their original field formulation.</p>
+</section>
+<section id="inspecting-a-decision">
+<h2>Inspecting a decision<a class="headerlink" href="#inspecting-a-decision" title="Link to this heading"></a></h2>
+<p>In the raw-model result, <code class="docutils literal notranslate"><span class="pre">continuity_selection</span></code> records the policy,
+the axial and section degree choices, and the qualified radial face count.
+<code class="docutils literal notranslate"><span class="pre">interface_decisions</span></code> identifies each pair of block sides, its field order
+and the evidence used. <code class="docutils literal notranslate"><span class="pre">field_compilation_ms</span></code> times the raw field compiler,
+including construction of the constrained basis. It excludes mechanical assembly
+and solution. To inspect a plan separately, use <code class="docutils literal notranslate"><span class="pre">export-inherited-space</span></code>
+with <code class="docutils literal notranslate"><span class="pre">{&quot;schema&quot;:&quot;inherited_field_auto_plan_v1&quot;,&quot;axial_degree&quot;:2}</span></code>.
+The normal load command above does not need this export.</p>
+<p>On the published pocket the three-dimensional field has degree three in the
+section and two axially. Four axial interfaces inherit C¹, eight lateral faces
+use the radial C¹ rule and four footprint faces retain C⁰. The loaded example
+has 276 free vector coefficients. The measured relative solver residual was
+<span class="math notranslate nohighlight">\(7.13\times10^{-12}\)</span>.</p>
+<p><strong>Cost and accuracy.</strong> In a separate development comparison, the same field
+with all twelve lateral faces at C⁰ had 456 free vector coefficients. On the
+smooth quintic manufactured load, its relative energy-norm error was 0.524%;
+the automatic selection gave 0.821% with 276 coefficients. These measurements
+use one section span per chart, the same axial field and order-ten quadrature.
+They concern a full three-dimensional field. The multi-level section
+study in <a class="reference internal" href="continuity-experiments.html"><span class="doc">Selecting displacement continuity</span></a> uses a restricted linear height profile.
+The production decision uses neither the applied traction nor these two solves.</p>
+</section>
+<section id="why-the-rules-depend-on-the-interface">
+<h2>Why the rules depend on the interface<a class="headerlink" href="#why-the-rules-depend-on-the-interface" title="Link to this heading"></a></h2>
+<p>On a matching physical face the bonded displacement has a common value (C⁰).
+C¹ additionally requires equality of physical gradients. Within a recovered
+regular tensor parent a knot of multiplicity <span class="math notranslate nohighlight">\(m\)</span> in a degree-<span class="math notranslate nohighlight">\(p\)</span>
+basis guarantees <span class="math notranslate nohighlight">\(C^{p-m}\)</span> continuity. Across separately constructed
+maps a common boundary curve alone is insufficient to determine the normal
+derivative. The compiler must also account for the transverse maps and their
+orientation. See <a class="reference internal" href="interface-fields.html"><span class="doc">Recovering parents and choosing interface continuity</span></a>.</p>
+<p>On the studied pocket, a cubic field retained four section coefficients for
+its transverse gradient on a radial seam at two intervals, and ten at eight.
+On the curved footprint it retained only two at both resolutions. The
+geometry and topology tests performed during analysis identify where an
+already qualified rule applies. The rational trace-rank study and the 32
+elasticity solves were run during development and are recorded in
+<a class="reference internal" href="continuity-experiments.html"><span class="doc">Selecting displacement continuity</span></a>.</p>
+<p>Collin, Sangalli and Takacs describe how a C¹ condition on neighbouring
+parameterizations can restrict field traces. Hasanova, Takacs and Takacs give
+approximation estimates under explicit planar analysis-suitable G¹ assumptions.
+These results explain why the field rule depends on its domain of qualification.
+They do not establish a universal convergence order for a pocket that changes
+section with height.
+<a class="reference external" href="https://arxiv.org/abs/1509.07619">Collin et al.</a>;
+<a class="reference external" href="https://arxiv.org/abs/2605.13270">Hasanova et al.</a>.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="operations.html" class="btn btn-neutral float-left" title="Boolean operations and edge treatments" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="interface-fields.html" class="btn btn-neutral float-right" title="Recovering parents and choosing interface continuity" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright .</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":["SectionJoins"],"fn":["solve","solve_model","solve_model_selected","solve_published"]};
+window.SIDEBAR_ITEMS = {"enum":["SectionJoins"],"fn":["is_qualified_geometry","plan_auto","qualified_radial_interfaces","solve","solve_model","solve_model_auto","solve_model_selected","solve_published"],"struct":["AutoSelection","QualifiedInterface"]};

@@ -50,6 +50,7 @@
 <li class="toctree-l2"><a class="reference internal" href="construction.html">Construction from native sketches</a></li>
 <li class="toctree-l2"><a class="reference internal" href="geometry.html">Geometry representation and certificates</a></li>
 <li class="toctree-l2"><a class="reference internal" href="operations.html">Boolean operations and edge treatments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="automatic-continuity.html">Automatic displacement continuity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="interface-fields.html">Recovering parents and choosing interface continuity</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Selecting displacement continuity</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#which-derivatives-can-be-shared">Which derivatives can be shared?</a></li>
@@ -238,6 +239,16 @@ fixed corner boxes qualify one multilevel schedule.
 </section>
 <section id="the-curved-gallery-pocket">
 <h2>The curved gallery pocket<a class="headerlink" href="#the-curved-gallery-pocket" title="Link to this heading"></a></h2>
+<figure class="align-default" id="id2">
+<img alt="Actual quadratic plan sections below and above the curved pocket floor, with radial and footprint seams distinguished." src="../_images/curved-pocket-sections.svg" />
+<figcaption>
+<p><span class="caption-text">The section curves are extracted from the nine-map gallery model. At z=7 mm,
+the central footprint is solid material; above the z=14 mm floor it is the
+open pocket, and its curved boundary is a free wall. The radial-only field
+constrains all eight radial faces (four at each level) to physical C¹; the
+four footprint joins retain C⁰ continuity.</span><a class="headerlink" href="#id2" title="Link to this image"></a></p>
+</figcaption>
+</figure>
 <p>The gallery pocket has nine polynomial maps of degree (2,2,1). Its bottom
 section consists of five footprints. Four radial interfaces continue above
 the floor, where the curved footprint of the void disappears. An interface
@@ -259,14 +270,14 @@ times height pulls back to a field of degree at most (4,4,1). It supplies a
 reproduction test for a quartic section field, and a convergence test for a
 cubic one.</p>
 <p><a class="reference external" href="https://github.com/jeffwitz/SolidCraftTrivariate/tree/main/docs/results/curved-pocket-fields">Curved-pocket measurements and replay</a>.</p>
-<figure class="align-default" id="id2">
+<figure class="align-default" id="id3">
 <img alt="Exact section seams and the effect of enforcing C1 on either seam family, at degrees three and four." src="../_images/curved-pocket-fields.svg" />
 <figcaption>
 <p><span class="caption-text">On the quintic manufactured field, the last observed cubic energy order is
 2.89 with C⁰, 2.99 with only the radial seams constrained, 0.93 with only
 the footprint constrained and 1.07 with all eight seams constrained. The
 corresponding quartic orders are 3.98, 4.03, 3.75 and 3.82. Each segment
-joins two measured refinements. The chart partition and loads are identical.</span><a class="headerlink" href="#id2" title="Link to this image"></a></p>
+joins two measured refinements. The chart partition and loads are identical.</span><a class="headerlink" href="#id3" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 </section>

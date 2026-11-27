@@ -24,6 +24,13 @@ equal-leg history the compact construction gives ten cells. The historical
 ``import-solidcraft`` adapter consumes a different input format.
 See :doc:`../reference/construction` for fallback conditions.
 
+Run a bonded solid with automatic joins
+---------------------------------------
+
+Use the ordinary ``solve-job`` command with the raw model and a
+``spline_feature_load_v1`` job. :doc:`../reference/automatic-continuity`
+includes a runnable tension case, the expected reaction and the field rules.
+
 Test a continuity change on an existing part
 --------------------------------------------
 

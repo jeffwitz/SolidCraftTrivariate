@@ -47,3 +47,39 @@ check-cylinder-iga: check-axial-knot-reduction
 check-crossed-bending:
 	cargo build --locked --offline --release
 	OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 python3 docs/results/crossed-interface-iga/check_bending.py target/release/solidcraft-trivariate
+
+.PHONY: check-inherited-space check-inherited-corpus
+check-inherited-space:
+	cargo build --release --locked --offline
+	python3 scripts/check_spline_parent.py --cli target/release/solidcraft-trivariate
+	python3 scripts/check_spline_parent.py --cli target/release/solidcraft-trivariate --nonuniform-source
+	python3 scripts/check_spline_parent.py --cli target/release/solidcraft-trivariate --reverse-source
+	python3 scripts/check_spline_eligibility.py --cli target/release/solidcraft-trivariate --check-native-report
+	python3 scripts/check_parent_field.py
+	python3 scripts/check_parent_spectrum.py
+	python3 scripts/check_inherited_joins.py
+	python3 scripts/measure_inherited_fields.py
+
+check-inherited-corpus: check-inherited-space
+	python3 scripts/census_support_interfaces.py
+	python3 scripts/census_transverse_transitions.py
+	python3 scripts/index_support_roles.py
+	python3 scripts/check_named_supports.py
+	python3 scripts/check_pair_parent_polygons.py
+	cmp build/pair-parent-expanded/summary.json docs/results/support-census/pair-parent-expanded.json
+	python3 scripts/check_curved_supports.py
+	python3 scripts/check_s3_spline_job.py
+	python3 scripts/audit_fieldcraft_parent_support.py --cli target/release/solidcraft-trivariate --output build/support-census/fieldcraft-parent-support.json
+	python3 scripts/check_pair_parent_corpus.py --cli target/release/solidcraft-trivariate
+	cmp build/support-census/role-index.json docs/results/support-census/role-index.json
+	python3 scripts/check_polygon_join_mechanics.py
+
+.PHONY: check-local-thb
+check-local-thb:
+	cargo build --release --locked --offline
+	cargo test --release --locked --offline --test thb_strip --test fieldcraft_nurbs_h1
+	cargo test --release --locked --offline --test cube_convergence cube_convergence_replay -- --ignored
+	python3 scripts/check_thb_mechanics.py
+	target/release/solidcraft-trivariate export-thb-extraction build/thb-mechanics/package.json build/thb-mechanics/extraction.json
+	python3 scripts/check_thb_function_values.py build/thb-mechanics/extraction.json --model build/thb-mechanics/model.json > build/thb-mechanics/function-values.json
+	python3 scripts/check_thb_traction.py

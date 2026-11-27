@@ -13,12 +13,12 @@ fn index(q: [usize; 3], degree: [usize; 3]) -> usize {
     (q[0] * (degree[1] + 1) + q[1]) * (degree[2] + 1) + q[2]
 }
 
-fn elevate(block: &BracketBlock, target: usize) -> Vec<[i128; 4]> {
+pub(crate) fn elevate_to(block: &BracketBlock, target: [usize; 3]) -> Vec<[i128; 4]> {
     let mut d = block.degrees;
     let mut net: Vec<_> = block.controls.iter().map(|p| p.map(i128::from)).collect();
     // At most two exact elevations per axis, or a scale factor of 216.
     for axis in 0..3 {
-        while d[axis] < target {
+        while d[axis] < target[axis] {
             let old = d;
             d[axis] += 1;
             let n = d[axis];
@@ -57,22 +57,12 @@ fn n(v: impl ToString) -> Json {
     Json::Number(v.to_string())
 }
 
-/// Return the mounted geometry-degree field after exact elevation and trace matching.
-pub fn export(model: &Json) -> Result<Json, &'static str> {
-    if !matches!(
-        model.field("schema")?.text()?,
-        "nurbs_multiloop_v1"
-            | "g2_cross_plate_v1"
-            | "s3_face_pocket_v1"
-            | "primitive_sweep_v1"
-            | "nurbs_edge_loops_v1"
-            | "nurbs_sketch_strip_v1"
-            | "nurbs_cross_bores_v1"
-            | "nurbs_cross_bores_bounded_v1"
-            | "nurbs_cross_oval_v1"
-    ) {
-        return Err("expected a supported NURBS sketch model");
-    }
+/// Return a geometry-degree C0 field on any audited whole-face block model.
+///
+/// Each block is elevated exactly to the largest geometry degree, then shared
+/// face Bernstein coefficients are identified using the audited incidence
+/// orientation. The model family itself is not used to infer parent support.
+pub fn export_audited_multiblock(model: &Json) -> Result<Json, &'static str> {
     let report = audit(model)?;
     if report.field("status")?.text()? != "valid" {
         return Err("uncertified NURBS geometry");
@@ -115,7 +105,7 @@ pub fn export(model: &Json) -> Result<Json, &'static str> {
     let mut ids = BTreeMap::new();
     let mut elements = Vec::new();
     for (i, block) in blocks.iter().enumerate() {
-        let controls = elevate(block, p);
+        let controls = elevate_to(block, [p; 3]);
         let dofs = (0..count)
             .map(|j| {
                 let next = ids.len();
@@ -148,6 +138,26 @@ pub fn export(model: &Json) -> Result<Json, &'static str> {
         ("trace_continuity", Json::String("C0".into())),
         ("blocks", Json::Array(elements)),
     ]))
+}
+
+/// Keep the original sketch-family allowlist for the stable public command.
+pub fn export(model: &Json) -> Result<Json, &'static str> {
+    if !matches!(
+        model.field("schema")?.text()?,
+        "nurbs_multiloop_v1"
+            | "g2_cross_plate_v1"
+            | "s3_face_pocket_v1"
+            | "primitive_sweep_v1"
+            | "nurbs_edge_loops_v1"
+            | "nurbs_sketch_strip_v1"
+            | "nurbs_cross_bores_v1"
+            | "nurbs_cross_bores_bounded_v1"
+            | "nurbs_cross_oval_v1"
+            | "affine_image_v1"
+    ) {
+        return Err("expected a supported NURBS sketch model");
+    }
+    export_audited_multiblock(model)
 }
 
 /// Attach the physical volume integrated at the requested tensor Gauss order.

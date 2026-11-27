@@ -6,6 +6,7 @@ Start with the [project README](../README.md) to build the Rust CLI and run a sk
 
 | Question | Where to look |
 | --- | --- |
+| Where does continuity change the mechanical field? | [Continuity and manufactured elasticity](results/inherited-continuity/README.md), [interface census](results/support-census/README.md), [source support recovery](spline-support-s1.md) |
 | Which original chart partitions support edge treatments? | [FieldCraft and S3 fixed-partition rim experiments, qualification and STEP files](results/fixed-rims/README.md) |
 | How are crossed-tool Boolean results reproduced? | [Constructor and oracle](crossed-tool-boolean.md), [interface mechanics](results/crossed-interface-iga/README.md) |
 | What are the requirements and acceptance criteria? | [Kernel specification](kernel-requirements.md) |

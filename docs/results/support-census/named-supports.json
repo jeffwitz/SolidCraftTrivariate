@@ -1,0 +1,264 @@
+{
+  "states": [
+    {
+      "name": "tall_cylinder_box",
+      "source": "docs/site/box-cylinder/tall/box.model.json",
+      "source_validity": "valid",
+      "profile": "eligible_single_complete_parent",
+      "explanation": "one exact complete parent qualifies for the initial uniform tensor mesh",
+      "c0": {
+        "scalar_dofs": 12,
+        "inherited_join_count": 0,
+        "retained_c0_join_count": 0
+      },
+      "c1": {
+        "scalar_dofs": 12,
+        "inherited_join_count": 0,
+        "retained_c0_join_count": 0
+      }
+    },
+    {
+      "name": "tall_cylinder_cylinder",
+      "source": "docs/site/box-cylinder/tall/cylinder.model.json",
+      "source_validity": "valid",
+      "profile": "unsupported_profile",
+      "explanation": "not_demonstrated",
+      "c0": {
+        "scalar_dofs": 119,
+        "inherited_join_count": 0,
+        "retained_c0_join_count": 34
+      },
+      "c1": {
+        "scalar_dofs": 85,
+        "inherited_join_count": 10,
+        "retained_c0_join_count": 24
+      }
+    },
+    {
+      "name": "tall_cylinder_union",
+      "source": "docs/site/box-cylinder/tall/union.model.json",
+      "source_validity": "valid",
+      "profile": "unsupported_profile",
+      "explanation": "not_demonstrated",
+      "c0": {
+        "scalar_dofs": 143,
+        "inherited_join_count": 0,
+        "retained_c0_join_count": 42
+      },
+      "c1": {
+        "scalar_dofs": 109,
+        "inherited_join_count": 10,
+        "retained_c0_join_count": 32
+      }
+    },
+    {
+      "name": "tall_cylinder_intersection",
+      "source": "docs/site/box-cylinder/tall/intersection.model.json",
+      "source_validity": "valid",
+      "profile": "unsupported_profile",
+      "explanation": "not_demonstrated",
+      "c0": {
+        "scalar_dofs": 51,
+        "inherited_join_count": 0,
+        "retained_c0_join_count": 8
+      },
+      "c1": {
+        "scalar_dofs": 51,
+        "inherited_join_count": 0,
+        "retained_c0_join_count": 8
+      }
+    },
+    {
+      "name": "tall_cylinder_a-minus-b",
+      "source": "docs/site/box-cylinder/tall/a-minus-b.model.json",
+      "source_validity": "valid",
+      "profile": "unsupported_profile",
+      "explanation": "exact_through_tunnel_topology",
+      "c0": {
+        "scalar_dofs": 48,
+        "inherited_join_count": 0,
+        "retained_c0_join_count": 4
+      },
+      "c1": {
+        "scalar_dofs": 48,
+        "inherited_join_count": 0,
+        "retained_c0_join_count": 4
+      }
+    },
+    {
+      "name": "tall_cylinder_b-minus-a",
+      "source": "docs/site/box-cylinder/tall/b-minus-a.model.json",
+      "source_validity": "valid",
+      "profile": "unsupported_profile",
+      "explanation": "not_demonstrated",
+      "c0": {
+        "scalar_dofs": 102,
+        "inherited_join_count": 0,
+        "retained_c0_join_count": 16
+      },
+      "c1": {
+        "scalar_dofs": 102,
+        "inherited_join_count": 0,
+        "retained_c0_join_count": 16
+      }
+    },
+    {
+      "name": "tall_cylinder_xor",
+      "source": "docs/site/box-cylinder/tall/xor.model.json",
+      "source_validity": "valid",
+      "profile": "unsupported_profile",
+      "explanation": "not_demonstrated",
+      "c0": {
+        "scalar_dofs": 150,
+        "inherited_join_count": 0,
+        "retained_c0_join_count": 20
+      },
+      "c1": {
+        "scalar_dofs": 150,
+        "inherited_join_count": 0,
+        "retained_c0_join_count": 20
+      }
+    },
+    {
+      "name": "box_cylinder_classic",
+      "source": "docs/site/box-cylinder/classic.model.json",
+      "source_validity": "valid",
+      "profile": "unsupported_profile",
+      "explanation": "no_complete_parent_witness",
+      "c0": {
+        "scalar_dofs": 48,
+        "inherited_join_count": 0,
+        "retained_c0_join_count": 4
+      },
+      "c1": {
+        "scalar_dofs": 48,
+        "inherited_join_count": 0,
+        "retained_c0_join_count": 4
+      }
+    },
+    {
+      "name": "box_cylinder_result",
+      "source": "docs/site/box-cylinder/result.model.json",
+      "source_validity": "valid",
+      "profile": "unsupported_profile",
+      "explanation": "exact_through_tunnel_topology",
+      "c0": {
+        "scalar_dofs": 48,
+        "inherited_join_count": 0,
+        "retained_c0_join_count": 4
+      },
+      "c1": {
+        "scalar_dofs": 48,
+        "inherited_join_count": 0,
+        "retained_c0_join_count": 4
+      }
+    },
+    {
+      "name": "fieldcraft_x40_y80",
+      "source": "docs/site/data/fieldcraft_x40_y80/fieldcraft_x40_y80.model.json",
+      "source_validity": "valid",
+      "profile": "unsupported_profile",
+      "explanation": "no_complete_parent_witness",
+      "c0": {
+        "reason": "unsupported: extrusion requires common ascending physical z planes",
+        "status": "error"
+      },
+      "c1": {
+        "reason": "unsupported: extrusion requires common ascending physical z planes",
+        "status": "error"
+      }
+    },
+    {
+      "name": "fieldcraft_x50_y74",
+      "source": "docs/site/data/fieldcraft_x50_y74/fieldcraft_x50_y74.model.json",
+      "source_validity": "valid",
+      "profile": "unsupported_profile",
+      "explanation": "no_complete_parent_witness",
+      "c0": {
+        "reason": "unsupported: extrusion requires common ascending physical z planes",
+        "status": "error"
+      },
+      "c1": {
+        "reason": "unsupported: extrusion requires common ascending physical z planes",
+        "status": "error"
+      }
+    },
+    {
+      "name": "fieldcraft_x51_y74",
+      "source": "docs/site/data/fieldcraft_x51_y74/fieldcraft_x51_y74.model.json",
+      "source_validity": "valid",
+      "profile": "unsupported_profile",
+      "explanation": "no_complete_parent_witness",
+      "c0": {
+        "reason": "unsupported: extrusion requires common ascending physical z planes",
+        "status": "error"
+      },
+      "c1": {
+        "reason": "unsupported: extrusion requires common ascending physical z planes",
+        "status": "error"
+      }
+    },
+    {
+      "name": "fieldcraft_x64_y64",
+      "source": "docs/site/data/fieldcraft_x64_y64/fieldcraft_x64_y64.model.json",
+      "source_validity": "valid",
+      "profile": "unsupported_profile",
+      "explanation": "no_complete_parent_witness",
+      "c0": {
+        "reason": "unsupported: extrusion requires common ascending physical z planes",
+        "status": "error"
+      },
+      "c1": {
+        "reason": "unsupported: extrusion requires common ascending physical z planes",
+        "status": "error"
+      }
+    },
+    {
+      "name": "fieldcraft_x80_y40",
+      "source": "docs/site/data/fieldcraft_x80_y40/fieldcraft_x80_y40.model.json",
+      "source_validity": "valid",
+      "profile": "unsupported_profile",
+      "explanation": "no_complete_parent_witness",
+      "c0": {
+        "reason": "unsupported: extrusion requires common ascending physical z planes",
+        "status": "error"
+      },
+      "c1": {
+        "reason": "unsupported: extrusion requires common ascending physical z planes",
+        "status": "error"
+      }
+    },
+    {
+      "name": "S2_crossed_union_rise_-3mm",
+      "source": "docs/site/crossed-tools/union--3.json",
+      "source_validity": "qualified_geometry_with_partial_interfaces",
+      "profile": "outside_whole_face_profile",
+      "partial_faces": 4,
+      "complete_faces": 7,
+      "polar_line_constraints": 2
+    },
+    {
+      "name": "S2_crossed_union_rise_+0mm",
+      "source": "docs/site/crossed-tools/union-0.json",
+      "source_validity": "qualified_geometry_with_partial_interfaces",
+      "profile": "outside_whole_face_profile",
+      "partial_faces": 4,
+      "complete_faces": 7,
+      "polar_line_constraints": 2
+    },
+    {
+      "name": "S2_crossed_union_rise_+3mm",
+      "source": "docs/site/crossed-tools/union-3.json",
+      "source_validity": "qualified_geometry_with_partial_interfaces",
+      "profile": "outside_whole_face_profile",
+      "partial_faces": 4,
+      "complete_faces": 7,
+      "polar_line_constraints": 2
+    }
+  ],
+  "profile_observations": {
+    "eligible_single_complete_parent": 1,
+    "unsupported_profile": 13,
+    "outside_whole_face_profile": 3
+  }
+}

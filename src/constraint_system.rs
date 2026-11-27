@@ -160,7 +160,7 @@ impl Ratio {
         Self::new(numerator, denominator)
     }
 
-    fn checked_div(self, other: Self) -> Result<Self, &'static str> {
+    pub(crate) fn checked_div(self, other: Self) -> Result<Self, &'static str> {
         if other.numerator == 0 {
             return Err("rational division by zero");
         }

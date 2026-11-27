@@ -194,3 +194,18 @@ pub mod s3_stock_rim;
 pub mod bracket_edge_edit;
 pub mod fieldcraft_rims;
 mod fixed_span_topology;
+
+pub mod extracted_space;
+pub mod inherited_space;
+pub mod section_manufactured;
+mod spline_constraints;
+pub mod spline_support;
+mod transverse_jets;
+
+pub mod cube_convergence;
+pub mod pair_parent;
+pub mod parent_field;
+pub mod spline_load;
+mod spline_reconstruction;
+pub mod thb_job;
+pub mod thb_strip;

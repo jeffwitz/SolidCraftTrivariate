@@ -108,7 +108,7 @@ impl RationalBezierMap {
     }
 }
 
-fn basis(degree: usize, t: f64) -> ([f64; 4], [f64; 4]) {
+pub(crate) fn basis(degree: usize, t: f64) -> ([f64; 4], [f64; 4]) {
     let a = 1. - t;
     match degree {
         1 => ([a, t, 0., 0.], [-1., 1., 0., 0.]),

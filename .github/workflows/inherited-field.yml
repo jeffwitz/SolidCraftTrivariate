@@ -1,0 +1,72 @@
+name: Inherited spline fields
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'src/**'
+      - 'tests/**'
+      - 'scripts/*spline*'
+      - 'scripts/*inherited*'
+      - 'scripts/*support*'
+      - 'scripts/*transition*'
+      - 'scripts/check_parent*.py'
+      - 'scripts/check_pair*.py'
+      - 'scripts/check_s3_spline_job.py'
+      - 'scripts/check_polygon_join_mechanics.py'
+      - 'scripts/*thb*'
+      - 'docs/results/inherited-continuity/**'
+      - 'Makefile'
+      - '.github/workflows/inherited-field.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  continuum:
+    strategy:
+      fail-fast: false
+      matrix:
+        evaluation: [corpus, refinement]
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install numpy
+      - if: matrix.evaluation == 'corpus'
+        run: cargo clippy --all-targets --locked --offline -- -D warnings
+      - if: matrix.evaluation == 'corpus'
+        run: |
+          cargo test --release --locked --offline --test inherited_continuity --test extracted_space --test pair_parent
+          python3 -m unittest discover -s tests -p 'test_*support*.py'
+      - if: matrix.evaluation == 'refinement'
+        run: cargo test --release --locked --offline --test local_thb_job
+      - if: matrix.evaluation == 'corpus'
+        run: make check-inherited-corpus
+      - if: matrix.evaluation == 'refinement'
+        run: make check-local-thb
+      - uses: actions/upload-artifact@v4
+        with:
+          name: inherited-field-${{ matrix.evaluation }}
+          path: |
+            build/pair-parent-expanded/summary.json
+            build/pair-parent-corpus/summary.json
+            build/support-census/census.json
+            build/support-census/role-index.json
+            build/transverse-transitions/summary.json
+            build/inherited-mechanics/results.json
+            build/polygon-join-mechanics/results.json
+            build/inherited-oracle/jets.json
+            build/canonical-parent-field/summary.json
+            build/parent-spectrum/spectrum.json
+            build/thb-mechanics/function-values.json
+            build/thb-mechanics/results.json
+            build/thb-mechanics/traction-audit.json
+            build/curved-supports/chart-jets.json
+            build/curved-supports/s3-stress-audit.json
+            build/cube-convergence/replay.json
+          if-no-files-found: error

@@ -75,3 +75,9 @@ The native C⁰ tensor assembler takes source Bézier maps and a separate placem
 ### Relation to feature-based volume construction
 
 Chen, Bu, Jin, Xu and Li (2022) describe partitioning an interactively specified feature network, mapping the subnetworks to volumetric patches, then merging and adjusting the patches for IGA. Feature-first volume construction thus has a direct precedent. The distinguishing, testable claim here concerns the admitted families: replayable sketch operations, equality of homogeneous coefficients after extraction, explicit subface lineage, and a recorded certificate or refusal. The authors' published abstract describes mechanical and free-form examples. A comparison of their detailed acceptance criteria and guarantees requires the full paper. [Chen et al., Computer-Aided Design 146, 103228](https://doi.org/10.1016/j.cad.2022.103228)
+
+## Geometry supports and displacement spaces
+
+A construction block owns its exact geometric map and named boundary sides. A source support can cover several such blocks. Its restrictions record the parent coordinate intervals, signed axis maps and the homogeneous scale of each block. Parent recovery verifies complete control nets. The field compiler can then choose knot multiplicities and degrees independently of the representation used to export the solid.
+
+The native elasticity assembler receives a variable-length list of global basis indices, values and physical gradients at an integration point. Both the canonical tensor field and the locally refined field implement this interface. Integration still splits at geometry and field breakpoints. Loads and essential conditions follow the source sides through refinement. The [inherited-continuity campaign](results/inherited-continuity/README.md) records which interfaces were admitted, what extra smoothness cost mechanically, and the limits of the single-support hierarchical profile.

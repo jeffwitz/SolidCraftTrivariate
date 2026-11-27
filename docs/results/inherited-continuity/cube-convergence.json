@@ -1,0 +1,489 @@
+{
+  "acceptance_deviations": [
+    "primary C2 rate band failed at n=2 to n=4",
+    "primary C2/C0 fine energy error ratio exceeded 1.5",
+    "initial strict gate rejected the frozen observations"
+  ],
+  "analytic_diagnostics": {
+    "body_axial_resultant_N": 21.991148575128552,
+    "bottom_support_reaction_N": -10.995574287564276,
+    "exact_strain_energy_N_mm": 8.635903850953188,
+    "top_traction_axial_resultant_N": -10.995574287564276
+  },
+  "log_dof_error_sample_covariance": {
+    "C0_displacement_L2": -5.175001845622205,
+    "C0_energy": -3.8338820396722992,
+    "C2_displacement_L2": -1.937158735134307,
+    "C2_energy": -1.5032811016405365
+  },
+  "primary_C2_to_C0_energy_error_ratio_n4": 2.0957067425592553,
+  "primary_q8": {
+    "geometry_parent": "single_affine_unit_cube",
+    "levels_per_axis": [
+      1,
+      2,
+      4
+    ],
+    "observations": [
+      {
+        "boundary_face_observations": 6,
+        "cell_count": 1,
+        "cells_per_axis": 1,
+        "continuity_label": "C2_maximum",
+        "interior_continuity": 2,
+        "max_affine_gradient_error": 8.27463098040937e-16,
+        "max_affine_value_error_mm": 3.3306690738754696e-16,
+        "max_geometry_position_error_mm": 0,
+        "max_jacobian_error": 0,
+        "min_sampled_determinant": 1,
+        "result": {
+          "assembly_ms": 19.751438,
+          "block_nnz": 4096,
+          "energy_N_mm": 8.52118617614453,
+          "free_vector_dofs": 144,
+          "manufactured_field": "section_axial_sine_mms_v1",
+          "mean_displacement_z_mm": 0.6296740432818335,
+          "quadrature": 8,
+          "quadrature_points": 512,
+          "relative_displacement_L2": 0.046643965123194145,
+          "relative_energy_norm": 0.11525539675419867,
+          "relative_residual": 7.430040696608978e-13,
+          "relative_stress_L2": 0.10593884029683738,
+          "scalar_dofs": 64,
+          "schema": "section_manufactured_result_v1",
+          "solve_ms": 1.367508,
+          "virtual_work_relative_defect": 2.9272545128972437e-13,
+          "volume_mm3": 0.9999999999999987
+        },
+        "scalar_dofs": 64
+      },
+      {
+        "boundary_face_observations": 24,
+        "cell_count": 8,
+        "cells_per_axis": 2,
+        "continuity_label": "C2_maximum",
+        "interior_continuity": 2,
+        "max_affine_gradient_error": 2.4303475898435067e-15,
+        "max_affine_value_error_mm": 5.551115123125783e-16,
+        "max_geometry_position_error_mm": 1.1102230246251565e-16,
+        "max_jacobian_error": 0,
+        "min_sampled_determinant": 0.125,
+        "result": {
+          "assembly_ms": 143.92643099999998,
+          "block_nnz": 12167,
+          "energy_N_mm": 8.633561986700533,
+          "free_vector_dofs": 300,
+          "manufactured_field": "section_axial_sine_mms_v1",
+          "mean_displacement_z_mm": 0.63645856670523,
+          "quadrature": 8,
+          "quadrature_points": 4096,
+          "relative_displacement_L2": 0.003411203434748927,
+          "relative_energy_norm": 0.016467473233362222,
+          "relative_residual": 9.324224016209921e-12,
+          "relative_stress_L2": 0.016421921852754116,
+          "scalar_dofs": 125,
+          "schema": "section_manufactured_result_v1",
+          "solve_ms": 12.163934,
+          "virtual_work_relative_defect": 2.687391359150663e-15,
+          "volume_mm3": 1.0000000000000064
+        },
+        "scalar_dofs": 125
+      },
+      {
+        "boundary_face_observations": 96,
+        "cell_count": 64,
+        "cells_per_axis": 4,
+        "continuity_label": "C2_maximum",
+        "interior_continuity": 2,
+        "max_affine_gradient_error": 5.734995811579324e-15,
+        "max_affine_value_error_mm": 6.661338147750939e-16,
+        "max_geometry_position_error_mm": 5.551115123125783e-16,
+        "max_jacobian_error": 1.7763568394002505e-15,
+        "min_sampled_determinant": 0.015624999999999944,
+        "result": {
+          "assembly_ms": 967.363534,
+          "block_nnz": 50653,
+          "energy_N_mm": 8.635818425085398,
+          "free_vector_dofs": 882,
+          "manufactured_field": "section_axial_sine_mms_v1",
+          "mean_displacement_z_mm": 0.6366215676900293,
+          "quadrature": 8,
+          "quadrature_points": 32768,
+          "relative_displacement_L2": 0.00044404581226912827,
+          "relative_energy_norm": 0.0031451460233471525,
+          "relative_residual": 9.80887421272775e-12,
+          "relative_stress_L2": 0.0031389986257770877,
+          "scalar_dofs": 343,
+          "schema": "section_manufactured_result_v1",
+          "solve_ms": 69.20581,
+          "virtual_work_relative_defect": 5.3062457510184066e-15,
+          "volume_mm3": 0.9999999999998036
+        },
+        "scalar_dofs": 343
+      },
+      {
+        "boundary_face_observations": 6,
+        "cell_count": 1,
+        "cells_per_axis": 1,
+        "continuity_label": "C0_bernstein",
+        "interior_continuity": 0,
+        "max_affine_gradient_error": 8.27463098040937e-16,
+        "max_affine_value_error_mm": 3.3306690738754696e-16,
+        "max_geometry_position_error_mm": 0,
+        "max_jacobian_error": 0,
+        "min_sampled_determinant": 1,
+        "result": {
+          "assembly_ms": 15.19819,
+          "block_nnz": 4096,
+          "energy_N_mm": 8.52118617614453,
+          "free_vector_dofs": 144,
+          "manufactured_field": "section_axial_sine_mms_v1",
+          "mean_displacement_z_mm": 0.6296740432818335,
+          "quadrature": 8,
+          "quadrature_points": 512,
+          "relative_displacement_L2": 0.046643965123194145,
+          "relative_energy_norm": 0.11525539675419867,
+          "relative_residual": 7.430040696608978e-13,
+          "relative_stress_L2": 0.10593884029683738,
+          "scalar_dofs": 64,
+          "schema": "section_manufactured_result_v1",
+          "solve_ms": 1.47787,
+          "virtual_work_relative_defect": 2.9272545128972437e-13,
+          "volume_mm3": 0.9999999999999987
+        },
+        "scalar_dofs": 64
+      },
+      {
+        "boundary_face_observations": 24,
+        "cell_count": 8,
+        "cells_per_axis": 2,
+        "continuity_label": "C0_bernstein",
+        "interior_continuity": 0,
+        "max_affine_gradient_error": 2.239528007486058e-15,
+        "max_affine_value_error_mm": 7.771561172376096e-16,
+        "max_geometry_position_error_mm": 0,
+        "max_jacobian_error": 0,
+        "min_sampled_determinant": 0.125,
+        "result": {
+          "assembly_ms": 112.845653,
+          "block_nnz": 29791,
+          "energy_N_mm": 8.634738164220114,
+          "free_vector_dofs": 882,
+          "manufactured_field": "section_axial_sine_mms_v1",
+          "mean_displacement_z_mm": 0.6364550824476464,
+          "quadrature": 8,
+          "quadrature_points": 4096,
+          "relative_displacement_L2": 0.0021770625980608604,
+          "relative_energy_norm": 0.01161815128700155,
+          "relative_residual": 9.07427144226342e-12,
+          "relative_stress_L2": 0.011183751949283343,
+          "scalar_dofs": 343,
+          "schema": "section_manufactured_result_v1",
+          "solve_ms": 46.882282,
+          "virtual_work_relative_defect": 1.5696918732518082e-15,
+          "volume_mm3": 1.0000000000000067
+        },
+        "scalar_dofs": 343
+      },
+      {
+        "boundary_face_observations": 96,
+        "cell_count": 64,
+        "cells_per_axis": 4,
+        "continuity_label": "C0_bernstein",
+        "interior_continuity": 0,
+        "max_affine_gradient_error": 4.373237882937531e-15,
+        "max_affine_value_error_mm": 7.771561172376096e-16,
+        "max_geometry_position_error_mm": 0,
+        "max_jacobian_error": 1.1102230246251565e-16,
+        "min_sampled_determinant": 0.015625,
+        "result": {
+          "assembly_ms": 915.228519,
+          "block_nnz": 226981,
+          "energy_N_mm": 8.635884400554932,
+          "free_vector_dofs": 6084,
+          "manufactured_field": "section_axial_sine_mms_v1",
+          "mean_displacement_z_mm": 0.6366167210420078,
+          "quadrature": 8,
+          "quadrature_points": 32768,
+          "relative_displacement_L2": 0.00013316929930979986,
+          "relative_energy_norm": 0.0015007567420937593,
+          "relative_residual": 9.419041132730327e-12,
+          "relative_stress_L2": 0.0014747202308443132,
+          "scalar_dofs": 2197,
+          "schema": "section_manufactured_result_v1",
+          "solve_ms": 559.149529,
+          "virtual_work_relative_defect": 1.7297937117543552e-15,
+          "volume_mm3": 0.9999999999998036
+        },
+        "scalar_dofs": 2197
+      }
+    ],
+    "quadrature_order": 8,
+    "schema": "solidcraft_uniform_cubic_cube_convergence_v1",
+    "spline_degree": 3
+  },
+  "primary_verdicts": {
+    "C0_bernstein": {
+      "displacement_L2_order": 4.031049461908917,
+      "energy_order": 2.9526184669557263,
+      "verdict": "pass"
+    },
+    "C2_maximum": {
+      "displacement_L2_order": 2.9415003634459285,
+      "energy_order": 2.388420299683446,
+      "verdict": "fail"
+    }
+  },
+  "q12_finest_quadrature": {
+    "geometry_parent": "single_affine_unit_cube",
+    "levels_per_axis": [
+      4
+    ],
+    "observations": [
+      {
+        "boundary_face_observations": 96,
+        "cell_count": 64,
+        "cells_per_axis": 4,
+        "continuity_label": "C2_maximum",
+        "interior_continuity": 2,
+        "max_affine_gradient_error": 5.734995811579324e-15,
+        "max_affine_value_error_mm": 6.661338147750939e-16,
+        "max_geometry_position_error_mm": 5.551115123125783e-16,
+        "max_jacobian_error": 1.7763568394002505e-15,
+        "min_sampled_determinant": 0.015624999999999944,
+        "result": {
+          "assembly_ms": 3009.441796,
+          "block_nnz": 50653,
+          "energy_N_mm": 8.635818425073863,
+          "free_vector_dofs": 882,
+          "manufactured_field": "section_axial_sine_mms_v1",
+          "mean_displacement_z_mm": 0.6366215676898557,
+          "quadrature": 12,
+          "quadrature_points": 110592,
+          "relative_displacement_L2": 0.00044404581237732725,
+          "relative_energy_norm": 0.0031451460233470636,
+          "relative_residual": 9.838096746790337e-12,
+          "relative_stress_L2": 0.003138998625771731,
+          "scalar_dofs": 343,
+          "schema": "section_manufactured_result_v1",
+          "solve_ms": 67.24344,
+          "virtual_work_relative_defect": 8.308353598361132e-15,
+          "volume_mm3": 0.9999999999999619
+        },
+        "scalar_dofs": 343
+      },
+      {
+        "boundary_face_observations": 96,
+        "cell_count": 64,
+        "cells_per_axis": 4,
+        "continuity_label": "C0_bernstein",
+        "interior_continuity": 0,
+        "max_affine_gradient_error": 4.373237882937531e-15,
+        "max_affine_value_error_mm": 7.771561172376096e-16,
+        "max_geometry_position_error_mm": 0,
+        "max_jacobian_error": 1.1102230246251565e-16,
+        "min_sampled_determinant": 0.015625,
+        "result": {
+          "assembly_ms": 2810.6618430000003,
+          "block_nnz": 226981,
+          "energy_N_mm": 8.635884400558867,
+          "free_vector_dofs": 6084,
+          "manufactured_field": "section_axial_sine_mms_v1",
+          "mean_displacement_z_mm": 0.6366167210419023,
+          "quadrature": 12,
+          "quadrature_points": 110592,
+          "relative_displacement_L2": 0.0001331692993679737,
+          "relative_energy_norm": 0.0015007567420938092,
+          "relative_residual": 9.207909105102211e-12,
+          "relative_stress_L2": 0.0014747202308292209,
+          "scalar_dofs": 2197,
+          "schema": "section_manufactured_result_v1",
+          "solve_ms": 558.792952,
+          "virtual_work_relative_defect": 3.340623558917942e-15,
+          "volume_mm3": 0.9999999999999619
+        },
+        "scalar_dofs": 2197
+      }
+    ],
+    "quadrature_order": 12,
+    "schema": "solidcraft_uniform_cubic_cube_convergence_v1",
+    "spline_degree": 3
+  },
+  "q8_q12_relative_defects": [
+    {
+      "quantity": "relative_displacement_L2",
+      "relative_defect": 2.4366626777166247e-10
+    },
+    {
+      "quantity": "relative_energy_norm",
+      "relative_defect": 2.826723385300776e-14
+    },
+    {
+      "quantity": "relative_displacement_L2",
+      "relative_defect": 4.3684125131072155e-10
+    },
+    {
+      "quantity": "relative_energy_norm",
+      "relative_defect": 3.3232101202992554e-14
+    }
+  ],
+  "schema": "cube_convergence_replay_v1",
+  "supplement_q8_levels_4_to_8": {
+    "geometry_parent": "single_affine_unit_cube",
+    "levels_per_axis": [
+      4,
+      8
+    ],
+    "observations": [
+      {
+        "boundary_face_observations": 96,
+        "cell_count": 64,
+        "cells_per_axis": 4,
+        "continuity_label": "C2_maximum",
+        "interior_continuity": 2,
+        "max_affine_gradient_error": 5.734995811579324e-15,
+        "max_affine_value_error_mm": 6.661338147750939e-16,
+        "max_geometry_position_error_mm": 5.551115123125783e-16,
+        "max_jacobian_error": 1.7763568394002505e-15,
+        "min_sampled_determinant": 0.015624999999999944,
+        "result": {
+          "assembly_ms": 928.136491,
+          "block_nnz": 50653,
+          "energy_N_mm": 8.635818425085398,
+          "free_vector_dofs": 882,
+          "manufactured_field": "section_axial_sine_mms_v1",
+          "mean_displacement_z_mm": 0.6366215676900293,
+          "quadrature": 8,
+          "quadrature_points": 32768,
+          "relative_displacement_L2": 0.00044404581226912827,
+          "relative_energy_norm": 0.0031451460233471525,
+          "relative_residual": 9.80887421272775e-12,
+          "relative_stress_L2": 0.0031389986257770877,
+          "scalar_dofs": 343,
+          "schema": "section_manufactured_result_v1",
+          "solve_ms": 68.46479699999999,
+          "virtual_work_relative_defect": 5.3062457510184066e-15,
+          "volume_mm3": 0.9999999999998036
+        },
+        "scalar_dofs": 343
+      },
+      {
+        "boundary_face_observations": 384,
+        "cell_count": 512,
+        "cells_per_axis": 8,
+        "continuity_label": "C2_maximum",
+        "interior_continuity": 2,
+        "max_affine_gradient_error": 1.608782551620891e-14,
+        "max_affine_value_error_mm": 9.992007221626409e-16,
+        "max_geometry_position_error_mm": 8.881784197001252e-16,
+        "max_jacobian_error": 1.1225829293914913e-15,
+        "min_sampled_determinant": 0.0019531249999999816,
+        "result": {
+          "assembly_ms": 7354.537435,
+          "block_nnz": 274625,
+          "energy_N_mm": 8.63590272472011,
+          "free_vector_dofs": 3630,
+          "manufactured_field": "section_axial_sine_mms_v1",
+          "mean_displacement_z_mm": 0.6366197917983588,
+          "quadrature": 8,
+          "quadrature_points": 262144,
+          "relative_displacement_L2": 2.3177581544381148e-05,
+          "relative_energy_norm": 0.0003611272662037645,
+          "relative_residual": 7.91880437279153e-12,
+          "relative_stress_L2": 0.0003610307437603182,
+          "scalar_dofs": 1331,
+          "schema": "section_manufactured_result_v1",
+          "solve_ms": 508.3343259999999,
+          "virtual_work_relative_defect": 5.707620793198614e-15,
+          "volume_mm3": 0.9999999999998759
+        },
+        "scalar_dofs": 1331
+      },
+      {
+        "boundary_face_observations": 96,
+        "cell_count": 64,
+        "cells_per_axis": 4,
+        "continuity_label": "C0_bernstein",
+        "interior_continuity": 0,
+        "max_affine_gradient_error": 4.373237882937531e-15,
+        "max_affine_value_error_mm": 7.771561172376096e-16,
+        "max_geometry_position_error_mm": 0,
+        "max_jacobian_error": 1.1102230246251565e-16,
+        "min_sampled_determinant": 0.015625,
+        "result": {
+          "assembly_ms": 892.12934,
+          "block_nnz": 226981,
+          "energy_N_mm": 8.635884400554932,
+          "free_vector_dofs": 6084,
+          "manufactured_field": "section_axial_sine_mms_v1",
+          "mean_displacement_z_mm": 0.6366167210420078,
+          "quadrature": 8,
+          "quadrature_points": 32768,
+          "relative_displacement_L2": 0.00013316929930979986,
+          "relative_energy_norm": 0.0015007567420937593,
+          "relative_residual": 9.419041132730327e-12,
+          "relative_stress_L2": 0.0014747202308443132,
+          "scalar_dofs": 2197,
+          "schema": "section_manufactured_result_v1",
+          "solve_ms": 559.0447320000001,
+          "virtual_work_relative_defect": 1.7297937117543552e-15,
+          "volume_mm3": 0.9999999999998036
+        },
+        "scalar_dofs": 2197
+      },
+      {
+        "boundary_face_observations": 384,
+        "cell_count": 512,
+        "cells_per_axis": 8,
+        "continuity_label": "C0_bernstein",
+        "interior_continuity": 0,
+        "max_affine_gradient_error": 9.743941764561725e-15,
+        "max_affine_value_error_mm": 9.992007221626409e-16,
+        "max_geometry_position_error_mm": 0,
+        "max_jacobian_error": 1.1102230246251565e-16,
+        "min_sampled_determinant": 0.0019531249999999983,
+        "result": {
+          "assembly_ms": 7165.885204,
+          "block_nnz": 1771561,
+          "energy_N_mm": 8.635903540743538,
+          "free_vector_dofs": 45000,
+          "manufactured_field": "section_axial_sine_mms_v1",
+          "mean_displacement_z_mm": 0.6366197158324985,
+          "quadrature": 8,
+          "quadrature_points": 262144,
+          "relative_displacement_L2": 8.142832186249318e-06,
+          "relative_energy_norm": 0.00018952853342286337,
+          "relative_residual": 9.641564478506211e-12,
+          "relative_stress_L2": 0.00018792243979885213,
+          "scalar_dofs": 15625,
+          "schema": "section_manufactured_result_v1",
+          "solve_ms": 4880.921334,
+          "virtual_work_relative_defect": 1.899554469769303e-15,
+          "volume_mm3": 0.9999999999998759
+        },
+        "scalar_dofs": 15625
+      }
+    ],
+    "quadrature_order": 8,
+    "schema": "solidcraft_uniform_cubic_cube_convergence_v1",
+    "spline_degree": 3
+  },
+  "supplement_rate_bands": {
+    "C0_displacement_L2": true,
+    "C0_energy": true,
+    "C2_displacement_L2": true,
+    "C2_energy": true
+  },
+  "supplement_verdicts": {
+    "C0_bernstein": {
+      "displacement_L2_order": 4.0315870428741984,
+      "energy_order": 2.985203182379385,
+      "verdict": "pass"
+    },
+    "C2_maximum": {
+      "displacement_L2_order": 4.259906585440534,
+      "energy_order": 3.1225477429753794,
+      "verdict": "pass"
+    }
+  }
+}

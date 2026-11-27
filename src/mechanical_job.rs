@@ -41,7 +41,7 @@ pub(crate) fn vector(x: &Json) -> Result<Vector, &'static str> {
     };
     Ok([finite(a)?, finite(b)?, finite(c)?])
 }
-fn side(block: &str, s: &str) -> Result<BlockSide, &'static str> {
+pub(crate) fn side(block: &str, s: &str) -> Result<BlockSide, &'static str> {
     let (axis, upper) = match s {
         "u0" => (0, false),
         "u1" => (0, true),
@@ -110,7 +110,7 @@ pub(crate) enum Traction {
     Stress([Vector; 3]),
 }
 impl Traction {
-    fn parse(x: &Json) -> Result<Self, &'static str> {
+    pub(crate) fn parse(x: &Json) -> Result<Self, &'static str> {
         if let Ok(v) = x.field("vector_mpa") {
             x.keys(&["select", "vector_mpa"])?;
             return Ok(Self::Vector(vector(v)?));
@@ -224,6 +224,12 @@ fn mounting_rank(points: &[Vector], fixed: &[BTreeMap<usize, Ratio>; 3]) -> usiz
 /// Build the effective space, apply essential conditions, solve,
 /// and return a reproducible result document. Publication is the caller's job.
 pub fn solve_job(model: &Json, job: &Json) -> Result<Json, &'static str> {
+    if matches!(
+        model.field("schema").and_then(Json::text),
+        Ok("local_thb_analysis_v1" | "solidcraft_inherited_analysis_v1")
+    ) {
+        return crate::spline_load::solve(model, job);
+    }
     let (inner, fixed) = crate::sector_analysis::unpack(model, job)?;
     let mut result = run_job(model, inner, None, fixed)?;
     if fixed {

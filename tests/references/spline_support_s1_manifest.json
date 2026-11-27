@@ -1,0 +1,59 @@
+{
+  "schema": "spline_support_s1_manifest_v1",
+  "published_baseline": "3f9d2d915c918121503668691b489a39781c6dd5",
+  "baseline_git_tree": "a1942f7a16f247490dab6139fe3337c688830405",
+  "starting_revision": "da94fed46977013eeec134c734eb2d91d3cf5ebe",
+  "starting_branch": "gallery/thicker-polygons",
+  "starting_worktree": "clean except untracked upstream symlink",
+  "owned_files": [
+    "src/spline_support.rs",
+    "tests/references/spline_support_s1_manifest.json",
+    "scripts/check_spline_parent.py",
+    "scripts/check_spline_eligibility.py",
+    "docs/spline-support-s1.md"
+  ],
+  "parent_fixture": "tests/references/nurbs_strip.recipe.json",
+  "required_geometry": {
+    "degrees": [3, 1, 1],
+    "control_shape": [5, 2, 2],
+    "control_count": 20,
+    "source_knots_u": [-2, -2, -2, -2, 1, 4, 4, 4, 4],
+    "source_domain_u": [-2, 4],
+    "span_intervals": [[-2, 1], [1, 4]],
+    "source_span_occurrences": 32,
+    "c0_unique_controls": 28,
+    "simple_interior_knot": 1,
+    "inherited_continuity_order": 2
+  },
+  "exact_acceptance": [
+    "Rebuild the source model and reject any forged model field or lineage.",
+    "Require paired degree and knot vectors, identical homogeneous x controls and positive shared weights.",
+    "Recover the 20-control tensor parent in w-fast, then v, then u storage order.",
+    "On each actual source knot interval, compare every source block homogeneous control against exact knot-inserted parent restriction up to one positive constant gauge.",
+    "Retain actual source knot coordinates and record the affine local-to-parent map, axis permutation, reversal, block ID, event and positive gauge.",
+    "Derive continuity from source knot multiplicity and record parameter frame, direction, method and assumptions.",
+    "Independent Fraction oracle checks the direct Cox-de Boor parent against every extracted block on seven exact parameter locations per span; cross-multiplied degree-six identities make this an exact span identity check."
+  ],
+  "diagnostic_thresholds": {
+    "independent_oracle": "exact Fraction equality; no floating tolerance",
+    "round_trip": "serialized support reparses to identical exact data",
+    "nonuniform_metrics": "source derivatives retain actual interval length; no unit-span substitution"
+  },
+  "negative_cases": [
+    "changed block homogeneous coefficient",
+    "changed or missing source interval",
+    "mismatched source knot vectors",
+    "nonpositive source weight",
+    "different x map or weight profile between lower and upper curves",
+    "invalid axis permutation or nonpositive source gauge"
+  ],
+  "nonuniform_lineage_fixture": "tests/references/nurbs_cross_bores.recipe.json",
+  "additional_column_fixtures": [
+    "tests/references/box_minus_cylinder.recipe.json",
+    "tests/references/sketch_boolean_blind_pocket.recipe.json",
+    "tests/references/nurbs_cross_bores.recipe.json"
+  ],
+  "source_column_contract": "For local degree-one directions, verify equal positive endpoint weights and exact H1-H0=tW for every transverse control; t is a general exact 3D vector.",
+  "oracle": "Independent Python Fraction implementation of Cox-de Boor evaluation and tensor-product strip interpolation; it does not call Rust extraction or construction code.",
+  "coverage_note": "The mandatory strip parent is the S1 positive case. The synchronized multi-support recipe is lineage/metric coverage only and is not admitted as a single-parent T-spline body."
+}

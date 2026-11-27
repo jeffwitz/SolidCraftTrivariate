@@ -51,7 +51,7 @@ fn publish(target: &Path, contents: &str) -> std::io::Result<()> {
     }
 }
 
-const COMMANDS_AND_EVALUATORS: &str = r#"{"commands":["build","audit","assemble-patches","reduce-axial-knots","plan-sketch","crossed-boolean","evaluate","capabilities","export-step","certify-map","export-analysis","export-sketch-analysis","export-nurbs-space","export-adaptive","inspect-travel","solve-job","differentiate-job","import-solidcraft","import-solidcraft-sketch","export-field-vtu","export-geometry-vtu","edit-bore-intervals","edit-s3-stock-rim","edit-fieldcraft-bore-rims"],"evaluators":{"rational_bezier_tensor":{"degrees":[[1,1,1],[1,1,2],[1,1,3],[1,2,1],[1,2,2],[1,2,3],[1,3,1],[1,3,2],[1,3,3],[2,1,1],[2,1,2],[2,1,3],[2,2,1],[2,2,2],[2,2,3],[2,3,1],[2,3,2],[2,3,3],[3,1,1],[3,1,2],[3,1,3],[3,2,1],[3,2,2],[3,2,3],[3,3,1],[3,3,2],[3,3,3]],"domain":[[0,1],[0,1],[0,1]]}}}"#;
+const COMMANDS_AND_EVALUATORS: &str = r#"{"commands":["build","audit","assemble-patches","reduce-axial-knots","recover-spline-parent","recover-pair-parents","refine-thb-strip","export-thb-extraction","solve-thb-strip","check-thb-galerkin","export-parent-field","audit-parent-field","check-parent-galerkin","export-parent-stiffness","solve-parent-field","spline-eligibility","recover-translation-columns","solve-inherited","export-inherited-space","audit-inherited-space","solve-inherited-space","plan-sketch","crossed-boolean","evaluate","capabilities","export-step","certify-map","export-analysis","export-sketch-analysis","export-nurbs-space","export-adaptive","inspect-travel","solve-job","differentiate-job","import-solidcraft","import-solidcraft-sketch","export-field-vtu","export-geometry-vtu","edit-bore-intervals","edit-s3-stock-rim","edit-fieldcraft-bore-rims"],"evaluators":{"rational_bezier_tensor":{"degrees":[[1,1,1],[1,1,2],[1,1,3],[1,2,1],[1,2,2],[1,2,3],[1,3,1],[1,3,2],[1,3,3],[2,1,1],[2,1,2],[2,1,3],[2,2,1],[2,2,2],[2,2,3],[2,3,1],[2,3,2],[2,3,3],[3,1,1],[3,1,2],[3,1,3],[3,2,1],[3,2,2],[3,2,3],[3,3,1],[3,3,2],[3,3,3]],"domain":[[0,1],[0,1],[0,1]]}}}"#;
 
 fn capabilities() -> Result<Json, String> {
     let mut result = parse(COMMANDS_AND_EVALUATORS)?;
@@ -314,6 +314,91 @@ fn run(args: &[String]) -> Result<Json, String> {
             publish(Path::new(target),&model.to_string()).map_err(|e|e.to_string())?;
             Ok(object([("status",Json::String("exported".into())),("blocks",Json::Number(model.field("blocks")?.items()?.len().to_string()))]))
         }
+        [cmd,model,target] if cmd=="recover-pair-parents"=>{
+            let source=read(model)?;
+            let audit=solidcraft_trivariate::interchange::audit(&source)?;
+            if audit.field("status")?.text()?!="valid" {
+                return Err("pair parent recovery requires an audited valid source model".into());
+            }
+            let report=solidcraft_trivariate::pair_parent::recover_model_interfaces(&source)?;
+            publish(Path::new(target),&report.to_string()).map_err(|e|e.to_string())?;
+            Ok(object([
+                ("status",Json::String("exported".into())),
+                ("interfaces",report.field("interface_count")?.clone()),
+                ("recovered",report.field("recovered_count")?.clone()),
+                ("refused",report.field("refused_count")?.clone()),
+                ("indeterminate",report.field("indeterminate_count")?.clone()),
+            ]))
+        }
+        [cmd,model,plan,target] if cmd=="refine-thb-strip"=>{
+            let source=read(model)?;
+            let package=match solidcraft_trivariate::thb_job::compile(&source,&read(plan)?) {
+                Ok(value)=>value,
+                Err(reason)=>return Ok(solidcraft_trivariate::thb_job::refusal(&source,reason)),
+            };
+            publish(Path::new(target),&package.to_string()).map_err(|e|e.to_string())?;
+            Ok(object([("status",Json::String("exported".into())),("scalar_dofs",package.field("field")?.field("local_scalar_dofs")?.clone())]))
+        }
+        [cmd,package,target] if cmd=="export-thb-extraction"=>{
+            let field=solidcraft_trivariate::thb_job::replay(&read(package)?)?;
+            publish(Path::new(target),&field.document().to_string()).map_err(|e|e.to_string())?;
+            Ok(object([("status",Json::String("exported".into())),("leaf_count",Json::Number(field.leaves.len().to_string()))]))
+        }
+        [cmd,package,q] if cmd=="check-thb-galerkin"=>Ok(solidcraft_trivariate::thb_job::galerkin(&read(package)?,q.parse().map_err(|_|"invalid quadrature order")?)?),
+        [cmd,package,mode,job,target] if cmd=="solve-thb-strip"=>{
+            let result=solidcraft_trivariate::thb_job::solve(&read(package)?,mode,&read(job)?)?;
+            publish(Path::new(target),&result.to_string()).map_err(|e|e.to_string())?;
+            Ok(result)
+        }
+        [cmd,model,target] if cmd=="export-parent-field"=>{
+            let field=solidcraft_trivariate::parent_field::build(&read(model)?)?;
+            publish(Path::new(target),&field.extraction.to_string()).map_err(|e|e.to_string())?;
+            Ok(object([("status",Json::String("exported".into())),("scalar_dofs",Json::Number(field.ndof.to_string()))]))
+        }
+        [cmd,model,q,target] if cmd=="export-parent-stiffness"=>{
+            let package=solidcraft_trivariate::parent_field::stiffness_package(&read(model)?,q.parse().map_err(|_|"invalid quadrature order")?)?;
+            publish(Path::new(target),&package.to_string()).map_err(|e|e.to_string())?;
+            Ok(object([("status",Json::String("exported".into()))]))
+        }
+        [cmd,model,q] if cmd=="check-parent-galerkin"=>Ok(solidcraft_trivariate::parent_field::check_galerkin(&read(model)?,q.parse().map_err(|_|"invalid quadrature order")?)?),
+        [cmd,model,field] if cmd=="audit-parent-field"=>{
+            let parent=solidcraft_trivariate::parent_field::build(&read(model)?)?;
+            if parent.extraction!=read(field)?{return Err("parent field differs from exact extraction replay".into());}
+            Ok(object([("status",Json::String("valid".into())),("scalar_dofs",Json::Number(parent.ndof.to_string()))]))
+        }
+        [cmd,model,job,target] if cmd=="solve-parent-field"=>{
+            let field=solidcraft_trivariate::parent_field::build(&read(model)?)?;
+            let answer=field.solve(&read(job)?)?;
+            publish(Path::new(target),&answer.to_string()).map_err(|e|e.to_string())?;
+            Ok(answer)
+        }
+        [cmd,model] if cmd=="spline-eligibility"=>Ok(solidcraft_trivariate::spline_support::eligibility_report(&read(model)?)?),
+        [cmd,model,axis] if cmd=="recover-translation-columns"=>Ok(solidcraft_trivariate::spline_support::recover_translation_columns(&read(model)?,axis.parse().map_err(|_|"expected a local axis in 0..3")?)?),
+        [cmd,model,job,target] if cmd=="solve-inherited"=>{
+            let result=solidcraft_trivariate::extracted_space::solve_inherited(&read(model)?,&read(job)?)?;
+            publish(Path::new(target),&result.to_string()).map_err(|e|e.to_string())?;
+            Ok(result)
+        }
+        [cmd,model,target] if cmd=="recover-spline-parent"=>{
+            use solidcraft_trivariate::spline_support::{recover_complete_parent,serialize_support,audit_parent};
+            let parent=recover_complete_parent(&read(model)?)?;
+            publish(Path::new(target),&serialize_support(&parent).to_string()).map_err(|e|e.to_string())?;
+            Ok(audit_parent(&parent))
+        }
+        [cmd,model,plan,target] if cmd=="export-inherited-space"=>{
+            let package=solidcraft_trivariate::inherited_space::compile(&read(model)?,&read(plan)?)?;
+            publish(Path::new(target),&package.to_string()).map_err(|e|e.to_string())?;
+            Ok(object([("status",Json::String("exported".into())),("scalar_dofs",package.field("field")?.field("scalar_dofs")?.clone())]))
+        }
+        [cmd,package,job,target] if cmd=="solve-inherited-space"=>{
+            let package=read(package)?;
+            let model=package.field("geometry")?;
+            let space=solidcraft_trivariate::inherited_space::replay(&package)?;
+            let result=solidcraft_trivariate::section_manufactured::solve(model,&space,&read(job)?)?;
+            publish(Path::new(target),&result.to_string()).map_err(|e|e.to_string())?;
+            Ok(result)
+        }
+        [cmd,model] if cmd=="audit-inherited-space"=>Ok(solidcraft_trivariate::inherited_space::audit_package(&read(model)?)?),
         [cmd, model, layout, target] if cmd == "assemble-patches" => {
             let model = read(model)?;
             audit(&model)?;
@@ -418,7 +503,7 @@ fn run(args: &[String]) -> Result<Json, String> {
             Ok(object([("status",Json::String("evaluated".into())),("position",vector(res.position)),
                 ("jacobian_columns",Json::Array(res.jacobian_columns.into_iter().map(vector).collect()))]))
         }
-        _=>Err("usage: solidcraft-trivariate assemble-patches MODEL LAYOUT OUTPUT | reduce-axial-knots PATCHES OUTPUT | capabilities | crossed-boolean RECIPE OP OUTPUT | plan-sketch RECIPE | build RECIPE OUTPUT | audit MODEL | evaluate MAP U V W | export-step MODEL OUTPUT | certify-map MAP MAX_LEAVES MAX_DEPTH | export-analysis MODEL GAUSS_ORDER OUTPUT | export-sketch-analysis MODEL GAUSS_ORDER OUTPUT | export-nurbs-space MODEL OUTPUT | export-adaptive MODEL PLAN GAUSS_ORDER OUTPUT | import-solidcraft SCRIPT OUTPUT | import-solidcraft-sketch TIMELINE OUTPUT | solve-job MODEL JOB OUTPUT | differentiate-job MODEL JOB DIRECTION OUTPUT | export-field-vtu RESULT SUBDIVISIONS OUTPUT | export-geometry-vtu MODEL SUBDIVISIONS OUTPUT | edit-bore-intervals MODEL EDITS OUTPUT | edit-s3-stock-rim MODEL sharp|chamfer|fillet OUTPUT.json|OUTPUT.step | edit-fieldcraft-bore-rims MODEL STATE OUTPUT.json|OUTPUT.step | inspect-travel CENTER_X_UM".into()),
+        _=>Err("usage: solidcraft-trivariate refine-thb-strip MODEL PLAN PACKAGE | export-thb-extraction PACKAGE OUT | solve-thb-strip PACKAGE prepared|local JOB OUT | check-thb-galerkin PACKAGE ORDER | recover-spline-parent MODEL OUT | recover-pair-parents MODEL REPORT | export-parent-field MODEL OUT | audit-parent-field MODEL FIELD | check-parent-galerkin MODEL ORDER | export-parent-stiffness MODEL ORDER OUT | solve-parent-field MODEL JOB OUT | recover-translation-columns MODEL AXIS | spline-eligibility MODEL | export-inherited-space MODEL PLAN OUT | audit-inherited-space PACKAGE | solve-inherited-space PACKAGE JOB OUT | solve-inherited MODEL JOB OUT | assemble-patches MODEL LAYOUT OUTPUT | reduce-axial-knots PATCHES OUTPUT | capabilities | crossed-boolean RECIPE OP OUTPUT | plan-sketch RECIPE | build RECIPE OUTPUT | audit MODEL | evaluate MAP U V W | export-step MODEL OUTPUT | certify-map MAP MAX_LEAVES MAX_DEPTH | export-analysis MODEL GAUSS_ORDER OUTPUT | export-sketch-analysis MODEL GAUSS_ORDER OUTPUT | export-nurbs-space MODEL OUTPUT | export-adaptive MODEL PLAN GAUSS_ORDER OUTPUT | import-solidcraft SCRIPT OUTPUT | import-solidcraft-sketch TIMELINE OUTPUT | solve-job MODEL JOB OUTPUT | differentiate-job MODEL JOB DIRECTION OUTPUT | export-field-vtu RESULT SUBDIVISIONS OUTPUT | export-geometry-vtu MODEL SUBDIVISIONS OUTPUT | edit-bore-intervals MODEL EDITS OUTPUT | edit-s3-stock-rim MODEL sharp|chamfer|fillet OUTPUT.json|OUTPUT.step | edit-fieldcraft-bore-rims MODEL STATE OUTPUT.json|OUTPUT.step | inspect-travel CENTER_X_UM".into()),
     }
 }
 
@@ -429,7 +514,7 @@ fn main() -> ExitCode {
             (
                 "status",
                 Json::String(
-                    if e.ends_with("_indeterminate_bernstein") {
+                    if e.ends_with("_indeterminate_bernstein") || e.starts_with("indeterminate:") {
                         "indeterminate"
                     } else {
                         "error"

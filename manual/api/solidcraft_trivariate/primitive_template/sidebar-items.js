@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["Operation","Primitive"],"struct":["PrimitivePlan","SectionPatch"]};

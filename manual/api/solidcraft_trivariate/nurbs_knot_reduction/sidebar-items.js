@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["reduce_patch_document","remove_degree_one_knots"],"struct":["ReducedLine"]};

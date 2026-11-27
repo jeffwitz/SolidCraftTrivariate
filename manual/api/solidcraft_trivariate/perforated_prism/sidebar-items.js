@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["build_perforated_prism"],"struct":["LoopProfile","PerforatedPrism"]};

@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["FaceUse","PartitionUse"],"fn":["partition_master"],"struct":["FacePartition","FacePatch","MasterSide","PartitionCell","TopologicalFaceId"]};

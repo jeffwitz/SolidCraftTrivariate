@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["ActiveRegime"],"fn":["optimize_reparameterization"],"struct":["KktDiagnostics","ReparameterizationResult"]};

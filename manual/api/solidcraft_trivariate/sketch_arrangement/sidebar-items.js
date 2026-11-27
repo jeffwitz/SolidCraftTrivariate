@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["FaceClass","Role"],"fn":["arrange"],"struct":["Arrangement","ArrangementEdge","Face","FaceEdge","Provenance","Segment"]};

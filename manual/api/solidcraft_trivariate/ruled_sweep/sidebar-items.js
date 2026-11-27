@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["SweepSection"],"fn":["build_ruled_sweep"],"struct":["SweepRecipe"]};

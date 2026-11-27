@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["EdgeTreatment"],"fn":["chamfer_compact_bracket","edit_compact_bracket","round_fillet_fixed_partition_status"],"struct":["BoreChamfer","BoreEdge","EditedBracket","SpanMap"]};

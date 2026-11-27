@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["TravelFidelity","TravelGeometry"],"struct":["TravelChange","TravelState","TravellingBoreSession"]};

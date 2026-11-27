@@ -1,0 +1,147 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/sketch_junction.rs`."><title>sketch_junction.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-203241e4.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="solidcraft_trivariate" data-themes="" data-resource-suffix="" data-rustdoc-version="1.100.0 (0ef1bc386 2026-11-09)" data-channel="1.100.0" data-search-js="search-b167f383.js" data-stringdex-js="stringdex-b5109af9.js" data-settings-js="settings-170eb4bf.js" ><script src="../../static.files/storage-41dd4d93.js"></script><script defer src="../../static.files/src-script-813739b1.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-1814ead3.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-9f56287d.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><a class="skip-main-content" href="#main-content">Skip to main content</a><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><section id="main-content" class="content" tabindex="-1"><div class="main-heading"><h1><div class="sub-heading">solidcraft_trivariate/</div>sketch_junction.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap digits-3"><pre class="rust"><code><a href=#1 id=1 data-nosnippet>1</a><span class="doccomment">//! Geometric continuity at an oriented planar rational Bézier junction.
+<a href=#2 id=2 data-nosnippet>2</a>//! The left span ends at the join and the right span starts there.
+<a href=#3 id=3 data-nosnippet>3</a>
+<a href=#4 id=4 data-nosnippet>4</a></span><span class="kw">use </span><span class="kw">crate</span>::constraint_system::Ratio;
+<a href=#5 id=5 data-nosnippet>5</a>
+<a href=#6 id=6 data-nosnippet>6</a><span class="attr">#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+<a href=#7 id=7 data-nosnippet>7</a></span><span class="kw">pub enum </span>Continuity {
+<a href=#8 id=8 data-nosnippet>8</a>    Disconnected,
+<a href=#9 id=9 data-nosnippet>9</a>    Singular,
+<a href=#10 id=10 data-nosnippet>10</a>    Corner,
+<a href=#11 id=11 data-nosnippet>11</a>    Tangent,
+<a href=#12 id=12 data-nosnippet>12</a>    Curvature,
+<a href=#13 id=13 data-nosnippet>13</a>}
+<a href=#14 id=14 data-nosnippet>14</a>
+<a href=#15 id=15 data-nosnippet>15</a><span class="kw">type </span>Pair = [Ratio; <span class="number">2</span>];
+<a href=#16 id=16 data-nosnippet>16</a><span class="kw">type </span>Error = <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str;
+<a href=#17 id=17 data-nosnippet>17</a>
+<a href=#18 id=18 data-nosnippet>18</a><span class="kw">struct </span>Jet {
+<a href=#19 id=19 data-nosnippet>19</a>    position: Pair,
+<a href=#20 id=20 data-nosnippet>20</a>    velocity: Pair,
+<a href=#21 id=21 data-nosnippet>21</a>    acceleration: Pair,
+<a href=#22 id=22 data-nosnippet>22</a>}
+<a href=#23 id=23 data-nosnippet>23</a>
+<a href=#24 id=24 data-nosnippet>24</a><span class="kw">fn </span>quotient(a: Ratio, b: Ratio) -&gt; <span class="prelude-ty">Result</span>&lt;Ratio, Error&gt; {
+<a href=#25 id=25 data-nosnippet>25</a>    a.checked_mul(Ratio::new(b.denominator(), b.numerator())<span class="question-mark">?</span>)
+<a href=#26 id=26 data-nosnippet>26</a>}
+<a href=#27 id=27 data-nosnippet>27</a>
+<a href=#28 id=28 data-nosnippet>28</a><span class="kw">fn </span>endpoint(controls: <span class="kw-2">&amp;</span>[[i64; <span class="number">3</span>]], end: bool) -&gt; <span class="prelude-ty">Result</span>&lt;Jet, Error&gt; {
+<a href=#29 id=29 data-nosnippet>29</a>    <span class="kw">if </span>controls.len() &lt; <span class="number">2 </span>|| controls.iter().any(|p| p[<span class="number">2</span>] &lt;= <span class="number">0</span>) {
+<a href=#30 id=30 data-nosnippet>30</a>        <span class="kw">return </span><span class="prelude-val">Err</span>(<span class="string">"a junction requires positive-weight spans of degree at least one"</span>);
+<a href=#31 id=31 data-nosnippet>31</a>    }
+<a href=#32 id=32 data-nosnippet>32</a>    <span class="kw">let </span>n = controls.len() - <span class="number">1</span>;
+<a href=#33 id=33 data-nosnippet>33</a>    <span class="kw">let </span>degree = Ratio::new(n <span class="kw">as </span>i128, <span class="number">1</span>)<span class="question-mark">?</span>;
+<a href=#34 id=34 data-nosnippet>34</a>    <span class="kw">let </span>second_factor = degree.checked_mul(Ratio::new((n - <span class="number">1</span>) <span class="kw">as </span>i128, <span class="number">1</span>)<span class="question-mark">?</span>)<span class="question-mark">?</span>;
+<a href=#35 id=35 data-nosnippet>35</a>    <span class="kw">let </span>point = |i: usize| controls[<span class="kw">if </span>end { n - i } <span class="kw">else </span>{ i }].map(i128::from);
+<a href=#36 id=36 data-nosnippet>36</a>    <span class="kw">let </span>h = point(<span class="number">0</span>);
+<a href=#37 id=37 data-nosnippet>37</a>    <span class="kw">let </span>near = point(<span class="number">1</span>);
+<a href=#38 id=38 data-nosnippet>38</a>    <span class="kw">let </span>far = point(n.min(<span class="number">2</span>));
+<a href=#39 id=39 data-nosnippet>39</a>    <span class="kw">let </span>inv_w = Ratio::new(<span class="number">1</span>, h[<span class="number">2</span>])<span class="question-mark">?</span>;
+<a href=#40 id=40 data-nosnippet>40</a>    <span class="comment">// Differences first point inward at both ends. Reversing the parameter
+<a href=#41 id=41 data-nosnippet>41</a>    // changes the first derivative's sign and preserves the second derivative.
+<a href=#42 id=42 data-nosnippet>42</a>    </span><span class="kw">let </span>first = |d: usize| Ratio::new(near[d] - h[d], <span class="number">1</span>)<span class="question-mark">?</span>.checked_mul(degree);
+<a href=#43 id=43 data-nosnippet>43</a>    <span class="kw">let </span>second = |d: usize| Ratio::new(far[d] - <span class="number">2 </span>* near[d] + h[d], <span class="number">1</span>)<span class="question-mark">?</span>.checked_mul(second_factor);
+<a href=#44 id=44 data-nosnippet>44</a>    <span class="kw">let </span>dw = first(<span class="number">2</span>)<span class="question-mark">?</span>;
+<a href=#45 id=45 data-nosnippet>45</a>    <span class="kw">let </span>ddw = second(<span class="number">2</span>)<span class="question-mark">?</span>;
+<a href=#46 id=46 data-nosnippet>46</a>    <span class="kw">let </span><span class="kw-2">mut </span>jet = Jet {
+<a href=#47 id=47 data-nosnippet>47</a>        position: [Ratio::zero(); <span class="number">2</span>],
+<a href=#48 id=48 data-nosnippet>48</a>        velocity: [Ratio::zero(); <span class="number">2</span>],
+<a href=#49 id=49 data-nosnippet>49</a>        acceleration: [Ratio::zero(); <span class="number">2</span>],
+<a href=#50 id=50 data-nosnippet>50</a>    };
+<a href=#51 id=51 data-nosnippet>51</a>    <span class="kw">for </span>(d, x) <span class="kw">in </span>jet.position.iter_mut().enumerate() {
+<a href=#52 id=52 data-nosnippet>52</a>        <span class="kw-2">*</span>x = Ratio::new(h[d], h[<span class="number">2</span>])<span class="question-mark">?</span>;
+<a href=#53 id=53 data-nosnippet>53</a>        <span class="kw">let </span>v = first(d)<span class="question-mark">?
+<a href=#54 id=54 data-nosnippet>54</a>            </span>.checked_sub(x.checked_mul(dw)<span class="question-mark">?</span>)<span class="question-mark">?
+<a href=#55 id=55 data-nosnippet>55</a>            </span>.checked_mul(inv_w)<span class="question-mark">?</span>;
+<a href=#56 id=56 data-nosnippet>56</a>        jet.acceleration[d] = second(d)<span class="question-mark">?
+<a href=#57 id=57 data-nosnippet>57</a>            </span>.checked_sub(x.checked_mul(ddw)<span class="question-mark">?</span>)<span class="question-mark">?
+<a href=#58 id=58 data-nosnippet>58</a>            </span>.checked_sub(v.checked_mul(dw)<span class="question-mark">?</span>.checked_mul(Ratio::new(<span class="number">2</span>, <span class="number">1</span>)<span class="question-mark">?</span>)<span class="question-mark">?</span>)<span class="question-mark">?
+<a href=#59 id=59 data-nosnippet>59</a>            </span>.checked_mul(inv_w)<span class="question-mark">?</span>;
+<a href=#60 id=60 data-nosnippet>60</a>        jet.velocity[d] = <span class="kw">if </span>end {
+<a href=#61 id=61 data-nosnippet>61</a>            Ratio::zero().checked_sub(v)<span class="question-mark">?
+<a href=#62 id=62 data-nosnippet>62</a>        </span>} <span class="kw">else </span>{
+<a href=#63 id=63 data-nosnippet>63</a>            v
+<a href=#64 id=64 data-nosnippet>64</a>        };
+<a href=#65 id=65 data-nosnippet>65</a>    }
+<a href=#66 id=66 data-nosnippet>66</a>    <span class="prelude-val">Ok</span>(jet)
+<a href=#67 id=67 data-nosnippet>67</a>}
+<a href=#68 id=68 data-nosnippet>68</a>
+<a href=#69 id=69 data-nosnippet>69</a><span class="kw">fn </span>cross(a: Pair, b: Pair) -&gt; <span class="prelude-ty">Result</span>&lt;Ratio, Error&gt; {
+<a href=#70 id=70 data-nosnippet>70</a>    a[<span class="number">0</span>].checked_mul(b[<span class="number">1</span>])<span class="question-mark">?</span>.checked_sub(a[<span class="number">1</span>].checked_mul(b[<span class="number">0</span>])<span class="question-mark">?</span>)
+<a href=#71 id=71 data-nosnippet>71</a>}
+<a href=#72 id=72 data-nosnippet>72</a>
+<a href=#73 id=73 data-nosnippet>73</a><span class="doccomment">/// Classify using exact endpoint jets of the stored homogeneous (wx, wy, w)
+<a href=#74 id=74 data-nosnippet>74</a>/// controls. Curvature means at least G2. Singular means a stationary endpoint
+<a href=#75 id=75 data-nosnippet>75</a>/// prevents this regular-jet test from deciding geometric continuity.
+<a href=#76 id=76 data-nosnippet>76</a></span><span class="kw">pub fn </span>classify(left: <span class="kw-2">&amp;</span>[[i64; <span class="number">3</span>]], right: <span class="kw-2">&amp;</span>[[i64; <span class="number">3</span>]]) -&gt; <span class="prelude-ty">Result</span>&lt;Continuity, Error&gt; {
+<a href=#77 id=77 data-nosnippet>77</a>    <span class="kw">let </span>a = endpoint(left, <span class="bool-val">true</span>)<span class="question-mark">?</span>;
+<a href=#78 id=78 data-nosnippet>78</a>    <span class="kw">let </span>b = endpoint(right, <span class="bool-val">false</span>)<span class="question-mark">?</span>;
+<a href=#79 id=79 data-nosnippet>79</a>    <span class="kw">if </span>a.position != b.position {
+<a href=#80 id=80 data-nosnippet>80</a>        <span class="kw">return </span><span class="prelude-val">Ok</span>(Continuity::Disconnected);
+<a href=#81 id=81 data-nosnippet>81</a>    }
+<a href=#82 id=82 data-nosnippet>82</a>    <span class="kw">let </span><span class="prelude-val">Some</span>(axis) = a.velocity.iter().position(|v| v.numerator() != <span class="number">0</span>) <span class="kw">else </span>{
+<a href=#83 id=83 data-nosnippet>83</a>        <span class="kw">return </span><span class="prelude-val">Ok</span>(Continuity::Singular);
+<a href=#84 id=84 data-nosnippet>84</a>    };
+<a href=#85 id=85 data-nosnippet>85</a>    <span class="kw">if </span>b.velocity == [Ratio::zero(); <span class="number">2</span>] {
+<a href=#86 id=86 data-nosnippet>86</a>        <span class="kw">return </span><span class="prelude-val">Ok</span>(Continuity::Singular);
+<a href=#87 id=87 data-nosnippet>87</a>    }
+<a href=#88 id=88 data-nosnippet>88</a>    <span class="kw">if </span>cross(a.velocity, b.velocity)<span class="question-mark">? </span>!= Ratio::zero()
+<a href=#89 id=89 data-nosnippet>89</a>        || a.velocity[axis].numerator().signum() != b.velocity[axis].numerator().signum()
+<a href=#90 id=90 data-nosnippet>90</a>    {
+<a href=#91 id=91 data-nosnippet>91</a>        <span class="kw">return </span><span class="prelude-val">Ok</span>(Continuity::Corner);
+<a href=#92 id=92 data-nosnippet>92</a>    }
+<a href=#93 id=93 data-nosnippet>93</a>    <span class="comment">// If v_b = speed * v_a, G2 permits arbitrary tangential acceleration.
+<a href=#94 id=94 data-nosnippet>94</a>    // The normal part of a_b must equal that of speed^2 * a_a.
+<a href=#95 id=95 data-nosnippet>95</a>    </span><span class="kw">let </span>speed = quotient(b.velocity[axis], a.velocity[axis])<span class="question-mark">?</span>;
+<a href=#96 id=96 data-nosnippet>96</a>    <span class="kw">let </span>right_bend = cross(a.velocity, b.acceleration)<span class="question-mark">?</span>;
+<a href=#97 id=97 data-nosnippet>97</a>    <span class="kw">let </span>left_bend = cross(a.velocity, a.acceleration)<span class="question-mark">?
+<a href=#98 id=98 data-nosnippet>98</a>        </span>.checked_mul(speed)<span class="question-mark">?
+<a href=#99 id=99 data-nosnippet>99</a>        </span>.checked_mul(speed)<span class="question-mark">?</span>;
+<a href=#100 id=100 data-nosnippet>100</a>    <span class="prelude-val">Ok</span>(<span class="kw">if </span>right_bend == left_bend {
+<a href=#101 id=101 data-nosnippet>101</a>        Continuity::Curvature
+<a href=#102 id=102 data-nosnippet>102</a>    } <span class="kw">else </span>{
+<a href=#103 id=103 data-nosnippet>103</a>        Continuity::Tangent
+<a href=#104 id=104 data-nosnippet>104</a>    })
+<a href=#105 id=105 data-nosnippet>105</a>}
+<a href=#106 id=106 data-nosnippet>106</a>
+<a href=#107 id=107 data-nosnippet>107</a><span class="doccomment">/// A candidate partition event at the start of the named right-hand span.
+<a href=#108 id=108 data-nosnippet>108</a>/// At closure the incoming span ends at the upper limit of the active domain.
+<a href=#109 id=109 data-nosnippet>109</a></span><span class="attr">#[derive(Clone, Debug, Eq, PartialEq)]
+<a href=#110 id=110 data-nosnippet>110</a></span><span class="kw">pub struct </span>SketchJunction {
+<a href=#111 id=111 data-nosnippet>111</a>    <span class="kw">pub </span>right_span: usize,
+<a href=#112 id=112 data-nosnippet>112</a>    <span class="kw">pub </span>parameter: i64,
+<a href=#113 id=113 data-nosnippet>113</a>    <span class="kw">pub </span>multiplicity: usize,
+<a href=#114 id=114 data-nosnippet>114</a>    <span class="kw">pub </span>closure: bool,
+<a href=#115 id=115 data-nosnippet>115</a>    <span class="kw">pub </span>continuity: Continuity,
+<a href=#116 id=116 data-nosnippet>116</a>}
+<a href=#117 id=117 data-nosnippet>117</a>
+<a href=#118 id=118 data-nosnippet>118</a><span class="doccomment">/// Inspect every junction, including closure, before building any volume.
+<a href=#119 id=119 data-nosnippet>119</a>/// All events are preserved; callers decide which ones require partition lines.
+<a href=#120 id=120 data-nosnippet>120</a>/// Disconnected and singular results are diagnostics, not admissions.
+<a href=#121 id=121 data-nosnippet>121</a></span><span class="kw">pub fn </span>plan_loop(
+<a href=#122 id=122 data-nosnippet>122</a>    degree: usize,
+<a href=#123 id=123 data-nosnippet>123</a>    knots: <span class="kw-2">&amp;</span>[i64],
+<a href=#124 id=124 data-nosnippet>124</a>    controls: <span class="kw-2">&amp;</span>[[i64; <span class="number">3</span>]],
+<a href=#125 id=125 data-nosnippet>125</a>) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;SketchJunction&gt;, Error&gt; {
+<a href=#126 id=126 data-nosnippet>126</a>    <span class="kw">let </span>spans = <span class="kw">crate</span>::nurbs_curve::extract_active_bezier(degree, knots, controls)<span class="question-mark">?</span>;
+<a href=#127 id=127 data-nosnippet>127</a>    <span class="kw">let </span><span class="kw-2">mut </span>events = Vec::with_capacity(spans.len());
+<a href=#128 id=128 data-nosnippet>128</a>    <span class="kw">for </span>(index, right) <span class="kw">in </span>spans.iter().enumerate() {
+<a href=#129 id=129 data-nosnippet>129</a>        <span class="kw">let </span>left = <span class="kw-2">&amp;</span>spans[<span class="kw">if </span>index == <span class="number">0 </span>{
+<a href=#130 id=130 data-nosnippet>130</a>            spans.len() - <span class="number">1
+<a href=#131 id=131 data-nosnippet>131</a>        </span>} <span class="kw">else </span>{
+<a href=#132 id=132 data-nosnippet>132</a>            index - <span class="number">1
+<a href=#133 id=133 data-nosnippet>133</a>        </span>}];
+<a href=#134 id=134 data-nosnippet>134</a>        <span class="kw">let </span>parameter = right.interval[<span class="number">0</span>];
+<a href=#135 id=135 data-nosnippet>135</a>        <span class="kw">let </span>first = knots.partition_point(|k| <span class="kw-2">*</span>k &lt; parameter);
+<a href=#136 id=136 data-nosnippet>136</a>        <span class="kw">let </span>after = knots.partition_point(|k| <span class="kw-2">*</span>k &lt;= parameter);
+<a href=#137 id=137 data-nosnippet>137</a>        events.push(SketchJunction {
+<a href=#138 id=138 data-nosnippet>138</a>            right_span: index,
+<a href=#139 id=139 data-nosnippet>139</a>            parameter,
+<a href=#140 id=140 data-nosnippet>140</a>            multiplicity: after - first,
+<a href=#141 id=141 data-nosnippet>141</a>            closure: index == <span class="number">0</span>,
+<a href=#142 id=142 data-nosnippet>142</a>            continuity: classify(<span class="kw-2">&amp;</span>left.controls, <span class="kw-2">&amp;</span>right.controls)<span class="question-mark">?</span>,
+<a href=#143 id=143 data-nosnippet>143</a>        });
+<a href=#144 id=144 data-nosnippet>144</a>    }
+<a href=#145 id=145 data-nosnippet>145</a>    <span class="prelude-val">Ok</span>(events)
+<a href=#146 id=146 data-nosnippet>146</a>}
+</code></pre></div></section></main></body></html>

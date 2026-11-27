@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["bracket_load","bracket_tip_displacement","solve_bracket"],"struct":["BracketResult"]};

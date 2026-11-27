@@ -1,0 +1,165 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>How-to guides &mdash; SolidCraft Trivariate</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Technical reference" href="../reference/index.html" />
+    <link rel="prev" title="Tutorials" href="../tutorials/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            SolidCraft Trivariate
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">How-to guides</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#find-a-recipe-your-executable-supports">Find a recipe your executable supports</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#build-a-bracket-from-its-feature-history">Build a bracket from its feature history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#test-a-continuity-change-on-an-existing-part">Test a continuity change on an existing part</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#rebuild-the-manual-and-api">Rebuild the manual and API</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/index.html">Technical reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../explanation/index.html">Explanation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">SolidCraft Trivariate</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">How-to guides</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/how-to/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="how-to-guides">
+<h1>How-to guides<a class="headerlink" href="#how-to-guides" title="Link to this heading"></a></h1>
+<section id="find-a-recipe-your-executable-supports">
+<h2>Find a recipe your executable supports<a class="headerlink" href="#find-a-recipe-your-executable-supports" title="Link to this heading"></a></h2>
+<p>Run <code class="docutils literal notranslate"><span class="pre">solidcraft-trivariate</span> <span class="pre">capabilities</span></code> and look up the recipe’s
+<code class="docutils literal notranslate"><span class="pre">family</span></code> in <a class="reference internal" href="../reference/catalog.html"><span class="doc">Command and recipe catalogue</span></a>. Each example is taken from the
+same source revision as the executable used to build this manual.</p>
+</section>
+<section id="build-a-bracket-from-its-feature-history">
+<h2>Build a bracket from its feature history<a class="headerlink" href="#build-a-bracket-from-its-feature-history" title="Link to this heading"></a></h2>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>cargo<span class="w"> </span>build<span class="w"> </span>--release<span class="w"> </span>--locked<span class="w"> </span>--offline
+<span class="nv">cli</span><span class="o">=</span>target/release/solidcraft-trivariate
+<span class="s2">"</span><span class="nv">$cli</span><span class="s2">"</span><span class="w"> </span>import-solidcraft-sketch<span class="w"> </span>tests/references/solidcraft_sketch_bracket.timeline.json<span class="w"> </span>build/bracket.model.json
+<span class="s2">"</span><span class="nv">$cli</span><span class="s2">"</span><span class="w"> </span>audit<span class="w"> </span>build/bracket.model.json
+<span class="s2">"</span><span class="nv">$cli</span><span class="s2">"</span><span class="w"> </span>export-step<span class="w"> </span>build/bracket.model.json<span class="w"> </span>build/bracket.step
+</pre></div>
+</div>
+<p>This importer retains the sketch, extrusion and bore intent. On the admitted
+equal-leg history the compact construction gives ten cells. The historical
+<code class="docutils literal notranslate"><span class="pre">import-solidcraft</span></code> adapter consumes a different input format.
+See <a class="reference internal" href="../reference/construction.html"><span class="doc">Construction from native sketches</span></a> for fallback conditions.</p>
+</section>
+<section id="test-a-continuity-change-on-an-existing-part">
+<h2>Test a continuity change on an existing part<a class="headerlink" href="#test-a-continuity-change-on-an-existing-part" title="Link to this heading"></a></h2>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="nv">cli</span><span class="o">=</span>target/release/solidcraft-trivariate
+<span class="nv">src</span><span class="o">=</span>docs/results/s3-face-pocket.model.json
+<span class="s2">"</span><span class="nv">$cli</span><span class="s2">"</span><span class="w"> </span>recover-pair-parents<span class="w"> </span><span class="s2">"</span><span class="nv">$src</span><span class="s2">"</span><span class="w"> </span>build/s3-pairs.json
+<span class="s2">"</span><span class="nv">$cli</span><span class="s2">"</span><span class="w"> </span>export-inherited-space<span class="w"> </span><span class="s2">"</span><span class="nv">$src</span><span class="s2">"</span><span class="w"> </span>tests/references/matched_chart_jets.plan.json<span class="w"> </span>build/s3-field.json
+<span class="s2">"</span><span class="nv">$cli</span><span class="s2">"</span><span class="w"> </span>audit-inherited-space<span class="w"> </span>build/s3-field.json
+<span class="s2">"</span><span class="nv">$cli</span><span class="s2">"</span><span class="w"> </span>solve-job<span class="w"> </span>build/s3-field.json<span class="w"> </span>tests/references/s3_inherited_stress.job.json<span class="w"> </span>build/s3-solution.json
+</pre></div>
+</div>
+<p>Compare the recovered pair count with the number of smooth field interfaces.
+Then inspect <code class="docutils literal notranslate"><span class="pre">energy_n_mm</span></code>, <code class="docutils literal notranslate"><span class="pre">relative_residual</span></code> and the force and reaction
+vectors in the saved solution. To compare fields under a spatially varying
+load, run <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">check-inherited-corpus</span></code>. Its manufactured solutions measure
+error against the same physical displacement on each candidate space.</p>
+</section>
+<section id="rebuild-the-manual-and-api">
+<h2>Rebuild the manual and API<a class="headerlink" href="#rebuild-the-manual-and-api" title="Link to this heading"></a></h2>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>.venv
+.venv/bin/pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>docs/rtd/requirements.txt
+make<span class="w"> </span>docs<span class="w"> </span><span class="nv">SPHINXBUILD</span><span class="o">=</span>.venv/bin/sphinx-build
+python3<span class="w"> </span>-m<span class="w"> </span>http.server<span class="w"> </span>--directory<span class="w"> </span>build/manual<span class="w"> </span><span class="m">8000</span>
+</pre></div>
+</div>
+<p>Open <code class="docutils literal notranslate"><span class="pre">http://localhost:8000/</span></code>. The build generates the command and recipe
+catalogue from the Rust executable and includes the crate’s rustdoc. Read the
+Docs uses the repository’s <code class="docutils literal notranslate"><span class="pre">.readthedocs.yaml</span></code> to prepare the same inputs.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../tutorials/index.html" class="btn btn-neutral float-left" title="Tutorials" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../reference/index.html" class="btn btn-neutral float-right" title="Technical reference" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright .</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

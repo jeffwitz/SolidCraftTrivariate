@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["PocketDepthError","PocketRegime","PocketSelectionEvent"],"fn":["build_pocket_depth"],"struct":["DesignFaceSelection","PocketDepth","PocketDepthBlock","SelectionState"]};

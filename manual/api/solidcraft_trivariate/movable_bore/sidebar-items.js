@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["MovableBoreError"],"fn":["build_movable_bore"],"struct":["MovableBore","MovableBoreBlock"]};

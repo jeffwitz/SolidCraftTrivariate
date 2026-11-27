@@ -1,0 +1,194 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Adaptive solves, pressure and design derivatives &mdash; SolidCraft Trivariate</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Verification and evidence scope" href="verification.html" />
+    <link rel="prev" title="Analysis on audited trivariate models" href="analysis.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            SolidCraft Trivariate
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../how-to/index.html">How-to guides</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Technical reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="catalog.html">Command and recipe catalogue</a></li>
+<li class="toctree-l2"><a class="reference internal" href="construction.html">Construction from native sketches</a></li>
+<li class="toctree-l2"><a class="reference internal" href="geometry.html">Geometry representation and certificates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="operations.html">Boolean operations and edge treatments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="interface-fields.html">Recovering parents and choosing interface continuity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spline-fields.html">Spline fields, extraction, and local refinement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="analysis.html">Analysis on audited trivariate models</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Adaptive solves, pressure and design derivatives</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#marking-and-transfer">Marking and transfer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#nearly-incompressible-materials">Nearly incompressible materials</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#design-derivatives">Design derivatives</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#executable-checks">Executable checks</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="verification.html">Verification and evidence scope</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../explanation/index.html">Explanation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">SolidCraft Trivariate</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Technical reference</a></li>
+      <li class="breadcrumb-item active">Adaptive solves, pressure and design derivatives</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/reference/solver-design.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="adaptive-solves-pressure-and-design-derivatives">
+<h1>Adaptive solves, pressure and design derivatives<a class="headerlink" href="#adaptive-solves-pressure-and-design-derivatives" title="Link to this heading"></a></h1>
+<section id="marking-and-transfer">
+<h2>Marking and transfer<a class="headerlink" href="#marking-and-transfer" title="Link to this heading"></a></h2>
+<p>An adaptive Q2 leaf carries three contributions to its squared indicator:
+the volume residual, the traction jump on interior faces and the natural
+boundary residual. The data structure also records whether an error upper
+bound is available. Here it is false. The value depends on the current
+mesh, loads and discrete solution.</p>
+<p>For a fraction <span class="math notranslate nohighlight">\(0&lt;\theta\leq1\)</span>,
+<code class="docutils literal notranslate"><span class="pre">AdaptiveResidual::bulk_mark</span></code> sorts the squared indicators in descending
+order and selects the shortest prefix containing at least that fraction of
+their sum. Leaf identifiers order ties. A vanishing indicator selects no
+leaves. Dörfler proved convergence for an adaptive Poisson algorithm.
+The kernel uses its marking rule in elasticity. Error reduction on an
+elastic part must be measured separately.
+<a class="reference external" href="https://doi.org/10.1137/0733054">Dörfler (1996)</a>.</p>
+<p>The constrained multilevel solver assembles a coarse operator
+<span class="math notranslate nohighlight">\(P^T K P\)</span> using the nested Q2 transfer. It factors the coarsest
+operator by Cholesky and adds an inverse reduced-diagonal correction at each
+finer level. All levels use the same homogeneous mounting. An unsupported
+mount or an inconsistent transfer fails during construction. For timings,
+include preconditioner setup, iterations and assembly in addition to
+the residual. For the linear iteration underlying the solver, see
+<a class="reference external" href="https://doi.org/10.6028/jres.049.044">Hestenes and Stiefel (1952)</a>.</p>
+</section>
+<section id="nearly-incompressible-materials">
+<h2>Nearly incompressible materials<a class="headerlink" href="#nearly-incompressible-materials" title="Link to this heading"></a></h2>
+<p>As Poisson’s ratio approaches one half, a displacement discretization can
+overconstrain the volume strain. The optional <code class="docutils literal notranslate"><span class="pre">projected_bulk</span></code> operator
+projects the Q2 displacement divergence onto an element-local Q1 pressure
+space with eight coefficients. It condenses the pressure variables before
+the global solve. Its recovery operator returns coefficients of mean stress
+with tension positive, in MPa. Compare reaction equilibrium, the true 3D
+residual, and a displacement or stress observable against a reference under
+the same loading. Elguedj, Bazilevs, Calo and Hughes derive small- and
+finite-strain projection methods for higher-order NURBS. The kernel’s
+qualified law in this module is small-strain isotropic elasticity.
+<a class="reference external" href="https://www.ices.utexas.edu/media/reports/2007/0726.pdf">Author manuscript</a>.</p>
+</section>
+<section id="design-derivatives">
+<h2>Design derivatives<a class="headerlink" href="#design-derivatives" title="Link to this heading"></a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">differentiate-job</span> <span class="pre">MODEL</span> <span class="pre">JOB</span> <span class="pre">DIRECTION</span> <span class="pre">OUTPUT</span></code> holds the chart
+connectivity and quadrature rule fixed while differentiating geometry,
+material, loads and supported constraint equations. For a reduced
+equilibrium <span class="math notranslate nohighlight">\(K_r q=f_r\)</span>, the tangent satisfies
+<span class="math notranslate nohighlight">\(K_r q'=f'_r-K'_r q\)</span>. For one scalar observable the adjoint uses the
+transpose of the same reduced operator. Moving prescribed values and trace
+coefficients enter through the derivative of the lift. Record both
+objective derivatives and replay the central difference inside the same
+topological regime. A change of active features calls for a new regime.
+Wall, Frenzel and Cyron describe shape sensitivities with NURBS design
+variables in isogeometric structural optimisation.
+<a class="reference external" href="https://doi.org/10.1016/j.cma.2008.01.025">Wall et al. (2008)</a>.</p>
+</section>
+<section id="executable-checks">
+<h2>Executable checks<a class="headerlink" href="#executable-checks" title="Link to this heading"></a></h2>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>cargo<span class="w"> </span><span class="nb">test</span><span class="w"> </span>--locked<span class="w"> </span>--offline<span class="w"> </span>--test<span class="w"> </span>multilevel
+cargo<span class="w"> </span><span class="nb">test</span><span class="w"> </span>--locked<span class="w"> </span>--offline<span class="w"> </span>--test<span class="w"> </span>adaptive_enrichment
+cargo<span class="w"> </span><span class="nb">test</span><span class="w"> </span>--locked<span class="w"> </span>--offline<span class="w"> </span>--test<span class="w"> </span>mechanical_sensitivity
+</pre></div>
+</div>
+<p>The symbol-level contracts are in the crate modules
+<code class="docutils literal notranslate"><span class="pre">adaptive_estimator</span></code>, <code class="docutils literal notranslate"><span class="pre">multilevel</span></code>, <code class="docutils literal notranslate"><span class="pre">projected_bulk</span></code>,
+<code class="docutils literal notranslate"><span class="pre">elasticity_sensitivity</span></code> and <code class="docutils literal notranslate"><span class="pre">mechanical_sensitivity</span></code>.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="analysis.html" class="btn btn-neutral float-left" title="Analysis on audited trivariate models" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="verification.html" class="btn btn-neutral float-right" title="Verification and evidence scope" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright .</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

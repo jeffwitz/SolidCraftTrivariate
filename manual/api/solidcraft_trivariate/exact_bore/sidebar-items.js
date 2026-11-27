@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["ExactBoreError"],"fn":["build_exact_bore"],"struct":["ExactBore"]};

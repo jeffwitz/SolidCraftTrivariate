@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["integrate_traction"],"struct":["LoadPatch","SurfaceLoad"]};

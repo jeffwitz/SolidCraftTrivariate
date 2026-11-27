@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["build","check_galerkin","stiffness_package"],"struct":["ParentField"]};

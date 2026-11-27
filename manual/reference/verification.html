@@ -1,0 +1,258 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Verification and evidence scope &mdash; SolidCraft Trivariate</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Explanation" href="../explanation/index.html" />
+    <link rel="prev" title="Adaptive solves, pressure and design derivatives" href="solver-design.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            SolidCraft Trivariate
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../how-to/index.html">How-to guides</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Technical reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="catalog.html">Command and recipe catalogue</a></li>
+<li class="toctree-l2"><a class="reference internal" href="construction.html">Construction from native sketches</a></li>
+<li class="toctree-l2"><a class="reference internal" href="geometry.html">Geometry representation and certificates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="operations.html">Boolean operations and edge treatments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="interface-fields.html">Recovering parents and choosing interface continuity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spline-fields.html">Spline fields, extraction, and local refinement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="analysis.html">Analysis on audited trivariate models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="solver-design.html">Adaptive solves, pressure and design derivatives</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Verification and evidence scope</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#geometric-and-algebraic-checks">Geometric and algebraic checks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-exchange-and-readback">STEP exchange and readback</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#mechanics-and-the-method-of-manufactured-solutions">Mechanics and the Method of Manufactured Solutions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#singular-fillet-caveat">Singular fillet caveat</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#independent-mechanics-comparisons">Independent mechanics comparisons</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#primary-verification-reference">Primary verification reference</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../explanation/index.html">Explanation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">SolidCraft Trivariate</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Technical reference</a></li>
+      <li class="breadcrumb-item active">Verification and evidence scope</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/reference/verification.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="verification-and-evidence-scope">
+<h1>Verification and evidence scope<a class="headerlink" href="#verification-and-evidence-scope" title="Link to this heading"></a></h1>
+<p>Verification asks whether the implemented equations and algorithms are solved
+as intended. It is distinct from validation against physical observations.
+This project combines exact or interval-based geometric audits, independent
+analytic oracles, manufactured-solution mechanics, mesh-convergence studies,
+and comparisons with independent geometry or finite-element software. Each
+method answers a different question; no single pass should be generalized
+beyond its declared domain and discretization.</p>
+<section id="geometric-and-algebraic-checks">
+<h2>Geometric and algebraic checks<a class="headerlink" href="#geometric-and-algebraic-checks" title="Link to this heading"></a></h2>
+<p>Native Rust constructors and audits live beside one another but are separate
+implementations for each family (for example, <code class="docutils literal notranslate"><span class="pre">src/curved_sketch.rs</span></code> and
+<code class="docutils literal notranslate"><span class="pre">src/curved_sketch_audit.rs</span></code>). Family audits check declared geometry
+invariants such as coverage, exact volume, interfaces, and a named Jacobian
+certificate. The Python references in <code class="docutils literal notranslate"><span class="pre">tests/references</span></code> provide independent
+oracles for selected results. A sampled grid is a diagnostic only; a
+continuous certificate must name its domain, method, and bounds. If a proof or
+interval subdivision reaches its budget without a conclusion, the result is
+indeterminate rather than accepted.</p>
+</section>
+<section id="step-exchange-and-readback">
+<h2>STEP exchange and readback<a class="headerlink" href="#step-exchange-and-readback" title="Link to this heading"></a></h2>
+<p>The exporter in <code class="docutils literal notranslate"><span class="pre">src/step_boundary.rs</span></code> serializes the audited boundary using
+STEP AP214. ISO 10303-21 specifies the clear-text exchange encoding, while ISO
+10303-42 defines generic geometric and topological representation resources;
+neither standard makes a producer’s export self-validating. The project gate
+therefore distinguishes serialization from a readback in another CAD kernel.
+Even agreement of volume, area, and moments is not a complete shape-identity
+test: Kuzminykh and Hoffmann construct noncongruent solids sharing such
+invariants. Readback checks should include closure/validity and classifications
+at selected material, void, and boundary points, with reader tolerances stated.
+See <a class="reference external" href="https://www.iso.org/standard/63141.html">ISO 10303-21:2016</a>,
+<a class="reference external" href="https://www.iso.org/standard/91386.html">ISO 10303-42:2025</a>, and
+A. Kuzminykh and C. Hoffmann, “On validating STEP product data exchange,”
+<em>Computer-Aided Design</em> 40(2) (2008), 133–138,
+<a class="reference external" href="https://doi.org/10.1016/j.cad.2007.09.004">DOI 10.1016/j.cad.2007.09.004</a>.</p>
+<p>Preserve counterexamples and regressions under <code class="docutils literal notranslate"><span class="pre">tests/counterexamples</span></code> and
+<code class="docutils literal notranslate"><span class="pre">tests/regressions</span></code>. An invalid input that is required to be rejected is
+part of coverage, and rejection must leave the prior model or published
+artifact unchanged. Rebuild tracked geometry from its source recipe when the
+partition changes, then run:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="n">check</span><span class="o">-</span><span class="n">published</span><span class="o">-</span><span class="n">geometry</span>
+</pre></div>
+</div>
+</section>
+<section id="mechanics-and-the-method-of-manufactured-solutions">
+<h2>Mechanics and the Method of Manufactured Solutions<a class="headerlink" href="#mechanics-and-the-method-of-manufactured-solutions" title="Link to this heading"></a></h2>
+<p>The Method of Manufactured Solutions (MMS) chooses a smooth displacement
+field, applies the continuum elasticity operator analytically to derive the
+body force, and prescribes exact boundary data. The numerical solution can
+then be compared with the chosen field in displacement and energy norms. MMS
+is a code-verification technique: a successful rate study checks the coded
+operator, loads, boundary conditions, quadrature, and solver together for
+that case. It does not establish accuracy for arbitrary loads or validate a
+physical material model.</p>
+<p>The native T-junction example <code class="docutils literal notranslate"><span class="pre">examples/manufactured_t.rs</span></code> is a concrete
+regression of a two-rate Q2 mesh. It uses a nonzero affine displacement plus
+a smooth trigonometric perturbation on <code class="docutils literal notranslate"><span class="pre">[0,2]</span> <span class="pre">×</span> <span class="pre">[0,2]</span> <span class="pre">×</span> <span class="pre">[0,1]</span></code>; the right
+half is refined twice as finely in y, and the coarse interface is restricted
+exactly onto two fine slave faces. The recipe and acceptance bands are recorded
+in <code class="docutils literal notranslate"><span class="pre">docs/campaign-run-ledger.md</span></code> under M1. In particular, it requires an
+affine patch test, a reduced residual check, observed L2 and H1 rates, and a
+quadrature comparison. This is evidence for that mesh family and manufactured
+field, not universal convergence.</p>
+<p>For the S2 variable-size extracted-space roadmap study, use the regular affine
+cube and its preregistered refinement levels and error norms in
+<code class="docutils literal notranslate"><span class="pre">docs/recipe-driven-tsplines.md</span></code>. Do not substitute a singular geometry and
+retain the smooth-case rate thresholds: the roadmap explicitly excludes that
+inference.</p>
+</section>
+<section id="singular-fillet-caveat">
+<h2>Singular fillet caveat<a class="headerlink" href="#singular-fillet-caveat" title="Link to this heading"></a></h2>
+<p>The four-sector annulus fillet has analytically identified Jacobian zeros on
+four circles (at the two end planes and the stated radii). The proof of volume
+and quadrant coverage does not make that map locally regular at those sets.
+Consequently, results for the singular fillet are experimental evidence for
+the declared parameterization and oracle, not qualification as a regular IGA
+chart. See <code class="docutils literal notranslate"><span class="pre">docs/annulus-original-edge-states.md</span></code> and
+<code class="docutils literal notranslate"><span class="pre">docs/results/inherited-continuity/README.md</span></code>. Do not use good volume
+agreement to erase the singularity or imply mechanics qualification there.</p>
+</section>
+<section id="independent-mechanics-comparisons">
+<h2>Independent mechanics comparisons<a class="headerlink" href="#independent-mechanics-comparisons" title="Link to this heading"></a></h2>
+<p>Comparisons among native trivariate, tetrahedral, or immersed spline solves
+are meaningful only when the physical domain, boundary conditions, material,
+loads, and observables are aligned. Report those definitions along with mesh
+or basis size, quadrature, solver tolerance, residual, norm definition, and
+resource limits. Different parameterizations can have different discrete
+spaces even when their audited solid is the same. A field discrepancy is
+therefore a discretization comparison, not necessarily a geometry defect.
+The repository’s campaign protocol and machine-readable measurements are
+linked from <code class="docutils literal notranslate"><span class="pre">docs/campaign-run-ledger.md</span></code>; preserve failed, timed-out, and
+indeterminate trials in the denominator and state their limits.</p>
+<p>As one current mechanics comparison, the crossed-tool bending study reports
+0.305584 mm for the audited rational IGA model and 0.306089 mm for a matched
+HEX20 mesh, both with 11,112 free vector degrees of freedom; their displacement
+difference is 0.165% of the HEX20 value. A finer HEX20 reference with 125,004
+free vector degrees of freedom gives 0.307772 mm. The study explicitly
+qualifies global compliance for this geometry and loading, not local stress
+accuracy or runtime. Reproduce the selected runs with
+<code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">check-crossed-bending</span></code> and see the
+<a class="reference external" href="https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/crossed-interface-iga/bending-enrichment.md">measurement report</a>.</p>
+<p>Reproducible project gates from the repository root are:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cargo</span> <span class="n">test</span> <span class="o">--</span><span class="n">locked</span> <span class="o">--</span><span class="n">offline</span>
+<span class="n">python3</span> <span class="o">-</span><span class="n">m</span> <span class="n">unittest</span> <span class="n">discover</span> <span class="o">-</span><span class="n">s</span> <span class="n">tests</span> <span class="o">-</span><span class="n">v</span>
+<span class="n">make</span> <span class="n">check</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">check</span></code> runs the Rust and Python suites, demonstrations, and published
+geometry checks. Specialized mechanics studies have separate targets such as
+<code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">check-local-thb</span></code> and <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">check-cylinder-iga</span></code>; these should be
+reported by name rather than implied by the general gate.</p>
+</section>
+<section id="primary-verification-reference">
+<h2>Primary verification reference<a class="headerlink" href="#primary-verification-reference" title="Link to this heading"></a></h2>
+<p>For the relation between a manufactured load and the exact field it
+prescribes, see <a class="reference internal" href="#roache2009" id="id1"><span>[Roache2009]</span></a>.</p>
+<div role="list" class="citation-list">
+<div class="citation" id="roache2009" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">Roache2009</a><span class="fn-bracket">]</span></span>
+<p>P. J. Roache, “Fundamentals of Verification and Validation,”
+<em>Hermes</em>, 2009, Chapter 3: “Method of Manufactured Solutions.”
+<a class="reference external" href="https://fenix.tecnico.ulisboa.pt/downloadFile/2815368242434470/FVV_Roache_2009.pdf">Author’s manuscript</a>.
+MMS derives exact source terms from an assumed field and is used to check
+numerical implementation and observed order; it is not physical validation.</p>
+</div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="solver-design.html" class="btn btn-neutral float-left" title="Adaptive solves, pressure and design derivatives" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../explanation/index.html" class="btn btn-neutral float-right" title="Explanation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright .</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

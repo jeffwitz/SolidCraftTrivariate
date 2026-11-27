@@ -1,0 +1,274 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Geometry representation and certificates &mdash; SolidCraft Trivariate</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Boolean operations and edge treatments" href="operations.html" />
+    <link rel="prev" title="Construction from native sketches" href="construction.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            SolidCraft Trivariate
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../how-to/index.html">How-to guides</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Technical reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="catalog.html">Command and recipe catalogue</a></li>
+<li class="toctree-l2"><a class="reference internal" href="construction.html">Construction from native sketches</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Geometry representation and certificates</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#rational-tensor-product-maps">Rational tensor-product maps</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#nurbs-span-extraction-and-exact-simplification">NURBS span extraction and exact simplification</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#certificates-and-their-domains">Certificates and their domains</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#exact-polygonal-input-contract">Exact polygonal input contract</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#local-validity-is-not-global-coverage">Local validity is not global coverage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#analysis-export">Analysis export</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#bernstein-bounds-and-rational-maps">Bernstein bounds and rational maps</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="operations.html">Boolean operations and edge treatments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="interface-fields.html">Recovering parents and choosing interface continuity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spline-fields.html">Spline fields, extraction, and local refinement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="analysis.html">Analysis on audited trivariate models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="solver-design.html">Adaptive solves, pressure and design derivatives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="verification.html">Verification and evidence scope</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../explanation/index.html">Explanation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">SolidCraft Trivariate</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Technical reference</a></li>
+      <li class="breadcrumb-item active">Geometry representation and certificates</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/reference/geometry.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="geometry-representation-and-certificates">
+<h1>Geometry representation and certificates<a class="headerlink" href="#geometry-representation-and-certificates" title="Link to this heading"></a></h1>
+<section id="rational-tensor-product-maps">
+<h2>Rational tensor-product maps<a class="headerlink" href="#rational-tensor-product-maps" title="Link to this heading"></a></h2>
+<p>The native crate represents a volume block as a rational tensor-product
+Bézier/NURBS map over the closed unit cube. Control points are homogeneous;
+positive weights are required where the family contract says so. Physical
+coordinates and dimensions are in millimeters. Parametric coordinates are
+dimensionless. The public primitive API starts with
+<code class="docutils literal notranslate"><span class="pre">RationalBezierMap::new</span></code> and <code class="docutils literal notranslate"><span class="pre">evaluate</span></code> in the
+<a class="reference external" href="https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/src/bezier.rs">Bézier map implementation</a>;
+the crate documentation is the authoritative type-level API.</p>
+<p>A model contains both geometry and topology. Geometry includes degrees, knots,
+homogeneous controls and span domains. Topology includes block sides, oriented
+face incidences, boundary status, provenance, and persistent identities where
+the family provides them. Geometry equality alone does not define an
+interface: restrictions must match under the recorded parameter orientation
+and, for nested traces, under a certified refinement relation.</p>
+</section>
+<section id="nurbs-span-extraction-and-exact-simplification">
+<h2>NURBS span extraction and exact simplification<a class="headerlink" href="#nurbs-span-extraction-and-exact-simplification" title="Link to this heading"></a></h2>
+<p>The curve utilities in the
+<a class="reference external" href="https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/src/nurbs_curve.rs">NURBS curve module</a>
+extract active Bézier spans by exact knot insertion in integer/rational
+arithmetic. The source degree and knot multiplicities are preserved as
+provenance. A common integer scale represents rational knots; homogeneous
+controls may be rescaled by a common nonzero factor without changing the
+represented curve. Degree elevation and span subdivision are exact coefficient
+transformations when they remain within checked arithmetic.</p>
+<p>The crate also contains
+<a class="reference external" href="https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/src/nurbs_knot_reduction.rs">knot-reduction utilities</a>.
+Reduction is a separate operation from
+exact extraction: a reduced representation must be accompanied by its
+declared error contract and audit. A representation is not called exact merely
+because sampled points agree. Unsupported degree, malformed/non-monotone knot
+vectors, nonpositive weights where disallowed, inconsistent gauges, and
+integer overflow are rejection cases. NURBS theory and the standard extraction
+operations are covered in Piegl and Tiller, <em>The NURBS Book</em>, 2nd ed.,
+Springer, DOI &lt;<a class="reference external" href="https://doi.org/10.1007/978-3-642-59223-2">https://doi.org/10.1007/978-3-642-59223-2</a>&gt;. This reference
+describes the general representation; it does not certify any particular
+SolidCraft model.</p>
+<p>For a concrete bounded family, see <code class="docutils literal notranslate"><span class="pre">tests/references/nurbs_strip.recipe.json</span></code>
+and the
+<a class="reference external" href="https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/nurbs-sketch.md">NURBS strip reference</a>. The strip constructor requires compatible
+monotone boundaries; it does not claim general reparameterization of arbitrary
+NURBS profiles. For crossed profiles, see
+<code class="docutils literal notranslate"><span class="pre">tests/references/nurbs_cross_oval.recipe.json</span></code> and
+<code class="docutils literal notranslate"><span class="pre">tests/references/nurbs_cross_bores.recipe.json</span></code>. The latter’s exact event
+contract is intentionally narrower than general algebraic surface
+intersection.</p>
+</section>
+<section id="certificates-and-their-domains">
+<h2>Certificates and their domains<a class="headerlink" href="#certificates-and-their-domains" title="Link to this heading"></a></h2>
+<p>SolidCraft separates the following claims:</p>
+<ul class="simple">
+<li><p><strong>Representation fidelity:</strong> the map equals its declared source geometry,
+or satisfies an explicitly bounded approximation contract.</p></li>
+<li><p><strong>Local regularity:</strong> the denominator and Jacobian determinant stay strictly
+positive on a stated closed parametric domain.</p></li>
+<li><p><strong>Injectivity:</strong> the map is one-to-one on that domain. A positive Jacobian
+alone is local and does not establish global injectivity.</p></li>
+<li><p><strong>Trace compatibility:</strong> adjacent maps induce the same oriented geometry on
+their shared face, possibly after a supported exact subdivision.</p></li>
+<li><p><strong>Coverage:</strong> the union of the active block images equals the target
+material, with disjoint interiors and the required boundary.</p></li>
+<li><p><strong>Analysis suitability:</strong> the resulting discrete space is conforming and
+meets the stated integration or mechanics checks. This is not implied by
+geometric validity.</p></li>
+</ul>
+<p>Every certificate must name its method, domain, assumptions, bounds, and
+status. Bernstein-form interval bounds can prove polynomial positivity when
+all coefficients on a subdomain are strictly positive. Subdivision may make
+the bound decisive; if a fixed depth or arithmetic budget ends first, the
+result is indeterminate rather than a proof. The underlying positivity methods
+are established in the literature. Powers and Reznick bound the degree needed
+in Pólya-type representations for polynomials positive on polyhedra.
+Boudaoud, Caruso, and Roy study certificates in the Bernstein basis, including
+degree elevation and subdivision as ways to obtain decisive coefficients.
+These are related mathematical results, not specifications of the exact
+interval tests implemented here. SolidCraft’s certificates are the code and
+recorded audit outputs for each family. See V. Powers and B. Reznick, “A new
+bound for Pólya’s theorem with applications to polynomials positive on
+polyhedra,” <em>Journal of Pure and Applied Algebra</em> 164(1–2) (2001), 221–229,
+<a class="reference external" href="https://doi.org/10.1016/S0022-4049(00)00155-9">DOI 10.1016/S0022-4049(00)00155-9</a>,
+and F. Boudaoud, F. Caruso, and M.-F. Roy, “Certificates of Positivity in the
+Bernstein Basis,” <em>Discrete &amp; Computational Geometry</em> 39(4) (2008), 639–655,
+<a class="reference external" href="https://doi.org/10.1007/s00454-007-9042-x">DOI 10.1007/s00454-007-9042-x</a>.</p>
+<p>The <a class="reference external" href="https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/src/spatial_certificate.rs">spatial certificate implementation</a>,
+<a class="reference external" href="https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/src/planar.rs">planar checks</a>,
+<a class="reference external" href="https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/src/annular_audit.rs">annular audit</a>,
+<a class="reference external" href="https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/src/polygon_prism_audit.rs">polygon-prism audit</a>,
+and <a class="reference external" href="https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/src/curved_sketch_audit.rs">curved-sketch audit</a>
+implement these checks. A positive sampled
+determinant is diagnostic only. <code class="docutils literal notranslate"><span class="pre">tests/test_planar_certificate.py</span></code> and
+<code class="docutils literal notranslate"><span class="pre">tests/test_annular_certificate.py</span></code> provide independent reference checks;
+the Rust tests exercise production APIs.</p>
+</section>
+<section id="exact-polygonal-input-contract">
+<h2>Exact polygonal input contract<a class="headerlink" href="#exact-polygonal-input-contract" title="Link to this heading"></a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">sketch_layer_partition_v1</span></code> uses integer millimeter vertices and straight
+segments. It accepts simple contours subject to the stock, count, and cut
+limits described in the project README. It does not treat a polygon as a
+sampled curve. Curved contours use their own families, with explicit degrees,
+knots, homogeneous controls, and parameter conventions. The polygonal source
+recipe and selected model preserve loop and feature identifiers; the audit
+does not silently repair invalid contours.</p>
+</section>
+<section id="local-validity-is-not-global-coverage">
+<h2>Local validity is not global coverage<a class="headerlink" href="#local-validity-is-not-global-coverage" title="Link to this heading"></a></h2>
+<p>For a block map <code class="docutils literal notranslate"><span class="pre">F</span></code>, a strict lower bound on <code class="docutils literal notranslate"><span class="pre">det(DF)</span></code> over the closed cube
+establishes orientation-preserving local regularity. It does not rule out
+global self-overlap. Likewise, matching every declared interface does not
+prove that blocks cover the intended solid. Coverage checks compare exact
+section areas or family-specific analytic measures and incidence structure;
+independent point classification and STEP readback are supplemental oracles.
+An oracle’s positive sample set is evidence for those samples, not a universal
+proof.</p>
+</section>
+<section id="analysis-export">
+<h2>Analysis export<a class="headerlink" href="#analysis-export" title="Link to this heading"></a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">export-analysis</span></code> creates a versioned conforming space package for the
+supported geometry family and requested quadrature order. Geometry degree,
+trace orientation, exact degree elevation, common DOF numbering, and volume
+quadrature are recorded according to the package schema. Analysis suitability
+is then checked independently through affine-field reproduction, interface
+rank, equilibrium residual, and mechanics benchmarks where provided. Geometry
+certificates do not automatically transfer to a different analysis basis or
+quadrature rule. See the <a class="reference external" href="https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/src/nurbs_space.rs">NURBS space compiler</a>,
+<a class="reference external" href="https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/src/nurbs_tensor_assembly.rs">tensor assembly</a>,
+<a class="reference external" href="https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/src/analysis_space.rs">analysis space</a>,
+and <a class="reference external" href="https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/src/solver_package.rs">solver package</a>.</p>
+</section>
+<section id="bernstein-bounds-and-rational-maps">
+<h2>Bernstein bounds and rational maps<a class="headerlink" href="#bernstein-bounds-and-rational-maps" title="Link to this heading"></a></h2>
+<p>Johnen, Remacle and Geuzaine expand the polynomial Jacobian determinant in
+a Bernstein basis and subdivide to tighten coefficient bounds. This gives
+a direct reference for the closed-element validity test. For rational
+SolidCraft charts the denominator also enters the test: a positive weight
+bound permits the homogeneous numerator to determine the sign. A failed
+strict-positivity proof at the subdivision budget is recorded separately
+from a demonstrated inversion. A boundary-singular fillet must also be
+identified separately from a regular chart.
+<a class="reference external" href="https://doi.org/10.1016/j.jcp.2012.08.051">Johnen et al. (2013), Journal of Computational Physics</a>.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="construction.html" class="btn btn-neutral float-left" title="Construction from native sketches" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="operations.html" class="btn btn-neutral float-right" title="Boolean operations and edge treatments" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright .</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

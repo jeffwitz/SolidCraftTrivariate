@@ -1,0 +1,318 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Construction from native sketches &mdash; SolidCraft Trivariate</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Geometry representation and certificates" href="geometry.html" />
+    <link rel="prev" title="Command and recipe catalogue" href="catalog.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            SolidCraft Trivariate
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../how-to/index.html">How-to guides</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Technical reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="catalog.html">Command and recipe catalogue</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Construction from native sketches</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#sketch-arrangements-and-separators">Sketch arrangements and separators</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#multiple-holes-and-partition-choice">Multiple holes and partition choice</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#extrusion-layers-and-cross-axis-construction">Extrusion, layers, and cross-axis construction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#topology-interfaces-and-conformity">Topology, interfaces, and conformity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#from-design-features-to-volume-maps">From design features to volume maps</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#reproducing-a-build">Reproducing a build</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="geometry.html">Geometry representation and certificates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="operations.html">Boolean operations and edge treatments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="interface-fields.html">Recovering parents and choosing interface continuity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spline-fields.html">Spline fields, extraction, and local refinement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="analysis.html">Analysis on audited trivariate models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="solver-design.html">Adaptive solves, pressure and design derivatives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="verification.html">Verification and evidence scope</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../explanation/index.html">Explanation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">SolidCraft Trivariate</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Technical reference</a></li>
+      <li class="breadcrumb-item active">Construction from native sketches</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/reference/construction.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="construction-from-native-sketches">
+<h1>Construction from native sketches<a class="headerlink" href="#construction-from-native-sketches" title="Link to this heading"></a></h1>
+<p>SolidCraftTrivariate constructs rational tensor-product volume maps from
+supported, explicit sketch families. A sketch is design input; a partition is
+an inspectable construction result. These are separate objects: changing the
+partition need not change the represented boundary, while changing a profile
+may invalidate both the partition and its certificates.</p>
+<p>The implementation is a collection of qualified families, not a universal
+sketch-to-solid algorithm. Each family has its own schema, geometric
+preconditions, finite search budget, audit, and regression fixtures. The
+planner rejects a recipe when no candidate meets its contract; a valid CAD
+shape is not necessarily representable by the available family.</p>
+<section id="sketch-arrangements-and-separators">
+<h2>Sketch arrangements and separators<a class="headerlink" href="#sketch-arrangements-and-separators" title="Link to this heading"></a></h2>
+<p>The polygonal input family is <code class="docutils literal notranslate"><span class="pre">sketch_layer_partition_v1</span></code>. It accepts an
+outer straight-edged contour, cut contours, their axial material/void
+intervals, and optional construction guides. The coordinates are integer
+millimeters. A loop has 3–64 distinct vertices; the recipe allows at most 12
+cuts, 64 guides, integer height 1–4096 mm, and coordinates bounded by
+4096 mm. Winding is normalized. Self-intersections, repeated vertices,
+contour contacts, cuts outside stock, and unhistoried nested or overlapping
+cuts are rejected. With explicit Boolean history nested loops are allowed,
+but touching or crossing loops remain outside this contract. This family
+represents line segments exactly; arcs and NURBS require other schemas.</p>
+<p>For polygon inputs, candidate arrangements include rectangular strips,
+radial constructions, quadrilateral separators, and convex hosts. The
+automatic planner builds and audits each supported candidate and selects by
+block count, then by a sampled condition-number diagnostic with stable
+tie-breaking. Exact area coverage, face incidences, and positive Jacobian
+bounds are acceptance conditions; the sampled score is not a certificate.
+The convex-host path handles multiple disjoint convex cuts with shared
+separator points and floor cells for blind cuts. Candidate search is bounded
+and a refusal does not imply that the sketch is geometrically invalid.</p>
+<p>The NURBS path first extracts active Bézier spans and builds a planar
+arrangement of supported intersections. <code class="docutils literal notranslate"><span class="pre">plan-sketch</span></code> reports the events
+that the constructor will use; it does not promise that an arbitrary pair of
+curves has an exact finite representation as a regular NURBS intersection.
+For supported transverse profiles, event parameters, orientation, source
+span, and provenance are retained through subdivision. Tangencies, stationary
+parameterizations, unsupported loop relationships, arithmetic overflow, or
+an unresolved event cause refusal rather than a guessed arrangement. See
+<code class="docutils literal notranslate"><span class="pre">tests/counterexamples/nurbs_multiloop_stationary.json</span></code> and
+<code class="docutils literal notranslate"><span class="pre">tests/counterexamples/g2_cross_ordinary_levels.recipe.json</span></code>.</p>
+<p>An arrangement is not just a set of drawn separators. The graph records
+vertices, oriented edges, source support, parameter interval, and role as
+boundary or interior separator. Shared intersections become common vertices.
+The resulting cells must admit the selected volume maps and conforming
+interfaces. The general problem of exact cubic curve arrangements has a
+substantial literature. Eigenwillig, Kettner, Schömer, and Wolpert give a
+complete, exact, and efficient algorithm for arrangements of planar algebraic
+curves of degree at most three, including degeneracies such as tangencies and
+singularities. That result is background, not the algorithm claimed for every
+SolidCraft family: <em>Exact, efficient, and complete arrangement computation
+for cubic curves</em>, <em>Computational Geometry</em> 35(1–2) (2006), 36–73,
+<a class="reference external" href="https://doi.org/10.1016/j.comgeo.2005.10.003">DOI 10.1016/j.comgeo.2005.10.003</a>.</p>
+<p>Implemented arrangement and planning modules include
+<code class="docutils literal notranslate"><span class="pre">src/sketch_arrangement.rs</span></code>, <code class="docutils literal notranslate"><span class="pre">src/sketch_quad_separators.rs</span></code>,
+<code class="docutils literal notranslate"><span class="pre">src/sketch_radial.rs</span></code>, <code class="docutils literal notranslate"><span class="pre">src/sketch_convex_hosts.rs</span></code>,
+<code class="docutils literal notranslate"><span class="pre">src/sketch_nurbs.rs</span></code>, <code class="docutils literal notranslate"><span class="pre">src/sketch_intersections.rs</span></code>,
+<code class="docutils literal notranslate"><span class="pre">src/sketch_rational_event.rs</span></code>, and <code class="docutils literal notranslate"><span class="pre">src/sketch_partition_plan.rs</span></code>.
+The higher-level polygon contract and reproduction commands are documented in
+the repository <a class="reference external" href="https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/README.md">README</a>.</p>
+</section>
+<section id="multiple-holes-and-partition-choice">
+<h2>Multiple holes and partition choice<a class="headerlink" href="#multiple-holes-and-partition-choice" title="Link to this heading"></a></h2>
+<p>For several disjoint polygonal holes, the convex-host planner separates holes
+into hosts, adds rational split points to host boundaries when needed, and
+uses the same separator points on both incident hosts. Blind cuts add floor
+cells that reuse the wall vertices. The method is described with its corpus
+and limitations in the
+<a class="reference external" href="https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/convex-host-rings.md">convex-host report</a>. In particular, arbitrary
+non-convex stock, arbitrary nesting, intersecting contours, and every
+possible vertex-count combination are not promised. Other families cover
+selected multiple circular bores and crossed NURBS tools; they have distinct
+recipes and topology contracts.</p>
+<p>Useful reproducible inputs include:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">tests/references/polygon_prism_corpus.json</span></code> for polygonal benchmark cases;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">tests/references/sketch_boolean_blind_pocket.recipe.json</span></code> for a guided blind
+pocket;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">tests/references/nurbs_multiloop.recipe.json</span></code> for supported NURBS loops;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">tests/references/nurbs_cross_oval.recipe.json</span></code> and
+<code class="docutils literal notranslate"><span class="pre">tests/references/g2_cross_plate.recipe.json</span></code> for cross-axis examples;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">tests/counterexamples/</span></code> and <code class="docutils literal notranslate"><span class="pre">tests/regressions/</span></code> for explicit refusals
+and reproduced defects.</p></li>
+</ul>
+<p>Fixture inventory evolves with the repository. The family identifier inside
+each JSON file is authoritative; filenames alone do not define a schema.</p>
+</section>
+<section id="extrusion-layers-and-cross-axis-construction">
+<h2>Extrusion, layers, and cross-axis construction<a class="headerlink" href="#extrusion-layers-and-cross-axis-construction" title="Link to this heading"></a></h2>
+<p>For an extrusion of a planar map <code class="docutils literal notranslate"><span class="pre">S(u,v)</span></code> along direction <code class="docutils literal notranslate"><span class="pre">d</span></code>, the
+Jacobian determinant is <code class="docutils literal notranslate"><span class="pre">(S_u</span> <span class="pre">x</span> <span class="pre">S_v)</span> <span class="pre">.</span> <span class="pre">d</span></code>. The extrusion constructor can
+therefore certify regularity from the planar determinant when the profile is
+simple and the direction is transverse. Axial layer construction partitions
+the sweep at feature start/end levels, pocket floors, shoulders, and supported
+crossing events. A common subdivision on both sides of each level preserves
+whole-face interfaces. Void intervals do not become inactive material blocks.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">nurbs_sketch_strip_v1</span></code> family extrudes the region between two
+monotone rational NURBS boundaries. Degree is 1–3, weights are positive,
+knots are clamped integers under a common rational scale, and both profiles
+must admit a common span partition and compatible parameterization. The
+constructor proves strict longitudinal monotonicity and a positive gap over
+each closed span using Bernstein bounds. It preserves the source parameter
+interval for each output block. See the
+<a class="reference external" href="https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/nurbs-sketch.md">NURBS strip reference</a> and
+<code class="docutils literal notranslate"><span class="pre">tests/references/nurbs_strip.recipe.json</span></code>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">orthogonal_sketch_features_v1</span></code> builds supported orthogonal feature stacks
+and propagates compatible traces through multiple layers. Cross-axis bores
+and NURBS profiles use specialized constructors: a transverse operation can
+change section topology, so a single extrusion template cannot simply be
+continued through the event. Intersections must be explicitly planned and
+represented by shared edges/faces. For rational surfaces the intersection
+curve need not itself be rational; the constructor supports only qualified
+cases and refuses unresolved intersections. The crossed-profile example,
+its exact-event recipe, and limitations are in the
+<a class="reference external" href="https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/nurbs-cross.md">crossed-NURBS reference</a>.</p>
+<p>Important implementation entry points are the <a class="reference external" href="https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/src/nurbs_extrusion.rs">NURBS extrusion module</a>,
+<a class="reference external" href="https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/src/curved_sketch.rs">curved-sketch builder</a>,
+<a class="reference external" href="https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/src/curved_sketch_audit.rs">curved-sketch audit</a>,
+<a class="reference external" href="https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/src/orthogonal_sketch.rs">orthogonal sketch builder</a>,
+<a class="reference external" href="https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/src/nurbs_cross.rs">crossed NURBS constructor</a>,
+and <a class="reference external" href="https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/src/nurbs_multiloop.rs">multi-loop NURBS constructor</a>.
+The API is exposed through the Rust crate where the module is public; JSON
+adapters are separate from the geometry kernel.</p>
+</section>
+<section id="topology-interfaces-and-conformity">
+<h2>Topology, interfaces, and conformity<a class="headerlink" href="#topology-interfaces-and-conformity" title="Link to this heading"></a></h2>
+<p>Every accepted block is a map over the closed unit cube. Its six parametric
+sides are related to topological faces, edges, and vertices by explicit
+incidences and orientations. A topological face is either a complete shared
+interface or a boundary piece. The audit checks that active sides are covered
+without gaps or overlapping interiors, and that shared faces have compatible
+traces under their recorded orientation. Design-face identity and block IDs
+are semantic metadata; they are not inferred from a global numbering after
+an edit.</p>
+<p>Some constructions require subdivision propagation: a cut introduced on a
+parent face must be carried across exactly matched faces until the whole
+complex conforms. <a class="reference external" href="https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/src/mapped_seams.rs">mapped seam discovery</a>
+discovers supported exact traces; <a class="reference external" href="https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/src/mapped_cut_propagation.rs">mapped cut propagation</a>
+propagates their rational subdivisions. A
+bounded propagation budget can yield refusal/indeterminate status. Edge-only
+or vertex-only contact does not establish a volume interface. Euler counts
+and sampled classifications are useful consistency checks, but neither proves
+local manifoldness, injectivity, or complete coverage by itself.</p>
+<p>This distinction is also visible in a precise topological existence theorem.
+For a connected domain with a topological quadrilateral boundary mesh <code class="docutils literal notranslate"><span class="pre">Q</span></code>,
+Erickson proves that <code class="docutils literal notranslate"><span class="pre">Q</span></code> extends to a topological hexahedral mesh if and
+only if <code class="docutils literal notranslate"><span class="pre">Q</span></code> has an even number of quadrilaterals and no odd cycle in <code class="docutils literal notranslate"><span class="pre">Q</span></code>
+bounds a surface inside the domain. This concerns existence of a topological
+mesh; it is not a geometric parameterization or a rational-map certificate.
+SolidCraft’s family certificates remain specific to their represented blocks.
+See Erickson, <em>Efficiently Hex-Meshing Things with Topology</em>, <em>Discrete &amp;
+Computational Geometry</em> 52(3) (2014), 427–449,
+<a class="reference external" href="https://doi.org/10.1007/s00454-014-9624-3">DOI 10.1007/s00454-014-9624-3</a>.</p>
+</section>
+<section id="from-design-features-to-volume-maps">
+<h2>From design features to volume maps<a class="headerlink" href="#from-design-features-to-volume-maps" title="Link to this heading"></a></h2>
+<p>Chen, Bu, Jin, Xu, and Li describe a segmentation–mapping–merging pipeline:
+they partition a semantic design-feature network into feature subnetworks,
+map complete feature networks to volume patches, then merge and adjust the
+patches for IGA. The corresponding stages here are sketch arrangement, construction
+of the rational control nets and coefficient-checked patch assembly.
+Each admitted family also specifies which input configurations it can
+certify and what a refused edit does to its prior state. Compare the
+geometric representations and admission conditions when translating an
+example between these approaches.
+L. Chen, N. Bu, Y. Jin, G. Xu, and B. Li, “Construction of IGA-suitable
+Volume Parametric Models by the Segmentation–Mapping–Merging Mechanism of
+Design Features,” <em>Computer-Aided Design</em> 146 (2022), article 103228,
+<a class="reference external" href="https://doi.org/10.1016/j.cad.2022.103228">DOI 10.1016/j.cad.2022.103228</a>.</p>
+</section>
+<section id="reproducing-a-build">
+<h2>Reproducing a build<a class="headerlink" href="#reproducing-a-build" title="Link to this heading"></a></h2>
+<p>From the repository root, use a source recipe, then audit the serialized model
+before exporting:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">cargo run --locked --offline -- build tests/references/nurbs_strip.recipe.json build/strip.model.json</span>
+<span class="go">cargo run --locked --offline -- audit build/strip.model.json</span>
+<span class="go">cargo run --locked --offline -- plan-patches build/strip.model.json build/strip.patches.json</span>
+<span class="go">cargo run --locked --offline -- export-step build/strip.model.json build/strip.step</span>
+<span class="go">cargo run --locked --offline -- export-analysis build/strip.model.json 16 build/strip.analysis.json</span>
+</pre></div>
+</div>
+<p>The CLI routes through the same constructor and audit as the library. A
+successful build means the family-specific checks passed; it does not imply
+that a downstream STEP reader, a distinct B-Rep kernel, or an analysis solver
+has independently validated the export. Use the independent replay scripts
+and reports linked from the family pages for those claims.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="catalog.html" class="btn btn-neutral float-left" title="Command and recipe catalogue" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="geometry.html" class="btn btn-neutral float-right" title="Geometry representation and certificates" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright .</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

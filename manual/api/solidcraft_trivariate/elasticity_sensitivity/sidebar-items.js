@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["assemble_sensitivity","evaluate_geometry_jet"],"struct":["ElasticitySensitivity","GeometryJetSample","MaterialJet"]};

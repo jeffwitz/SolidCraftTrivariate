@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["export_adaptive_package","parse_refinement_plan"],"struct":["RefinementPlan"]};

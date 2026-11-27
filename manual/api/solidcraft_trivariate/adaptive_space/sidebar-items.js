@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["build_adaptive_space"],"struct":["AdaptiveSpace"]};

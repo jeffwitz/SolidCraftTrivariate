@@ -1,0 +1,201 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Analysis on audited trivariate models &mdash; SolidCraft Trivariate</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Adaptive solves, pressure and design derivatives" href="solver-design.html" />
+    <link rel="prev" title="Spline fields, extraction, and local refinement" href="spline-fields.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            SolidCraft Trivariate
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../how-to/index.html">How-to guides</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Technical reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="catalog.html">Command and recipe catalogue</a></li>
+<li class="toctree-l2"><a class="reference internal" href="construction.html">Construction from native sketches</a></li>
+<li class="toctree-l2"><a class="reference internal" href="geometry.html">Geometry representation and certificates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="operations.html">Boolean operations and edge treatments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="interface-fields.html">Recovering parents and choosing interface continuity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spline-fields.html">Spline fields, extraction, and local refinement</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Analysis on audited trivariate models</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#foundational-and-coupling-references">Foundational and coupling references</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="solver-design.html">Adaptive solves, pressure and design derivatives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="verification.html">Verification and evidence scope</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../explanation/index.html">Explanation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">SolidCraft Trivariate</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Technical reference</a></li>
+      <li class="breadcrumb-item active">Analysis on audited trivariate models</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/reference/analysis.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="analysis-on-audited-trivariate-models">
+<h1>Analysis on audited trivariate models<a class="headerlink" href="#analysis-on-audited-trivariate-models" title="Link to this heading"></a></h1>
+<p>The analysis layer consumes a geometric model only after its family audit has
+accepted it. This is a deliberate boundary: a valid volume representation,
+positive local Jacobians, complete face incidence, and an analysis-suitable
+field space are separate claims. A determinant certificate for the geometry
+does not by itself prove that an elasticity discretization is stable or
+accurate.</p>
+<p>Hughes, Cottrell and Bazilevs introduce the use of CAD spline bases for
+analysis <a class="reference internal" href="#hughes2005" id="id1"><span>[Hughes2005]</span></a>.</p>
+<p>The central fixed-family entry points are
+<code class="docutils literal notranslate"><span class="pre">analysis_space::build_analysis_space</span></code> and its family-specific siblings in
+<code class="docutils literal notranslate"><span class="pre">src/analysis_space.rs</span></code>. The bracket path exactly elevates degree-one axes
+to Q2 Bernstein form and identifies face controls by rational physical
+coordinates after the audited face orientation has been applied. The general
+adaptive path is in <code class="docutils literal notranslate"><span class="pre">src/adaptive_space.rs</span></code>: matching Q2 traces are
+identified, while nonmatching nested traces become exact rational constraint
+rows. <code class="docutils literal notranslate"><span class="pre">constraint_system::resolve</span></code> turns those rows into a lift from free
+masters. This is strong algebraic conformity for the supported trace patterns;
+it is not a general multipatch coupling method.</p>
+<p>For context, common multipatch alternatives include mortar constraints and
+Nitsche coupling for nonmatching interfaces <a class="reference internal" href="#brivadis2015" id="id2"><span>[Brivadis2015]</span></a> <a class="reference internal" href="#nguyen2014" id="id3"><span>[Nguyen2014]</span></a>. These methods impose continuity
+weakly and introduce their own multiplier-space or stabilization choices.
+The present supported Q2 adaptive path instead builds exact trace relations
+for certified whole-face and nested dyadic interfaces. Do not infer support
+for arbitrary partial, curved, or non-nested overlaps from that implementation.
+Variable-size extracted elements are implemented in <code class="docutils literal notranslate"><span class="pre">extracted_space</span></code>
+and exercised by <code class="docutils literal notranslate"><span class="pre">cargo</span> <span class="pre">test</span> <span class="pre">--test</span> <span class="pre">extracted_space</span></code>. On the recovered
+NURBS strip the local THB job uses this assembly route. The separate
+crossed-tool bending study has a ten-chart geometry with partial interfaces.
+See <a class="reference internal" href="spline-fields.html"><span class="doc">Spline fields, extraction, and local refinement</span></a> for the supported field transfers. On general
+multipatch inputs, partial footprints need interface-specific treatment, and a THB basis
+does not automatically resolve those joins.</p>
+<p>The small-strain isotropic elasticity implementation is in
+<code class="docutils literal notranslate"><span class="pre">src/elasticity.rs</span></code>. <code class="docutils literal notranslate"><span class="pre">assemble</span></code> uses the supplied tensor-product Gauss
+order for volume integration; <code class="docutils literal notranslate"><span class="pre">constrained_elasticity::solve_constrained</span></code>
+and <code class="docutils literal notranslate"><span class="pre">solve_preconditioned</span></code> solve the reduced system after boundary and trace
+constraints have been resolved. Report assembly quadrature, reduced residual,
+DOFs, solver iterations, and physical error norms separately. A small algebraic
+residual is evidence about the linear solve, not a discretization-error bound.</p>
+<p>The source-level APIs are exercised by Rust tests and by independent
+reassembly scripts. From the repository root, useful commands are:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cargo</span> <span class="n">test</span> <span class="o">--</span><span class="n">locked</span> <span class="o">--</span><span class="n">offline</span> <span class="o">--</span><span class="n">test</span> <span class="n">elasticity</span>
+<span class="n">cargo</span> <span class="n">test</span> <span class="o">--</span><span class="n">locked</span> <span class="o">--</span><span class="n">offline</span> <span class="o">--</span><span class="n">test</span> <span class="n">adaptive_partition</span>
+<span class="n">cargo</span> <span class="n">test</span> <span class="o">--</span><span class="n">locked</span> <span class="o">--</span><span class="n">offline</span> <span class="o">--</span><span class="n">test</span> <span class="n">nested_trace</span>
+<span class="n">make</span> <span class="n">check</span><span class="o">-</span><span class="n">local</span><span class="o">-</span><span class="n">thb</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">check-local-thb</span></code> rebuilds the native CLI, runs the THB-specific tests
+and independent function/traction checks. For the broader project gate use
+<code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">check</span></code>; it is substantially more expensive.</p>
+<section id="foundational-and-coupling-references">
+<h2>Foundational and coupling references<a class="headerlink" href="#foundational-and-coupling-references" title="Link to this heading"></a></h2>
+<div role="list" class="citation-list">
+<div class="citation" id="hughes2005" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">Hughes2005</a><span class="fn-bracket">]</span></span>
+<p>T. J. R. Hughes, J. A. Cottrell, and Y. Bazilevs,
+“Isogeometric analysis: CAD, finite elements, NURBS, exact geometry and
+mesh refinement,” <em>Computer Methods in Applied Mechanics and Engineering</em>,
+194 (2005), 4135–4195. <a class="reference external" href="https://doi.org/10.1016/j.cma.2004.10.008">DOI 10.1016/j.cma.2004.10.008</a>.</p>
+</div>
+<div class="citation" id="brivadis2015" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">Brivadis2015</a><span class="fn-bracket">]</span></span>
+<p>E. Brivadis, A. Buffa, B. Wohlmuth, and L. Wunderlich,
+“Isogeometric mortar methods,” <em>Computer Methods in Applied Mechanics and
+Engineering</em>, 284 (2015), 292–319. <a class="reference external" href="https://doi.org/10.1016/j.cma.2014.09.012">DOI 10.1016/j.cma.2014.09.012</a>. This describes a weak
+interface-coupling family, not the exact constraint implementation here.</p>
+</div>
+<div class="citation" id="nguyen2014" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id3">Nguyen2014</a><span class="fn-bracket">]</span></span>
+<p>V. P. Nguyen, P. Kerfriden, M. Brino, S. P. A. Bordas, and
+E. Bonisoli, “Nitsche’s method for two and three dimensional NURBS
+patch coupling,” <em>Computational Mechanics</em>, 53(6) (2014), 1163–1182.
+<a class="reference external" href="https://doi.org/10.1007/s00466-013-0955-3">DOI 10.1007/s00466-013-0955-3</a>.</p>
+</div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="spline-fields.html" class="btn btn-neutral float-left" title="Spline fields, extraction, and local refinement" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="solver-design.html" class="btn btn-neutral float-right" title="Adaptive solves, pressure and design derivatives" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright .</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

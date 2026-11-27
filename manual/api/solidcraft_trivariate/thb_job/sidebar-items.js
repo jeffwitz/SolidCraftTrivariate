@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["compile","galerkin","refusal","replay","solve"]};

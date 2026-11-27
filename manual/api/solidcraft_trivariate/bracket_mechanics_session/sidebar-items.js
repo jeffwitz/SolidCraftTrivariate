@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["cache_preflight"],"struct":["BracketMechanicsConfig","BracketMechanicsSession","BracketMechanicsState","BracketMechanicsTiming","CachePreflight"]};

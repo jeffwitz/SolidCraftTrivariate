@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["compare_points_exact","quadrangulate","quadrangulate_with_provenance"],"struct":["BoundaryEdgeSource","QuadWithProvenance"]};

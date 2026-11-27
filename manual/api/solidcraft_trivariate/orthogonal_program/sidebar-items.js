@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["BoxOp"],"fn":["build_orthogonal_program"],"struct":["BoxFeature","OrthogonalProgram"],"type":["Bounds"]};

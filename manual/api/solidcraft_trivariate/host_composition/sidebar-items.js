@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["HostCompositionError","HostNodeStatus","HostRepresentation"],"fn":["compose_with_host"],"struct":["AffinePiece","ComposedBlock","HostComposition","HostNodeEvent","PiecewiseAffineHost","RationalParameter"]};

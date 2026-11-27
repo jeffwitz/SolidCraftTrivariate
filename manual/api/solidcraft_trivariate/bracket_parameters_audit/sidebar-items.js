@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["audit_bracket_parameter_derivatives","audit_bracket_parameters"],"struct":["ParameterizedBracketCertificate"]};

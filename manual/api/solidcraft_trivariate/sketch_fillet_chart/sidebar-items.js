@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["fillet_charts","fillet_charts_rect"]};

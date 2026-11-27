@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["build_cross","build_cross_bounded","build_oval"],"struct":["NurbsCurve2"]};

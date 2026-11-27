@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["CounterboreOpening"],"fn":["build_counterbores"],"struct":["Counterbore","CounterborePrism"]};

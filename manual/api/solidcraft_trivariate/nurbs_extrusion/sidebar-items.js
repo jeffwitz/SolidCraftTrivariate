@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["determinant_bound","extrude_strips"]};

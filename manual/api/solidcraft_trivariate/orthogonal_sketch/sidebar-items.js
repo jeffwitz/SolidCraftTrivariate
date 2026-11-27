@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["build"],"struct":["Bore","Fillet","OrthogonalSketch","SweepPartition"]};

@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["CylinderOp"],"fn":["build_coaxial_program"],"struct":["CoaxialProgram","CylinderFeature","LayeredRegions","Region"]};

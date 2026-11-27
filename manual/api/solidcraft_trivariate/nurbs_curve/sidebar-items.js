@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["extract_active_bezier","extract_bezier"],"struct":["BezierSpan"]};

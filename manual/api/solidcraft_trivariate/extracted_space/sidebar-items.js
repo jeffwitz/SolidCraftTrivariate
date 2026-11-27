@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["assemble_elements","assemble_sampled","compare_assembled","compare_galerkin","solve_axial_manufactured","solve_inherited"],"struct":["AxisExtraction","ElementBasisSample","ElementGeometrySample","ExtractedElement","GalerkinComparison","ManufacturedResult","NativeAssembly"]};

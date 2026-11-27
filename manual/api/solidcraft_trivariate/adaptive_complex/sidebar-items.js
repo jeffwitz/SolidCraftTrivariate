@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["FaceSource"],"fn":["build_oriented_complex"],"struct":["ChartPoint","ChartSegment","ComplexCell","ComplexEdge","ComplexFace","ComplexVertex","OrientedComplex","SignedId"]};

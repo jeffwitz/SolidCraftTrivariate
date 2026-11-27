@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["BendSection"],"fn":["build_circular_bend"],"struct":["BendRecipe"]};

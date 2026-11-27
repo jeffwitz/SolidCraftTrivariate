@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["nested_weight_jets"],"struct":["CoefficientJet"]};

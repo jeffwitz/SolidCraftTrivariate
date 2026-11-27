@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["IntersectionCardinality","SketchRelation"],"fn":["intersect_circles"],"struct":["SketchIntersection","SketchPoint"]};

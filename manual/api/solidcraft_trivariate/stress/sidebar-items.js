@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["cauchy_stress","fillet_limits","von_mises"]};

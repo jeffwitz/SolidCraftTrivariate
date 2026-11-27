@@ -1,0 +1,378 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Command and recipe catalogue &mdash; SolidCraft Trivariate</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Construction from native sketches" href="construction.html" />
+    <link rel="prev" title="Technical reference" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            SolidCraft Trivariate
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../how-to/index.html">How-to guides</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Technical reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Command and recipe catalogue</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#command-reference">Command reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#recipe-families">Recipe families</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="construction.html">Construction from native sketches</a></li>
+<li class="toctree-l2"><a class="reference internal" href="geometry.html">Geometry representation and certificates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="operations.html">Boolean operations and edge treatments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="interface-fields.html">Recovering parents and choosing interface continuity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spline-fields.html">Spline fields, extraction, and local refinement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="analysis.html">Analysis on audited trivariate models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="solver-design.html">Adaptive solves, pressure and design derivatives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="verification.html">Verification and evidence scope</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../explanation/index.html">Explanation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">SolidCraft Trivariate</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Technical reference</a></li>
+      <li class="breadcrumb-item active">Command and recipe catalogue</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/reference/catalog.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="command-and-recipe-catalogue">
+<h1>Command and recipe catalogue<a class="headerlink" href="#command-and-recipe-catalogue" title="Link to this heading"></a></h1>
+<p>The catalogue is generated from the compiled kernel. Each family has a downloadable JSON recipe. The audit checks family-specific
+requirements after parsing, including consistency between the source recipe,
+maps and topology.</p>
+<section id="command-reference">
+<h2>Command reference<a class="headerlink" href="#command-reference" title="Link to this heading"></a></h2>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">annulus-edges</span> <span class="pre">LAYOUT</span> <span class="pre">PROFILE</span> <span class="pre">OUT</span></code></dt><dd><p>Emit the knots and homogeneous volume nets for an annulus layout and edge profile.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">assemble-patches</span> <span class="pre">MODEL</span> <span class="pre">LAYOUT</span> <span class="pre">OUTPUT</span></code></dt><dd><p>Apply a supplied layout to the source cells and assemble compatible homogeneous control nets.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">audit</span> <span class="pre">MODEL</span></code></dt><dd><p>Read the persisted model and repeat its family-specific checks on controls, incidence and geometry.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">audit-inherited-space</span> <span class="pre">PACKAGE</span></code></dt><dd><p>Recheck the saved inherited-space package and its constraints.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">audit-parent-field</span> <span class="pre">MODEL</span> <span class="pre">FIELD</span></code></dt><dd><p>Check the serialized parent field against its geometric model.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">build</span> <span class="pre">RECIPE</span> <span class="pre">OUTPUT</span></code></dt><dd><p>Construct a versioned rational volume model from its family-specific recipe.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">capabilities</span></code></dt><dd><p>List the registered construction families, commands and evaluators for this binary.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">certify-map</span> <span class="pre">MAP</span> <span class="pre">MAX_LEAVES</span> <span class="pre">MAX_DEPTH</span></code></dt><dd><p>Bound the determinant on the parameter cube under the leaf and depth budgets. Inspect the returned status and lower bound.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">check-parent-galerkin</span> <span class="pre">MODEL</span> <span class="pre">ORDER</span></code></dt><dd><p>Compare the fine and transferred parent stiffness at the same quadrature order.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">check-thb-galerkin</span> <span class="pre">PACKAGE</span> <span class="pre">ORDER</span></code></dt><dd><p>Compare coarse stiffness with the transferred refined stiffness at identical quadrature.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">classify-transverse-transitions</span> <span class="pre">MODEL</span> <span class="pre">OUTPUT</span></code></dt><dd><p>Examine first jets on interfaces and report the supported constant or affine transverse relations.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">compose-axial</span> <span class="pre">JOB</span> <span class="pre">OUT</span></code></dt><dd><p>Subtract a third axial operand from a connected two-operand union, carrying surviving source maps and face ownership.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">cover-cylinder</span> <span class="pre">MODEL</span> <span class="pre">2|3</span> <span class="pre">OUT</span></code></dt><dd><p>Assemble a two- or three-volume cover of the tall three-layer cylinder, including its seam incidence.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">crossed-boolean</span> <span class="pre">RECIPE</span> <span class="pre">OP</span> <span class="pre">OUTPUT</span></code></dt><dd><p>Select an operation in the supported crossed-tool arrangement. The output retains its partial-face footprints.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">differentiate-job</span> <span class="pre">MODEL</span> <span class="pre">JOB</span> <span class="pre">DIRECTION</span> <span class="pre">OUTPUT</span></code></dt><dd><p>Differentiate an admitted job along the prescribed direction within one fixed regime.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">edit-bore-intervals</span> <span class="pre">MODEL</span> <span class="pre">EDITS</span> <span class="pre">OUTPUT</span></code></dt><dd><p>Apply a set of axial bore edits to the saved model with the family’s edit and lineage checks.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">edit-fieldcraft-bore-rims</span> <span class="pre">MODEL</span> <span class="pre">STATE</span> <span class="pre">OUTPUT.json|OUTPUT.step</span></code></dt><dd><p>Apply the requested edge state to the qualified FieldCraft bore rims.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">edit-s3-stock-rim</span> <span class="pre">MODEL</span> <span class="pre">sharp|chamfer|fillet</span> <span class="pre">OUTPUT.json|OUTPUT.step</span></code></dt><dd><p>Apply the supported stock-rim treatment on the S3 plate and emit its JSON or STEP representation.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">evaluate</span> <span class="pre">MAP</span> <span class="pre">U</span> <span class="pre">V</span> <span class="pre">W</span></code></dt><dd><p>Evaluate a homogeneous rational map at the three supplied parameters.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">export-adaptive</span> <span class="pre">MODEL</span> <span class="pre">PLAN</span> <span class="pre">GAUSS_ORDER</span> <span class="pre">OUTPUT</span></code></dt><dd><p>Compile the local refinement plan into an adaptive analysis package and trace constraints.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">export-analysis</span> <span class="pre">MODEL</span> <span class="pre">GAUSS_ORDER</span> <span class="pre">OUTPUT</span></code></dt><dd><p>Construct the family’s analysis package with the specified Gauss order.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">export-field-vtu</span> <span class="pre">RESULT</span> <span class="pre">SUBDIVISIONS</span> <span class="pre">OUTPUT</span></code></dt><dd><p>Sample the field from a supported result package for VTK visualization.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">export-geometry-vtu</span> <span class="pre">MODEL</span> <span class="pre">SUBDIVISIONS</span> <span class="pre">OUTPUT</span></code></dt><dd><p>Sample the geometry at the requested subdivision count for a VTK viewer.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">export-inherited-space</span> <span class="pre">MODEL</span> <span class="pre">PLAN</span> <span class="pre">OUT</span></code></dt><dd><p>Apply the requested continuity plan and serialize the constrained field.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">export-nurbs-space</span> <span class="pre">MODEL</span> <span class="pre">OUTPUT</span></code></dt><dd><p>Export the supported conforming rational field with shared trace numbering.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">export-parent-field</span> <span class="pre">MODEL</span> <span class="pre">OUT</span></code></dt><dd><p>Write the extracted canonical field for the recovered strip parent.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">export-parent-stiffness</span> <span class="pre">MODEL</span> <span class="pre">ORDER</span> <span class="pre">OUT</span></code></dt><dd><p>Serialize the parent-field stiffness for independent matrix reassembly.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">export-sketch-analysis</span> <span class="pre">MODEL</span> <span class="pre">GAUSS_ORDER</span> <span class="pre">OUTPUT</span></code></dt><dd><p>Compile a sketch-derived analysis package at the requested integration order.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">export-step</span> <span class="pre">MODEL</span> <span class="pre">OUTPUT</span></code></dt><dd><p>Write the oriented boundary of an admitted model as STEP for independent CAD readback.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">export-thb-extraction</span> <span class="pre">PACKAGE</span> <span class="pre">OUT</span></code></dt><dd><p>Export element extraction data for the locally refined field.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">import-solidcraft</span> <span class="pre">SCRIPT</span> <span class="pre">OUTPUT</span></code></dt><dd><p>Import a supported SolidCraft script through the historical adapter.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">import-solidcraft-sketch</span> <span class="pre">TIMELINE</span> <span class="pre">OUTPUT</span></code></dt><dd><p>Replay a supported design timeline through sketch and feature constructors.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">inspect-travel</span> <span class="pre">CENTER_X_UM</span></code></dt><dd><p>Inspect a travelling-bore configuration at the specified centre coordinate in micrometres.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">plan-patches</span> <span class="pre">MODEL</span> <span class="pre">OUTPUT</span></code></dt><dd><p>Select a tensor-patch cover from the existing volume cells and retain the mapping of spans to sources.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">plan-sketch</span> <span class="pre">RECIPE</span></code></dt><dd><p>Compute the supported arrangement, junctions and construction events before building a solid.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">recover-pair-parents</span> <span class="pre">MODEL</span> <span class="pre">REPORT</span></code></dt><dd><p>Test neighboring cell pairs for a common polynomial parent under the admitted parameter changes.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">recover-spline-parent</span> <span class="pre">MODEL</span> <span class="pre">OUT</span></code></dt><dd><p>Recover the strip’s generating tensor-product parent and verify its restrictions.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">recover-translation-columns</span> <span class="pre">MODEL</span> <span class="pre">AXIS</span></code></dt><dd><p>Find supported chains of translated sections along the chosen axis.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">reduce-axial-knots</span> <span class="pre">PATCHES</span> <span class="pre">OUTPUT</span></code></dt><dd><p>Attempt exact geometry-knot removal on compatible axial chains. Retain source subintervals and selections.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">refine-thb-strip</span> <span class="pre">MODEL</span> <span class="pre">PLAN</span> <span class="pre">PACKAGE</span></code></dt><dd><p>Apply the supported hierarchical refinement plan to the recovered strip and save a replayable package.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">solve-inherited</span> <span class="pre">MODEL</span> <span class="pre">JOB</span> <span class="pre">OUT</span></code></dt><dd><p>Construct the inherited field from the model and run the supported job.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">solve-inherited-space</span> <span class="pre">PACKAGE</span> <span class="pre">JOB</span> <span class="pre">OUT</span></code></dt><dd><p>Solve a supported mechanical job on a persisted inherited field.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">solve-job</span> <span class="pre">MODEL</span> <span class="pre">JOB</span> <span class="pre">OUTPUT</span></code></dt><dd><p>Dispatch an elasticity job to the compatible model or saved field space.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">solve-parent-field</span> <span class="pre">MODEL</span> <span class="pre">JOB</span> <span class="pre">OUT</span></code></dt><dd><p>Solve an admitted parent-field elasticity job on the recovered strip.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">solve-thb-strip</span> <span class="pre">PACKAGE</span> <span class="pre">prepared|local</span> <span class="pre">JOB</span> <span class="pre">OUT</span></code></dt><dd><p>Select the prepared or locally refined field from a THB package and solve the job.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">spline-eligibility</span> <span class="pre">MODEL</span></code></dt><dd><p>Inspect which parent or field constructions the supplied model admits.</p>
+</dd>
+</dl>
+</section>
+<section id="recipe-families">
+<h2>Recipe families<a class="headerlink" href="#recipe-families" title="Link to this heading"></a></h2>
+<p>Download a recipe and pass it directly to <code class="docutils literal notranslate"><span class="pre">build</span> <span class="pre">RECIPE</span> <span class="pre">MODEL</span></code>. Run <code class="docutils literal notranslate"><span class="pre">audit</span> <span class="pre">MODEL</span></code> to verify the resulting control nets and incidence.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Family</p></th>
+<th class="head"><p>Reproducible input</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">affine_image_v1</span></code></p></td>
+<td><p><a class="reference download internal" download="" href="../_downloads/c7a179a3e2be786f73acb20849039acf/affine_image_v1.json"><code class="xref download docutils literal notranslate"><span class="pre">Recipe</span> <span class="pre">JSON</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">affine_pair_v1</span></code></p></td>
+<td><p><a class="reference download internal" download="" href="../_downloads/6cee01d32577b82524ab6fc4916ebe17/affine_pair_v1.json"><code class="xref download docutils literal notranslate"><span class="pre">Recipe</span> <span class="pre">JSON</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">annular_pair_v1</span></code></p></td>
+<td><p><a class="reference download internal" download="" href="../_downloads/3d5e95388d43527c04e4644f88fc6314/annular_pair_v1.json"><code class="xref download docutils literal notranslate"><span class="pre">Recipe</span> <span class="pre">JSON</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">axial_boolean_v1</span></code></p></td>
+<td><p><a class="reference download internal" download="" href="../_downloads/b25438a2bd0dcc02ab605e16083167d2/axial_boolean_v1.json"><code class="xref download docutils literal notranslate"><span class="pre">Recipe</span> <span class="pre">JSON</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">box_cylinder_boolean_suite_v1</span></code></p></td>
+<td><p><a class="reference download internal" download="" href="../_downloads/27de3f70e46d1372cc8adac84763df3a/box_cylinder_boolean_suite_v1.json"><code class="xref download docutils literal notranslate"><span class="pre">Recipe</span> <span class="pre">JSON</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">box_cylinder_boolean_v1</span></code></p></td>
+<td><p><a class="reference download internal" download="" href="../_downloads/442692ea7a6b0a324e67192ad13f0968/box_cylinder_boolean_v1.json"><code class="xref download docutils literal notranslate"><span class="pre">Recipe</span> <span class="pre">JSON</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">circular_bend_v1</span></code></p></td>
+<td><p><a class="reference download internal" download="" href="../_downloads/4ff6e5de6c3d031ce0937e2c4241b4d2/circular_bend_v1.json"><code class="xref download docutils literal notranslate"><span class="pre">Recipe</span> <span class="pre">JSON</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">coaxial_feature_program_v1</span></code></p></td>
+<td><p><a class="reference download internal" download="" href="../_downloads/905d3391ba0059c429aa934321413c5e/coaxial_feature_program_v1.json"><code class="xref download docutils literal notranslate"><span class="pre">Recipe</span> <span class="pre">JSON</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">core_disk_v1</span></code></p></td>
+<td><p><a class="reference download internal" download="" href="../_downloads/9651300efa194250283f74dd71b7737c/core_disk_v1.json"><code class="xref download docutils literal notranslate"><span class="pre">Recipe</span> <span class="pre">JSON</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">crescent_pocket_v1</span></code></p></td>
+<td><p><a class="reference download internal" download="" href="../_downloads/fb989ba68086236dfc9b4ba6142ac616/crescent_pocket_v1.json"><code class="xref download docutils literal notranslate"><span class="pre">Recipe</span> <span class="pre">JSON</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">curved_sketch_layers_v1</span></code></p></td>
+<td><p><a class="reference download internal" download="" href="../_downloads/96a8d5e04655eec80f889362e1e31186/curved_sketch_layers_v1.json"><code class="xref download docutils literal notranslate"><span class="pre">Recipe</span> <span class="pre">JSON</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">exact_bore_v1</span></code></p></td>
+<td><p><a class="reference download internal" download="" href="../_downloads/6d98093793840b625394b38d7b04b15f/exact_bore_v1.json"><code class="xref download docutils literal notranslate"><span class="pre">Recipe</span> <span class="pre">JSON</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">filleted_bracket_v1</span></code></p></td>
+<td><p><a class="reference download internal" download="" href="../_downloads/9cc0d1530a189cb3523cb4555bbcba85/filleted_bracket_v1.json"><code class="xref download docutils literal notranslate"><span class="pre">Recipe</span> <span class="pre">JSON</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">full_annulus_v1</span></code></p></td>
+<td><p><a class="reference download internal" download="" href="../_downloads/d879c2a5027e3cd0aeeccea845c54ede/full_annulus_v1.json"><code class="xref download docutils literal notranslate"><span class="pre">Recipe</span> <span class="pre">JSON</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">g2_cross_plate_v1</span></code></p></td>
+<td><p><a class="reference download internal" download="" href="../_downloads/612ed375dce4a0485fe5e52f928a90ce/g2_cross_plate_v1.json"><code class="xref download docutils literal notranslate"><span class="pre">Recipe</span> <span class="pre">JSON</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">layered_pocket_v1</span></code></p></td>
+<td><p><a class="reference download internal" download="" href="../_downloads/0a5f0db8806909f8e9a7a60a359215f9/layered_pocket_v1.json"><code class="xref download docutils literal notranslate"><span class="pre">Recipe</span> <span class="pre">JSON</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">movable_bore_v1</span></code></p></td>
+<td><p><a class="reference download internal" download="" href="../_downloads/9454ae12440941b4a61647f0f5fddf38/movable_bore_v1.json"><code class="xref download docutils literal notranslate"><span class="pre">Recipe</span> <span class="pre">JSON</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">nurbs_cross_bores_bounded_v1</span></code></p></td>
+<td><p><a class="reference download internal" download="" href="../_downloads/1e17456c8d1d3dba1262a9fc75220cc1/nurbs_cross_bores_bounded_v1.json"><code class="xref download docutils literal notranslate"><span class="pre">Recipe</span> <span class="pre">JSON</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">nurbs_cross_bores_v1</span></code></p></td>
+<td><p><a class="reference download internal" download="" href="../_downloads/b9e4f77bcf68beaffe9cb51124488381/nurbs_cross_bores_v1.json"><code class="xref download docutils literal notranslate"><span class="pre">Recipe</span> <span class="pre">JSON</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">nurbs_cross_oval_v1</span></code></p></td>
+<td><p><a class="reference download internal" download="" href="../_downloads/1aeb286b7fcac4d1a086ca6225955100/nurbs_cross_oval_v1.json"><code class="xref download docutils literal notranslate"><span class="pre">Recipe</span> <span class="pre">JSON</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">nurbs_edge_loops_v1</span></code></p></td>
+<td><p><a class="reference download internal" download="" href="../_downloads/e88b7f0cdf408bfbae692a5312ba1b5e/nurbs_edge_loops_v1.json"><code class="xref download docutils literal notranslate"><span class="pre">Recipe</span> <span class="pre">JSON</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">nurbs_multiloop_v1</span></code></p></td>
+<td><p><a class="reference download internal" download="" href="../_downloads/cab19da2a649b045e7946f917a210c53/nurbs_multiloop_v1.json"><code class="xref download docutils literal notranslate"><span class="pre">Recipe</span> <span class="pre">JSON</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">nurbs_sketch_strip_v1</span></code></p></td>
+<td><p><a class="reference download internal" download="" href="../_downloads/dd06b46b3bae77ca162b716213174bbd/nurbs_sketch_strip_v1.json"><code class="xref download docutils literal notranslate"><span class="pre">Recipe</span> <span class="pre">JSON</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">orthogonal_feature_program_v1</span></code></p></td>
+<td><p><a class="reference download internal" download="" href="../_downloads/e3d8ca5fdbe9861daa60491710fe2e4f/orthogonal_feature_program_v1.json"><code class="xref download docutils literal notranslate"><span class="pre">Recipe</span> <span class="pre">JSON</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">orthogonal_sketch_features_v1</span></code></p></td>
+<td><p><a class="reference download internal" download="" href="../_downloads/2ba1f1650d76330030f55c6625b1e09a/orthogonal_sketch_features_v1.json"><code class="xref download docutils literal notranslate"><span class="pre">Recipe</span> <span class="pre">JSON</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">overlap_bore_v1</span></code></p></td>
+<td><p><a class="reference download internal" download="" href="../_downloads/3273ad7f727be012344791a2b757c36c/overlap_bore_v1.json"><code class="xref download docutils literal notranslate"><span class="pre">Recipe</span> <span class="pre">JSON</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">parameterized_bracket_v1</span></code></p></td>
+<td><p><a class="reference download internal" download="" href="../_downloads/0eb3efd8bf1162007aeae4ffd4bcf2e9/parameterized_bracket_v1.json"><code class="xref download docutils literal notranslate"><span class="pre">Recipe</span> <span class="pre">JSON</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">pierced_square_v1</span></code></p></td>
+<td><p><a class="reference download internal" download="" href="../_downloads/36b839dbb88d87edba83f3d617516015/pierced_square_v1.json"><code class="xref download docutils literal notranslate"><span class="pre">Recipe</span> <span class="pre">JSON</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">pocket_depth_v1</span></code></p></td>
+<td><p><a class="reference download internal" download="" href="../_downloads/8a78f55de240867fa9ee8b3995591dc1/pocket_depth_v1.json"><code class="xref download docutils literal notranslate"><span class="pre">Recipe</span> <span class="pre">JSON</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">polygon_circular_bores_v1</span></code></p></td>
+<td><p><a class="reference download internal" download="" href="../_downloads/4a405b835792f9ca58a563c129144071/polygon_circular_bores_v1.json"><code class="xref download docutils literal notranslate"><span class="pre">Recipe</span> <span class="pre">JSON</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">polygon_counterbores_v1</span></code></p></td>
+<td><p><a class="reference download internal" download="" href="../_downloads/fc3705c19c072a7c61154dced46e3ffb/polygon_counterbores_v1.json"><code class="xref download docutils literal notranslate"><span class="pre">Recipe</span> <span class="pre">JSON</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">polygon_countersinks_v1</span></code></p></td>
+<td><p><a class="reference download internal" download="" href="../_downloads/8fe53c6bcff20fcbab1c29ae9d7f363c/polygon_countersinks_v1.json"><code class="xref download docutils literal notranslate"><span class="pre">Recipe</span> <span class="pre">JSON</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">polygon_interval_bores_v1</span></code></p></td>
+<td><p><a class="reference download internal" download="" href="../_downloads/63d72e6bd8e733a95d13fe869e403584/polygon_interval_bores_v1.json"><code class="xref download docutils literal notranslate"><span class="pre">Recipe</span> <span class="pre">JSON</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">polygon_prism_v1</span></code></p></td>
+<td><p><a class="reference download internal" download="" href="../_downloads/1109b59586967c96549c69629fbd4e21/polygon_prism_v1.json"><code class="xref download docutils literal notranslate"><span class="pre">Recipe</span> <span class="pre">JSON</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">polygonal_perforated_prism_v1</span></code></p></td>
+<td><p><a class="reference download internal" download="" href="../_downloads/40305a31b2d285f525802a5b5463bcdc/polygonal_perforated_prism_v1.json"><code class="xref download docutils literal notranslate"><span class="pre">Recipe</span> <span class="pre">JSON</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">primitive_sweep_v1</span></code></p></td>
+<td><p><a class="reference download internal" download="" href="../_downloads/4d10c540829069c5085207c236b05292/primitive_sweep_v1.json"><code class="xref download docutils literal notranslate"><span class="pre">Recipe</span> <span class="pre">JSON</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">rational_sector_prism_v1</span></code></p></td>
+<td><p><a class="reference download internal" download="" href="../_downloads/6bc75dc004772167f94a2c0ae67e5bab/rational_sector_prism_v1.json"><code class="xref download docutils literal notranslate"><span class="pre">Recipe</span> <span class="pre">JSON</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">reference_rectangle_v1</span></code></p></td>
+<td><p><a class="reference download internal" download="" href="../_downloads/1206cbedc13037c73e64d065f5a57f75/reference_rectangle_v1.json"><code class="xref download docutils literal notranslate"><span class="pre">Recipe</span> <span class="pre">JSON</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">rounded_corner_v1</span></code></p></td>
+<td><p><a class="reference download internal" download="" href="../_downloads/5125c4469ea03257e23146d9a0519e8a/rounded_corner_v1.json"><code class="xref download docutils literal notranslate"><span class="pre">Recipe</span> <span class="pre">JSON</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">row_bores_v1</span></code></p></td>
+<td><p><a class="reference download internal" download="" href="../_downloads/c29320c9daa6020a787030790a3f1c9f/row_bores_v1.json"><code class="xref download docutils literal notranslate"><span class="pre">Recipe</span> <span class="pre">JSON</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ruled_section_sweep_v1</span></code></p></td>
+<td><p><a class="reference download internal" download="" href="../_downloads/cb2984efd7d9c96f4955548137e6f6da/ruled_section_sweep_v1.json"><code class="xref download docutils literal notranslate"><span class="pre">Recipe</span> <span class="pre">JSON</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">s3_face_pocket_v1</span></code></p></td>
+<td><p><a class="reference download internal" download="" href="../_downloads/2bffba16f74a4417c13321f5a0161a21/s3_face_pocket_v1.json"><code class="xref download docutils literal notranslate"><span class="pre">Recipe</span> <span class="pre">JSON</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">sketch_boolean_layers_v1</span></code></p></td>
+<td><p><a class="reference download internal" download="" href="../_downloads/7ed8f1fa105ff406928c65b87b264d82/sketch_boolean_layers_v1.json"><code class="xref download docutils literal notranslate"><span class="pre">Recipe</span> <span class="pre">JSON</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">sketch_layer_partition_v1</span></code></p></td>
+<td><p><a class="reference download internal" download="" href="../_downloads/2b77415fdb85f290163ac4f89518fa44/sketch_layer_partition_v1.json"><code class="xref download docutils literal notranslate"><span class="pre">Recipe</span> <span class="pre">JSON</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">travelling_bore_bounded_v1</span></code></p></td>
+<td><p><a class="reference download internal" download="" href="../_downloads/0b6337f23da4757eac8a99fd1289584d/travelling_bore_bounded_v1.json"><code class="xref download docutils literal notranslate"><span class="pre">Recipe</span> <span class="pre">JSON</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">travelling_bore_v1</span></code></p></td>
+<td><p><a class="reference download internal" download="" href="../_downloads/cbdfdf31702242c7a9e2cb6279c47f9a/travelling_bore_v1.json"><code class="xref download docutils literal notranslate"><span class="pre">Recipe</span> <span class="pre">JSON</span></code></a></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Technical reference" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="construction.html" class="btn btn-neutral float-right" title="Construction from native sketches" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright .</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

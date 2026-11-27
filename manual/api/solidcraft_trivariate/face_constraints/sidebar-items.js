@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["Span"],"fn":["nested_constraints"],"struct":["FaceNet","Row"]};

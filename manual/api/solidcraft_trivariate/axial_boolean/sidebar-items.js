@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["AxialAxis","AxialBooleanError","AxialBooleanOperation","AxialSectionFamily","OperandLabel"],"fn":["build_axial_boolean"],"struct":["AxialBooleanFace","AxialBooleanModel","AxialOperand","FaceProvenance","SelectedAxialInterval"]};

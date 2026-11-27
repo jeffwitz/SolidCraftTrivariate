@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["assemble_cover"],"struct":["C0Tensor","Placement"],"type":["Homogeneous"]};

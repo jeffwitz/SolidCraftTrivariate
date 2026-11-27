@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["PlanarError"],"fn":["certify_planar","certify_planar_refined"]};

@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["EdgeLayout","EdgeProfile"],"fn":["build_edge_model"]};

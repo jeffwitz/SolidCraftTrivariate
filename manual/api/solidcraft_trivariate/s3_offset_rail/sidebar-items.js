@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["build","source_endpoint_offset"],"struct":["OffsetRail","RailSpan"]};

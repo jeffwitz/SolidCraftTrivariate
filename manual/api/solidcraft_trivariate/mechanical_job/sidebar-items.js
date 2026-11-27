@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["differentiate_job","solve_job"]};

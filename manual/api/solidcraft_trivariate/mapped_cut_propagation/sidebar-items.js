@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["propagate_exact_cuts"],"struct":["BoundaryChild","CutParameter","CutRequest","FaceMap","PropagatedCut","PropagatedPlan"]};

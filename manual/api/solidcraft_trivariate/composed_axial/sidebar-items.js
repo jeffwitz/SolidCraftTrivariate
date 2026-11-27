@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["build_document","compose"],"struct":["CarriedMap","ComposedResult"]};

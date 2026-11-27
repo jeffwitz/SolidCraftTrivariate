@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["travelling_bore_bounded_blocks"]};

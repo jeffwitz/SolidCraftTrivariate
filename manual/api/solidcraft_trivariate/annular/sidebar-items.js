@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["build_annular"],"struct":["AnnularBlock","AnnularPair"]};

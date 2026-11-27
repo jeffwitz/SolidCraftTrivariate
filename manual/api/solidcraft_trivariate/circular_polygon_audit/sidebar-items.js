@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["audit_circular_polygon_prism"],"struct":["CircularPolygonCertificate"]};

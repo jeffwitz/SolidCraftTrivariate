@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["SliceStatus"],"fn":["certify_xmax_void","plan_sector"],"struct":["ParameterSlice","SectorPlan"]};

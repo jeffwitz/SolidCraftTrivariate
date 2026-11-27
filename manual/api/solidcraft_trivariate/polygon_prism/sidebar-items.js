@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["build_polygon_prism"],"struct":["PolygonPrism","Vertex"]};

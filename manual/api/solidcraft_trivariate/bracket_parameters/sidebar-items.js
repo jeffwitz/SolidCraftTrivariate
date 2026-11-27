@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["build_bracket_parameters"],"struct":["ParameterizedBracket"]};

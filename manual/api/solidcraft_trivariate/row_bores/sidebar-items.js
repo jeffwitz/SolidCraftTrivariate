@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["RowBoresError"],"fn":["build_row_bores"],"struct":["RowBores"]};

@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["ContactDecision","ContactFeature","PairRelation"],"fn":["audit_declared_contact","classify_pair"],"struct":["AffineParallelepiped","ContactAudit"]};

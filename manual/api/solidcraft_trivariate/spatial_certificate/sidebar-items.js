@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["CertificateStatus"],"fn":["certify_cap_contact","certify_spatial"],"struct":["CertificateBudget","DyadicBox","DyadicInterval","NonPositiveWitness","SpatialCertificate"]};

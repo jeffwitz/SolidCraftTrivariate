@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["boundary_shell"],"struct":["BoundaryShell","ShellEdge","ShellFace"]};

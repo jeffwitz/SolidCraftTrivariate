@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["solve_constrained","solve_constrained_from","solve_preconditioned"],"struct":["ConstrainedSolution"],"trait":["ReducedPreconditioner"]};

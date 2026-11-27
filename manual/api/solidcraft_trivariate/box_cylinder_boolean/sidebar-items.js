@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"constant":["SUITE_FAMILY","SUITE_OPERATIONS"],"fn":["build_boolean_state","subtract_through_cylinder"],"struct":["BooleanState","BoxCylinderBoolean","BoxOperand","ThroughCylinderOperand"]};

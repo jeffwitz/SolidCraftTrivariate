@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["SurfaceSplit"],"fn":["integrate_adaptive_traction","integrate_surface_traction"],"struct":["AdaptiveSurfaceLoad","SurfaceQuadrature"]};

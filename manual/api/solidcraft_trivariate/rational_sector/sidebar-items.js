@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["build_rational_sector"],"struct":["RationalSector"]};

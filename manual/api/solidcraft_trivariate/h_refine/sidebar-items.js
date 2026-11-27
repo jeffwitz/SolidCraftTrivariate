@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["refine_cross_section","refine_uniform"]};

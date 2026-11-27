@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["assemble","basis_geometry","gauss"],"struct":["BasisSample","Stiffness"],"type":["Matrix","Vector"]};

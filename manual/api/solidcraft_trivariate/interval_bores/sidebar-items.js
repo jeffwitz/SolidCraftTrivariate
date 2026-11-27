@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["build_interval_bore_prism"],"struct":["IntervalBore","IntervalBorePrism"]};

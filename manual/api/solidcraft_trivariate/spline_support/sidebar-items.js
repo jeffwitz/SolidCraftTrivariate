@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["audit_parent","eligibility_report","recover_complete_parent","recover_nurbs_strip_parent","recover_translation_columns","serialize_support"],"struct":["ContinuityEvidence","ParametricRestriction","SourceSpan","TensorSupport"]};

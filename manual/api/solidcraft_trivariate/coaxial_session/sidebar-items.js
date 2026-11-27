@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["SelectionStatus"],"struct":["CoaxialSession","CoaxialSessionState","FaceSelection","SelectionEvent"]};

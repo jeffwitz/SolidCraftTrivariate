@@ -1,0 +1,199 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Technical reference &mdash; SolidCraft Trivariate</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Command and recipe catalogue" href="catalog.html" />
+    <link rel="prev" title="How-to guides" href="../how-to/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            SolidCraft Trivariate
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../how-to/index.html">How-to guides</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Technical reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="catalog.html">Command and recipe catalogue</a></li>
+<li class="toctree-l2"><a class="reference internal" href="construction.html">Construction from native sketches</a></li>
+<li class="toctree-l2"><a class="reference internal" href="geometry.html">Geometry representation and certificates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="operations.html">Boolean operations and edge treatments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="interface-fields.html">Recovering parents and choosing interface continuity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spline-fields.html">Spline fields, extraction, and local refinement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="analysis.html">Analysis on audited trivariate models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="solver-design.html">Adaptive solves, pressure and design derivatives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="verification.html">Verification and evidence scope</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../explanation/index.html">Explanation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">SolidCraft Trivariate</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Technical reference</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/reference/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="technical-reference">
+<h1>Technical reference<a class="headerlink" href="#technical-reference" title="Link to this heading"></a></h1>
+<p>Use the command and recipe catalogue to identify an entry point, then consult
+the corresponding chapter for inputs, coordinate conventions, evidence and
+admission limits.</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="catalog.html">Command and recipe catalogue</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="catalog.html#command-reference">Command reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="catalog.html#recipe-families">Recipe families</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="construction.html">Construction from native sketches</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="construction.html#sketch-arrangements-and-separators">Sketch arrangements and separators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="construction.html#multiple-holes-and-partition-choice">Multiple holes and partition choice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="construction.html#extrusion-layers-and-cross-axis-construction">Extrusion, layers, and cross-axis construction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="construction.html#topology-interfaces-and-conformity">Topology, interfaces, and conformity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="construction.html#from-design-features-to-volume-maps">From design features to volume maps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="construction.html#reproducing-a-build">Reproducing a build</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="geometry.html">Geometry representation and certificates</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="geometry.html#rational-tensor-product-maps">Rational tensor-product maps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="geometry.html#nurbs-span-extraction-and-exact-simplification">NURBS span extraction and exact simplification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="geometry.html#certificates-and-their-domains">Certificates and their domains</a></li>
+<li class="toctree-l2"><a class="reference internal" href="geometry.html#exact-polygonal-input-contract">Exact polygonal input contract</a></li>
+<li class="toctree-l2"><a class="reference internal" href="geometry.html#local-validity-is-not-global-coverage">Local validity is not global coverage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="geometry.html#analysis-export">Analysis export</a></li>
+<li class="toctree-l2"><a class="reference internal" href="geometry.html#bernstein-bounds-and-rational-maps">Bernstein bounds and rational maps</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="operations.html">Boolean operations and edge treatments</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="operations.html#boolean-construction">Boolean construction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="operations.html#relation-to-volumetric-untrimming">Relation to volumetric untrimming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="operations.html#edge-treatments">Edge treatments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="operations.html#exact-simplification-and-geometric-identity">Exact simplification and geometric identity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="operations.html#verification-layers">Verification layers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="operations.html#native-commands-for-the-reference-solids">Native commands for the reference solids</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="interface-fields.html">Recovering parents and choosing interface continuity</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="interface-fields.html#a-recovered-support">A recovered support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="interface-fields.html#three-different-field-constraints">Three different field constraints</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="spline-fields.html">Spline fields, extraction, and local refinement</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="spline-fields.html#bezier-extraction">Bézier extraction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spline-fields.html#thb-pilot-and-its-limits">THB pilot and its limits</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spline-fields.html#s2-context-and-references">S2 context and references</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="analysis.html">Analysis on audited trivariate models</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="analysis.html#foundational-and-coupling-references">Foundational and coupling references</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="solver-design.html">Adaptive solves, pressure and design derivatives</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="solver-design.html#marking-and-transfer">Marking and transfer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="solver-design.html#nearly-incompressible-materials">Nearly incompressible materials</a></li>
+<li class="toctree-l2"><a class="reference internal" href="solver-design.html#design-derivatives">Design derivatives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="solver-design.html#executable-checks">Executable checks</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="verification.html">Verification and evidence scope</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="verification.html#geometric-and-algebraic-checks">Geometric and algebraic checks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="verification.html#step-exchange-and-readback">STEP exchange and readback</a></li>
+<li class="toctree-l2"><a class="reference internal" href="verification.html#mechanics-and-the-method-of-manufactured-solutions">Mechanics and the Method of Manufactured Solutions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="verification.html#singular-fillet-caveat">Singular fillet caveat</a></li>
+<li class="toctree-l2"><a class="reference internal" href="verification.html#independent-mechanics-comparisons">Independent mechanics comparisons</a></li>
+<li class="toctree-l2"><a class="reference internal" href="verification.html#primary-verification-reference">Primary verification reference</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<p>The <a class="reference external" href="../api/solidcraft_trivariate/index.html">Rust crate reference</a> contains
+the public modules, type definitions, methods and function signatures from
+this revision.</p>
+<p>The <a class="reference external" href="https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/native-coverage.md">native coverage inventory</a>
+identifies the Rust entry points, the publication drivers and the independent
+oracles used to qualify them.</p>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../how-to/index.html" class="btn btn-neutral float-left" title="How-to guides" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="catalog.html" class="btn btn-neutral float-right" title="Command and recipe catalogue" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright .</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

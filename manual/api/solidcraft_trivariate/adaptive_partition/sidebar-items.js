@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"struct":["AdaptivePartition","ExteriorPatch","FacePatch","FaceRect","LeafKey","LeafSide","RefinementReport"]};

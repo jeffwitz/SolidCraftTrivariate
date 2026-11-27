@@ -1,0 +1,232 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Spline fields, extraction, and local refinement &mdash; SolidCraft Trivariate</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Analysis on audited trivariate models" href="analysis.html" />
+    <link rel="prev" title="Recovering parents and choosing interface continuity" href="interface-fields.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            SolidCraft Trivariate
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../how-to/index.html">How-to guides</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Technical reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="catalog.html">Command and recipe catalogue</a></li>
+<li class="toctree-l2"><a class="reference internal" href="construction.html">Construction from native sketches</a></li>
+<li class="toctree-l2"><a class="reference internal" href="geometry.html">Geometry representation and certificates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="operations.html">Boolean operations and edge treatments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="interface-fields.html">Recovering parents and choosing interface continuity</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Spline fields, extraction, and local refinement</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#bezier-extraction">Bézier extraction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#thb-pilot-and-its-limits">THB pilot and its limits</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#s2-context-and-references">S2 context and references</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="analysis.html">Analysis on audited trivariate models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="solver-design.html">Adaptive solves, pressure and design derivatives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="verification.html">Verification and evidence scope</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../explanation/index.html">Explanation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">SolidCraft Trivariate</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Technical reference</a></li>
+      <li class="breadcrumb-item active">Spline fields, extraction, and local refinement</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/reference/spline-fields.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="spline-fields-extraction-and-local-refinement">
+<h1>Spline fields, extraction, and local refinement<a class="headerlink" href="#spline-fields-extraction-and-local-refinement" title="Link to this heading"></a></h1>
+<p>Geometry splines and analysis splines have different jobs in this codebase.
+The model’s rational Bernstein control nets encode the geometry. Analysis
+spaces attach field basis functions and global degrees of freedom to audited
+blocks and interfaces. A model may therefore preserve exact geometry while an
+analysis space is only a chosen approximation space over it.</p>
+<section id="bezier-extraction">
+<h2>Bézier extraction<a class="headerlink" href="#bezier-extraction" title="Link to this heading"></a></h2>
+<p>Bézier extraction rewrites a spline basis restricted to a knot cell in terms
+of a local Bernstein basis and an extraction operator. It is an algebraic
+change of local representation; it does not approximate the geometry or
+create a new continuity guarantee at patch boundaries. The NURBS tensor
+assembly code in <code class="docutils literal notranslate"><span class="pre">src/nurbs_tensor_assembly.rs</span></code> supports exact extraction
+on its full-multiplicity cell grid. <code class="docutils literal notranslate"><span class="pre">C0Tensor::extract</span></code> returns the local
+homogeneous net in patch orientation. The implementation checks the local
+dimensions and orientation rather than relying on sampled values.</p>
+<p>The original extraction data-structure paper is Scott et al. <a class="reference internal" href="#scott2011" id="id1"><span>[Scott2011]</span></a>,
+and the NURBS-specific finite-element formulation is Borden et al.
+<a class="reference internal" href="#borden2011" id="id2"><span>[Borden2011]</span></a>. The project uses extraction as a local assembly representation;
+the cited papers do not certify this repository’s model audits or numerical
+results.</p>
+<div role="list" class="citation-list">
+<div class="citation" id="scott2011" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">Scott2011</a><span class="fn-bracket">]</span></span>
+<p>M. A. Scott, M. J. Borden, C. V. Verhoosel, T. W. Sederberg,
+and T. J. R. Hughes, “Isogeometric finite element data structures based on
+Bézier extraction of T-splines,” ICES Report 10-45 (2010).
+<a class="reference external" href="https://www.ices.utexas.edu/media/reports/2010/1045.pdf">Author-hosted report</a>.</p>
+</div>
+<div class="citation" id="borden2011" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">Borden2011</a><span class="fn-bracket">]</span></span>
+<p>M. J. Borden, M. A. Scott, J. A. Evans, and T. J. R. Hughes,
+“Isogeometric finite element data structures based on Bézier extraction
+of NURBS,” <em>International Journal for Numerical Methods in Engineering</em>,
+87 (2011), 15–47. <a class="reference external" href="https://doi.org/10.1002/nme.2968">DOI 10.1002/nme.2968</a>.</p>
+</div>
+</div>
+</section>
+<section id="thb-pilot-and-its-limits">
+<h2>THB pilot and its limits<a class="headerlink" href="#thb-pilot-and-its-limits" title="Link to this heading"></a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">src/thb_strip.rs</span></code> implements a deliberately narrow, one-level THB pilot
+over a recovered cubic NURBS strip. Its public builders are
+<code class="docutils literal notranslate"><span class="pre">build_thb_strip</span></code>, <code class="docutils literal notranslate"><span class="pre">build_thb_strip_from_recipe</span></code>,
+<code class="docutils literal notranslate"><span class="pre">build_thb_strip_from_recipe_cells</span></code>, and <code class="docutils literal notranslate"><span class="pre">build_thb_strip_for_cells</span></code>.
+The marked region must be a strict interior box; source degree, rational
+weights, active-basis size, and refined-leaf count are checked. The module
+constructs sparse local Bernstein extraction rows for the active truncated
+basis and retains the prepared-space extraction on the same leaves for
+comparison. Exact nesting and homogeneous geometry identity are checked
+before a <code class="docutils literal notranslate"><span class="pre">ThbStrip</span></code> is returned.</p>
+<p>This is a THB B-spline construction, not a T-spline construction, and it is
+not a generic adaptive solver for every model family. In particular, THB
+interior refinement does not resolve nonmatching or partial interface
+footprints by itself. The current support-census report records that S2’s
+partial footprints require interface-specific handling. No result from this
+pilot should be described as a general error estimator, an automatic marking
+strategy, or a proof of optimal convergence.</p>
+<p>Truncating coarse functions over refined regions preserves a partition
+of unity in the THB construction <a class="reference internal" href="#giannelli2012" id="id3"><span>[Giannelli2012]</span></a>.</p>
+<div role="list" class="citation-list">
+<div class="citation" id="giannelli2012" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id3">Giannelli2012</a><span class="fn-bracket">]</span></span>
+<p>C. Giannelli, B. Jüttler, and H. Speleers,
+“THB-splines: the truncated basis for hierarchical splines,”
+<em>Computer Aided Geometric Design</em>, 29 (2012), 485–498.
+<a class="reference external" href="https://doi.org/10.1016/j.cagd.2012.03.025">DOI 10.1016/j.cagd.2012.03.025</a>. The paper defines the
+truncated hierarchical basis and its properties; it is not a qualification
+of this implementation.</p>
+</div>
+</div>
+</section>
+<section id="s2-context-and-references">
+<h2>S2 context and references<a class="headerlink" href="#s2-context-and-references" title="Link to this heading"></a></h2>
+<p>S2 in <code class="docutils literal notranslate"><span class="pre">docs/recipe-driven-tsplines.md</span></code> asks for variable-size extracted
+spaces and a non-affine manufactured elasticity solution on a regular affine
+cube. The purpose of that manufactured case is to assess field approximation
+independently of geometric approximation. A localized manufactured solution
+or frozen geometric marking may seed an initial adaptive study; a new general
+residual estimator is explicitly not required. Its convergence bands apply to
+the prescribed smooth cube and must not be carried over to arbitrary local
+refinement or singular physical solutions.</p>
+<p>For adaptive THB analysis in a different, immersed setting, Divi et al.
+<a class="reference internal" href="#divi2022" id="id4"><span>[Divi2022]</span></a> derive residual indicators with stabilization and boundary terms
+for their model problems. That paper is useful context for what an estimator
+requires, but neither its estimator nor its claims transfer to this project.</p>
+<div role="list" class="citation-list">
+<div class="citation" id="divi2022" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id4">Divi2022</a><span class="fn-bracket">]</span></span>
+<p>S. C. Divi, P. H. van Zuijlen, T. Hoang, F. de Prenter,
+F. Auricchio, A. Reali, E. H. van Brummelen, and C. V. Verhoosel,
+“Residual-based error estimation and adaptivity for stabilized immersed
+isogeometric analysis using truncated hierarchical B-splines,”
+<em>Journal of Mechanics</em>, 38 (2022), 204–237.
+<a class="reference external" href="https://doi.org/10.1093/jom/ufac015">DOI 10.1093/jom/ufac015</a>.</p>
+</div>
+</div>
+<p>Reproduce the local THB checks from the repository root with:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="n">check</span><span class="o">-</span><span class="n">local</span><span class="o">-</span><span class="n">thb</span>
+</pre></div>
+</div>
+<p>The target builds the release CLI, runs <code class="docutils literal notranslate"><span class="pre">thb_strip</span></code> and
+<code class="docutils literal notranslate"><span class="pre">fieldcraft_nurbs_h1</span></code> Rust integration tests, runs the ignored cube
+convergence replay, then checks independent THB mechanics, function values,
+and tractions. Generated packages and measurements belong under <code class="docutils literal notranslate"><span class="pre">build/</span></code>.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="interface-fields.html" class="btn btn-neutral float-left" title="Recovering parents and choosing interface continuity" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="analysis.html" class="btn btn-neutral float-right" title="Analysis on audited trivariate models" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright .</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

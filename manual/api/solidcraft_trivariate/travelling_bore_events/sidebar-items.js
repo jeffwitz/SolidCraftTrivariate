@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["BorePlateRelation","BorePocketRelation","LineRelation","PhysicalGradientSignature"],"fn":["analyze_travelling_bore"],"struct":["BoundaryAreas","PhysicalSignature","RepresentationSignature","TangencyEvent","TravellingBoreReport"]};

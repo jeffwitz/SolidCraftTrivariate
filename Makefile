@@ -106,3 +106,23 @@ check-continuity-followup:
 	cargo test --release --locked --offline --test thb_reentrant_edge -- --include-ignored
 	cargo test --release --locked --offline --test reentrant_ritz -- --ignored
 	OPENBLAS_NUM_THREADS=1 python3 scripts/check_reentrant_thb.py
+
+.PHONY: check-curved-pocket-fields
+check-curved-pocket-fields:
+	cargo build --release --locked --offline --bin solidcraft-trivariate --example curved_pocket_field
+	mkdir -p build/curved-pocket-fields
+	target/release/solidcraft-trivariate build docs/site/data/plate_blind_pocket/plate_blind_pocket.recipe.json build/curved-pocket-fields/model.json
+	cmp build/curved-pocket-fields/model.json docs/site/data/plate_blind_pocket/plate_blind_pocket.model.json
+	target/release/solidcraft-trivariate audit build/curved-pocket-fields/model.json
+	target/release/solidcraft-trivariate classify-transverse-transitions build/curved-pocket-fields/model.json build/curved-pocket-fields/native-gluing.json
+	python3 tests/references/curved_section_gluing.py --native build/curved-pocket-fields/native-gluing.json --output build/curved-pocket-fields/symbolic-gluing.json
+	cmp build/curved-pocket-fields/symbolic-gluing.json docs/results/curved-pocket-fields/symbolic-gluing.json
+	python3 -c 'import json; from pathlib import Path; assert json.loads(Path("build/curved-pocket-fields/native-gluing.json").read_text()) == json.loads(Path("docs/results/curved-pocket-fields/native-gluing.json").read_text())'
+	python3 scripts/check_curved_pocket_work.py --output build/curved-pocket-fields/continuum.json
+	cmp build/curved-pocket-fields/continuum.json docs/results/curved-pocket-fields/continuum.json
+	python3 scripts/check_curved_pocket_traces.py --output build/curved-pocket-fields/traces.json
+	cmp build/curved-pocket-fields/traces.json tests/references/curved_pocket_trace_richness.json
+	cargo test --release --locked --offline --test pocket_convergence published_ -- --include-ignored
+	python3 scripts/check_curved_pocket_results.py
+	python3 scripts/check_curved_pocket_fields.py --compare docs/results/curved-pocket-fields/historical.json
+	python3 scripts/compare_curved_seam_selection.py --compare docs/results/curved-pocket-fields/seam-selection.json

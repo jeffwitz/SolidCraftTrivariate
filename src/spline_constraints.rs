@@ -402,3 +402,121 @@ pub(crate) fn joint_kernel(
     }
     Ok((lift, independent.into_iter().map(|i| roots[i]).collect()))
 }
+
+/// Interpolation coordinates for floating-point assembly of a rational kernel.
+/// The exact coordinate map is defined implicitly by A u = 0 and identity
+/// values at the free indices. An invertible modular pivot minor and the
+/// previously certified nullity prove that these coordinates are unisolvent.
+pub(crate) fn evaluation_kernel(
+    n: usize,
+    equations: &[Row],
+    nullity: usize,
+) -> Result<(Vec<BTreeMap<usize, f64>>, f64)> {
+    let variables: Vec<_> = equations
+        .iter()
+        .flat_map(|r| r.keys().copied())
+        .collect::<std::collections::BTreeSet<_>>()
+        .into_iter()
+        .collect();
+    let nv = variables.len();
+    let rank = n - nullity;
+    let mut col = vec![0; n];
+    for (j, &v) in variables.iter().enumerate() {
+        col[v] = j;
+    }
+    let value = |q: Ratio| q.numerator() as f64 / q.denominator() as f64;
+    let mut matrix = Vec::new();
+    for r in equations.iter().filter(|r| !r.is_empty()) {
+        let scale = r.values().map(|&q| value(q).abs()).fold(0., f64::max);
+        let mut row = vec![0.; nv];
+        for (&v, &q) in r {
+            row[col[v]] = value(q) / scale;
+        }
+        matrix.push(row);
+    }
+    let mut indices = variables;
+    for i in 0..rank {
+        let mut best = (0., i, i);
+        for (j, row) in matrix.iter().enumerate().skip(i) {
+            for (k, x) in row.iter().enumerate().skip(i) {
+                if x.abs() > best.0 {
+                    best = (x.abs(), j, k);
+                }
+            }
+        }
+        if best.0 < 1e-13 {
+            return Err("numerically unresolved interpolation minor");
+        }
+        matrix.swap(i, best.1);
+        indices.swap(i, best.2);
+        for row in &mut matrix {
+            row.swap(i, best.2);
+        }
+        let scale = matrix[i][i];
+        for v in &mut matrix[i][i..] {
+            *v /= scale;
+        }
+        let pivot = matrix[i].clone();
+        for (j, row) in matrix.iter_mut().enumerate() {
+            if j == i {
+                continue;
+            }
+            let ratio = row[i];
+            row[i] = 0.;
+            if ratio != 0. {
+                for (v, p) in row[i + 1..].iter_mut().zip(&pivot[i + 1..]) {
+                    *v -= ratio * p;
+                }
+            }
+        }
+    }
+    let mut pivot_id = vec![None; n];
+    for (j, &v) in indices[..rank].iter().enumerate() {
+        pivot_id[v] = Some(j);
+    }
+    let minor: Vec<Row> = equations
+        .iter()
+        .map(|r| {
+            r.iter()
+                .filter_map(|(&v, &q)| Some((pivot_id[v]?, q)))
+                .collect()
+        })
+        .collect();
+    if !modular_basis::<P1>(rank, &minor)?.1.is_empty() {
+        return Err("indeterminate: unverified interpolation minor");
+    }
+    let mut free = vec![None; n];
+    let mut count = 0;
+    let mut result = vec![BTreeMap::new(); n];
+    for i in 0..n {
+        if pivot_id[i].is_none() {
+            free[i] = Some(count);
+            result[i].insert(count, 1.);
+            count += 1;
+        }
+    }
+    for (i, &v) in indices[..rank].iter().enumerate() {
+        for (j, &w) in indices.iter().enumerate().skip(rank) {
+            let a = -matrix[i][j];
+            if a.abs() > 2e-13 {
+                result[v].insert(free[w].ok_or("invalid free-coordinate index")?, a);
+            }
+        }
+    }
+    let mut worst = 0_f64;
+    for e in equations.iter().filter(|e| !e.is_empty()) {
+        let mut residual = BTreeMap::new();
+        let scale: f64 = e.values().map(|&q| value(q).abs()).sum();
+        for (&v, &q) in e {
+            for (&i, &x) in &result[v] {
+                *residual.entry(i).or_insert(0.) += value(q) * x;
+            }
+        }
+        let defect = residual.values().map(|x| f64::abs(*x)).sum::<f64>() / scale;
+        if !defect.is_finite() || defect > 2e-10 {
+            return Err("interpolation lift fails the jet residual bound");
+        }
+        worst = worst.max(defect);
+    }
+    Ok((result, worst))
+}

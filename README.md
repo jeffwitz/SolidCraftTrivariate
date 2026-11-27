@@ -12,7 +12,7 @@ The [continuity and refinement benchmarks](docs/results/continuity-followup/READ
 compare interchart C¹ with C⁰ on the bilinear blind pocket, cubic C² with C⁰
 at equal dimension on the smooth cube, and local THB with uniform refinement
 at a reentrant edge. Run `make check-continuity-followup` to reproduce the
-native solves and independent singular-field controls.
+native solves and independent singular-field controls. The [curved-pocket study](docs/results/curved-pocket-fields/README.md) measures which seams preserve approximation order on the gallery geometry, including exact gradient trace ranks and wall loads.
 
 
 ## Polygonal sketch input contract

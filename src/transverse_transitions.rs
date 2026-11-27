@@ -119,6 +119,48 @@ fn binom(n: usize, k: usize) -> Option<i128> {
     }
     Some(r)
 }
+
+fn power_to_bernstein(p: &P) -> Option<Vec<Q>> {
+    let n = p.len().saturating_sub(1);
+    (0..=n).map(|i| {
+        (0..=i).try_fold(qnew(0, 1)?, |sum, k| {
+            let ratio = qnew(binom(i, k)?, binom(n, k)?)?;
+            sum.add(p[k].mul(ratio)?)
+        })
+    }).collect()
+}
+
+fn half_split(c: &[Q]) -> Option<(Vec<Q>, Vec<Q>)> {
+    if c.is_empty() { return None; }
+    let mut row = c.to_vec();
+    let mut left = vec![row[0]];
+    let mut right = vec![*row.last()?];
+    while row.len() > 1 {
+        row = row.windows(2).map(|w| w[0].add(w[1])?.div(qnew(2, 1)?)).collect::<Option<_>>()?;
+        left.push(row[0]);
+        right.push(*row.last()?);
+    }
+    right.reverse();
+    Some((left, right))
+}
+
+/// Return a certified sign, zero witness, or indeterminate within a bounded
+/// exact Bernstein subdivision. No floating-point sampling is used.
+fn bernstein_sign(c: &[Q], depth: usize) -> Option<i8> {
+    if c.iter().all(|x| x.numerator() > 0) { return Some(1); }
+    if c.iter().all(|x| x.numerator() < 0) { return Some(-1); }
+    if c.first()?.numerator() == 0 || c.last()?.numerator() == 0 { return Some(0); }
+    if depth == 0 { return None; }
+    let (left, right) = half_split(c)?;
+    let a = bernstein_sign(&left, depth - 1)?;
+    let b = bernstein_sign(&right, depth - 1)?;
+    Some(if a == 0 || b == 0 || a != b { 0 } else { a })
+}
+
+fn polynomial_nonzero_sign(p: &P) -> Option<i8> {
+    if p.is_empty() { return Some(0); }
+    bernstein_sign(&power_to_bernstein(p)?, 12)
+}
 fn quotient_affine(a: &P, b: &P) -> Option<Option<(Q, Q)>> {
     if b.is_empty() || b[0].numerator() == 0 {
         return None;
@@ -175,52 +217,59 @@ fn pgcd(a: &P, b: &P) -> Option<P> {
     x.iter().map(|v| v.div(lead)).collect()
 }
 
-fn split_beta(a: &P, b: &P, beta: &P) -> Option<(P, P)> {
-    // Solve beta = a * beta_second + b * beta_first for linear factors.
+fn split_beta(a: &P, b: &P, beta: &P, d: usize) -> Option<Option<(P, P)>> {
+    // Solve beta = a * beta_second + b * beta_first over exact rationals.
     let z = qnew(0, 1)?;
-    let at = |p: &P, i: usize| p.get(i).copied().unwrap_or(z);
-    let mut m = [
-        [at(b, 0), z, at(a, 0), z, at(beta, 0)],
-        [at(b, 1), at(b, 0), at(a, 1), at(a, 0), at(beta, 1)],
-        [z, at(b, 1), z, at(a, 1), at(beta, 2)],
-    ];
+    if d > 3 || a.len() > d + 1 || b.len() > d + 1 { return Some(None); }
+    let rows = beta.len().max(a.len() + d).max(b.len() + d);
+    let variables = 2 * (d + 1);
+    let mut m = vec![vec![z; variables + 1]; rows];
+    for (r, equation) in m.iter_mut().enumerate() {
+        for i in 0..=d {
+            if r >= i {
+                if let Some(value) = b.get(r-i) { equation[i] = equation[i].add(*value)?; }
+                if let Some(value) = a.get(r-i) { equation[d+1+i] = equation[d+1+i].add(*value)?; }
+            }
+        }
+        equation[variables] = beta.get(r).copied().unwrap_or(z);
+    }
     let mut row = 0;
-    for col in 0..4 {
-        let Some(pivot) = (row..3).find(|r| m[*r][col].numerator() != 0) else {
+    for col in 0..variables {
+        let Some(pivot) = (row..rows).find(|r| m[*r][col].numerator() != 0) else {
             continue;
         };
         m.swap(row, pivot);
         let d = m[row][col];
-        for v in &mut m[row][col..] {
+        for v in &mut m[row][col..=variables] {
             *v = v.div(d)?;
         }
-        let normalized = m[row];
+        let normalized = m[row].clone();
         for (r, other) in m.iter_mut().enumerate() {
             if r == row {
                 continue;
             }
             let f = other[col];
-            for (v, pivot) in other[col..].iter_mut().zip(&normalized[col..]) {
+            for (v, pivot) in other[col..=variables].iter_mut().zip(&normalized[col..=variables]) {
                 *v = v.sub(f.mul(*pivot)?)?;
             }
         }
         row += 1;
-        if row == 3 {
+        if row == rows {
             break;
         }
     }
     for trailing in &m[row..] {
-        if trailing[..4].iter().all(|v| v.numerator() == 0) && trailing[4].numerator() != 0 {
-            return None;
+        if trailing[..variables].iter().all(|v| v.numerator() == 0) && trailing[variables].numerator() != 0 {
+            return Some(None);
         }
     }
-    let mut x = [z; 4];
+    let mut x = vec![z; variables];
     for r in (0..row).rev() {
-        let col = (0..4).find(|c| m[r][*c].numerator() != 0)?;
-        let rhs = (col + 1..4).try_fold(m[r][4], |v, c| v.sub(m[r][c].mul(x[c])?))?;
+        let col = (0..variables).find(|c| m[r][*c].numerator() != 0)?;
+        let rhs = (col + 1..variables).try_fold(m[r][variables], |v, c| v.sub(m[r][c].mul(x[c])?))?;
         x[col] = rhs.div(m[r][col])?;
     }
-    Some((vec![x[0], x[1]], vec![x[2], x[3]]))
+    Some(Some((x[..d+1].to_vec(), x[d+1..].to_vec())))
 }
 
 fn normalized_control_points(block: &Json) -> Result<Option<Vec<[Q; 3]>>, &'static str> {
@@ -279,36 +328,41 @@ fn has_constant_positive_weight(block: &Json) -> Result<bool, &'static str> {
 
 fn has_planar_extrusion_support(block: &Json) -> Result<bool, &'static str> {
     let degrees = block.field("degrees")?.items()?;
-    if degrees.len() != 3 || degrees.iter().any(|d| d.number::<usize>().ok() != Some(1)) {
+    if degrees.len() != 3
+        || !(1..=3).contains(&degrees[0].number::<usize>().unwrap_or(0))
+        || !(1..=3).contains(&degrees[1].number::<usize>().unwrap_or(0))
+        || degrees[2].number::<usize>().ok() != Some(1)
+    {
         return Ok(false);
     }
     let Some(points) = normalized_control_points(block)? else {
         return Ok(false);
     };
-    if points.len() != 8 {
+    let du = degrees[0].number::<usize>()?;
+    let dv = degrees[1].number::<usize>()?;
+    if points.len() != 2 * (du + 1) * (dv + 1) {
         return Ok(false);
     }
     let mut base_z = None;
     let mut height = None;
-    for i in 0..4 {
+    for i in 0..(du + 1) * (dv + 1) {
         let low = points[2 * i];
         let high = points[2 * i + 1];
         if base_z.is_some_and(|z| z != low[2]) {
             return Ok(false);
         }
         base_z = Some(low[2]);
-        let delta = [
-            high[0].sub(low[0]).ok_or("rational overflow")?,
-            high[1].sub(low[1]).ok_or("rational overflow")?,
-            high[2].sub(low[2]).ok_or("rational overflow")?,
-        ];
-        if delta[0].numerator() != 0 || delta[1].numerator() != 0 || delta[2].numerator() <= 0 {
+        if high[0] != low[0] || high[1] != low[1] {
             return Ok(false);
         }
-        if height.is_some_and(|h| h != delta[2]) {
+        let delta = high[2].sub(low[2]).ok_or("rational overflow")?;
+        if delta.numerator() <= 0 || height.is_some_and(|h| h != delta) {
             return Ok(false);
         }
-        height = Some(delta[2]);
+        height = Some(delta);
+        if i > dv && low[2] != points[2 * (i - (dv + 1))][2] {
+            return Ok(false);
+        }
     }
     Ok(true)
 }
@@ -317,15 +371,17 @@ fn oriented_endpoints(
     block: &Json,
     side: &str,
     reverse: bool,
-) -> Result<Option<[[[Q; 3]; 2]; 2]>, &'static str> {
+) -> Result<Option<Vec<[Q; 3]>>, &'static str> {
     let degrees = block.field("degrees")?.items()?;
-    if degrees.len() != 3 || degrees.iter().any(|d| d.number::<usize>().ok() != Some(1)) {
+    if degrees.len() != 3 || degrees[2].number::<usize>().ok() != Some(1) {
         return Ok(None);
     }
     let Some(points) = normalized_control_points(block)? else {
         return Ok(None);
     };
-    if points.len() != 8 {
+    let du = degrees[0].number::<usize>()?;
+    let dv = degrees[1].number::<usize>()?;
+    if points.len() != 2 * (du + 1) * (dv + 1) {
         return Ok(None);
     }
     let (axis, end) = match side.as_bytes() {
@@ -335,13 +391,15 @@ fn oriented_endpoints(
         [b'v', b'1'] => (1, 1),
         _ => return Ok(None),
     };
-    let mut result = [[[Q::zero(); 3]; 2]; 2];
-    for (z, z_row) in result.iter_mut().enumerate() {
-        for (t0, endpoint) in z_row.iter_mut().enumerate() {
-            let t = if reverse { 1 - t0 } else { t0 };
-            let (i, j) = if axis == 0 { (end, t) } else { (t, end) };
-            *endpoint = points[2 * (2 * i + j) + z];
-        }
+    let normal_degree = if axis == 0 { du } else { dv };
+    let degree = if axis == 0 { dv } else { du };
+    let mut result = Vec::with_capacity(degree + 1);
+    for t0 in 0..=degree {
+        let t = if reverse { degree - t0 } else { t0 };
+        let (i, j) = if axis == 0 { (end * normal_degree, t) } else { (t, end * normal_degree) };
+        let index = 2 * (i * (dv + 1) + j);
+        result.push(points[index]);
+        result.push(points[index + 1]);
     }
     Ok(Some(result))
 }
@@ -356,12 +414,13 @@ fn as_g1_result(
     let unsupported = || object([("status", Json::String("unsupported_family".into()))]);
     let da = a.field("degrees")?.items()?;
     let db = b.field("degrees")?.items()?;
-    if da.len() != 3
-        || db.len() != 3
-        || da
-            .iter()
-            .chain(db)
-            .any(|d| d.number::<usize>().ok() != Some(1))
+    if da.len() != 3 || db.len() != 3
+        || da[2].number::<usize>().ok() != Some(1)
+        || db[2].number::<usize>().ok() != Some(1)
+        || da[0].number::<usize>().ok() != db[0].number::<usize>().ok()
+        || da[1].number::<usize>().ok() != db[1].number::<usize>().ok()
+        || da[0].number::<usize>().ok().is_none_or(|d| !(1..=3).contains(&d))
+        || da[1].number::<usize>().ok().is_none_or(|d| !(1..=3).contains(&d))
     {
         return Ok(unsupported());
     }
@@ -393,7 +452,7 @@ fn as_g1_result(
         return Ok(object([(
             "status",
             Json::String("unsupported_trace".into()),
-        )]));
+        ), ("face_association_verified", Json::Bool(false))]));
     }
     let (ta, na, _) = block_jet(a, sa, false)?;
     let (tb, nb, _) = block_jet(b, sb, reverse)?;
@@ -401,7 +460,7 @@ fn as_g1_result(
         return Ok(object([(
             "status",
             Json::String("unsupported_trace".into()),
-        )]));
+        ), ("face_association_verified", Json::Bool(false))]));
     }
     // The determinant syzygy constructs gluing data:
     // det(n_b,t)n_a + det(t,n_a)n_b + det(n_a,n_b)t = 0.
@@ -427,13 +486,22 @@ fn as_g1_result(
             p.iter().map(|x| Json::String(qtext(*x))).collect()
         })
     };
-    // AS-G1 permits quadratic beta; the two alpha gluing functions are linear.
-    let linear = alpha_a.len() <= 2 && alpha_b.len() <= 2 && beta.len() <= 3;
+    // This classifier admits the AS-G1 subclass with linear alpha factors,
+    // linear beta-side factors, and their quadratic combined beta. These bounds
+    // are independent of the input map degree.
+    let degree_ok = alpha_a.len() <= 2 && alpha_b.len() <= 2 && beta.len() <= 3;
     let relatively_prime = pgcd(&alpha_a, &alpha_b).is_some_and(|p| p.len() == 1);
-    let Some((beta_first, beta_second)) = split_beta(&alpha_a, &alpha_b, &beta) else {
+    let split = split_beta(&alpha_a, &alpha_b, &beta, 1);
+    let Some(split) = split else {
+        return Ok(object([("status", Json::String("indeterminate".into())),
+            ("reason", Json::String("exact_polynomial_split_arithmetic_budget".into())),
+            ("face_association_verified", Json::Bool(true))]));
+    };
+    let Some((beta_first, beta_second)) = split else {
         return Ok(object([
             ("status", Json::String("not_as_g1".into())),
-            ("reason", Json::String("no_linear_beta_split".into())),
+            ("reason", Json::String("no_polynomial_beta_split_within_degree".into())),
+            ("face_association_verified", Json::Bool(true)),
         ]));
     };
     let split_check = padd(
@@ -453,49 +521,18 @@ fn as_g1_result(
             .and_then(|x| pmul(&beta, &ta[c]).and_then(|y| padd(&x, &y, 1)));
         left.is_some_and(|p| p.is_empty())
     });
-    let endpoint_signs = |p: &P| -> Option<(i8, i8)> {
-        let x = p.first()?.numerator();
-        let y = p
-            .iter()
-            .try_fold(qnew(0, 1)?, |sum, c| sum.add(*c))?
-            .numerator();
-        if x == 0 || y == 0 || x.signum() != y.signum() {
-            None
-        } else {
-            Some((x.signum() as i8, y.signum() as i8))
-        }
-    };
     // Normals are directed inward on each chart; compatible inward gluing has
     // equal-sign alpha factors because the two physical inward vectors oppose.
-    let orientable = endpoint_signs(&alpha_a)
-        .zip(endpoint_signs(&alpha_b))
-        .is_some_and(|(x, y)| x.0 == y.0 && x.1 == y.1);
-    let no_zero = |p: &P| -> Option<bool> {
-        let (s0, s1) = endpoint_signs(p)?;
-        if p.len() <= 2 {
-            return Some(s0 == s1);
-        }
-        if p.len() != 3 {
-            return None;
-        }
-        let (a, b) = (p[2], p[1]);
-        if a.numerator() == 0 {
-            return Some(s0 == s1);
-        }
-        let vertex = b.mul(qnew(-1, 2)?)?.div(a)?;
-        if vertex.numerator() <= 0 || vertex.sub(qnew(1, 1)?)?.numerator() >= 0 {
-            return Some(s0 == s1);
-        }
-        let value = p[0].sub(b.mul(b)?.div(a.mul(qnew(4, 1)?)?)?)?;
-        Some(if s0 > 0 {
-            value.numerator() > 0
-        } else {
-            value.numerator() < 0
-        })
-    };
-    let regular = no_zero(&cross(&ta, &na).ok_or("rational overflow")?).unwrap_or(false)
-        && no_zero(&cross(&ta, &nb).ok_or("rational overflow")?).unwrap_or(false);
-    let admitted = linear
+    let sign_a = polynomial_nonzero_sign(&alpha_a);
+    let sign_b = polynomial_nonzero_sign(&alpha_b);
+    let orientable = sign_a.zip(sign_b).is_some_and(|(x, y)| x != 0 && x == y);
+    let regular_a = polynomial_nonzero_sign(&cross(&ta, &na).ok_or("rational overflow")?);
+    let regular_b = polynomial_nonzero_sign(&cross(&ta, &nb).ok_or("rational overflow")?);
+    let regular = regular_a.zip(regular_b).is_some_and(|(x, y)| x != 0 && y != 0);
+    let inconclusive = sign_a.is_none() || sign_b.is_none() || regular_a.is_none() || regular_b.is_none();
+    let contradicted = sign_a == Some(0) || sign_b == Some(0)
+        || regular_a == Some(0) || regular_b == Some(0);
+    let admitted = degree_ok
         && relatively_prime
         && orientable
         && regular
@@ -504,7 +541,7 @@ fn as_g1_result(
     Ok(object([
         (
             "status",
-            Json::String(if admitted { "as_g1" } else { "not_as_g1" }.into()),
+            Json::String(if admitted { "as_g1" } else if inconclusive && !contradicted { "indeterminate" } else { "not_as_g1" }.into()),
         ),
         (
             "gluing_factors",
@@ -520,6 +557,9 @@ fn as_g1_result(
         ("relatively_prime", Json::Bool(relatively_prime)),
         ("orientable", Json::Bool(orientable)),
         ("regular_on_closed_edge", Json::Bool(regular)),
+        ("face_association_verified", Json::Bool(trace_a == trace_b)),
+        ("curved_edge_jacobians_nonzero", Json::Bool(regular)),
+        ("sign_certificate", Json::String("exact Bernstein subdivision, depth 12".into())),
         ("trace_tangent_match", Json::Bool(true)),
         ("beta_split_verified", Json::Bool(split_check.is_empty())),
         ("syzygy_verified", Json::Bool(identity_check)),
@@ -602,7 +642,7 @@ fn block_jet(block: &Json, side: &str, reverse: bool) -> Result<([P; 2], [P; 2],
     let n = if end {
         d.saturating_sub(1)
     } else {
-        (d + 1).min(d)
+        1
     };
     let len = if axis == 0 { dv + 1 } else { du + 1 };
     let mut h: [Vec<Q>; 4] = std::array::from_fn(|_| Vec::new());

@@ -1,0 +1,36 @@
+{
+  "provenance": "New synthetic regression witness authored for the degree-three AS-G1 admission extension; this is not a historical counterexample.",
+  "purpose": "A regular cubic extrusion whose two exact transverse factors are coprime quadratics, outside the fixed linear-alpha AS-G1 class.",
+  "expected_as_g1": "not_as_g1",
+  "blocks": [
+    {
+      "id": "a",
+      "degrees": [3, 1, 1],
+      "controls": [
+        [0, -3, 0, 1], [0, -3, 1, 1], [0, 0, 0, 1], [0, 0, 1, 1],
+        [1, -3, 0, 1], [1, -3, 1, 1], [1, 0, 0, 1], [1, 0, 1, 1],
+        [2, -4, 0, 1], [2, -4, 1, 1], [2, 0, 0, 1], [2, 0, 1, 1],
+        [3, -6, 0, 1], [3, -6, 1, 1], [3, 0, 0, 1], [3, 0, 1, 1]
+      ]
+    },
+    {
+      "id": "b",
+      "degrees": [3, 1, 1],
+      "controls": [
+        [0, 0, 0, 1], [0, 0, 1, 1], [0, 3, 0, 1], [0, 3, 1, 1],
+        [1, 0, 0, 1], [1, 0, 1, 1], [1, 5, 0, 1], [1, 5, 1, 1],
+        [2, 0, 0, 1], [2, 0, 1, 1], [2, 8, 0, 1], [2, 8, 1, 1],
+        [3, 0, 0, 1], [3, 0, 1, 1], [3, 12, 0, 1], [3, 12, 1, 1]
+      ]
+    }
+  ],
+  "topology": {
+    "interfaces": [
+      {
+        "first": ["a", "v1"],
+        "second": ["b", "v0"],
+        "orientation": {"swap": false, "flip_first": false, "flip_second": false}
+      }
+    ]
+  }
+}

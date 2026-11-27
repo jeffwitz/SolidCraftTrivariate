@@ -8,6 +8,7 @@ A positive result is a first-jet identity, not a global reparametrization.
 from argparse import ArgumentParser
 from collections import Counter
 from fractions import Fraction as F
+from math import comb
 from pathlib import Path
 import json
 import subprocess
@@ -94,12 +95,54 @@ def _split_beta(alpha_first, alpha_second, beta):
     for r in range(row - 1, -1, -1):
         col = next(c for c, v in enumerate(m[r][:4]) if v)
         x[col] = (m[r][4] - sum(m[r][c] * x[c] for c in range(col + 1, 4))) / m[r][col]
-    return ([x[0], x[1]], [x[2], x[3]])
+    result = ([x[0], x[1]], [x[2], x[3]])
+    if add(add(mul(alpha_first, result[1]), mul(alpha_second, result[0])), beta, -1):
+        return None
+    return result
+
+
+def _power_to_bernstein(p):
+    degree = len(p) - 1
+    return [sum(p[k] * F(comb(i, k), comb(degree, k)) for k in range(i + 1))
+            for i in range(degree + 1)]
+
+
+def _half_split(values):
+    row = list(values)
+    left, right = [row[0]], [row[-1]]
+    while len(row) > 1:
+        row = [(a + b) / 2 for a, b in zip(row, row[1:])]
+        left.append(row[0])
+        right.append(row[-1])
+    return left, list(reversed(right))
+
+
+def _bernstein_sign(values, depth=12):
+    if all(x > 0 for x in values):
+        return 1
+    if all(x < 0 for x in values):
+        return -1
+    if values[0] == 0 or values[-1] == 0:
+        return 0
+    if depth == 0:
+        return None
+    left, right = _half_split(values)
+    a, b = _bernstein_sign(left, depth - 1), _bernstein_sign(right, depth - 1)
+    if a is None or b is None:
+        return None
+    return 0 if a == 0 or b == 0 or a != b else a
+
+
+def _nonzero_sign(p):
+    return 0 if not p else _bernstein_sign(_power_to_bernstein(p))
 
 
 def as_g1(block_a, side_a, block_b, side_b, flip):
-    """Construct and exactly verify AS-G1 linear gluing data for bilinear extrusions."""
-    if block_a.get("degrees") != [1, 1, 1] or block_b.get("degrees") != [1, 1, 1]:
+    """Construct and verify fixed linear AS-G1 data on degree 1..3 extrusions."""
+    da, db = block_a.get("degrees"), block_b.get("degrees")
+    if (not isinstance(da, list) or not isinstance(db, list) or len(da) != 3 or len(db) != 3
+            or da[2] != 1 or db[2] != 1 or da[:2] != db[:2]
+            or any(not isinstance(d, int) or isinstance(d, bool) or not 1 <= d <= 3 for d in da[:2])):
         return {"status": "unsupported_family"}
     controls_a = _constant_weight_points(block_a)
     controls_b = _constant_weight_points(block_b)
@@ -112,7 +155,7 @@ def as_g1(block_a, side_a, block_b, side_b, flip):
     trace_a = _oriented_endpoints(block_a, side_a, False)
     trace_b = _oriented_endpoints(block_b, side_b, flip)
     if trace_a is None or trace_b is None or trace_a != trace_b:
-        return {"status": "unsupported_trace"}
+        return {"status": "unsupported_trace", "face_association_verified": False}
     ta, na, wa = jet(block_a, side_a, False)
     tb, nb, wb = jet(block_b, side_b, flip)
     if len(wa) != 1 or len(wb) != 1:
@@ -120,7 +163,7 @@ def as_g1(block_a, side_a, block_b, side_b, flip):
     ta, na = [[x / wa[0] for x in p] for p in ta], [[x / wa[0] for x in p] for p in na]
     tb, nb = [[x / wb[0] for x in p] for p in tb], [[x / wb[0] for x in p] for p in nb]
     if tb != ta:
-        return {"status": "unsupported_trace"}
+        return {"status": "unsupported_trace", "face_association_verified": False}
     # Each vector component is a polynomial in the shared edge parameter.
     aa = cross(nb, ta)
     ab = cross(ta, na)
@@ -138,44 +181,34 @@ def as_g1(block_a, side_a, block_b, side_b, flip):
         not add(add(mul(aa, na[i]), mul(ab, nb[i])), mul(beta, ta[i]))
         for i in range(2)
     )
+    degree_ok = len(aa) <= 2 and len(ab) <= 2 and len(beta) <= 3
     split = _split_beta(aa, ab, beta)
     if split is None:
-        return {"status": "not_as_g1", "reason": "no_linear_beta_split"}
+        return {"status": "not_as_g1", "reason": "no_polynomial_beta_split_within_degree",
+                "face_association_verified": True}
     beta_first, beta_second = split
     assert not add(add(mul(aa, beta_second), mul(ab, beta_first)), beta, -1)
     relative = len(_gcd_poly(aa, ab)) <= 1
-    def endpoint_sign(p):
-        values = (sum(p, F(0)), p[0] if p else F(0))
-        if not all(values) or values[0] * values[1] < 0:
-            return 0
-        return 1 if values[0] > 0 else -1
-    def no_zero(p):
-        s = endpoint_sign(p)
-        if not s:
-            return False
-        if len(p) <= 2:
-            return True
-        if len(p) != 3 or not p[2]:
-            return False
-        vertex = -p[1] / (2 * p[2])
-        if not 0 < vertex < 1:
-            return True
-        value = p[0] - p[1] ** 2 / (4 * p[2])
-        return value > 0 if s > 0 else value < 0
+    sign_a, sign_b = _nonzero_sign(aa), _nonzero_sign(ab)
     # Both transverse vectors point inward, so compatible gluing has equal signs.
-    orientable = endpoint_sign(aa) == endpoint_sign(ab) and endpoint_sign(aa) != 0
-    regular = no_zero(cross(ta, na)) and no_zero(cross(ta, nb))
-    # AS-G1 uses linear alpha factors and permits a quadratic beta factor.
-    linear = len(aa) <= 2 and len(ab) <= 2 and len(beta) <= 3
+    orientable = sign_a not in (0, None) and sign_a == sign_b
+    regular_a, regular_b = _nonzero_sign(cross(ta, na)), _nonzero_sign(cross(ta, nb))
+    regular = regular_a not in (0, None) and regular_b not in (0, None)
+    inconclusive = None in (sign_a, sign_b, regular_a, regular_b)
+    contradicted = 0 in (sign_a, sign_b, regular_a, regular_b)
     def text(p):
         return [str(x) for x in p] or ["0"]
     return {
-        "status": "as_g1" if linear and relative and orientable and regular else "not_as_g1",
+        "status": "as_g1" if degree_ok and split is not None and relative and orientable and regular
+                  else "indeterminate" if inconclusive and not contradicted else "not_as_g1",
         "gluing_factors": {"alpha_first": text(aa), "alpha_second": text(ab), "beta_first": text(beta_first), "beta_second": text(beta_second), "beta": text(beta)},
         "common_factor": text(common),
         "relatively_prime": relative,
         "orientable": orientable,
         "regular_on_closed_edge": regular,
+        "face_association_verified": trace_a == trace_b,
+        "curved_edge_jacobians_nonzero": regular,
+        "sign_certificate": "exact Bernstein subdivision, depth 12",
         "trace_tangent_match": True,
         "beta_split_verified": True,
         "syzygy_verified": True,
@@ -204,41 +237,52 @@ def _constant_weight_points(block):
 
 
 def _planar_extrusion_points(block):
-    if block.get("degrees") != [1, 1, 1]:
+    degrees = block.get("degrees")
+    if (not isinstance(degrees, list) or len(degrees) != 3
+            or any(not isinstance(d, int) or isinstance(d, bool) for d in degrees)
+            or any(not 1 <= d <= 3 for d in degrees[:2]) or degrees[2] != 1):
         return None
     points = _constant_weight_points(block)
-    if points is None or len(points) != 8:
+    du, dv, _ = degrees
+    if points is None or len(points) != 2 * (du + 1) * (dv + 1):
         return None
     base_z = points[0][2]
     height = None
-    for i in range(4):
+    for i in range((du + 1) * (dv + 1)):
         low, high = points[2 * i], points[2 * i + 1]
         if low[2] != base_z:
             return None
-        delta = [high[k] - low[k] for k in range(3)]
-        if delta[0] or delta[1] or delta[2] <= 0:
+        if high[:2] != low[:2]:
             return None
-        if height is not None and height != delta[2]:
+        delta = high[2] - low[2]
+        if delta <= 0:
             return None
-        height = delta[2]
+        if height is not None and height != delta:
+            return None
+        height = delta
+        if i > dv and low[2] != points[2 * (i - (dv + 1))][2]:
+            return None
     return points
 
 
 def _oriented_endpoints(block, side, reverse):
     points = _constant_weight_points(block)
-    if points is None or block.get("degrees") != [1, 1, 1]:
+    degrees = block.get("degrees")
+    if points is None or not isinstance(degrees, list) or len(degrees) != 3 or degrees[2] != 1:
         return None
     if side not in ("u0", "u1", "v0", "v1"):
         return None
+    du, dv, _ = degrees
     axis, end = (0, int(side[1])) if side[0] == "u" else (1, int(side[1]))
+    normal_degree, tangent_degree = (du, dv) if axis == 0 else (dv, du)
+    if end > 1 or normal_degree == 0:
+        return None
     result = []
-    for z in range(2):
-        row = []
-        for t0 in range(2):
-            t = 1 - t0 if reverse else t0
-            i, j = (end, t) if axis == 0 else (t, end)
-            row.append(points[2 * (2 * i + j) + z])
-        result.append(row)
+    for t0 in range(tangent_degree + 1):
+        t = tangent_degree - t0 if reverse else t0
+        i, j = (end * normal_degree, t) if axis == 0 else (t, end * normal_degree)
+        index = 2 * (i * (dv + 1) + j)
+        result.extend((points[index], points[index + 1]))
     return result
 
 

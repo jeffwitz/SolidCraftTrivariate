@@ -36,6 +36,12 @@ enum Profile {
         center: V,
         lengths: V,
     },
+    AffinePower {
+        coefficients: V,
+        offset: f64,
+        scale: f64,
+        degree: i32,
+    },
 }
 impl Profile {
     fn jets(&self, x: V) -> (f64, V, M) {
@@ -63,6 +69,30 @@ impl Profile {
                 let h = std::array::from_fn(|i| {
                     std::array::from_fn(|j| {
                         f * (a[i] * a[j] - if i == j { 1. / lengths[i].powi(2) } else { 0. })
+                    })
+                });
+                (f, d, h)
+            }
+            Self::AffinePower {
+                coefficients,
+                offset,
+                scale,
+                degree,
+            } => {
+                let q = (dot(*coefficients, x) + offset) / scale;
+                let factor = coefficients.map(|v| v / scale);
+                let f = q.powi(*degree);
+                let d = factor.map(|v| f64::from(*degree) * q.powi(*degree - 1) * v);
+                let h = std::array::from_fn(|i| {
+                    std::array::from_fn(|j| {
+                        if *degree < 2 {
+                            0.
+                        } else {
+                            f64::from(*degree * (*degree - 1))
+                                * q.powi(*degree - 2)
+                                * factor[i]
+                                * factor[j]
+                        }
                     })
                 });
                 (f, d, h)
@@ -246,6 +276,42 @@ where
             }
             Profile::Gaussian { center, lengths }
         }
+        "section_affine_power_mms_v1" => {
+            job.keys(&[
+                "schema",
+                "quadrature",
+                "coefficients",
+                "offset",
+                "scale",
+                "degree",
+            ])?;
+            let coefficients = job.field("coefficients")?.items()?;
+            if coefficients.len() != 3 {
+                return Err("affine power expects three coefficients");
+            }
+            let coefficients: V = [
+                coefficients[0].number::<f64>()?,
+                coefficients[1].number()?,
+                coefficients[2].number()?,
+            ];
+            let offset = job.field("offset")?.number::<f64>()?;
+            let scale = job.field("scale")?.number::<f64>()?;
+            let degree = job.field("degree")?.number::<i32>()?;
+            if coefficients.iter().any(|x| !x.is_finite())
+                || !offset.is_finite()
+                || !scale.is_finite()
+                || scale <= 0.
+                || !(1..=5).contains(&degree)
+            {
+                return Err("invalid affine power parameters");
+            }
+            Profile::AffinePower {
+                coefficients,
+                offset,
+                scale,
+                degree,
+            }
+        }
         _ => return Err("unknown section verification job"),
     };
     let order = job.field("quadrature")?.number()?;
@@ -268,6 +334,7 @@ where
         |x| exact.body(x),
     )?;
     let q = gauss(order)?;
+    let mut boundary_resultants = [[0.; 3]; 4]; // bottom, top, walls, pocket floor
     for &(leaf, axis, upper) in domain.boundary {
         let [a, b] = face_axes(axis);
         for &(u, wu) in &q {
@@ -281,10 +348,22 @@ where
                 let area = cross(j[(axis + 1) % 3], j[(axis + 2) % 3]);
                 let sigma = exact.stress(exact.field(g.position).1);
                 let factor = wu * wv * if upper { 1. } else { -1. };
+                let group = if axis != 2 {
+                    2
+                } else if (g.position[2] - z0).abs() < 1e-9 {
+                    0
+                } else if (g.position[2] - z1).abs() < 1e-9 {
+                    1
+                } else {
+                    3
+                };
                 for (&id, &r) in basis.dofs.iter().zip(&basis.values) {
                     for (i, &row) in sigma.iter().enumerate() {
                         assembly.force[3 * id + i] += r * dot(row, area) * factor;
                     }
+                }
+                for (i, row) in sigma.iter().enumerate() {
+                    boundary_resultants[group][i] += dot(*row, area) * factor;
                 }
             }
         }
@@ -302,16 +381,24 @@ where
     let mut weak = vec![0.; 3 * domain.scalar_dofs];
     let mut integrated_uz = 0.;
     let mut totals = [0f64; 6];
+    let mut body_resultant = [0.; 3];
+    let mut body_moment = [0.; 3];
     for leaf in 0..domain.cell_count {
         for &(u, wu) in &q {
             for &(v, wv) in &q {
                 for &(w, ww) in &q {
                     let (g, b) = sample(leaf, [u, v, w])?;
                     let (x, d) = exact.field(g.position);
+                    let body = exact.body(g.position);
                     let mut uh = [0.; 3];
                     let mut du = [[0.; 3]; 3];
                     let sig = exact.stress(d);
                     let weight = g.determinant * wu * wv * ww;
+                    let moment = cross(g.position, body);
+                    for i in 0..3 {
+                        body_resultant[i] += weight * body[i];
+                        body_moment[i] += weight * moment[i];
+                    }
                     for (k, &id) in b.dofs.iter().enumerate() {
                         for i in 0..3 {
                             let coeff = solution.displacement_mm[3 * id + i];
@@ -354,6 +441,9 @@ where
         return Err("indeterminate: manufactured physical norm is nonfinite or has zero reference");
     }
     let ratio = |i: usize| (totals[i] / totals[i + 1]).max(0.).sqrt();
+    let resultant =
+        |group: usize| Json::Array(boundary_resultants[group].iter().map(|x| n(*x)).collect());
+    let body_vec = |values: &[f64; 3]| Json::Array(values.iter().map(|x| n(*x)).collect());
     Ok(object([
         (
             "schema",
@@ -378,6 +468,12 @@ where
         ("relative_displacement_L2", n(ratio(0))),
         ("relative_energy_norm", n(ratio(2))),
         ("relative_stress_L2", n(ratio(4))),
+        ("bottom_traction_resultant_N", resultant(0)),
+        ("top_traction_resultant_N", resultant(1)),
+        ("wall_traction_resultant_N", resultant(2)),
+        ("floor_traction_resultant_N", resultant(3)),
+        ("body_force_resultant_N", body_vec(&body_resultant)),
+        ("body_force_moment_N_mm", body_vec(&body_moment)),
     ]))
 }
 
@@ -418,6 +514,17 @@ mod tests {
             ..cube
         };
         check_body(&pocket, [17., 12., 7.]);
+        let curved_pocket = Exact {
+            profile: Profile::AffinePower {
+                coefficients: [1., 2., 0.],
+                offset: 10.,
+                scale: 150.,
+                degree: 5,
+            },
+            height: 20.,
+            ..pocket
+        };
+        check_body(&curved_pocket, [17., 12., 7.]);
     }
 
     fn check_body(exact: &Exact, x: V) {

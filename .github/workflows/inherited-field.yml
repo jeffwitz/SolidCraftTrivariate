@@ -5,6 +5,10 @@ on:
     branches: [main]
     paths:
       - 'src/**'
+      - 'examples/curved_pocket_field.rs'
+      - 'scripts/*curved*pocket*'
+      - 'scripts/compare_curved_seam_selection.py'
+      - 'docs/results/curved-pocket-fields/**'
       - 'tests/**'
       - 'scripts/*spline*'
       - 'scripts/*inherited*'
@@ -108,4 +112,22 @@ jobs:
             build/pocket-vector/
             build/cube-convergence/matched-gaussian-*.json
             build/reentrant-ritz/
+          if-no-files-found: error
+
+  curved-pocket:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install sympy
+      - run: make check-curved-pocket-fields
+      - uses: actions/upload-artifact@v4
+        with:
+          name: curved-pocket-fields
+          path: |
+            build/curved-pocket-fields/
+            build/curved-pocket-vector/
           if-no-files-found: error

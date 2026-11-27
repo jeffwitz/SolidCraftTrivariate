@@ -3,11 +3,11 @@
 //! on every open span, including both endpoints for vertex enclosure.
 use crate::{
     bracket_json::{decode_blocks, decode_side_name},
-    constraint_system::{Ratio as Q, resolve},
+    constraint_system::{resolve, Ratio as Q},
     extracted_space::{ElementBasisSample, ElementGeometrySample},
-    json::{Json, object},
-    section_manufactured::{IntegrationDomain, solve_sampled},
-    spline_constraints::{Result, Row, add, conditioned_kernel},
+    json::{object, Json},
+    section_manufactured::{solve_sampled, IntegrationDomain},
+    spline_constraints::{add, conditioned_kernel, Result, Row},
     transverse_jets::bernstein,
 };
 use std::collections::{BTreeMap, BTreeSet};
@@ -15,6 +15,20 @@ use std::collections::{BTreeMap, BTreeSet};
 type Point = [i64; 2];
 type Quad = [Point; 4];
 type Side = (usize, usize, usize);
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum SectionJoins {
+    None,
+    Radial,
+    Footprint,
+    All,
+}
+#[derive(Clone, PartialEq, Eq)]
+struct Chart {
+    corners: Quad,
+    /// Tensor quadratic XY Bezier net, in i-major order. Bilinear source
+    /// maps are exactly degree-elevated into this representation.
+    xy: [[Q; 2]; 9],
+}
 #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
 enum AxisKind {
     Value,
@@ -39,6 +53,149 @@ fn endpoints(c: &Quad, a: usize, b: usize) -> [Point; 2] {
         [c[b], c[2 + b]]
     }
 }
+impl Chart {
+    fn edge_controls(&self, axis: usize, endpoint: usize) -> [[Q; 2]; 3] {
+        std::array::from_fn(|k| {
+            let (i, j) = if axis == 0 {
+                (endpoint * 2, k)
+            } else {
+                (k, endpoint * 2)
+            };
+            self.xy[i * 3 + j]
+        })
+    }
+    fn edge_is_straight(&self, axis: usize, endpoint: usize) -> bool {
+        let points = self.edge_controls(axis, endpoint);
+        let dx = points[2][0].checked_sub(points[0][0]);
+        let dy = points[2][1].checked_sub(points[0][1]);
+        let (Ok(dx), Ok(dy)) = (dx, dy) else {
+            return false;
+        };
+        points[1][0]
+            .checked_sub(points[0][0])
+            .and_then(|x| x.checked_mul(dy))
+            .and_then(|x| {
+                points[1][1]
+                    .checked_sub(points[0][1])
+                    .and_then(|y| y.checked_mul(dx).and_then(|y| x.checked_sub(y)))
+            })
+            .is_ok_and(|x| x.numerator() == 0)
+    }
+    fn derivatives(&self, u: Q, v: Q) -> Result<[[Q; 2]; 2]> {
+        let (bu, du) = bernstein(2, u)?;
+        let (bv, dv) = bernstein(2, v)?;
+        let mut out = [[Q::zero(); 2]; 2];
+        for i in 0..3 {
+            for j in 0..3 {
+                let p = self.xy[i * 3 + j];
+                for k in 0..2 {
+                    out[0][k] =
+                        out[0][k].checked_add(du[i].checked_mul(bv[j])?.checked_mul(p[k])?)?;
+                    out[1][k] =
+                        out[1][k].checked_add(bu[i].checked_mul(dv[j])?.checked_mul(p[k])?)?;
+                }
+            }
+        }
+        Ok(out)
+    }
+    fn evaluate(&self, u: f64, v: f64) -> ([f64; 2], [[f64; 2]; 2]) {
+        let bu = [(1. - u).powi(2), 2. * u * (1. - u), u.powi(2)];
+        let bv = [(1. - v).powi(2), 2. * v * (1. - v), v.powi(2)];
+        let du = [-2. * (1. - u), 2. - 4. * u, 2. * u];
+        let dv = [-2. * (1. - v), 2. - 4. * v, 2. * v];
+        let mut position = [0.; 2];
+        let mut jac = [[0.; 2]; 2];
+        for i in 0..3 {
+            for j in 0..3 {
+                let p = self.xy[i * 3 + j].map(number);
+                for k in 0..2 {
+                    position[k] += bu[i] * bv[j] * p[k];
+                    jac[0][k] += du[i] * bv[j] * p[k];
+                    jac[1][k] += bu[i] * dv[j] * p[k];
+                }
+            }
+        }
+        (position, jac)
+    }
+}
+fn chart_from_block(b: &crate::bracket::BracketBlock) -> Result<Chart> {
+    if b.degrees != [1, 1, 1] && b.degrees != [2, 2, 1] {
+        return Err("unsupported curved pocket chart degree");
+    }
+    let expected = if b.degrees == [1, 1, 1] { 8 } else { 18 };
+    if b.controls.len() != expected {
+        return Err("invalid curved pocket control count");
+    }
+    let weight = b.controls[0][3];
+    if weight <= 0 || b.controls.iter().any(|h| h[3] != weight) {
+        return Err("curved pocket chart requires one positive common weight");
+    }
+    let point = |h: &[i64; 4]| -> Result<[Q; 2]> {
+        Ok([
+            Q::new(i128::from(h[0]), i128::from(h[3]))?,
+            Q::new(i128::from(h[1]), i128::from(h[3]))?,
+        ])
+    };
+    let mut xy = [[Q::zero(); 2]; 9];
+    if b.degrees == [2, 2, 1] {
+        for i in 0..3 {
+            for j in 0..3 {
+                let lo = &b.controls[(i * 3 + j) * 2];
+                let hi = &b.controls[(i * 3 + j) * 2 + 1];
+                if lo[0] != hi[0] || lo[1] != hi[1] || lo[3] != hi[3] {
+                    return Err("curved pocket XY chart changes along z");
+                }
+                xy[i * 3 + j] = point(lo)?;
+            }
+        }
+    } else {
+        let mut linear = [[Q::zero(); 2]; 4];
+        for i in 0..2 {
+            for j in 0..2 {
+                let lo = &b.controls[(i * 2 + j) * 2];
+                let hi = &b.controls[(i * 2 + j) * 2 + 1];
+                if lo[0] != hi[0] || lo[1] != hi[1] || lo[3] != hi[3] {
+                    return Err("bilinear pocket XY chart changes along z");
+                }
+                linear[i * 2 + j] = point(lo)?;
+            }
+        }
+        let elevate = [
+            [Q::one(), Q::zero()],
+            [Q::new(1, 2)?, Q::new(1, 2)?],
+            [Q::zero(), Q::one()],
+        ];
+        for i in 0..3 {
+            for j in 0..3 {
+                for k in 0..2 {
+                    for a in 0..2 {
+                        for d in 0..2 {
+                            xy[i * 3 + j][k] = xy[i * 3 + j][k].checked_add(
+                                elevate[i][a]
+                                    .checked_mul(elevate[j][d])?
+                                    .checked_mul(linear[a * 2 + d][k])?,
+                            )?;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    let integer = |x: Q| -> Result<i64> {
+        if x.denominator() != 1 {
+            return Err("curved pocket corner is not an integer topology point");
+        }
+        i64::try_from(x.numerator()).map_err(|_| "curved pocket corner overflows")
+    };
+    let indices = [0, 2, 6, 8];
+    let corners = [
+        [integer(xy[indices[0]][0])?, integer(xy[indices[0]][1])?],
+        [integer(xy[indices[1]][0])?, integer(xy[indices[1]][1])?],
+        [integer(xy[indices[2]][0])?, integer(xy[indices[2]][1])?],
+        [integer(xy[indices[3]][0])?, integer(xy[indices[3]][1])?],
+    ];
+    Ok(Chart { corners, xy })
+}
 fn axis_q(rows: &[Row], t: Q) -> Result<BTreeMap<usize, [Q; 2]>> {
     let (b, d) = bernstein(rows.len() - 1, t)?;
     let mut out = BTreeMap::new();
@@ -51,26 +208,34 @@ fn axis_q(rows: &[Row], t: Q) -> Result<BTreeMap<usize, [Q; 2]>> {
     }
     Ok(out)
 }
-/// D(u,v) of the parent chart, with integer vertex differences.
-fn tangent(c: &Quad, a: usize, t: Q) -> Result<[Q; 2]> {
-    let lo = endpoints(c, 1 - a, 0);
-    let hi = endpoints(c, 1 - a, 1);
-    let mut v = [Q::zero(); 2];
-    for j in 0..2 {
-        let l = i128::from(lo[1][j]) - i128::from(lo[0][j]);
-        let h = i128::from(hi[1][j]) - i128::from(hi[0][j]);
-        v[j] = Q::new(l, 1)?.checked_add(t.checked_mul(Q::new(h - l, 1)?)?)?;
-    }
-    Ok(v)
-}
 struct Basis {
     n: usize,
     dim: usize,
-    charts: Vec<Quad>,
+    charts: Vec<Chart>,
     ids: Vec<Vec<(usize, Q)>>,
     spans: Vec<Vec<Row>>,
 }
 impl Basis {
+    fn value_trace(&self, side: Side, k: usize, t: Q, row: &mut Row) -> Result<()> {
+        let (chart, axis, endpoint) = side;
+        let mut cells = [k; 2];
+        cells[axis] = endpoint * (self.n - 1);
+        let mut pt = [t; 2];
+        pt[axis] = integer(endpoint);
+        let bx = axis_q(&self.spans[cells[0]], pt[0])?;
+        let by = axis_q(&self.spans[cells[1]], pt[1])?;
+        for (i, [x, _]) in bx {
+            for (&j, &[y, _]) in &by {
+                add(
+                    row,
+                    self.ids[chart][i * self.dim + j].0,
+                    x.checked_mul(y)?
+                        .checked_mul(self.ids[chart][i * self.dim + j].1)?,
+                )?;
+            }
+        }
+        Ok(())
+    }
     fn jet(
         &self,
         side: Side,
@@ -90,8 +255,9 @@ impl Basis {
                 .checked_add(pt[j])?
                 .checked_div(integer(self.n))
         };
-        let u = tangent(&self.charts[chart], 0, parent(1)?)?;
-        let v = tangent(&self.charts[chart], 1, parent(0)?)?;
+        let source = self.charts[chart].derivatives(parent(0)?, parent(1)?)?;
+        let u = [source[0][0], source[0][1]];
+        let v = [source[1][0], source[1][1]];
         let det = u[0]
             .checked_mul(v[1])?
             .checked_sub(v[0].checked_mul(u[1])?)?;
@@ -121,6 +287,28 @@ impl Basis {
         }
         Ok(())
     }
+}
+
+fn lift_residual(rows: &[Row], lift: &[BTreeMap<usize, f64>]) -> f64 {
+    rows.iter()
+        .map(|row| {
+            let mut sum = BTreeMap::<usize, f64>::new();
+            let mut magnitude = BTreeMap::<usize, f64>::new();
+            for (&id, &coefficient) in row {
+                for (&free, &value) in &lift[id] {
+                    let term = number(coefficient) * value;
+                    *sum.entry(free).or_default() += term;
+                    *magnitude.entry(free).or_default() += term.abs();
+                }
+            }
+            let scale = magnitude.values().copied().fold(0., f64::max);
+            if scale == 0. {
+                0.
+            } else {
+                sum.values().map(|x| x.abs() / scale).fold(0., f64::max)
+            }
+        })
+        .fold(0., f64::max)
 }
 #[derive(PartialEq, Eq, PartialOrd, Ord)]
 enum Node {
@@ -210,28 +398,35 @@ fn node(c: &Quad, chart: usize, i: usize, j: usize, n: usize, dofs: &[AxisDof]) 
     }
 }
 struct Leaf {
-    c: Quad,
+    c: Chart,
     z: [f64; 2],
     ij: [usize; 2],
     dofs: Vec<usize>,
     rows: Vec<Vec<(usize, f64)>>,
 }
 impl Leaf {
-    fn new(b: &Basis, col: usize, z: [f64; 2], ij: [usize; 2], lift: &[Row]) -> Result<Self> {
+    fn new(
+        b: &Basis,
+        col: usize,
+        z: [f64; 2],
+        ij: [usize; 2],
+        lift: &[BTreeMap<usize, f64>],
+    ) -> Result<Self> {
         let mut rows = Vec::new();
         let mut active = BTreeSet::new();
         for a in &b.spans[ij[0]] {
             for d in &b.spans[ij[1]] {
-                let mut row = Row::new();
+                let mut row = BTreeMap::new();
                 for (&i, &ca) in a {
                     for (&j, &cb) in d {
                         let w = ca.checked_mul(cb)?;
                         let (local_id, orientation) = b.ids[col][i * b.dim + j];
                         for (&id, &c) in &lift[local_id] {
-                            add(&mut row, id, w.checked_mul(c)?.checked_mul(orientation)?)?
+                            *row.entry(id).or_insert(0.) += number(w.checked_mul(orientation)?) * c;
                         }
                     }
                 }
+                row.retain(|_, v| *v != 0.);
                 active.extend(row.keys().copied());
                 rows.push(row);
             }
@@ -241,12 +436,12 @@ impl Leaf {
             .into_iter()
             .map(|r| {
                 r.into_iter()
-                    .map(|(id, v)| (dofs.binary_search(&id).unwrap(), number(v)))
+                    .map(|(id, v)| (dofs.binary_search(&id).unwrap(), v))
                     .collect()
             })
             .collect();
         Ok(Self {
-            c: b.charts[col],
+            c: b.charts[col].clone(),
             z,
             ij,
             dofs,
@@ -265,12 +460,10 @@ impl Leaf {
         let mut pos = [0., 0., z];
         let mut jac = [[0.; 3]; 3];
         jac[2][2] = height;
-        for k in 0..2 {
-            let [a, b, c, d] = self.c.map(|xy| xy[k] as f64);
-            pos[k] = (1. - u) * ((1. - v) * a + v * b) + u * ((1. - v) * c + v * d);
-            jac[0][k] = ((1. - v) * (c - a) + v * (d - b)) / n as f64;
-            jac[1][k] = ((1. - u) * (b - a) + u * (d - c)) / n as f64;
-        }
+        let (xy, dxy) = self.c.evaluate(u, v);
+        pos[..2].copy_from_slice(&xy);
+        jac[0][..2].copy_from_slice(&dxy[0].map(|x| x / n as f64));
+        jac[1][..2].copy_from_slice(&dxy[1].map(|x| x / n as f64));
         let det = jac[0][0] * jac[1][1] - jac[0][1] * jac[1][0];
         let axis = |x: f64| {
             // Recurrence at both endpoints, including quartic end functions.
@@ -329,25 +522,77 @@ fn jet_lift(count: usize, equations: &[Row]) -> Result<(Vec<Row>, Vec<usize>)> {
     conditioned_kernel(count, equations)
 }
 
-/// Run the pre-registered conforming vector benchmark from its original sketch.
+/// Preserve the original bilinear benchmark API and its source geometry.
 pub fn solve(p: usize, n: usize, c1: bool, order: usize) -> Result<Json> {
-    if ![3, 4].contains(&p) || ![1, 2, 4, 8].contains(&n) || ![8, 10].contains(&order) {
+    if ![8, 10].contains(&order) {
         return Err("unsupported pocket study parameters");
     }
     let recipe = crate::json::parse(include_str!(
         "../tests/references/blind_bilinear_pocket.recipe.json"
     ))?;
     let model = crate::interchange::build(&recipe)?;
-    let blocks = decode_blocks(&model)?;
+    let job = object([
+        ("schema", Json::String("section_quintic_mms_v1".into())),
+        ("quadrature", Json::Number(order.to_string())),
+        ("x_origin_mm", Json::Number("-10".into())),
+        ("x_scale_mm", Json::Number("70".into())),
+    ]);
+    solve_model(&model, p, n, c1, &job)
+}
+
+/// Solve on the actual biquadratic model published with the blind-pocket case.
+pub fn solve_published(p: usize, n: usize, c1: bool, job: &Json) -> Result<Json> {
+    let model = crate::json::parse(include_str!(
+        "../docs/site/data/plate_blind_pocket/plate_blind_pocket.model.json"
+    ))?;
+    solve_model(&model, p, n, c1, job)
+}
+
+/// Run the conforming manufactured-field study on a supplied trivariate model.
+pub fn solve_model(model: &Json, p: usize, n: usize, c1: bool, job: &Json) -> Result<Json> {
+    solve_model_selected(
+        model,
+        p,
+        n,
+        if c1 {
+            SectionJoins::All
+        } else {
+            SectionJoins::None
+        },
+        job,
+    )
+}
+
+/// Solve with an explicit subset of physical C1 joins for diagnostic controls.
+pub fn solve_model_selected(
+    model: &Json,
+    p: usize,
+    n: usize,
+    joins: SectionJoins,
+    job: &Json,
+) -> Result<Json> {
+    if ![3, 4].contains(&p) || ![1, 2, 4, 8].contains(&n) {
+        return Err("unsupported pocket study parameters");
+    }
+    crate::interchange::audit(model)?;
+    let blocks = decode_blocks(model)?;
+    let mut z_bounds = [f64::INFINITY, f64::NEG_INFINITY];
+    for b in &blocks {
+        for h in &b.controls {
+            let z = h[2] as f64 / h[3] as f64;
+            z_bounds[0] = z_bounds[0].min(z);
+            z_bounds[1] = z_bounds[1].max(z);
+        }
+    }
+    if (z_bounds[0] - 0.).abs() > 1e-12 || (z_bounds[1] - 20.).abs() > 1e-12 {
+        return Err("curved pocket study requires z bounds [0,20] mm");
+    }
     let mut charts = Vec::new();
     let mut columns = Vec::new();
     for b in &blocks {
-        if b.degrees != [1; 3] || b.controls.iter().any(|h| h[3] != 1) {
-            return Err("expected trilinear unit-weight scaffold");
-        }
-        let c = std::array::from_fn(|k| [b.controls[2 * k][0], b.controls[2 * k][1]]);
+        let c = chart_from_block(b)?;
         let col = charts.iter().position(|q| q == &c).unwrap_or_else(|| {
-            charts.push(c);
+            charts.push(c.clone());
             charts.len() - 1
         });
         columns.push(col);
@@ -366,7 +611,7 @@ pub fn solve(p: usize, n: usize, c1: bool, order: usize) -> Result<Json> {
         for i in 0..dim {
             for j in 0..dim {
                 let next = nodes.len();
-                let (key, sign) = node(c, k, i, j, n, &dofs);
+                let (key, sign) = node(&c.corners, k, i, j, n, &dofs);
                 let id = *nodes.entry(key).or_insert(next);
                 local.push((id, sign));
             }
@@ -374,9 +619,26 @@ pub fn solve(p: usize, n: usize, c1: bool, order: usize) -> Result<Json> {
         ids.push(local);
         for a in 0..2 {
             for b in 0..2 {
-                let mut pair = endpoints(c, a, b);
+                let mut pair = endpoints(&c.corners, a, b);
                 pair.sort();
                 edges.entry(pair).or_default().push((k, a, b));
+            }
+        }
+    }
+    for sides in edges.values() {
+        if sides.len() > 2 {
+            return Err("nonmanifold chart edge");
+        }
+        if let [a, b] = sides[..] {
+            let first = charts[a.0].edge_controls(a.1, a.2);
+            let mut second = charts[b.0].edge_controls(b.1, b.2);
+            if endpoints(&charts[a.0].corners, a.1, a.2)
+                != endpoints(&charts[b.0].corners, b.1, b.2)
+            {
+                second.reverse();
+            }
+            if first != second {
+                return Err("shared pocket edge has mismatched full Bezier trace");
             }
         }
     }
@@ -389,7 +651,9 @@ pub fn solve(p: usize, n: usize, c1: bool, order: usize) -> Result<Json> {
         spans,
     };
     let mut equations = Vec::new();
-    if c1 {
+    let mut value_probe_rows = Vec::new();
+    let mut gradient_probe_rows = Vec::new();
+    if joins != SectionJoins::None {
         for ([start, end], sides) in edges {
             if sides.len() == 1 {
                 continue;
@@ -397,13 +661,27 @@ pub fn solve(p: usize, n: usize, c1: bool, order: usize) -> Result<Json> {
             let [a, b] = sides[..] else {
                 return Err("nonmanifold chart edge");
             };
-            let reverse =
-                endpoints(&basis.charts[a.0], a.1, a.2) != endpoints(&basis.charts[b.0], b.1, b.2);
+            let radial = basis.charts[a.0].edge_is_straight(a.1, a.2)
+                && basis.charts[b.0].edge_is_straight(b.1, b.2);
+            let selected = match joins {
+                SectionJoins::None => false,
+                SectionJoins::All => true,
+                SectionJoins::Radial => radial,
+                SectionJoins::Footprint => !radial,
+            };
+            if !selected {
+                continue;
+            }
+            let reverse = endpoints(&basis.charts[a.0].corners, a.1, a.2)
+                != endpoints(&basis.charts[b.0].corners, b.1, b.2);
             // A physical coordinate direction transverse to the common tangent.
             let x_component = start[1] != end[1];
             for k in 0..n {
-                for r in 0..=p + 1 {
-                    let t = Q::new(r as i128, (p + 1) as i128)?;
+                // Clearing the physical-map Jacobian denominators gives a
+                // univariate numerator of degree at most p+5 on each span.
+                // p+6 exact points therefore imply equality throughout it.
+                for r in 0..=p + 5 {
+                    let t = Q::new(r as i128, (p + 5) as i128)?;
                     let mut row = Row::new();
                     basis.jet(a, k, t, x_component, Q::one(), &mut row)?;
                     let (kb, tb) = if reverse {
@@ -414,12 +692,50 @@ pub fn solve(p: usize, n: usize, c1: bool, order: usize) -> Result<Json> {
                     basis.jet(b, kb, tb, x_component, Q::new(-1, 1)?, &mut row)?;
                     equations.push(row);
                 }
+                for r in 1..=2 {
+                    let t = Q::new(r as i128, (p + 7) as i128)?;
+                    let (kb, tb) = if reverse {
+                        (n - 1 - k, Q::one().checked_sub(t)?)
+                    } else {
+                        (k, t)
+                    };
+                    let mut value = Row::new();
+                    basis.value_trace(a, k, t, &mut value)?;
+                    basis.value_trace(b, kb, tb, &mut value)?;
+                    value_probe_rows.push(value);
+                    for x_component in [false, true] {
+                        let mut gradient = Row::new();
+                        basis.jet(a, k, t, x_component, Q::one(), &mut gradient)?;
+                        basis.jet(b, kb, tb, x_component, Q::new(-1, 1)?, &mut gradient)?;
+                        gradient_probe_rows.push(gradient);
+                    }
+                }
             }
         }
     }
-    let (lift, free) = jet_lift(count, &equations)?;
+    let (exact_lift, free) = jet_lift(count, &equations)?;
+    let (lift, interpolation_residual) =
+        if !equations.is_empty() && blocks.iter().any(|b| b.degrees == [2, 2, 1]) {
+            crate::spline_constraints::evaluation_kernel(count, &equations, free.len())?
+        } else {
+            (
+                exact_lift
+                    .iter()
+                    .map(|r| r.iter().map(|(&i, &q)| (i, number(q))).collect())
+                    .collect(),
+                0.,
+            )
+        };
+    let value_probe_residual = lift_residual(&value_probe_rows, &lift);
+    let gradient_probe_residual = lift_residual(&gradient_probe_rows, &lift);
+    if !equations.is_empty() && (value_probe_residual > 1e-8 || gradient_probe_residual > 1e-8) {
+        return Err("indeterminate: independent physical continuity probe residual");
+    }
     let mut leaves = Vec::new();
     let mut boundary = Vec::new();
+    let mut has_bottom = false;
+    let mut has_top = false;
+    let mut has_floor = false;
     let exterior = model.field("topology")?.field("exterior")?.items()?;
     for (k, b) in blocks.iter().enumerate() {
         let mut sides = Vec::new();
@@ -427,6 +743,15 @@ pub fn solve(p: usize, n: usize, c1: bool, order: usize) -> Result<Json> {
             let e = entry.items()?;
             if e[0].text()? == b.id {
                 sides.push(decode_side_name(e[1].text()?)?)
+            }
+        }
+        for &(axis, upper) in &sides {
+            if axis == 2 {
+                let h = &b.controls[usize::from(upper)];
+                let z = h[2] as f64 / h[3] as f64;
+                has_bottom |= z.abs() < 1e-12;
+                has_top |= (z - 20.).abs() < 1e-12;
+                has_floor |= (z - 14.).abs() < 1e-12;
             }
         }
         for i in 0..n {
@@ -440,29 +765,70 @@ pub fn solve(p: usize, n: usize, c1: bool, order: usize) -> Result<Json> {
                 leaves.push(Leaf::new(
                     &basis,
                     columns[k],
-                    [b.controls[0][2] as f64, b.controls[1][2] as f64],
+                    [
+                        b.controls[0][2] as f64 / b.controls[0][3] as f64,
+                        b.controls[1][2] as f64 / b.controls[1][3] as f64,
+                    ],
                     ij,
                     &lift,
                 )?);
             }
         }
     }
+    if !(has_bottom && has_top && has_floor) {
+        return Err("curved pocket model lacks bottom, upper, or floor boundary");
+    }
     let essential = resolve(free.len(), &[], &[])?;
-    let job = object([
-        ("schema", Json::String("section_quintic_mms_v1".into())),
-        ("quadrature", Json::Number(order.to_string())),
-        ("x_origin_mm", Json::Number("-10".into())),
-        ("x_scale_mm", Json::Number("70".into())),
-    ]);
-    solve_sampled(
+    let mut result = solve_sampled(
         &IntegrationDomain {
             scalar_dofs: free.len(),
             cell_count: leaves.len(),
-            z_bounds: [0., 20.],
+            z_bounds,
             boundary: &boundary,
             essential: &essential,
         },
-        &job,
+        job,
         |i, t| leaves[i].sample(n, p, t),
-    )
+    )?;
+    if let Json::Object(fields) = &mut result {
+        let exact_degree_bound = p + 5;
+        fields.insert(
+            "chart_count".into(),
+            Json::Number(basis.charts.len().to_string()),
+        );
+        fields.insert("span_count_per_axis".into(), Json::Number(n.to_string()));
+        fields.insert(
+            "interpolation_jet_residual".into(),
+            Json::Number(interpolation_residual.to_string()),
+        );
+        fields.insert(
+            "independent_c0_probe_relative_residual".into(),
+            Json::Number(value_probe_residual.to_string()),
+        );
+        fields.insert(
+            "independent_c1_gradient_probe_relative_residual".into(),
+            Json::Number(gradient_probe_residual.to_string()),
+        );
+        fields.insert(
+            "c1_join_selection".into(),
+            Json::String(format!("{joins:?}")),
+        );
+        fields.insert(
+            "c1_constraint_rows".into(),
+            Json::Number(equations.len().to_string()),
+        );
+        fields.insert(
+            "c1_constraint_rank".into(),
+            Json::Number(count.saturating_sub(free.len()).to_string()),
+        );
+        fields.insert(
+            "c1_gradient_numerator_degree_bound".into(),
+            Json::Number(exact_degree_bound.to_string()),
+        );
+        fields.insert(
+            "c1_points_per_span".into(),
+            Json::Number((exact_degree_bound + 1).to_string()),
+        );
+    }
+    Ok(result)
 }

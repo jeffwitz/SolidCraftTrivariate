@@ -76,16 +76,22 @@ def main():
             source = control(port, token, "engine.execute", {"command": "timeline.export_script", "params": {}})
             original = source["script"]["commands"][0]["params"]["feature"]["step"]
             click_handle(port, token, "button:solidcraft-trivariate.fillet")
+            time.sleep(1)
+            screenshot(windows[-1], out / "dialog.png")
             click_handle(port, token, "plugin_dialog:run")
             # The GUI applies plugin edits asynchronously. Observe the change on
             # the original feature before saving and independently reopening it.
             for _ in range(120):
                 export = control(port, token, "engine.execute", {"command": "timeline.export_script", "params": {}})
                 steps = export["script"]["commands"]
-                if len(steps) == 1 and steps[0]["params"]["feature"]["step"] != original:
+                if any(f.get("id") == 1 and f.get("step", original) != original for f in
+                       (s.get("params", {}).get("feature", {}) for s in steps) if isinstance(f, dict)):
                     break
                 time.sleep(0.25)
             else:
+                screenshot(windows[-1], out / "after-run.png")
+                print("Dialog after click:", str(control(port, token, "ui.inspect")).split("parameters")[0][:4000])
+                print("Command stream:", [s["command"] for s in steps])
                 raise RuntimeError("the Fillet ribbon click did not update the bracket import")
             document = out / "clicked-fillet.sc"
             control(port, token, "engine.execute", {"command": "file.save_as", "params": {"path": str(document)}})

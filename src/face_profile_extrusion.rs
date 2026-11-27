@@ -10,7 +10,7 @@ use crate::{
     bracket_audit::BracketCertificate,
     bracket_json::encode,
     incidence::enumerate_faces,
-    json::{Json, object},
+    json::{object, Json},
 };
 
 const FAMILY: &str = "face_profile_extrusion_v1";
@@ -402,7 +402,16 @@ pub fn build(r: &FaceProfileExtrusion) -> Result<Json, &'static str> {
     if frame_bound + 2.0 / SCALE > r.tolerance * 0.25 {
         return Err("face_frame_rationalization_exceeds_declared_tolerance");
     }
-    let (ring, core) = curved_ring_section(&r.spans, r.tolerance)?;
+    let (ring, core) = match curved_ring_section(&r.spans, r.tolerance) {
+        Ok(plan) => plan,
+        Err(
+            "profile_kernel_sectors_must_have_positive_turn"
+            | "profile_vertices_have_no_strict_common_kernel_center"
+            | "profile_boundary_must_wind_once_around_kernel"
+            | "profile_span_control_hull_crosses_its_kernel_sector",
+        ) => crate::face_profile_concave::curved_ring_section(&r.spans, r.tolerance)?,
+        Err(e) => return Err(e),
+    };
     for span in &r.spans {
         for h in span {
             let p = point(*h)?;

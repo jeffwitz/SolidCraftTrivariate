@@ -224,6 +224,7 @@ pub mod solidcraft_preview;
 pub mod oblique_pockets;
 mod oblique_pockets_json;
 
+mod face_profile_concave;
 pub mod face_profile_extrusion;
 mod face_profile_stock;
 mod face_profile_audit;

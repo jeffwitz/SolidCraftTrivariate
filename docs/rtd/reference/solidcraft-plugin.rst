@@ -16,7 +16,7 @@ Launch the separate compact profile to open the sharp FieldCraft bracket:
 
 .. code-block:: bash
 
-   python3 scripts/solidcraft_compact_desktop.py /path/to/solidcraft-trivariate-0.4.2.zip
+   python3 scripts/solidcraft_compact_desktop.py /path/to/solidcraft-trivariate-0.5.0.zip
 
 Its Sketch tab pins new sketch, line, two-point rectangle, coincidence,
 horizontal/vertical, fit-point spline, control-point spline, finish and cancel. The same ribbon adds **extrude**,

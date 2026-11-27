@@ -1,7 +1,7 @@
 {
   "id": "solidcraft-trivariate",
   "name": "SolidCraft Trivariate",
-  "version": "0.4.2",
+  "version": "0.5.0",
   "description": "Builds and displays audited SolidCraft Trivariate sketch, recipe and preview geometry using SolidCraft native features.",
   "capabilities": [
     "commands@0.2"
@@ -388,6 +388,43 @@
             "name": "Sketch"
           }
         ]
+      },
+      {
+        "name": "fieldcraft-iga-solve-display",
+        "effect": "edit",
+        "input_schema": {
+          "type": "object",
+          "title": "Solve and Display IGA Field",
+          "description": "Queue the approved SolidCraft IGA analysis through the native desktop bridge. The resulting FieldCraft archive is a visualization carrier; it is not a FieldCraft solve.",
+          "properties": {
+            "recipe": {
+              "type": "string",
+              "title": "Qualified recipe file",
+              "default": "fieldcraft_x64_y64.recipe.json"
+            },
+            "job": {
+              "type": "string",
+              "title": "Mechanical job file",
+              "default": "fieldcraft_bracket_hex_pa5.json"
+            },
+            "case_name": {
+              "type": "string",
+              "title": "Output case name",
+              "default": "solidcraft-analysis",
+              "pattern": "^[A-Za-z0-9_-]{1,64}$"
+            }
+          },
+          "x-solidcraft-icon": "icons/compute.svg"
+        }
+      },
+      {
+        "name": "fieldcraft-iga-status",
+        "effect": "edit",
+        "input_schema": {
+          "type": "object",
+          "title": "FieldCraft IGA Bridge Status",
+          "properties": {}
+        }
       }
     ],
     "permissions": {

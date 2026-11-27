@@ -180,3 +180,14 @@ On a fresh clone, `make bootstrap` retrieves the six oracle dependencies pinned 
 - [Adaptation and review organization](docs/archive/development-workflow-study.md)
 - [Campaign log and measured results](docs/campagne-20261125.md)
 - [Interactive gallery](https://jeffwitz.github.io/SolidCraftTrivariate/)
+
+## Desktop IGA workflow
+
+The compact SolidCraft plugin works with an optional FieldCraft desktop companion.
+The native Rust job defines the material, constraints and load on the recipe's
+volume maps. FieldCraft displays the displacement and stress sampled from that
+solution. The reference workflow includes a loaded two-hole bracket and an
+independent check of the fields exported again by FieldCraft.
+[Desktop tutorial](docs/rtd/tutorials/solidcraft-plugin.rst) ·
+[FieldCraft setup and troubleshooting](docs/rtd/how-to/solidcraft-fieldcraft.rst) ·
+[Result and unit conventions](docs/rtd/reference/fieldcraft-plugin.rst)

@@ -1,0 +1,24 @@
+{
+  "entry": "fieldcraft-iga-solve-display",
+  "params": {
+    "case_name": "plugin-guest-check"
+  },
+  "grants": {
+    "folders": [
+      {
+        "name": "companion",
+        "read": true,
+        "write": true,
+        "from": "companion"
+      }
+    ],
+    "command_groups": [
+      "file"
+    ]
+  },
+  "expect": {
+    "files": [
+      "companion/fieldcraft-analysis-request.json"
+    ]
+  }
+}

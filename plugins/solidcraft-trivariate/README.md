@@ -5,10 +5,36 @@ SolidCraft timeline for the native `solidcraft-trivariate` companion, displays a
 companion-produced native sketch preview on explicit request, and inserts the companion's
 STEP result through SolidCraft's own STEP importer.
 
+## Install the desktop analysis kit
+
+For the integrated workflow on Linux x86-64, download the
+**solidcraft-fieldcraft-workstation-linux** artifact of the
+[plugin workflow](https://github.com/jeffwitz/SolidCraftTrivariate/actions/workflows/solidcraft-trivariate-plugin.yml).
+Extract the tarball and run this from the extracted directory:
+
+```sh
+python3 scripts/solidcraft_compact_desktop.py ./solidcraft-trivariate-0.5.0.zip
+```
+
+Keep the launcher running while SolidCraft is open. It prepares a separate
+profile, seeds the reference bracket recipe and mechanical job, and discovers
+the installed FieldCraft desktop and CLI. The Linux kit supplies the native
+solver and the version-matched results writer. Run **FieldCraft IGA Bridge
+Status**, then **Solve and Display IGA Field** from the plugin commands. The
+operation solves the recipe named in the dialog. After a native-only CAD
+edit, verify that your recipe represents the edited body before using its
+mechanical result. The CAD-only ZIP can also be installed through Preferences.
+
+[Desktop tutorial](https://jeffwitz.github.io/SolidCraftTrivariate/manual/tutorials/solidcraft-plugin.html) ·
+[Analysis setup](https://jeffwitz.github.io/SolidCraftTrivariate/manual/how-to/solidcraft-fieldcraft.html) ·
+[Fields and units](https://jeffwitz.github.io/SolidCraftTrivariate/manual/reference/fieldcraft-plugin.html)
+
 ## Commands
 
 | Entry | Action |
 | --- | --- |
+| `fieldcraft-iga-status` | Read availability and the state of the latest analysis request. |
+| `fieldcraft-iga-solve-display` | Queue snapshots of the selected recipe and job, run native elasticity, and open the sampled result in FieldCraft. |
 | `snapshot-timeline` | Calls `timeline.export_script`, refuses a script with omitted design content, and writes `timeline.json` to the approved `companion` folder. |
 | `extrude-active-sketch` | Builds the selected pre-extrusion sketch as a new native-kernel body using `height_mm` (default 12, allowed 1–64 mm), audits it, and inserts its STEP payload as a native import feature. |
 | `extrude-active-timeline` | Uses the existing sketch-plus-extrusion timeline importer. This is separate from sketch-only extrusion so it cannot duplicate an existing body by default. |
@@ -68,7 +94,7 @@ SolidCraft 0.48.1 CLI, tests the entries, and packages `plugin.json` with the co
 
 ## Install in SolidCraft
 
-1. Download `solidcraft-trivariate-0.4.2.zip` from the successful **SolidCraft Trivariate plugin** workflow artifact.
+1. Download `solidcraft-trivariate-0.5.0.zip` from the successful **SolidCraft Trivariate plugin** workflow artifact.
 2. In SolidCraft, open **Preferences > Plugins > Install plugin…** and choose the ZIP.
 3. Approve the `file` command group and choose a folder named `companion` with read/write access. The plugin reads recipes and writes `timeline.json`, `partition.json`, and `result.step` there.
 4. Use the entries in the Model ribbon or Plugins menu. Place a recipe JSON in the approved folder and run **Build Recipe**. `operation` defaults to `from_recipe`; choose one of the four operations for the tall box-cylinder suite. `rim` defaults to `sharp` and also offers `chamfer` or `fillet` for the supported FieldCraft recipe. Incompatible operation overrides are refused before a feature is added.
@@ -87,7 +113,7 @@ redistribution of the WIT-derived interface.
 From the repository root, run:
 
 ```sh
-python3 scripts/solidcraft_compact_desktop.py /path/to/solidcraft-trivariate-0.4.2.zip
+python3 scripts/solidcraft_compact_desktop.py /path/to/solidcraft-trivariate-0.5.0.zip
 ```
 
 The launcher installs the package in its own desktop profile and opens the sharp

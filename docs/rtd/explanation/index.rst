@@ -1,6 +1,11 @@
 Explanation
 ===========
 
+.. toctree::
+   :maxdepth: 1
+
+   plugin-boundaries
+
 Why count cells, supports and unknowns separately?
 --------------------------------------------------
 

@@ -1,0 +1,23 @@
+{
+  "entry": "fieldcraft-iga-solve-display",
+  "params": {
+    "case_name": "unavailable-check"
+  },
+  "grants": {
+    "folders": [
+      {
+        "name": "companion",
+        "read": true,
+        "write": true,
+        "from": "companion-unavailable"
+      }
+    ],
+    "command_groups": [
+      "file"
+    ]
+  },
+  "expect": {
+    "error": "invalid_input",
+    "message": "FieldCraft analysis is unavailable for plugin test"
+  }
+}

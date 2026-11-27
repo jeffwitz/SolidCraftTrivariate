@@ -13,6 +13,7 @@ const MAX_DESCRIPTOR_BYTES: usize = 1_048_576;
 mod ribbon;
 mod face_spline;
 mod face_extrude;
+mod fieldcraft_bridge;
 
 struct Plugin;
 
@@ -29,6 +30,8 @@ impl Guest for Plugin {
             "extrude-active-sketch" => extrude_active_sketch(&params),
             "extrude-active-timeline" => extrude_active_timeline(),
             "build-recipe" => build_recipe(&params),
+            "fieldcraft-iga-solve-display" => fieldcraft_bridge::queue(&params),
+            "fieldcraft-iga-status" => fieldcraft_bridge::status(),
             _ => Err(invalid("entry", format!("unknown entry `{entry}`"))),
         }
     }

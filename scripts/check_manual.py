@@ -38,6 +38,8 @@ def check():
             targets.add(dest)
     for required in ["tutorials/index.html", "how-to/index.html",
                      "reference/index.html", "explanation/index.html",
+                     "tutorials/solidcraft-plugin.html", "how-to/solidcraft-fieldcraft.html",
+                     "reference/fieldcraft-plugin.html", "explanation/plugin-boundaries.html",
                      "api/solidcraft_trivariate/index.html", "search.html"]:
         if ROOT / required not in targets:
             raise ValueError(f"Unreachable manual entry: {required}")

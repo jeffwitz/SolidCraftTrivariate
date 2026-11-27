@@ -2,7 +2,7 @@
   "id": "solidcraft-trivariate",
   "name": "SolidCraft Trivariate",
   "version": "0.1.0",
-  "description": "Snapshots the active SolidCraft timeline and displays native sketch preview wires from the SolidCraft Trivariate companion.",
+  "description": "Builds and displays audited SolidCraft Trivariate sketch, recipe and preview geometry using SolidCraft native features.",
   "capabilities": ["commands@0.2"],
   "runtime": {
     "module": "solidcraft-trivariate.wasm",
@@ -27,7 +27,8 @@
         "name": "build-recipe",
         "effect": "edit",
         "input_schema": {"type": "object", "properties": {
-          "recipe": {"type": "string", "title": "Recipe file", "default": "recipe.json"}
+          "recipe": {"type": "string", "title": "Recipe file", "default": "recipe.json"},
+          "rim": {"type": "string", "title": "Bore rim", "enum": ["sharp", "chamfer", "fillet"], "default": "sharp"}
         }},
         "slots": [{"kind": "ribbon", "name": "Model"}]
       },

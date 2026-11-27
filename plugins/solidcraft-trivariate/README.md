@@ -12,7 +12,7 @@ STEP result through SolidCraft's own STEP importer.
 | `snapshot-timeline` | Calls `timeline.export_script`, refuses a script with omitted design content, and writes `timeline.json` to the approved `companion` folder. |
 | `extrude-active-sketch` | Builds the selected pre-extrusion sketch as a new native-kernel body using `height_mm` (default 12, allowed 1–64 mm), audits it, and inserts its STEP payload as a native import feature. |
 | `extrude-active-timeline` | Uses the existing sketch-plus-extrusion timeline importer. This is separate from sketch-only extrusion so it cannot duplicate an existing body by default. |
-| `build-recipe` | Reads `recipe.json` from the approved companion folder, builds and audits it with the shared Rust constructor, exports STEP, and inserts it as a native import feature. |
+| `build-recipe` | Reads a JSON family recipe from the approved companion folder, builds and audits it with the shared Rust constructor, exports STEP, and inserts it as a native import feature. For the qualified `fieldcraft_x64_y64` recipe, `rim` can be `sharp` (default), `chamfer`, or `fillet`. |
 | `show-sketch-stage` | Reads `partition.json`, verifies the complete source script against the open document, adds the companion's ordinary sketch feature with `timeline.add`, and shows it with `browser.visibility`. |
 | `hide-sketch-stage` | Rechecks the current timeline and preview feature, then hides that sketch with `browser.visibility`. |
 | `insert-result` | Reads `result.step` from the approved `companion` folder and adds it through SolidCraft's native timeline import feature, then sets the active viewport to native `shaded` style. |
@@ -55,9 +55,11 @@ solidcraft-cli plugin check .
 solidcraft-cli plugin test . --require-cases
 ```
 
-`extrude-active-sketch` currently supports the native line-and-arc sketch extrusion
-subset accepted by `solidcraft_polygon::extrude_preview`. The plugin does not make a
-separate mesh; SolidCraft inserts and displays exported STEP through its own importer.
+`extrude-active-sketch` reads the specified sketch before any host extrusion and accepts
+the native line-and-arc profile subset supported by `solidcraft_polygon::extrude_source_sketch`.
+`extrude-active-timeline` is the separate path for an already extruded sketch. The plugin
+does not make a separate mesh; SolidCraft imports the STEP text as a native timeline
+feature and renders the resulting body itself.
 
 The component imports the `craft:plugin@0.2.0` `commands` and `files` interfaces from
 SolidCraft's plugin contract. The workflow at

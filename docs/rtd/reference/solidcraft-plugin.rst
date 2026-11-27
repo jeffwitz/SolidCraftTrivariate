@@ -49,13 +49,13 @@ inspection in either SolidCraft or FieldCraft:
 SolidCraft exposes sketch visibility and shaded body display separately. The
 stock shaded setting suppresses the body's edge overlay. Switching display
 styles can expose edges between adjacent STEP boundary faces. The volume
-partition remains recorded in the model JSON. For FieldCraft 0.8.1, save the imported body as a SolidCraft document
-(``solidcraft-cli run result.step --save body.sc``) and open that document
-with ``geometry.open``. Direct STEP input to this release's headless
-``geometry.open`` failed its design-resource check.
+partition remains recorded in the model JSON. FieldCraft's stable 0.8.1 headless reader refused the STEP;
+its design reader accepts format 57 and SolidCraft 0.48.1 writes format 66.
+The viewport integration test pins the later FieldCraft nightly
+0.8.1-nightly.20261124.89.1 and exercises its STEP import directly.
 
 Intersecting oblique pockets
----------------------------
+----------------------------
 
 The SolidCraft reference starts from a 40 mm cube with two disjoint openings
 on its top face. Tool A has a periodic cubic control spline. Tool B has four

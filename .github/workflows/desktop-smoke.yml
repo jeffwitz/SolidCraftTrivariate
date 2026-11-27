@@ -1,0 +1,45 @@
+name: SolidCraft desktop sketch smoke
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/desktop-smoke.yml'
+      - 'scripts/solidcraft_desktop_smoke.py'
+      - 'scripts/solidcraft_preview_design.py'
+      - 'tests/references/solidcraft_sketch_bracket.timeline.json'
+      - 'src/solidcraft_preview.rs'
+  pull_request:
+    paths:
+      - '.github/workflows/desktop-smoke.yml'
+      - 'scripts/solidcraft_desktop_smoke.py'
+      - 'scripts/solidcraft_preview_design.py'
+      - 'tests/references/solidcraft_sketch_bracket.timeline.json'
+      - 'src/solidcraft_preview.rs'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  desktop-sketch:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - name: Install pinned SolidCraft desktop and virtual display
+        run: |
+          curl -fsSL https://github.com/tangency-labs/solidcraft/releases/download/v0.48.1/solidcraft-0.48.1-linux-x86_64.deb -o /tmp/solidcraft.deb
+          echo '4f2991b4c0c02e9a58843917ff7b0277c9668d051cb3da272ea363be5e5c0257  /tmp/solidcraft.deb' | sha256sum -c -
+          sudo apt-get update -qq
+          sudo apt-get install -y /tmp/solidcraft.deb xvfb xauth xdotool x11-utils imagemagick python3-pil mesa-vulkan-drivers
+      - name: Build native preview helper
+        run: cargo build --locked --release
+      - name: Show and hide a native sketch in the desktop viewport
+        run: xvfb-run -a -s '-screen 0 1440x1000x24 +extension GLX +render -noreset' python3 scripts/solidcraft_desktop_smoke.py --out build/desktop-smoke --kernel target/release/solidcraft-trivariate
+        env:
+          LIBGL_ALWAYS_SOFTWARE: '1'
+          GALLIUM_DRIVER: llvmpipe
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: solidcraft-desktop-smoke
+          path: build/desktop-smoke/

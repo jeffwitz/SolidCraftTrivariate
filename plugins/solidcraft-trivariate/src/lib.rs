@@ -383,12 +383,37 @@ fn build_recipe(params: &Value) -> Result<String, PluginError> {
         .map_err(|e| invalid("recipe", e))?;
     let model =
         solidcraft_trivariate::interchange::build(&recipe).map_err(|e| invalid("recipe", e))?;
-    insert_audited_model(&model)
+    audit_model(&model)?;
+    let rim = params.get("rim").and_then(Value::as_str).unwrap_or("sharp");
+    let step = match rim {
+        "sharp" => solidcraft_trivariate::step_boundary::export_step(&model),
+        "chamfer" | "fillet" => {
+            solidcraft_trivariate::fieldcraft_rims::construct(&model, rim)
+                .map_err(|e| invalid("rim", e))?;
+            solidcraft_trivariate::fieldcraft_rims::export_step(&model, rim)
+        }
+        _ => return Err(invalid("rim", "choose sharp, chamfer or fillet")),
+    }
+    .map_err(|e| invalid("model", e))?;
+    files::write_file(GRANT, "result.step", step.as_bytes())?;
+    let inserted = insert_step_content(&step)?;
+    let mut result: Value =
+        serde_json::from_str(&inserted).map_err(|e| invalid("timeline.add", e))?;
+    result["rim"] = json!(rim);
+    Ok(result.to_string())
 }
 
 fn insert_audited_model(model: &solidcraft_trivariate::json::Json) -> Result<String, PluginError> {
+    audit_model(model)?;
+    let step = solidcraft_trivariate::step_boundary::export_step(model)
+        .map_err(|e| invalid("model", e))?;
+    files::write_file(GRANT, "result.step", step.as_bytes())?;
+    insert_step_content(&step)
+}
+
+fn audit_model(model: &solidcraft_trivariate::json::Json) -> Result<(), PluginError> {
     let audit =
-        solidcraft_trivariate::interchange::audit(&model).map_err(|e| invalid("model", e))?;
+        solidcraft_trivariate::interchange::audit(model).map_err(|e| invalid("model", e))?;
     if audit
         .field("status")
         .and_then(solidcraft_trivariate::json::Json::text)
@@ -399,10 +424,7 @@ fn insert_audited_model(model: &solidcraft_trivariate::json::Json) -> Result<Str
             "native trivariate audit did not return valid",
         ));
     }
-    let step = solidcraft_trivariate::step_boundary::export_step(&model)
-        .map_err(|e| invalid("model", e))?;
-    files::write_file(GRANT, "result.step", step.as_bytes())?;
-    insert_step_content(&step)
+    Ok(())
 }
 
 fn validate_construction_wire(feature: &serde_json::Map<String, Value>) -> Result<(), PluginError> {

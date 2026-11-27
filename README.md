@@ -4,6 +4,16 @@
 
 A native Rust volumetric kernel for building and auditing rational trivariate maps, exporting STEP, and preparing their IGA analysis spaces. The geometry workflow starts from a sketch or recipe, derives its partition lines, then builds and audits the volumes in the same crate. Python supplies independent oracles and historical references. [Documentation index](docs/README.md)
 
+## Try the kernel in SolidCraft
+
+The plugin displays partition guides as a native construction sketch on
+request. Its CAD results enter the viewport as exact STEP boundaries, using
+the installed SolidCraft tessellator. The host tests cover extrusion, the four
+box–cylinder Booleans, intersecting blind pockets and fixed-partition bore rim
+treatments. [Plugin and installation](plugins/solidcraft-trivariate/README.md)
+· [Viewport reference](docs/rtd/reference/solidcraft-plugin.rst)
+· [Native render measurements](docs/results/solidcraft-plugin/native-render.md)
+
 ## Continuity of the analysis field
 
 The native field compiler can recover neighboring restrictions of the same extrusion, preserve construction faces for loads, and selectively impose physical gradient continuity between different supports. The [mechanical comparison](docs/results/inherited-continuity/README.md) covers the cylinder, a curved blind pocket and polygonal sketches. The [interface census](docs/results/support-census/README.md) identifies which faces have exact whole-face evidence and which require separate treatment. Run `make check-inherited-corpus` to replay the measurements. A recovered cubic strip also supports an interior hierarchical refinement and named mechanical loads through `solve-job`. Run `make check-local-thb` for its coefficient, force, energy and convergence checks.

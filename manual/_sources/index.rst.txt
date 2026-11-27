@@ -6,6 +6,9 @@ kernel represents material with rational volume maps. You can inspect their
 interfaces, export the boundary to STEP, and solve an elasticity problem on
 a field derived from the volume geometry.
 
+For the desktop workflow start with :doc:`tutorials/solidcraft-plugin`.
+For an installed FieldCraft client see :doc:`how-to/solidcraft-fieldcraft`.
+
 .. toctree::
    :maxdepth: 2
 

@@ -1,6 +1,11 @@
 Tutorials
 =========
 
+.. toctree::
+   :maxdepth: 1
+
+   solidcraft-plugin
+
 Build and load a curved strip
 -----------------------------
 

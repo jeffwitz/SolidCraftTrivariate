@@ -1,0 +1,210 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Edit a bracket from the compact ribbon &mdash; SolidCraft Trivariate</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="How-to guides" href="../how-to/index.html" />
+    <link rel="prev" title="Tutorials" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            SolidCraft Trivariate
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Tutorials</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Edit a bracket from the compact ribbon</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#plugin-operation-illustrations">Plugin operation illustrations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#open-the-example">Open the example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#make-a-feature-from-a-face-sketch">Make a feature from a face sketch</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#build-and-load-a-curved-strip">Build and load a curved strip</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../how-to/index.html">How-to guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/index.html">Technical reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../explanation/index.html">Explanation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">SolidCraft Trivariate</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Tutorials</a></li>
+      <li class="breadcrumb-item active">Edit a bracket from the compact ribbon</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/tutorials/solidcraft-plugin.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="edit-a-bracket-from-the-compact-ribbon">
+<h1>Edit a bracket from the compact ribbon<a class="headerlink" href="#edit-a-bracket-from-the-compact-ribbon" title="Link to this heading"></a></h1>
+<p>This exercise uses the sharp bracket supplied with the plugin. Work on a copy.
+You will add material on a wing and identify the geometry that can be passed
+to analysis. The modeling dimensions below are in millimetres.</p>
+<section id="plugin-operation-illustrations">
+<h2>Plugin operation illustrations<a class="headerlink" href="#plugin-operation-illustrations" title="Link to this heading"></a></h2>
+<p>These thumbnails are the vector images packaged with the plugin. They identify
+its own commands in the plugin ribbon group; the integration does not replace
+or rebind SolidCraft’s built-in Sketch tools.</p>
+<table class="docutils align-center">
+<colgroup>
+<col style="width: 33.3%" />
+<col style="width: 33.3%" />
+<col style="width: 33.3%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><a class="reference internal image-reference" href="../_images/extrude.svg"><img alt="Sketch extrusion" src="../_images/extrude.svg" style="width: 48px;" />
+</a>
+</td>
+<td><a class="reference internal image-reference" href="../_images/drill.svg"><img alt="Drill a bore" src="../_images/drill.svg" style="width: 48px;" />
+</a>
+</td>
+<td><a class="reference internal image-reference" href="../_images/boolean.svg"><img alt="Boolean operands" src="../_images/boolean.svg" style="width: 48px;" />
+</a>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>Extrude</strong></p></td>
+<td><p><strong>Drill</strong></p></td>
+<td><p><strong>Boolean</strong></p></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal image-reference" href="../_images/chamfer.svg"><img alt="Chamfer a corner" src="../_images/chamfer.svg" style="width: 48px;" />
+</a>
+</td>
+<td><a class="reference internal image-reference" href="../_images/fillet.svg"><img alt="Fillet a corner" src="../_images/fillet.svg" style="width: 48px;" />
+</a>
+</td>
+<td><a class="reference internal image-reference" href="../_images/compute.svg"><img alt="Solve for analysis" src="../_images/compute.svg" style="width: 48px;" />
+</a>
+</td>
+</tr>
+<tr class="row-even"><td><p><strong>Chamfer</strong></p></td>
+<td><p><strong>Fillet</strong></p></td>
+<td><p><strong>Analysis</strong></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="open-the-example">
+<h2>Open the example<a class="headerlink" href="#open-the-example" title="Link to this heading"></a></h2>
+<p>Install SolidCraft 0.48.1 and check that both <code class="docutils literal notranslate"><span class="pre">solidcraft</span></code> and
+<code class="docutils literal notranslate"><span class="pre">solidcraft-cli</span></code> are on your path. Download the ZIP from the
+<a class="reference external" href="https://github.com/jeffwitz/SolidCraftTrivariate/actions/workflows/solidcraft-trivariate-plugin.yml">plugin build</a>
+and extract the GitHub artifact wrapper. Keep the inner plugin ZIP intact.
+From the matching project checkout run:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>scripts/solidcraft_compact_desktop.py<span class="w"> </span>/path/to/solidcraft-trivariate-0.5.0.zip
+</pre></div>
+</div>
+<p>SolidCraft opens the example in a separate profile. The default sketch view
+shows the geometry you draw. To inspect its proposed partition, use the
+preview procedure in <a class="reference internal" href="../reference/solidcraft-plugin.html"><span class="doc">SolidCraft viewport and sketch bridge</span></a>.</p>
+</section>
+<section id="make-a-feature-from-a-face-sketch">
+<h2>Make a feature from a face sketch<a class="headerlink" href="#make-a-feature-from-a-face-sketch" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p>Select a planar wing face and start a sketch on it. Draw a small closed
+rectangle within the material. Finish the sketch. The face attachment
+identifies the owning body and the direction of the extrusion.</p></li>
+<li><p>Open <strong>Extrude</strong>, choose <strong>Add material</strong>, and enter 2 mm. Rotate the bracket
+until the side of the raised pad is visible. Undo the operation, reopen
+<strong>Extrude</strong> and choose <strong>Remove material</strong> to leave a pocket instead.</p></li>
+<li><p>To try a spline, start another face sketch. Close the fit-point curve at
+its first point and finish the sketch. Use a regular, simple profile.
+The modeling command reports profiles outside its admitted family.</p></li>
+<li><p>Finish sketch editing before choosing <strong>Fillet</strong> or <strong>Chamfer</strong>. Pick an edge
+of the body, enter the radius or setback, and leave <strong>Follow tangent edges</strong>
+enabled to continue across tangent portions of a rim. A face selection
+applies the operation to its boundary.</p></li>
+</ol>
+<figure class="align-default" id="id1">
+<a class="reference internal image-reference" href="../_images/solidcraft-face-extrusion.webp"><img alt="SolidCraft desktop showing the qualified bracket after a face extrusion." src="../_images/solidcraft-face-extrusion.webp" style="width: 95%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">SolidCraft displays the result using its own viewport and tessellation.
+The visible solid and the model used for analysis have separate records.</span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p>Continue with <a class="reference internal" href="../how-to/solidcraft-fieldcraft.html"><span class="doc">Run a native analysis and inspect it in FieldCraft</span></a> for the mechanical
+workflow and <a class="reference internal" href="../explanation/plugin-boundaries.html"><span class="doc">Which model does the solver see?</span></a> for the distinction
+between a complete trivariate result and a trivariate cutting tool.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Tutorials" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../how-to/index.html" class="btn btn-neutral float-right" title="How-to guides" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright .</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

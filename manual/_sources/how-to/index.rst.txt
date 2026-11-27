@@ -1,6 +1,11 @@
 How-to guides
 =============
 
+.. toctree::
+   :maxdepth: 1
+
+   solidcraft-fieldcraft
+
 Find a recipe your executable supports
 --------------------------------------
 

@@ -1,0 +1,9 @@
+{
+  "entry": "snapshot-timeline",
+  "design": "source-sketch.sc",
+  "grants": {
+    "command_groups": ["file"],
+    "folders": [{"name":"companion","read":true,"write":true,"from":"companion"}]
+  },
+  "expect": {"files": ["companion/timeline.json"]}
+}

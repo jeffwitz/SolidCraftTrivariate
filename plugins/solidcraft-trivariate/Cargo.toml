@@ -1,0 +1,19 @@
+[package]
+name = "solidcraft-trivariate-plugin"
+version = "0.1.0"
+edition = "2024"
+
+[workspace]
+
+[dependencies]
+serde_json = "1"
+wit-bindgen = "0.63"
+solidcraft-trivariate = { path = "../.." }
+
+[lib]
+crate-type = ["cdylib"]
+
+[profile.release]
+opt-level = "s"
+lto = true
+strip = true

@@ -1,0 +1,14 @@
+{
+  "entry": "show-sketch-stage",
+  "params": {"source_feature_id": 1},
+  "design": "source-sketch.sc",
+  "grants": {
+    "command_groups": ["file"],
+    "folders": [{"name":"companion","read":true,"write":true,"from":"companion"}]
+  },
+  "expect": {
+    "reply": {"result": {"visible": true, "installed": true, "source_feature_id": 1}},
+    "files": ["companion/partition.json"],
+    "model": {"body_count": 1, "total": {"volume_mm3": 552}}
+  }
+}

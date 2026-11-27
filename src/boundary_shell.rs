@@ -23,7 +23,9 @@ pub struct BoundaryShell {
     pub vertices: Vec<[i128; 4]>,
     pub edges: Vec<ShellEdge>,
     pub faces: Vec<ShellFace>,
-    /// Indices into faces, with the material exterior first and each void after it.
+    /// Number of material exterior shells, preceding the void shells.
+    pub exterior_count: usize,
+    /// Face indices of each connected boundary component.
     pub components: Vec<Vec<usize>>,
 }
 
@@ -113,6 +115,7 @@ pub(crate) fn supports_source_method(method: &str) -> bool {
             | crate::g2_cross_plate_json::FACE_POCKET_METHOD
             | crate::nurbs_sketch_json::METHOD
             | crate::orthogonal_sketch_json::METHOD
+            | "certified_box_cylinder_boolean_suite"
             | crate::box_cylinder_boolean_json::METHOD
             | crate::interval_bores_json::METHOD
             | crate::circular_polygon_json::METHOD
@@ -264,7 +267,12 @@ pub(crate) fn shell_from_faces(
         }
         components.push(connected.into_iter().collect::<Vec<_>>());
     }
-    if components.len() != expected_voids + 1 {
+    let exterior_count = if method == "certified_box_cylinder_boolean_suite" {
+        report.field("face_connected_components")?.number::<usize>()?
+    } else {
+        1
+    };
+    if components.len() != expected_voids + exterior_count {
         return Err("unexpected_boundary_shell_count");
     }
     if expected_voids > 0 {
@@ -332,5 +340,6 @@ pub(crate) fn shell_from_faces(
         edges,
         faces,
         components,
+        exterior_count,
     })
 }

@@ -1,0 +1,52 @@
+{
+  "id": "solidcraft-trivariate",
+  "name": "SolidCraft Trivariate",
+  "version": "0.1.0",
+  "description": "Snapshots the active SolidCraft timeline and displays native sketch preview wires from the SolidCraft Trivariate companion.",
+  "capabilities": ["commands@0.2"],
+  "runtime": {
+    "module": "solidcraft-trivariate.wasm",
+    "commands": ["timeline.export_script", "timeline.add", "browser.visibility", "file.insert_step", "view.visual_style"],
+    "entries": [
+      {
+        "name": "extrude-active-sketch",
+        "effect": "edit",
+        "input_schema": {"type": "object", "properties": {}},
+        "slots": [{"kind": "ribbon", "name": "Model"}]
+      },
+      {
+        "name": "insert-result",
+        "effect": "edit",
+        "input_schema": {"type": "object", "properties": {}},
+        "slots": [{"kind": "ribbon", "name": "Model"}]
+      },
+      {
+        "name": "snapshot-timeline",
+        "effect": "edit",
+        "input_schema": {"type": "object", "properties": {}},
+        "slots": [{"kind": "ribbon", "name": "Model"}]
+      },
+      {
+        "name": "show-sketch-stage",
+        "effect": "edit",
+        "input_schema": {"type": "object", "properties": {
+          "descriptor": {"type": "string", "title": "Descriptor file", "default": "partition.json"},
+          "source_feature_id": {"type": "integer", "title": "Source sketch feature id", "default": 1, "minimum": 1}
+        }}
+      },
+      {
+        "name": "hide-sketch-stage",
+        "effect": "edit",
+        "input_schema": {"type": "object", "properties": {
+          "descriptor": {"type": "string", "title": "Descriptor file", "default": "partition.json"},
+          "source_feature_id": {"type": "integer", "title": "Source sketch feature id", "default": 1, "minimum": 1}
+        }}
+      }
+    ],
+    "permissions": {
+      "command_groups": ["file"],
+      "files": [{"name": "companion", "read": true, "write": true}]
+    },
+    "limits": {"fuel": 1000000000, "memory_mib": 32, "deadline_ms": 10000}
+  }
+}

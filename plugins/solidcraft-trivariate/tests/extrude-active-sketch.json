@@ -1,0 +1,12 @@
+{
+  "entry": "extrude-active-sketch",
+  "design": "source-sketch.sc",
+  "grants": {
+    "command_groups": ["file"],
+    "folders": [{"name":"companion","read":true,"write":true,"from":"companion"}]
+  },
+  "expect": {
+    "files": ["companion/result.step"],
+    "model": {"body_count": 2, "total": {"volume_mm3": 1104}}
+  }
+}

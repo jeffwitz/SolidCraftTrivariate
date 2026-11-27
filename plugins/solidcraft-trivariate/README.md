@@ -1,0 +1,62 @@
+# SolidCraft Trivariate Plugin
+
+This is a separately installable SolidCraft command plugin. It snapshots the active
+SolidCraft timeline for the native `solidcraft-trivariate` companion, displays a
+companion-produced native sketch preview on explicit request, and inserts the companion's
+STEP result through SolidCraft's own STEP importer.
+
+## Commands
+
+| Entry | Action |
+| --- | --- |
+| `snapshot-timeline` | Calls `timeline.export_script`, refuses a script with omitted design content, and writes `timeline.json` to the approved `companion` folder. |
+| `show-sketch-stage` | Reads `partition.json`, verifies the complete source script against the open document, adds the companion's ordinary sketch feature with `timeline.add`, and shows it with `browser.visibility`. |
+| `hide-sketch-stage` | Rechecks the current timeline and preview feature, then hides that sketch with `browser.visibility`. |
+| `insert-result` | Imports `result.step` from the approved `companion` folder with `file.insert_step`, then sets the active viewport to SolidCraft's native `shaded` style. |
+
+There is no automatic preview creation or visibility change when installing, enabling, or
+opening a design. Before the first explicit Show Sketch Stage action, the plugin has added
+no preview feature. The preview descriptor is restricted to one plane and construction
+line curves. SolidCraft renders and tessellates the native sketch and imported STEP with
+its own renderer and kernel; this plugin creates no mesh, tessellation, or custom viewport
+content. Inserting the result changes the active view style to shaded, a global display
+setting; users can restore another style in SolidCraft's View menu.
+
+The companion descriptor contract is `solidcraft_sketch_preview_v1`. It contains
+`source_feature_id`, the exact `source_feature` and `source_script`, a `feature` sketch
+with name `SCT Partition <source_feature_id>` and its assigned feature id, and optional
+`internal_edges`. A preview installed by this plugin has its id recorded back into the
+descriptor. Before every show or hide, the plugin verifies that the open timeline is the
+recorded source timeline after removing only that exact preview `timeline.add` step. A
+changed document or changed preview is refused. Companion files are read and written only
+inside the folder the user approves as `companion` during installation.
+
+`timeline.export_script` is SolidCraft's actual replayable command history. SolidCraft
+0.48.1 refuses designs containing components or assemblies, and the plugin refuses any
+export whose `omitted` list is nonempty. Visibility changes are saved with the design and
+are undoable, per the host's `browser.visibility` contract.
+
+## Build and check
+
+Build the component with a Rust toolchain that has the `wasm32-wasip2` target:
+
+```sh
+cargo build --locked --release --target wasm32-wasip2
+cp target/wasm32-wasip2/release/solidcraft_trivariate_plugin.wasm ./solidcraft-trivariate.wasm
+solidcraft-cli plugin check .
+solidcraft-cli plugin test . --require-cases
+```
+
+The component imports the `craft:plugin@0.2.0` `commands` and `files` interfaces from
+SolidCraft's plugin contract. The workflow at
+`.github/workflows/solidcraft-trivariate-plugin.yml` builds it, checks it with the
+SolidCraft 0.48.1 CLI, tests the entries, and packages `plugin.json` with the component.
+
+## Upstream contract provenance
+
+The minimal WIT contract in `wit/plugin.wit` is adapted from SolidCraft's
+`crates/craft-plugin/wit/plugin.wit` and `docs/plugins.md` at upstream revision
+`765f26e0d1fc7c66a0d03ea2dae28ee3b65270b8` (SolidCraft 0.48.1). Upstream is MIT/Apache-2.0
+licensed. This plugin uses the documented WIT imports and host commands; it contains no
+copied SolidCraft implementation code. Keep the upstream origin and revision with any
+redistribution of the WIT-derived interface.

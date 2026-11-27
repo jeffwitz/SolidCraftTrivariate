@@ -7,6 +7,7 @@ use crate::{
 use std::fmt::Write as _;
 
 /// Proleptic Gregorian UTC timestamp for the Part 21 exchange header.
+#[cfg(not(all(target_arch = "wasm32", target_os = "unknown")))]
 fn exchange_timestamp() -> Result<String, &'static str> {
     let seconds = std::time::SystemTime::now()
         .duration_since(std::time::UNIX_EPOCH)
@@ -32,6 +33,12 @@ fn exchange_timestamp() -> Result<String, &'static str> {
         seconds / 60 % 60,
         seconds % 60
     ))
+}
+
+// The command-plugin ABI provides no clock. Use a deterministic exchange epoch.
+#[cfg(all(target_arch = "wasm32", target_os = "unknown"))]
+fn exchange_timestamp() -> Result<String, &'static str> {
+    Ok("1970-01-01T00:00:00Z".into())
 }
 
 struct Writer {
@@ -197,7 +204,7 @@ pub(crate) fn write_shell(shell: BoundaryShell, compact: bool) -> Result<String,
     }
     let mut face_refs = Vec::new();
     let mut is_void = vec![false; shell.faces.len()];
-    for component in shell.components.iter().skip(1) {
+    for component in shell.components.iter().skip(shell.exterior_count) {
         for &face in component {
             is_void[face] = true;
         }
@@ -256,10 +263,11 @@ pub(crate) fn write_shell(shell: BoundaryShell, compact: bool) -> Result<String,
         })
         .collect::<Vec<_>>();
     let outer = closed[0];
-    let solid = if closed.len() == 1 {
-        w.entity(format!(
-            "MANIFOLD_SOLID_BREP('SolidCraft boundary',#{outer})"
-        ))
+    let solids = if closed.len() == shell.exterior_count {
+        closed.iter().map(|outer| {
+            let id = w.entity(format!("MANIFOLD_SOLID_BREP('SolidCraft boundary',#{outer})"));
+            format!("#{id}")
+        }).collect::<Vec<_>>().join(",")
     } else {
         let voids = closed[1..]
             .iter()
@@ -269,9 +277,8 @@ pub(crate) fn write_shell(shell: BoundaryShell, compact: bool) -> Result<String,
             })
             .collect::<Vec<_>>()
             .join(",");
-        w.entity(format!(
-            "BREP_WITH_VOIDS('SolidCraft boundary',#{outer},({voids}))"
-        ))
+        let id = w.entity(format!("BREP_WITH_VOIDS('SolidCraft boundary',#{outer},({voids}))"));
+        format!("#{id}")
     };
     let origin = cartesian(&mut w, [0.0; 3]);
     let z_axis = w.entity("DIRECTION('',(0.,0.,1.))".into());
@@ -311,7 +318,7 @@ pub(crate) fn write_shell(shell: BoundaryShell, compact: bool) -> Result<String,
     let mut output = header.replace("@UTC@", &exchange_timestamp()?);
     writeln!(
         output,
-        "#10 = ADVANCED_BREP_SHAPE_REPRESENTATION('',(#{placement},#{solid}),#{context_id});"
+        "#10 = ADVANCED_BREP_SHAPE_REPRESENTATION('',(#{placement},{solids}),#{context_id});"
     )
     .unwrap();
     output.push_str(&w.data);

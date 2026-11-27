@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":["import_polygon_timeline"]};
+window.SIDEBAR_ITEMS = {"fn":["extrude_preview","extrude_source_sketch","import_polygon_timeline"]};

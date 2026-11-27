@@ -1,0 +1,185 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/solidcraft_preview.rs`."><title>solidcraft_preview.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2"href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-203241e4.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="solidcraft_trivariate" data-themes="" data-resource-suffix="" data-rustdoc-version="1.100.0 (0ef1bc386 2026-11-09)" data-channel="1.100.0" data-search-js="search-b167f383.js" data-stringdex-js="stringdex-b5109af9.js" data-settings-js="settings-170eb4bf.js" ><script src="../../static.files/storage-41dd4d93.js"></script><script defer src="../../static.files/src-script-813739b1.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-1814ead3.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-9f56287d.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-eab170b8.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><a class="skip-main-content" href="#main-content">Skip to main content</a><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer" title="Drag to resize sidebar"></div><main><section id="main-content" class="content" tabindex="-1"><div class="main-heading"><h1><div class="sub-heading">solidcraft_trivariate/</div>solidcraft_preview.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap digits-3"><pre class="rust"><code><a href=#1 id=1 data-nosnippet>1</a><span class="doccomment">//! Produce a native SolidCraft construction sketch from the exact planar partition.
+<a href=#2 id=2 data-nosnippet>2</a></span><span class="kw">use </span><span class="kw">crate</span>::constraint_system::Ratio;
+<a href=#3 id=3 data-nosnippet>3</a><span class="kw">use </span><span class="kw">crate</span>::json::{object, Json};
+<a href=#4 id=4 data-nosnippet>4</a><span class="kw">use </span><span class="kw">crate</span>::sketch_layers::{partition, SketchLayers, SketchLoop};
+<a href=#5 id=5 data-nosnippet>5</a><span class="kw">use </span>std::collections::{BTreeMap, BTreeSet};
+<a href=#6 id=6 data-nosnippet>6</a>
+<a href=#7 id=7 data-nosnippet>7</a><span class="kw">fn </span>num(n: <span class="kw">impl </span>ToString) -&gt; Json {
+<a href=#8 id=8 data-nosnippet>8</a>    Json::Number(n.to_string())
+<a href=#9 id=9 data-nosnippet>9</a>}
+<a href=#10 id=10 data-nosnippet>10</a><span class="kw">fn </span>string(s: <span class="kw">impl </span>ToString) -&gt; Json {
+<a href=#11 id=11 data-nosnippet>11</a>    Json::String(s.to_string())
+<a href=#12 id=12 data-nosnippet>12</a>}
+<a href=#13 id=13 data-nosnippet>13</a><span class="kw">type </span>Point = [Ratio; <span class="number">2</span>];
+<a href=#14 id=14 data-nosnippet>14</a>
+<a href=#15 id=15 data-nosnippet>15</a><span class="kw">fn </span>internal_edges(job: <span class="kw-2">&amp;</span>SketchLayers) -&gt; <span class="prelude-ty">Result</span>&lt;(Vec&lt;[Point; <span class="number">2</span>]&gt;, usize), <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str&gt; {
+<a href=#16 id=16 data-nosnippet>16</a>    <span class="kw">let </span>result = partition(job)<span class="question-mark">?</span>;
+<a href=#17 id=17 data-nosnippet>17</a>    <span class="kw">let </span><span class="kw-2">mut </span>incidence = BTreeMap::new();
+<a href=#18 id=18 data-nosnippet>18</a>    <span class="kw">for </span>block <span class="kw">in </span><span class="kw-2">&amp;</span>result.blocks {
+<a href=#19 id=19 data-nosnippet>19</a>        <span class="kw">if </span>block.degrees != [<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>] {
+<a href=#20 id=20 data-nosnippet>20</a>            <span class="kw">return </span><span class="prelude-val">Err</span>(<span class="string">"unsupported curved sketch preview cell"</span>);
+<a href=#21 id=21 data-nosnippet>21</a>        }
+<a href=#22 id=22 data-nosnippet>22</a>        <span class="kw">let </span><span class="kw-2">mut </span>corners = Vec::new();
+<a href=#23 id=23 data-nosnippet>23</a>        <span class="kw">for </span>index <span class="kw">in </span>[<span class="number">0</span>, <span class="number">4</span>, <span class="number">6</span>, <span class="number">2</span>] {
+<a href=#24 id=24 data-nosnippet>24</a>            <span class="kw">let </span>[x, y, <span class="kw">_</span>, w] = block.controls[index].map(i128::from);
+<a href=#25 id=25 data-nosnippet>25</a>            corners.push([Ratio::new(x, w)<span class="question-mark">?</span>, Ratio::new(y, w)<span class="question-mark">?</span>]);
+<a href=#26 id=26 data-nosnippet>26</a>        }
+<a href=#27 id=27 data-nosnippet>27</a>        <span class="kw">for </span>i <span class="kw">in </span><span class="number">0</span>..<span class="number">4 </span>{
+<a href=#28 id=28 data-nosnippet>28</a>            <span class="kw">let </span><span class="kw-2">mut </span>edge = [corners[i], corners[(i + <span class="number">1</span>) % <span class="number">4</span>]];
+<a href=#29 id=29 data-nosnippet>29</a>            edge.sort();
+<a href=#30 id=30 data-nosnippet>30</a>            <span class="kw-2">*</span>incidence.entry(edge).or_insert(<span class="number">0</span>) += <span class="number">1</span>;
+<a href=#31 id=31 data-nosnippet>31</a>        }
+<a href=#32 id=32 data-nosnippet>32</a>    }
+<a href=#33 id=33 data-nosnippet>33</a>    <span class="kw">if </span>incidence.values().any(|<span class="kw-2">&amp;</span>n| n &gt; <span class="number">2</span>) {
+<a href=#34 id=34 data-nosnippet>34</a>        <span class="kw">return </span><span class="prelude-val">Err</span>(<span class="string">"nonmanifold sketch preview edge"</span>);
+<a href=#35 id=35 data-nosnippet>35</a>    }
+<a href=#36 id=36 data-nosnippet>36</a>    <span class="prelude-val">Ok</span>((
+<a href=#37 id=37 data-nosnippet>37</a>        incidence
+<a href=#38 id=38 data-nosnippet>38</a>            .into_iter()
+<a href=#39 id=39 data-nosnippet>39</a>            .filter_map(|(e, n)| (n == <span class="number">2</span>).then_some(e))
+<a href=#40 id=40 data-nosnippet>40</a>            .collect(),
+<a href=#41 id=41 data-nosnippet>41</a>        result.blocks.len(),
+<a href=#42 id=42 data-nosnippet>42</a>    ))
+<a href=#43 id=43 data-nosnippet>43</a>}
+<a href=#44 id=44 data-nosnippet>44</a>
+<a href=#45 id=45 data-nosnippet>45</a><span class="kw">pub fn </span>snapshot_script(script: <span class="kw-2">&amp;</span>Json) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="kw-2">&amp;</span>Json, <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str&gt; {
+<a href=#46 id=46 data-nosnippet>46</a>    <span class="prelude-val">Ok</span>(
+<a href=#47 id=47 data-nosnippet>47</a>        <span class="kw">if </span>script.field(<span class="string">"script"</span>).is_ok() || script.field(<span class="string">"schema"</span>).is_ok() {
+<a href=#48 id=48 data-nosnippet>48</a>            <span class="kw">if </span>script
+<a href=#49 id=49 data-nosnippet>49</a>                .field(<span class="string">"schema"</span>)
+<a href=#50 id=50 data-nosnippet>50</a>                .ok()
+<a href=#51 id=51 data-nosnippet>51</a>                .map(Json::text)
+<a href=#52 id=52 data-nosnippet>52</a>                .transpose()<span class="question-mark">?
+<a href=#53 id=53 data-nosnippet>53</a>                </span>.is_some_and(|s| s != <span class="string">"solidcraft_trivariate_timeline_v1"</span>)
+<a href=#54 id=54 data-nosnippet>54</a>                || !script.field(<span class="string">"omitted"</span>)<span class="question-mark">?</span>.items()<span class="question-mark">?</span>.is_empty()
+<a href=#55 id=55 data-nosnippet>55</a>            {
+<a href=#56 id=56 data-nosnippet>56</a>                <span class="kw">return </span><span class="prelude-val">Err</span>(<span class="string">"unsupported or incomplete SolidCraft snapshot"</span>);
+<a href=#57 id=57 data-nosnippet>57</a>            }
+<a href=#58 id=58 data-nosnippet>58</a>            script.field(<span class="string">"script"</span>)<span class="question-mark">?
+<a href=#59 id=59 data-nosnippet>59</a>        </span>} <span class="kw">else </span>{
+<a href=#60 id=60 data-nosnippet>60</a>            script
+<a href=#61 id=61 data-nosnippet>61</a>        },
+<a href=#62 id=62 data-nosnippet>62</a>    )
+<a href=#63 id=63 data-nosnippet>63</a>}
+<a href=#64 id=64 data-nosnippet>64</a>
+<a href=#65 id=65 data-nosnippet>65</a><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>source_feature(script: <span class="kw-2">&amp;</span>Json, source_id: u32) -&gt; <span class="prelude-ty">Result</span>&lt;(<span class="kw-2">&amp;</span>Json, u32), <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str&gt; {
+<a href=#66 id=66 data-nosnippet>66</a>    <span class="kw">let </span><span class="kw-2">mut </span>ids = BTreeSet::new();
+<a href=#67 id=67 data-nosnippet>67</a>    <span class="kw">let </span><span class="kw-2">mut </span>source = <span class="prelude-val">None</span>;
+<a href=#68 id=68 data-nosnippet>68</a>    <span class="kw">for </span>cmd <span class="kw">in </span>script.field(<span class="string">"commands"</span>)<span class="question-mark">?</span>.items()<span class="question-mark">? </span>{
+<a href=#69 id=69 data-nosnippet>69</a>        <span class="kw">if </span>cmd.field(<span class="string">"command"</span>)<span class="question-mark">?</span>.text()<span class="question-mark">? </span>!= <span class="string">"timeline.add" </span>{
+<a href=#70 id=70 data-nosnippet>70</a>            <span class="kw">continue</span>;
+<a href=#71 id=71 data-nosnippet>71</a>        }
+<a href=#72 id=72 data-nosnippet>72</a>        <span class="kw">let </span>feature = cmd.field(<span class="string">"params"</span>)<span class="question-mark">?</span>.field(<span class="string">"feature"</span>)<span class="question-mark">?</span>;
+<a href=#73 id=73 data-nosnippet>73</a>        <span class="kw">let </span>id = feature.field(<span class="string">"id"</span>)<span class="question-mark">?</span>.number::&lt;u32&gt;()<span class="question-mark">?</span>;
+<a href=#74 id=74 data-nosnippet>74</a>        <span class="kw">if </span>!ids.insert(id) {
+<a href=#75 id=75 data-nosnippet>75</a>            <span class="kw">return </span><span class="prelude-val">Err</span>(<span class="string">"duplicate source feature id"</span>);
+<a href=#76 id=76 data-nosnippet>76</a>        }
+<a href=#77 id=77 data-nosnippet>77</a>        <span class="kw">if </span>id == source_id {
+<a href=#78 id=78 data-nosnippet>78</a>            source = <span class="prelude-val">Some</span>(feature);
+<a href=#79 id=79 data-nosnippet>79</a>        }
+<a href=#80 id=80 data-nosnippet>80</a>    }
+<a href=#81 id=81 data-nosnippet>81</a>    <span class="kw">let </span>source = source.ok_or(<span class="string">"missing source sketch"</span>)<span class="question-mark">?</span>;
+<a href=#82 id=82 data-nosnippet>82</a>    <span class="kw">if </span>source.field(<span class="string">"type"</span>)<span class="question-mark">?</span>.text()<span class="question-mark">? </span>!= <span class="string">"sketch" </span>{
+<a href=#83 id=83 data-nosnippet>83</a>        <span class="kw">return </span><span class="prelude-val">Err</span>(<span class="string">"expected a sketch feature"</span>);
+<a href=#84 id=84 data-nosnippet>84</a>    }
+<a href=#85 id=85 data-nosnippet>85</a>    <span class="kw">let </span>target_id = ids
+<a href=#86 id=86 data-nosnippet>86</a>        .last()
+<a href=#87 id=87 data-nosnippet>87</a>        .and_then(|id| id.checked_add(<span class="number">1</span>))
+<a href=#88 id=88 data-nosnippet>88</a>        .ok_or(<span class="string">"feature id overflow"</span>)<span class="question-mark">?</span>;
+<a href=#89 id=89 data-nosnippet>89</a>    <span class="prelude-val">Ok</span>((source, target_id))
+<a href=#90 id=90 data-nosnippet>90</a>}
+<a href=#91 id=91 data-nosnippet>91</a>
+<a href=#92 id=92 data-nosnippet>92</a><span class="kw">pub fn </span>descriptor(input: <span class="kw-2">&amp;</span>Json, source_id: u32) -&gt; <span class="prelude-ty">Result</span>&lt;Json, <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str&gt; {
+<a href=#93 id=93 data-nosnippet>93</a>    <span class="kw">let </span>script = snapshot_script(input)<span class="question-mark">?</span>;
+<a href=#94 id=94 data-nosnippet>94</a>    <span class="kw">let </span>(source, target_id) = source_feature(script, source_id)<span class="question-mark">?</span>;
+<a href=#95 id=95 data-nosnippet>95</a>    <span class="kw">let </span><span class="kw-2">mut </span>loops = <span class="kw">crate</span>::solidcraft_polygon::preview_contours(source)<span class="question-mark">?
+<a href=#96 id=96 data-nosnippet>96</a>        </span>.into_iter()
+<a href=#97 id=97 data-nosnippet>97</a>        .enumerate()
+<a href=#98 id=98 data-nosnippet>98</a>        .map(|(i, vertices)| SketchLoop {
+<a href=#99 id=99 data-nosnippet>99</a>            id: <span class="macro">format!</span>(<span class="string">"loop{i}"</span>),
+<a href=#100 id=100 data-nosnippet>100</a>            vertices,
+<a href=#101 id=101 data-nosnippet>101</a>        });
+<a href=#102 id=102 data-nosnippet>102</a>    <span class="kw">let </span>job = SketchLayers {
+<a href=#103 id=103 data-nosnippet>103</a>        outer: loops.next().ok_or(<span class="string">"empty profile"</span>)<span class="question-mark">?</span>,
+<a href=#104 id=104 data-nosnippet>104</a>        cuts: loops.map(|l| (l, [<span class="number">0</span>, <span class="number">1</span>])).collect(),
+<a href=#105 id=105 data-nosnippet>105</a>        guides: Vec::new(),
+<a href=#106 id=106 data-nosnippet>106</a>        height: <span class="number">1</span>,
+<a href=#107 id=107 data-nosnippet>107</a>        force_triangulation: <span class="bool-val">false</span>,
+<a href=#108 id=108 data-nosnippet>108</a>        operations: <span class="prelude-val">None</span>,
+<a href=#109 id=109 data-nosnippet>109</a>        shift: [<span class="number">0</span>, <span class="number">0</span>],
+<a href=#110 id=110 data-nosnippet>110</a>        strategy: Default::default(),
+<a href=#111 id=111 data-nosnippet>111</a>    };
+<a href=#112 id=112 data-nosnippet>112</a>    <span class="kw">let </span>(edges, blocks) = internal_edges(<span class="kw-2">&amp;</span>job)<span class="question-mark">?</span>;
+<a href=#113 id=113 data-nosnippet>113</a>    <span class="kw">let </span><span class="kw-2">mut </span>points = <span class="macro">vec!</span>[object([
+<a href=#114 id=114 data-nosnippet>114</a>        (<span class="string">"id"</span>, string(<span class="string">"origin"</span>)),
+<a href=#115 id=115 data-nosnippet>115</a>        (<span class="string">"pos"</span>, Json::Array(<span class="macro">vec!</span>[num(<span class="string">"0.0"</span>), num(<span class="string">"0.0"</span>)])),
+<a href=#116 id=116 data-nosnippet>116</a>        (<span class="string">"fixed"</span>, Json::Bool(<span class="bool-val">true</span>)),
+<a href=#117 id=117 data-nosnippet>117</a>    ])];
+<a href=#118 id=118 data-nosnippet>118</a>    <span class="kw">let </span><span class="kw-2">mut </span>curves = Vec::new();
+<a href=#119 id=119 data-nosnippet>119</a>    <span class="kw">let </span><span class="kw-2">mut </span>exact = Vec::new();
+<a href=#120 id=120 data-nosnippet>120</a>    <span class="kw">for </span>(i, edge) <span class="kw">in </span>edges.iter().enumerate() {
+<a href=#121 id=121 data-nosnippet>121</a>        <span class="kw">let </span>id = <span class="macro">format!</span>(<span class="string">"l{}"</span>, i + <span class="number">1</span>);
+<a href=#122 id=122 data-nosnippet>122</a>        <span class="kw">let </span>start = points.len();
+<a href=#123 id=123 data-nosnippet>123</a>        <span class="kw">for </span>(p, suffix) <span class="kw">in </span>edge.iter().zip([<span class="string">"start"</span>, <span class="string">"end"</span>]) {
+<a href=#124 id=124 data-nosnippet>124</a>            <span class="kw">let </span>pos = p
+<a href=#125 id=125 data-nosnippet>125</a>                .iter()
+<a href=#126 id=126 data-nosnippet>126</a>                .map(|q| {
+<a href=#127 id=127 data-nosnippet>127</a>                    Json::Number(<span class="macro">format!</span>(
+<a href=#128 id=128 data-nosnippet>128</a>                        <span class="string">"{:?}"</span>,
+<a href=#129 id=129 data-nosnippet>129</a>                        q.numerator() <span class="kw">as </span>f64 / q.denominator() <span class="kw">as </span>f64
+<a href=#130 id=130 data-nosnippet>130</a>                    ))
+<a href=#131 id=131 data-nosnippet>131</a>                })
+<a href=#132 id=132 data-nosnippet>132</a>                .collect();
+<a href=#133 id=133 data-nosnippet>133</a>            points.push(object([
+<a href=#134 id=134 data-nosnippet>134</a>                (<span class="string">"id"</span>, string(<span class="macro">format!</span>(<span class="string">"{id}.{suffix}"</span>))),
+<a href=#135 id=135 data-nosnippet>135</a>                (<span class="string">"pos"</span>, Json::Array(pos)),
+<a href=#136 id=136 data-nosnippet>136</a>                (<span class="string">"fixed"</span>, Json::Bool(<span class="bool-val">true</span>)),
+<a href=#137 id=137 data-nosnippet>137</a>            ]));
+<a href=#138 id=138 data-nosnippet>138</a>        }
+<a href=#139 id=139 data-nosnippet>139</a>        curves.push(object([
+<a href=#140 id=140 data-nosnippet>140</a>            (<span class="string">"id"</span>, string(id)),
+<a href=#141 id=141 data-nosnippet>141</a>            (<span class="string">"type"</span>, string(<span class="string">"line"</span>)),
+<a href=#142 id=142 data-nosnippet>142</a>            (<span class="string">"a"</span>, num(start)),
+<a href=#143 id=143 data-nosnippet>143</a>            (<span class="string">"b"</span>, num(start + <span class="number">1</span>)),
+<a href=#144 id=144 data-nosnippet>144</a>            (<span class="string">"construction"</span>, Json::Bool(<span class="bool-val">true</span>)),
+<a href=#145 id=145 data-nosnippet>145</a>        ]));
+<a href=#146 id=146 data-nosnippet>146</a>        exact.push(Json::Array(
+<a href=#147 id=147 data-nosnippet>147</a>            edge.iter()
+<a href=#148 id=148 data-nosnippet>148</a>                .map(|p| {
+<a href=#149 id=149 data-nosnippet>149</a>                    Json::Array(
+<a href=#150 id=150 data-nosnippet>150</a>                        p.iter()
+<a href=#151 id=151 data-nosnippet>151</a>                            .map(|q| Json::Array(<span class="macro">vec!</span>[num(q.numerator()), num(q.denominator())]))
+<a href=#152 id=152 data-nosnippet>152</a>                            .collect(),
+<a href=#153 id=153 data-nosnippet>153</a>                    )
+<a href=#154 id=154 data-nosnippet>154</a>                })
+<a href=#155 id=155 data-nosnippet>155</a>                .collect(),
+<a href=#156 id=156 data-nosnippet>156</a>        ));
+<a href=#157 id=157 data-nosnippet>157</a>    }
+<a href=#158 id=158 data-nosnippet>158</a>    <span class="kw">let </span>sketch = object([
+<a href=#159 id=159 data-nosnippet>159</a>        (<span class="string">"points"</span>, Json::Array(points)),
+<a href=#160 id=160 data-nosnippet>160</a>        (
+<a href=#161 id=161 data-nosnippet>161</a>            <span class="string">"counters"</span>,
+<a href=#162 id=162 data-nosnippet>162</a>            object([(<span class="string">"k"</span>, num(<span class="number">0</span>)), (<span class="string">"l"</span>, num(curves.len()))]),
+<a href=#163 id=163 data-nosnippet>163</a>        ),
+<a href=#164 id=164 data-nosnippet>164</a>        (<span class="string">"constraints"</span>, Json::Array(<span class="macro">vec!</span>[])),
+<a href=#165 id=165 data-nosnippet>165</a>        (<span class="string">"curves"</span>, Json::Array(curves)),
+<a href=#166 id=166 data-nosnippet>166</a>    ]);
+<a href=#167 id=167 data-nosnippet>167</a>    <span class="kw">let </span>feature = object([
+<a href=#168 id=168 data-nosnippet>168</a>        (<span class="string">"type"</span>, string(<span class="string">"sketch"</span>)),
+<a href=#169 id=169 data-nosnippet>169</a>        (<span class="string">"name"</span>, string(<span class="macro">format!</span>(<span class="string">"SCT Partition {source_id}"</span>))),
+<a href=#170 id=170 data-nosnippet>170</a>        (<span class="string">"plane"</span>, source.field(<span class="string">"plane"</span>)<span class="question-mark">?</span>.clone()),
+<a href=#171 id=171 data-nosnippet>171</a>        (<span class="string">"id"</span>, num(target_id)),
+<a href=#172 id=172 data-nosnippet>172</a>        (<span class="string">"suppressed"</span>, Json::Bool(<span class="bool-val">false</span>)),
+<a href=#173 id=173 data-nosnippet>173</a>        (<span class="string">"sketch"</span>, sketch),
+<a href=#174 id=174 data-nosnippet>174</a>    ]);
+<a href=#175 id=175 data-nosnippet>175</a>    <span class="prelude-val">Ok</span>(object([
+<a href=#176 id=176 data-nosnippet>176</a>        (<span class="string">"schema"</span>, string(<span class="string">"solidcraft_sketch_preview_v1"</span>)),
+<a href=#177 id=177 data-nosnippet>177</a>        (<span class="string">"source_feature_id"</span>, num(source_id)),
+<a href=#178 id=178 data-nosnippet>178</a>        (<span class="string">"source_feature"</span>, source.clone()),
+<a href=#179 id=179 data-nosnippet>179</a>        (<span class="string">"source_script"</span>, script.clone()),
+<a href=#180 id=180 data-nosnippet>180</a>        (<span class="string">"feature"</span>, feature),
+<a href=#181 id=181 data-nosnippet>181</a>        (<span class="string">"internal_edges"</span>, Json::Array(exact)),
+<a href=#182 id=182 data-nosnippet>182</a>        (<span class="string">"block_count"</span>, num(blocks)),
+<a href=#183 id=183 data-nosnippet>183</a>    ]))
+<a href=#184 id=184 data-nosnippet>184</a>}
+</code></pre></div></section></main></body></html>

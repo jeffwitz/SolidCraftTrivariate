@@ -1,0 +1,238 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SolidCraft viewport and sketch bridge &mdash; SolidCraft Trivariate</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Automatic displacement continuity" href="automatic-continuity.html" />
+    <link rel="prev" title="Boolean operations and edge treatments" href="operations.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            SolidCraft Trivariate
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../how-to/index.html">How-to guides</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Technical reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="catalog.html">Command and recipe catalogue</a></li>
+<li class="toctree-l2"><a class="reference internal" href="construction.html">Construction from native sketches</a></li>
+<li class="toctree-l2"><a class="reference internal" href="geometry.html">Geometry representation and certificates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="operations.html">Boolean operations and edge treatments</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">SolidCraft viewport and sketch bridge</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#sketch-and-extrusion">Sketch and extrusion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#intersecting-oblique-pockets">Intersecting oblique pockets</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#native-rendering-checks">Native rendering checks</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="automatic-continuity.html">Automatic displacement continuity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="interface-fields.html">Recovering parents and choosing interface continuity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="continuity-experiments.html">Selecting displacement continuity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spline-fields.html">Spline fields, extraction, and local refinement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="analysis.html">Analysis on audited trivariate models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="crossed-mechanics.html">Crossed-tool partial-interface mechanics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fitted-bending.html">Fitted crossed-tool bending</a></li>
+<li class="toctree-l2"><a class="reference internal" href="solver-design.html">Adaptive solves, pressure and design derivatives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="verification.html">Verification and evidence scope</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../explanation/index.html">Explanation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">SolidCraft Trivariate</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Technical reference</a></li>
+      <li class="breadcrumb-item active">SolidCraft viewport and sketch bridge</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/reference/solidcraft-plugin.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="solidcraft-viewport-and-sketch-bridge">
+<h1>SolidCraft viewport and sketch bridge<a class="headerlink" href="#solidcraft-viewport-and-sketch-bridge" title="Link to this heading"></a></h1>
+<p>The geometry service owns the rational volume maps. SolidCraft owns the display
+of a design. The bridge passes construction sketch entities for a planar layout
+and a STEP boundary representation for a solid. SolidCraft reads the boundary
+and tessellates it using the same display path as any other CAD body in the
+application. Changing the viewport quality requires no change to the volume
+maps. The STEP file carries the boundary; retain the model JSON for interior
+charts, exact weights and analysis.</p>
+<section id="sketch-and-extrusion">
+<h2>Sketch and extrusion<a class="headerlink" href="#sketch-and-extrusion" title="Link to this heading"></a></h2>
+<p>For a closed polygonal sketch on the origin XY plane, the companion enumerates
+the exact edges with two incident planar cells. A separate native sketch holds
+one construction line per shared edge. The descriptor keeps its rational
+coordinates, the source feature and the source timeline. Only the host display
+coordinates go through a floating-point conversion. A rectangle can give zero
+interior lines. The L profile from the bracket history gives one diagonal from
+(0, 0) to (8, 8) mm, two cells and, at 40 mm height, 32,640 mm³. This is the
+layout <strong>before</strong> the bracket’s later fillet and holes.</p>
+<p>To create an ordinary SolidCraft design with the overlay initially hidden, run
+the following from the repository root:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cargo<span class="w"> </span>build<span class="w"> </span>--release<span class="w"> </span>--locked
+python3<span class="w"> </span>scripts/solidcraft_preview_design.py<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>tests/references/solidcraft_sketch_bracket.timeline.json<span class="w"> </span><span class="m">1</span><span class="w"> </span>build/bracket.sc
+</pre></div>
+</div>
+<p>Open the design and toggle <strong>SCT Partition 1</strong> in the SolidCraft browser.
+The preview can also be generated when the timeline contains only the sketch.
+The preview accepts integral polygon coordinates in the planner’s ±4096 mm
+range and coincident, horizontal and vertical line constraints. The extrusion path accepts a
+positive new-body extrusion of 1 through 64 mm with the supported profile
+selection. It applies the same planar planner through the actual thickness.</p>
+<p>For a captured two-feature timeline, these commands build the exact result for
+inspection in either SolidCraft or FieldCraft:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>target/release/solidcraft-trivariate<span class="w"> </span>sketch-preview<span class="w"> </span>timeline.json<span class="w"> </span><span class="m">1</span><span class="w"> </span>partition.json
+target/release/solidcraft-trivariate<span class="w"> </span>extrude-sketch<span class="w"> </span>timeline.json<span class="w"> </span>model.json
+target/release/solidcraft-trivariate<span class="w"> </span>export-step<span class="w"> </span>model.json<span class="w"> </span>result.step
+</pre></div>
+</div>
+<p>SolidCraft exposes sketch visibility and shaded body display separately. The
+stock shaded setting suppresses the body’s edge overlay. Switching display
+styles can expose edges between adjacent STEP boundary faces. The volume
+partition remains recorded in the model JSON. FieldCraft’s stable 0.8.1 headless reader refused the STEP;
+its design reader accepts format 57 and SolidCraft 0.48.1 writes format 66.
+The viewport integration test pins the later FieldCraft nightly
+0.8.1-nightly.20261124.89.1 and exercises its STEP import directly.</p>
+</section>
+<section id="intersecting-oblique-pockets">
+<h2>Intersecting oblique pockets<a class="headerlink" href="#intersecting-oblique-pockets" title="Link to this heading"></a></h2>
+<p>The SolidCraft reference starts from a 40 mm cube with two disjoint openings
+on its top face. Tool A has a periodic cubic control spline. Tool B has four
+weighted quadratic arcs with distinct tangent directions at their joins.
+Each pocket is a loft between a profile and its translated copy. The two
+translation vectors are (10, 0, −22) and (−8, 0, −17) mm. Both tools end inside
+the cube and their volumes intersect below the top surface.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>scripts/check_solidcraft_oblique_cube.py
+solidcraft<span class="w"> </span>build/solidcraft-oblique-reference/both.sc
+</pre></div>
+</div>
+<figure class="align-default" id="id1">
+<a class="reference internal image-reference" href="../_images/oblique-cube-section.png"><img alt="Native section through two oblique blind pockets that meet below separate openings." src="../_images/oblique-cube-section.png" style="width: 520px;" />
+</a>
+<figcaption>
+<p><span class="caption-text">SolidCraft section at y = 20 mm. The hatched material separates the mouths
+and remains below both floors. The two swept voids communicate at depth.</span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p>The script rebuilds both single cuts and the combined cut as independent
+SolidCraft documents. It reopens them, checks their closed shells, and tests
+seven material locations in each. Inclusion–exclusion of their measured
+volumes gives a tool overlap of 440.91218 mm³ and a remaining volume of
+60,497.17099 mm³. The B-rep reference uses the host’s modeling kernel. Its
+volume and classifications qualify the reference geometry; qualification of
+trivariate charts requires a separate construction and determinant audit.</p>
+<p>A separate native trivariate fixture, <code class="docutils literal notranslate"><span class="pre">oblique_blind_pockets_v1</span></code>, uses a
+10 mm cube, two interior footprints, and independent shear slopes +1/5 and
+−1/10 in y per millimetre of depth. The floor depths are 7 and 5 mm.
+The first profile has a true C¹ quadratic span joint with unequal second
+derivatives. The other profile is rectangular. Both closed profiles have
+corners. The openings overlap at the surface in this fixture. The planar
+wall envelopes change order at an interior depth that varies with x.</p>
+<p>The construction has 64 whole tensor-product charts and 122 shared faces.
+Their Bernstein certificates bound the Jacobian determinant from below by
+0.29583 mm³. The source-profile inequalities agree with the cell coverage on
+616 off-boundary probes. SolidCraft opens the exported STEP as one closed
+solid with 140 boundary faces and volume 871.43658667 mm³.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>target/release/solidcraft-trivariate<span class="w"> </span>build<span class="w"> </span>tests/references/oblique_blind_pockets.recipe.json<span class="w"> </span>pockets.json
+target/release/solidcraft-trivariate<span class="w"> </span>export-step<span class="w"> </span>pockets.json<span class="w"> </span>pockets.step
+solidcraft<span class="w"> </span>pockets.step
+</pre></div>
+</div>
+<p>The qualified constructor checks the complete fixed recipe. Smooth periodic
+profiles with disjoint openings as in the 40 mm reference require an extension
+of this arrangement.</p>
+</section>
+<section id="native-rendering-checks">
+<h2>Native rendering checks<a class="headerlink" href="#native-rendering-checks" title="Link to this heading"></a></h2>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>scripts/check_solidcraft_native_render.py<span class="w"> </span>--help
+</pre></div>
+</div>
+<p>The check imports exact boundaries, calls the host’s <code class="docutils literal notranslate"><span class="pre">model.mesh</span></code> and takes
+snapshots with the stock renderer. The number of display triangles depends on
+display settings. Mechanical elements and rational volume spans are counted
+separately. The fixed-partition FieldCraft bore chamfer and fillet use their
+native boundary exports. The fillet has a singular contact rail; a successful
+display does not establish regularity there.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="operations.html" class="btn btn-neutral float-left" title="Boolean operations and edge treatments" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="automatic-continuity.html" class="btn btn-neutral float-right" title="Automatic displacement continuity" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright .</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

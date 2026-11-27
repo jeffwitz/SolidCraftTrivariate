@@ -54,6 +54,7 @@
 <li class="toctree-l2"><a class="reference internal" href="construction.html">Construction from native sketches</a></li>
 <li class="toctree-l2"><a class="reference internal" href="geometry.html">Geometry representation and certificates</a></li>
 <li class="toctree-l2"><a class="reference internal" href="operations.html">Boolean operations and edge treatments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="solidcraft-plugin.html">SolidCraft viewport and sketch bridge</a></li>
 <li class="toctree-l2"><a class="reference internal" href="automatic-continuity.html">Automatic displacement continuity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="interface-fields.html">Recovering parents and choosing interface continuity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="continuity-experiments.html">Selecting displacement continuity</a></li>
@@ -165,6 +166,8 @@ maps and topology.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">export-thb-extraction</span> <span class="pre">PACKAGE</span> <span class="pre">OUT</span></code></dt><dd><p>Export element extraction data for the locally refined field.</p>
 </dd>
+<dt><code class="docutils literal notranslate"><span class="pre">extrude-sketch</span> <span class="pre">TIMELINE</span> <span class="pre">OUTPUT</span></code></dt><dd><p>Extrude the admitted SolidCraft profile with the same planar layout as the preview and audit the result.</p>
+</dd>
 <dt><code class="docutils literal notranslate"><span class="pre">import-solidcraft</span> <span class="pre">SCRIPT</span> <span class="pre">OUTPUT</span></code></dt><dd><p>Import a supported SolidCraft script through the historical adapter.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">import-solidcraft-sketch</span> <span class="pre">TIMELINE</span> <span class="pre">OUTPUT</span></code></dt><dd><p>Replay a supported design timeline through sketch and feature constructors.</p>
@@ -184,6 +187,8 @@ maps and topology.</p>
 <dt><code class="docutils literal notranslate"><span class="pre">reduce-axial-knots</span> <span class="pre">PATCHES</span> <span class="pre">OUTPUT</span></code></dt><dd><p>Attempt exact geometry-knot removal on compatible axial chains. Retain source subintervals and selections.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">refine-thb-strip</span> <span class="pre">MODEL</span> <span class="pre">PLAN</span> <span class="pre">PACKAGE</span></code></dt><dd><p>Apply the supported hierarchical refinement plan to the recovered strip and save a replayable package.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">sketch-preview</span> <span class="pre">TIMELINE</span> <span class="pre">SKETCH_ID</span> <span class="pre">OUTPUT</span></code></dt><dd><p>Run the planar partition on a supported native sketch and export the internal edges as SolidCraft construction geometry.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">solve-inherited</span> <span class="pre">MODEL</span> <span class="pre">JOB</span> <span class="pre">OUT</span></code></dt><dd><p>Construct the inherited field from the model and run the supported job.</p>
 </dd>
@@ -302,95 +307,99 @@ maps and topology.</p>
 <td><p><code class="docutils literal notranslate"><span class="pre">height_mm</span></code>, <code class="docutils literal notranslate"><span class="pre">lower</span></code>, <code class="docutils literal notranslate"><span class="pre">upper</span></code></p></td>
 <td><p><a class="reference download internal" download="" href="../_downloads/dd06b46b3bae77ca162b716213174bbd/nurbs_sketch_strip_v1.json"><code class="xref download docutils literal notranslate"><span class="pre">Recipe</span> <span class="pre">JSON</span></code></a></p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">orthogonal_feature_program_v1</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">oblique_blind_pockets_v1</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">footprint_x_mm</span></code>, <code class="docutils literal notranslate"><span class="pre">profile_a</span></code>, <code class="docutils literal notranslate"><span class="pre">profile_b</span></code>, <code class="docutils literal notranslate"><span class="pre">scope</span></code>, <code class="docutils literal notranslate"><span class="pre">sketch_plane</span></code>, <code class="docutils literal notranslate"><span class="pre">stock_bounds_xyz_mm</span></code>, <code class="docutils literal notranslate"><span class="pre">tools</span></code></p></td>
+<td><p><a class="reference download internal" download="" href="../_downloads/0dc1e09992ac6956c24a58cfbc1eaf32/oblique_blind_pockets_v1.json"><code class="xref download docutils literal notranslate"><span class="pre">Recipe</span> <span class="pre">JSON</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">orthogonal_feature_program_v1</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">base_mm</span></code>, <code class="docutils literal notranslate"><span class="pre">features</span></code></p></td>
 <td><p><a class="reference download internal" download="" href="../_downloads/e3d8ca5fdbe9861daa60491710fe2e4f/orthogonal_feature_program_v1.json"><code class="xref download docutils literal notranslate"><span class="pre">Recipe</span> <span class="pre">JSON</span></code></a></p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">orthogonal_sketch_features_v1</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">orthogonal_sketch_features_v1</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">bores</span></code>, <code class="docutils literal notranslate"><span class="pre">fillets</span></code>, <code class="docutils literal notranslate"><span class="pre">height_mm</span></code>, <code class="docutils literal notranslate"><span class="pre">outer</span></code></p></td>
 <td><p><a class="reference download internal" download="" href="../_downloads/2ba1f1650d76330030f55c6625b1e09a/orthogonal_sketch_features_v1.json"><code class="xref download docutils literal notranslate"><span class="pre">Recipe</span> <span class="pre">JSON</span></code></a></p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">overlap_bore_v1</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">overlap_bore_v1</span></code></p></td>
 <td><p>Built-in fixture</p></td>
 <td><p><a class="reference download internal" download="" href="../_downloads/3273ad7f727be012344791a2b757c36c/overlap_bore_v1.json"><code class="xref download docutils literal notranslate"><span class="pre">Recipe</span> <span class="pre">JSON</span></code></a></p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">parameterized_bracket_v1</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">parameterized_bracket_v1</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">radii_sixteenths_mm</span></code></p></td>
 <td><p><a class="reference download internal" download="" href="../_downloads/0eb3efd8bf1162007aeae4ffd4bcf2e9/parameterized_bracket_v1.json"><code class="xref download docutils literal notranslate"><span class="pre">Recipe</span> <span class="pre">JSON</span></code></a></p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">pierced_square_v1</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">pierced_square_v1</span></code></p></td>
 <td><p>Built-in fixture</p></td>
 <td><p><a class="reference download internal" download="" href="../_downloads/36b839dbb88d87edba83f3d617516015/pierced_square_v1.json"><code class="xref download docutils literal notranslate"><span class="pre">Recipe</span> <span class="pre">JSON</span></code></a></p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">pocket_depth_v1</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">pocket_depth_v1</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">depth_half_mm</span></code></p></td>
 <td><p><a class="reference download internal" download="" href="../_downloads/8a78f55de240867fa9ee8b3995591dc1/pocket_depth_v1.json"><code class="xref download docutils literal notranslate"><span class="pre">Recipe</span> <span class="pre">JSON</span></code></a></p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">polygon_circular_bores_v1</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">polygon_circular_bores_v1</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">bores</span></code>, <code class="docutils literal notranslate"><span class="pre">height_mm</span></code>, <code class="docutils literal notranslate"><span class="pre">outer</span></code>, <code class="docutils literal notranslate"><span class="pre">top_shift_mm</span></code></p></td>
 <td><p><a class="reference download internal" download="" href="../_downloads/4a405b835792f9ca58a563c129144071/polygon_circular_bores_v1.json"><code class="xref download docutils literal notranslate"><span class="pre">Recipe</span> <span class="pre">JSON</span></code></a></p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">polygon_counterbores_v1</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">polygon_counterbores_v1</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">bores</span></code>, <code class="docutils literal notranslate"><span class="pre">height_mm</span></code>, <code class="docutils literal notranslate"><span class="pre">outer</span></code>, <code class="docutils literal notranslate"><span class="pre">top_shift_mm</span></code></p></td>
 <td><p><a class="reference download internal" download="" href="../_downloads/fc3705c19c072a7c61154dced46e3ffb/polygon_counterbores_v1.json"><code class="xref download docutils literal notranslate"><span class="pre">Recipe</span> <span class="pre">JSON</span></code></a></p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">polygon_countersinks_v1</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">polygon_countersinks_v1</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">bores</span></code>, <code class="docutils literal notranslate"><span class="pre">height_mm</span></code>, <code class="docutils literal notranslate"><span class="pre">outer</span></code>, <code class="docutils literal notranslate"><span class="pre">top_shift_mm</span></code></p></td>
 <td><p><a class="reference download internal" download="" href="../_downloads/8fe53c6bcff20fcbab1c29ae9d7f363c/polygon_countersinks_v1.json"><code class="xref download docutils literal notranslate"><span class="pre">Recipe</span> <span class="pre">JSON</span></code></a></p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">polygon_interval_bores_v1</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">polygon_interval_bores_v1</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">bores</span></code>, <code class="docutils literal notranslate"><span class="pre">height_mm</span></code>, <code class="docutils literal notranslate"><span class="pre">outer</span></code>, <code class="docutils literal notranslate"><span class="pre">top_shift_mm</span></code></p></td>
 <td><p><a class="reference download internal" download="" href="../_downloads/63d72e6bd8e733a95d13fe869e403584/polygon_interval_bores_v1.json"><code class="xref download docutils literal notranslate"><span class="pre">Recipe</span> <span class="pre">JSON</span></code></a></p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">polygon_prism_v1</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">polygon_prism_v1</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">height_mm</span></code>, <code class="docutils literal notranslate"><span class="pre">top_shift_mm</span></code>, <code class="docutils literal notranslate"><span class="pre">vertices</span></code></p></td>
 <td><p><a class="reference download internal" download="" href="../_downloads/1109b59586967c96549c69629fbd4e21/polygon_prism_v1.json"><code class="xref download docutils literal notranslate"><span class="pre">Recipe</span> <span class="pre">JSON</span></code></a></p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">polygonal_perforated_prism_v1</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">polygonal_perforated_prism_v1</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">height_mm</span></code>, <code class="docutils literal notranslate"><span class="pre">holes</span></code>, <code class="docutils literal notranslate"><span class="pre">outer</span></code>, <code class="docutils literal notranslate"><span class="pre">top_shift_mm</span></code></p></td>
 <td><p><a class="reference download internal" download="" href="../_downloads/40305a31b2d285f525802a5b5463bcdc/polygonal_perforated_prism_v1.json"><code class="xref download docutils literal notranslate"><span class="pre">Recipe</span> <span class="pre">JSON</span></code></a></p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">primitive_sweep_v1</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">primitive_sweep_v1</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">operation</span></code>, <code class="docutils literal notranslate"><span class="pre">primitive</span></code></p></td>
 <td><p><a class="reference download internal" download="" href="../_downloads/4d10c540829069c5085207c236b05292/primitive_sweep_v1.json"><code class="xref download docutils literal notranslate"><span class="pre">Recipe</span> <span class="pre">JSON</span></code></a></p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">rational_sector_prism_v1</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">rational_sector_prism_v1</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">half_angle_tangent</span></code>, <code class="docutils literal notranslate"><span class="pre">height_mm</span></code>, <code class="docutils literal notranslate"><span class="pre">radii_mm</span></code></p></td>
 <td><p><a class="reference download internal" download="" href="../_downloads/6bc75dc004772167f94a2c0ae67e5bab/rational_sector_prism_v1.json"><code class="xref download docutils literal notranslate"><span class="pre">Recipe</span> <span class="pre">JSON</span></code></a></p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">reference_rectangle_v1</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">reference_rectangle_v1</span></code></p></td>
 <td><p>Built-in fixture</p></td>
 <td><p><a class="reference download internal" download="" href="../_downloads/1206cbedc13037c73e64d065f5a57f75/reference_rectangle_v1.json"><code class="xref download docutils literal notranslate"><span class="pre">Recipe</span> <span class="pre">JSON</span></code></a></p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">rounded_corner_v1</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">rounded_corner_v1</span></code></p></td>
 <td><p>Built-in fixture</p></td>
 <td><p><a class="reference download internal" download="" href="../_downloads/5125c4469ea03257e23146d9a0519e8a/rounded_corner_v1.json"><code class="xref download docutils literal notranslate"><span class="pre">Recipe</span> <span class="pre">JSON</span></code></a></p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">row_bores_v1</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">row_bores_v1</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">centers_half_mm</span></code>, <code class="docutils literal notranslate"><span class="pre">half_widths_half_mm</span></code>, <code class="docutils literal notranslate"><span class="pre">radii_half_mm</span></code></p></td>
 <td><p><a class="reference download internal" download="" href="../_downloads/c29320c9daa6020a787030790a3f1c9f/row_bores_v1.json"><code class="xref download docutils literal notranslate"><span class="pre">Recipe</span> <span class="pre">JSON</span></code></a></p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ruled_section_sweep_v1</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">ruled_section_sweep_v1</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">height_mm</span></code>, <code class="docutils literal notranslate"><span class="pre">section</span></code>, <code class="docutils literal notranslate"><span class="pre">top_multiplier_eighths</span></code>, <code class="docutils literal notranslate"><span class="pre">top_translation_eighths_mm</span></code></p></td>
 <td><p><a class="reference download internal" download="" href="../_downloads/cb2984efd7d9c96f4955548137e6f6da/ruled_section_sweep_v1.json"><code class="xref download docutils literal notranslate"><span class="pre">Recipe</span> <span class="pre">JSON</span></code></a></p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">s3_face_pocket_v1</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">s3_face_pocket_v1</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">operation</span></code>, <code class="docutils literal notranslate"><span class="pre">parent_model</span></code></p></td>
 <td><p><a class="reference download internal" download="" href="../_downloads/2bffba16f74a4417c13321f5a0161a21/s3_face_pocket_v1.json"><code class="xref download docutils literal notranslate"><span class="pre">Recipe</span> <span class="pre">JSON</span></code></a></p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">sketch_boolean_layers_v1</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">sketch_boolean_layers_v1</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">construction</span></code>, <code class="docutils literal notranslate"><span class="pre">height_mm</span></code>, <code class="docutils literal notranslate"><span class="pre">operations</span></code>, <code class="docutils literal notranslate"><span class="pre">outer</span></code></p></td>
 <td><p><a class="reference download internal" download="" href="../_downloads/7ed8f1fa105ff406928c65b87b264d82/sketch_boolean_layers_v1.json"><code class="xref download docutils literal notranslate"><span class="pre">Recipe</span> <span class="pre">JSON</span></code></a></p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">sketch_layer_partition_v1</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">sketch_layer_partition_v1</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">construction</span></code>, <code class="docutils literal notranslate"><span class="pre">cuts</span></code>, <code class="docutils literal notranslate"><span class="pre">height_mm</span></code>, <code class="docutils literal notranslate"><span class="pre">nurbs_partition</span></code>, <code class="docutils literal notranslate"><span class="pre">outer</span></code></p></td>
 <td><p><a class="reference download internal" download="" href="../_downloads/2b77415fdb85f290163ac4f89518fa44/sketch_layer_partition_v1.json"><code class="xref download docutils literal notranslate"><span class="pre">Recipe</span> <span class="pre">JSON</span></code></a></p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">travelling_bore_bounded_v1</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">travelling_bore_bounded_v1</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">center_x_um</span></code></p></td>
 <td><p><a class="reference download internal" download="" href="../_downloads/0b6337f23da4757eac8a99fd1289584d/travelling_bore_bounded_v1.json"><code class="xref download docutils literal notranslate"><span class="pre">Recipe</span> <span class="pre">JSON</span></code></a></p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">travelling_bore_v1</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">travelling_bore_v1</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">center_x_um</span></code></p></td>
 <td><p><a class="reference download internal" download="" href="../_downloads/cbdfdf31702242c7a9e2cb6279c47f9a/travelling_bore_v1.json"><code class="xref download docutils literal notranslate"><span class="pre">Recipe</span> <span class="pre">JSON</span></code></a></p></td>
 </tr>

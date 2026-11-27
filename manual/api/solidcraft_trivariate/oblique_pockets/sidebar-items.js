@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["audit_oblique_blind_pockets","build_oblique_blind_pockets"]};

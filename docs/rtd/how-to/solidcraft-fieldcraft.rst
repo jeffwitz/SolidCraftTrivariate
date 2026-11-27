@@ -35,13 +35,31 @@ the contour legend or export the field. Keep the original mechanical result
 JSON for reactions, residual and energy. See :doc:`../reference/fieldcraft-plugin`.
 
 .. figure:: fieldcraft-displacement.png
-   :alt: FieldCraft contour on the two-hole bracket, blue at the clamp and red at the loaded end.
+   :alt: FieldCraft Results workspace showing the bracket, the displacement legend in mm, and the IGA step.
    :width: 85%
 
    Displacement magnitude on the undeformed bracket, from 0 mm (blue) to
    0.13814 mm (red). FieldCraft 0.8.1 drew this view after reopening the
-   sample archive. Four subdivisions per chart direction give 640 display
+   sample archive in a desktop window. The Results panel at the right selects
+   the step, component and deformation scale. Four subdivisions per chart direction give 640 display
    hexahedra; the native analysis still has ten charts.
+
+Find the files for a run
+------------------------
+
+The default profile is ``build/compact-solidcraft`` under the kit. If you use
+``--profile``, open that directory instead. Read
+``companion/fieldcraft-analysis-status.json`` for the archive path and input
+hashes. The launcher gives each request its own directory under
+``companion/results/``, including repeated runs with the same case name.
+The native result ends in ``.result.json``; the sampled native field ends in
+``.field.vtu``. The ``.manifest.json`` records units, sample density,
+field readback errors and checksums. Open the ``.fieldcraft`` file again to
+inspect the same result after closing the desktop.
+
+The complete reference run, with the installable kit and the original window
+capture, is available in the `qualified workflow artifacts
+<https://github.com/jeffwitz/SolidCraftTrivariate/actions/runs/46067535896>`_.
 
 If the operation stops
 ----------------------

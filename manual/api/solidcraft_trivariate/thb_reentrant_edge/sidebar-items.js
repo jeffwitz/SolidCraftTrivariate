@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["build_hierarchy","build_hierarchy_with_widths","build_uniform"],"struct":["IntegrationLeaf","ReentrantHierarchy"]};

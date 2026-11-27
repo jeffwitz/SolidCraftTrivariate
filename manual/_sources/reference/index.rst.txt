@@ -13,6 +13,7 @@ admission limits.
    geometry
    operations
    interface-fields
+   continuity-experiments
    spline-fields
    analysis
    crossed-mechanics

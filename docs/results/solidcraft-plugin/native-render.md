@@ -27,11 +27,11 @@ The four tall Boolean recipes were rebuilt, audited and exported to STEP by the 
 
 ## Shaded-style check
 
-`view.visual_style {style: shaded}` is accepted by the host command path. The headless snapshot API has no style parameter: all 8 `shaded` request PNGs are byte-identical to default snapshots, so the CLI does not demonstrate suppression of B-rep edge seams. The GUI's View > Shaded mode remains the host-supported setting for suppressing edge overlays; desktop visual QA was unavailable in this execution context.
+`view.visual_style {style: shaded}` is accepted by the host command path. The headless snapshot API has no style parameter: all 8 `shaded` request PNGs are byte-identical to default snapshots, so the CLI does not demonstrate suppression of B-rep edge seams. The GUI's View > Shaded mode remains the host-supported setting for suppressing edge overlays; the separate desktop test exercises the native sketch overlay.
 
 ## Limits
 
-The GUI launch failed with winit `XOpenDisplayFailed` although `xwininfo -root` can query the shared X server. No claim of desktop visual validation is made. The software-rendered snapshots validate the SolidCraft headless display path and the exported solid's native evaluation and tessellation.
+This headless run checks native evaluation and tessellation. The [desktop sketch workflow](https://github.com/jeffwitz/SolidCraftTrivariate/actions/workflows/desktop-smoke.yml) tests the visible partition independently in a real SolidCraft window on Xvfb.
 
 Failures: none
 
@@ -45,8 +45,8 @@ A two-feature bracket (closed six-edge sketch plus `solid.extrude`) was saved, r
 - Preview sketch visibility after each saved/reopened state: `{'base': None, 'initial_hidden': False, 'shown': True, 'hidden_again': False}`.
 - Snapshot hashes: hidden `dd199754689f754c95f56a1726a575e3c8cb29a47ffd08859a7ad5133243b161`, shown `bd4c0c58b9e9373618e944c8b9d345b2965a6ccc47071081b95838b020a21858`, hidden again `dd199754689f754c95f56a1726a575e3c8cb29a47ffd08859a7ad5133243b161`.
 - Snapshot overlay visibility: 5 changed pixels; visibly demonstrated: `False`.
-- Plugin component check/test: `not_run` (component artifact not present), report `build/solidcraft-native-render-qa/sketch-preview-report.json`.
+- Plugin component check/test: `passed` (see JSON), report `build/solidcraft-native-render-qa/sketch-preview-report.json`.
 
-This exercises the native SolidCraft command path; when no WASM artifact is present, it is not reported as an invocation of the plugin component. The preview adds no mesh or B-rep face, and the body's evaluated mesh stays identical. The headless snapshot does not visibly establish that it rendered the sketch overlay; desktop visibility remains unqualified because the app could not connect to X.
+This exercises the native SolidCraft command path; when no WASM artifact is present, it is not reported as an invocation of the plugin component. The preview adds no mesh or B-rep face, and the body's evaluated mesh stays identical. The headless snapshot changes only a few pixels. The desktop sketch workflow measures the construction line in a crop of the stock viewport and checks that hiding it restores the original view.
 
 Failures: none

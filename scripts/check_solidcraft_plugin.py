@@ -227,7 +227,7 @@ def main() -> int:
         f"- Snapshot overlay visibility: {snapshot_difference_pixels} changed pixels; visibly demonstrated: `{report['snapshot_overlay']['visibly_demonstrated']}`.",
         f"- Plugin component check/test: `{plugin_test['status']}` ({plugin_test.get('reason', 'see JSON')}), report `{relative_path(report_path, root)}`.",
         "",
-        "This exercises the native SolidCraft command path; when no WASM artifact is present, it is not reported as an invocation of the plugin component. The preview adds no mesh or B-rep face, and the body's evaluated mesh stays identical. The headless snapshot does not visibly establish that it rendered the sketch overlay; desktop visibility remains unqualified because the app could not connect to X.",
+        "This exercises the native SolidCraft command path; when no WASM artifact is present, it is not reported as an invocation of the plugin component. The preview adds no mesh or B-rep face, and the body's evaluated mesh stays identical. The headless snapshot changes only a few pixels. The desktop sketch workflow measures the construction line in a crop of the stock viewport and checks that hiding it restores the original view.",
         "",
         "Failures: " + (", ".join(failures) if failures else "none"),
         "",

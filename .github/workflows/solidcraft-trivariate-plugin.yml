@@ -5,12 +5,14 @@ on:
     branches: [main]
     paths:
       - "plugins/solidcraft-trivariate/**"
+      - "scripts/*compact*.py"
       - "src/**"
       - "Cargo.toml"
       - ".github/workflows/solidcraft-trivariate-plugin.yml"
   pull_request:
     paths:
       - "plugins/solidcraft-trivariate/**"
+      - "scripts/*compact*.py"
       - "src/**"
       - "Cargo.toml"
       - ".github/workflows/solidcraft-trivariate-plugin.yml"
@@ -106,3 +108,19 @@ jobs:
           path: dist/solidcraft-trivariate-0.2.0.zip
           if-no-files-found: error
           retention-days: 14
+
+      - name: Inspect the compact desktop ribbon
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y xvfb xauth xdotool x11-apps imagemagick mesa-vulkan-drivers
+          xvfb-run -a -s '-screen 0 1920x1200x24' python3 scripts/check_compact_ribbon.py dist/solidcraft-trivariate-0.2.0.zip build/compact-ribbon
+        env:
+          LIBGL_ALWAYS_SOFTWARE: '1'
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: compact-ribbon-desktop
+          path: |
+            build/compact-ribbon/ribbon.png
+            build/compact-ribbon/handles.json
+            build/compact-ribbon/desktop.log

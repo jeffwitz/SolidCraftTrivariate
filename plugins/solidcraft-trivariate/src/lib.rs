@@ -175,6 +175,24 @@ fn set_sketch_stage(params: &Value, visible: bool) -> Result<String, PluginError
             "source feature is not present in the recorded source timeline",
         ));
     }
+    let descriptor_source = solidcraft_trivariate::json::parse(&source_script.to_string())
+        .map_err(|e| invalid("descriptor", e))?;
+    let expected_native = solidcraft_trivariate::solidcraft_preview::descriptor(
+        &descriptor_source,
+        u32::try_from(source_id)
+            .map_err(|_| invalid("descriptor", "source feature id is too large"))?,
+    )
+    .map_err(|e| invalid("descriptor", e))?;
+    let expected_native: Value = serde_json::from_str(&expected_native.to_string())
+        .map_err(|e| invalid("descriptor", e))?;
+    if expected_native.get("feature") != descriptor.get("feature")
+        || expected_native.get("internal_edges") != descriptor.get("internal_edges")
+    {
+        return Err(invalid(
+            "descriptor",
+            "preview construction wires do not match the native reconstruction of the recorded source sketch",
+        ));
+    }
 
     let id = match installed_id {
         Some(id) => id,
@@ -232,7 +250,10 @@ fn make_native_descriptor(source_id: u64) -> Result<Value, PluginError> {
     let source_id_u32 = u32::try_from(source_id)
         .map_err(|_| invalid("source_feature_id", "feature id is too large"))?;
     let mut existing = None;
-    if let Some(steps) = export.pointer_mut("/script/commands").and_then(Value::as_array_mut) {
+    if let Some(steps) = export
+        .pointer_mut("/script/commands")
+        .and_then(Value::as_array_mut)
+    {
         let matches = steps
             .iter()
             .enumerate()
@@ -244,11 +265,15 @@ fn make_native_descriptor(source_id: u64) -> Result<Value, PluginError> {
             .map(|(index, step)| (index, step.pointer("/params/feature").cloned()))
             .collect::<Vec<_>>();
         if matches.len() > 1 {
-            return Err(invalid("descriptor", "multiple generated partition sketches are present"));
+            return Err(invalid(
+                "descriptor",
+                "multiple generated partition sketches are present",
+            ));
         }
         if let Some((index, Some(feature))) = matches.into_iter().next() {
-            let id = feature.get("id").and_then(Value::as_u64)
-                .ok_or_else(|| invalid("descriptor", "generated partition sketch has no feature id"))?;
+            let id = feature.get("id").and_then(Value::as_u64).ok_or_else(|| {
+                invalid("descriptor", "generated partition sketch has no feature id")
+            })?;
             steps.remove(index);
             existing = Some((id, feature));
         }
@@ -257,11 +282,14 @@ fn make_native_descriptor(source_id: u64) -> Result<Value, PluginError> {
         .map_err(|e| invalid("timeline", e))?;
     let native = solidcraft_trivariate::solidcraft_preview::descriptor(&input, source_id_u32)
         .map_err(|e| invalid("source_feature_id", e))?;
-    let mut descriptor: Value = serde_json::from_str(&native.to_string())
-        .map_err(|e| invalid("descriptor", e))?;
+    let mut descriptor: Value =
+        serde_json::from_str(&native.to_string()).map_err(|e| invalid("descriptor", e))?;
     if let Some((id, feature)) = existing {
         if descriptor.get("feature") != Some(&feature) {
-            return Err(invalid("descriptor", "existing partition sketch does not match the native preview reconstruction"));
+            return Err(invalid(
+                "descriptor",
+                "existing partition sketch does not match the native preview reconstruction",
+            ));
         }
         descriptor["installed_feature_id"] = json!(id);
     }
@@ -300,7 +328,8 @@ fn validate_construction_wire(feature: &serde_json::Map<String, Value>) -> Resul
         ));
     }
     let curves = feature
-        .pointer("/sketch/curves")
+        .get("sketch")
+        .and_then(|sketch| sketch.get("curves"))
         .and_then(Value::as_array)
         .ok_or_else(|| invalid("descriptor", "preview sketch must contain sketch.curves"))?;
     if curves.is_empty()

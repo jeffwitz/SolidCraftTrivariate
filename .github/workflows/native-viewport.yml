@@ -1,0 +1,51 @@
+name: Native CAD viewport
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/native-viewport.yml'
+      - 'scripts/*solidcraft*.py'
+      - 'tests/references/solidcraft-plugin/**'
+      - 'src/solidcraft_preview.rs'
+      - 'src/oblique_pockets*.rs'
+      - 'src/step_boundary.rs'
+  pull_request:
+    paths: ['.github/workflows/native-viewport.yml', 'scripts/*solidcraft*.py', 'src/solidcraft_preview.rs', 'src/oblique_pockets*.rs', 'src/step_boundary.rs']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  viewport:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - name: Install pinned production CAD clients
+        run: |
+          curl -fsSL https://github.com/tangency-labs/solidcraft/releases/download/v0.48.1/solidcraft-0.48.1-linux-x86_64.deb -o /tmp/solidcraft.deb
+          curl -fsSL https://github.com/tangency-labs/fieldcraft/releases/download/v0.8.1/fieldcraft_0.8.1_amd64.deb -o /tmp/fieldcraft.deb
+          echo '4f2991b4c0c02e9a58843917ff7b0277c9668d051cb3da272ea363be5e5c0257  /tmp/solidcraft.deb' | sha256sum -c -
+          echo '5e82c681e9ffe2a985ba9c6acd9fa694fd86eb8bfe75a08a2021d0f21573da92  /tmp/fieldcraft.deb' | sha256sum -c -
+          sudo apt-get update -qq
+          sudo apt-get install -y /tmp/solidcraft.deb /tmp/fieldcraft.deb mesa-vulkan-drivers
+      - name: Build and open the trivariate result in both applications
+        run: |
+          cargo build --locked --release
+          mkdir -p build/native-viewport
+          target/release/solidcraft-trivariate build docs/site/box-cylinder/tall/a-minus-b.recipe.json build/native-viewport/body.json
+          target/release/solidcraft-trivariate export-step build/native-viewport/body.json build/native-viewport/body.step
+          cd build/native-viewport
+          echo '[{"command":"geometry.open","params":{"path":"body.step"}}]' > fieldcraft.json
+          fieldcraft-cli run fieldcraft.json
+          fieldcraft-cli snapshot fieldcraft.json --out fieldcraft.png
+          solidcraft-cli snapshot --in body.step --out solidcraft.png
+      - name: Reopen the initially hidden sketch preview and reproduce the pocket reference
+        run: |
+          python3 scripts/solidcraft_preview_design.py tests/references/solidcraft_sketch_bracket.timeline.json 1 build/native-viewport/bracket.sc
+          python3 scripts/check_solidcraft_oblique_cube.py
+          cp build/solidcraft-oblique-reference/both.sc build/native-viewport/oblique-cube.sc
+          cp build/solidcraft-oblique-reference/section.png build/native-viewport/oblique-section.png
+      - uses: actions/upload-artifact@v4
+        with:
+          name: native-cad-designs-and-snapshots
+          path: build/native-viewport/

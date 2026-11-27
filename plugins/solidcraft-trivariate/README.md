@@ -10,6 +10,7 @@ STEP result through SolidCraft's own STEP importer.
 | Entry | Action |
 | --- | --- |
 | `snapshot-timeline` | Calls `timeline.export_script`, refuses a script with omitted design content, and writes `timeline.json` to the approved `companion` folder. |
+| `extrude-active-sketch` | Sends the exported timeline to the shared Rust polygon constructor, audits its model, exports STEP, and inserts it with SolidCraft's native importer. |
 | `show-sketch-stage` | Reads `partition.json`, verifies the complete source script against the open document, adds the companion's ordinary sketch feature with `timeline.add`, and shows it with `browser.visibility`. |
 | `hide-sketch-stage` | Rechecks the current timeline and preview feature, then hides that sketch with `browser.visibility`. |
 | `insert-result` | Imports `result.step` from the approved `companion` folder with `file.insert_step`, then sets the active viewport to SolidCraft's native `shaded` style. |
@@ -38,14 +39,21 @@ are undoable, per the host's `browser.visibility` contract.
 
 ## Build and check
 
-Build the component with a Rust toolchain that has the `wasm32-wasip2` target:
+Build a core Wasm module and wrap it as a component. SolidCraft does not link WASI
+interfaces, so a `wasm32-wasip2` component is refused by the host:
 
 ```sh
-cargo build --locked --release --target wasm32-wasip2
-cp target/wasm32-wasip2/release/solidcraft_trivariate_plugin.wasm ./solidcraft-trivariate.wasm
+rustup target add wasm32-unknown-unknown
+cd plugins/solidcraft-trivariate
+cargo build --locked --release --target wasm32-unknown-unknown
+wasm-tools component new target/wasm32-unknown-unknown/release/solidcraft_trivariate_plugin.wasm -o solidcraft-trivariate.wasm
 solidcraft-cli plugin check .
 solidcraft-cli plugin test . --require-cases
 ```
+
+`extrude-active-sketch` currently supports the native line-and-arc sketch extrusion
+subset accepted by `solidcraft_polygon::extrude_preview`. The plugin does not make a
+separate mesh; SolidCraft inserts and displays exported STEP through its own importer.
 
 The component imports the `craft:plugin@0.2.0` `commands` and `files` interfaces from
 SolidCraft's plugin contract. The workflow at

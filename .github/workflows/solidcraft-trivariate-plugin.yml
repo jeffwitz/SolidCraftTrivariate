@@ -71,7 +71,7 @@ jobs:
           cp plugins/solidcraft-trivariate/plugin.json "$RUNNER_TEMP/solidcraft-trivariate-package/"
           cp "$RUNNER_TEMP/solidcraft-trivariate.wasm" "$RUNNER_TEMP/solidcraft-trivariate-package/"
           cp plugins/solidcraft-trivariate/tests/*.json "$RUNNER_TEMP/solidcraft-trivariate-package/tests/"
-          cp plugins/solidcraft-trivariate/tests/source-sketch.sc "$RUNNER_TEMP/solidcraft-trivariate-package/tests/"
+          cp plugins/solidcraft-trivariate/tests/*.sc "$RUNNER_TEMP/solidcraft-trivariate-package/tests/"
           cp -R plugins/solidcraft-trivariate/tests/companion "$RUNNER_TEMP/solidcraft-trivariate-package/tests/"
           cp -R plugins/solidcraft-trivariate/tests/invalid-descriptor "$RUNNER_TEMP/solidcraft-trivariate-package/tests/"
 

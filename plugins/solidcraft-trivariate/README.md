@@ -10,10 +10,12 @@ STEP result through SolidCraft's own STEP importer.
 | Entry | Action |
 | --- | --- |
 | `snapshot-timeline` | Calls `timeline.export_script`, refuses a script with omitted design content, and writes `timeline.json` to the approved `companion` folder. |
-| `extrude-active-sketch` | Sends the exported timeline to the shared Rust polygon constructor, audits its model, exports STEP, and inserts it with SolidCraft's native importer. |
+| `extrude-active-sketch` | Builds the selected pre-extrusion sketch as a new native-kernel body using `height_mm` (default 12, allowed 1–64 mm), audits it, and inserts its STEP payload as a native import feature. |
+| `extrude-active-timeline` | Uses the existing sketch-plus-extrusion timeline importer. This is separate from sketch-only extrusion so it cannot duplicate an existing body by default. |
+| `build-recipe` | Reads `recipe.json` from the approved companion folder, builds and audits it with the shared Rust constructor, exports STEP, and inserts it as a native import feature. |
 | `show-sketch-stage` | Reads `partition.json`, verifies the complete source script against the open document, adds the companion's ordinary sketch feature with `timeline.add`, and shows it with `browser.visibility`. |
 | `hide-sketch-stage` | Rechecks the current timeline and preview feature, then hides that sketch with `browser.visibility`. |
-| `insert-result` | Imports `result.step` from the approved `companion` folder with `file.insert_step`, then sets the active viewport to SolidCraft's native `shaded` style. |
+| `insert-result` | Reads `result.step` from the approved `companion` folder and adds it through SolidCraft's native timeline import feature, then sets the active viewport to native `shaded` style. |
 
 There is no automatic preview creation or visibility change when installing, enabling, or
 opening a design. Before the first explicit Show Sketch Stage action, the plugin has added
@@ -32,6 +34,8 @@ recorded source timeline after removing only that exact preview `timeline.add` s
 changed document or changed preview is refused. Companion files are read and written only
 inside the folder the user approves as `companion` during installation.
 
+The imported STEP text is carried in the native `timeline.add` feature, so host display and
+tessellation use SolidCraft's reader and renderer without an external path or generated mesh.
 `timeline.export_script` is SolidCraft's actual replayable command history. SolidCraft
 0.48.1 refuses designs containing components or assemblies, and the plugin refuses any
 export whose `omitted` list is nonempty. Visibility changes are saved with the design and

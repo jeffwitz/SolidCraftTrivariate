@@ -159,6 +159,7 @@ fn qualified_two_blind_profiles_have_distinct_axes_and_internal_continuities() {
         unsupported.field("reason").unwrap().text().unwrap(),
         "oblique_blind_profile_requires_exact_monotone_graph_arrangement"
     );
+    assert!(interchange::build(&unsupported).is_err());
 
     // The source spans have equal first derivatives and unequal second
     // derivatives at x=5, which is an internal C1 knot, not a loop seam.
@@ -274,17 +275,13 @@ fn versioned_recipe_rebuilds_and_audits_atomically() {
             .unwrap(),
         140
     );
-    let mut changed = recipe.clone();
-    changed
-        .field("tools")
-        .unwrap()
-        .items()
-        .unwrap();
-    let changed_text = changed.to_string().replace("[1,5]", "[1,6]");
+    let changed_text = recipe
+        .to_string()
+        .replace("\"depth_mm\":7", "\"depth_mm\":8");
     let changed_recipe = parse(&changed_text).unwrap();
     assert!(interchange::build(&changed_recipe).is_err());
     assert!(interchange::audit(&model).is_ok());
-    let mut altered_model = model.clone();
+    let altered_model = model.clone();
     let blocks = altered_model.field("blocks").unwrap().items().unwrap();
     assert_eq!(blocks.len(), 64);
     let corrupted = altered_model.to_string().replace("1000", "1001");

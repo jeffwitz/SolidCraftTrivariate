@@ -7,7 +7,6 @@ use serde_json::{Value, json};
 
 const GRANT: &str = "companion";
 const SNAPSHOT_NAME: &str = "timeline.json";
-const RESULT_STEP_PATH: &str = "grant:companion/result.step";
 const DESCRIPTOR_SCHEMA: &str = "solidcraft_sketch_preview_v1";
 const MAX_DESCRIPTOR_BYTES: usize = 1_048_576;
 
@@ -21,7 +20,9 @@ impl Guest for Plugin {
             "show-sketch-stage" => set_sketch_stage(&params, true),
             "hide-sketch-stage" => set_sketch_stage(&params, false),
             "insert-result" => insert_result(),
-            "extrude-active-sketch" => extrude_active_sketch(),
+            "extrude-active-sketch" => extrude_active_sketch(&params),
+            "extrude-active-timeline" => extrude_active_timeline(),
+            "build-recipe" => build_recipe(&params),
             _ => Err(invalid("entry", format!("unknown entry `{entry}`"))),
         }
     }
@@ -183,8 +184,8 @@ fn set_sketch_stage(params: &Value, visible: bool) -> Result<String, PluginError
             .map_err(|_| invalid("descriptor", "source feature id is too large"))?,
     )
     .map_err(|e| invalid("descriptor", e))?;
-    let expected_native: Value = serde_json::from_str(&expected_native.to_string())
-        .map_err(|e| invalid("descriptor", e))?;
+    let expected_native: Value =
+        serde_json::from_str(&expected_native.to_string()).map_err(|e| invalid("descriptor", e))?;
     if expected_native.get("feature") != descriptor.get("feature")
         || expected_native.get("internal_edges") != descriptor.get("internal_edges")
     {
@@ -237,12 +238,46 @@ fn set_sketch_stage(params: &Value, visible: bool) -> Result<String, PluginError
 }
 
 fn insert_result() -> Result<String, PluginError> {
-    let inserted = commands::run(
-        "file.insert_step",
-        &json!({"path": RESULT_STEP_PATH}).to_string(),
-    )?;
+    let bytes = files::read_file(GRANT, "result.step")?;
+    let step = std::str::from_utf8(&bytes).map_err(|e| invalid("result.step", e))?;
+    insert_step_content(step)
+}
+
+fn insert_step_content(step: &str) -> Result<String, PluginError> {
+    let export = export_timeline()?;
+    let command_list = export
+        .pointer("/script/commands")
+        .and_then(Value::as_array)
+        .ok_or_else(|| invalid("timeline", "host export did not return script commands"))?;
+    let next_id = command_list
+        .iter()
+        .filter_map(|command| {
+            command
+                .pointer("/params/feature/id")
+                .and_then(Value::as_u64)
+        })
+        .max()
+        .unwrap_or(0)
+        .checked_add(1)
+        .ok_or_else(|| invalid("timeline", "feature id space is exhausted"))?;
+    let feature = json!({
+        "type": "import",
+        "name": "Trivariate result",
+        "file": "result.step",
+        "step": step,
+        "id": next_id,
+        "suppressed": false
+    });
+    let reply = commands::run("timeline.add", &json!({"feature": feature}).to_string())?;
+    let result: Value = serde_json::from_str(&reply).map_err(|e| invalid("timeline.add", e))?;
+    if result.get("feature").and_then(Value::as_u64) != Some(next_id) {
+        return Err(invalid(
+            "timeline.add",
+            "host did not confirm the imported result feature id",
+        ));
+    }
     commands::run("view.visual_style", &json!({"style": "shaded"}).to_string())?;
-    Ok(inserted)
+    Ok(json!({"feature_id": next_id, "name": "Trivariate result"}).to_string())
 }
 
 fn make_native_descriptor(source_id: u64) -> Result<Value, PluginError> {
@@ -296,12 +331,62 @@ fn make_native_descriptor(source_id: u64) -> Result<Value, PluginError> {
     Ok(descriptor)
 }
 
-fn extrude_active_sketch() -> Result<String, PluginError> {
+fn extrude_active_sketch(params: &Value) -> Result<String, PluginError> {
+    let source_id = params
+        .get("source_feature_id")
+        .and_then(Value::as_u64)
+        .unwrap_or(1);
+    let source_id = u32::try_from(source_id)
+        .map_err(|_| invalid("source_feature_id", "feature id is too large"))?;
+    let height = params
+        .get("height_mm")
+        .and_then(Value::as_i64)
+        .unwrap_or(12);
+    let height = i32::try_from(height)
+        .map_err(|_| invalid("height_mm", "height must be an integer from 1 to 64 mm"))?;
+    if !(1..=64).contains(&height) {
+        return Err(invalid(
+            "height_mm",
+            "height must be an integer from 1 to 64 mm",
+        ));
+    }
+    let export = export_timeline()?;
+    let input = solidcraft_trivariate::json::parse(&export.to_string())
+        .map_err(|e| invalid("timeline", e))?;
+    let model =
+        solidcraft_trivariate::solidcraft_polygon::extrude_source_sketch(&input, source_id, height)
+            .map_err(|e| invalid("timeline", e))?;
+    insert_audited_model(&model)
+}
+
+fn extrude_active_timeline() -> Result<String, PluginError> {
     let export = export_timeline()?;
     let input = solidcraft_trivariate::json::parse(&export.to_string())
         .map_err(|e| invalid("timeline", e))?;
     let model = solidcraft_trivariate::solidcraft_polygon::extrude_preview(&input)
         .map_err(|e| invalid("timeline", e))?;
+    insert_audited_model(&model)
+}
+
+fn build_recipe(params: &Value) -> Result<String, PluginError> {
+    let path = params
+        .get("recipe")
+        .and_then(Value::as_str)
+        .unwrap_or("recipe.json");
+    validate_leaf_name(path)?;
+    let bytes = files::read_file(GRANT, path)?;
+    if bytes.len() > MAX_DESCRIPTOR_BYTES {
+        return Err(invalid("recipe", "recipe exceeds 1 MiB"));
+    }
+    let source: Value = serde_json::from_slice(&bytes).map_err(|e| invalid("recipe", e))?;
+    let recipe = solidcraft_trivariate::json::parse(&source.to_string())
+        .map_err(|e| invalid("recipe", e))?;
+    let model =
+        solidcraft_trivariate::interchange::build(&recipe).map_err(|e| invalid("recipe", e))?;
+    insert_audited_model(&model)
+}
+
+fn insert_audited_model(model: &solidcraft_trivariate::json::Json) -> Result<String, PluginError> {
     let audit =
         solidcraft_trivariate::interchange::audit(&model).map_err(|e| invalid("model", e))?;
     if audit
@@ -317,7 +402,7 @@ fn extrude_active_sketch() -> Result<String, PluginError> {
     let step = solidcraft_trivariate::step_boundary::export_step(&model)
         .map_err(|e| invalid("model", e))?;
     files::write_file(GRANT, "result.step", step.as_bytes())?;
-    insert_result()
+    insert_step_content(&step)
 }
 
 fn validate_construction_wire(feature: &serde_json::Map<String, Value>) -> Result<(), PluginError> {

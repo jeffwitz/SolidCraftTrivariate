@@ -6,12 +6,29 @@
   "capabilities": ["commands@0.2"],
   "runtime": {
     "module": "solidcraft-trivariate.wasm",
-    "commands": ["timeline.export_script", "timeline.add", "browser.visibility", "file.insert_step", "view.visual_style"],
+    "commands": ["timeline.export_script", "timeline.add", "browser.visibility", "view.visual_style"],
     "entries": [
       {
         "name": "extrude-active-sketch",
         "effect": "edit",
+        "input_schema": {"type": "object", "properties": {
+          "source_feature_id": {"type": "integer", "title": "Sketch feature id", "default": 1, "minimum": 1},
+          "height_mm": {"type": "integer", "title": "Extrusion height (mm)", "default": 12, "minimum": 1, "maximum": 64}
+        }},
+        "slots": [{"kind": "ribbon", "name": "Model"}]
+      },
+      {
+        "name": "extrude-active-timeline",
+        "effect": "edit",
         "input_schema": {"type": "object", "properties": {}},
+        "slots": [{"kind": "ribbon", "name": "Model"}]
+      },
+      {
+        "name": "build-recipe",
+        "effect": "edit",
+        "input_schema": {"type": "object", "properties": {
+          "recipe": {"type": "string", "title": "Recipe file", "default": "recipe.json"}
+        }},
         "slots": [{"kind": "ribbon", "name": "Model"}]
       },
       {

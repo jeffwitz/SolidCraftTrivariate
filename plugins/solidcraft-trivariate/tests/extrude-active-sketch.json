@@ -1,12 +1,29 @@
 {
   "entry": "extrude-active-sketch",
-  "design": "source-sketch.sc",
+  "params": {
+    "source_feature_id": 1,
+    "height_mm": 12
+  },
+  "design": "sketch-only.sc",
   "grants": {
-    "command_groups": ["file"],
-    "folders": [{"name":"companion","read":true,"write":true,"from":"companion"}]
+    "folders": [
+      {
+        "name": "companion",
+        "read": true,
+        "write": true,
+        "from": "companion"
+      }
+    ]
   },
   "expect": {
-    "files": ["companion/result.step"],
-    "model": {"body_count": 2, "total": {"volume_mm3": 1104}}
+    "files": [
+      "companion/result.step"
+    ],
+    "model": {
+      "body_count": 1,
+      "total": {
+        "volume_mm3": 2208
+      }
+    }
   }
 }

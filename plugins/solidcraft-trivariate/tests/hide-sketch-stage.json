@@ -2,8 +2,21 @@
   "entry": "hide-sketch-stage",
   "design": "source-sketch.sc",
   "grants": {
-    "command_groups": ["file"],
-    "folders": [{"name":"companion","read":true,"write":true,"from":"companion"}]
+    "folders": [
+      {
+        "name": "companion",
+        "read": true,
+        "write": true,
+        "from": "companion"
+      }
+    ]
   },
-  "expect": {"reply": {"result": {"visible": false, "installed": false}}}
+  "expect": {
+    "reply": {
+      "result": {
+        "visible": false,
+        "installed": false
+      }
+    }
+  }
 }

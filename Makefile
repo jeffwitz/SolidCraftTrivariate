@@ -45,7 +45,9 @@ check-cylinder-iga: check-axial-knot-reduction
 
 .PHONY: check-crossed-bending
 check-crossed-bending:
+	cargo test --locked --offline --release --test crossed_bending --test conforming_bending
 	cargo build --locked --offline --release
+	python3 scripts/check_native_crossed_bending.py target/release/solidcraft-trivariate
 	OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 python3 docs/results/crossed-interface-iga/check_bending.py target/release/solidcraft-trivariate
 
 .PHONY: check-inherited-space check-inherited-corpus

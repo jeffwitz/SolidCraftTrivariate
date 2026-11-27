@@ -116,7 +116,8 @@ pub mod adaptive_traction;
 pub mod geometry_vtu;
 pub mod nurbs_knot_reduction;
 pub mod transverse_transitions;
-
+pub mod conforming_bending;
+pub mod crossed_bending;
 
 pub mod rational_sector;
 pub mod rational_sector_audit;

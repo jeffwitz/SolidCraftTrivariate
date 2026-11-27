@@ -51,7 +51,7 @@ fn publish(target: &Path, contents: &str) -> std::io::Result<()> {
     }
 }
 
-const COMMANDS_AND_EVALUATORS: &str = r#"{"commands":["build","audit","classify-transverse-transitions","cover-cylinder","compose-axial","annulus-edges","assemble-patches","plan-patches","reduce-axial-knots","recover-spline-parent","recover-pair-parents","refine-thb-strip","export-thb-extraction","solve-thb-strip","check-thb-galerkin","export-parent-field","audit-parent-field","check-parent-galerkin","export-parent-stiffness","solve-parent-field","spline-eligibility","recover-translation-columns","solve-inherited","export-inherited-space","audit-inherited-space","solve-inherited-space","plan-sketch","crossed-boolean","evaluate","capabilities","export-step","certify-map","export-analysis","export-sketch-analysis","export-nurbs-space","export-adaptive","inspect-travel","solve-job","differentiate-job","import-solidcraft","import-solidcraft-sketch","export-field-vtu","export-geometry-vtu","edit-bore-intervals","edit-s3-stock-rim","edit-fieldcraft-bore-rims"],"evaluators":{"rational_bezier_tensor":{"degrees":[[1,1,1],[1,1,2],[1,1,3],[1,2,1],[1,2,2],[1,2,3],[1,3,1],[1,3,2],[1,3,3],[2,1,1],[2,1,2],[2,1,3],[2,2,1],[2,2,2],[2,2,3],[2,3,1],[2,3,2],[2,3,3],[3,1,1],[3,1,2],[3,1,3],[3,2,1],[3,2,2],[3,2,3],[3,3,1],[3,3,2],[3,3,3]],"domain":[[0,1],[0,1],[0,1]]}}}"#;
+const COMMANDS_AND_EVALUATORS: &str = r#"{"commands":["build","audit","classify-transverse-transitions","crossed-bending","conforming-bending","cover-cylinder","compose-axial","annulus-edges","assemble-patches","plan-patches","reduce-axial-knots","recover-spline-parent","recover-pair-parents","refine-thb-strip","export-thb-extraction","solve-thb-strip","check-thb-galerkin","export-parent-field","audit-parent-field","check-parent-galerkin","export-parent-stiffness","solve-parent-field","spline-eligibility","recover-translation-columns","solve-inherited","export-inherited-space","audit-inherited-space","solve-inherited-space","plan-sketch","crossed-boolean","evaluate","capabilities","export-step","certify-map","export-analysis","export-sketch-analysis","export-nurbs-space","export-adaptive","inspect-travel","solve-job","differentiate-job","import-solidcraft","import-solidcraft-sketch","export-field-vtu","export-geometry-vtu","edit-bore-intervals","edit-s3-stock-rim","edit-fieldcraft-bore-rims"],"evaluators":{"rational_bezier_tensor":{"degrees":[[1,1,1],[1,1,2],[1,1,3],[1,2,1],[1,2,2],[1,2,3],[1,3,1],[1,3,2],[1,3,3],[2,1,1],[2,1,2],[2,1,3],[2,2,1],[2,2,2],[2,2,3],[2,3,1],[2,3,2],[2,3,3],[3,1,1],[3,1,2],[3,1,3],[3,2,1],[3,2,2],[3,2,3],[3,3,1],[3,3,2],[3,3,3]],"domain":[[0,1],[0,1],[0,1]]}}}"#;
 
 fn capabilities() -> Result<Json, String> {
     let mut result = parse(COMMANDS_AND_EVALUATORS)?;
@@ -285,7 +285,7 @@ fn inspect_travel(center: &str) -> Result<Json, &'static str> {
     ]))
 }
 
-const USAGE: &str = "usage: solidcraft-trivariate classify-transverse-transitions MODEL OUTPUT | refine-thb-strip MODEL PLAN PACKAGE | export-thb-extraction PACKAGE OUT | solve-thb-strip PACKAGE prepared|local JOB OUT | check-thb-galerkin PACKAGE ORDER | recover-spline-parent MODEL OUT | recover-pair-parents MODEL REPORT | export-parent-field MODEL OUT | audit-parent-field MODEL FIELD | check-parent-galerkin MODEL ORDER | export-parent-stiffness MODEL ORDER OUT | solve-parent-field MODEL JOB OUT | recover-translation-columns MODEL AXIS | spline-eligibility MODEL | export-inherited-space MODEL PLAN OUT | audit-inherited-space PACKAGE | solve-inherited-space PACKAGE JOB OUT | solve-inherited MODEL JOB OUT | cover-cylinder MODEL 2|3 OUT | compose-axial JOB OUT | annulus-edges LAYOUT PROFILE OUT | assemble-patches MODEL LAYOUT OUTPUT | plan-patches MODEL OUTPUT | reduce-axial-knots PATCHES OUTPUT | capabilities | crossed-boolean RECIPE OP OUTPUT | plan-sketch RECIPE | build RECIPE OUTPUT | audit MODEL | evaluate MAP U V W | export-step MODEL OUTPUT | certify-map MAP MAX_LEAVES MAX_DEPTH | export-analysis MODEL GAUSS_ORDER OUTPUT | export-sketch-analysis MODEL GAUSS_ORDER OUTPUT | export-nurbs-space MODEL OUTPUT | export-adaptive MODEL PLAN GAUSS_ORDER OUTPUT | import-solidcraft SCRIPT OUTPUT | import-solidcraft-sketch TIMELINE OUTPUT | solve-job MODEL JOB OUTPUT | differentiate-job MODEL JOB DIRECTION OUTPUT | export-field-vtu RESULT SUBDIVISIONS OUTPUT | export-geometry-vtu MODEL SUBDIVISIONS OUTPUT | edit-bore-intervals MODEL EDITS OUTPUT | edit-s3-stock-rim MODEL sharp|chamfer|fillet OUTPUT.json|OUTPUT.step | edit-fieldcraft-bore-rims MODEL STATE OUTPUT.json|OUTPUT.step | inspect-travel CENTER_X_UM";
+const USAGE: &str = "usage: solidcraft-trivariate classify-transverse-transitions MODEL OUTPUT | refine-thb-strip MODEL PLAN PACKAGE | export-thb-extraction PACKAGE OUT | solve-thb-strip PACKAGE prepared|local JOB OUT | check-thb-galerkin PACKAGE ORDER | recover-spline-parent MODEL OUT | recover-pair-parents MODEL REPORT | export-parent-field MODEL OUT | audit-parent-field MODEL FIELD | check-parent-galerkin MODEL ORDER | export-parent-stiffness MODEL ORDER OUT | solve-parent-field MODEL JOB OUT | recover-translation-columns MODEL AXIS | spline-eligibility MODEL | export-inherited-space MODEL PLAN OUT | audit-inherited-space PACKAGE | solve-inherited-space PACKAGE JOB OUT | solve-inherited MODEL JOB OUT | cover-cylinder MODEL 2|3 OUT | compose-axial JOB OUT | annulus-edges LAYOUT PROFILE OUT | assemble-patches MODEL LAYOUT OUTPUT | plan-patches MODEL OUTPUT | reduce-axial-knots PATCHES OUTPUT | capabilities | crossed-boolean RECIPE OP OUTPUT | crossed-bending MODEL NV NW QUADRATURE OUTPUT | conforming-bending MODEL NV NW QUADRATURE C0|C1 OUTPUT | plan-sketch RECIPE | build RECIPE OUTPUT | audit MODEL | evaluate MAP U V W | export-step MODEL OUTPUT | certify-map MAP MAX_LEAVES MAX_DEPTH | export-analysis MODEL GAUSS_ORDER OUTPUT | export-sketch-analysis MODEL GAUSS_ORDER OUTPUT | export-nurbs-space MODEL OUTPUT | export-adaptive MODEL PLAN GAUSS_ORDER OUTPUT | import-solidcraft SCRIPT OUTPUT | import-solidcraft-sketch TIMELINE OUTPUT | solve-job MODEL JOB OUTPUT | differentiate-job MODEL JOB DIRECTION OUTPUT | export-field-vtu RESULT SUBDIVISIONS OUTPUT | export-geometry-vtu MODEL SUBDIVISIONS OUTPUT | edit-bore-intervals MODEL EDITS OUTPUT | edit-s3-stock-rim MODEL sharp|chamfer|fillet OUTPUT.json|OUTPUT.step | edit-fieldcraft-bore-rims MODEL STATE OUTPUT.json|OUTPUT.step | inspect-travel CENTER_X_UM";
 
 fn run(args: &[String]) -> Result<Json, String> {
     match args {
@@ -330,6 +330,35 @@ fn run(args: &[String]) -> Result<Json, String> {
             let model=solidcraft_trivariate::g2_cross_plate::boolean::report(&read(path)?,op)?;
             publish(Path::new(target),&model.to_string()).map_err(|e|e.to_string())?;
             Ok(object([("status",Json::String("exported".into())),("blocks",Json::Number(model.field("blocks")?.items()?.len().to_string()))]))
+        }
+        [cmd, model, nv, nw, q, target] if cmd == "crossed-bending" => {
+            let result = solidcraft_trivariate::crossed_bending::analyze(
+                &read(model)?,
+                nv.parse().map_err(|_| "invalid v refinement")?,
+                nw.parse().map_err(|_| "invalid w refinement")?,
+                q.parse().map_err(|_| "invalid quadrature order")?,
+            )
+            .map_err(str::to_owned)?;
+            publish(Path::new(target), &result.to_string()).map_err(|e| e.to_string())?;
+            Ok(object([
+                ("status", Json::String("solved".into())),
+                ("result", result),
+            ]))
+        }
+        [cmd, model, nv, nw, q, continuity, target] if cmd == "conforming-bending" => {
+            let result = solidcraft_trivariate::conforming_bending::analyze(
+                &read(model)?,
+                nv.parse().map_err(|_| "invalid v refinement")?,
+                nw.parse().map_err(|_| "invalid w refinement")?,
+                q.parse().map_err(|_| "invalid quadrature order")?,
+                continuity,
+            )
+            .map_err(str::to_owned)?;
+            publish(Path::new(target), &result.to_string()).map_err(|e| e.to_string())?;
+            Ok(object([
+                ("status", Json::String("solved".into())),
+                ("result", result),
+            ]))
         }
         [cmd,model,target] if cmd=="recover-pair-parents"=>{
             let source=read(model)?;

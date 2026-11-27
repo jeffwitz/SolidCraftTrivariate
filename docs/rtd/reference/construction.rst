@@ -161,24 +161,34 @@ and sampled classifications are useful consistency checks, but neither proves
 local manifoldness, injectivity, or complete coverage by itself.
 
 This distinction is also visible in a precise topological existence theorem.
-For a connected domain with a topological quadrilateral boundary mesh ``Q``,
-Erickson proves that ``Q`` extends to a topological hexahedral mesh if and
-only if ``Q`` has an even number of quadrilaterals and no odd cycle in ``Q``
-bounds a surface inside the domain. This concerns existence of a topological
-mesh; it is not a geometric parameterization or a rational-map certificate.
+For a connected domain whose boundary is a connected surface with topological
+quadrilateral mesh ``Q``, Erickson proves that ``Q`` extends to a topological
+hexahedral mesh of the interior if and only if ``Q`` has an even number of
+quadrilaterals and no odd cycle in ``Q`` bounds a surface inside the domain.
+The paper also states that the results extend to domains with disconnected
+boundaries. This concerns existence of a topological mesh; it is not a
+geometric parameterization or a rational-map certificate.
 SolidCraft's family certificates remain specific to their represented blocks.
 See Erickson, *Efficiently Hex-Meshing Things with Topology*, *Discrete &
 Computational Geometry* 52(3) (2014), 427--449,
-`DOI 10.1007/s00454-014-9624-3 <https://doi.org/10.1007/s00454-014-9624-3>`_.
+`DOI 10.1007/s00454-014-9624-3 <https://doi.org/10.1007/s00454-014-9624-3>`_
+(`author's paper page <https://jeffe.cs.illinois.edu/pubs/hexmesh.html>`_).
 
 From design features to volume maps
 -----------------------------------
 
-Chen, Bu, Jin, Xu, and Li describe a segmentation--mapping--merging pipeline:
-they partition a semantic design-feature network into feature subnetworks,
-map complete feature networks to volume patches, then merge and adjust the
-patches for IGA. The corresponding stages here are sketch arrangement, construction
-of the rational control nets and coefficient-checked patch assembly.
+Chen, Bu, Jin, Xu, and Li describe a segmentation--mapping--merging pipeline
+whose input is a semantic design-feature network, supplied interactively or
+extracted from an existing model. They derive geometric feature networks,
+segment these into complete feature networks, map each complete network to a
+volume patch, then merge and adjust the patches for IGA. The comparison with
+SolidCraft is at the workflow level: selected SolidCraft families arrange
+explicit sketch features, construct rational control nets, and assemble
+patches subject to their own coefficient checks. SolidCraft does not claim to
+implement Chen et al.'s semantic feature extraction, network segmentation, or
+patch-optimization method. The cited paper demonstrates its method on complex
+mechanical and free-form models; it does not establish the correctness of a
+SolidCraft construction.
 Each admitted family also specifies which input configurations it can
 certify and what a refused edit does to its prior state. Compare the
 geometric representations and admission conditions when translating an

@@ -15,6 +15,8 @@ admission limits.
    interface-fields
    spline-fields
    analysis
+   crossed-mechanics
+   fitted-bending
    solver-design
    verification
 

@@ -34,13 +34,14 @@ transformations when they remain within checked arithmetic.
 
 The crate also contains
 `knot-reduction utilities <https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/src/nurbs_knot_reduction.rs>`_.
-Reduction is a separate operation from
-exact extraction: a reduced representation must be accompanied by its
-declared error contract and audit. A representation is not called exact merely
-because sampled points agree. Unsupported degree, malformed/non-monotone knot
-vectors, nonpositive weights where disallowed, inconsistent gauges, and
-integer overflow are rejection cases. NURBS theory and the standard extraction
-operations are covered in Piegl and Tiller, *The NURBS Book*, 2nd ed.,
+This module removes only interior degree-one knots, and only when reinsertion
+reconstructs every homogeneous control component exactly; nonremovable knots
+are retained. It does not implement tolerance-based approximate knot removal.
+That is a separate operation with a declared error measure and tolerance, as
+in the knot-removal literature. Sampling alone does not establish exactness.
+Unsupported degree, malformed/non-monotone knot vectors, nonpositive weights
+where disallowed, inconsistent gauges, and integer overflow are rejection
+cases. NURBS theory and standard extraction operations are covered in Piegl and Tiller, *The NURBS Book*, 2nd ed.,
 Springer, DOI <https://doi.org/10.1007/978-3-642-59223-2>. This reference
 describes the general representation; it does not certify any particular
 SolidCraft model.
@@ -84,7 +85,9 @@ in Pólya-type representations for polynomials positive on polyhedra.
 Boudaoud, Caruso, and Roy study certificates in the Bernstein basis, including
 degree elevation and subdivision as ways to obtain decisive coefficients.
 These are related mathematical results, not specifications of the exact
-interval tests implemented here. SolidCraft's certificates are the code and
+interval tests implemented here. In particular, a positivity result for a
+polynomial on a simplex or polyhedron does not by itself establish the
+project's rational-map certificate. SolidCraft's certificates are the code and
 recorded audit outputs for each family. See V. Powers and B. Reznick, “A new
 bound for Pólya's theorem with applications to polynomials positive on
 polyhedra,” *Journal of Pure and Applied Algebra* 164(1--2) (2001), 221--229,
@@ -144,12 +147,27 @@ and `solver package <https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/
 Bernstein bounds and rational maps
 ----------------------------------
 
-Johnen, Remacle and Geuzaine expand the polynomial Jacobian determinant in
-a Bernstein basis and subdivide to tighten coefficient bounds. This gives
-a direct reference for the closed-element validity test. For rational
-SolidCraft charts the denominator also enters the test: a positive weight
-bound permits the homogeneous numerator to determine the sign. A failed
+Johnen, Remacle and Geuzaine give a method for bounding Jacobian determinants
+of curvilinear polynomial finite elements with Bernstein coefficients; their
+strictly positive lower bound certifies geometric validity for the polynomial
+elements in their scope. This is a polynomial-element precedent, not a proof
+of SolidCraft's rational-map implementation. For a rational SolidCraft chart,
+the homogeneous determinant numerator and the weight denominator are checked
+under the family's stated positive-weight assumptions; the denominator must
+be accounted for before inferring the physical determinant sign. A failed
 strict-positivity proof at the subdivision budget is recorded separately
 from a demonstrated inversion. A boundary-singular fillet must also be
 identified separately from a regular chart.
 `Johnen et al. (2013), Journal of Computational Physics <https://doi.org/10.1016/j.jcp.2012.08.051>`__.
+
+For knot removal, Tiller presents algorithms with error analysis for rational
+B-spline curves and surfaces; Eck and Hadenfeld study removal of one interior
+knot and optimize the remaining degrees of freedom under several error norms,
+including a continuous local min-max criterion. These are references for
+tolerance-based removal methods, distinct from the crate's exact degree-one
+removal operation described above: W. Tiller, “Knot-removal algorithms for
+NURBS curves and surfaces,” *Computer-Aided Design* 24(8) (1992), 445--453,
+`DOI 10.1016/0010-4485(92)90012-Y <https://doi.org/10.1016/0010-4485(92)90012-Y>`_;
+M. Eck and J. Hadenfeld, “Knot removal for B-spline curves,” *Computer Aided
+Geometric Design* 12(3) (1995), 259--282,
+`DOI 10.1016/0167-8396(94)00012-H <https://doi.org/10.1016/0167-8396(94)00012-H>`_.

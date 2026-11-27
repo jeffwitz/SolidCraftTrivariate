@@ -18,6 +18,7 @@ def write_examples(families, replay):
         raise ValueError("Every native build family must have one downloadable recipe")
     output = GENERATED / "recipes"
     output.mkdir(parents=True, exist_ok=True)
+    example_fields = {}
     with tempfile.TemporaryDirectory() as temporary:
         model = Path(temporary) / "model.json"
         for family, entry in catalog.items():
@@ -29,6 +30,7 @@ def write_examples(families, replay):
                     recipe = recipe[key]
             if recipe["family"] != family:
                 raise ValueError(f"Fixture no longer describes {family}")
+            example_fields[family] = sorted(recipe.keys() - {"family"})
             path = output / f"{family}.json"
             path.write_text(json.dumps(recipe, ensure_ascii=False, indent=2) + "\n")
             if replay:
@@ -36,6 +38,8 @@ def write_examples(families, replay):
                 audit = json.loads(subprocess.check_output([CLI, "audit", model]))
                 if audit.get("status") != "valid":
                     raise ValueError(f"Example audit failed: {family}")
+
+    return example_fields
 
 
 def catalogue(replay):
@@ -54,12 +58,15 @@ def catalogue(replay):
         lines.extend([f"``{synopses[name]}``", f"   {purposes[name]}", ""])
     lines += ["", "Recipe families", "---------------", "",
               "Download a recipe and pass it directly to ``build RECIPE MODEL``. "
-              "Run ``audit MODEL`` to verify the resulting control nets and incidence.", "",
-              ".. list-table::", "   :header-rows: 1", "", "   * - Family", "     - Reproducible input"]
-    write_examples(capabilities["families"], replay)
+              "Run ``audit MODEL`` to verify the resulting control nets and incidence. "
+              "The inputs listed below are the top-level members supplied by that example. "
+              "A built-in fixture can be constructed using only its family name.", "",
+              ".. list-table::", "   :header-rows: 1", "", "   * - Family", "     - Example inputs", "     - Download"]
+    fields = write_examples(capabilities["families"], replay)
     for family in sorted(capabilities["families"]):
         ref = f":download:`Recipe JSON <../_generated/recipes/{family}.json>`"
-        lines.extend([f"   * - ``{family}``", f"     - {ref}"])
+        inputs = ", ".join(f"``{key}``" for key in fields[family]) or "Built-in fixture"
+        lines.extend([f"   * - ``{family}``", f"     - {inputs}", f"     - {ref}"])
     (GENERATED / "catalog.inc").write_text("\n".join(lines) + "\n")
     print(f"Catalogue: {len(synopses)} commands and {len(capabilities['families'])} families.")
 

@@ -1,0 +1,26 @@
+{
+  "schema": "blind_bilinear_pocket_lateral_sweep_initial_failures_v1",
+  "source_model_sha256": "a1ba1d319dcc9c691534dfa888e5a155a76e481012f6aee79404ab6d2856614a",
+  "status": "superseded_diagnostics_not_qualified_results",
+  "issues": [
+    {
+      "issue": "wall_load_quadrature_crossed_spline_breaks",
+      "case": {"p": 3, "n": 2, "continuity": "C0"},
+      "observations_before_fix": [
+        {"quadrature_order": 12, "relative_energy_error": 0.00286960492412965, "relative_l2_error": 0.00033865606621773486},
+        {"quadrature_order": 16, "relative_energy_error": 0.002564537435975418, "relative_l2_error": 0.0003280297799884256},
+        {"quadrature_order": 32, "relative_energy_error": 0.0024105931952272145, "relative_l2_error": 0.00032374702954755965},
+        {"quadrature_order": 64, "relative_energy_error": 0.002399937306501768, "relative_l2_error": 0.0003237173186906305}
+      ],
+      "diagnosis": "The natural traction on each pocket wall was integrated across the full edge even though its spline trace has interior h-knots. Partitioning the line integral by every tangential knot span is required. All values above are excluded from qualification."
+    },
+    {
+      "issue": "C1_interface_collocation_missed_tangential_h_knots",
+      "observations_before_fix": [
+        {"p": 3, "n": 2, "max_dense_gradient_jump": 0.00011434878354473162},
+        {"p": 3, "n": 4, "max_dense_gradient_jump": 0.10632642025186193}
+      ],
+      "diagnosis": "The first constraint generator sampled p+3 points over the whole interface. The corrected generator samples independently on each tangential knot span, then performs rank-revealing row reduction. No sweep results from the incomplete constraint set are qualified."
+    }
+  ]
+}

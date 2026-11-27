@@ -4,7 +4,7 @@
 //! on a face when successful; it does not prove a global reparameterization.
 
 use crate::constraint_system::Ratio;
-use crate::json::{object, Json};
+use crate::json::{Json, object};
 
 type Q = Ratio;
 
@@ -179,10 +179,10 @@ fn split_beta(a: &P, b: &P, beta: &P) -> Option<(P, P)> {
     // Solve beta = a * beta_second + b * beta_first for linear factors.
     let z = qnew(0, 1)?;
     let at = |p: &P, i: usize| p.get(i).copied().unwrap_or(z);
-    let mut m = vec![
-        vec![at(b, 0), z, at(a, 0), z, at(beta, 0)],
-        vec![at(b, 1), at(b, 0), at(a, 1), at(a, 0), at(beta, 1)],
-        vec![z, at(b, 1), z, at(a, 1), at(beta, 2)],
+    let mut m = [
+        [at(b, 0), z, at(a, 0), z, at(beta, 0)],
+        [at(b, 1), at(b, 0), at(a, 1), at(a, 0), at(beta, 1)],
+        [z, at(b, 1), z, at(a, 1), at(beta, 2)],
     ];
     let mut row = 0;
     for col in 0..4 {
@@ -191,16 +191,17 @@ fn split_beta(a: &P, b: &P, beta: &P) -> Option<(P, P)> {
         };
         m.swap(row, pivot);
         let d = m[row][col];
-        for k in col..5 {
-            m[row][k] = m[row][k].div(d)?;
+        for v in &mut m[row][col..] {
+            *v = v.div(d)?;
         }
-        for r in 0..3 {
+        let normalized = m[row];
+        for (r, other) in m.iter_mut().enumerate() {
             if r == row {
                 continue;
             }
-            let f = m[r][col];
-            for k in col..5 {
-                m[r][k] = m[r][k].sub(f.mul(m[row][k])?)?;
+            let f = other[col];
+            for (v, pivot) in other[col..].iter_mut().zip(&normalized[col..]) {
+                *v = v.sub(f.mul(*pivot)?)?;
             }
         }
         row += 1;
@@ -208,8 +209,8 @@ fn split_beta(a: &P, b: &P, beta: &P) -> Option<(P, P)> {
             break;
         }
     }
-    for r in row..3 {
-        if (0..4).all(|c| m[r][c].numerator() == 0) && m[r][4].numerator() != 0 {
+    for trailing in &m[row..] {
+        if trailing[..4].iter().all(|v| v.numerator() == 0) && trailing[4].numerator() != 0 {
             return None;
         }
     }
@@ -220,6 +221,129 @@ fn split_beta(a: &P, b: &P, beta: &P) -> Option<(P, P)> {
         x[col] = rhs.div(m[r][col])?;
     }
     Some((vec![x[0], x[1]], vec![x[2], x[3]]))
+}
+
+fn normalized_control_points(block: &Json) -> Result<Option<Vec<[Q; 3]>>, &'static str> {
+    let controls = block.field("controls")?.items()?;
+    let Some(weight) = controls
+        .first()
+        .and_then(|p| p.items().ok())
+        .and_then(|p| p.get(3))
+        .and_then(|w| w.number::<i128>().ok())
+    else {
+        return Ok(None);
+    };
+    if weight <= 0 {
+        return Ok(None);
+    }
+    let mut points = Vec::with_capacity(controls.len());
+    for control in controls {
+        let Ok(values) = control.items() else {
+            return Ok(None);
+        };
+        if values.len() != 4
+            || values[3].number::<i128>().ok() != Some(weight)
+            || values[3].number::<i128>().ok().is_none_or(|w| w <= 0)
+        {
+            return Ok(None);
+        }
+        let mut xyz = [Q::zero(); 3];
+        for k in 0..3 {
+            let Ok(value) = values[k].number::<i128>() else {
+                return Ok(None);
+            };
+            xyz[k] = qnew(value, weight).ok_or("rational overflow")?;
+        }
+        points.push(xyz);
+    }
+    Ok(Some(points))
+}
+
+fn has_constant_positive_weight(block: &Json) -> Result<bool, &'static str> {
+    let controls = block.field("controls")?.items()?;
+    let Some(weight) = controls
+        .first()
+        .and_then(|p| p.items().ok())
+        .and_then(|p| p.get(3))
+        .and_then(|w| w.number::<i128>().ok())
+    else {
+        return Ok(false);
+    };
+    Ok(weight > 0
+        && controls.iter().all(|p| {
+            p.items()
+                .ok()
+                .is_some_and(|v| v.len() == 4 && v[3].number::<i128>().ok() == Some(weight))
+        }))
+}
+
+fn has_planar_extrusion_support(block: &Json) -> Result<bool, &'static str> {
+    let degrees = block.field("degrees")?.items()?;
+    if degrees.len() != 3 || degrees.iter().any(|d| d.number::<usize>().ok() != Some(1)) {
+        return Ok(false);
+    }
+    let Some(points) = normalized_control_points(block)? else {
+        return Ok(false);
+    };
+    if points.len() != 8 {
+        return Ok(false);
+    }
+    let mut base_z = None;
+    let mut height = None;
+    for i in 0..4 {
+        let low = points[2 * i];
+        let high = points[2 * i + 1];
+        if base_z.is_some_and(|z| z != low[2]) {
+            return Ok(false);
+        }
+        base_z = Some(low[2]);
+        let delta = [
+            high[0].sub(low[0]).ok_or("rational overflow")?,
+            high[1].sub(low[1]).ok_or("rational overflow")?,
+            high[2].sub(low[2]).ok_or("rational overflow")?,
+        ];
+        if delta[0].numerator() != 0 || delta[1].numerator() != 0 || delta[2].numerator() <= 0 {
+            return Ok(false);
+        }
+        if height.is_some_and(|h| h != delta[2]) {
+            return Ok(false);
+        }
+        height = Some(delta[2]);
+    }
+    Ok(true)
+}
+
+fn oriented_endpoints(
+    block: &Json,
+    side: &str,
+    reverse: bool,
+) -> Result<Option<[[[Q; 3]; 2]; 2]>, &'static str> {
+    let degrees = block.field("degrees")?.items()?;
+    if degrees.len() != 3 || degrees.iter().any(|d| d.number::<usize>().ok() != Some(1)) {
+        return Ok(None);
+    }
+    let Some(points) = normalized_control_points(block)? else {
+        return Ok(None);
+    };
+    if points.len() != 8 {
+        return Ok(None);
+    }
+    let (axis, end) = match side.as_bytes() {
+        [b'u', b'0'] => (0, 0),
+        [b'u', b'1'] => (0, 1),
+        [b'v', b'0'] => (1, 0),
+        [b'v', b'1'] => (1, 1),
+        _ => return Ok(None),
+    };
+    let mut result = [[[Q::zero(); 3]; 2]; 2];
+    for (z, z_row) in result.iter_mut().enumerate() {
+        for (t0, endpoint) in z_row.iter_mut().enumerate() {
+            let t = if reverse { 1 - t0 } else { t0 };
+            let (i, j) = if axis == 0 { (end, t) } else { (t, end) };
+            *endpoint = points[2 * (2 * i + j) + z];
+        }
+    }
+    Ok(Some(result))
 }
 
 fn as_g1_result(
@@ -241,27 +365,35 @@ fn as_g1_result(
     {
         return Ok(unsupported());
     }
-    for block in [a, b] {
-        let controls = block.field("controls")?.items()?;
-        let first_weight = controls
-            .first()
-            .and_then(|p| p.items().ok())
-            .and_then(|p| p.get(3))
-            .and_then(|w| w.number::<i128>().ok());
-        if first_weight.is_none_or(|w| w <= 0)
-            || controls.iter().any(|p| {
-                p.items()
-                    .ok()
-                    .and_then(|p| p.get(3))
-                    .and_then(|w| w.number::<i128>().ok())
-                    != first_weight
-            })
-        {
-            return Ok(object([(
-                "status",
-                Json::String("unsupported_projective_weights".into()),
-            )]));
-        }
+    if !has_constant_positive_weight(a)? || !has_constant_positive_weight(b)? {
+        return Ok(object([(
+            "status",
+            Json::String("unsupported_projective_weights".into()),
+        )]));
+    }
+    if !has_planar_extrusion_support(a)? || !has_planar_extrusion_support(b)? {
+        return Ok(object([(
+            "status",
+            Json::String("unsupported_extrusion_support".into()),
+        )]));
+    }
+    let Some(trace_a) = oriented_endpoints(a, sa, false)? else {
+        return Ok(object([(
+            "status",
+            Json::String("unsupported_trace".into()),
+        )]));
+    };
+    let Some(trace_b) = oriented_endpoints(b, sb, reverse)? else {
+        return Ok(object([(
+            "status",
+            Json::String("unsupported_trace".into()),
+        )]));
+    };
+    if trace_a != trace_b {
+        return Ok(object([(
+            "status",
+            Json::String("unsupported_trace".into()),
+        )]));
     }
     let (ta, na, _) = block_jet(a, sa, false)?;
     let (tb, nb, _) = block_jet(b, sb, reverse)?;
@@ -494,8 +626,15 @@ fn block_jet(block: &Json, side: &str, reverse: bool) -> Result<([P; 2], [P; 2],
             near[c].reverse();
         }
     }
-    let hp: [P; 4] = std::array::from_fn(|c| bernstein(&h[c]).unwrap_or_default());
-    let np: [P; 4] = std::array::from_fn(|c| bernstein(&near[c]).unwrap_or_default());
+    let convert = |rows: [Vec<Q>; 4]| -> Result<[P; 4], &'static str> {
+        rows.into_iter()
+            .map(|row| bernstein(&row).ok_or("rational overflow"))
+            .collect::<Result<Vec<_>, _>>()?
+            .try_into()
+            .map_err(|_| "invalid transverse row count")
+    };
+    let hp = convert(h)?;
+    let np = convert(near)?;
     let weight = hp[3].clone();
     let wt = deriv(&weight).ok_or("rational overflow")?;
     let weight_normal = padd(&np[3], &hp[3], -1)
@@ -609,30 +748,64 @@ pub fn classify(model: &Json) -> Result<Json, &'static str> {
             as_g1 = object([("status", Json::String("nonlateral_interface".into()))]);
         } else {
             let shift = |x: &Json| -> Result<Option<[Q; 3]>, &'static str> {
-                let dg = x.field("degrees")?.items()?;
-                if dg[2].number::<usize>()? != 1 {
+                let Ok(dg) = x.field("degrees").and_then(Json::items) else {
+                    return Ok(None);
+                };
+                if dg.len() != 3 {
                     return Ok(None);
                 }
-                let c = x.field("controls")?.items()?;
+                let Ok(du) = dg[0].number::<usize>() else {
+                    return Ok(None);
+                };
+                let Ok(dv) = dg[1].number::<usize>() else {
+                    return Ok(None);
+                };
+                if du == 0
+                    || dv == 0
+                    || du > 64
+                    || dv > 64
+                    || dg[2].number::<usize>().ok() != Some(1)
+                {
+                    return Ok(None);
+                }
+                let Some(expected) = (du + 1).checked_mul(dv + 1).and_then(|m| m.checked_mul(2))
+                else {
+                    return Ok(None);
+                };
+                let Ok(c) = x.field("controls").and_then(Json::items) else {
+                    return Ok(None);
+                };
+                if c.len() != expected || c.iter().any(|p| p.items().map_or(true, |v| v.len() != 4))
+                {
+                    return Ok(None);
+                }
                 let mut got = None;
-                let (pairs, _) = c.as_chunks::<2>();
+                let (pairs, remainder) = c.as_chunks::<2>();
+                if !remainder.is_empty() {
+                    return Ok(None);
+                }
                 for pair in pairs {
                     let u = pair[0].items()?;
                     let v = pair[1].items()?;
                     let mut s = [Q::zero(); 3];
                     for i in 0..3 {
-                        let wu = u[3].number::<i128>()?;
-                        let wv = v[3].number::<i128>()?;
+                        let Ok(wu) = u[3].number::<i128>() else {
+                            return Ok(None);
+                        };
+                        let Ok(wv) = v[3].number::<i128>() else {
+                            return Ok(None);
+                        };
                         if wu != wv || wu <= 0 {
                             return Ok(None);
                         }
-                        s[i] = qnew(
-                            v[i].number::<i128>()?
-                                .checked_sub(u[i].number::<i128>()?)
-                                .ok_or("rational overflow")?,
-                            wu,
-                        )
-                        .ok_or("rational overflow")?;
+                        let Ok(lower) = u[i].number::<i128>() else {
+                            return Ok(None);
+                        };
+                        let Ok(upper) = v[i].number::<i128>() else {
+                            return Ok(None);
+                        };
+                        s[i] = qnew(upper.checked_sub(lower).ok_or("rational overflow")?, wu)
+                            .ok_or("rational overflow")?;
                     }
                     if got.is_some_and(|old| old != s) {
                         return Ok(None);

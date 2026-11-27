@@ -15,7 +15,7 @@ fn mul(a: Q, b: Q) -> Result<Q> {
 fn diff_product(a: Q, b: Q, c: Q, d: Q) -> Result<Q> {
     mul(a, b)?.checked_sub(mul(c, d)?)
 }
-fn bernstein(p: usize, t: Q) -> Result<(Vec<Q>, Vec<Q>)> {
+pub(crate) fn bernstein(p: usize, t: Q) -> Result<(Vec<Q>, Vec<Q>)> {
     let s = Q::one().checked_sub(t)?;
     let mut prev = vec![Q::one()];
     for level in 1..=p {

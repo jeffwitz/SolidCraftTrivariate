@@ -19,14 +19,14 @@ The five distinct quadrilateral charts align exactly with the source partition. 
 
 - Primary errors: relative 3D strain-energy norm and relative displacement L2 norm, with the exact thickness weight in both norms.
 - Complexity: free scalar DOFs after homogeneous exterior Dirichlet conditions; vector-equivalent DOFs are three times this count. Report energy and L2 errors against DOFs as well as against h.
-- Quadrature: tensor-product Gauss-Legendre integration, initially order 12 and independently replayed at order 16. Require relative changes below 1e-9 for energy error, L2 error, and strain energy.
-- Solve: sparse direct solve; require normalized free residual below 1e-10. Require positive Cholesky pivots after essential conditions.
+- Quadrature: tensor-product Gauss-Legendre integration, initial n=1 gate at orders 12 and 16. After correcting the two archived span-integration defects, p=4/C0/n=1 narrowly exceeded the 1e-9 error-observable threshold (relative energy-error change 1.92e-9). Therefore the full sweep uses independently assembled orders 16 and 24 and retains the same 1e-9 threshold for energy error, L2 error, and strain energy. This prospective increase is applied to all sweep cases.
+- Solve: sparse direct solve; require normalized KKT/free residual below 1e-10. Require a positive smallest eigenvalue of the symmetric stiffness after essential conditions (sparse Lanczos check); for C1 also require the constraint residual below 1e-9.
 - Independent checks: analytic MMS derivatives and source terms; independent high-order quadrature of exact norms; exact knot-multiplicity checks; numerical reconstruction of C1 jumps at all shared edges and vertices; compare order-12 and order-16 assemblies/results.
-- The first n=1 solve in each p/continuity family must pass all checks before the remaining sweep is accepted. Any failed case remains in the denominator and is reported as a failure.
+- The first n=1 solve in each p/continuity family must pass residual, definiteness, C1, and q16/q24 checks before the remaining sweep is accepted. Any failed case remains in the denominator and is reported as a failure.
 
 ## Thresholds and exit criteria
 
-The sweep is complete only if all 16 (p, n, continuity) states solve, have residual below 1e-10, pass positive definiteness, and meet the q12/q16 observable tolerance. Report observed rates between consecutive n values, with no pre-imposed rate gate. Compare C0 and C1 at equal p,n and nearest equal DOF; do not claim C1 is better solely from asymptotic rate. The prior native inherited-space result on the curved nine-block model remains a separate historical measurement, not calibration data for this new bilinear model or reduced solver.
+The sweep is complete only if all 16 (p, n, continuity) states solve, have residual below 1e-10, pass positive definiteness, and meet the q16/q24 observable tolerance. Report observed rates between consecutive n values, with no pre-imposed rate gate. Compare C0 and C1 at equal p,n and nearest equal DOF; do not claim C1 is better solely from asymptotic rate. The prior native inherited-space result on the curved nine-block model remains a separate historical measurement, not calibration data for this new bilinear model or reduced solver.
 
 ## Reproduction
 

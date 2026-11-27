@@ -8,6 +8,13 @@ A native Rust volumetric kernel for building and auditing rational trivariate ma
 
 The native field compiler can recover neighboring restrictions of the same extrusion, preserve construction faces for loads, and selectively impose physical gradient continuity between different supports. The [mechanical comparison](docs/results/inherited-continuity/README.md) covers the cylinder, a curved blind pocket and polygonal sketches. The [interface census](docs/results/support-census/README.md) identifies which faces have exact whole-face evidence and which require separate treatment. Run `make check-inherited-corpus` to replay the measurements. A recovered cubic strip also supports an interior hierarchical refinement and named mechanical loads through `solve-job`. Run `make check-local-thb` for its coefficient, force, energy and convergence checks.
 
+The [continuity and refinement benchmarks](docs/results/continuity-followup/README.md)
+compare interchart C¹ with C⁰ on the bilinear blind pocket, cubic C² with C⁰
+at equal dimension on the smooth cube, and local THB with uniform refinement
+at a reentrant edge. Run `make check-continuity-followup` to reproduce the
+native solves and independent singular-field controls.
+
+
 ## Polygonal sketch input contract
 
 The native `sketch_layer_partition_v1` input is a set of straight-edged polygon contours in the XY plane, with coordinates in integer millimeters. Each loop has 3–64 distinct vertices, a unique identifier, and must be simple: self-crossings, repeated vertices, and contacts between contours are rejected. The outer loop must enclose every cut. Without Boolean operation history, cut loops must also be mutually disjoint and non-nested; with history, nested loops are allowed, but contours still may not touch or cross. A recipe supports at most 12 cuts, an integer height from 1 to 4096 mm, integer cut intervals satisfying `0 ≤ z0 < z1 ≤ height`, and an optional integer top shift of at most 4096 mm per axis. Coordinates and construction-guide endpoints are limited to ±4096 mm; at most 64 construction guides are allowed. Clockwise or counterclockwise input winding is accepted and normalized by the planner.

@@ -1,0 +1,39 @@
+{
+  "schema": "blind_bilinear_pocket_quadrature_retry_diagnostics_v1",
+  "criterion": "relative observable change <= 1e-9; unchanged from preregistration",
+  "retained_main_attempt": {
+    "p": 3,
+    "n_per_parent_direction": 8,
+    "continuity": "C1",
+    "orders": [16, 24],
+    "relative_change": 5.06013805086742e-9,
+    "energy_error_abs_change": 3.78885779087762e-13,
+    "l2_error_abs_change": 4.691599874844269e-15,
+    "energy_errors": [7.487656924806591e-5, 7.487656962695169e-5],
+    "l2_errors": [3.6996164331646314e-6, 3.6996164284730315e-6],
+    "equilibrium_residuals": [3.39558432228275e-14, 3.445963344516144e-14]
+  },
+  "additional_diagnostics": [
+    {
+      "orders": [24, 32],
+      "relative_change": 2.403881347540366e-9,
+      "q24_energy_error": 7.487656962695169e-5,
+      "q24_l2_error": 3.6996164284730315e-6,
+      "q24_equilibrium_residual": 3.445963344516144e-14,
+      "q32_energy_error": 7.487656963254844e-5,
+      "q32_l2_error": 3.6996164373664704e-6,
+      "q32_equilibrium_residual": 3.169102959207665e-14,
+      "status": "failed"
+    },
+    {
+      "orders": [32, 40],
+      "relative_change": 8.441860327302296e-9,
+      "q32_energy_error": 7.487656963254844e-5,
+      "q32_l2_error": 3.6996164373664704e-6,
+      "q32_equilibrium_residual": 3.169102959207665e-14,
+      "q40_observables": "not retained as individual values; the pairwise maximum relative change is retained",
+      "status": "failed"
+    }
+  ],
+  "interpretation": "The linear solves are well below the 1e-10 residual threshold. Relative error-of-error changes remain above 1e-9 because the absolute error norms are small. No threshold was relaxed and no additional quadrature pair was run."
+}

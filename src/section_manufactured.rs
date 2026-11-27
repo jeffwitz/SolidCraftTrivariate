@@ -211,7 +211,7 @@ where
             job.keys(&["schema", "quadrature"])?;
             Profile::Constant
         }
-        "section_quadratic_mms_v1" | "section_cubic_mms_v1" => {
+        "section_quadratic_mms_v1" | "section_cubic_mms_v1" | "section_quintic_mms_v1" => {
             job.keys(&["schema", "quadrature", "x_origin_mm", "x_scale_mm"])?;
             let origin = job.field("x_origin_mm")?.number::<f64>()?;
             let width = job.field("x_scale_mm")?.number::<f64>()?;
@@ -219,10 +219,10 @@ where
                 return Err("invalid manufactured polynomial scale");
             }
             Profile::Power {
-                degree: if schema == "section_cubic_mms_v1" {
-                    3
-                } else {
-                    2
+                degree: match schema {
+                    "section_cubic_mms_v1" => 3,
+                    "section_quintic_mms_v1" => 5,
+                    _ => 2,
                 },
                 origin,
                 width,
@@ -398,6 +398,29 @@ mod tests {
             mu: 1.,
         };
         let x = [1.9, 2.1, 2.4];
+        check_body(&exact, x);
+        let cube = Exact {
+            profile: Profile::Gaussian {
+                center: [0.31, 0.57, 0.68],
+                lengths: [0.30, 0.41, 0.36],
+            },
+            height: 1.,
+            ..exact
+        };
+        check_body(&cube, [0.24, 0.49, 0.76]);
+        let pocket = Exact {
+            profile: Profile::Power {
+                degree: 5,
+                origin: -10.,
+                width: 70.,
+            },
+            height: 20.,
+            ..cube
+        };
+        check_body(&pocket, [17., 12., 7.]);
+    }
+
+    fn check_body(exact: &Exact, x: V) {
         let body = exact.body(x);
         let step = 1e-5;
         let mut numerical = [0.; 3];
@@ -428,23 +451,7 @@ mod tests {
             mu: 1.,
         };
         let x = [0.37, 0.61, 0.42];
-        let body = exact.body(x);
-        let step = 1e-5;
-        let mut numerical = [0.; 3];
-        for j in 0..3 {
-            let mut a = x;
-            let mut b = x;
-            a[j] -= step;
-            b[j] += step;
-            let stress_a = exact.stress(exact.field(a).1);
-            let stress_b = exact.stress(exact.field(b).1);
-            for i in 0..3 {
-                numerical[i] -= (stress_b[i][j] - stress_a[i][j]) / (2. * step);
-            }
-        }
-        for (expected, found) in body.into_iter().zip(numerical) {
-            assert!((expected - found).abs() < 1e-7);
-        }
+        check_body(&exact, x);
         assert_eq!(exact.field([0.5, 0.5, 0.]).0, [0.; 3]);
         assert!((exact.field([0.5, 0.5, 1.]).0[2]).abs() < 1e-15);
         assert!((exact.field([0.5, 0.5, 1.]).1[2][2] + std::f64::consts::PI).abs() < 1e-14);

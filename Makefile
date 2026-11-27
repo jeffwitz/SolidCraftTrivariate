@@ -95,3 +95,14 @@ docs-inputs:
 docs: docs-inputs
 	$(SPHINXBUILD) -E -a -W --keep-going -b html docs/rtd build/manual
 	python3 scripts/check_manual.py
+
+.PHONY: check-continuity-followup
+check-continuity-followup:
+	cargo test --release --locked --offline --test transverse_transitions
+	python3 -m unittest discover -s tests/references -p test_pocket_lateral_c1_sweep.py
+	cargo test --release --locked --offline --test cube_convergence matched_dimension_gaussian -- --ignored --exact
+	cargo test --release --locked --offline --test pocket_convergence -- --include-ignored
+	python3 scripts/check_continuity_followup.py
+	cargo test --release --locked --offline --test thb_reentrant_edge -- --include-ignored
+	cargo test --release --locked --offline --test reentrant_ritz -- --ignored
+	OPENBLAS_NUM_THREADS=1 python3 scripts/check_reentrant_thb.py

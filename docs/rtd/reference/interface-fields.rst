@@ -44,7 +44,7 @@ Three different field constraints
   can reduce the approximation capacity of the field substantially.
 
 ``classify-transverse-transitions`` reports which jets satisfy a constant
-or affine transverse transition. It serves as a candidate selector.
+or affine transverse transition. It also emits a separate exact AS-G¹ gluing witness for regular bilinear section edges. See :doc:`continuity-experiments` for the two criteria and matched-dimension mechanical measurements.
 ``export-inherited-space`` constructs the space requested by the plan.
 ``audit-inherited-space`` and the independent field oracle check the
 result. Use ``solve-inherited-space`` to compare two selections under

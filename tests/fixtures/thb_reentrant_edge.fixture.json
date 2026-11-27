@@ -1,0 +1,26 @@
+{
+  "schema": "l_prism_antiplane_singularity_v1",
+  "section_boundary_ccw_mm": [[-1,-1],[1,-1],[1,0],[0,0],[0,1],[-1,1]],
+  "removed_open_square_mm": [[0,0],[1,0],[1,1],[0,1]],
+  "reentrant_vertex_mm": [0,0],
+  "opening_angle_rad": "3*pi/2",
+  "extrusion_interval_mm": [0,1],
+  "charts": [
+    {"id":"southwest","origin_mm":[0,0],"u_mm":[-1,0],"v_mm":[0,-1],"reentrant_corner_uv":[0,0]},
+    {"id":"southeast","origin_mm":[0,0],"u_mm":[0,-1],"v_mm":[1,0],"reentrant_corner_uv":[0,0]},
+    {"id":"northwest","origin_mm":[0,0],"u_mm":[0,1],"v_mm":[-1,0],"reentrant_corner_uv":[0,0]}
+  ],
+  "interfaces": [
+    {"charts":["southwest","southeast"],"local_edges":["u0","v0"],"parameter_map":"identity"},
+    {"charts":["southwest","northwest"],"local_edges":["v0","u0"],"parameter_map":"identity"}
+  ],
+  "field": {
+    "problem":"scalar_antiplane_poisson_section",
+    "exact":"r^(2/3)*sin(2*theta/3)",
+    "polar_branch":"0 <= theta <= 3*pi/2, measured clockwise from positive x",
+    "body_source":"zero away from the reentrant vertex",
+    "outer_boundary":"exact Dirichlet trace",
+    "chart_interfaces":"strong C0 continuity",
+    "norms":["L2","H1_seminorm_energy"]
+  }
+}

@@ -99,8 +99,20 @@ def _split_beta(alpha_first, alpha_second, beta):
 
 def as_g1(block_a, side_a, block_b, side_b, flip):
     """Construct and exactly verify AS-G1 linear gluing data for bilinear extrusions."""
-    if block_a["degrees"] != [1, 1, 1] or block_b["degrees"] != [1, 1, 1]:
+    if block_a.get("degrees") != [1, 1, 1] or block_b.get("degrees") != [1, 1, 1]:
         return {"status": "unsupported_family"}
+    controls_a = _constant_weight_points(block_a)
+    controls_b = _constant_weight_points(block_b)
+    if controls_a is None or controls_b is None:
+        return {"status": "unsupported_projective_weights"}
+    points_a = _planar_extrusion_points(block_a)
+    points_b = _planar_extrusion_points(block_b)
+    if points_a is None or points_b is None:
+        return {"status": "unsupported_extrusion_support"}
+    trace_a = _oriented_endpoints(block_a, side_a, False)
+    trace_b = _oriented_endpoints(block_b, side_b, flip)
+    if trace_a is None or trace_b is None or trace_a != trace_b:
+        return {"status": "unsupported_trace"}
     ta, na, wa = jet(block_a, side_a, False)
     tb, nb, wb = jet(block_b, side_b, flip)
     if len(wa) != 1 or len(wb) != 1:
@@ -171,14 +183,85 @@ def as_g1(block_a, side_a, block_b, side_b, flip):
     }
 
 
+def _constant_weight_points(block):
+    degrees = block.get("degrees")
+    controls = block.get("controls")
+    if not isinstance(degrees, list) or len(degrees) != 3:
+        return None
+    if any(not isinstance(d, int) or isinstance(d, bool) for d in degrees):
+        return None
+    du, dv, dw = degrees
+    if du <= 0 or dv <= 0 or dw != 1 or du > 64 or dv > 64:
+        return None
+    if not isinstance(controls, list) or len(controls) != 2 * (du + 1) * (dv + 1):
+        return None
+    if any(not isinstance(p, list) or len(p) != 4 or any(not isinstance(x, int) or isinstance(x, bool) for x in p) for p in controls):
+        return None
+    weight = controls[0][3]
+    if weight <= 0 or any(p[3] != weight for p in controls):
+        return None
+    return [[F(x, weight) for x in p[:3]] for p in controls]
+
+
+def _planar_extrusion_points(block):
+    if block.get("degrees") != [1, 1, 1]:
+        return None
+    points = _constant_weight_points(block)
+    if points is None or len(points) != 8:
+        return None
+    base_z = points[0][2]
+    height = None
+    for i in range(4):
+        low, high = points[2 * i], points[2 * i + 1]
+        if low[2] != base_z:
+            return None
+        delta = [high[k] - low[k] for k in range(3)]
+        if delta[0] or delta[1] or delta[2] <= 0:
+            return None
+        if height is not None and height != delta[2]:
+            return None
+        height = delta[2]
+    return points
+
+
+def _oriented_endpoints(block, side, reverse):
+    points = _constant_weight_points(block)
+    if points is None or block.get("degrees") != [1, 1, 1]:
+        return None
+    if side not in ("u0", "u1", "v0", "v1"):
+        return None
+    axis, end = (0, int(side[1])) if side[0] == "u" else (1, int(side[1]))
+    result = []
+    for z in range(2):
+        row = []
+        for t0 in range(2):
+            t = 1 - t0 if reverse else t0
+            i, j = (end, t) if axis == 0 else (t, end)
+            row.append(points[2 * (2 * i + j) + z])
+        result.append(row)
+    return result
+
+
 def classify(model):
     blocks = {b["id"]: b for b in model["blocks"]}
 
     def sweep(block):
-        if block["degrees"][2] != 1:
+        degrees = block.get("degrees")
+        controls = block.get("controls")
+        if not isinstance(degrees, list) or len(degrees) != 3:
+            return None
+        if any(not isinstance(d, int) or isinstance(d, bool) for d in degrees):
+            return None
+        du, dv, dw = degrees
+        if du <= 0 or dv <= 0 or dw != 1 or du > 64 or dv > 64:
+            return None
+        expected = 2 * (du + 1) * (dv + 1)
+        if not isinstance(controls, list) or len(controls) != expected:
+            return None
+        if any(not isinstance(p, list) or len(p) != 4 or any(not isinstance(x, int) or isinstance(x, bool) for x in p) for p in controls):
             return None
         shifts = set()
-        for a, b in zip(block["controls"][::2], block["controls"][1::2]):
+        for a, b in zip(controls[::2], controls[1::2]):
             if a[3] != b[3] or a[3] <= 0:
                 return None
             shifts.add(tuple(F(b[i] - a[i], a[3]) for i in range(3)))

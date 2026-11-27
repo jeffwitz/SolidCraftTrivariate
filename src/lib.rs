@@ -207,6 +207,9 @@ pub mod spline_support;
 mod transverse_jets;
 
 pub mod cube_convergence;
+pub mod pocket_convergence;
+pub mod thb_reentrant_edge;
+pub mod reentrant_ritz;
 pub mod pair_parent;
 pub mod parent_field;
 pub mod spline_load;

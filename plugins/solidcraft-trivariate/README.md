@@ -101,8 +101,8 @@ Five modeling buttons occupy the plugin group. Extrusion reads an existing
 sketch. Drill replaces a matching box with a centered through-bore. For a box
 created by sketch extrusion, enter its source sketch ID and extrusion height.
 Boolean edits the box and suppresses the selected cylinder. The qualified
-Boolean operand pair is the tall box/cylinder example. Chamfer-bores and
-fillet-bores edit the two bore rims of the qualified sharp FieldCraft bracket.
+Boolean operand pair is the tall box/cylinder example. Chamfer and
+Fillet edit the two bore rims of the qualified sharp FieldCraft bracket.
 Pick the target body in the viewport. For a Boolean operation, activate the tool field and pick the cylinder. The supplied bracket and box examples default to feature 1; the two-body example defaults to features 1 and 2. The commands
 check its full STEP data against the regenerated operand before modifying the
 timeline. Each operation uses SolidCraft's original viewport and undo history.

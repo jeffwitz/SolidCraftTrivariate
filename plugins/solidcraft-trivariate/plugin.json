@@ -39,13 +39,7 @@
             }
           },
           "x-solidcraft-icon": "icons/extrude.svg"
-        },
-        "slots": [
-          {
-            "kind": "ribbon",
-            "name": "Sketch"
-          }
-        ]
+        }
       },
       {
         "name": "extrude-active-timeline",
@@ -242,7 +236,7 @@
         }
       },
       {
-        "name": "chamfer-bores",
+        "name": "chamfer",
         "effect": "edit",
         "slots": [
           {
@@ -269,7 +263,7 @@
         }
       },
       {
-        "name": "fillet-bores",
+        "name": "fillet",
         "effect": "edit",
         "slots": [
           {
@@ -294,6 +288,35 @@
           },
           "x-solidcraft-icon": "icons/fillet.svg"
         }
+      },
+      {
+        "name": "extrude",
+        "effect": "edit",
+        "input_schema": {
+          "type": "object",
+          "properties": {
+            "source_feature_id": {
+              "type": "integer",
+              "title": "Sketch feature id",
+              "default": 1,
+              "minimum": 1
+            },
+            "height_mm": {
+              "type": "integer",
+              "title": "Extrusion height (mm)",
+              "default": 12,
+              "minimum": 1,
+              "maximum": 64
+            }
+          },
+          "x-solidcraft-icon": "icons/extrude.svg"
+        },
+        "slots": [
+          {
+            "kind": "ribbon",
+            "name": "Sketch"
+          }
+        ]
       }
     ],
     "permissions": {

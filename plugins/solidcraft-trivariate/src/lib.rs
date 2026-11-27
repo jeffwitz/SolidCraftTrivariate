@@ -18,14 +18,12 @@ impl Guest for Plugin {
     fn execute(entry: String, params: String) -> Result<String, PluginError> {
         let params: Value = serde_json::from_str(&params).map_err(|e| invalid("params", e))?;
         match entry.as_str() {
-            "drill" | "boolean" | "chamfer-bores" | "fillet-bores" => {
-                ribbon::apply(&entry, &params)
-            }
+            "drill" | "boolean" | "chamfer" | "fillet" => ribbon::apply(&entry, &params),
             "snapshot-timeline" => snapshot_timeline(),
             "show-sketch-stage" => set_sketch_stage(&params, true),
             "hide-sketch-stage" => set_sketch_stage(&params, false),
             "insert-result" => insert_result(),
-            "extrude-active-sketch" => extrude_active_sketch(&params),
+            "extrude" | "extrude-active-sketch" => extrude_active_sketch(&params),
             "extrude-active-timeline" => extrude_active_timeline(),
             "build-recipe" => build_recipe(&params),
             _ => Err(invalid("entry", format!("unknown entry `{entry}`"))),

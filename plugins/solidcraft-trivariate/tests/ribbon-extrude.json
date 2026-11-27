@@ -1,0 +1,32 @@
+{
+  "entry": "extrude",
+  "params": {
+    "source_feature_id": 1,
+    "height_mm": 12
+  },
+  "design": "sketch-only.sc",
+  "grants": {
+    "folders": [
+      {
+        "name": "companion",
+        "read": true,
+        "write": true,
+        "from": "companion"
+      }
+    ],
+    "command_groups": [
+      "file"
+    ]
+  },
+  "expect": {
+    "files": [
+      "companion/result.step"
+    ],
+    "model": {
+      "body_count": 1,
+      "total": {
+        "volume_mm3": 2208
+      }
+    }
+  }
+}

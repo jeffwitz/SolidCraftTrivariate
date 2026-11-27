@@ -93,13 +93,13 @@ fn suite() -> Value {
 pub(super) fn apply(entry: &str, params: &Value) -> Result<String, PluginError> {
     let id = picked_feature(params, "target_body", 1)?;
     let timeline = export_timeline()?;
-    if matches!(entry, "chamfer-bores" | "fillet-bores") {
+    if matches!(entry, "chamfer" | "fillet") {
         let recipe =
             serde_json::from_str(include_str!("../examples/fieldcraft_x64_y64.recipe.json"))
                 .expect("reference fixture");
         let model = build(&recipe)?;
         verify_operand(&timeline, id, &boundary(&model)?)?;
-        let state = if entry == "chamfer-bores" {
+        let state = if entry == "chamfer" {
             "chamfer"
         } else {
             "fillet"

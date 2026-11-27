@@ -101,7 +101,7 @@ def main():
             # Open the real face sketch, apply the default (outward) extrusion
             # through the same ribbon, then remeasure the saved part off-line.
             fixture = Path("plugins/solidcraft-trivariate/tests/face-box-add.sc").resolve()
-            control(port, token, "engine.execute", {"command": "file.open", "params": {"path": str(fixture)}})
+            control(port, token, "engine.execute", {"command": "doc.open", "params": {"path": str(fixture)}})
             time.sleep(1)
             click_handle(port, token, "button:solidcraft-trivariate.extrude")
             time.sleep(1)

@@ -97,7 +97,7 @@ constrain them, and finish or cancel. SolidCraft retains its dropdown menus and
 command search. The extrusion dialog accepts a single closed profile, including a periodic cubic spline.
 
 Five modeling buttons occupy the plugin group. Extrusion reads an existing
-sketch. Choose Add or Remove on a planar face and enter the depth. Closed profiles on rectangular stock produce a full trivariate result; on FieldCraft the trivariate tool is combined by the host. See [the face extrusion contract](../../docs/face-sketch-extrusion.md). Drill replaces a matching box with a centered through-bore. For a box
+sketch. Choose Add or Remove on a planar face and enter the depth. Admitted profiles on rectangular stock with a certified outer partition produce a full trivariate result; on FieldCraft the trivariate tool is combined by the host. See [the face extrusion contract](../../docs/face-sketch-extrusion.md). Drill replaces a matching box with a centered through-bore. For a box
 created by sketch extrusion, enter its source sketch ID and extrusion height.
 Boolean edits the box and suppresses the selected cylinder. The qualified
 Boolean operand pair is the tall box/cylinder example. Chamfer and

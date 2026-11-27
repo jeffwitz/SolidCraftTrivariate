@@ -1,0 +1,12 @@
+# Physical continuity on the curved blind pocket
+
+Baseline: public revision ea891d529cba3048425b6640eec9ce8e649ea623. Use the unchanged gallery recipe and nine biquadratic-by-linear maps in docs/site/data/plate_blind_pocket. Count interfaces of source blocks and distinct section seams separately. Rebuild and audit before accepting geometry.
+
+## Admission and approximation
+
+1. Inspect actual oriented polynomial or homogeneous wall jets on the full interface. Verify signs, nonvanishing factors and exact gluing identities for each admitted AS-G1 interface. Report the supported orientation, degree and result of unsupported inputs. Use an independent exact calculation and adversarial examples with matching endpoints and distinct interiors or first jets. Record availability of the originally reported counterexamples.
+2. Measure the ranks of the value and transverse-derivative traces as h decreases, first on a pair and then after compatibility at the shared vertices. Report arithmetic, spline coordinates, nullity and uncertainty.
+3. Compare C0 and physical C1 with n = 1, 2, 4, 8 uniform intervals per section direction, p = 3 and 4, interior regularity r = 1 in both branches. Fix the bottom-clamped axial factor to z/20. Use the same nonrepresentable smooth field varying in x and y in every run. Add a representable physical displacement and use analytic body and natural traction on the actual stock, floor and walls. Count free vector coefficients and report relative energy and displacement errors, residual, integration order and elapsed time. Compare fixed coarse historical load where possible. Repeat finest results with higher quadrature. Prospective targets: relative residual < 1e-9, volume relative defect < 1e-10, representable patch-test energy error < 1e-8, fine quadrature change in energy error < 1e-4 relative. Record failures and the evidence available for every required row.
+4. Diagnose coarse penalties, rate loss and plateaus separately. Two finite refinements do not establish an asymptotic lower bound. Relate the observations to reproduction on the shared traces and state the axial restriction when reporting a solid calculation.
+
+Primary implementation: native Rust classifier, section field and mechanical assembly. Independent controls: source geometry and reference continuum integrals, exact planar edge constraints and a second quadrature. Publish compact measurements and reproduction commands alongside the scientific manual.

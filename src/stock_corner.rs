@@ -603,6 +603,6 @@ mod tests {
 
     #[test]
     fn tangent_chain_policy_defaults_on() {
-        assert!(DEFAULT_TANGENT_CHAIN);
+        const { assert!(DEFAULT_TANGENT_CHAIN) };
     }
 }

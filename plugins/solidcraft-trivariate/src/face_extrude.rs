@@ -96,6 +96,43 @@ fn box_section(faces: &[Value], f: &Frame) -> Option<([[f64; 2]; 2], f64)> {
     Some(([bounds[0], bounds[1]], size[2]))
 }
 
+// The four authored straight edges must cover the four distinct rectangle sides.
+// The native stock partition subsequently checks the whole inner control hull.
+fn rectangular_perforation(spans: &[Vec<V>]) -> Option<([[f64; 2]; 2], Vec<Vec<V>>)> {
+    let (edges, hole): (Vec<_>, Vec<_>) = spans.iter().partition(|s| s.len() == 2);
+    if edges.len() != 4 || hole.is_empty() {
+        return None;
+    }
+    let mut bounds = [[f64::INFINITY, f64::NEG_INFINITY]; 2];
+    for edge in &edges {
+        for h in edge.iter() {
+            for axis in 0..2 {
+                let pos = h[axis] / h[2];
+                bounds[axis][0] = bounds[axis][0].min(pos);
+                bounds[axis][1] = bounds[axis][1].max(pos);
+            }
+        }
+    }
+    if bounds.iter().any(|b| b[0] >= b[1]) {
+        return None;
+    }
+    let corner = |h: V| {
+        let x = bounds[0].iter().position(|p| *p == h[0] / h[2])?;
+        let y = bounds[1].iter().position(|p| *p == h[1] / h[2])?;
+        Some(2 * y + x)
+    };
+    let mut sides = Vec::new();
+    for e in edges {
+        let (a, b) = (corner(e[0])?, corner(e[1])?);
+        sides.push((a.min(b), a.max(b)));
+    }
+    sides.sort_unstable();
+    if sides != [(0, 1), (0, 2), (1, 3), (2, 3)] {
+        return None;
+    }
+    Some((bounds, hole.into_iter().cloned().collect()))
+}
+
 fn model_body_for(id: u64) -> Result<String, PluginError> {
     let data = cmd("model.body_features", json!({}))?;
     let names: Vec<_> = data["bodies"]
@@ -167,7 +204,7 @@ pub(super) fn run(params: &Value) -> Result<String, PluginError> {
         _ => {
             return Err(invalid(
                 "operation",
-                "add and cut require a sketch attached to a planar body face",
+                "this sketch has no supporting body face; use New body on an origin plane, or create the sketch on a planar face for Add/Remove material",
             ));
         }
     };
@@ -248,6 +285,25 @@ pub(super) fn run(params: &Value) -> Result<String, PluginError> {
     }
     let mut stock_diagnostic = None;
     let mut stock_model = None;
+    if operation == "new" {
+        if let Some((bounds, inner)) = rectangular_perforation(&spans) {
+            let mut top = frame;
+            top[0] = std::array::from_fn(|k| frame[0][k] + depth * frame[3][k]);
+            let recipe = FaceProfileExtrusion {
+                spans: inner,
+                bounds,
+                thickness: depth,
+                depth,
+                operation: "cut".into(),
+                frame: top,
+                tolerance: 1e-6,
+            };
+            stock_model = Some(
+                face_profile_extrusion::build(&recipe)
+                    .map_err(|e| invalid("rectangular profile with spline opening", e))?,
+            );
+        }
+    }
     if let Some((bounds, thickness)) = section.filter(|_| operation != "new") {
         let recipe = FaceProfileExtrusion {
             spans: spans.clone(),
@@ -292,7 +348,7 @@ pub(super) fn run(params: &Value) -> Result<String, PluginError> {
     // The STEP exporter replays the source recipe and verifies boundary incidence.
     let step = solidcraft_trivariate::step_boundary::export_step(&model)
         .map_err(|e| invalid("boundary", e))?;
-    if full {
+    if full && operation != "new" {
         cmd(
             "solid.remove",
             json!({"bodies":[target],"name":"Replace extrusion stock"}),

@@ -1,0 +1,30 @@
+{
+  "entry": "extrude",
+  "params": {
+    "source_feature_id": 0,
+    "height_mm": 12,
+    "operation": "auto"
+  },
+  "design": "extrude-rectangle-spline-opening.sc",
+  "grants": {
+    "folders": [
+      {
+        "name": "companion",
+        "read": true,
+        "write": true,
+        "from": "companion"
+      }
+    ],
+    "command_groups": [
+      "file"
+    ]
+  },
+  "expect": {
+    "model": {
+      "body_count": 1,
+      "total": {
+        "volume_mm3": 4685.321115617777
+      }
+    }
+  }
+}

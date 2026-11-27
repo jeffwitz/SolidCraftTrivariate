@@ -108,7 +108,7 @@ charts, exact weights and analysis.</p>
 <section id="compact-sketch-ribbon">
 <h2>Compact sketch ribbon<a class="headerlink" href="#compact-sketch-ribbon" title="Link to this heading"></a></h2>
 <p>Launch the separate compact profile to open the sharp FieldCraft bracket:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>scripts/solidcraft_compact_desktop.py<span class="w"> </span>/path/to/solidcraft-trivariate-0.3.0.zip
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>scripts/solidcraft_compact_desktop.py<span class="w"> </span>/path/to/solidcraft-trivariate-0.4.0.zip
 </pre></div>
 </div>
 <p>Its Sketch tab pins new sketch, line, two-point rectangle, coincidence,
@@ -136,14 +136,16 @@ rebuilding the extrusion.</p>
 On a rectangular sketch extrusion also identify the original sketch and height.</p></li>
 <li><p><strong>Boolean</strong> accepts the reference box and crossing cylinder as two viewport
 picks. The chosen operation updates the stock feature and suppresses the tool.</p></li>
-<li><p><strong>Chamfer</strong> and <strong>fillet</strong> treat the bore rims on the sharp reference bracket.
-The picked body is checked against the reconstructed trivariate parent.</p></li>
+<li><p><strong>Fillet</strong> and <strong>Chamfer</strong> accept viewport picks on a single solid. Finish
+the sketch and select an edge, several edges, or a face whose boundary
+should be treated. Adjacent coplanar patches are grouped to exclude
+internal partition seams. Tangent-chain propagation is disabled. If the
+kernel cannot construct the requested corners, the edit is refused.
+Enter the radius or distance in millimetres and run
+the command. The edited solid can already contain extrusions and cuts.
+SolidCraft creates a B-rep feature in the document timeline. The native
+fixed-partition bore-rim demonstration remains available through Build Recipe.</p></li>
 </ul>
-<p>Edits compare the complete STEP data section of the target with the regenerated
-operand before changing the existing feature. Undo or reopening the sharp
-example allows comparison of alternative treatments. These commands cover the
-families above; general edge-by-edge selection and parametric history replay
-remain outside this bridge.</p>
 </section>
 <section id="sketch-and-extrusion">
 <h2>Sketch and extrusion<a class="headerlink" href="#sketch-and-extrusion" title="Link to this heading"></a></h2>

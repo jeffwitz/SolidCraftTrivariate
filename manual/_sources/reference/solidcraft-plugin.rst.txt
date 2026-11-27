@@ -16,7 +16,7 @@ Launch the separate compact profile to open the sharp FieldCraft bracket:
 
 .. code-block:: bash
 
-   python3 scripts/solidcraft_compact_desktop.py /path/to/solidcraft-trivariate-0.3.0.zip
+   python3 scripts/solidcraft_compact_desktop.py /path/to/solidcraft-trivariate-0.4.0.zip
 
 Its Sketch tab pins new sketch, line, two-point rectangle, coincidence,
 horizontal/vertical, fit-point spline, control-point spline, finish and cancel. The same ribbon adds **extrude**,
@@ -43,14 +43,15 @@ the entry dialogs use the package's operation icons.
   On a rectangular sketch extrusion also identify the original sketch and height.
 * **Boolean** accepts the reference box and crossing cylinder as two viewport
   picks. The chosen operation updates the stock feature and suppresses the tool.
-* **Chamfer** and **fillet** treat the bore rims on the sharp reference bracket.
-  The picked body is checked against the reconstructed trivariate parent.
-
-Edits compare the complete STEP data section of the target with the regenerated
-operand before changing the existing feature. Undo or reopening the sharp
-example allows comparison of alternative treatments. These commands cover the
-families above; general edge-by-edge selection and parametric history replay
-remain outside this bridge.
+* **Fillet** and **Chamfer** accept viewport picks on a single solid. Finish
+  the sketch and select an edge, several edges, or a face whose boundary
+  should be treated. Adjacent coplanar patches are grouped to exclude
+  internal partition seams. Tangent-chain propagation is disabled. If the
+  kernel cannot construct the requested corners, the edit is refused.
+  Enter the radius or distance in millimetres and run
+  the command. The edited solid can already contain extrusions and cuts.
+  SolidCraft creates a B-rep feature in the document timeline. The native
+  fixed-partition bore-rim demonstration remains available through Build Recipe.
 
 Sketch and extrusion
 --------------------

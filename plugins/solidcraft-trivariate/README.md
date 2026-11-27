@@ -66,6 +66,13 @@ SolidCraft's plugin contract. The workflow at
 `.github/workflows/solidcraft-trivariate-plugin.yml` builds it, checks it with the
 SolidCraft 0.48.1 CLI, tests the entries, and packages `plugin.json` with the component.
 
+## Install in SolidCraft
+
+1. Download `solidcraft-trivariate-0.1.0.zip` from the successful **SolidCraft Trivariate plugin** workflow artifact.
+2. In SolidCraft, open **Preferences > Plugins > Install plugin…** and choose the ZIP.
+3. Approve the `file` command group and choose a folder named `companion` with read/write access. The plugin reads recipes and writes `timeline.json`, `partition.json`, and `result.step` there.
+4. Use the entries in the Model ribbon or Plugins menu. For a pocket recipe, place its JSON file in the approved folder and run **Build Recipe**; `rim` defaults to `sharp` and also offers `chamfer` or `fillet` for the supported FieldCraft recipe.
+
 ## Upstream contract provenance
 
 The minimal WIT contract in `wit/plugin.wit` is adapted from SolidCraft's

@@ -383,10 +383,12 @@ fn build_recipe(params: &Value) -> Result<String, PluginError> {
         .map_err(|e| invalid("recipe", e))?;
     let model =
         solidcraft_trivariate::interchange::build(&recipe).map_err(|e| invalid("recipe", e))?;
-    audit_model(&model)?;
     let rim = params.get("rim").and_then(Value::as_str).unwrap_or("sharp");
     let step = match rim {
-        "sharp" => solidcraft_trivariate::step_boundary::export_step(&model),
+        "sharp" => {
+            audit_model(&model)?;
+            solidcraft_trivariate::step_boundary::export_step(&model)
+        }
         "chamfer" | "fillet" => {
             solidcraft_trivariate::fieldcraft_rims::construct(&model, rim)
                 .map_err(|e| invalid("rim", e))?;

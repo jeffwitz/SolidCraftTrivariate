@@ -1,0 +1,31 @@
+{
+  "entry": "build-recipe",
+  "params": {
+    "recipe": "oblique_blind_pockets.recipe.json"
+  },
+  "design": "sketch-only.sc",
+  "grants": {
+    "command_groups": [
+      "file"
+    ],
+    "folders": [
+      {
+        "name": "companion",
+        "read": true,
+        "write": true,
+        "from": "companion"
+      }
+    ]
+  },
+  "expect": {
+    "files": [
+      "companion/result.step"
+    ],
+    "model": {
+      "body_count": 1,
+      "total": {
+        "volume_mm3": 871.4365866666666
+      }
+    }
+  }
+}

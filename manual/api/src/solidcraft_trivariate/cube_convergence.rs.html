@@ -274,60 +274,92 @@
 <a href=#274 id=274 data-nosnippet>274</a>    <span class="kw">if </span>levels.is_empty() || levels.windows(<span class="number">2</span>).any(|w| w[<span class="number">0</span>] &gt;= w[<span class="number">1</span>]) || quadrature &lt; <span class="number">2 </span>{
 <a href=#275 id=275 data-nosnippet>275</a>        <span class="kw">return </span><span class="prelude-val">Err</span>(<span class="string">"cube study requires increasing levels and quadrature &gt;= 2"</span>);
 <a href=#276 id=276 data-nosnippet>276</a>    }
-<a href=#277 id=277 data-nosnippet>277</a>    <span class="kw">let </span><span class="kw-2">mut </span>rows = Vec::new();
-<a href=#278 id=278 data-nosnippet>278</a>    <span class="kw">for </span><span class="kw-2">&amp;</span>(continuity, multiplicity, label) <span class="kw">in </span><span class="kw-2">&amp;</span>[(<span class="number">2</span>, <span class="number">1</span>, <span class="string">"C2_maximum"</span>), (<span class="number">0</span>, <span class="number">3</span>, <span class="string">"C0_bernstein"</span>)] {
-<a href=#279 id=279 data-nosnippet>279</a>        <span class="kw">for </span><span class="kw-2">&amp;</span>cells <span class="kw">in </span>levels {
-<a href=#280 id=280 data-nosnippet>280</a>            <span class="kw">let </span>mesh = build_mesh(cells, multiplicity)<span class="question-mark">?</span>;
-<a href=#281 id=281 data-nosnippet>281</a>            <span class="kw">let </span>domain = IntegrationDomain {
-<a href=#282 id=282 data-nosnippet>282</a>                scalar_dofs: mesh.scalar_dofs,
-<a href=#283 id=283 data-nosnippet>283</a>                cell_count: mesh.elements.len(),
-<a href=#284 id=284 data-nosnippet>284</a>                z_bounds: [<span class="number">0.</span>, <span class="number">1.</span>],
-<a href=#285 id=285 data-nosnippet>285</a>                boundary: <span class="kw-2">&amp;</span>mesh.boundary,
-<a href=#286 id=286 data-nosnippet>286</a>                essential: <span class="kw-2">&amp;</span>mesh.lift,
-<a href=#287 id=287 data-nosnippet>287</a>            };
-<a href=#288 id=288 data-nosnippet>288</a>            <span class="kw">let </span>result = solve_sampled(
-<a href=#289 id=289 data-nosnippet>289</a>                <span class="kw-2">&amp;</span>domain,
-<a href=#290 id=290 data-nosnippet>290</a>                <span class="kw-2">&amp;</span>object([
-<a href=#291 id=291 data-nosnippet>291</a>                    (<span class="string">"schema"</span>, Json::String(<span class="string">"section_axial_sine_mms_v1"</span>.into())),
-<a href=#292 id=292 data-nosnippet>292</a>                    (<span class="string">"quadrature"</span>, n(quadrature)),
-<a href=#293 id=293 data-nosnippet>293</a>                ]),
-<a href=#294 id=294 data-nosnippet>294</a>                |cell, uvw| mesh.elements[cell].sample(uvw),
-<a href=#295 id=295 data-nosnippet>295</a>            )<span class="question-mark">?</span>;
-<a href=#296 id=296 data-nosnippet>296</a>            rows.push(object([
-<a href=#297 id=297 data-nosnippet>297</a>                (<span class="string">"continuity_label"</span>, Json::String(label.into())),
-<a href=#298 id=298 data-nosnippet>298</a>                (<span class="string">"interior_continuity"</span>, n(continuity)),
-<a href=#299 id=299 data-nosnippet>299</a>                (<span class="string">"cells_per_axis"</span>, n(cells)),
-<a href=#300 id=300 data-nosnippet>300</a>                (<span class="string">"cell_count"</span>, n(mesh.elements.len())),
-<a href=#301 id=301 data-nosnippet>301</a>                (<span class="string">"scalar_dofs"</span>, n(mesh.scalar_dofs)),
-<a href=#302 id=302 data-nosnippet>302</a>                (<span class="string">"boundary_face_observations"</span>, n(mesh.boundary.len())),
-<a href=#303 id=303 data-nosnippet>303</a>                (<span class="string">"min_sampled_determinant"</span>, n(mesh.min_det)),
-<a href=#304 id=304 data-nosnippet>304</a>                (<span class="string">"max_geometry_position_error_mm"</span>, n(mesh.max_geometry_error)),
-<a href=#305 id=305 data-nosnippet>305</a>                (<span class="string">"max_jacobian_error"</span>, n(mesh.max_jacobian_error)),
-<a href=#306 id=306 data-nosnippet>306</a>                (<span class="string">"max_affine_value_error_mm"</span>, n(mesh.max_affine_value_error)),
-<a href=#307 id=307 data-nosnippet>307</a>                (
-<a href=#308 id=308 data-nosnippet>308</a>                    <span class="string">"max_affine_gradient_error"</span>,
-<a href=#309 id=309 data-nosnippet>309</a>                    n(mesh.max_affine_gradient_error),
-<a href=#310 id=310 data-nosnippet>310</a>                ),
-<a href=#311 id=311 data-nosnippet>311</a>                (<span class="string">"result"</span>, result),
-<a href=#312 id=312 data-nosnippet>312</a>            ]));
-<a href=#313 id=313 data-nosnippet>313</a>        }
-<a href=#314 id=314 data-nosnippet>314</a>    }
-<a href=#315 id=315 data-nosnippet>315</a>    <span class="prelude-val">Ok</span>(object([
-<a href=#316 id=316 data-nosnippet>316</a>        (
-<a href=#317 id=317 data-nosnippet>317</a>            <span class="string">"schema"</span>,
-<a href=#318 id=318 data-nosnippet>318</a>            Json::String(<span class="string">"solidcraft_uniform_cubic_cube_convergence_v1"</span>.into()),
-<a href=#319 id=319 data-nosnippet>319</a>        ),
-<a href=#320 id=320 data-nosnippet>320</a>        (
-<a href=#321 id=321 data-nosnippet>321</a>            <span class="string">"geometry_parent"</span>,
-<a href=#322 id=322 data-nosnippet>322</a>            Json::String(<span class="string">"single_affine_unit_cube"</span>.into()),
-<a href=#323 id=323 data-nosnippet>323</a>        ),
-<a href=#324 id=324 data-nosnippet>324</a>        (<span class="string">"spline_degree"</span>, n(DEGREE)),
-<a href=#325 id=325 data-nosnippet>325</a>        (<span class="string">"quadrature_order"</span>, n(quadrature)),
-<a href=#326 id=326 data-nosnippet>326</a>        (
-<a href=#327 id=327 data-nosnippet>327</a>            <span class="string">"levels_per_axis"</span>,
-<a href=#328 id=328 data-nosnippet>328</a>            Json::Array(levels.iter().map(|<span class="kw-2">&amp;</span>x| n(x)).collect()),
-<a href=#329 id=329 data-nosnippet>329</a>        ),
-<a href=#330 id=330 data-nosnippet>330</a>        (<span class="string">"observations"</span>, Json::Array(rows)),
-<a href=#331 id=331 data-nosnippet>331</a>    ]))
-<a href=#332 id=332 data-nosnippet>332</a>}
+<a href=#277 id=277 data-nosnippet>277</a>    <span class="kw">let </span>job = object([
+<a href=#278 id=278 data-nosnippet>278</a>        (<span class="string">"schema"</span>, Json::String(<span class="string">"section_axial_sine_mms_v1"</span>.into())),
+<a href=#279 id=279 data-nosnippet>279</a>        (<span class="string">"quadrature"</span>, n(quadrature)),
+<a href=#280 id=280 data-nosnippet>280</a>    ]);
+<a href=#281 id=281 data-nosnippet>281</a>    <span class="kw">let </span><span class="kw-2">mut </span>rows = Vec::new();
+<a href=#282 id=282 data-nosnippet>282</a>    <span class="kw">for </span><span class="kw-2">&amp;</span>(continuity, multiplicity, label) <span class="kw">in </span><span class="kw-2">&amp;</span>[(<span class="number">2</span>, <span class="number">1</span>, <span class="string">"C2_maximum"</span>), (<span class="number">0</span>, <span class="number">3</span>, <span class="string">"C0_bernstein"</span>)] {
+<a href=#283 id=283 data-nosnippet>283</a>        <span class="kw">for </span><span class="kw-2">&amp;</span>cells <span class="kw">in </span>levels {
+<a href=#284 id=284 data-nosnippet>284</a>            rows.push(observe(cells, multiplicity, continuity, label, <span class="kw-2">&amp;</span>job)<span class="question-mark">?</span>);
+<a href=#285 id=285 data-nosnippet>285</a>        }
+<a href=#286 id=286 data-nosnippet>286</a>    }
+<a href=#287 id=287 data-nosnippet>287</a>    <span class="prelude-val">Ok</span>(object([
+<a href=#288 id=288 data-nosnippet>288</a>        (
+<a href=#289 id=289 data-nosnippet>289</a>            <span class="string">"schema"</span>,
+<a href=#290 id=290 data-nosnippet>290</a>            Json::String(<span class="string">"solidcraft_uniform_cubic_cube_convergence_v1"</span>.into()),
+<a href=#291 id=291 data-nosnippet>291</a>        ),
+<a href=#292 id=292 data-nosnippet>292</a>        (
+<a href=#293 id=293 data-nosnippet>293</a>            <span class="string">"geometry_parent"</span>,
+<a href=#294 id=294 data-nosnippet>294</a>            Json::String(<span class="string">"single_affine_unit_cube"</span>.into()),
+<a href=#295 id=295 data-nosnippet>295</a>        ),
+<a href=#296 id=296 data-nosnippet>296</a>        (<span class="string">"spline_degree"</span>, n(DEGREE)),
+<a href=#297 id=297 data-nosnippet>297</a>        (<span class="string">"quadrature_order"</span>, n(quadrature)),
+<a href=#298 id=298 data-nosnippet>298</a>        (
+<a href=#299 id=299 data-nosnippet>299</a>            <span class="string">"levels_per_axis"</span>,
+<a href=#300 id=300 data-nosnippet>300</a>            Json::Array(levels.iter().map(|<span class="kw-2">&amp;</span>x| n(x)).collect()),
+<a href=#301 id=301 data-nosnippet>301</a>        ),
+<a href=#302 id=302 data-nosnippet>302</a>        (<span class="string">"observations"</span>, Json::Array(rows)),
+<a href=#303 id=303 data-nosnippet>303</a>    ]))
+<a href=#304 id=304 data-nosnippet>304</a>}
+<a href=#305 id=305 data-nosnippet>305</a>
+<a href=#306 id=306 data-nosnippet>306</a><span class="kw">fn </span>observe(
+<a href=#307 id=307 data-nosnippet>307</a>    cells: usize,
+<a href=#308 id=308 data-nosnippet>308</a>    multiplicity: usize,
+<a href=#309 id=309 data-nosnippet>309</a>    continuity: usize,
+<a href=#310 id=310 data-nosnippet>310</a>    label: <span class="kw-2">&amp;</span>str,
+<a href=#311 id=311 data-nosnippet>311</a>    job: <span class="kw-2">&amp;</span>Json,
+<a href=#312 id=312 data-nosnippet>312</a>) -&gt; <span class="prelude-ty">Result</span>&lt;Json&gt; {
+<a href=#313 id=313 data-nosnippet>313</a>    <span class="kw">let </span>mesh = build_mesh(cells, multiplicity)<span class="question-mark">?</span>;
+<a href=#314 id=314 data-nosnippet>314</a>    <span class="kw">let </span>domain = IntegrationDomain {
+<a href=#315 id=315 data-nosnippet>315</a>        scalar_dofs: mesh.scalar_dofs,
+<a href=#316 id=316 data-nosnippet>316</a>        cell_count: mesh.elements.len(),
+<a href=#317 id=317 data-nosnippet>317</a>        z_bounds: [<span class="number">0.</span>, <span class="number">1.</span>],
+<a href=#318 id=318 data-nosnippet>318</a>        boundary: <span class="kw-2">&amp;</span>mesh.boundary,
+<a href=#319 id=319 data-nosnippet>319</a>        essential: <span class="kw-2">&amp;</span>mesh.lift,
+<a href=#320 id=320 data-nosnippet>320</a>    };
+<a href=#321 id=321 data-nosnippet>321</a>    <span class="kw">let </span>result = solve_sampled(<span class="kw-2">&amp;</span>domain, job, |cell, uvw| mesh.elements[cell].sample(uvw))<span class="question-mark">?</span>;
+<a href=#322 id=322 data-nosnippet>322</a>    <span class="prelude-val">Ok</span>(object([
+<a href=#323 id=323 data-nosnippet>323</a>        (<span class="string">"continuity_label"</span>, Json::String(label.into())),
+<a href=#324 id=324 data-nosnippet>324</a>        (<span class="string">"interior_continuity"</span>, n(continuity)),
+<a href=#325 id=325 data-nosnippet>325</a>        (<span class="string">"cells_per_axis"</span>, n(cells)),
+<a href=#326 id=326 data-nosnippet>326</a>        (<span class="string">"cell_count"</span>, n(mesh.elements.len())),
+<a href=#327 id=327 data-nosnippet>327</a>        (<span class="string">"scalar_dofs"</span>, n(mesh.scalar_dofs)),
+<a href=#328 id=328 data-nosnippet>328</a>        (<span class="string">"boundary_face_observations"</span>, n(mesh.boundary.len())),
+<a href=#329 id=329 data-nosnippet>329</a>        (<span class="string">"min_sampled_determinant"</span>, n(mesh.min_det)),
+<a href=#330 id=330 data-nosnippet>330</a>        (<span class="string">"max_geometry_position_error_mm"</span>, n(mesh.max_geometry_error)),
+<a href=#331 id=331 data-nosnippet>331</a>        (<span class="string">"max_jacobian_error"</span>, n(mesh.max_jacobian_error)),
+<a href=#332 id=332 data-nosnippet>332</a>        (<span class="string">"max_affine_value_error_mm"</span>, n(mesh.max_affine_value_error)),
+<a href=#333 id=333 data-nosnippet>333</a>        (
+<a href=#334 id=334 data-nosnippet>334</a>            <span class="string">"max_affine_gradient_error"</span>,
+<a href=#335 id=335 data-nosnippet>335</a>            n(mesh.max_affine_gradient_error),
+<a href=#336 id=336 data-nosnippet>336</a>        ),
+<a href=#337 id=337 data-nosnippet>337</a>        (<span class="string">"result"</span>, result),
+<a href=#338 id=338 data-nosnippet>338</a>    ]))
+<a href=#339 id=339 data-nosnippet>339</a>}
+<a href=#340 id=340 data-nosnippet>340</a>
+<a href=#341 id=341 data-nosnippet>341</a><span class="doccomment">/// Run the preregistered three-dimensional Gaussian load at matched field dimensions.
+<a href=#342 id=342 data-nosnippet>342</a>/// The two layouts integrate over different numbers of cells on the same physical cube.
+<a href=#343 id=343 data-nosnippet>343</a></span><span class="kw">pub fn </span>matched_dimension_gaussian(coarse_cells: usize, quadrature: usize) -&gt; <span class="prelude-ty">Result</span>&lt;Json&gt; {
+<a href=#344 id=344 data-nosnippet>344</a>    <span class="kw">if </span>![<span class="number">4</span>, <span class="number">5</span>].contains(<span class="kw-2">&amp;</span>coarse_cells) || ![<span class="number">6</span>, <span class="number">8</span>].contains(<span class="kw-2">&amp;</span>quadrature) {
+<a href=#345 id=345 data-nosnippet>345</a>        <span class="kw">return </span><span class="prelude-val">Err</span>(<span class="string">"matched cube requires C0 n=4 or 5 and q=6 or 8"</span>);
+<a href=#346 id=346 data-nosnippet>346</a>    }
+<a href=#347 id=347 data-nosnippet>347</a>    <span class="kw">let </span>smooth_cells = <span class="number">3 </span>* coarse_cells - <span class="number">2</span>;
+<a href=#348 id=348 data-nosnippet>348</a>    <span class="kw">let </span>coordinates = |v: [f64; <span class="number">3</span>]| Json::Array(v.into_iter().map(n).collect());
+<a href=#349 id=349 data-nosnippet>349</a>    <span class="kw">let </span>job = object([
+<a href=#350 id=350 data-nosnippet>350</a>        (<span class="string">"schema"</span>, Json::String(<span class="string">"local_gaussian_mms_v1"</span>.into())),
+<a href=#351 id=351 data-nosnippet>351</a>        (<span class="string">"quadrature"</span>, n(quadrature)),
+<a href=#352 id=352 data-nosnippet>352</a>        (<span class="string">"center_mm"</span>, coordinates([<span class="number">0.31</span>, <span class="number">0.57</span>, <span class="number">0.68</span>])),
+<a href=#353 id=353 data-nosnippet>353</a>        (<span class="string">"lengths_mm"</span>, coordinates([<span class="number">0.30</span>, <span class="number">0.41</span>, <span class="number">0.36</span>])),
+<a href=#354 id=354 data-nosnippet>354</a>    ]);
+<a href=#355 id=355 data-nosnippet>355</a>    <span class="prelude-val">Ok</span>(object([
+<a href=#356 id=356 data-nosnippet>356</a>        (
+<a href=#357 id=357 data-nosnippet>357</a>            <span class="string">"schema"</span>,
+<a href=#358 id=358 data-nosnippet>358</a>            Json::String(<span class="string">"matched_dimension_cube_gaussian_v1"</span>.into()),
+<a href=#359 id=359 data-nosnippet>359</a>        ),
+<a href=#360 id=360 data-nosnippet>360</a>        (<span class="string">"C0"</span>, observe(coarse_cells, <span class="number">3</span>, <span class="number">0</span>, <span class="string">"C0_bernstein"</span>, <span class="kw-2">&amp;</span>job)<span class="question-mark">?</span>),
+<a href=#361 id=361 data-nosnippet>361</a>        (<span class="string">"C2"</span>, observe(smooth_cells, <span class="number">1</span>, <span class="number">2</span>, <span class="string">"C2_maximum"</span>, <span class="kw-2">&amp;</span>job)<span class="question-mark">?</span>),
+<a href=#362 id=362 data-nosnippet>362</a>        (<span class="string">"job"</span>, job),
+<a href=#363 id=363 data-nosnippet>363</a>    ]))
+<a href=#364 id=364 data-nosnippet>364</a>}
 </code></pre></div></section></main></body></html>

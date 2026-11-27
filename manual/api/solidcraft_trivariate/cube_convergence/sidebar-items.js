@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":["run"]};
+window.SIDEBAR_ITEMS = {"fn":["matched_dimension_gaussian","run"]};

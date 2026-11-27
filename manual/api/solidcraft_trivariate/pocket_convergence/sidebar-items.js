@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":["solve"]};
+window.SIDEBAR_ITEMS = {"enum":["SectionJoins"],"fn":["solve","solve_model","solve_model_selected","solve_published"]};

@@ -89,7 +89,7 @@ For cubic fields the measured energy orders on the final doubling are
 At eight subdivisions cubic C¹ uses 3,780 free vector DOFs and has
 relative energy error 5.64e−5; cubic C⁰ uses 4,440 and gives 5.34e−5.
 The observed rate recovers on the bilinear control. The original
-curved-pocket calculation has only one coarse level.
+curved-pocket campaign initially measured one coarse level. The curved-pocket section below reports the subsequent refinements.
 
 .. figure:: continuity-errors.svg
    :alt: Relative error versus free coefficients for the native pocket and L section.
@@ -119,3 +119,40 @@ and 0.564310% error. A separate finest-grid Galerkin assembly recovers both
 results, including the effect of mass projection of the exterior trace. The
 fixed corner boxes qualify one multilevel schedule.
 `THB and uniform convergence histories <https://github.com/jeffwitz/SolidCraftTrivariate/blob/main/docs/results/continuity-followup/reentrant-ritz.json>`__.
+
+The curved gallery pocket
+-------------------------
+
+The gallery pocket has nine polynomial maps of degree (2,2,1). Its bottom
+section consists of five footprints. Four radial interfaces continue above
+the floor, where the curved footprint of the void disappears. An interface
+in a section and a shared face in the solid therefore have different counts.
+
+The four distinct radial seams admit linear AS-G¹ gluing factors. The four
+seams around the footprint require coprime quadratic transverse factors for
+these parametrizations. On the east footprint seam, in the inward-derivative
+convention, their quotient is proportional to
+(36t² − 36t + 19)/(16t² − 16t − 6). The polynomials have no common root.
+This obstructs a pair of linear gluing factors without a change of chart.
+A globally smooth physical field can still satisfy the physical gradient
+conditions on that seam. An approximation experiment must establish how many
+such fields the discrete space retains as the intervals are subdivided.
+
+The source volume is 48,976 mm³ and the floor area is 512/3 mm². Integrating
+polynomial moments along the oriented quadratic boundaries supplies an
+independent reference for strain energy and the separate work of body, top,
+floor and wall loads. On this curved pocket a physical quadratic displacement
+times height pulls back to a field of degree at most (4,4,1). It supplies a
+reproduction test for a quartic section field, and a convergence test for a
+cubic one.
+
+`Curved-pocket measurements and replay <https://github.com/jeffwitz/SolidCraftTrivariate/tree/main/docs/results/curved-pocket-fields>`_.
+
+.. figure:: curved-pocket-fields.svg
+   :alt: Exact section seams and the effect of enforcing C1 on either seam family, at degrees three and four.
+
+   On the quintic manufactured field, the last observed cubic energy order is
+   2.89 with C⁰, 2.99 with only the radial seams constrained, 0.93 with only
+   the footprint constrained and 1.07 with all eight seams constrained. The
+   corresponding quartic orders are 3.98, 4.03, 3.75 and 3.82. Each segment
+   joins two measured refinements. The chart partition and loads are identical.

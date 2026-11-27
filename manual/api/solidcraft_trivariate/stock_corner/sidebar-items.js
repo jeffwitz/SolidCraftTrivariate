@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"constant":["DEFAULT_TANGENT_CHAIN"],"enum":["Profile","SketchSegment","Treatment"],"fn":["analyze","validate_result"],"struct":["BodyMetrics","Edge","Face","Input","StockCornerPlan","VolumeEnvelope"]};

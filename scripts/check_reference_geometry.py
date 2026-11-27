@@ -207,7 +207,7 @@ def main() -> None:
             checks += 1
 
     print(f"geometry parity passed: {checks} checks; STEP comparison ignores only the header timestamp")
-    print("annulus four-/ten-map prototypes are full Rust-example models; they have no CLI audit route")
+    print("annulus four-/ten-map prototypes reproduce complete coefficient models from native Rust examples")
     print(f"independent SolidCore reference retained: {reference_step.relative_to(ROOT)}")
 
 

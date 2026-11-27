@@ -2,6 +2,7 @@
 
 import argparse
 from bisect import bisect_right
+import hashlib
 import json
 import math
 from pathlib import Path
@@ -134,6 +135,17 @@ def manifest():
         ):
             raise ValueError(f"{state} volume or component count differs")
         probes = membership_check(state, cells)
+        map_names = (
+            ("cylinder.patches.json", "cylinder-2.patches.json", "cylinder-3.patches.json")
+            if state == "cylinder"
+            else (f"{state}.patches.json",)
+        )
+        patch_maps = []
+        for name in map_names:
+            payload = (SITE / name).read_bytes()
+            patch_maps.append(
+                {"file": name, "sha256": hashlib.sha256(payload).hexdigest()}
+            )
         records.append(
             dict(
                 id=state,
@@ -144,6 +156,7 @@ def manifest():
                 volume_pi_coefficient_mm3=coeff,
                 components=count,
                 material_probes=probes,
+                patch_maps=patch_maps,
             )
         )
     return dict(

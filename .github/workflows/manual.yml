@@ -12,6 +12,7 @@ on:
       - 'docs/site/**/*.recipe.json'
       - 'docs/site/index.html'
       - 'docs/site/box-cylinder/tall/*.patches.json'
+      - 'docs/site/box-cylinder/tall/manifest.json'
       - 'Cargo.*'
       - 'Makefile'
       - '.readthedocs.yaml'
@@ -52,7 +53,7 @@ jobs:
         working-directory: docs/site
         run: |
           mkdir -p ../../build/manual-gallery-links
-          cp --parents index.html box-cylinder/tall/*.patches.json ../../build/manual-gallery-links/
+          cp --parents index.html box-cylinder/tall/manifest.json box-cylinder/tall/*.patches.json ../../build/manual-gallery-links/
       - uses: actions/upload-artifact@v4
         with:
           name: manual-gallery-links
@@ -87,8 +88,8 @@ jobs:
           rsync -a --delete "$RUNNER_TEMP/manual/" manual/
           test -s "$RUNNER_TEMP/gallery-links/index.html"
           cp "$RUNNER_TEMP/gallery-links/index.html" index.html
-          cp "$RUNNER_TEMP/gallery-links/box-cylinder/tall/"*.patches.json box-cylinder/tall/
-          git add -f -- manual index.html box-cylinder/tall/*.patches.json
+          cp "$RUNNER_TEMP/gallery-links/box-cylinder/tall/"*.json box-cylinder/tall/
+          git add -f -- manual index.html box-cylinder/tall/manifest.json box-cylinder/tall/*.patches.json
           if ! git diff --cached --quiet; then
             git commit -m "Publish scientific manual from ${GITHUB_SHA}"
             git pull --rebase origin gh-pages

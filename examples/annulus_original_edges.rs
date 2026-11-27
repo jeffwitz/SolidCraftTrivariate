@@ -1,4 +1,7 @@
 use solidcraft_trivariate::annulus_edges::{build_edge_model, EdgeLayout, EdgeProfile};
+#[path = "support/annulus_legacy_output.rs"]
+mod legacy_output;
+
 fn main() {
     let state = match std::env::args().nth(1).as_deref() {
         Some("sharp") => EdgeProfile::Sharp,
@@ -6,8 +9,7 @@ fn main() {
         Some("fillet") => EdgeProfile::Fillet,
         _ => panic!("expected sharp, chamfer or fillet"),
     };
-    println!(
-        "{}",
-        build_edge_model(EdgeLayout::OriginalQuadratic, state).expect("valid annulus state")
-    );
+    let model =
+        build_edge_model(EdgeLayout::OriginalQuadratic, state).expect("valid annulus state");
+    legacy_output::print_model(&model);
 }

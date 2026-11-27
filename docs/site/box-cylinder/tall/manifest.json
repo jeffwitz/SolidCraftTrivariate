@@ -18,7 +18,13 @@
       "volume_constant_mm3": 19200,
       "volume_pi_coefficient_mm3": 0,
       "components": 1,
-      "material_probes": 3179
+      "material_probes": 3179,
+      "patch_maps": [
+        {
+          "file": "box.patches.json",
+          "sha256": "1015bdee1b7c602d7c72825f377ee703c4b41f7442d34151b9769718f8606c31"
+        }
+      ]
     },
     {
       "id": "cylinder",
@@ -28,7 +34,21 @@
       "volume_constant_mm3": 0,
       "volume_pi_coefficient_mm3": 900,
       "components": 1,
-      "material_probes": 3179
+      "material_probes": 3179,
+      "patch_maps": [
+        {
+          "file": "cylinder.patches.json",
+          "sha256": "0ef8d710d18101aa12dc38900de1468bcc8e57a18e3dfd21ce07d10d31a67692"
+        },
+        {
+          "file": "cylinder-2.patches.json",
+          "sha256": "0ef8d710d18101aa12dc38900de1468bcc8e57a18e3dfd21ce07d10d31a67692"
+        },
+        {
+          "file": "cylinder-3.patches.json",
+          "sha256": "d89276b0cb1cfb52dd1d8eed53dbb9df215cc7e676b424db87b1fb3bd6dfd287"
+        }
+      ]
     },
     {
       "id": "union",
@@ -38,7 +58,13 @@
       "volume_constant_mm3": 19200,
       "volume_pi_coefficient_mm3": 600,
       "components": 1,
-      "material_probes": 3179
+      "material_probes": 3179,
+      "patch_maps": [
+        {
+          "file": "union.patches.json",
+          "sha256": "41b605b6a7b148c0bb8b60fa757e96ba3f73c47577037ad2f3234431f772ab32"
+        }
+      ]
     },
     {
       "id": "intersection",
@@ -48,7 +74,13 @@
       "volume_constant_mm3": 0,
       "volume_pi_coefficient_mm3": 300,
       "components": 1,
-      "material_probes": 3179
+      "material_probes": 3179,
+      "patch_maps": [
+        {
+          "file": "intersection.patches.json",
+          "sha256": "60e978a3b429b66819449d78a9627777e926153ffb99b366d3e0eef72b94a6c7"
+        }
+      ]
     },
     {
       "id": "a-minus-b",
@@ -58,7 +90,13 @@
       "volume_constant_mm3": 19200,
       "volume_pi_coefficient_mm3": -300,
       "components": 1,
-      "material_probes": 3179
+      "material_probes": 3179,
+      "patch_maps": [
+        {
+          "file": "a-minus-b.patches.json",
+          "sha256": "c67cb4620cf20e4d489566c17aa9d1aa73150e428b4d8be5a090ccde9b52b1d9"
+        }
+      ]
     },
     {
       "id": "b-minus-a",
@@ -68,7 +106,13 @@
       "volume_constant_mm3": 0,
       "volume_pi_coefficient_mm3": 600,
       "components": 2,
-      "material_probes": 3179
+      "material_probes": 3179,
+      "patch_maps": [
+        {
+          "file": "b-minus-a.patches.json",
+          "sha256": "94650174db2af8ba4eb5e0b43e0c45b80f873e6f710fd6c034ca1d734c1e1650"
+        }
+      ]
     },
     {
       "id": "xor",
@@ -78,7 +122,13 @@
       "volume_constant_mm3": 19200,
       "volume_pi_coefficient_mm3": 300,
       "components": 3,
-      "material_probes": 3179
+      "material_probes": 3179,
+      "patch_maps": [
+        {
+          "file": "xor.patches.json",
+          "sha256": "84b52412e7ff8fa029da08051e18e3b4f694294dabc737632fcbc8c34b132174"
+        }
+      ]
     }
   ]
 }

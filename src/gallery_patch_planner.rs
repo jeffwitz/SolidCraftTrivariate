@@ -87,9 +87,8 @@ fn oriented_span(
     source: &BTreeMap<String, [usize; 3]>,
 ) -> Result<Json> {
     let source_degree = source.get(&span.source).ok_or("unknown source block")?;
-    let elevation = std::array::from_fn(|axis| {
-        target[axis].saturating_sub(source_degree[span.axis_map[axis]])
-    });
+    let elevation =
+        std::array::from_fn(|axis| target[axis].saturating_sub(source_degree[span.axis_map[axis]]));
     Ok(object([
         ("source_block", text(span.source.clone())),
         ("axis_map", indices(span.axis_map)),
@@ -324,6 +323,14 @@ fn subface(span: &SpanPlan, patch_id: &str, side_name: &str) -> Result<Json> {
     ]))
 }
 
+fn exterior_face(span: &SpanPlan, patch_id: &str, side_name: &str) -> Result<Json> {
+    let Json::Object(mut fields) = subface(span, patch_id, side_name)? else {
+        return Err("invalid exterior face record");
+    };
+    fields.insert("status".to_owned(), text("extracted_exactly_from_model"));
+    Ok(Json::Object(fields))
+}
+
 fn cover_layout(
     model: &Json,
     groups: &[Group],
@@ -408,7 +415,7 @@ fn cover_layout(
     for face in model.field("topology")?.field("exterior")?.items()? {
         let (id, _, _) = side(face)?;
         let span = owner.get(&id).ok_or("missing exterior source span")?;
-        boundaries.push(subface(span.1, span.0, face.items()?[1].text()?)?);
+        boundaries.push(exterior_face(span.1, span.0, face.items()?[1].text()?)?);
     }
     let model_schema = model.field("schema")?.clone();
     let mut fields = vec![
@@ -599,6 +606,21 @@ mod tests {
                 .unwrap()
                 .len()
         );
+        assert!(cover
+            .field("boundary_faces")
+            .unwrap()
+            .items()
+            .unwrap()
+            .iter()
+            .all(|face| face.field("status").unwrap().text().unwrap()
+                == "extracted_exactly_from_model"));
+        assert!(cover
+            .field("interfaces")
+            .unwrap()
+            .items()
+            .unwrap()
+            .iter()
+            .all(|face| face.field("status").unwrap().text().unwrap() == "exact_match"));
     }
 
     #[test]

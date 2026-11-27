@@ -15,13 +15,40 @@ fn boundary(model: &Model) -> Result<String, PluginError> {
     solidcraft_trivariate::step_boundary::export_step(model).map_err(|e| invalid("body", e))
 }
 
-fn feature_id(params: &Value, key: &str, default: u64) -> Result<u64, PluginError> {
-    params
-        .get(key)
-        .unwrap_or(&json!(default))
+fn picked_feature(params: &Value, field: &str, fallback: u64) -> Result<u64, PluginError> {
+    let Some(picks) = params.get(field) else {
+        return Ok(fallback);
+    };
+    let list = picks
+        .as_array()
+        .ok_or_else(|| invalid(field, "expected a body selection"))?;
+    if list.is_empty() {
+        return Ok(fallback);
+    }
+    let [pick] = list.as_slice() else {
+        return Err(invalid(field, "pick exactly one body"));
+    };
+    let name = pick
+        .get("name")
+        .and_then(Value::as_str)
+        .filter(|_| pick["type"] == "body")
+        .ok_or_else(|| invalid(field, "expected a SolidCraft body"))?;
+    let reply = commands::run("model.body_features", "{}")?;
+    let bodies: Value = serde_json::from_str(&reply).map_err(|e| invalid(field, e))?;
+    let features = bodies["bodies"]
+        .as_array()
+        .and_then(|rows| rows.iter().find(|row| row["body"] == name))
+        .and_then(|row| row["features"].as_array())
+        .ok_or_else(|| invalid(field, "body is absent from this design"))?;
+    let [feature] = features.as_slice() else {
+        return Err(invalid(
+            field,
+            "body must have one trivariate import feature",
+        ));
+    };
+    feature["id"]
         .as_u64()
-        .filter(|n| *n > 0)
-        .ok_or_else(|| invalid(key, "select a positive timeline feature id"))
+        .ok_or_else(|| invalid(field, "body feature has no numeric id"))
 }
 
 // STEP exchange timestamps may differ between a desktop build and Wasm.
@@ -64,7 +91,7 @@ fn suite() -> Value {
 }
 
 pub(super) fn apply(entry: &str, params: &Value) -> Result<String, PluginError> {
-    let id = feature_id(params, "body_id", 1)?;
+    let id = picked_feature(params, "target_body", 1)?;
     let timeline = export_timeline()?;
     if matches!(entry, "chamfer-bores" | "fillet-bores") {
         let recipe =
@@ -120,7 +147,7 @@ pub(super) fn apply(entry: &str, params: &Value) -> Result<String, PluginError> 
     }
     let mut tool = None;
     let operation = if entry == "boolean" {
-        let tool_id = feature_id(params, "tool_id", 2)?;
+        let tool_id = picked_feature(params, "tool_body", 2)?;
         recipe["operation"] = json!("cylinder");
         verify_operand(&timeline, tool_id, &boundary(&build(&recipe)?)?)?;
         tool = Some(tool_id);

@@ -14,7 +14,8 @@
       "browser.visibility",
       "view.visual_style",
       "timeline.edit",
-      "timeline.suppress"
+      "timeline.suppress",
+      "model.body_features"
     ],
     "entries": [
       {
@@ -158,11 +159,16 @@
         "input_schema": {
           "type": "object",
           "properties": {
-            "body_id": {
-              "type": "integer",
-              "title": "Target timeline feature",
-              "default": 1,
-              "minimum": 1
+            "target_body": {
+              "type": "array",
+              "title": "Target body",
+              "maxItems": 1,
+              "x-solidcraft-selection": {
+                "version": 1,
+                "accept": [
+                  "body"
+                ]
+              }
             },
             "radius_mm": {
               "type": "integer",
@@ -198,17 +204,16 @@
         "input_schema": {
           "type": "object",
           "properties": {
-            "body_id": {
-              "type": "integer",
-              "title": "Target timeline feature",
-              "default": 1,
-              "minimum": 1
-            },
-            "tool_id": {
-              "type": "integer",
-              "title": "Cylinder feature",
-              "default": 2,
-              "minimum": 1
+            "target_body": {
+              "type": "array",
+              "title": "Target body",
+              "maxItems": 1,
+              "x-solidcraft-selection": {
+                "version": 1,
+                "accept": [
+                  "body"
+                ]
+              }
             },
             "operation": {
               "type": "string",
@@ -220,6 +225,17 @@
                 "b_minus_a"
               ],
               "default": "union"
+            },
+            "tool_body": {
+              "type": "array",
+              "title": "Cylinder tool",
+              "maxItems": 1,
+              "x-solidcraft-selection": {
+                "version": 1,
+                "accept": [
+                  "body"
+                ]
+              }
             }
           },
           "x-solidcraft-icon": "icons/boolean.svg"
@@ -237,11 +253,16 @@
         "input_schema": {
           "type": "object",
           "properties": {
-            "body_id": {
-              "type": "integer",
-              "title": "Target timeline feature",
-              "default": 1,
-              "minimum": 1
+            "target_body": {
+              "type": "array",
+              "title": "Target body",
+              "maxItems": 1,
+              "x-solidcraft-selection": {
+                "version": 1,
+                "accept": [
+                  "body"
+                ]
+              }
             }
           },
           "x-solidcraft-icon": "icons/chamfer.svg"
@@ -259,11 +280,16 @@
         "input_schema": {
           "type": "object",
           "properties": {
-            "body_id": {
-              "type": "integer",
-              "title": "Target timeline feature",
-              "default": 1,
-              "minimum": 1
+            "target_body": {
+              "type": "array",
+              "title": "Target body",
+              "maxItems": 1,
+              "x-solidcraft-selection": {
+                "version": 1,
+                "accept": [
+                  "body"
+                ]
+              }
             }
           },
           "x-solidcraft-icon": "icons/fillet.svg"

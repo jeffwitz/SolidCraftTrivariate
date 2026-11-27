@@ -1,10 +1,15 @@
 {
   "entry": "drill",
   "params": {
-    "body_id": 2,
     "source_feature_id": 1,
     "height_mm": 12,
-    "radius_mm": 2
+    "radius_mm": 2,
+    "target_body": [
+      {
+        "type": "body",
+        "name": "SolidCraft boundary"
+      }
+    ]
   },
   "design": "ribbon-rect-extrusion.sc",
   "grants": {

@@ -21,6 +21,69 @@ fn affine_first_jet_transition_matches_rational_reference() {
         row.field("reversed_status").unwrap().text().unwrap(),
         "constant_transition"
     );
+    assert_eq!(
+        row.field("as_g1")
+            .unwrap()
+            .field("status")
+            .unwrap()
+            .text()
+            .unwrap(),
+        "as_g1"
+    );
+    assert_eq!(
+        row.field("as_g1")
+            .unwrap()
+            .field("gluing_factors")
+            .unwrap()
+            .field("alpha_first")
+            .unwrap()
+            .to_string(),
+        r#"["1"]"#
+    );
+    assert!(row
+        .field("as_g1")
+        .unwrap()
+        .field("beta_split_verified")
+        .unwrap()
+        .bool()
+        .unwrap());
+    assert!(row
+        .field("as_g1")
+        .unwrap()
+        .field("syzygy_verified")
+        .unwrap()
+        .bool()
+        .unwrap());
+}
+
+#[test]
+fn reversed_bilinear_orientation_is_not_certified_as_g1() {
+    let model = parse(r#"{
+      "blocks":[
+        {"id":"a","degrees":[1,1,1],"controls":[[0,0,0,1],[0,0,1,1],[0,1,0,1],[0,1,1,1],[1,0,0,1],[1,0,1,1],[1,1,0,1],[1,1,1,1]]},
+        {"id":"b","degrees":[1,1,1],"controls":[[1,0,0,1],[1,0,1,1],[1,1,0,1],[1,1,1,1],[0,0,0,1],[0,0,1,1],[0,1,0,1],[0,1,1,1]]}
+      ],
+      "topology":{"interfaces":[{"first":["a","u1"],"second":["b","u0"],"orientation":{"swap":false,"flip_first":false,"flip_second":false}}]}
+    }"#).unwrap();
+    let result = classify(&model).unwrap();
+    let status = result.items().unwrap()[0]
+        .field("as_g1")
+        .unwrap()
+        .field("status")
+        .unwrap()
+        .text()
+        .unwrap();
+    assert_eq!(status, "not_as_g1");
+    assert_eq!(
+        result.items().unwrap()[0]
+            .field("as_g1")
+            .unwrap()
+            .field("orientable")
+            .unwrap()
+            .bool()
+            .unwrap(),
+        false
+    );
 }
 
 #[test]

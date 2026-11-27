@@ -404,3 +404,61 @@ fn object_for_pair(key: &str, value: f64) -> Json {
         ("relative_defect", Json::Number(value.to_string())),
     ])
 }
+
+#[test]
+fn matched_cube_rejects_unregistered_levels_and_quadrature() {
+    assert!(cube_convergence::matched_dimension_gaussian(3, 6).is_err());
+    assert!(cube_convergence::matched_dimension_gaussian(4, 2).is_err());
+}
+
+#[test]
+#[ignore = "full three-dimensional matched-dimension benchmark; run in release"]
+fn matched_dimension_gaussian() {
+    let mut runs = Vec::new();
+    for (level, q) in [(4, 6), (4, 8), (5, 6)] {
+        let row = cube_convergence::matched_dimension_gaussian(level, q).unwrap();
+        save_report(&format!("matched-gaussian-n{level}-q{q}.json"), &row);
+        runs.push(row);
+    }
+    for (row, level) in runs.iter().zip([4usize, 4, 5]) {
+        let width = 3 * level + 1;
+        for name in ["C0", "C2"] {
+            let space = row.field(name).unwrap();
+            let result = space.field("result").unwrap();
+            assert_eq!(
+                usize_number(space.field("scalar_dofs").unwrap()),
+                width.pow(3)
+            );
+            assert_eq!(
+                usize_number(result.field("free_vector_dofs").unwrap()),
+                3 * width.pow(2) * (width - 1)
+            );
+            assert!((number(result.field("volume_mm3").unwrap()) - 1.).abs() < 2e-11);
+            assert!(number(result.field("relative_residual").unwrap()) < 1e-9);
+            assert!(number(result.field("virtual_work_relative_defect").unwrap()) < 1e-8);
+            assert!(number(space.field("min_sampled_determinant").unwrap()) > 0.);
+            for key in [
+                "max_geometry_position_error_mm",
+                "max_jacobian_error",
+                "max_affine_value_error_mm",
+                "max_affine_gradient_error",
+            ] {
+                assert!(number(space.field(key).unwrap()) < 2e-11);
+            }
+        }
+        assert!(
+            measure(row.field("C0").unwrap(), "relative_energy_norm")
+                >= 1.5 * measure(row.field("C2").unwrap(), "relative_energy_norm")
+        );
+    }
+    for name in ["C0", "C2"] {
+        for key in ["relative_energy_norm", "relative_displacement_L2"] {
+            let value = |i: usize| measure(runs[i].field(name).unwrap(), key);
+            assert!((value(0) / value(1) - 1.).abs() < 1e-4);
+        }
+        assert!(
+            measure(runs[2].field(name).unwrap(), "relative_energy_norm")
+                < measure(runs[0].field(name).unwrap(), "relative_energy_norm")
+        );
+    }
+}

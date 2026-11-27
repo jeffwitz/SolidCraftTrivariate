@@ -29,6 +29,16 @@ Differential replay matched all records, statuses, and rational coefficients
 for 70 models: the 68 support-census models (3,136 interfaces) and both named
 models (50 interfaces). No arithmetic overflow occurred in this corpus.
 
+For lateral degree-`[1,1,1]` extrusions with one shared positive constant
+weight, each record also carries a separate `as_g1` result. It constructs exact
+determinant-syzygy factors, reduces their polynomial gcd, and verifies the
+split of total beta into two linear side factors. Admission checks coprime
+alpha factors, positive alpha product, and nonvanishing section Jacobians on
+the closed edge. The independent Python `Fraction` census agrees record for
+record with the native CLI on all 68 polygon models. This is an interface-local
+certificate; the constant/affine transition classification remains a separate
+diagnostic. See the [AS-G1 protocol and census](results/transverse-as-g1.md).
+
 ## Other Python invoked from project workflows
 
 The Python commands in `Makefile` fall into these groups:

@@ -274,42 +274,14 @@ pub fn run(levels: &[usize], quadrature: usize) -> Result<Json> {
     if levels.is_empty() || levels.windows(2).any(|w| w[0] >= w[1]) || quadrature < 2 {
         return Err("cube study requires increasing levels and quadrature >= 2");
     }
+    let job = object([
+        ("schema", Json::String("section_axial_sine_mms_v1".into())),
+        ("quadrature", n(quadrature)),
+    ]);
     let mut rows = Vec::new();
     for &(continuity, multiplicity, label) in &[(2, 1, "C2_maximum"), (0, 3, "C0_bernstein")] {
         for &cells in levels {
-            let mesh = build_mesh(cells, multiplicity)?;
-            let domain = IntegrationDomain {
-                scalar_dofs: mesh.scalar_dofs,
-                cell_count: mesh.elements.len(),
-                z_bounds: [0., 1.],
-                boundary: &mesh.boundary,
-                essential: &mesh.lift,
-            };
-            let result = solve_sampled(
-                &domain,
-                &object([
-                    ("schema", Json::String("section_axial_sine_mms_v1".into())),
-                    ("quadrature", n(quadrature)),
-                ]),
-                |cell, uvw| mesh.elements[cell].sample(uvw),
-            )?;
-            rows.push(object([
-                ("continuity_label", Json::String(label.into())),
-                ("interior_continuity", n(continuity)),
-                ("cells_per_axis", n(cells)),
-                ("cell_count", n(mesh.elements.len())),
-                ("scalar_dofs", n(mesh.scalar_dofs)),
-                ("boundary_face_observations", n(mesh.boundary.len())),
-                ("min_sampled_determinant", n(mesh.min_det)),
-                ("max_geometry_position_error_mm", n(mesh.max_geometry_error)),
-                ("max_jacobian_error", n(mesh.max_jacobian_error)),
-                ("max_affine_value_error_mm", n(mesh.max_affine_value_error)),
-                (
-                    "max_affine_gradient_error",
-                    n(mesh.max_affine_gradient_error),
-                ),
-                ("result", result),
-            ]));
+            rows.push(observe(cells, multiplicity, continuity, label, &job)?);
         }
     }
     Ok(object([
@@ -328,5 +300,65 @@ pub fn run(levels: &[usize], quadrature: usize) -> Result<Json> {
             Json::Array(levels.iter().map(|&x| n(x)).collect()),
         ),
         ("observations", Json::Array(rows)),
+    ]))
+}
+
+fn observe(
+    cells: usize,
+    multiplicity: usize,
+    continuity: usize,
+    label: &str,
+    job: &Json,
+) -> Result<Json> {
+    let mesh = build_mesh(cells, multiplicity)?;
+    let domain = IntegrationDomain {
+        scalar_dofs: mesh.scalar_dofs,
+        cell_count: mesh.elements.len(),
+        z_bounds: [0., 1.],
+        boundary: &mesh.boundary,
+        essential: &mesh.lift,
+    };
+    let result = solve_sampled(&domain, job, |cell, uvw| mesh.elements[cell].sample(uvw))?;
+    Ok(object([
+        ("continuity_label", Json::String(label.into())),
+        ("interior_continuity", n(continuity)),
+        ("cells_per_axis", n(cells)),
+        ("cell_count", n(mesh.elements.len())),
+        ("scalar_dofs", n(mesh.scalar_dofs)),
+        ("boundary_face_observations", n(mesh.boundary.len())),
+        ("min_sampled_determinant", n(mesh.min_det)),
+        ("max_geometry_position_error_mm", n(mesh.max_geometry_error)),
+        ("max_jacobian_error", n(mesh.max_jacobian_error)),
+        ("max_affine_value_error_mm", n(mesh.max_affine_value_error)),
+        (
+            "max_affine_gradient_error",
+            n(mesh.max_affine_gradient_error),
+        ),
+        ("result", result),
+    ]))
+}
+
+/// Run the preregistered three-dimensional Gaussian load at matched field dimensions.
+/// The two layouts integrate over different numbers of cells on the same physical cube.
+pub fn matched_dimension_gaussian(coarse_cells: usize, quadrature: usize) -> Result<Json> {
+    if ![4, 5].contains(&coarse_cells) || ![6, 8].contains(&quadrature) {
+        return Err("matched cube requires C0 n=4 or 5 and q=6 or 8");
+    }
+    let smooth_cells = 3 * coarse_cells - 2;
+    let coordinates = |v: [f64; 3]| Json::Array(v.into_iter().map(n).collect());
+    let job = object([
+        ("schema", Json::String("local_gaussian_mms_v1".into())),
+        ("quadrature", n(quadrature)),
+        ("center_mm", coordinates([0.31, 0.57, 0.68])),
+        ("lengths_mm", coordinates([0.30, 0.41, 0.36])),
+    ]);
+    Ok(object([
+        (
+            "schema",
+            Json::String("matched_dimension_cube_gaussian_v1".into()),
+        ),
+        ("C0", observe(coarse_cells, 3, 0, "C0_bernstein", &job)?),
+        ("C2", observe(smooth_cells, 1, 2, "C2_maximum", &job)?),
+        ("job", job),
     ]))
 }

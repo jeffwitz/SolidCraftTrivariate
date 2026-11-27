@@ -78,3 +78,24 @@ The sample covariance of `log(DOF)` and `log(error)` for `(n=1,2,4)` is:
 This measurement qualifies the affine unit cube, the specified isotropic
 material, sine field, loading, and uniform cubic spaces only. It does not
 qualify curved geometry, stress accuracy, or arbitrary boundary conditions.
+
+## Accuracy at equal dimension
+
+The original sine data also compare fields at exactly 343 scalar coefficients
+(882 free displacement coefficients). C² at n=4 gives relative energy-norm
+error 0.00314515 and C⁰ at n=2 gives 0.01161815, a factor of 3.69. The
+stored n=8 C² solve measured 0.00036113 with 1,331 scalar coefficients,
+while C⁰ at n=4 measured 0.00150076 with 2,197. The second pair has
+different dimensions. The observed factor is 4.16 with 39.4% fewer scalar
+coefficients. Both comparisons use measured errors.
+
+A [separately preregistered Gaussian field](../continuity-followup/cube-protocol.md)
+tests equal dimension with at least four spans per direction.
+At 6,084 free displacement coefficients, C⁰ and C² energy-norm errors
+are 0.00555250 and 0.00073965. At 11,520 free coefficients they are
+0.00288067 and 0.00032368. The factors of 7.51 and 8.90 meet the frozen
+1.5 threshold. At the smaller budget the C² calculation integrates 1,000
+cells and C⁰ integrates 64. These measurements compare accuracy per
+coefficient under a smooth load on affine geometry. The original
+equal-cell convergence criterion retains its failed verdict.
+[Quadrature, residuals, dimensions and L² errors](../continuity-followup/cube-matched.json)

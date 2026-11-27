@@ -140,6 +140,266 @@ fn quotient_affine(a: &P, b: &P) -> Option<Option<(Q, Q)>> {
     })
 }
 
+fn pdiv_rem(a: &P, b: &P) -> Option<(P, P)> {
+    if b.is_empty() {
+        return None;
+    }
+    let mut r = a.clone();
+    let mut q = vec![qnew(0, 1)?; a.len().saturating_sub(b.len()) + 1];
+    while !r.is_empty() && r.len() >= b.len() {
+        let shift = r.len() - b.len();
+        let factor = r.last()?.div(*b.last()?)?;
+        q[shift] = factor;
+        let mut term = vec![qnew(0, 1)?; shift];
+        term.extend(
+            b.iter()
+                .map(|x| x.mul(factor))
+                .collect::<Option<Vec<_>>>()?,
+        );
+        r = padd(&r, &term, -1)?;
+    }
+    Some((trim(q), r))
+}
+
+fn pgcd(a: &P, b: &P) -> Option<P> {
+    let (mut x, mut y) = (trim(a.clone()), trim(b.clone()));
+    while !y.is_empty() {
+        let (_, r) = pdiv_rem(&x, &y)?;
+        x = y;
+        y = r;
+    }
+    if x.is_empty() {
+        return Some(x);
+    }
+    let lead = *x.last()?;
+    x.iter().map(|v| v.div(lead)).collect()
+}
+
+fn split_beta(a: &P, b: &P, beta: &P) -> Option<(P, P)> {
+    // Solve beta = a * beta_second + b * beta_first for linear factors.
+    let z = qnew(0, 1)?;
+    let at = |p: &P, i: usize| p.get(i).copied().unwrap_or(z);
+    let mut m = vec![
+        vec![at(b, 0), z, at(a, 0), z, at(beta, 0)],
+        vec![at(b, 1), at(b, 0), at(a, 1), at(a, 0), at(beta, 1)],
+        vec![z, at(b, 1), z, at(a, 1), at(beta, 2)],
+    ];
+    let mut row = 0;
+    for col in 0..4 {
+        let Some(pivot) = (row..3).find(|r| m[*r][col].numerator() != 0) else {
+            continue;
+        };
+        m.swap(row, pivot);
+        let d = m[row][col];
+        for k in col..5 {
+            m[row][k] = m[row][k].div(d)?;
+        }
+        for r in 0..3 {
+            if r == row {
+                continue;
+            }
+            let f = m[r][col];
+            for k in col..5 {
+                m[r][k] = m[r][k].sub(f.mul(m[row][k])?)?;
+            }
+        }
+        row += 1;
+        if row == 3 {
+            break;
+        }
+    }
+    for r in row..3 {
+        if (0..4).all(|c| m[r][c].numerator() == 0) && m[r][4].numerator() != 0 {
+            return None;
+        }
+    }
+    let mut x = [z; 4];
+    for r in (0..row).rev() {
+        let col = (0..4).find(|c| m[r][*c].numerator() != 0)?;
+        let rhs = (col + 1..4).try_fold(m[r][4], |v, c| v.sub(m[r][c].mul(x[c])?))?;
+        x[col] = rhs.div(m[r][col])?;
+    }
+    Some((vec![x[0], x[1]], vec![x[2], x[3]]))
+}
+
+fn as_g1_result(
+    a: &Json,
+    sa: &str,
+    b: &Json,
+    sb: &str,
+    reverse: bool,
+) -> Result<Json, &'static str> {
+    let unsupported = || object([("status", Json::String("unsupported_family".into()))]);
+    let da = a.field("degrees")?.items()?;
+    let db = b.field("degrees")?.items()?;
+    if da.len() != 3
+        || db.len() != 3
+        || da
+            .iter()
+            .chain(db)
+            .any(|d| d.number::<usize>().ok() != Some(1))
+    {
+        return Ok(unsupported());
+    }
+    for block in [a, b] {
+        let controls = block.field("controls")?.items()?;
+        let first_weight = controls
+            .first()
+            .and_then(|p| p.items().ok())
+            .and_then(|p| p.get(3))
+            .and_then(|w| w.number::<i128>().ok());
+        if first_weight.is_none_or(|w| w <= 0)
+            || controls.iter().any(|p| {
+                p.items()
+                    .ok()
+                    .and_then(|p| p.get(3))
+                    .and_then(|w| w.number::<i128>().ok())
+                    != first_weight
+            })
+        {
+            return Ok(object([(
+                "status",
+                Json::String("unsupported_projective_weights".into()),
+            )]));
+        }
+    }
+    let (ta, na, _) = block_jet(a, sa, false)?;
+    let (tb, nb, _) = block_jet(b, sb, reverse)?;
+    if tb != ta {
+        return Ok(object([(
+            "status",
+            Json::String("unsupported_trace".into()),
+        )]));
+    }
+    // The determinant syzygy constructs gluing data:
+    // det(n_b,t)n_a + det(t,n_a)n_b + det(n_a,n_b)t = 0.
+    let mut alpha_a = cross(&nb, &ta).ok_or("rational overflow")?;
+    let mut alpha_b = cross(&ta, &na).ok_or("rational overflow")?;
+    let mut beta = cross(&na, &nb).ok_or("rational overflow")?;
+    let common = pgcd(&pgcd(&alpha_a, &alpha_b).ok_or("rational overflow")?, &beta)
+        .ok_or("rational overflow")?;
+    if common.is_empty() {
+        return Ok(object([("status", Json::String("indeterminate".into()))]));
+    }
+    for p in [&mut alpha_a, &mut alpha_b, &mut beta] {
+        let (q, r) = pdiv_rem(p, &common).ok_or("rational overflow")?;
+        if !r.is_empty() {
+            return Err("inexact gluing factor division");
+        }
+        *p = q;
+    }
+    let coeff = |p: &P| -> Json {
+        Json::Array(if p.is_empty() {
+            vec![Json::String("0".into())]
+        } else {
+            p.iter().map(|x| Json::String(qtext(*x))).collect()
+        })
+    };
+    // AS-G1 permits quadratic beta; the two alpha gluing functions are linear.
+    let linear = alpha_a.len() <= 2 && alpha_b.len() <= 2 && beta.len() <= 3;
+    let relatively_prime = pgcd(&alpha_a, &alpha_b).is_some_and(|p| p.len() == 1);
+    let Some((beta_first, beta_second)) = split_beta(&alpha_a, &alpha_b, &beta) else {
+        return Ok(object([
+            ("status", Json::String("not_as_g1".into())),
+            ("reason", Json::String("no_linear_beta_split".into())),
+        ]));
+    };
+    let split_check = padd(
+        &padd(
+            &pmul(&alpha_a, &beta_second).ok_or("rational overflow")?,
+            &pmul(&alpha_b, &beta_first).ok_or("rational overflow")?,
+            1,
+        )
+        .ok_or("rational overflow")?,
+        &beta,
+        -1,
+    )
+    .ok_or("rational overflow")?;
+    let identity_check = (0..2).all(|c| {
+        let left = pmul(&alpha_a, &na[c])
+            .and_then(|x| pmul(&alpha_b, &nb[c]).and_then(|y| padd(&x, &y, 1)))
+            .and_then(|x| pmul(&beta, &ta[c]).and_then(|y| padd(&x, &y, 1)));
+        left.is_some_and(|p| p.is_empty())
+    });
+    let endpoint_signs = |p: &P| -> Option<(i8, i8)> {
+        let x = p.first()?.numerator();
+        let y = p
+            .iter()
+            .try_fold(qnew(0, 1)?, |sum, c| sum.add(*c))?
+            .numerator();
+        if x == 0 || y == 0 || x.signum() != y.signum() {
+            None
+        } else {
+            Some((x.signum() as i8, y.signum() as i8))
+        }
+    };
+    // Normals are directed inward on each chart; compatible inward gluing has
+    // equal-sign alpha factors because the two physical inward vectors oppose.
+    let orientable = endpoint_signs(&alpha_a)
+        .zip(endpoint_signs(&alpha_b))
+        .is_some_and(|(x, y)| x.0 == y.0 && x.1 == y.1);
+    let no_zero = |p: &P| -> Option<bool> {
+        let (s0, s1) = endpoint_signs(p)?;
+        if p.len() <= 2 {
+            return Some(s0 == s1);
+        }
+        if p.len() != 3 {
+            return None;
+        }
+        let (a, b) = (p[2], p[1]);
+        if a.numerator() == 0 {
+            return Some(s0 == s1);
+        }
+        let vertex = b.mul(qnew(-1, 2)?)?.div(a)?;
+        if vertex.numerator() <= 0 || vertex.sub(qnew(1, 1)?)?.numerator() >= 0 {
+            return Some(s0 == s1);
+        }
+        let value = p[0].sub(b.mul(b)?.div(a.mul(qnew(4, 1)?)?)?)?;
+        Some(if s0 > 0 {
+            value.numerator() > 0
+        } else {
+            value.numerator() < 0
+        })
+    };
+    let regular = no_zero(&cross(&ta, &na).ok_or("rational overflow")?).unwrap_or(false)
+        && no_zero(&cross(&ta, &nb).ok_or("rational overflow")?).unwrap_or(false);
+    let admitted = linear
+        && relatively_prime
+        && orientable
+        && regular
+        && split_check.is_empty()
+        && identity_check;
+    Ok(object([
+        (
+            "status",
+            Json::String(if admitted { "as_g1" } else { "not_as_g1" }.into()),
+        ),
+        (
+            "gluing_factors",
+            object([
+                ("alpha_first", coeff(&alpha_a)),
+                ("alpha_second", coeff(&alpha_b)),
+                ("beta_first", coeff(&beta_first)),
+                ("beta_second", coeff(&beta_second)),
+                ("beta", coeff(&beta)),
+            ]),
+        ),
+        ("common_factor", coeff(&common)),
+        ("relatively_prime", Json::Bool(relatively_prime)),
+        ("orientable", Json::Bool(orientable)),
+        ("regular_on_closed_edge", Json::Bool(regular)),
+        ("trace_tangent_match", Json::Bool(true)),
+        ("beta_split_verified", Json::Bool(split_check.is_empty())),
+        ("syzygy_verified", Json::Bool(identity_check)),
+        (
+            "proof",
+            Json::String(
+                "exact determinant syzygy; polynomial gcd division has zero remainder".into(),
+            ),
+        ),
+    ]))
+}
+
 fn parse_face(v: &Json) -> Result<(&str, &str), &'static str> {
     let a = v.items()?;
     if a.len() != 2 {
@@ -342,9 +602,11 @@ pub fn classify(model: &Json) -> Result<Json, &'static str> {
         let mut coeff = object([]);
         let mut reverse_coeff = object([]);
         let mut reversed = None;
+        let mut as_g1 = object([("status", Json::String("unsupported_frame".into()))]);
         let status;
         if side_axial {
-            status = "axial_or_nonlateral"
+            status = "axial_or_nonlateral";
+            as_g1 = object([("status", Json::String("nonlateral_interface".into()))]);
         } else {
             let shift = |x: &Json| -> Result<Option<[Q; 3]>, &'static str> {
                 let dg = x.field("degrees")?.items()?;
@@ -384,6 +646,7 @@ pub fn classify(model: &Json) -> Result<Json, &'static str> {
             if swap || fs || x.is_none() || x != y {
                 status = "unsupported_transition_frame"
             } else {
+                as_g1 = as_g1_result(aa, sa, bb, sb, ff)?;
                 let (s, c1, c2) = directional(aa, sa, bb, sb, ff)?;
                 status = s;
                 coeff = coeffs(c1, c2);
@@ -396,6 +659,7 @@ pub fn classify(model: &Json) -> Result<Json, &'static str> {
         let mut fields = std::collections::BTreeMap::new();
         fields.insert("faces".into(), Json::Array(vec![face(first), face(second)]));
         fields.insert("status".into(), Json::String(status.into()));
+        fields.insert("as_g1".into(), as_g1);
         if let Json::Object(values) = coeff {
             fields.extend(values);
         }

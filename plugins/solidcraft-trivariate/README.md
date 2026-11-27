@@ -68,7 +68,7 @@ SolidCraft 0.48.1 CLI, tests the entries, and packages `plugin.json` with the co
 
 ## Install in SolidCraft
 
-1. Download `solidcraft-trivariate-0.4.0.zip` from the successful **SolidCraft Trivariate plugin** workflow artifact.
+1. Download `solidcraft-trivariate-0.4.1.zip` from the successful **SolidCraft Trivariate plugin** workflow artifact.
 2. In SolidCraft, open **Preferences > Plugins > Install plugin…** and choose the ZIP.
 3. Approve the `file` command group and choose a folder named `companion` with read/write access. The plugin reads recipes and writes `timeline.json`, `partition.json`, and `result.step` there.
 4. Use the entries in the Model ribbon or Plugins menu. Place a recipe JSON in the approved folder and run **Build Recipe**. `operation` defaults to `from_recipe`; choose one of the four operations for the tall box-cylinder suite. `rim` defaults to `sharp` and also offers `chamfer` or `fillet` for the supported FieldCraft recipe. Incompatible operation overrides are refused before a feature is added.
@@ -87,7 +87,7 @@ redistribution of the WIT-derived interface.
 From the repository root, run:
 
 ```sh
-python3 scripts/solidcraft_compact_desktop.py /path/to/solidcraft-trivariate-0.4.0.zip
+python3 scripts/solidcraft_compact_desktop.py /path/to/solidcraft-trivariate-0.4.1.zip
 ```
 
 The launcher installs the package in its own desktop profile and opens the sharp
@@ -102,6 +102,27 @@ created by sketch extrusion, enter its source sketch ID and extrusion height.
 Boolean edits the box and suppresses the selected cylinder. The qualified
 Boolean operand pair is the tall box/cylinder example. Fillet and Chamfer accept edges or the boundary of a selected face on one body, including a body edited by multiple features. Finish the sketch, open the operation, click the selection field and pick in the viewport. Set the radius or distance in millimetres. SolidCraft applies this selection to the host B-rep and records a feature in its timeline. The native reference bore-rim treatments remain available through Build Recipe.
 For a Boolean operation, activate the tool field and pick the cylinder. Each operation uses SolidCraft's original viewport and undo history.
+
+### Filleting an outside corner that meets a pocket
+
+Select the original sharp edge, enter the radius in millimetres and run **Fillet**.
+If a previous fillet occupies the edge, return to the feature immediately before
+it and run the plugin there. Editing an existing SolidCraft fillet in its history
+uses SolidCraft's own rolling-fillet command.
+
+On a full-length straight outside corner of axis-aligned stock, a rolling contact
+line can run into an opening in an adjacent wall. For an eligible single edge,
+the plugin can cut the corner with an extruded circular arc at the requested
+radius. The existing pocket trims that cylindrical wall. This produces a host
+B-rep and keeps the other edges sharp. The cut is recorded in the timeline.
+
+The regression fixture `tests/edge-fillet-side-opening.sc` has a 22 × 12 × 12 mm
+stock and a through-bore of radius 2 mm centred at (20.5, 4) in the XY plane.
+A 7 mm fillet on the vertical edge at (22, 0) meets the bore. In this section,
+the surviving bore area inside the rounded stock is the intersection area of
+two disks with radii 7 and 2 mm and centre distance √157/2 mm.
+Subtracting that lens and the removed corner from the stock gives
+2,935.94898449337 mm³. The host fixture checks this volume after the edit.
 
 Open `tests/ribbon-bracket.sc` for the bore treatments, `tests/ribbon-box.sc` for
 drilling, or `tests/ribbon-pair.sc` for Boolean combinations (features 1 and 2).

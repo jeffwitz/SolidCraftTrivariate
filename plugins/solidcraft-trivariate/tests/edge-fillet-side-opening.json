@@ -1,0 +1,40 @@
+{
+  "entry": "fillet",
+  "params": {
+    "selection": [
+      {
+        "type": "edge",
+        "body": "FixtureStock",
+        "index": 8,
+        "point": [
+          22.0,
+          0.0,
+          6.0
+        ]
+      }
+    ],
+    "radius_mm": 7.0
+  },
+  "design": "edge-fillet-side-opening.sc",
+  "grants": {
+    "folders": [
+      {
+        "name": "companion",
+        "read": true,
+        "write": true,
+        "from": "companion"
+      }
+    ],
+    "command_groups": [
+      "file"
+    ]
+  },
+  "expect": {
+    "model": {
+      "body_count": 1,
+      "total": {
+        "volume_mm3": 2935.94898449337
+      }
+    }
+  }
+}

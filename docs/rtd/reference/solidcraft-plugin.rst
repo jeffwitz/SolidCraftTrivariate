@@ -16,7 +16,7 @@ Launch the separate compact profile to open the sharp FieldCraft bracket:
 
 .. code-block:: bash
 
-   python3 scripts/solidcraft_compact_desktop.py /path/to/solidcraft-trivariate-0.4.0.zip
+   python3 scripts/solidcraft_compact_desktop.py /path/to/solidcraft-trivariate-0.4.1.zip
 
 Its Sketch tab pins new sketch, line, two-point rectangle, coincidence,
 horizontal/vertical, fit-point spline, control-point spline, finish and cancel. The same ribbon adds **extrude**,
@@ -47,7 +47,11 @@ the entry dialogs use the package's operation icons.
   the sketch and select an edge, several edges, or a face whose boundary
   should be treated. Adjacent coplanar patches are grouped to exclude
   internal partition seams. Tangent-chain propagation is disabled. If the
-  kernel cannot construct the requested corners, the edit is refused.
+  rolling fillet reaches a pocket on a single eligible full-length straight
+  outside corner of axis-aligned stock, the plugin can also cut the corner
+  with an extruded quarter-circle. Its cylindrical face retains the entered
+  radius wherever it borders material. Run the plugin from the original
+  sharp edge when replacing an existing fillet.
   Enter the radius or distance in millimetres and run
   the command. The edited solid can already contain extrusions and cuts.
   SolidCraft creates a B-rep feature in the document timeline. The native

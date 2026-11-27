@@ -1,10 +1,6 @@
-//! Selection-scoped host B-Rep chamfer and fillet dispatch.
-//!
-//! The host owns B-Rep topology. We resolve its sparse `model.edges` / `model.faces` indices
-//! against the named body, then ask SolidCraft's native solid operation to edit those exact
-//! edges. Face picks expand only to the selected planar patch's perimeter; coplanar adjacent
-//! faces are treated as one patch so an artificial partition seam is not selected. No tangent
-//! chain propagation is requested. This does not edit trivariate recipe geometry.
+//! Adapt SolidCraft edge and face selections to the stock-corner kernel or host blend.
+//! The host owns the B-rep topology and executes the edit as a timeline transaction.
+//! Tangent propagation is configurable for host blends across split rims.
 
 use super::*;
 use std::collections::{BTreeSet, HashMap};
@@ -292,12 +288,7 @@ fn edge_face_sides(name: &str) -> Vec<&str> {
         .collect()
 }
 
-#[derive(Clone, Debug)]
-struct BodyMetrics {
-    volume: f64,
-    closed: bool,
-    bounds: ([f64; 3], [f64; 3]),
-}
+type BodyMetrics = solidcraft_trivariate::stock_corner::BodyMetrics;
 
 fn find_named<'a>(value: &'a Value, name: &str) -> Option<&'a Value> {
     if value.get("name").and_then(Value::as_str) == Some(name) {
@@ -358,309 +349,73 @@ fn body_metrics(body: &str) -> Result<BodyMetrics, PluginError> {
     Ok(BodyMetrics {
         volume,
         closed,
+        shell_count: shells,
         bounds: (min, max),
     })
 }
 
-#[derive(Clone, Copy, Debug)]
-struct LocalCorner {
-    origin: [f64; 3],
-    x_dir: [f64; 3],
-    y_dir: [f64; 3],
-    edge_length: f64,
-    tool_length: f64,
-}
-
-fn dot(a: [f64; 3], b: [f64; 3]) -> f64 {
-    a[0] * b[0] + a[1] * b[1] + a[2] * b[2]
-}
-
-fn cross(a: [f64; 3], b: [f64; 3]) -> [f64; 3] {
-    [
-        a[1] * b[2] - a[2] * b[1],
-        a[2] * b[0] - a[0] * b[2],
-        a[0] * b[1] - a[1] * b[0],
-    ]
-}
-
-fn unit_axis(v: [f64; 3], tolerance: f64) -> Option<usize> {
-    let axis = (0..3).find(|&i| v[i].abs() > 1.0 - tolerance)?;
-    ((0..3)
-        .filter(|&i| i != axis)
-        .all(|i| v[i].abs() <= tolerance))
-    .then_some(axis)
-}
-
-/// Prove the picked edge is a full-span, convex, axis-aligned stock corner. The tool only
-/// sweeps a quarter-circle corner prism over that full edge; curved or partial edges refuse.
-fn prove_local_corner(
+fn local_corner_cut(
     body: &str,
-    item: &Value,
-    radius: f64,
-    edges: &[EdgeRow],
-    metrics: &BodyMetrics,
-) -> Result<LocalCorner, PluginError> {
-    if item.get("type").and_then(Value::as_str) != Some("edge") {
-        return Err(bad(
-            "selection",
-            "analytic fallback requires one selected edge",
-        ));
-    }
-    let index = item
-        .get("index")
-        .and_then(Value::as_u64)
-        .ok_or_else(|| bad("selection", "selected edge has no index"))?;
-    let edge = edges
-        .iter()
-        .find(|e| e.index == index)
-        .ok_or_else(|| bad("selection", "selected edge vanished"))?;
-    let (Some(a), Some(b), Some(name)) = (edge.start, edge.end, edge.name.as_deref()) else {
-        return Err(bad(
-            "selection",
-            "analytic fallback requires a straight named edge with endpoints",
-        ));
-    };
-    let (lo, hi) = metrics.bounds;
-    let size = std::array::from_fn::<_, 3, _>(|i| hi[i] - lo[i]);
-    let scale = size.into_iter().fold(1.0_f64, f64::max);
-    let tol = scale * 2.0e-8;
-    let chord_vec = [b[0] - a[0], b[1] - a[1], b[2] - a[2]];
-    let chord = distance(a, b);
-    if !chord.is_finite() || chord <= tol {
-        return Err(bad(
-            "selection",
-            "analytic fallback requires a nonzero straight edge",
-        ));
-    }
-    let Some(axis) = unit_axis(chord_vec.map(|v| v / chord), 1e-9) else {
-        return Err(bad(
-            "selection",
-            "analytic fallback requires an axis-aligned straight edge",
-        ));
-    };
-    if chord <= tol || (edge.length - chord).abs() > tol || (chord - size[axis]).abs() > tol {
-        return Err(bad(
-            "selection",
-            "analytic fallback requires an edge spanning the full stock length",
-        ));
-    }
-    let start = if a[axis] < b[axis] { a } else { b };
-    let end = if a[axis] < b[axis] { b } else { a };
-    if (start[axis] - lo[axis]).abs() > tol || (end[axis] - hi[axis]).abs() > tol {
-        return Err(bad(
-            "selection",
-            "analytic fallback edge must span the complete stock bound",
-        ));
-    }
-    let transverse: Vec<usize> = (0..3).filter(|&i| i != axis).collect();
-    for &i in &transverse {
-        if (start[i] - end[i]).abs() > tol
-            || ((start[i] - lo[i]).abs() > tol && (start[i] - hi[i]).abs() > tol)
-        {
-            return Err(bad(
-                "selection",
-                "analytic fallback requires an outer stock corner",
-            ));
-        }
-    }
-    if radius >= size[transverse[0]].min(size[transverse[1]]) - tol {
-        return Err(bad(
-            "radius_mm",
-            "radius must fit within both stock dimensions",
-        ));
-    }
-    let face_rows = faces(body)?;
-    let sides = edge_face_sides(name);
-    if sides.len() != 2 || sides[0] == sides[1] {
-        return Err(bad(
-            "selection",
-            "analytic fallback requires two distinct planar exterior faces",
-        ));
-    }
-    let face_for = |side: &str| face_rows.iter().find(|f| f.name.as_deref() == Some(side));
-    let f0 = face_for(sides[0])
-        .ok_or_else(|| bad("selection", "could not resolve first adjacent face"))?;
-    let f1 = face_for(sides[1])
-        .ok_or_else(|| bad("selection", "could not resolve second adjacent face"))?;
-    let (Some(n0), Some(p0), Some(n1), Some(p1)) = (f0.normal, f0.point, f1.normal, f1.point)
-    else {
-        return Err(bad(
-            "selection",
-            "analytic fallback requires planar adjacent faces",
-        ));
-    };
-    let Some(ax0) = unit_axis(n0, 1e-9) else {
-        return Err(bad("selection", "adjacent face is not axis-aligned"));
-    };
-    let Some(ax1) = unit_axis(n1, 1e-9) else {
-        return Err(bad("selection", "adjacent face is not axis-aligned"));
-    };
-    if ax0 == axis || ax1 == axis || ax0 == ax1 || dot(n0, n1).abs() > 1e-9 {
-        return Err(bad(
-            "selection",
-            "adjacent faces are not the two perpendicular exterior sides",
-        ));
-    }
-    for (normal, point, side_axis) in [(n0, p0, ax0), (n1, p1, ax1)] {
-        let bound = if normal[side_axis] > 0.0 {
-            hi[side_axis]
-        } else {
-            lo[side_axis]
-        };
-        if (point[side_axis] - bound).abs() > tol || (start[side_axis] - bound).abs() > tol {
-            return Err(bad("selection", "edge is not on the exterior stock planes"));
-        }
-    }
-    let mut e_dir = [0.0; 3];
-    e_dir[axis] = 1.0;
-    let (x_dir, opposite) = if dot(cross(e_dir, n0), [-n1[0], -n1[1], -n1[2]]) > 1.0 - 1e-9 {
-        (n0, n1)
-    } else if dot(cross(e_dir, n1), [-n0[0], -n0[1], -n0[2]]) > 1.0 - 1e-9 {
-        (n1, n0)
-    } else {
-        return Err(bad(
-            "selection",
-            "adjacent face orientation does not prove a convex outer corner",
-        ));
-    };
-    let y_dir = cross(e_dir, x_dir);
-    debug_assert!(dot(y_dir, [-opposite[0], -opposite[1], -opposite[2]]) > 1.0 - 1e-9);
-    let inset = 1.0_f64.min(size[axis] / 4.0);
-    let origin = [
-        start[0] - e_dir[0] * inset,
-        start[1] - e_dir[1] * inset,
-        start[2] - e_dir[2] * inset,
-    ];
-    Ok(LocalCorner {
-        origin,
-        x_dir,
-        y_dir,
-        edge_length: size[axis],
-        tool_length: size[axis] + 2.0 * inset,
-    })
-}
-
-fn is_full_box_perimeter(edge: &EdgeRow, bounds: ([f64; 3], [f64; 3]), tol: f64) -> bool {
-    let (Some(a), Some(b), Some(mid)) = (edge.start, edge.end, edge.mid) else {
-        return false;
-    };
-    let chord = distance(a, b);
-    if (edge.length - chord).abs() > tol || chord <= tol {
-        return false;
-    }
-    let delta = [b[0] - a[0], b[1] - a[1], b[2] - a[2]];
-    let Some(axis) = unit_axis(delta.map(|v| v / chord), 1e-9) else {
-        return false;
-    };
-    let (lo, hi) = bounds;
-    (a[axis].min(b[axis]) - lo[axis]).abs() <= tol
-        && (a[axis].max(b[axis]) - hi[axis]).abs() <= tol
-        && (mid[axis] - (lo[axis] + hi[axis]) * 0.5).abs() <= tol
-        && (0..3).filter(|&i| i != axis).all(|i| {
-            (a[i] - b[i]).abs() <= tol
-                && ((a[i] - lo[i]).abs() <= tol || (a[i] - hi[i]).abs() <= tol)
-        })
-}
-
-/// A nearby non-perimeter trim on either supporting plane means a native constant-radius
-/// blend would have to trim another loop. Use the local analytic sweep before asking the host
-/// fillet command, whose failed native feature can be retained by some host transactions.
-fn has_nearby_support_trim(
-    body: &str,
-    selected: &EdgeRow,
-    radius: f64,
-    edges: &[EdgeRow],
-    metrics: &BodyMetrics,
-) -> Result<bool, PluginError> {
-    let selected_name = selected
-        .name
-        .as_deref()
-        .ok_or_else(|| bad("selection", "selected edge has no adjacent-face names"))?;
-    let side_names = edge_face_sides(selected_name);
-    let face_rows = faces(body)?;
-    let scale = (0..3)
-        .map(|i| metrics.bounds.1[i] - metrics.bounds.0[i])
-        .fold(1.0_f64, f64::max);
-    let tol = scale * 2.0e-8;
-    let selected_start = selected
-        .start
-        .ok_or_else(|| bad("selection", "selected edge has no start point"))?;
-    let selected_end = selected
-        .end
-        .ok_or_else(|| bad("selection", "selected edge has no end point"))?;
-    for side in side_names {
-        let Some(face) = face_rows.iter().find(|f| f.name.as_deref() == Some(side)) else {
-            continue;
-        };
-        let (Some(normal), Some(point)) = (face.normal, face.point) else {
-            continue;
-        };
-        for edge in edges {
-            if edge.index == selected.index
-                || !edge.name.as_deref().is_some_and(|n| edge_has_face(n, side))
-                || is_full_box_perimeter(edge, metrics.bounds, tol)
-            {
-                continue;
-            }
-            let samples: Vec<[f64; 3]> = [edge.start, edge.end, edge.mid]
-                .into_iter()
-                .flatten()
-                .collect();
-            if samples.is_empty() {
-                continue;
-            }
-            let lies_on_support = samples.iter().all(|p| {
-                let d = [p[0] - point[0], p[1] - point[1], p[2] - point[2]];
-                dot(d, normal).abs() <= tol
-            });
-            // Every point of this trim is within its total arc length of any one sample, so
-            // this lower bound cannot miss an unsampled crossing between start/mid/end.
-            let near_edge = samples.iter().any(|p| {
-                segment_distance(*p, selected_start, selected_end) - edge.length <= radius + tol
-            });
-            if lies_on_support && near_edge {
-                return Ok(true);
-            }
-        }
-    }
-    Ok(false)
-}
-
-fn analytic_corner_cut(
-    body: &str,
-    radius: f64,
-    corner: LocalCorner,
-    before: &BodyMetrics,
+    plan: &solidcraft_trivariate::stock_corner::StockCornerPlan,
+    before: BodyMetrics,
+    field: &str,
 ) -> Result<String, PluginError> {
-    // A constant-radius quarter-circle tool, extruded just past the two end planes.
+    use solidcraft_trivariate::stock_corner::SketchSegment;
     let sketch_raw = commands::run(
         "sketch.create",
         &json!({
-            "name":"SCT Local Analytic Fillet",
-            "plane":{"origin":corner.origin,"x_dir":corner.x_dir,"y_dir":corner.y_dir}
+            "name":"SCT Local Corner Treatment",
+            "plane":{"origin":plan.origin,"x_dir":plan.x_dir,"y_dir":plan.y_dir}
         })
         .to_string(),
     )?;
-    let sketch: Value = serde_json::from_str(&sketch_raw).map_err(|e| bad("fillet", e))?;
+    let sketch: Value = serde_json::from_str(&sketch_raw).map_err(|e| bad(field, e))?;
     let sketch_id = sketch
         .get("sketch")
         .and_then(Value::as_u64)
-        .ok_or_else(|| {
-            bad(
-                "fillet",
-                "host did not return the temporary sketch feature id",
-            )
-        })?;
-    let r = radius;
-    let path = json!({"points":[[-r,0.0],[-r,-1.0],[1.0,-1.0],[1.0,r],[0.0,r]],"closed":false});
+        .ok_or_else(|| bad(field, "host did not return the temporary sketch feature id"))?;
     let built = (|| -> Result<String, PluginError> {
-        commands::run("sketch.line", &path.to_string())?;
-        commands::run(
-            "sketch.arc.center_point",
-            &json!({"center":[-r,r],"start":[0.0,r],"end":[-r,0.0],"clockwise":true}).to_string(),
-        )?;
+        let mut i = 0;
+        while i < plan.profile_segments.len() {
+            match &plan.profile_segments[i] {
+                SketchSegment::Line { start, end } => {
+                    let mut points = vec![*start, *end];
+                    i += 1;
+                    while let Some(SketchSegment::Line { start, end }) =
+                        plan.profile_segments.get(i)
+                    {
+                        let previous = points.last().copied().expect("at least one point");
+                        if previous != *start {
+                            return Err(bad(
+                                "selection",
+                                "core profile has disconnected line segments",
+                            ));
+                        }
+                        points.push(*end);
+                        i += 1;
+                    }
+                    commands::run(
+                        "sketch.line",
+                        &json!({"points":points,"closed":false}).to_string(),
+                    )?;
+                }
+                SketchSegment::Arc {
+                    center,
+                    start,
+                    end,
+                    clockwise,
+                } => {
+                    commands::run(
+                        "sketch.arc.center_point",
+                        &json!({"center":center,"start":start,"end":end,"clockwise":clockwise})
+                            .to_string(),
+                    )?;
+                    i += 1;
+                }
+            }
+        }
         commands::run("sketch.finish", "{}")?;
-        commands::run("solid.extrude", &json!({"sketch":sketch_id,"distance":corner.tool_length,"direction":"positive","operation":"cut","targets":[body]}).to_string())
+        commands::run("solid.extrude", &json!({"sketch":sketch_id,"distance":plan.tool_length,"direction":"positive","operation":"cut","targets":[body]}).to_string())
     })();
     let reply = match built {
         Ok(reply) => reply,
@@ -676,19 +431,9 @@ fn analytic_corner_cut(
             return Err(error);
         }
     };
-    let bbox_same = (0..3).all(|i| {
-        (before.bounds.0[i] - after.bounds.0[i]).abs() <= 2e-8
-            && (before.bounds.1[i] - after.bounds.1[i]).abs() <= 2e-8
-    });
-    let removed = before.volume - after.volume;
-    let upper = radius * radius * (1.0 - std::f64::consts::FRAC_PI_4) * corner.edge_length
-        + before.volume * 2e-8;
-    if !after.closed || !bbox_same || removed <= before.volume * 1e-12 || removed > upper {
+    if let Err(reason) = solidcraft_trivariate::stock_corner::validate_result(before, after, plan) {
         let _ = commands::run("timeline.delete", &json!({"feature":sketch_id}).to_string());
-        return Err(bad(
-            "fillet",
-            "analytic local cut failed the one-solid, unchanged-bounds, or volume-envelope check",
-        ));
+        return Err(bad("selection", reason));
     }
     Ok(reply)
 }
@@ -796,6 +541,85 @@ fn face_boundary_edges(
     Ok(result.into_iter().collect())
 }
 
+/// Convert host-owned selection and topology records into the geometry core's input.
+/// Missing B-Rep witnesses make the local sweep ineligible, so the caller can preserve the
+/// host's ordinary feature path.
+fn stock_corner_plan(
+    body: &str,
+    selected_index: u64,
+    edges: &[EdgeRow],
+    metrics: BodyMetrics,
+    amount: f64,
+    chamfer: bool,
+) -> Result<solidcraft_trivariate::stock_corner::StockCornerPlan, &'static str> {
+    use solidcraft_trivariate::stock_corner::{Edge, Face, Input, Treatment, analyze};
+
+    let selected = edges
+        .iter()
+        .find(|edge| edge.index == selected_index)
+        .ok_or("selected edge is absent")?;
+    let (Some(start), Some(end), Some(name)) =
+        (selected.start, selected.end, selected.name.as_deref())
+    else {
+        return Err("selected edge lacks its B-Rep endpoints or adjacent face names");
+    };
+    let sides = edge_face_sides(name);
+    if sides.len() != 2 || sides[0] == sides[1] {
+        return Err("selected edge does not identify two distinct adjacent faces");
+    }
+    let face_rows = faces(body).map_err(|_| "could not read adjacent faces")?;
+    let host_face = |side: &str| {
+        face_rows
+            .iter()
+            .find(|face| face.name.as_deref() == Some(side))
+    };
+    let to_face = |face: &FaceRow| -> Result<Face, &'static str> {
+        Ok(Face {
+            normal: face.normal.ok_or("adjacent face has no plane normal")?,
+            point: face.point.ok_or("adjacent face has no plane point")?,
+        })
+    };
+    let adjacent_faces = [
+        to_face(host_face(sides[0]).ok_or("first adjacent face is absent")?)?,
+        to_face(host_face(sides[1]).ok_or("second adjacent face is absent")?)?,
+    ];
+    let mut support_trims = Vec::new();
+    for edge in edges.iter().filter(|edge| edge.index != selected_index) {
+        let Some(edge_name) = edge.name.as_deref() else {
+            continue;
+        };
+        if !sides.iter().any(|side| edge_has_face(edge_name, side)) {
+            continue;
+        }
+        let (Some(start), Some(end)) = (edge.start, edge.end) else {
+            return Err("a support trim is missing endpoints");
+        };
+        support_trims.push(Edge {
+            length: edge.length,
+            start,
+            end,
+            mid: edge.mid,
+        });
+    }
+    let input = Input {
+        body: metrics,
+        selected: Edge {
+            length: selected.length,
+            start,
+            end,
+            mid: selected.mid,
+        },
+        adjacent_faces,
+        support_trims,
+    };
+    let treatment = if chamfer {
+        Treatment::EqualDistanceChamfer(amount)
+    } else {
+        Treatment::Radius(amount)
+    };
+    analyze(&input, treatment)
+}
+
 pub(super) fn apply(entry: &str, params: &Value) -> Result<String, PluginError> {
     let field = if entry == "fillet" {
         "radius_mm"
@@ -846,25 +670,35 @@ pub(super) fn apply(entry: &str, params: &Value) -> Result<String, PluginError> 
     } else {
         "solid.chamfer"
     };
-    let mut args = json!({"body":body,"edges":commands_edges,"tangent_chain":false});
+    let tangent_chain = params
+        .get("tangent_chain")
+        .and_then(Value::as_bool)
+        .unwrap_or(solidcraft_trivariate::stock_corner::DEFAULT_TANGENT_CHAIN);
+    let mut args = json!({"body":body,"edges":commands_edges,"tangent_chain":tangent_chain});
     if entry == "fillet" {
         args["radius"] = json!(amount);
         args["fit"] = json!("exact");
     } else {
         args["distance"] = json!(amount);
     }
-    if entry == "fillet" && selected_edges.len() == 1 {
-        // Do not probe with a native feature when a nearby trim loop is already known: the
-        // host may retain failed feature diagnostics in the active transaction. Preserve native
-        // support for regular edges and fall back only for the rigorously bounded corner case.
+    if selected_edges.len() == 1
+        && selection.len() == 1
+        && selection[0].get("type").and_then(Value::as_str) == Some("edge")
+    {
+        // The core analyzes the actual adjacent planes and emits the local section. Use the
+        // swept profile only when those planes contain a nearby trim; regular cases continue
+        // through the host's native edge operation.
         if let Ok(before) = body_metrics(&body) {
-            if let Ok(corner) = prove_local_corner(&body, &selection[0], amount, &edges, &before) {
-                if let Some(selected) = edges.iter().find(|e| e.index == selected_edges[0]) {
-                    if has_nearby_support_trim(&body, selected, amount, &edges, &before)
-                        .unwrap_or(false)
-                    {
-                        return analytic_corner_cut(&body, amount, corner, &before);
-                    }
+            if let Ok(plan) = stock_corner_plan(
+                &body,
+                selected_edges[0],
+                &edges,
+                before,
+                amount,
+                entry == "chamfer",
+            ) {
+                if plan.nearby_support_trim {
+                    return local_corner_cut(&body, &plan, before, field);
                 }
             }
         }

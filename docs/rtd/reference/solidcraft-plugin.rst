@@ -16,7 +16,7 @@ Launch the separate compact profile to open the sharp FieldCraft bracket:
 
 .. code-block:: bash
 
-   python3 scripts/solidcraft_compact_desktop.py /path/to/solidcraft-trivariate-0.4.1.zip
+   python3 scripts/solidcraft_compact_desktop.py /path/to/solidcraft-trivariate-0.4.2.zip
 
 Its Sketch tab pins new sketch, line, two-point rectangle, coincidence,
 horizontal/vertical, fit-point spline, control-point spline, finish and cancel. The same ribbon adds **extrude**,
@@ -46,12 +46,15 @@ the entry dialogs use the package's operation icons.
 * **Fillet** and **Chamfer** accept viewport picks on a single solid. Finish
   the sketch and select an edge, several edges, or a face whose boundary
   should be treated. Adjacent coplanar patches are grouped to exclude
-  internal partition seams. Tangent-chain propagation is disabled. If the
-  rolling fillet reaches a pocket on a single eligible full-length straight
-  outside corner of axis-aligned stock, the plugin can also cut the corner
-  with an extruded quarter-circle. Its cylindrical face retains the entered
-  radius wherever it borders material. Run the plugin from the original
-  sharp edge when replacing an existing fillet.
+  internal partition seams. **Follow tangent edges** is enabled by default,
+  so a hole rim may continue across a face boundary. Clear the option to
+  use only the selected edges. If the
+  selected full-span outside edge meets a pocket on axis-aligned stock, the
+  Rust library can construct a swept corner cutter. Its profile uses a
+  quarter-circle for a fillet and a straight line at equal setbacks on the
+  two support planes for a chamfer. The plugin passes that profile and the
+  extrusion frame to SolidCraft, which cuts the selected B-rep. Run the
+  operation from the sharp parent when changing the dimension.
   Enter the radius or distance in millimetres and run
   the command. The edited solid can already contain extrusions and cuts.
   SolidCraft creates a B-rep feature in the document timeline. The native

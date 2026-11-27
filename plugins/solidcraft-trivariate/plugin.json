@@ -1,7 +1,7 @@
 {
   "id": "solidcraft-trivariate",
   "name": "SolidCraft Trivariate",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "Builds and displays audited SolidCraft Trivariate sketch, recipe and preview geometry using SolidCraft native features.",
   "capabilities": [
     "commands@0.2"
@@ -279,6 +279,12 @@
               "title": "Distance (mm)",
               "default": 0.25,
               "exclusiveMinimum": 0
+            },
+            "tangent_chain": {
+              "type": "boolean",
+              "title": "Follow tangent edges",
+              "description": "Continue along tangent pieces of the selected edge, including a rim split between adjacent faces. Clear to restrict the operation to the picked edges.",
+              "default": true
             }
           },
           "x-solidcraft-icon": "icons/chamfer.svg",
@@ -317,6 +323,12 @@
               "title": "Radius (mm)",
               "default": 0.25,
               "exclusiveMinimum": 0
+            },
+            "tangent_chain": {
+              "type": "boolean",
+              "title": "Follow tangent edges",
+              "description": "Continue along tangent pieces of the selected edge, including a rim split between adjacent faces. Clear to restrict the operation to the picked edges.",
+              "default": true
             }
           },
           "x-solidcraft-icon": "icons/fillet.svg",

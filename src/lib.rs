@@ -10,6 +10,7 @@ pub mod adaptive_estimator;
 pub mod affine_overlap;
 pub mod annular;
 pub mod annular_audit;
+pub mod stock_corner;
 pub mod axial_boolean;
 mod axial_json;
 pub mod axial_boolean_audit;

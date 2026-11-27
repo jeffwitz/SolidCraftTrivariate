@@ -647,13 +647,11 @@ fn compile_extrusion(
                     "exact_proportional_complete_homogeneous_normal_jet",
                     1,
                 );
-                if record_decisions {
-                    if let Json::Object(fields) = &mut record {
-                        fields.insert(
-                            "normal_interval_ratio".into(),
-                            Json::Array(vec![n(scale.numerator()), n(scale.denominator())]),
-                        );
-                    }
+                if let Json::Object(fields) = &mut record {
+                    fields.insert(
+                        "normal_interval_ratio".into(),
+                        Json::Array(vec![n(scale.numerator()), n(scale.denominator())]),
+                    );
                 }
                 coupled += 1;
                 evidence.push(record);

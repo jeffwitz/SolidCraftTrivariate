@@ -148,6 +148,21 @@ fn source_g2_sketch_only_restores_lateral_faces_with_complete_normal_jets() {
         ),
         (16, 4, 26)
     );
+    let matched: Vec<_> = field
+        .interface_evidence
+        .iter()
+        .filter(|x| {
+            x.field("basis_evidence").and_then(Json::text).ok()
+                == Some("exact_proportional_complete_homogeneous_normal_jet")
+        })
+        .collect();
+    assert_eq!(matched.len(), 4);
+    for join in matched {
+        assert_eq!(
+            join.field("normal_interval_ratio").unwrap(),
+            &parse("[1,1]").unwrap()
+        );
+    }
 }
 
 #[test]
@@ -283,4 +298,22 @@ fn manual_inherited_exports_keep_their_versioned_document_shape() {
         .unwrap()
         .iter()
         .all(|x| x.field("reason").is_err()));
+    let interfaces = package
+        .field("field")
+        .unwrap()
+        .field("interfaces")
+        .unwrap()
+        .items()
+        .unwrap();
+    let matched: Vec<_> = interfaces
+        .iter()
+        .filter(|x| {
+            x.field("basis_evidence").and_then(Json::text).ok()
+                == Some("exact_proportional_complete_homogeneous_normal_jet")
+        })
+        .collect();
+    assert_eq!(matched.len(), 4);
+    assert!(matched.iter().all(|x| {
+        x.field("normal_interval_ratio").unwrap() == &parse("[1,1]").unwrap()
+    }));
 }

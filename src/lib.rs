@@ -219,3 +219,5 @@ pub mod thb_strip;
 pub mod composed_axial;
 pub mod cylinder_tensor_covers;
 pub mod annulus_edges;
+
+pub mod solidcraft_preview;

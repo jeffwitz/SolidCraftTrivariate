@@ -436,25 +436,7 @@ fn validate_extrude(
 
 /// Import an extracted `solidcraft/66` sketch/extrude history as an audited native prism.
 pub fn import_polygon_timeline(script: &Json) -> Result<Json, &'static str> {
-    script.keys(&["about", "commands"])?;
-    let about = script.field("about")?;
-    about.keys(&["design", "format", "replay", "version"])?;
-    if text(about.field("format")?)? != "solidcraft/66"
-        || text(about.field("version")?)? != "0.48.1"
-        || text(about.field("design")?)?.is_empty()
-        || text(about.field("replay")?)?.is_empty()
-    {
-        return Err("unsupported SolidCraft timeline metadata");
-    }
-    let commands = script.field("commands")?.items()?;
-    if commands.len() != 2 {
-        return Err("SolidCraft polygon import requires exactly a sketch and extrusion");
-    }
-    let sketch = feature(&commands[0], "sketch")?;
-    let sketch_id = feature_id(sketch)?;
-    let mut loops = parse_loops(sketch)?;
-    let extrude = feature(&commands[1], "extrude")?;
-    let height = validate_extrude(extrude, sketch_id, &loops)?;
+    let (mut loops, height) = extrusion_profiles(script, false)?;
     let outer = loops.remove(0);
     let recipe = if loops.is_empty() {
         if outer.vertices.len() > 24 {
@@ -563,4 +545,106 @@ pub fn import_polygon_timeline(script: &Json) -> Result<Json, &'static str> {
         ])
     };
     polygon_json::build(&recipe)
+}
+
+fn check_preview_coordinates(feature: &Json) -> Result<(), &'static str> {
+    for point in feature.field("sketch")?.field("points")?.items()? {
+        for value in point.field("pos")?.items()? {
+            if !(-4096..=4096).contains(&exact_i32(value, false)?) {
+                return Err("sketch preview exceeds planner coordinate range");
+            }
+        }
+    }
+    Ok(())
+}
+
+pub(crate) fn preview_contours(feature: &Json) -> Result<Vec<Vec<[i32; 2]>>, &'static str> {
+    check_preview_coordinates(feature)?;
+    Ok(parse_loops(feature)?
+        .into_iter()
+        .map(|profile| profile.vertices.into_iter().map(|v| v.xy_mm).collect())
+        .collect())
+}
+
+fn extrusion_profiles(
+    script: &Json,
+    preview: bool,
+) -> Result<(Vec<ProfileLoop>, i32), &'static str> {
+    script.keys(&["about", "commands"])?;
+    let about = script.field("about")?;
+    about.keys(&["design", "format", "replay", "version"])?;
+    if text(about.field("format")?)? != "solidcraft/66"
+        || text(about.field("version")?)? != "0.48.1"
+        || text(about.field("design")?)?.is_empty()
+        || text(about.field("replay")?)?.is_empty()
+    {
+        return Err("unsupported SolidCraft timeline metadata");
+    }
+    let commands = script.field("commands")?.items()?;
+    let first = commands.first().ok_or("empty SolidCraft timeline")?;
+    let sketch = feature(first, "sketch")?;
+    let sketch_id = feature_id(sketch)?;
+    if preview {
+        check_preview_coordinates(sketch)?;
+    }
+    let loops = parse_loops(sketch)?;
+    let extrude = match commands {
+        [_, extrusion] => feature(extrusion, "extrude")?,
+        [_, a, b] if preview => {
+            let (overlay, extrusion, prefix) = if feature(a, "sketch").is_ok() {
+                (a, b, vec![first.clone()])
+            } else {
+                (b, a, vec![first.clone(), a.clone()])
+            };
+            let prefix = object([("commands", Json::Array(prefix))]);
+            let expected = crate::solidcraft_preview::descriptor(
+                &prefix,
+                sketch_id.try_into().map_err(|_| "invalid sketch id")?,
+            )?;
+            if feature(overlay, "sketch")? != expected.field("feature")? {
+                return Err("additional sketch differs from the generated construction preview");
+            }
+            feature(extrusion, "extrude")?
+        }
+        _ => return Err("SolidCraft polygon import requires a sketch and extrusion"),
+    };
+    let height = validate_extrude(extrude, sketch_id, &loops)?;
+    Ok((loops, height))
+}
+
+/// Extrude the same planar layout shown by the native sketch preview.
+pub fn extrude_preview(input: &Json) -> Result<Json, &'static str> {
+    let script = crate::solidcraft_preview::snapshot_script(input)?;
+    let (profiles, height) = extrusion_profiles(script, true)?;
+    let n = |i: i32| Json::Number(i.to_string());
+    let mut contours = profiles.into_iter().enumerate().map(|(i, profile)| {
+        object([
+            ("id", Json::String(format!("loop{i}"))),
+            (
+                "vertices",
+                Json::Array(
+                    profile
+                        .vertices
+                        .iter()
+                        .map(|v| Json::Array(v.xy_mm.map(n).to_vec()))
+                        .collect(),
+                ),
+            ),
+        ])
+    });
+    let outer = contours.next().ok_or("empty extrusion profile")?;
+    let mut cuts = Vec::new();
+    for contour in contours {
+        let Json::Object(mut values) = contour else {
+            unreachable!()
+        };
+        values.insert("z_interval_mm".into(), Json::Array(vec![n(0), n(height)]));
+        cuts.push(Json::Object(values));
+    }
+    crate::interchange::build(&object([
+        ("family", Json::String("sketch_layer_partition_v1".into())),
+        ("outer", outer),
+        ("cuts", Json::Array(cuts)),
+        ("height_mm", n(height)),
+    ]))
 }

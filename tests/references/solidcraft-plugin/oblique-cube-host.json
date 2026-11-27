@@ -1,0 +1,458 @@
+{
+  "commands": [
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XY",
+        "offset": 0,
+        "name": "Cube base"
+      }
+    },
+    {
+      "command": "sketch.rectangle.two_point",
+      "params": {
+        "p0": [
+          0,
+          0
+        ],
+        "p1": [
+          40,
+          40
+        ]
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": 40,
+        "body_name": "Cube"
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XY",
+        "offset": 40,
+        "name": "A mouth"
+      }
+    },
+    {
+      "command": "sketch.spline.control_point",
+      "params": {
+        "points": [
+          [
+            18,
+            20
+          ],
+          [
+            17,
+            25
+          ],
+          [
+            12,
+            27
+          ],
+          [
+            7,
+            25
+          ],
+          [
+            6,
+            20
+          ],
+          [
+            7,
+            15
+          ],
+          [
+            12,
+            13
+          ],
+          [
+            17,
+            15
+          ]
+        ],
+        "periodic": true
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XY",
+        "offset": 18,
+        "name": "A floor"
+      }
+    },
+    {
+      "command": "sketch.spline.control_point",
+      "params": {
+        "points": [
+          [
+            28,
+            20
+          ],
+          [
+            27,
+            25
+          ],
+          [
+            22,
+            27
+          ],
+          [
+            17,
+            25
+          ],
+          [
+            16,
+            20
+          ],
+          [
+            17,
+            15
+          ],
+          [
+            22,
+            13
+          ],
+          [
+            27,
+            15
+          ]
+        ],
+        "periodic": true
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.loft",
+      "params": {
+        "sections": [
+          {
+            "sketch": "A mouth"
+          },
+          {
+            "sketch": "A floor"
+          }
+        ],
+        "operation": "cut",
+        "name": "A oblique pocket"
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XY",
+        "offset": 40,
+        "name": "B mouth"
+      }
+    },
+    {
+      "command": "sketch.spline.control_knots",
+      "params": {
+        "degree": 2,
+        "knots": [
+          0,
+          0,
+          0,
+          1,
+          1,
+          1
+        ],
+        "weights": [
+          1,
+          0.8,
+          1
+        ],
+        "points": [
+          [
+            34,
+            20
+          ],
+          [
+            32,
+            24
+          ],
+          [
+            28,
+            25
+          ]
+        ]
+      }
+    },
+    {
+      "command": "sketch.spline.control_knots",
+      "params": {
+        "degree": 2,
+        "knots": [
+          0,
+          0,
+          0,
+          1,
+          1,
+          1
+        ],
+        "weights": [
+          1,
+          0.8,
+          1
+        ],
+        "points": [
+          [
+            28,
+            25
+          ],
+          [
+            23,
+            24
+          ],
+          [
+            22,
+            20
+          ]
+        ]
+      }
+    },
+    {
+      "command": "sketch.spline.control_knots",
+      "params": {
+        "degree": 2,
+        "knots": [
+          0,
+          0,
+          0,
+          1,
+          1,
+          1
+        ],
+        "weights": [
+          1,
+          0.8,
+          1
+        ],
+        "points": [
+          [
+            22,
+            20
+          ],
+          [
+            24,
+            16
+          ],
+          [
+            28,
+            15
+          ]
+        ]
+      }
+    },
+    {
+      "command": "sketch.spline.control_knots",
+      "params": {
+        "degree": 2,
+        "knots": [
+          0,
+          0,
+          0,
+          1,
+          1,
+          1
+        ],
+        "weights": [
+          1,
+          0.8,
+          1
+        ],
+        "points": [
+          [
+            28,
+            15
+          ],
+          [
+            33,
+            16
+          ],
+          [
+            34,
+            20
+          ]
+        ]
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XY",
+        "offset": 23,
+        "name": "B floor"
+      }
+    },
+    {
+      "command": "sketch.spline.control_knots",
+      "params": {
+        "degree": 2,
+        "knots": [
+          0,
+          0,
+          0,
+          1,
+          1,
+          1
+        ],
+        "weights": [
+          1,
+          0.8,
+          1
+        ],
+        "points": [
+          [
+            26,
+            20
+          ],
+          [
+            24,
+            24
+          ],
+          [
+            20,
+            25
+          ]
+        ]
+      }
+    },
+    {
+      "command": "sketch.spline.control_knots",
+      "params": {
+        "degree": 2,
+        "knots": [
+          0,
+          0,
+          0,
+          1,
+          1,
+          1
+        ],
+        "weights": [
+          1,
+          0.8,
+          1
+        ],
+        "points": [
+          [
+            20,
+            25
+          ],
+          [
+            15,
+            24
+          ],
+          [
+            14,
+            20
+          ]
+        ]
+      }
+    },
+    {
+      "command": "sketch.spline.control_knots",
+      "params": {
+        "degree": 2,
+        "knots": [
+          0,
+          0,
+          0,
+          1,
+          1,
+          1
+        ],
+        "weights": [
+          1,
+          0.8,
+          1
+        ],
+        "points": [
+          [
+            14,
+            20
+          ],
+          [
+            16,
+            16
+          ],
+          [
+            20,
+            15
+          ]
+        ]
+      }
+    },
+    {
+      "command": "sketch.spline.control_knots",
+      "params": {
+        "degree": 2,
+        "knots": [
+          0,
+          0,
+          0,
+          1,
+          1,
+          1
+        ],
+        "weights": [
+          1,
+          0.8,
+          1
+        ],
+        "points": [
+          [
+            20,
+            15
+          ],
+          [
+            25,
+            16
+          ],
+          [
+            26,
+            20
+          ]
+        ]
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.loft",
+      "params": {
+        "sections": [
+          {
+            "sketch": "B mouth"
+          },
+          {
+            "sketch": "B floor"
+          }
+        ],
+        "operation": "cut",
+        "name": "B oblique pocket"
+      }
+    }
+  ]
+}

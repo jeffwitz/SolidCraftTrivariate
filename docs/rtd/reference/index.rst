@@ -12,6 +12,7 @@ admission limits.
    construction
    geometry
    operations
+   solidcraft-plugin
    automatic-continuity
    interface-fields
    continuity-experiments

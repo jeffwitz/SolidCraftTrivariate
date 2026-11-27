@@ -113,7 +113,11 @@ def main() -> int:
         if not windows:
             raise RuntimeError("SolidCraft control is ready but no visible desktop window was found")
         wid = windows[-1]
-        subprocess.run(["xdotool", "windowactivate", "--sync", wid], check=True)
+        activate = subprocess.run(["xdotool", "windowactivate", "--sync", wid], text=True, capture_output=True)
+        if activate.returncode:
+            # Xvfb has no window manager, so _NET_ACTIVE_WINDOW is commonly unsupported.
+            # XSetInputFocus still targets the real SolidCraft X11 window for capture.
+            subprocess.run(["xdotool", "windowfocus", "--sync", wid], check=True)
         execute = client.execute
         execute("view.apply", {"view": "top"})
         # Keep the test view unambiguous: hide model bodies and source profile, leaving only

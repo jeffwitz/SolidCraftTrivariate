@@ -51,8 +51,13 @@ stock shaded setting suppresses the body's edge overlay. Switching display
 styles can expose edges between adjacent STEP boundary faces. The volume
 partition remains recorded in the model JSON. FieldCraft's stable 0.8.1 headless reader refused the STEP;
 its design reader accepts format 57 and SolidCraft 0.48.1 writes format 66.
-The viewport integration test pins the later FieldCraft nightly
-0.8.1-nightly.20261124.89.1 and exercises its STEP import directly.
+FieldCraft nightly 0.8.1-nightly.20261124.89.1 opened the trivariate
+box-minus-cylinder STEP and rendered it through its own viewport. The
+`two-client test and original screenshots
+<https://github.com/jeffwitz/SolidCraftTrivariate/actions/runs/46017997317>`_
+use the same STEP bytes in both clients. FieldCraft's snapshot includes
+boundary-face edges. The SolidCraft shaded display setting applies only in
+SolidCraft.
 
 Intersecting oblique pockets
 ----------------------------

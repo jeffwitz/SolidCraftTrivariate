@@ -1,0 +1,28 @@
+{
+  "entry": "boolean",
+  "params": {
+    "operation": "b_minus_a"
+  },
+  "design": "ribbon-pair.sc",
+  "grants": {
+    "folders": [
+      {
+        "name": "companion",
+        "read": true,
+        "write": true,
+        "from": "companion"
+      }
+    ],
+    "command_groups": [
+      "file"
+    ]
+  },
+  "expect": {
+    "model": {
+      "body_count": 2,
+      "total": {
+        "volume_mm3": 1884.9555921538758
+      }
+    }
+  }
+}

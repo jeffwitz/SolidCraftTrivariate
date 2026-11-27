@@ -10,12 +10,17 @@ const SNAPSHOT_NAME: &str = "timeline.json";
 const DESCRIPTOR_SCHEMA: &str = "solidcraft_sketch_preview_v1";
 const MAX_DESCRIPTOR_BYTES: usize = 1_048_576;
 
+mod ribbon;
+
 struct Plugin;
 
 impl Guest for Plugin {
     fn execute(entry: String, params: String) -> Result<String, PluginError> {
         let params: Value = serde_json::from_str(&params).map_err(|e| invalid("params", e))?;
         match entry.as_str() {
+            "drill" | "boolean" | "chamfer-bores" | "fillet-bores" => {
+                ribbon::apply(&entry, &params)
+            }
             "snapshot-timeline" => snapshot_timeline(),
             "show-sketch-stage" => set_sketch_stage(&params, true),
             "hide-sketch-stage" => set_sketch_stage(&params, false),

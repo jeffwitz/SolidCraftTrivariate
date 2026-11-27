@@ -1,0 +1,26 @@
+{
+  "entry": "chamfer-bores",
+  "params": {},
+  "design": "ribbon-bracket.sc",
+  "grants": {
+    "folders": [
+      {
+        "name": "companion",
+        "read": true,
+        "write": true,
+        "from": "companion"
+      }
+    ],
+    "command_groups": [
+      "file"
+    ]
+  },
+  "expect": {
+    "model": {
+      "body_count": 1,
+      "total": {
+        "volume_mm3": 32141.571882888155
+      }
+    }
+  }
+}

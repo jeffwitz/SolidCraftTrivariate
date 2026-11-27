@@ -1,0 +1,26 @@
+{
+  "entry": "drill",
+  "params": {},
+  "design": "ribbon-box.sc",
+  "grants": {
+    "folders": [
+      {
+        "name": "companion",
+        "read": true,
+        "write": true,
+        "from": "companion"
+      }
+    ],
+    "command_groups": [
+      "file"
+    ]
+  },
+  "expect": {
+    "model": {
+      "body_count": 1,
+      "total": {
+        "volume_mm3": 18257.522203923058
+      }
+    }
+  }
+}

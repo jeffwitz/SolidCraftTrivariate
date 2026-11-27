@@ -1,0 +1,28 @@
+{
+  "entry": "chamfer-bores",
+  "params": {},
+  "design": "ribbon-box.sc",
+  "grants": {
+    "folders": [
+      {
+        "name": "companion",
+        "read": true,
+        "write": true,
+        "from": "companion"
+      }
+    ],
+    "command_groups": [
+      "file"
+    ]
+  },
+  "expect": {
+    "error": "invalid_input",
+    "message": "does not match",
+    "model": {
+      "body_count": 1,
+      "total": {
+        "volume_mm3": 19200
+      }
+    }
+  }
+}

@@ -68,7 +68,7 @@ SolidCraft 0.48.1 CLI, tests the entries, and packages `plugin.json` with the co
 
 ## Install in SolidCraft
 
-1. Download `solidcraft-trivariate-0.1.0.zip` from the successful **SolidCraft Trivariate plugin** workflow artifact.
+1. Download `solidcraft-trivariate-0.2.0.zip` from the successful **SolidCraft Trivariate plugin** workflow artifact.
 2. In SolidCraft, open **Preferences > Plugins > Install plugin…** and choose the ZIP.
 3. Approve the `file` command group and choose a folder named `companion` with read/write access. The plugin reads recipes and writes `timeline.json`, `partition.json`, and `result.step` there.
 4. Use the entries in the Model ribbon or Plugins menu. Place a recipe JSON in the approved folder and run **Build Recipe**. `operation` defaults to `from_recipe`; choose one of the four operations for the tall box-cylinder suite. `rim` defaults to `sharp` and also offers `chamfer` or `fillet` for the supported FieldCraft recipe. Incompatible operation overrides are refused before a feature is added.
@@ -81,3 +81,27 @@ The minimal WIT contract in `wit/plugin.wit` is adapted from SolidCraft's
 licensed. This plugin uses the documented WIT imports and host commands; it contains no
 copied SolidCraft implementation code. Keep the upstream origin and revision with any
 redistribution of the WIT-derived interface.
+
+## Compact desktop ribbon
+
+Run `python3 scripts/solidcraft_compact_profile.py /absolute/path/to/compact-settings`
+once. Set `SOLIDCRAFT_SETTINGS_DIR` to that directory when launching the desktop
+with this plugin installed. The profile keeps Sketch visible from startup. Its
+pinned sketch controls create a sketch, draw straight sides and rectangles,
+constrain them, and finish or cancel. SolidCraft retains its dropdown menus and
+command search. Its standalone sketch editor accepts more curve types than the
+trivariate extrusion importer (closed XY polygons with integer coordinates).
+
+Five modeling buttons occupy the plugin group. Extrusion reads an existing
+sketch. Drill replaces a matching box with a centered through-bore. For a box
+created by sketch extrusion, enter its source sketch ID and extrusion height.
+Boolean edits the box and suppresses the selected cylinder. The qualified
+Boolean operand pair is the tall box/cylinder example. Chamfer-bores and
+fillet-bores edit the two bore rims of the qualified sharp FieldCraft bracket.
+The target feature ID is the ID of the imported trivariate body. The commands
+check its full STEP data against the regenerated operand before modifying the
+timeline. Each operation uses SolidCraft's original viewport and undo history.
+
+Open `tests/ribbon-bracket.sc` for the bore treatments, `tests/ribbon-box.sc` for
+drilling, or `tests/ribbon-pair.sc` for Boolean combinations (features 1 and 2).
+Reopen the original or use Undo when comparing alternative results.

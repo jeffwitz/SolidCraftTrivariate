@@ -1,71 +1,291 @@
 {
   "id": "solidcraft-trivariate",
   "name": "SolidCraft Trivariate",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Builds and displays audited SolidCraft Trivariate sketch, recipe and preview geometry using SolidCraft native features.",
-  "capabilities": ["commands@0.2"],
+  "capabilities": [
+    "commands@0.2"
+  ],
   "runtime": {
     "module": "solidcraft-trivariate.wasm",
-    "commands": ["timeline.export_script", "timeline.add", "browser.visibility", "view.visual_style"],
+    "commands": [
+      "timeline.export_script",
+      "timeline.add",
+      "browser.visibility",
+      "view.visual_style",
+      "timeline.edit",
+      "timeline.suppress"
+    ],
     "entries": [
       {
         "name": "extrude-active-sketch",
         "effect": "edit",
-        "input_schema": {"type": "object", "properties": {
-          "source_feature_id": {"type": "integer", "title": "Sketch feature id", "default": 1, "minimum": 1},
-          "height_mm": {"type": "integer", "title": "Extrusion height (mm)", "default": 12, "minimum": 1, "maximum": 64}
-        }},
-        "slots": [{"kind": "ribbon", "name": "Model"}]
+        "input_schema": {
+          "type": "object",
+          "properties": {
+            "source_feature_id": {
+              "type": "integer",
+              "title": "Sketch feature id",
+              "default": 1,
+              "minimum": 1
+            },
+            "height_mm": {
+              "type": "integer",
+              "title": "Extrusion height (mm)",
+              "default": 12,
+              "minimum": 1,
+              "maximum": 64
+            }
+          },
+          "x-solidcraft-icon": "icons/extrude.svg"
+        },
+        "slots": [
+          {
+            "kind": "ribbon",
+            "name": "Sketch"
+          }
+        ]
       },
       {
         "name": "extrude-active-timeline",
         "effect": "edit",
-        "input_schema": {"type": "object", "properties": {}},
-        "slots": [{"kind": "ribbon", "name": "Model"}]
+        "input_schema": {
+          "type": "object",
+          "properties": {}
+        }
       },
       {
         "name": "build-recipe",
         "effect": "edit",
-        "input_schema": {"type": "object", "properties": {
-          "recipe": {"type": "string", "title": "Recipe file", "default": "recipe.json"},
-          "rim": {"type": "string", "title": "Bore rim", "enum": ["sharp", "chamfer", "fillet"], "default": "sharp"},
-          "operation": {"type": "string", "title": "Boolean operation", "enum": ["from_recipe", "union", "intersection", "a_minus_b", "b_minus_a"], "default": "from_recipe"}
-        }},
-        "slots": [{"kind": "ribbon", "name": "Model"}]
+        "input_schema": {
+          "type": "object",
+          "properties": {
+            "recipe": {
+              "type": "string",
+              "title": "Recipe file",
+              "default": "recipe.json"
+            },
+            "rim": {
+              "type": "string",
+              "title": "Bore rim",
+              "enum": [
+                "sharp",
+                "chamfer",
+                "fillet"
+              ],
+              "default": "sharp"
+            },
+            "operation": {
+              "type": "string",
+              "title": "Boolean operation",
+              "enum": [
+                "from_recipe",
+                "union",
+                "intersection",
+                "a_minus_b",
+                "b_minus_a"
+              ],
+              "default": "from_recipe"
+            }
+          }
+        }
       },
       {
         "name": "insert-result",
         "effect": "edit",
-        "input_schema": {"type": "object", "properties": {}},
-        "slots": [{"kind": "ribbon", "name": "Model"}]
+        "input_schema": {
+          "type": "object",
+          "properties": {}
+        }
       },
       {
         "name": "snapshot-timeline",
         "effect": "edit",
-        "input_schema": {"type": "object", "properties": {}},
-        "slots": [{"kind": "ribbon", "name": "Model"}]
+        "input_schema": {
+          "type": "object",
+          "properties": {}
+        }
       },
       {
         "name": "show-sketch-stage",
         "effect": "edit",
-        "input_schema": {"type": "object", "properties": {
-          "descriptor": {"type": "string", "title": "Descriptor file", "default": "partition.json"},
-          "source_feature_id": {"type": "integer", "title": "Source sketch feature id", "default": 1, "minimum": 1}
-        }}
+        "input_schema": {
+          "type": "object",
+          "properties": {
+            "descriptor": {
+              "type": "string",
+              "title": "Descriptor file",
+              "default": "partition.json"
+            },
+            "source_feature_id": {
+              "type": "integer",
+              "title": "Source sketch feature id",
+              "default": 1,
+              "minimum": 1
+            }
+          }
+        }
       },
       {
         "name": "hide-sketch-stage",
         "effect": "edit",
-        "input_schema": {"type": "object", "properties": {
-          "descriptor": {"type": "string", "title": "Descriptor file", "default": "partition.json"},
-          "source_feature_id": {"type": "integer", "title": "Source sketch feature id", "default": 1, "minimum": 1}
-        }}
+        "input_schema": {
+          "type": "object",
+          "properties": {
+            "descriptor": {
+              "type": "string",
+              "title": "Descriptor file",
+              "default": "partition.json"
+            },
+            "source_feature_id": {
+              "type": "integer",
+              "title": "Source sketch feature id",
+              "default": 1,
+              "minimum": 1
+            }
+          }
+        }
+      },
+      {
+        "name": "drill",
+        "effect": "edit",
+        "slots": [
+          {
+            "kind": "ribbon",
+            "name": "Sketch"
+          }
+        ],
+        "input_schema": {
+          "type": "object",
+          "properties": {
+            "body_id": {
+              "type": "integer",
+              "title": "Target timeline feature",
+              "default": 1,
+              "minimum": 1
+            },
+            "radius_mm": {
+              "type": "integer",
+              "title": "Centered bore radius (mm)",
+              "default": 5,
+              "minimum": 1
+            },
+            "source_feature_id": {
+              "type": "integer",
+              "title": "Source rectangle sketch (0 for reference box)",
+              "default": 0,
+              "minimum": 0
+            },
+            "height_mm": {
+              "type": "integer",
+              "title": "Source extrusion height (mm)",
+              "default": 12,
+              "minimum": 1
+            }
+          },
+          "x-solidcraft-icon": "icons/drill.svg"
+        }
+      },
+      {
+        "name": "boolean",
+        "effect": "edit",
+        "slots": [
+          {
+            "kind": "ribbon",
+            "name": "Sketch"
+          }
+        ],
+        "input_schema": {
+          "type": "object",
+          "properties": {
+            "body_id": {
+              "type": "integer",
+              "title": "Target timeline feature",
+              "default": 1,
+              "minimum": 1
+            },
+            "tool_id": {
+              "type": "integer",
+              "title": "Cylinder feature",
+              "default": 2,
+              "minimum": 1
+            },
+            "operation": {
+              "type": "string",
+              "title": "Operation",
+              "enum": [
+                "union",
+                "intersection",
+                "a_minus_b",
+                "b_minus_a"
+              ],
+              "default": "union"
+            }
+          },
+          "x-solidcraft-icon": "icons/boolean.svg"
+        }
+      },
+      {
+        "name": "chamfer-bores",
+        "effect": "edit",
+        "slots": [
+          {
+            "kind": "ribbon",
+            "name": "Sketch"
+          }
+        ],
+        "input_schema": {
+          "type": "object",
+          "properties": {
+            "body_id": {
+              "type": "integer",
+              "title": "Target timeline feature",
+              "default": 1,
+              "minimum": 1
+            }
+          },
+          "x-solidcraft-icon": "icons/chamfer.svg"
+        }
+      },
+      {
+        "name": "fillet-bores",
+        "effect": "edit",
+        "slots": [
+          {
+            "kind": "ribbon",
+            "name": "Sketch"
+          }
+        ],
+        "input_schema": {
+          "type": "object",
+          "properties": {
+            "body_id": {
+              "type": "integer",
+              "title": "Target timeline feature",
+              "default": 1,
+              "minimum": 1
+            }
+          },
+          "x-solidcraft-icon": "icons/fillet.svg"
+        }
       }
     ],
     "permissions": {
-      "command_groups": ["file"],
-      "files": [{"name": "companion", "read": true, "write": true}]
+      "command_groups": [
+        "file"
+      ],
+      "files": [
+        {
+          "name": "companion",
+          "read": true,
+          "write": true
+        }
+      ]
     },
-    "limits": {"fuel": 100000000000, "memory_mib": 64, "deadline_ms": 30000}
+    "limits": {
+      "fuel": 100000000000,
+      "memory_mib": 64,
+      "deadline_ms": 30000
+    }
   }
 }

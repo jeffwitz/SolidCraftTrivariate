@@ -1,0 +1,11 @@
+{
+  "schema":"inherited_continuity_campaign_v1",
+  "baseline":"3f9d2d915c918121503668691b489a39781c6dd5",
+  "corpus":["45 benchmark recipes","12 supplemental recipes","11 external sketches","tall cylinder","box-cylinder boolean","S2 partial union","FieldCraft brackets","nurbs_strip","curved plate_blind_pocket"],
+  "tests":["count modeled interfaces once per state and classify the evidence","recover strip homogeneous controls and verify every extracted coefficient against the native model","recover common axial extrusion through full horizontal faces of the cylinder and sketch plate and enforce derivatives in physical z","compare physical-coordinate reproduction, trace gradients and signed sparse extraction at shared edges","compare cylinder torsion against Saint-Venant and compare C0 and inherited spaces at fixed field degree","test a transverse join on the actual cylinder with exact rational derivative constraints for the whole field basis","choose further adaptive work from measured coverage and error per DOF"],
+  "numeric":{"relative_stiffness_same_quadrature":1e-10,"relative_load_same_quadrature":1e-10,"relative_free_residual":1e-9,"affine_gradient_normalized":1e-9,"torsion_energy_relative":1e-8,"quadrature_observable_relative":1e-8},
+  "proofs":["whole-net homogeneous restriction, positive constant gauge","trace derivative identities in physical coordinates using exact interval widths","sparse rational elimination and verification on all original constraints"],
+  "negative_cases":["unsupported family/partial face","nonpositive weight","forged parent or model","orientation or interval mismatch","arithmetic or allocation budget"],
+  "separate_outputs":["source model validity","support eligibility","logical supports","C0/full/partial interfaces","scalar dimension","free vector DOFs","energy and L2 errors","cost"],
+  "resources":{"max_source_blocks":2048,"max_raw_scalar_dofs":120000,"max_elimination_row_terms":4096}
+}
